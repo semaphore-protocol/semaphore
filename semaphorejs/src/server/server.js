@@ -63,69 +63,82 @@ class SemaphoreServer {
 
     constructor(storage, node_url, contract_address, tree) {
         this.storage = storage;
+        this.node_url = node_url;
         this.web3 = new Web3(new Web3.providers.HttpProvider(node_url));
         this.web3.eth.transactionConfirmationBlocks = transaction_confirmation_blocks;
         logger.verbose(`transaction confirmation blocks: ${this.web3.eth.transactionConfirmationBlocks}`);
         this.contract_address = contract_address;
         this.tree = tree;
         this.contract = new this.web3.eth.Contract(
-            SemaphoreABI.abi, 
+            SemaphoreABI.abi,
             this.contract_address,
         );
     }
 
     async event_processing_loop() {
         while (true) {
-            const last_processed_block = await this.get_last_processed_block();
-            const current_block_number = await this.web3.eth.getBlockNumber();
+          try {
+              const last_processed_block = await this.get_last_processed_block();
+              const current_block_number = await this.web3.eth.getBlockNumber();
 
-            logger.debug(`last_processed_block: ${last_processed_block}`);
-            logger.debug(`current_block_number: ${current_block_number}`);
+              logger.debug(`last_processed_block: ${last_processed_block}`);
+              logger.debug(`current_block_number: ${current_block_number}`);
 
-            const code = await this.web3.eth.getCode(this.contract_address, last_processed_block);
-            if ( code == '0x') {
-                await this.storage.put(last_block_key, (last_processed_block + 1).toString());
-                continue;
-            }
+              const code = await this.web3.eth.getCode(this.contract_address, last_processed_block);
+              if ( code == '0x') {
+                  await this.storage.put(last_block_key, (last_processed_block + 1).toString());
+                  continue;
+              }
 
-            const state_root = await this.contract.methods.root().call({from: from_address}, last_processed_block);
-            const state_signal_rolling_hash = await this.contract.methods.signal_rolling_hash().call({from: from_address}, last_processed_block);
-            logger.debug(`state_root: ${state_root}, state_signal_rolling_hash: ${state_signal_rolling_hash}`);
+              const state_root = await this.contract.methods.root().call({from: from_address}, last_processed_block);
+              const state_signal_rolling_hash = await this.contract.methods.signal_rolling_hash().call({from: from_address}, last_processed_block);
+              logger.debug(`state_root: ${state_root}, state_signal_rolling_hash: ${state_signal_rolling_hash}`);
 
-            const saved_state_block = await this.get_state_for_block(last_processed_block);
-            logger.debug(`saved_state_block: ${JSON.stringify(saved_state_block)}`);
+              const saved_state_block = await this.get_state_for_block(last_processed_block);
+              logger.debug(`saved_state_block: ${JSON.stringify(saved_state_block)}`);
 
-            if ( saved_state_block.root && (state_root != saved_state_block.root || 
-                state_signal_rolling_hash != saved_state_block.signal_rolling_hash)) {
-                await this.rollback_one_step(last_processed_block);
-                continue;
-            }
+              if ( saved_state_block.root && (state_root != saved_state_block.root ||
+                  state_signal_rolling_hash != saved_state_block.signal_rolling_hash)) {
+                  await this.rollback_one_step(last_processed_block);
+                  continue;
+              }
 
-            const target_block_number = Math.min(current_block_number, last_processed_block + 10);
+              const target_block_number = Math.min(current_block_number, last_processed_block + 10);
 
-            const logs = await this.contract.getPastEvents('allEvents', {
-                fromBlock: last_processed_block + 1,
-                toBlock: target_block_number,
-                address: this.contract_address,
-            });
-            await this.save_events(
-                logs, 
-                state_signal_rolling_hash,
-                target_block_number
+              const logs = await this.contract.getPastEvents('allEvents', {
+                  fromBlock: last_processed_block + 1,
+                  toBlock: target_block_number,
+                  address: this.contract_address,
+              });
+              await this.save_events(
+                  logs,
+                  state_signal_rolling_hash,
+                  target_block_number
+              );
+
+              if (logs.length > 0) {
+                  const state_root = await this.contract.methods.root().call({from: from_address}, target_block_number);
+                  const state_signal_rolling_hash = await this.contract.methods.signal_rolling_hash().call({from: from_address}, target_block_number);
+                  logger.verbose(`state_root: ${state_root}, state_signal_rolling_hash: ${state_signal_rolling_hash}`);
+
+                  const saved_state_block = await this.get_state_for_block(target_block_number);
+                  logger.verbose(`saved_state_block: ${JSON.stringify(saved_state_block)}`);
+              }
+
+              if (target_block_number == current_block_number) {
+                  await timeout(5000);
+              }
+          } catch(e) {
+            logger.error(`Error in loop: ${e}`);
+            await timeout(1000);
+
+            this.web3 = new Web3(new Web3.providers.HttpProvider(this.node_url));
+            this.web3.eth.transactionConfirmationBlocks = transaction_confirmation_blocks;
+            this.contract = new this.web3.eth.Contract(
+                SemaphoreABI.abi,
+                this.contract_address,
             );
-
-            if (logs.length > 0) {
-                const state_root = await this.contract.methods.root().call({from: from_address}, last_processed_block);
-                const state_signal_rolling_hash = await this.contract.methods.signal_rolling_hash().call({from: from_address}, last_processed_block);
-                logger.verbose(`state_root: ${state_root}, state_signal_rolling_hash: ${state_signal_rolling_hash}`);
-
-                const saved_state_block = await this.get_state_for_block(last_processed_block);
-                logger.verbose(`saved_state_block: ${JSON.stringify(saved_state_block)}`);
-            }
-
-            if (target_block_number == current_block_number) {
-                await timeout(5000);
-            }
+          }
         }
     }
 
@@ -159,6 +172,8 @@ class SemaphoreServer {
     }
 
     async save_events(events, rolling_hash, block_number) {
+        let current_index = parseInt(await this.storage.get_or_element(signal_index_key, '0'));
+
         rolling_hash = bigInt(rolling_hash);
 
         let key_values = [];
@@ -176,20 +191,27 @@ class SemaphoreServer {
                         ('00' + crypto.createHash('sha256').update(event.returnValues.signal.slice(2), 'hex').digest().slice(0,31).toString('hex')), 'hex'
                     ).digest()
                 );
+
+                current_index++;
                 const adds = await this.prepare_signal_add(
                     event.returnValues.signal,
-                    event.returnValues.nullifiers_hash,
-                    block_number,
+                    event.returnValues.nullifiers_hash.toString(),
+                    event.returnValues.external_nullifier.toString(),
+                    event.blockNumber,
                     rolling_hash.toString(),
+                    current_index,
                 );
-                key_values.push(adds[0]);
-                key_values.push(adds[1]);
+                key_values.push(adds);
             } else {
                 logger.error(`Unknown event: ${JSON.stringify(event)}`);
             }
         }
 
         key_values.push({ key: last_block_key, value: block_number.toString()});
+        key_values.push({
+            key: signal_index_key,
+            value: current_index,
+        });
         const root = await tree.root();
         key_values.push(await this.prepare_save_state_for_block(block_number, {
             root,
@@ -202,23 +224,18 @@ class SemaphoreServer {
         return parseInt(await this.storage.get_or_element(last_block_key, '0'));
     }
 
-    async prepare_signal_add(signal, nullifiers_hash, block_number, rolling_hash) {
-        let current_index = parseInt(await this.storage.get_or_element(signal_index_key, '0'));
-        current_index++;
-
+    async prepare_signal_add(signal, nullifiers_hash, external_nullifier, block_number, rolling_hash, current_index) {
         const signal_key = `${signal_key_prefix}_${current_index}`;
-        return [{
+        return {
             key: signal_key,
             value: JSON.stringify({
                 signal,
+                external_nullifier,
                 nullifiers_hash,
                 block_number,
                 rolling_hash,
             }),
-        }, {
-            key: signal_index_key,
-            value: current_index,
-        }];
+        };
     }
 
     async rollback_signals_to_rolling_hash(rolling_hash) {
@@ -246,7 +263,7 @@ const tree = new MerkleTree(
     prefix,
     storage,
     hasher,
-    4,
+    20,
     default_value,
 );
 
@@ -258,13 +275,16 @@ const semaphore = new SemaphoreServer(
 );
 
 semaphore.event_processing_loop()
-.catch((err) => logger.error(err));
+.catch((err) => logger.error(`Semaphore error: ${err}`));
 
 const express = require('express');
+var cors = require('cors');
+
 var bodyParser = require('body-parser')
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 const port = process.env.SEMAPHORE_PORT;
 
 app.get('/path/:index', async (req, res) => {
@@ -294,23 +314,10 @@ app.get('/element_index/:element', async (req, res) => {
     res.send({ index: leaf_index });
 });
 
-
-
-app.get('/signals/:start_index/:amount/:order', async (req, res) => {
-    const amount = parseInt(req.params.amount)
-    if (isNaN(amount)) {
-        res.status(400).send({ error: `Invalid amount ${amount}`});
-        return;
-    }
-    const order = req.params.order;
-    const start_index = parseInt(req.params.start_index)
-    if (isNaN(start_index)) {
-        res.status(400).send({ error: `Invalid start index ${start_index}`});
-        return;
-    }
-
+async function get_signals(start_index, amount, order) {
     let signals = [];
 
+    const latest_signal_index = await semaphore.storage.get_or_element(signal_index_key, 0);
     if (order == 'asc') {
         for (let i = 0; i < amount; i++) {
             const signal_key = `${signal_key_prefix}_${start_index + i}`;
@@ -320,7 +327,6 @@ app.get('/signals/:start_index/:amount/:order', async (req, res) => {
             }
         }
     } else if (order == 'desc') {
-        const latest_signal_index = await semaphore.storage.get_or_element(signal_index_key, 0);
         for (let i = 0; i < amount; i++) {
             const signal_key = `${signal_key_prefix}_${latest_signal_index - start_index - i}`;
             const signal_data = JSON.parse(await semaphore.storage.get_or_element(signal_key, '{}'));
@@ -329,15 +335,80 @@ app.get('/signals/:start_index/:amount/:order', async (req, res) => {
             }
         }
     } else {
-        res.status(400).send({error:  `Unknown order ${order}`});
+        throw new Error(`Unknown order ${order}`);
+    }
+
+    const ret = {
+      filtered: parseInt(latest_signal_index),
+      total: parseInt(latest_signal_index),
+      signals
+    };
+
+    return ret;
+}
+
+
+app.get('/signals/:start_index/:amount/:order', async (req, res) => {
+  try {
+    const amount = parseInt(req.params.amount);
+    if (isNaN(amount)) {
+        res.status(400).send({ error: `Invalid amount ${amount}`});
         return;
     }
 
-    res.send(signals);
+    const order = req.params.order;
+    const start_index = parseInt(req.params.start_index);
+    if (isNaN(start_index)) {
+        res.status(400).send({ error: `Invalid start index ${start_index}`});
+        return;
+    }
+    const data = await get_signals(start_index, amount, order);
+    res.send(data);
+  } catch(err) {
+    res.status(400).send({error: err.message});
+  }
+});
+
+app.get('/signals_datatable', async (req, res) => {
+  try {
+    const amount = parseInt(req.query.length);
+    if (isNaN(amount)) {
+        res.status(400).send({ error: `Invalid amount ${amount}`});
+        return;
+    }
+
+    //const order = req.query.order[0].dir;
+    const order = 'asc';
+    const start_index = parseInt(req.query.start) + 1;
+    if (isNaN(start_index)) {
+        res.status(400).send({ error: `Invalid start index ${start_index}`});
+        return;
+    }
+    const data = await get_signals(start_index, amount, order);
+    data.signals = data.signals.map( (e) => {
+      e.signal = semaphore.web3.utils.toAscii(e.signal).replace(/\0/g,'');
+      e.nullifiers_hash = '0x' + bigInt(e.nullifiers_hash).toString(16);
+      e.external_nullifier = '0x' + bigInt(e.external_nullifier).toString(16);
+      e.rolling_hash = '0x' + bigInt(e.rolling_hash).toString(16);
+      return e;
+    });
+    res.send({
+      draw: req.query.draw,
+      recordsFiltered: data.filtered,
+      recordsTotal: data.total,
+      data: data.signals
+    });
+  } catch(err) {
+    res.status(400).send({error: err.message});
+  }
 });
 
 const check_login = (req) => {
-    return (req.header('login') == process.env.SEMAPHORE_LOGIN);
+    if (process.env.SEMAPHORE_LOGIN !== undefined) {
+      return (req.header('login') == process.env.SEMAPHORE_LOGIN);
+    } else {
+      return true;
+    }
 };
 
 const from_address = process.env.FROM_ADDRESS;
@@ -345,7 +416,8 @@ const from_private_key = process.env.FROM_PRIVATE_KEY;
 const chain_id = parseInt(process.env.CHAIN_ID);
 
 app.post('/add_identity', async (req, res) => {
-    if (check_login) {
+  try {
+    if ((await check_login(req)) == true) {
         const leaf = req.body.leaf;
         const encoded = await semaphore.contract.methods.insertIdentity(leaf).encodeABI();
         //logger.verbose('encoded: ' + encoded);
@@ -374,25 +446,35 @@ app.post('/add_identity', async (req, res) => {
         const signed_tx = await semaphore.web3.eth.accounts.signTransaction(tx_object, from_private_key);
         logger.info(`sending tx: ${signed_tx.messageHash}`);
 
-        semaphore.web3.eth.sendSignedTransaction(signed_tx.rawTransaction)
-        .on('receipt', () => {
-            logger.verbose(`tx sent: ${signed_tx.messageHash}`);
-        })
-        .catch((err) => logger.error(`tx send error: ${JSON.stringify(err)}`));
+        const promise = new Promise((resolve, reject) => {
+          semaphore.web3.eth.sendSignedTransaction(signed_tx.rawTransaction)
+          .on('receipt', () => {
+              logger.debug(`tx sent: ${signed_tx.messageHash}`);
+              resolve();
+          })
+          .catch((err) => {
+            logger.error(`tx send error: ${JSON.stringify(err)}`);
+            reject(err);
+          });
+        });
+        await promise;
 
         res.json({});
     } else {
         res.status(400).json({error: 'Invalid login'});
     }
+  } catch(err) {
+        res.status(400).json({error: err.stack});
+  }
 });
 
 process.on('unhandledRejection', function(err, promise) {
-    logger.error(err.message);
+    logger.error(err.stack);
     process.exit(1);
 });
 
 process.on('uncaughtException', function(err) {
-    logger.error(err.message);
+    logger.error(err.stack);
     process.exit(1);
 });
 

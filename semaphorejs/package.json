@@ -11,20 +11,26 @@
   "dependencies": {
     "circom": "0.0.24",
     "circomlib": "0.0.6",
+    "cors": "^2.8.5",
     "del": "^4.1.0",
+    "file-saver": "^2.0.1",
     "ganache-cli": "^6.4.1",
     "ganache-core": "^2.5.3",
     "html-webpack-plugin": "^3.2.0",
     "mocha": "^6.0.2",
     "node-fetch": "^2.3.0",
     "require-nocache": "^1.0.0",
-    "snarkjs": "^0.1.11",
+    "snarkjs": "^0.1.13",
     "truffle": "^5.0.10",
     "truffle-artifactor": "^4.0.10",
     "truffle-contract": "^4.0.11",
     "web3": "^1.0.0-beta.51",
     "webpack": "^4.30.0",
-    "websnark": "git+https://github.com/iden3/websnark.git",
+    "websnark": "0.0.2",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "null-loader": "^0.1.1",
+    "webpack-cli": "^3.3.0"
   }
 }

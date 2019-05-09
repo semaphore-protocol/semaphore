@@ -6,7 +6,7 @@ import "./MerkleTree.sol";
 contract Semaphore is Verifier, MerkleTree {
     address public owner;
 
-    uint256 external_nullifier;
+    uint256 public external_nullifier;
 
     uint8 constant root_history_size = 100;
     uint256[root_history_size] root_history;
@@ -14,7 +14,7 @@ contract Semaphore is Verifier, MerkleTree {
 
     uint256 public signal_rolling_hash = 0;
 
-    event SignalBroadcast(bytes signal, uint256 externl_nullifier);
+    event SignalBroadcast(bytes signal, uint256 nullifiers_hash, uint256 external_nullifier);
 
     constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in) MerkleTree(tree_levels, zero_value) public {
         owner = msg.sender;
@@ -38,7 +38,7 @@ contract Semaphore is Verifier, MerkleTree {
     }
 
     function broadcastSignal(
-        bytes memory signal, 
+        bytes memory signal,
         uint[2] a,
         uint[2][2] b,
         uint[2] c,
@@ -59,6 +59,6 @@ contract Semaphore is Verifier, MerkleTree {
         require(found_root);
 
         signal_rolling_hash = uint256(sha256(abi.encodePacked(signal_rolling_hash, signal_hash)));
-        emit SignalBroadcast(signal, input[1]);
+        emit SignalBroadcast(signal, input[1], external_nullifier);
     }
 }

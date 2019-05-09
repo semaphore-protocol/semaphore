@@ -43,12 +43,12 @@ const logger = winston.createLogger({
 });
 
 process.on('unhandledRejection', function(err, promise) {
-    logger.error(err.message);
+    logger.error(err.stack);
     process.exit(1);
 });
 
 process.on('uncaughtException', function(err) {
-    logger.error(err.message);
+    logger.error(err.stack);
     process.exit(1);
 });
 
@@ -75,8 +75,9 @@ if (fs.existsSync(stored_identity_path)) {
 }
 
 
-const cir_def = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit.json')).toString());
-const proving_key = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/proving_key.json')).toString());
+const cir_def = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit.json'), 'utf8'));
+const proving_key = fs.readFileSync(path.join(__dirname,'../../build/proving_key.bin'));
+const verification_key = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/verification_key.json'), 'utf8'));
 const transaction_confirmation_blocks = parseInt(process.env.TRANSACTION_CONFIRMATION_BLOCKS) || 24;
 
 const semaphore = new SemaphoreClient(
@@ -85,8 +86,9 @@ const semaphore = new SemaphoreClient(
     SemaphoreABI,
     cir_def,
     proving_key,
+    verification_key,
     process.env.EXTERNAL_NULLIFIER,
-    process.env.IDENTITY_INDEX,
+    null,
     process.env.SEMAPHORE_SERVER_URL,
     process.env.CONTRACT_ADDRESS,
     process.env.FROM_PRIVATE_KEY,
@@ -95,6 +97,14 @@ const semaphore = new SemaphoreClient(
     transaction_confirmation_blocks,
     logger,
 );
-semaphore.broadcast_signal(process.argv[3]);
+semaphore.broadcast_signal(process.argv[3])
+.then(() => {
+  logger.info('Done sending.');
+  process.exit(0);
+})
+.catch((err) => {
+  logger.error(`Error sending: ${err.stack}`);
+  process.exit(1);
+});
 break;
 }

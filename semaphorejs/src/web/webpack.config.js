@@ -4,16 +4,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const prod = process.env.NODE_ENV === 'production';
 
 const browserConfig = {
-  entry: "./client_web.js",
+  entry: './client_web.js',
   plugins: [
     new HtmlWebpackPlugin({
-      title: "Semaphore",
+      title: 'Semaphore',
       template: 'template.html'
     })
   ],
   resolve: {
   },
-	mode: prod ? 'production' : 'development'
+  mode: prod ? 'production' : 'development',
+  externals: /^(worker_threads)$/
 };
 
-module.exports = [browserConfig];
+module.exports = browserConfig;

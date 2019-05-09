@@ -1,4 +1,5 @@
-const {unstringifyBigInts} = require('snarkjs/src/stringifybigint.js');
+const {unstringifyBigInts} = require('websnark/tools/stringifybigint.js');
+const snarkjs = require('snarkjs');
 const assert = require('assert');
 
 
@@ -50,11 +51,13 @@ function convertWitness(witnessJson) {
   return Buffer.from(buff);
 }
 
-const buildGroth16 = require("websnark/src/groth16.js");
+const buildGroth16 = require('websnark/src/groth16.js');
 
-function prove(witness, provingKey) {
-  const p = groth16.proof(witness, provingKey);
-  return p;
+async function prove(witness, provingKey) {
+  const groth16 = await buildGroth16();
+  const p = await groth16.proof(witness, provingKey);
+  //groth16.terminate();
+  return snarkjs.unstringifyBigInts(p);
 }
 
 module.exports = {

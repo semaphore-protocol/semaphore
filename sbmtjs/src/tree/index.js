@@ -12,7 +12,7 @@ class MerkleTree {
     for (let i = 0; i < n_levels; i++) {
       current_zero_value = this.hasher.hash(i, current_zero_value, current_zero_value);
       this.zero_values.push(
-        current_zero_value,
+        current_zero_value.toString(),
       );
     }
   }
@@ -44,7 +44,7 @@ class MerkleTree {
     ops.push({
       type: 'put',
       key: update_log_key,
-      value: update_log_index.toString(), 
+      value: update_log_index.toString(),
     });
 
     if (should_put_element_update) {
@@ -109,8 +109,8 @@ class MerkleTree {
 
     await this.traverse(index, traverser);
     return {
-      root, 
-      path_elements: traverser.path_elements, 
+      root,
+      path_elements: traverser.path_elements,
       path_index: traverser.path_index,
       element
     };
@@ -136,7 +136,7 @@ class MerkleTree {
           );
           this.key_values_to_put.push({
             key: MerkleTree.element_to_key(this.prefix, element),
-            value: index,
+            value: index.toString(),
           });
 
         }
@@ -164,7 +164,7 @@ class MerkleTree {
     }
     let traverser = new UpdateTraverser(
       this.prefix,
-      this.storage, 
+      this.storage,
       this.hasher,
       element,
       this.zero_values
@@ -187,6 +187,7 @@ class MerkleTree {
     }
 
     await this.storage.del(MerkleTree.element_to_key(this.prefix, traverser.original_element));
+    //traverser.key_values_to_put.forEach((e) => console.log(`key_values: ${JSON.stringify(e)}`));
     await this.storage.put_batch(traverser.key_values_to_put);
 
     const root = await this.root();
@@ -213,7 +214,7 @@ class MerkleTree {
     for (let i = 0; i < updates; i++) {
       const update_log_element_key = MerkleTree.update_log_element_to_key(this.prefix, update_log_index - i);
       const update_element_log = JSON.parse(await this.storage.get(update_log_element_key));
-      
+
       await this.update(update_element_log.index, update_element_log.old_element, update_log_index - i - 1);
     }
   }
@@ -225,7 +226,7 @@ class MerkleTree {
       update_log_index -= 1;
       const update_log_element_key = MerkleTree.update_log_element_to_key(this.prefix, update_log_index - i);
       const update_element_log = JSON.parse(await this.storage.get(update_log_element_key));
-      
+
       await this.update(update_element_log.index, update_element_log.old_element, update_log_index);
       const current_root = await this.root();
       if (current_root == root) {

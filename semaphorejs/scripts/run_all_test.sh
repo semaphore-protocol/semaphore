@@ -5,7 +5,7 @@ rm -rf semaphore_server.db
 truffle migrate --reset
 ADDRESS=`cat ../build/contracts/Semaphore.json | jq '.networks."5777".address' | sed 's/"//g'`
 
-CHAIN_ID=5777 CONTRACT_ADDRESS=$ADDRESS FROM_ADDRESS=0x1929c15f4e818abf2549510622a50c440c474223 FROM_PRIVATE_KEY=0x6738837df169e8d6ffc6e33a2947e58096d644fa4aa6d74358c8d9d57c12cd21 NODE_URL=http://localhost:7545 EXTERNAL_NULLIFIER=12312 SEMAPHORE_SERVER_URL=http://localhost:3000 IDENTITY_INDEX=0 node ../src/client/client.js generate_identity
+CHAIN_ID=5777 CONTRACT_ADDRESS=$ADDRESS FROM_ADDRESS=0x1929c15f4e818abf2549510622a50c440c474223 FROM_PRIVATE_KEY=0x6738837df169e8d6ffc6e33a2947e58096d644fa4aa6d74358c8d9d57c12cd21 NODE_URL=http://localhost:7545 EXTERNAL_NULLIFIER=12312 SEMAPHORE_SERVER_URL=http://localhost:3000 node ../src/client/client.js generate_identity
 
 IDENTITY_COMMITMENT=`cat ./semaphore_identity.json | jq '.identity_commitment' | sed 's/"//g'`
 

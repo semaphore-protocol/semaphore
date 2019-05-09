@@ -42,7 +42,7 @@ describe('circuit test', function () {
 
         const identity_nullifier = bigInt('230');
         const identity_r = bigInt('12311');
-        const tree = build_merkle_tree_example(4, 5, mimc7.multiHash([pubKey[0], pubKey[1], identity_nullifier, identity_r]));
+        const tree = build_merkle_tree_example(20, 5, mimc7.multiHash([pubKey[0], pubKey[1], identity_nullifier, identity_r]));
 
         const identity_path_elements = tree[2];
         const identity_path_index = tree[3];

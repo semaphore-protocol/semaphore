@@ -120,4 +120,4 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     // END verify sig
 }
 
-component main = Semaphore(251, 4, 91);
+component main = Semaphore(251, 20, 91);
