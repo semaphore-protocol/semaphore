@@ -22,11 +22,11 @@ Implemented in [**semaphorejs/contracts**](semaphorejs/contracts).
   * The nullifiers hashes set and external nullifier allows the contract to prevent double signals by the same user, without exposing the specific user.
   * The gas price refund price is a mechanism that supports transaction abstraction - a server can broadcast on behalf of a user to provide further anonymity, and in return they receive a refund and a small reward, with a maximum gas price for their transaction.
 
-  The contract allows administrative operations that only the owner is allowed to perform:
+The contract allows administrative operations that only the owner is allowed to perform:
 
-    * Managing identities using the **insertIdentity** and **updateIdentity** methods.
-    * Setting the **external_nullifier**.
-    * Setting the **gas_price_max**.
+  * Managing identities using the **insertIdentity** and **updateIdentity** methods.
+  * Setting the **external_nullifier**.
+  * Setting the **gas_price_max**.
 
   The contract allows anyone to read the current state:
 
@@ -82,6 +82,7 @@ Note: MiMCHash, and especially the specific paramteres used in the circuit, have
 ### Server
 
 Implemented in [**semaphorejs/src/server/server.js**](semaphorejs/src/server/server.js). Acts as a manager of the identities merkle tree and as an identity onboarder. The REST API allows:
+
         * An owner to submit a transaction that adds an identity to the merkle tree, provided proper authentication.
         * A client to ask for a path from an identity commitment to the current root of the tree, relieving the client from the need to manage this tree by themselves.
         * A client to ask a list of signals, together with their paths to the signals tree root.
@@ -95,6 +96,7 @@ It uses [**sbmtjs**](sbmtjs) - *storage-backed merkle tree*. Semaphore requires 
 ### Client
 
 Implemented in [**src/client/client.js**](semaphorejs/src/client/client.js). Enables signaling a user's support of an arbitrary statemnt, given identity secrets of an identity existing in the tree. The client has 2 CLI functions:
+
       * **generate_identity** - generate random identity secrets and randomness, save them to disk and print the identity commitment. The client can then send the commitment to the onboarder (using another channel), requesting they add them to the tree.
       * **signal STRING** - given an arbitrary string, generates a zero-knowledge proof of the client's authorization to signal. The signalling requests the path of the identity commitment from the server, and broadcasts the transaction directly to the contract.
 
