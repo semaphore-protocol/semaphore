@@ -1,0 +1,48 @@
+<html>
+<header>
+</header>
+<script src="websnark.js"></script>
+<script>
+
+var witness;
+var proving_key;
+
+function onLoad() {
+
+    fetch("proving_key.bin").then( (response) => {
+        return response.arrayBuffer();
+    }).then( (b) => {
+        provingKey = b;
+    });
+
+    fetch("witness.bin").then( (response) => {
+        return response.arrayBuffer();
+    }).then( (b) => {
+        witness = b;
+    });
+}
+
+function calcProof() {
+    const start = new Date().getTime();
+    document.getElementById("time").innerHTML = "processing....";
+    document.getElementById("proof").innerHTML = "";
+
+    window.genZKSnarkProof(witness, provingKey).then((p)=> {
+        const end = new Date().getTime();
+        const time = end - start;
+        document.getElementById("time").innerHTML = `Time to compute: ${time}ms`;
+        document.getElementById("proof").innerHTML = JSON.stringify(p, null, 1);
+    });
+}
+
+</script>
+<body onLoad="onLoad()">
+<h1>iden3</h1>
+<h2>Zero knowledge proof generator</h2>
+<button onClick="calcProof()">Test</button>
+<div id="time"></div>
+<pre id="proof"></pre>
+
+</body>
+</html>
+

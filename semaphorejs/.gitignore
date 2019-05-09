@@ -61,3 +61,13 @@ typings/
 .next
 
 build
+src/web/dist
+src/web/semaphore.js
+src/web/Semaphore.json
+src/web/circuit.json
+src/web/groth16_wasm.js
+src/web/proving_key.json
+src/web/websnark.js
+scripts/semaphore_identity.json
+scripts/semaphore_server.db
+scripts/witness.json
