@@ -3,4 +3,4 @@
 mkdir -p ../build
 cd ../build
 
-npx snarkjs setup
+npx snarkjs setup --protocol groth
