@@ -57,6 +57,7 @@ The statement assures that given public inputs:
   * **broadcaster_address**
   * **root**
   * **nullifiers_hash**
+
 and private inputs:
   * **identity_pk**
   * **identity_nullifier**
@@ -151,7 +152,9 @@ The server and the client look for **server-config.json** and **client-config.js
 
 ## Running
 
-* The easiest way to try Semaphore out is running:
+The easiest way to try Semaphore out is to use [https://semaphore.kobi.one](https://semaphore.kobi.one) - a Web interface to broadcast locally. First, load the Rinkeby config using the button at the top. Then, you can generate an identity and send the commitment to @kobigurk on Telegram or open an issue in the repository. Then, you can broadcast signals, including the proof generation, directly in the browser. Lastly, you can see the signals that have been broadcast to date in the table.
+
+* To try Semaphore locally out is running:
   * **npm install**
   * **cd scripts && ./compile.sh && ./do_setup.sh && ./build_verifier.sh** - compile, do a setup and build the verifier of the Semaphore circuit.
 
