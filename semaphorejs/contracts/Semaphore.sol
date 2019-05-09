@@ -20,7 +20,7 @@ contract Semaphore is Verifier, MultipleMerkleTree {
 
     event SignalBroadcast(bytes signal, uint256 nullifiers_hash, uint256 external_nullifier);
 
-    uint256 constant gas_price_max = 30000000000;
+    uint256 public gas_price_max = 30000000000;
 
     constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in, uint256 reward_amount_in_max_gas_price) public {
         owner = msg.sender;
@@ -99,12 +99,19 @@ contract Semaphore is Verifier, MultipleMerkleTree {
       root = tree_roots[tree_index];
     }
 
-    function get_id_tree_index() public view returns (uint8 index) {
+    function getIdTreeIndex() public view returns (uint8 index) {
       index = id_tree_index;
     }
 
-    function get_signal_tree_index() public  view returns (uint8 index) {
+    function getSignalTreeIndex() public  view returns (uint8 index) {
       index = signal_tree_index;
     }
 
+    function setExternalNullifier(uint256 new_external_nullifier) {
+      external_nullifier = new_external_nullifier;
+    }
+
+    function setMaxGasPrice(uint256 new_max_gas_price) {
+      gas_price_max = new_max_gas_price;
+    }
 }

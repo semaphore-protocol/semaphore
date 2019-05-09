@@ -11,10 +11,18 @@ const bigInt = snarkjs.bigInt;
 const crypto = require('crypto');
 const winston = require('winston');
 
-const transaction_confirmation_blocks = parseInt(process.env.TRANSACTION_CONFIRMATION_BLOCKS) || 24;
+let server_config;
+
+if (process.env.CONFIG_ENV) {
+  server_config = process.env;
+} else {
+  server_config = require(process.env.CONFIG_PATH || './server-config.json');
+}
+
+const transaction_confirmation_blocks = parseInt(server_config.TRANSACTION_CONFIRMATION_BLOCKS) || 24;
 
 const logger = winston.createLogger({
-    level: process.env.LOG_LEVEL,
+    level: server_config.LOG_LEVEL,
     format: winston.format.json(),
     transports: [
         new winston.transports.Console({
@@ -97,8 +105,8 @@ class SemaphoreServer {
                   continue;
               }
 
-              this.identity_tree_index = await this.contract.methods.get_id_tree_index().call({from: from_address}, last_processed_block);
-              this.signal_tree_index = await this.contract.methods.get_signal_tree_index().call({from: from_address}, last_processed_block);
+              this.identity_tree_index = await this.contract.methods.getIdTreeIndex().call({from: from_address}, last_processed_block);
+              this.signal_tree_index = await this.contract.methods.getSignalTreeIndex().call({from: from_address}, last_processed_block);
 
               const state_root = await this.contract.methods.roots(this.identity_tree_index).call({from: from_address}, last_processed_block);
               const state_signal_root = await this.contract.methods.roots(this.signal_tree_index).call({from: from_address}, last_processed_block);
@@ -252,7 +260,7 @@ class SemaphoreServer {
 }
 
 const prefix = 'semaphore';
-const storage = new RocksDb(process.env.DB_PATH || 'semaphore_server.db');
+const storage = new RocksDb(server_config.DB_PATH || 'semaphore_server.db');
 const hasher = new Mimc7Hasher();
 const default_value = '0';
 
@@ -274,9 +282,9 @@ const signal_tree = new MerkleTree(
 
 const semaphore = new SemaphoreServer(
     storage,
-    process.env.NODE_URL,
-    process.env.CONTRACT_ADDRESS,
-    process.env.CREATION_HASH,
+    server_config.NODE_URL,
+    server_config.CONTRACT_ADDRESS,
+    server_config.CREATION_HASH,
     tree,
     signal_tree,
 );
@@ -284,9 +292,9 @@ const semaphore = new SemaphoreServer(
 semaphore.event_processing_loop()
 .catch((err) => logger.error(`Semaphore error: ${err.stack}`));
 
-const from_address = process.env.FROM_ADDRESS;
-const from_private_key = process.env.FROM_PRIVATE_KEY;
-const chain_id = parseInt(process.env.CHAIN_ID);
+const from_address = server_config.FROM_ADDRESS;
+const from_private_key = server_config.FROM_PRIVATE_KEY;
+const chain_id = parseInt(server_config.CHAIN_ID);
 
 async function send_transaction(encoded, value) {
     const gas_price = '0x' + (await semaphore.web3.eth.getGasPrice()).toString(16);
@@ -359,7 +367,7 @@ if (process.argv[2] == 'fund') {
   const app = express();
   app.use(bodyParser.json());
   app.use(cors());
-  const port = process.env.SEMAPHORE_PORT;
+  const port = server_config.SEMAPHORE_PORT;
 
   app.get('/path/:index', async (req, res) => {
       const leaf_index = req.params.index;
@@ -498,8 +506,8 @@ if (process.argv[2] == 'fund') {
   });
 
   const check_login = (req) => {
-      if (process.env.SEMAPHORE_LOGIN !== undefined) {
-        return (req.header('login') == process.env.SEMAPHORE_LOGIN);
+      if (server_config.SEMAPHORE_LOGIN !== undefined) {
+        return (req.header('login') == server_config.SEMAPHORE_LOGIN);
       } else {
         return true;
       }
@@ -511,6 +519,44 @@ if (process.argv[2] == 'fund') {
       if ((await check_login(req)) == true) {
           const leaf = req.body.leaf;
           const encoded = await semaphore.contract.methods.insertIdentity(leaf).encodeABI();
+          //logger.verbose('encoded: ' + encoded);
+          await send_transaction(encoded);
+
+          res.json({});
+      } else {
+          res.status(400).json({error: 'Invalid login'});
+      }
+    } catch(err) {
+          logger.error(err.stack);
+          res.status(400).json({error: err.stack});
+    }
+  });
+
+  app.post('/set_external_nullifier', async (req, res) => {
+    try {
+      logger.info(`setting external nullifier with body: ${JSON.stringify(req.body)}`);
+      if ((await check_login(req)) == true) {
+          const external_nullifier = req.body.external_nullifier;
+          const encoded = await semaphore.contract.methods.setExternalNullifier(external_nullifier).encodeABI();
+          //logger.verbose('encoded: ' + encoded);
+          await send_transaction(encoded);
+
+          res.json({});
+      } else {
+          res.status(400).json({error: 'Invalid login'});
+      }
+    } catch(err) {
+          logger.error(err.stack);
+          res.status(400).json({error: err.stack});
+    }
+  });
+
+  app.post('/set_max_gas_price', async (req, res) => {
+    try {
+      logger.info(`setting external nullifier with body: ${JSON.stringify(req.body)}`);
+      if ((await check_login(req)) == true) {
+          const max_gas_price = req.body.max_gas_price;
+          const encoded = await semaphore.contract.methods.setMaxGasPrice(max_gas_price).encodeABI();
           //logger.verbose('encoded: ' + encoded);
           await send_transaction(encoded);
 

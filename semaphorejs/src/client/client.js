@@ -29,8 +29,14 @@ const SemaphoreModules = require('./semaphore.js');
 const SemaphoreClient = SemaphoreModules.client;
 const generate_identity = SemaphoreModules.generate_identity;
 
+if (process.env.CONFIG_ENV) {
+  client_config = process.env;
+} else {
+  client_config = require(process.env.CONFIG_PATH || './client-config.json');
+}
+
 const logger = winston.createLogger({
-    level: process.env.LOG_LEVEL,
+    level: client_config.LOG_LEVEL,
     format: winston.format.json(),
     transports: [
         new winston.transports.Console({
@@ -53,7 +59,7 @@ process.on('uncaughtException', function(err) {
 });
 
 
-const stored_identity_path = process.env.IDENTITY_PATH || 'semaphore_identity.json';
+const stored_identity_path = client_config.IDENTITY_PATH || 'semaphore_identity.json';
 
 switch(process.argv[2]) {
 case 'generate_identity':
@@ -78,25 +84,25 @@ if (fs.existsSync(stored_identity_path)) {
 const cir_def = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit.json'), 'utf8'));
 const proving_key = fs.readFileSync(path.join(__dirname,'../../build/proving_key.bin'));
 const verification_key = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/verification_key.json'), 'utf8'));
-const transaction_confirmation_blocks = parseInt(process.env.TRANSACTION_CONFIRMATION_BLOCKS) || 24;
+const transaction_confirmation_blocks = parseInt(client_config.TRANSACTION_CONFIRMATION_BLOCKS) || 24;
 
 const semaphore = new SemaphoreClient(
-    process.env.NODE_URL,
+    client_config.NODE_URL,
     loaded_identity,
     SemaphoreABI,
     cir_def,
     proving_key,
     verification_key,
-    process.env.EXTERNAL_NULLIFIER,
+    client_config.EXTERNAL_NULLIFIER,
     null,
-    process.env.SEMAPHORE_SERVER_URL,
-    process.env.CONTRACT_ADDRESS,
-    process.env.FROM_PRIVATE_KEY,
-    process.env.FROM_ADDRESS,
-    parseInt(process.env.CHAIN_ID),
+    client_config.SEMAPHORE_SERVER_URL,
+    client_config.CONTRACT_ADDRESS,
+    client_config.FROM_PRIVATE_KEY,
+    client_config.FROM_ADDRESS,
+    parseInt(client_config.CHAIN_ID),
     transaction_confirmation_blocks,
     true,
-    process.env.BROADCASTER_ADDRESS,
+    client_config.BROADCASTER_ADDRESS,
     logger,
 );
 semaphore.broadcast_signal(process.argv[3])
