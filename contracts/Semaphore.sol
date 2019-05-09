@@ -1,20 +1,24 @@
 pragma solidity >=0.4.21;
 
 import "./verifier.sol";
+import "./MerkleTree.sol";
 
-library MiMC {
-    function MiMCpe7(uint256 in_x, uint256 in_k)  pure public returns (uint256 out_x);
-}
-
-contract Semaphore is Verifier {
+contract Semaphore is Verifier, MerkleTree {
     address public owner;
+
+    constructor(uint8 tree_levels, uint256 zero_value) MerkleTree(tree_levels, zero_value) public {
+    }
 
     modifier onlyOwner() {
         if (msg.sender == owner) _;
     }
 
-    function updateIdentity(bytes memory leaf) public onlyOwner {
-        MiMC.MiMCpe7(5, 5);
+    function insertIdentity(uint256 leaf) {
+        insert(leaf);
+    }
+
+    function updateIdentity(uint256 leaf, uint32 leaf_index) public onlyOwner {
+        uint32 current_index = leaf_index;
     }
 
     function broadcastSignal(
@@ -26,4 +30,6 @@ contract Semaphore is Verifier {
     ) public {
 
     }
+
+
 }

@@ -52,7 +52,7 @@ describe('circuit test', function () {
     this.timeout(100000);
 
     before( async () => {
-      const cirDef = JSON.parse(fs.readFileSync(path.join(__dirname,'../build/circuit.json')).toString());
+      const cirDef = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit.json')).toString());
       circuit = new snarkjs.Circuit(cirDef);
 
       console.log('NConstrains Semaphore: ' + circuit.nConstraints);
