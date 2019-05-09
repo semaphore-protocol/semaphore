@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "circom": "0.0.24",
-    "circomlib": "0.0.6",
+    "circomlib": "git+https://github.com/kobigurk/circomlib.git",
     "cors": "^2.8.5",
     "del": "^4.1.0",
     "file-saver": "^2.0.1",
