@@ -83,17 +83,44 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
       $('#f_from_address').val(),
       parseInt($('#f_chain_id').val()),
       parseInt($('#f_tx_confirm').val()),
+      true,
       logger,
     );
     await semaphore.broadcast_signal(signal_str);
   };
 
+  window.verify_row = function (row, data, index) {
+      let current_hash = data.signal_hash;
+      let left;
+      let right;
+      for (let i = 0; i < data.path.path_elements.length; i++) {
+        if (data.path.path_index[i] == 0) {
+          left = current_hash;
+          right = data.path.path_elements[i];
+        } else {
+          left = data.path.path_elements[i];
+          right = current_hash;
+        }
+        current_hash = bigInt(mimc7.multiHash([bigInt(left), bigInt(right)]));
+      }
+      const expected_root = '0x' + current_hash.toString(16);
+      const signals_root = $('#s_signals_root').text();
+      if (expected_root != signals_root) {
+        $(row).addClass('verify-error');
+      } else {
+        $(row).addClass('verify-ok');
+      }
+  };
+
   async function update_state() {
     $('#s_block_number').text(await web3js.eth.getBlockNumber());
-    $('#s_root').text('0x' + bigInt(await semaphore_contract.methods.root().call()).toString(16));
-    $('#s_rolling_hash').text('0x' + bigInt(await semaphore_contract.methods.signal_rolling_hash().call()).toString(16));
+    $('#s_root').text('0x' + bigInt(await semaphore_contract.methods.roots(0).call()).toString(16));
+    const signals_root = await semaphore_contract.methods.roots(1).call();
+    $('#s_signals_root').text('0x' + bigInt(signals_root).toString(16));
     $('#s_external_nullifier').text(await semaphore_contract.methods.external_nullifier().call());
-    window.signals_table.ajax.reload(null, false);
+    if (window.table_inited) {
+      window.signals_table.ajax.reload(null, false);
+    }
   }
 
   window.connect = async function() {
@@ -101,7 +128,6 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
     semaphore_contract = new web3js.eth.Contract(SemaphoreABI.abi, $('#f_semaphore_contract_address').val());
     window.web3js = web3js;
     window.semaphore_contract = semaphore_contract;
-    await update_state();
     web3js.eth.subscribe('newBlockHeaders', null, async (err, result) => {
       if (err) {
         console.error(err);
@@ -111,6 +137,24 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
     });
     semaphore_contract.events.allEvents(null, async () => {
     });
+    await update_state();
+    window.signals_table = $('#signals').DataTable({
+        "searching": false,
+        "processing": true,
+        "serverSide": true,
+        "ajax": $('#f_semaphore_server_url').val() + "/signals_datatable",
+        "createdRow": window.verify_row,
+				"columnDefs": [
+					{ "orderable": true, "targets": 0 }
+				],
+        "columns": [
+            { "data": "signal" },
+            { "data": "nullifiers_hash" },
+            { "data": "external_nullifier" },
+            { "data": "block_number" },
+        ]
+    });
+    window.table_inited = true;
   };
   $('#btn_connect').click(window.connect);
 

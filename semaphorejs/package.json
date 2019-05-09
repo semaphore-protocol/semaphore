@@ -28,7 +28,7 @@
     "truffle-privatekey-provider": "^1.1.0",
     "web3": "^1.0.0-beta.51",
     "webpack": "^4.30.0",
-    "websnark": "0.0.2",
+    "websnark": "git+https://github.com/iden3/websnark.git",
     "winston": "^3.2.1"
   },
   "devDependencies": {

@@ -1,25 +1,27 @@
 pragma solidity >=0.4.21;
 
 import "./verifier.sol";
-import "./MerkleTree.sol";
+import "./MerkleTreeLib.sol";
 
-contract Semaphore is Verifier, MerkleTree {
+contract Semaphore is Verifier, MultipleMerkleTree {
     address public owner;
 
     uint256 public external_nullifier;
+    uint8 signal_tree_index;
+    uint8 id_tree_index;
 
     uint8 constant root_history_size = 100;
     uint256[root_history_size] root_history;
     uint8 current_root_index = 0;
 
-    uint256 public signal_rolling_hash = 0;
-
     event SignalBroadcast(bytes signal, uint256 nullifiers_hash, uint256 external_nullifier);
 
-    constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in) MerkleTree(tree_levels, zero_value) public {
+    constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in) public {
         owner = msg.sender;
 
         external_nullifier = external_nullifier_in;
+        id_tree_index = init_tree(tree_levels, zero_value);
+        signal_tree_index = init_tree(tree_levels, zero_value);
     }
 
     modifier onlyOwner() {
@@ -28,13 +30,13 @@ contract Semaphore is Verifier, MerkleTree {
     }
 
     function insertIdentity(uint256 leaf) public onlyOwner {
-        insert(leaf);
-        root_history[current_root_index++ % root_history_size] = root;
+        insert(id_tree_index, leaf);
+        root_history[current_root_index++ % root_history_size] = tree_roots[id_tree_index];
     }
 
-    function updateIdentity(uint256 leaf, uint32 leaf_index, uint256[] memory path) public onlyOwner {
-        update(leaf, leaf_index, path);
-        root_history[current_root_index++ % root_history_size] = root;
+    function updateIdentity(uint256 old_leaf, uint256 leaf, uint32 leaf_index, uint256[] memory old_path, uint256[] memory path) public onlyOwner {
+        update(id_tree_index, old_leaf, leaf, leaf_index, old_path, path);
+        root_history[current_root_index++ % root_history_size] = tree_roots[id_tree_index];
     }
 
     function broadcastSignal(
@@ -58,8 +60,20 @@ contract Semaphore is Verifier, MerkleTree {
         }
         require(found_root);
 
-        signal_rolling_hash = uint256(sha256(abi.encodePacked(signal_rolling_hash, signal_hash)));
+        insert(signal_tree_index, signal_hash);
         emit SignalBroadcast(signal, input[1], external_nullifier);
     }
-}
 
+    function roots(uint8 tree_index) public view returns (uint256 root) {
+      root = tree_roots[tree_index];
+    }
+
+    function get_id_tree_index() public view returns (uint8 index) {
+      index = id_tree_index;
+    }
+
+    function get_signal_tree_index() public  view returns (uint8 index) {
+      index = signal_tree_index;
+    }
+
+}
