@@ -61,13 +61,14 @@ beInt2Buff = function(n, len) {
 
 class SemaphoreServer {
 
-    constructor(storage, node_url, contract_address, tree) {
+    constructor(storage, node_url, contract_address, creation_hash, tree) {
         this.storage = storage;
         this.node_url = node_url;
         this.web3 = new Web3(new Web3.providers.HttpProvider(node_url));
         this.web3.eth.transactionConfirmationBlocks = transaction_confirmation_blocks;
         logger.verbose(`transaction confirmation blocks: ${this.web3.eth.transactionConfirmationBlocks}`);
         this.contract_address = contract_address;
+        this.creation_hash = creation_hash;
         this.tree = tree;
         this.contract = new this.web3.eth.Contract(
             SemaphoreABI.abi,
@@ -76,6 +77,11 @@ class SemaphoreServer {
     }
 
     async event_processing_loop() {
+        this.creation_block = 0;
+        if (this.creation_hash) {
+          const creation_tx = await this.web3.eth.getTransaction(this.creation_hash);
+          this.creation_block = creation_tx.blockNumber;
+        }
         while (true) {
           try {
               const last_processed_block = await this.get_last_processed_block();
@@ -221,7 +227,7 @@ class SemaphoreServer {
     }
 
     async get_last_processed_block() {
-        return parseInt(await this.storage.get_or_element(last_block_key, '0'));
+        return parseInt(await this.storage.get_or_element(last_block_key, this.creation_block.toString()));
     }
 
     async prepare_signal_add(signal, nullifiers_hash, external_nullifier, block_number, rolling_hash, current_index) {
@@ -271,6 +277,7 @@ const semaphore = new SemaphoreServer(
     storage,
     process.env.NODE_URL,
     process.env.CONTRACT_ADDRESS,
+    process.env.CREATION_HASH,
     tree,
 );
 
@@ -445,6 +452,7 @@ app.post('/add_identity', async (req, res) => {
         logger.verbose('signing tx');
         const signed_tx = await semaphore.web3.eth.accounts.signTransaction(tx_object, from_private_key);
         logger.info(`sending tx: ${signed_tx.messageHash}`);
+        logger.verbose(`sending tx object: ${JSON.stringify(signed_tx)}`);
 
         const promise = new Promise((resolve, reject) => {
           semaphore.web3.eth.sendSignedTransaction(signed_tx.rawTransaction)

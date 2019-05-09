@@ -23,6 +23,9 @@
 //
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
+//
+var HDWalletProvider = require("truffle-hdwallet-provider");
+var privateKey = "6738837df169e8d6ffc6e33a2947e58096d644fa4aa6d74358c8d9d57c12cd21";
 
 module.exports = {
   /**
@@ -46,6 +49,23 @@ module.exports = {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 7545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
+    },
+    goerli: {
+      provider: () => new HDWalletProvider(privateKey, "https://goerli.infura.io/v3/f4a3ad81db3f4750bd201955c8d20066"),
+      network_id: 5,
+      skipDryRun: true
+    },
+    ropsten: {
+      provider: () => new HDWalletProvider(privateKey, "https://ropsten.infura.io/v3/f4a3ad81db3f4750bd201955c8d20066"),
+      network_id: 3,
+      skipDryRun: true
+    },
+    rinkeby: {
+      provider: () => {
+				return new HDWalletProvider(privateKey, "https://rinkeby.infura.io/v3/f4a3ad81db3f4750bd201955c8d20066");
+			},
+      network_id: 4,
+      skipDryRun: true
     },
 
     // Another network with more advanced options...

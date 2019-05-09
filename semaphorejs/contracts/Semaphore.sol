@@ -62,3 +62,4 @@ contract Semaphore is Verifier, MerkleTree {
         emit SignalBroadcast(signal, input[1], external_nullifier);
     }
 }
+
