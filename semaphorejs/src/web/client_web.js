@@ -129,7 +129,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
     try {
       $('#d_status').text('Adding identity...');
       const semaphore_server_url = $('#f_semaphore_server_url').val();
-      await fetch(`${semaphore_server_url}/add_identity`, {
+      const response = await fetch(`${semaphore_server_url}/add_identity`, {
         method: 'post',
         body: JSON.stringify({
           leaf: $('#a_comm').val()
@@ -139,6 +139,9 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
           login: $('#a_login').val()
         }
       });
+      if (!response.ok) {
+        throw new Error(`Error, got status ${response.statusText}`);
+      }
       $('#d_status').text('Adding identity successful.');
     } catch(e) {
       $('#d_status').text(e.message);
