@@ -118,16 +118,16 @@ class SemaphoreClient {
 
         let identity_path;
         if (this.identity_index === undefined) {
-            logger.debug(`identity_index is undefined`);
+            logger.verbose(`identity_index is undefined`);
             const identity_path_response = await fetch(`${this.semaphore_server_url}/path_for_element/${this.identity_commitment}`)
             identity_path = (await identity_path_response.json());
         } else {
-            logger.debug(`identity_index is ${this.identity_index}`);
+            logger.verbose(`identity_index is ${this.identity_index}`);
             const identity_path_response = await fetch(`${this.semaphore_server_url}/path/${this.identity_index}`)
             identity_path = await identity_path_response.json();
         }
 
-        logger.debug(`identity_path: ${JSON.stringify(identity_path)}`);
+        logger.verbose(`identity_path: ${JSON.stringify(identity_path)}`);
 
         const identity_path_elements = identity_path.path_elements;
         const identity_path_index = identity_path.path_index;
@@ -158,7 +158,7 @@ class SemaphoreClient {
         const {proof, publicSignals} = groth.genProof(this.vk_proof, w);
         logger.info(`generating proof (ended at ${Date.now()})`);
 
-        logger.debug(`publicSignals: ${publicSignals}`);
+        logger.verbose(`publicSignals: ${publicSignals}`);
 
         const encoded = await this.contract.methods.broadcastSignal(
             signal_to_contract, 
@@ -168,18 +168,18 @@ class SemaphoreClient {
             [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString() ]
         ).encodeABI();
 
-        logger.debug('encoded: ' + encoded);
+        logger.verbose('encoded: ' + encoded);
         const gas_price = '0x' + (await this.web3.eth.getGasPrice()).toString(16);
-        logger.debug('gas_price: ' + gas_price);
+        logger.verbose('gas_price: ' + gas_price);
         const gas = '0x' + (await this.web3.eth.estimateGas({
             from: this.from_address,
             to: this.contract_address,
             data: encoded
         })).toString(16);
-        logger.debug('gas: ' + gas);
+        logger.verbose('gas: ' + gas);
         const nonce = await this.web3.eth.getTransactionCount(this.from_address);
-        logger.debug('nonce: ' + nonce);
-        logger.debug('chain_id: ' + this.chain_id);
+        logger.verbose('nonce: ' + nonce);
+        logger.verbose('chain_id: ' + this.chain_id);
         const tx_object = {
             gas: gas,
             gasPrice: gas_price,
@@ -189,15 +189,15 @@ class SemaphoreClient {
             chainId: this.chain_id,
             nonce: nonce,
         };
-        logger.debug(`tx_object: ${JSON.stringify(tx_object)}`);
-        logger.debug('adding wallet');
+        logger.verbose(`tx_object: ${JSON.stringify(tx_object)}`);
+        logger.verbose('adding wallet');
         const wallet = await this.web3.eth.accounts.wallet.add(this.from_private_key);
-        logger.debug('signing tx');
+        logger.verbose('signing tx');
         const signed_tx = await wallet.signTransaction(tx_object, this.from_address);
         logger.info(`sending tx: ${signed_tx.messageHash}`);
         this.web3.eth.sendSignedTransaction(signed_tx.rawTransaction)
         .on('receipt', () => {
-            logger.debug(`tx sent: ${signed_tx.messageHash}`);
+            logger.verbose(`tx sent: ${signed_tx.messageHash}`);
         })
         .catch((err) => logger.error(`tx send error: ${JSON.stringify(err)}`));
     }
