@@ -48,9 +48,18 @@ describe('tree test', function () {
     );
     assert.equal(root, calculated_root);
   });
+  it('tests insert', async () => {
+    await tree.update(0, '5');
+    let {root, path_elements, path_index} = await tree.path(0);
+    const calculated_root = hasher.hash(1,
+      hasher.hash(0, '5', path_elements[0]),
+      path_elements[1],
+    );
+    console.log(root);
+    assert.equal(root, calculated_root);
+  });
 
   it('tests updated', async () => {
-    await tree.update(0, '5');
     await tree.update(1, '6');
     await tree.update(2, '9');
     await tree.update(2, '8');

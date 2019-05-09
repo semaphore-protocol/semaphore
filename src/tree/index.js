@@ -123,7 +123,9 @@ class MerkleTree {
           key: MerkleTree.index_to_key(this.prefix, level, element_index),
           value: this.current_element,
         });
+        //console.log(`left: ${left}, right: ${right}`);
         this.current_element = this.hasher.hash(level, left, right);
+        //console.log(`current_element: ${this.current_element}`);
       }
     }
     let traverser = new UpdateTraverser(
@@ -135,6 +137,7 @@ class MerkleTree {
     );
 
     await this.traverse(index, traverser);
+    //console.log(`traverser.current_element: ${traverser.current_element}`);
     traverser.key_values_to_put.push({
       key: MerkleTree.index_to_key(this.prefix, this.n_levels, 0),
       value: traverser.current_element,
