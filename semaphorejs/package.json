@@ -1,5 +1,5 @@
 {
-  "name": "semaphorejs",
+  "name": "zkp-semaphorejs",
   "version": "0.1.0",
   "description": "Zero-knowledge signaling on Ethereum",
   "main": "index.js",
