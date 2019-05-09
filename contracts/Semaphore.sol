@@ -12,6 +12,8 @@ contract Semaphore is Verifier, MerkleTree {
     uint256[root_history_size] root_history;
     uint8 current_root_index = 0;
 
+    uint256 public signal_rolling_hash = 0;
+
     event SignalBroadcast(bytes signal, uint256 externl_nullifier);
 
     constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in) MerkleTree(tree_levels, zero_value) public {
@@ -56,6 +58,7 @@ contract Semaphore is Verifier, MerkleTree {
         }
         require(found_root);
 
+        signal_rolling_hash = uint256(sha256(abi.encodePacked(signal_rolling_hash, signal_hash)));
         emit SignalBroadcast(signal, input[1]);
     }
 }

@@ -7,11 +7,11 @@ library MiMC {
 contract MerkleTree {
     uint8 levels;
 
-    uint256 public root;
+    uint256 public root = 0;
     uint256[] public filled_subtrees;
     uint256[] public zeros;
 
-    uint32 next_index = 0;
+    uint32 public next_index = 0;
 
     event LeafAdded(uint256 leaf, uint32 leaf_index);
     event LeafUpdated(uint256 leaf, uint32 leaf_index);
@@ -28,7 +28,6 @@ contract MerkleTree {
         }
 
         root = HashLeftRight(zeros[levels - 1], zeros[levels - 1]);
-
     }
 
     function HashLeftRight(uint256 left, uint256 right) public pure returns (uint256 mimc_hash) {

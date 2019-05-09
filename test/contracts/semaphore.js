@@ -37,6 +37,7 @@ beBuff2int = function(buff) {
 };
 
 
+
 contract('Semaphore', function () {
     it('tests proof', async () => {
         const cirDef = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit.json')).toString());
