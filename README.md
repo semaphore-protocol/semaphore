@@ -34,6 +34,7 @@ The project is implemented in Node.JS and uses [circom](https://github.com/iden3
 ## Running
 
 * The easiest way to try Semaphore out is running:
+  * **npm install**
   * **cd scripts && ./compile.sh && ./do_setup.sh && ./build_verifier.sh** - compile, do a setup and build the verifier of the Semaphore circuit.
 
   * **scripts/run_ganache.sh** - runs ganache with appropriate parameters for Semaphroe testing.
