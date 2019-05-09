@@ -2,6 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/kobigurk/semaphore.svg?style=svg&circle-token=57fa2a6c591cd8d09ddae610313452bdd7b0fb14)](https://circleci.com/gh/kobigurk/semaphore)
 
+Join the [Telegram group](https://t.me/joinchat/B-PQx1U3GtAh--Z4Fwo56A) to discuss.
+
 ## Introduction
 
 Semaphore has been introduced by [barryWhiteHat](https://github.com/barryWhiteHat) as a method of zero-knowledge signaling - a method for an approved user to broadcast an arbitrary string without exposing their identity. This repository is an implementation of an upgraded version of the concept, including the zero-knowledge circuits and the tools necessary to use it, both server-side and client-side.
