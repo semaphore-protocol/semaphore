@@ -11,6 +11,7 @@
   "dependencies": {
     "circom": "0.0.24",
     "circomlib": "0.0.6",
+    "mocha": "^6.0.2",
     "snarkjs": "^0.1.11"
   }
 }

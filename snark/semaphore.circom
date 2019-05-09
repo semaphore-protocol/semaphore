@@ -1,115 +1,119 @@
-include "../node_modules/circomlib/circuits/pedersen.circom";
+include "../node_modules/circomlib/circuits/mimc.circom";
 include "../node_modules/circomlib/circuits/bitify.circom";
+include "../node_modules/circomlib/circuits/eddsamimc.circom";
 
-template HashLeftRight(jubjub_field_size) {
-  signal input left[jubjub_field_size];
-  signal input right[jubjub_field_size];
+template HashLeftRight(n_rounds) {
+  signal input left;
+  signal input right;
 
   signal output hash;
 
-  component hasher = Pedersen(2*jubjub_field_size);
-  for (var j = 0; j < jubjub_field_size; j++) {
-    left[j] ==> hasher.in[j];
-    right[j] ==> hasher.in[jubjub_field_size + j];
-  }
+  component hasher = MultiMiMC7(2, n_rounds);
+  left ==> hasher.in[0];
+  right ==> hasher.in[1];
 
-  hash <== hasher.out[0];
+  hash <== hasher.out;
 }
 
-template Semaphore(jubjub_field_size, n_levels) {
-    // pedersen hash
-    signal input root;
+template Selector() {
+  signal input input_elem;
+  signal input path_elem;
+  signal input path_index;
+
+  signal output left;
+  signal output right;
+
+  signal left_selector_1;
+  signal left_selector_2;
+  signal right_selector_1;
+  signal right_selector_2;
+
+  left_selector_1 <== (1 - path_index)*input_elem;
+  left_selector_2 <== (path_index)*path_elem;
+  right_selector_1 <== (path_index)*input_elem;
+  right_selector_2 <== (1 - path_index)*path_elem;
+
+  left <== left_selector_1 + left_selector_2;
+  right <== right_selector_1 + right_selector_2;
+}
+
+template Semaphore(jubjub_field_size, n_levels, n_rounds) {
+    // BEGIN signals
 
     signal input signal_hash;
+    signal input external_nullifier;
 
-    // pedersen vector commitment
-    signal private input identity_sk;
+    // mimc vector commitment
+    signal private input identity_pk[2];
     signal private input identity_nullifier;
     signal private input identity_r;
-
     signal private input identity_path_elements[n_levels];
     signal private input identity_path_index[n_levels];
 
-    // auth signature randomness
-    signal private input auth_r;
+    // signature on (external nullifier, signal_hash) with identity_pk
+    signal private input auth_sig_r[2];
+    signal private input auth_sig_s;
 
-    // pedersen vector commitment
-    signal output auth_sig;
+    // mimc hash
+    signal output root;
     signal output nullifiers_hash;
 
-    component identity_sk_bits = Num2Bits(jubjub_field_size);
-    identity_sk ==> identity_sk_bits.in;
+    // END signals
 
-    component identity_nullifier_bits = Num2Bits(jubjub_field_size);
-    identity_nullifier ==> identity_nullifier_bits.in;
+    component identity_commitment = MultiMiMC7(4, n_rounds);
 
-    component identity_r_bits = Num2Bits(jubjub_field_size);
-    identity_r ==> identity_r_bits.in;
+    // BEGIN identity commitment
+    identity_commitment.in[0] <== identity_pk[0];
+    identity_commitment.in[1] <== identity_pk[1];
+    identity_commitment.in[2] <== identity_nullifier;
+    identity_commitment.in[3] <== identity_r;
+    // END identity commitment
 
-    component identity_commitment = Pedersen(3*jubjub_field_size);
-
-    for (var i = 0; i < jubjub_field_size; i++) {
-      identity_commitment.in[i] <== identity_sk_bits.out[i];
-      identity_commitment.in[jubjub_field_size + i] <== identity_nullifier_bits.out[i];
-      identity_commitment.in[2*jubjub_field_size + i] <== identity_r_bits.out[i];
-    }
-
+    // BEGIN tree
+    component selectors[n_levels];
     component hashers[n_levels];
-    component left_bits[n_levels];
-    component right_bits[n_levels];
 
-    signal private input lefts[n_levels];
-    signal private input rights[n_levels];
+    for (var i = 0; i < n_levels; i++) {
+      selectors[i] = Selector();
+      hashers[i] = HashLeftRight(n_rounds);
 
-    signal private input left_selector_1[n_levels];
-    signal private input left_selector_2[n_levels];
-    signal private input right_selector_1[n_levels];
-    signal private input right_selector_2[n_levels];
+      identity_path_index[i] ==> selectors[i].path_index;
+      identity_path_elements[i] ==> selectors[i].path_elem;
 
-    hashers[0] = HashLeftRight(jubjub_field_size);
-    left_bits[0] = Num2Bits(jubjub_field_size);
-    right_bits[0] = Num2Bits(jubjub_field_size);
-
-    left_selector_1[0] <== (1 - identity_path_index[0])*identity_commitment.out[0];
-    left_selector_2[0] <== (identity_path_index[0])*identity_path_elements[0];
-    right_selector_1[0] <== (identity_path_index[0])*identity_commitment.out[0];
-    right_selector_2[0] <== (1 - identity_path_index[0])*identity_path_elements[0];
-
-    lefts[0] <== left_selector_1[0] + left_selector_2[0];
-    rights[0] <== right_selector_1[0] + right_selector_2[0];
-
-    lefts[0] ==> left_bits[0].in;
-    rights[0] ==> right_bits[0].in;
-
-    for (var j = 0; j < jubjub_field_size; j++) {
-      left_bits[0].out[j] ==> hashers[0].left[j];
-      right_bits[0].out[j] ==> hashers[0].right[j];
+      selectors[i].left ==> hashers[i].left;
+      selectors[i].right ==> hashers[i].right;
     }
+
+    identity_commitment.out ==> selectors[0].input_elem;
 
     for (var i = 1; i < n_levels; i++) {
-      hashers[i] = HashLeftRight(jubjub_field_size);
-      left_bits[i] = Num2Bits(jubjub_field_size);
-      right_bits[i] = Num2Bits(jubjub_field_size);
-
-      left_selector_1[i] <== (1 - identity_path_index[i])*hashers[i-1].hash;
-      left_selector_2[i] <== (identity_path_index[i])*identity_path_elements[i];
-      right_selector_1[i] <== (identity_path_index[i])*hashers[i-1].hash;
-      right_selector_2[i] <== (1 - identity_path_index[i])*identity_path_elements[i];
-
-      lefts[i] <== left_selector_1[i] + left_selector_2[i];
-      rights[i] <== right_selector_1[i] + right_selector_2[i];
-
-
-      lefts[i] ==> left_bits[i].in;
-      rights[i] ==> right_bits[i].in;
-
-      for (var j = 0; j < jubjub_field_size; j++) {
-        left_bits[i].out[j] ==> hashers[i].left[j];
-        right_bits[i].out[j] ==> hashers[i].right[j];
-      }
+      hashers[i-1].hash ==> selectors[i].input_elem;
     }
 
     root <== hashers[n_levels - 1].hash;
+    // END tree
+
+    // BEGIN nullifiers
+    component nullifiers_hasher = MultiMiMC7(2, n_rounds);
+    nullifiers_hasher.in[0] <== identity_nullifier;
+    nullifiers_hasher.in[1] <== external_nullifier;
+
+    nullifiers_hash <== nullifiers_hasher.out;
+    // END nullifiers
+
+    // BEGIN verify sig
+    component msg_hasher = MultiMiMC7(2, n_rounds);
+    msg_hasher.in[0] <== external_nullifier;
+    msg_hasher.in[1] <== signal_hash;
+
+    component sig_verifier = EdDSAMiMCVerifier();
+    1 ==> sig_verifier.enabled;
+    identity_pk[0] ==> sig_verifier.Ax;
+    identity_pk[1] ==> sig_verifier.Ay;
+    auth_sig_r[0] ==> sig_verifier.R8x;
+    auth_sig_r[1] ==> sig_verifier.R8y;
+    auth_sig_s ==> sig_verifier.S;
+    msg_hasher.out ==> sig_verifier.M;
 }
 
-component main = Semaphore(251, 20);
+component main = Semaphore(251, 20, 91);
