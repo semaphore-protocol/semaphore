@@ -11,6 +11,7 @@
   "dependencies": {
     "circom": "0.0.24",
     "circomlib": "0.0.6",
+    "del": "^4.1.0",
     "ganache-cli": "^6.4.1",
     "ganache-core": "^2.5.3",
     "mocha": "^6.0.2",
