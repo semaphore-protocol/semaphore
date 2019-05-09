@@ -28,43 +28,45 @@ The contract allows administrative operations that only the owner is allowed to 
   * Setting the **external_nullifier**.
   * Setting the **gas_price_max**.
 
-  The contract allows anyone to read the current state:
+The contract allows anyone to read the current state:
 
-  * Reading the roots of the two trees.
-  * Reading the current parameters of **external_nullifier** and **gas_price_max**.
+* Reading the roots of the two trees.
+* Reading the current parameters of **external_nullifier** and **gas_price_max**.
 
-  The contract allows anyone to attempt broadcasting a signal, given a signal, a proof and the relevant public inputs.
-  The contract allows anyone to fund the contract for gas refund and rewards.
+The contract allows anyone to attempt broadcasting a signal, given a signal, a proof and the relevant public inputs.
+The contract allows anyone to fund the contract for gas refund and rewards.
 
-  Lastly, the contract has a few events to allow a server to build a local state to serve users wishing to generate proofs:
-    * **Funded** - when the contract has received some funding for refunds and rewards.
-    * **SignalBroadcast** - when a signal has been broadcast successfully, after verification of the proof, the public inputs and double-signaling checks.
-    * **LeafAdded**, **LeafUpdated** (from MerkleTreeLib) - when the trees have been updated.
+Lastly, the contract has a few events to allow a server to build a local state to serve users wishing to generate proofs:
+
+  * **Funded** - when the contract has received some funding for refunds and rewards.
+  * **SignalBroadcast** - when a signal has been broadcast successfully, after verification of the proof, the public inputs and double-signaling checks.
+  * **LeafAdded**, **LeafUpdated** (from MerkleTreeLib) - when the trees have been updated.
 
 
 #### MerkleTreeLib
 
-  Manages a number of append-only Merkle trees with efficient inserts and updates.
+Manages a number of append-only Merkle trees with efficient inserts and updates.
 
 ### zkSNARK statement
-  Implemented in [**semaphorejs/snark**](semaphorejs/snark).
+Implemented in [**semaphorejs/snark**](semaphorejs/snark).
 
-  The statement assures that given public inputs:
-    * **signal_hash**
-    * **external_nullifier**
-    * **broadcaster_address**
-    * **root**
-    * **nullifiers_hash**
-  and private inputs:
-    * **identity_pk**
-    * **identity_nullifier**
-    * **identity_r**
-    * **identity_path_elements**
-    * **identity_path_index**
-    * **auth_sig_r**
-    * **auth_sig_s**
+The statement assures that given public inputs:
 
-  the following conditions hold:
+  * **signal_hash**
+  * **external_nullifier**
+  * **broadcaster_address**
+  * **root**
+  * **nullifiers_hash**
+and private inputs:
+  * **identity_pk**
+  * **identity_nullifier**
+  * **identity_r**
+  * **identity_path_elements**
+  * **identity_path_index**
+  * **auth_sig_r**
+  * **auth_sig_s**
+
+the following conditions hold:
 
   * The commitment of the identity structure (**identity_pk**, **identity_nullifier**, **identity_r**) exists in the identity tree with the root **root**, using the path (**identity_path_elements**, **identity_path_index**). This ensures that the user was added to the system at some point in the past.
   * **nullifiers_hash** is uniquely derived from **external_nullifier** and **identity_nullifier**. This ensures a user cannot broadcast a signal with the same **external_nullifier** more than once.
@@ -83,11 +85,11 @@ Note: MiMCHash, and especially the specific paramteres used in the circuit, have
 
 Implemented in [**semaphorejs/src/server/server.js**](semaphorejs/src/server/server.js). Acts as a manager of the identities merkle tree and as an identity onboarder. The REST API allows:
 
-        * An owner to submit a transaction that adds an identity to the merkle tree, provided proper authentication.
-        * A client to ask for a path from an identity commitment to the current root of the tree, relieving the client from the need to manage this tree by themselves.
-        * A client to ask a list of signals, together with their paths to the signals tree root.
-        * An owner to set the external nullifier.
-        * An owner to set the max gas price.
+  * An owner to submit a transaction that adds an identity to the merkle tree, provided proper authentication.
+  * A client to ask for a path from an identity commitment to the current root of the tree, relieving the client from the need to manage this tree by themselves.
+  * A client to ask a list of signals, together with their paths to the signals tree root.
+  * An owner to set the external nullifier.
+  * An owner to set the max gas price.
 
 The server relies on an Ethereum node and the events in the smart contract to synchronize to the current state and handle rollbacks if they occur.
 
@@ -97,8 +99,8 @@ It uses [**sbmtjs**](sbmtjs) - *storage-backed merkle tree*. Semaphore requires 
 
 Implemented in [**src/client/client.js**](semaphorejs/src/client/client.js). Enables signaling a user's support of an arbitrary statemnt, given identity secrets of an identity existing in the tree. The client has 2 CLI functions:
 
-      * **generate_identity** - generate random identity secrets and randomness, save them to disk and print the identity commitment. The client can then send the commitment to the onboarder (using another channel), requesting they add them to the tree.
-      * **signal STRING** - given an arbitrary string, generates a zero-knowledge proof of the client's authorization to signal. The signalling requests the path of the identity commitment from the server, and broadcasts the transaction directly to the contract.
+  * **generate_identity** - generate random identity secrets and randomness, save them to disk and print the identity commitment. The client can then send the commitment to the onboarder (using another channel), requesting they add them to the tree.
+  * **signal STRING** - given an arbitrary string, generates a zero-knowledge proof of the client's authorization to signal. The signalling requests the path of the identity commitment from the server, and broadcasts the transaction directly to the contract.
 
 ### Web
 
