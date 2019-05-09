@@ -25,7 +25,7 @@ describe("MiMC Smart contract test", () => {
 
         testrpc.listen(8546, "127.0.0.1");
 
-        web3 = new Web3("ws://127.0.0.1:8546");
+        web3 = new Web3("ws://127.0.0.1:7545");
         accounts = await web3.eth.getAccounts();
     });
 
