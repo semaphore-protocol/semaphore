@@ -8,7 +8,7 @@ contract Semaphore is Verifier, MerkleTree {
 
     uint256 external_nullifier;
 
-    uint8 constant root_history_size = 10;
+    uint8 constant root_history_size = 100;
     uint256[root_history_size] root_history;
     uint8 current_root_index = 0;
 
@@ -40,7 +40,7 @@ contract Semaphore is Verifier, MerkleTree {
         uint[2] a,
         uint[2][2] b,
         uint[2] c,
-        uint[4] input // (signal_hash, external_nullifier, root, nullifiers_hash)
+        uint[4] input // (root, nullifiers_hash, signal_hash, external_nullifier)
     ) public {
         uint256 signal_hash = uint256(sha256(signal) >> 8);
         require(signal_hash == input[2]);
