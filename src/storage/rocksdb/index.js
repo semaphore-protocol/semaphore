@@ -26,6 +26,10 @@ class RocksDbStorage {
     await this.db.put(key, value);
   }
 
+  async del(key) {
+    await this.db.del(key);
+  }
+
   async put_batch(key_values) {
     let ops = [];
     for (var i = 0; i < key_values.length; i++) {
