@@ -3,5 +3,5 @@
 mkdir -p ../build
 cd ../build
 
-circom ../src/factor/circuit.circom
-snarkjs setup
+npx circom ../src/factor/circuit.circom
+npx snarkjs setup

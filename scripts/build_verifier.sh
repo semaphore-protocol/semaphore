@@ -3,4 +3,4 @@
 mkdir -p ../build
 cd ../build
 
-snarkjs generateverifier
+npx snarkjs generateverifier
