@@ -34,4 +34,4 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: cd scripts && ./ci.sh
+      - run: cd semaphorejs/scripts && ./ci.sh
