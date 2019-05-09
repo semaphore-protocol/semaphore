@@ -52,8 +52,9 @@ contract('Semaphore', function () {
         const signal_hash_raw = crypto.createHash('sha256').update(signal_str, 'utf8').digest();
         const signal_hash = beBuff2int(signal_hash_raw.slice(0, 31));
         const signal_to_contract = web3.utils.asciiToHex(signal_str);
+        const broadcaster_address = bigInt('0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413');
 
-        const msg = mimc7.multiHash([external_nullifier, signal_hash]);
+        const msg = mimc7.multiHash([external_nullifier, signal_hash, broadcaster_address]);
         const signature = eddsa.signMiMC(prvKey, msg);
 
         assert(eddsa.verifyMiMC(msg, signature, pubKey));
@@ -99,6 +100,7 @@ contract('Semaphore', function () {
             identity_r,
             identity_path_elements,
             identity_path_index,
+            broadcaster_address,
         });
 
         const semaphore = await Semaphore.deployed();

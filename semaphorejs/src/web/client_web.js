@@ -84,6 +84,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
       parseInt($('#f_chain_id').val()),
       parseInt($('#f_tx_confirm').val()),
       true,
+      $('#f_semaphore_server_address').val(),
       logger,
     );
     await semaphore.broadcast_signal(signal_str);

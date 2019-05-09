@@ -44,6 +44,7 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
 
     signal input signal_hash;
     signal input external_nullifier;
+    signal input broadcaster_address;
 
     // mimc vector commitment
     signal private input identity_pk[2];
@@ -104,9 +105,10 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     // END nullifiers
 
     // BEGIN verify sig
-    component msg_hasher = MultiMiMC7(2, n_rounds);
+    component msg_hasher = MultiMiMC7(3, n_rounds);
     msg_hasher.in[0] <== external_nullifier;
     msg_hasher.in[1] <== signal_hash;
+    msg_hasher.in[2] <== broadcaster_address;
 
     component sig_verifier = EdDSAMiMCVerifier();
     1 ==> sig_verifier.enabled;

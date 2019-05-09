@@ -34,7 +34,7 @@ beBuff2int = function(buff) {
 
 
 class SemaphoreClient {
-    constructor(node_url, loaded_identity, semaphoreABI, cir_def, proving_key, verifier_key, external_nullifier, identity_index, semaphore_server_url, contract_address, from_private_key, from_address, chain_id, transaction_confirmation_blocks, server_broadcast, logger_handler) {
+    constructor(node_url, loaded_identity, semaphoreABI, cir_def, proving_key, verifier_key, external_nullifier, identity_index, semaphore_server_url, contract_address, from_private_key, from_address, chain_id, transaction_confirmation_blocks, server_broadcast, server_broadcast_address, logger_handler) {
         logger = logger_handler;
         this.cir_def = cir_def;
 
@@ -72,6 +72,8 @@ class SemaphoreClient {
         );
 
         this.chain_id = chain_id;
+        this.server_broadcast = server_broadcast;
+        this.broadcaster_address = server_broadcast_address;
     }
 
     async broadcast_signal(signal_str) {
@@ -85,8 +87,9 @@ class SemaphoreClient {
         const signal_to_contract = this.web3.utils.asciiToHex(signal_str);
         const signal_hash_raw = crypto.createHash('sha256').update(signal_to_contract.slice(2), 'hex').digest();
         const signal_hash = beBuff2int(signal_hash_raw.slice(0, 31));
+        const broadcaster_address = bigInt(this.broadcaster_address);
 
-        const msg = mimc7.multiHash([external_nullifier, signal_hash]);
+        const msg = mimc7.multiHash([external_nullifier, signal_hash, broadcaster_address]);
         const signature = eddsa.signMiMC(prvKey, msg);
 
         assert(eddsa.verifyMiMC(msg, signature, pubKey));
@@ -126,6 +129,7 @@ class SemaphoreClient {
             identity_r,
             identity_path_elements,
             identity_path_index,
+            broadcaster_address,
         };
         const w = this.circuit.calculateWitness(inputs);
         const witness_bin = proof_util.convertWitness(snarkjs.stringifyBigInts(w));
@@ -146,54 +150,79 @@ class SemaphoreClient {
 
         logger.debug(`publicSignals: ${publicSignals}`);
 
-        const encoded = await this.contract.methods.broadcastSignal(
-            signal_to_contract,
-            [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
-            [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ],
-            [ proof.pi_c[0].toString(), proof.pi_c[1].toString() ],
-            [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString() ]
-        ).encodeABI();
+        // publicSignals = (root, nullifiers_hash, signal_hash, external_nullifier, broadcaster_address)
+        const public_signals_to_broadcast = [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString(), publicSignals[4].toString() ];
+        const proof_to_broadcast = [
+          [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
+          [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ],
+          [ proof.pi_c[0].toString(), proof.pi_c[1].toString() ],
+        ];
 
-        logger.debug('encoded: ' + encoded);
-        const gas_price = '0x' + (await this.web3.eth.getGasPrice()).toString(16);
-        logger.debug('gas_price: ' + gas_price);
-        const gas = '0x' + (await this.web3.eth.estimateGas({
-            from: this.from_address,
-            to: this.contract_address,
-            data: encoded
-        })).toString(16);
-        logger.debug('gas: ' + gas);
-        const nonce = await this.web3.eth.getTransactionCount(this.from_address);
-        logger.debug('nonce: ' + nonce);
-        logger.debug('chain_id: ' + this.chain_id);
-        const tx_object = {
-            gas: gas,
-            gasPrice: gas_price,
-            from: this.from_address,
-            to: this.contract_address,
-            data: encoded,
-            chainId: this.chain_id,
-            nonce: nonce,
-        };
-        logger.debug(`tx_object: ${JSON.stringify(tx_object)}`);
-        logger.debug('adding wallet');
-        const wallet = await this.web3.eth.accounts.wallet.add(this.from_private_key);
-        logger.debug('signing tx');
-        const signed_tx = await wallet.signTransaction(tx_object, this.from_address);
-        logger.info(`sending tx: ${signed_tx.messageHash}`);
-
-        const promise = new Promise((resolve, reject) => {
-          this.web3.eth.sendSignedTransaction(signed_tx.rawTransaction)
-          .on('receipt', () => {
-              logger.debug(`tx sent: ${signed_tx.messageHash}`);
-              resolve();
-          })
-          .catch((err) => {
-            logger.error(`tx send error: ${JSON.stringify(err)}`);
-            reject(err);
+        if (this.server_broadcast) {
+          const response = await fetch(`${this.semaphore_server_url}/broadcast_signal`, {
+            method: 'post',
+            body: JSON.stringify({
+              signal: signal_to_contract,
+              proof: proof_to_broadcast,
+              public_signals: public_signals_to_broadcast,
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            }
           });
-        });
-        await promise;
+          if (!response.ok) {
+            throw new Error(`Error, got status ${response.statusText}`);
+          }
+        } else {
+          const encoded = await this.contract.methods.broadcastSignal(
+              signal_to_contract,
+              proof_to_broadcast[0],
+              proof_to_broadcast[1],
+              proof_to_broadcast[2],
+              public_signals_to_broadcast,
+          ).encodeABI();
+
+          logger.debug('encoded: ' + encoded);
+          const gas_price = '0x' + (await this.web3.eth.getGasPrice()).toString(16);
+          logger.debug('gas_price: ' + gas_price);
+          const gas = '0x' + (await this.web3.eth.estimateGas({
+              from: this.from_address,
+              to: this.contract_address,
+              data: encoded
+          })).toString(16);
+          logger.debug('gas: ' + gas);
+          const nonce = await this.web3.eth.getTransactionCount(this.from_address);
+          logger.debug('nonce: ' + nonce);
+          logger.debug('chain_id: ' + this.chain_id);
+          const tx_object = {
+              gas: gas,
+              gasPrice: gas_price,
+              from: this.from_address,
+              to: this.contract_address,
+              data: encoded,
+              chainId: this.chain_id,
+              nonce: nonce,
+          };
+          logger.debug(`tx_object: ${JSON.stringify(tx_object)}`);
+          logger.debug('adding wallet');
+          const wallet = await this.web3.eth.accounts.wallet.add(this.from_private_key);
+          logger.debug('signing tx');
+          const signed_tx = await wallet.signTransaction(tx_object, this.from_address);
+          logger.info(`sending tx: ${signed_tx.messageHash}`);
+
+          const promise = new Promise((resolve, reject) => {
+            this.web3.eth.sendSignedTransaction(signed_tx.rawTransaction)
+            .on('receipt', () => {
+                logger.debug(`tx sent: ${signed_tx.messageHash}`);
+                resolve();
+            })
+            .catch((err) => {
+              logger.error(`tx send error: ${JSON.stringify(err)}`);
+              reject(err);
+            });
+          });
+          await promise;
+        }
     }
 }
 

@@ -284,226 +284,280 @@ const semaphore = new SemaphoreServer(
 semaphore.event_processing_loop()
 .catch((err) => logger.error(`Semaphore error: ${err.stack}`));
 
-const express = require('express');
-var cors = require('cors');
-
-var bodyParser = require('body-parser')
-
-const app = express();
-app.use(bodyParser.json());
-app.use(cors());
-const port = process.env.SEMAPHORE_PORT;
-
-app.get('/path/:index', async (req, res) => {
-    const leaf_index = req.params.index;
-    const path = await semaphore.tree.path(parseInt(leaf_index));
-    res.send(path);
-});
-
-app.get('/path_for_element/:element', async (req, res) => {
-    const leaf = req.params.element;
-    const leaf_index = await semaphore.tree.element_index(leaf);
-    if (leaf_index < 0) {
-        res.status(400).send({ error: `Element ${leaf} not found` });
-        return;
-    }
-    const path = await semaphore.tree.path(leaf_index);
-    res.send(path);
-});
-
-app.get('/element_index/:element', async (req, res) => {
-    const leaf = req.params.element;
-    const leaf_index = await semaphore.tree.element_index(leaf);
-    if (leaf_index < 0) {
-        res.status(400).send({ error: `Element ${leaf} not found` });
-        return;
-    }
-    res.send({ index: leaf_index });
-});
-
-async function get_signals(start_index, amount, order) {
-    let signals = [];
-
-    const latest_signal_index = await semaphore.storage.get_or_element(signal_index_key, 0);
-    if (order == 'asc') {
-        for (let i = 0; i < amount; i++) {
-            const signal_key = `${signal_key_prefix}_${start_index + i}`;
-            const signal_data = JSON.parse(await semaphore.storage.get_or_element(signal_key, '{}'));
-            if (signal_data.signal) {
-                signals.push(signal_data);
-            }
-        }
-    } else if (order == 'desc') {
-        for (let i = 0; i < amount; i++) {
-            const signal_key = `${signal_key_prefix}_${latest_signal_index - start_index - i}`;
-            const signal_data = JSON.parse(await semaphore.storage.get_or_element(signal_key, '{}'));
-            if (signal_data.signal) {
-                signals.push(signal_data);
-            }
-        }
-    } else {
-        throw new Error(`Unknown order ${order}`);
-    }
-
-    const ret = {
-      filtered: parseInt(latest_signal_index),
-      total: parseInt(latest_signal_index),
-      signals
-    };
-
-    return ret;
-}
-
-
-function convert_path(path) {
-  path.root = '0x' + bigInt(path.root).toString(16);
-  path.path_elements = path.path_elements.map(x => '0x' + bigInt(x).toString(16));
-  return path;
-}
-
-
-app.get('/signals/:start_index/:amount/:order', async (req, res) => {
-  try {
-    const amount = parseInt(req.params.amount);
-    if (isNaN(amount)) {
-        res.status(400).send({ error: `Invalid amount ${amount}`});
-        return;
-    }
-
-    const order = req.params.order;
-    const start_index = parseInt(req.params.start_index);
-    if (isNaN(start_index)) {
-        res.status(400).send({ error: `Invalid start index ${start_index}`});
-        return;
-    }
-    const data = await get_signals(start_index, amount, order);
-    data.signals = await Promise.all(data.signals.map( async (e) => {
-      e.signal = semaphore.web3.utils.toAscii(e.signal).replace(/\0/g,'');
-      e.signal_hash = '0x' + e.signal_hash;
-      e.nullifiers_hash = '0x' + bigInt(e.nullifiers_hash).toString(16);
-      e.external_nullifier = '0x' + bigInt(e.external_nullifier).toString(16);
-      e.index = '0x' + bigInt(e.current_index).toString(16);
-      e.path = convert_path(await semaphore.signal_tree.path(parseInt(e.current_index) - 1));
-      return e;
-    }));
-
-    res.send(data);
-  } catch(err) {
-    res.status(400).send({error: err.message});
-  }
-});
-
-app.get('/signals_datatable', async (req, res) => {
-  try {
-    const amount = parseInt(req.query.length);
-    if (isNaN(amount)) {
-        res.status(400).send({ error: `Invalid amount ${amount}`});
-        return;
-    }
-
-    //const order = req.query.order[0].dir;
-    const order = 'asc';
-    const start_index = parseInt(req.query.start) + 1;
-    if (isNaN(start_index)) {
-        res.status(400).send({ error: `Invalid start index ${start_index}`});
-        return;
-    }
-    const data = await get_signals(start_index, amount, order);
-    data.signals = await Promise.all(data.signals.map( async (e) => {
-      e.signal = semaphore.web3.utils.toAscii(e.signal).replace(/\0/g,'');
-      e.signal_hash = '0x' + e.signal_hash;
-      e.nullifiers_hash = '0x' + bigInt(e.nullifiers_hash).toString(16);
-      e.external_nullifier = '0x' + bigInt(e.external_nullifier).toString(16);
-      e.index = '0x' + bigInt(e.current_index).toString(16);
-      e.path = convert_path(await semaphore.signal_tree.path(parseInt(e.current_index) - 1));
-      return e;
-    }));
-
-    res.send({
-      draw: req.query.draw,
-      recordsFiltered: data.filtered,
-      recordsTotal: data.total,
-      data: data.signals
-    });
-  } catch(err) {
-    res.status(400).send({error: err.message});
-  }
-});
-
-const check_login = (req) => {
-    if (process.env.SEMAPHORE_LOGIN !== undefined) {
-      return (req.header('login') == process.env.SEMAPHORE_LOGIN);
-    } else {
-      return true;
-    }
-};
-
 const from_address = process.env.FROM_ADDRESS;
 const from_private_key = process.env.FROM_PRIVATE_KEY;
 const chain_id = parseInt(process.env.CHAIN_ID);
 
-app.post('/add_identity', async (req, res) => {
-  try {
-    if ((await check_login(req)) == true) {
-        const leaf = req.body.leaf;
-        const encoded = await semaphore.contract.methods.insertIdentity(leaf).encodeABI();
-        //logger.verbose('encoded: ' + encoded);
-        const gas_price = '0x' + (await semaphore.web3.eth.getGasPrice()).toString(16);
-        //logger.verbose('gas_price: ' + gas_price);
-        const gas = '0x' + (await semaphore.web3.eth.estimateGas({
-            from: from_address,
-            to: semaphore.contract_address,
-            data: encoded
-        })).toString(16);
-        //logger.verbose('gas: ' + gas);
-        const nonce = await semaphore.web3.eth.getTransactionCount(from_address);
-        logger.verbose('nonce: ' + nonce);
-        logger.verbose('chain_id: ' + chain_id);
-        const tx_object = {
-            gas: gas,
-            gasPrice: gas_price,
-            from: from_address,
-            to: semaphore.contract_address,
-            data: encoded,
-            chainId: chain_id,
-            nonce: nonce,
-        };
-        logger.verbose(`tx_object: ${JSON.stringify(tx_object)}`);
-        logger.verbose('signing tx');
-        const signed_tx = await semaphore.web3.eth.accounts.signTransaction(tx_object, from_private_key);
-        logger.info(`sending tx: ${signed_tx.messageHash}`);
-        logger.verbose(`sending tx object: ${JSON.stringify(signed_tx)}`);
+async function send_transaction(encoded, value) {
+    const gas_price = '0x' + (await semaphore.web3.eth.getGasPrice()).toString(16);
+    logger.verbose(`tx value: ${value}`);
+    //logger.verbose('gas_price: ' + gas_price);
+    const gas = '0x' + ((await semaphore.web3.eth.estimateGas({
+        from: from_address,
+        to: semaphore.contract_address,
+        data: encoded,
+        value,
+    })) + 10000).toString(16);
+    //logger.verbose('gas: ' + gas);
+    const nonce = await semaphore.web3.eth.getTransactionCount(from_address);
+    logger.verbose('nonce: ' + nonce);
+    logger.verbose('chain_id: ' + chain_id);
+    const tx_object = {
+        gas: gas,
+        gasPrice: gas_price,
+        from: from_address,
+        to: semaphore.contract_address,
+        data: encoded,
+        chainId: chain_id,
+        nonce: nonce,
+        value,
+    };
+    logger.verbose(`tx_object: ${JSON.stringify(tx_object)}`);
+    logger.verbose('signing tx');
+    const signed_tx = await semaphore.web3.eth.accounts.signTransaction(tx_object, from_private_key);
+    logger.info(`sending tx: ${signed_tx.messageHash}`);
+    logger.verbose(`sending tx object: ${JSON.stringify(signed_tx)}`);
 
-        const promise = new Promise((resolve, reject) => {
-          semaphore.web3.eth.sendSignedTransaction(signed_tx.rawTransaction)
-          .on('receipt', () => {
-              logger.debug(`tx sent: ${signed_tx.messageHash}`);
-              resolve();
-          })
-          .catch((err) => {
-            logger.error(`tx send error: ${JSON.stringify(err)}`);
-            reject(err);
-          });
-        });
-        await promise;
+    const promise = new Promise((resolve, reject) => {
+      semaphore.web3.eth.sendSignedTransaction(signed_tx.rawTransaction)
+      .on('receipt', () => {
+          logger.debug(`tx sent: ${signed_tx.messageHash}`);
+          resolve();
+      })
+      .catch((err) => {
+        logger.error(`tx send error: ${JSON.stringify(err)}`);
+        reject(err);
+      });
+    });
+    await promise;
+
+}
+
+async function fund() {
+  const encoded = await semaphore.contract.methods.fund().encodeABI();
+  await send_transaction(encoded, '0x' +
+                         bigInt(30000000000).mul(bigInt(1000))
+                        .add(bigInt(50000000000).mul(bigInt(21000).add(bigInt(600000)))).mul(bigInt(10)).toString(16)
+  );
+}
+
+if (process.argv[2] == 'fund') {
+  fund()
+  .then(() => {
+    process.exit(0);
+  })
+  .catch((err) => {
+    logger.error(`error funding: ${err.stack}`);
+    process.exit(1);
+  });
+} else {
+  const express = require('express');
+  var cors = require('cors');
+
+  var bodyParser = require('body-parser')
+
+  const app = express();
+  app.use(bodyParser.json());
+  app.use(cors());
+  const port = process.env.SEMAPHORE_PORT;
+
+  app.get('/path/:index', async (req, res) => {
+      const leaf_index = req.params.index;
+      const path = await semaphore.tree.path(parseInt(leaf_index));
+      res.send(path);
+  });
+
+  app.get('/path_for_element/:element', async (req, res) => {
+      const leaf = req.params.element;
+      const leaf_index = await semaphore.tree.element_index(leaf);
+      if (leaf_index < 0) {
+          res.status(400).send({ error: `Element ${leaf} not found` });
+          return;
+      }
+      const path = await semaphore.tree.path(leaf_index);
+      res.send(path);
+  });
+
+  app.get('/element_index/:element', async (req, res) => {
+      const leaf = req.params.element;
+      const leaf_index = await semaphore.tree.element_index(leaf);
+      if (leaf_index < 0) {
+          res.status(400).send({ error: `Element ${leaf} not found` });
+          return;
+      }
+      res.send({ index: leaf_index });
+  });
+
+  async function get_signals(start_index, amount, order) {
+      let signals = [];
+
+      const latest_signal_index = await semaphore.storage.get_or_element(signal_index_key, 0);
+      if (order == 'asc') {
+          for (let i = 0; i < amount; i++) {
+              const signal_key = `${signal_key_prefix}_${start_index + i}`;
+              const signal_data = JSON.parse(await semaphore.storage.get_or_element(signal_key, '{}'));
+              if (signal_data.signal) {
+                  signals.push(signal_data);
+              }
+          }
+      } else if (order == 'desc') {
+          for (let i = 0; i < amount; i++) {
+              const signal_key = `${signal_key_prefix}_${latest_signal_index - start_index - i}`;
+              const signal_data = JSON.parse(await semaphore.storage.get_or_element(signal_key, '{}'));
+              if (signal_data.signal) {
+                  signals.push(signal_data);
+              }
+          }
+      } else {
+          throw new Error(`Unknown order ${order}`);
+      }
+
+      const ret = {
+        filtered: parseInt(latest_signal_index),
+        total: parseInt(latest_signal_index),
+        signals
+      };
+
+      return ret;
+  }
+
+
+  function convert_path(path) {
+    path.root = '0x' + bigInt(path.root).toString(16);
+    path.path_elements = path.path_elements.map(x => '0x' + bigInt(x).toString(16));
+    return path;
+  }
+
+
+  app.get('/signals/:start_index/:amount/:order', async (req, res) => {
+    try {
+      const amount = parseInt(req.params.amount);
+      if (isNaN(amount)) {
+          res.status(400).send({ error: `Invalid amount ${amount}`});
+          return;
+      }
+
+      const order = req.params.order;
+      const start_index = parseInt(req.params.start_index);
+      if (isNaN(start_index)) {
+          res.status(400).send({ error: `Invalid start index ${start_index}`});
+          return;
+      }
+      const data = await get_signals(start_index, amount, order);
+      data.signals = await Promise.all(data.signals.map( async (e) => {
+        e.signal = semaphore.web3.utils.toAscii(e.signal).replace(/\0/g,'');
+        e.signal_hash = '0x' + e.signal_hash;
+        e.nullifiers_hash = '0x' + bigInt(e.nullifiers_hash).toString(16);
+        e.external_nullifier = '0x' + bigInt(e.external_nullifier).toString(16);
+        e.index = '0x' + bigInt(e.current_index).toString(16);
+        e.path = convert_path(await semaphore.signal_tree.path(parseInt(e.current_index) - 1));
+        return e;
+      }));
+
+      res.send(data);
+    } catch(err) {
+      res.status(400).send({error: err.message});
+    }
+  });
+
+  app.get('/signals_datatable', async (req, res) => {
+    try {
+      const amount = parseInt(req.query.length);
+      if (isNaN(amount)) {
+          res.status(400).send({ error: `Invalid amount ${amount}`});
+          return;
+      }
+
+      //const order = req.query.order[0].dir;
+      const order = 'asc';
+      const start_index = parseInt(req.query.start) + 1;
+      if (isNaN(start_index)) {
+          res.status(400).send({ error: `Invalid start index ${start_index}`});
+          return;
+      }
+      const data = await get_signals(start_index, amount, order);
+      data.signals = await Promise.all(data.signals.map( async (e) => {
+        e.signal = semaphore.web3.utils.toAscii(e.signal).replace(/\0/g,'');
+        e.signal_hash = '0x' + e.signal_hash;
+        e.nullifiers_hash = '0x' + bigInt(e.nullifiers_hash).toString(16);
+        e.external_nullifier = '0x' + bigInt(e.external_nullifier).toString(16);
+        e.index = '0x' + bigInt(e.current_index).toString(16);
+        e.path = convert_path(await semaphore.signal_tree.path(parseInt(e.current_index) - 1));
+        return e;
+      }));
+
+      res.send({
+        draw: req.query.draw,
+        recordsFiltered: data.filtered,
+        recordsTotal: data.total,
+        data: data.signals
+      });
+    } catch(err) {
+      res.status(400).send({error: err.message});
+    }
+  });
+
+  const check_login = (req) => {
+      if (process.env.SEMAPHORE_LOGIN !== undefined) {
+        return (req.header('login') == process.env.SEMAPHORE_LOGIN);
+      } else {
+        return true;
+      }
+  };
+
+  app.post('/add_identity', async (req, res) => {
+    try {
+      logger.info(`adding identity with body: ${JSON.stringify(req.body)}`);
+      if ((await check_login(req)) == true) {
+          const leaf = req.body.leaf;
+          const encoded = await semaphore.contract.methods.insertIdentity(leaf).encodeABI();
+          //logger.verbose('encoded: ' + encoded);
+          await send_transaction(encoded);
+
+          res.json({});
+      } else {
+          res.status(400).json({error: 'Invalid login'});
+      }
+    } catch(err) {
+          logger.error(err.stack);
+          res.status(400).json({error: err.stack});
+    }
+  });
+
+  app.post('/broadcast_signal', async (req, res) => {
+    try {
+        logger.info(`broadcasting signal with body: ${JSON.stringify(req.body)}`);
+        const public_signals = req.body.public_signals;
+        const proof = req.body.proof;
+        const signal_to_contract = req.body.signal;
+
+        const encoded = await semaphore.contract.methods.broadcastSignal(
+            signal_to_contract,
+            proof[0],
+            proof[1],
+            proof[2],
+            public_signals,
+        ).encodeABI();
+
+        await send_transaction(encoded);
 
         res.json({});
-    } else {
-        res.status(400).json({error: 'Invalid login'});
-    }
-  } catch(err) {
+    } catch(err) {
+        logger.error(err.stack);
         res.status(400).json({error: err.stack});
-  }
-});
+    }
+  });
 
-process.on('unhandledRejection', function(err, promise) {
-    logger.error(err.stack);
-    process.exit(1);
-});
 
-process.on('uncaughtException', function(err) {
-    logger.error(err.stack);
-    process.exit(1);
-});
+  process.on('unhandledRejection', function(err, promise) {
+      logger.error(err.stack);
+      process.exit(1);
+  });
 
-app.listen(port, () => logger.verbose(`Semaphore running on port ${port}.`))
+  process.on('uncaughtException', function(err) {
+      logger.error(err.stack);
+      process.exit(1);
+  });
+
+  app.listen(port, () => logger.verbose(`Semaphore running on port ${port}.`))
+}
