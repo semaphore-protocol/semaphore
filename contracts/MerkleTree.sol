@@ -36,6 +36,7 @@ contract MerkleTree {
     }
 
     function insert(uint256 leaf) internal {
+        uint32 leaf_index = next_index;
         uint32 current_index = next_index;
         next_index += 1;
 
@@ -43,20 +44,15 @@ contract MerkleTree {
         uint256 left;
         uint256 right;
 
-        bool subtree_filled = true;
         for (uint8 i = 0; i < levels; i++) {
             if (current_index % 2 == 0) {
                 left = current_level_hash;
                 right = zeros[i];
 
-                if (subtree_filled) {
-                    filled_subtrees[i] = current_level_hash;
-                }
+                filled_subtrees[i] = current_level_hash;
             } else {
                 left = filled_subtrees[i];
                 right = current_level_hash;
-
-                subtree_filled = false;
             }
 
             current_level_hash = HashLeftRight(left, right);
@@ -66,7 +62,7 @@ contract MerkleTree {
 
         root = current_level_hash;
 
-        emit LeafAdded(leaf, current_index);
+        emit LeafAdded(leaf, leaf_index);
     }
 
     function update(uint256 leaf, uint32 leaf_index, uint256[] memory path) internal {
@@ -90,6 +86,6 @@ contract MerkleTree {
             current_index /= 2;
         }
 
-        emit LeafUpdated(leaf, current_index);
+        emit LeafUpdated(leaf, leaf_index);
     }
 }

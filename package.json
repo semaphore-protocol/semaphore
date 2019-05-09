@@ -15,6 +15,7 @@
     "ganache-cli": "^6.4.1",
     "ganache-core": "^2.5.3",
     "mocha": "^6.0.2",
+    "node-fetch": "^2.3.0",
     "require-nocache": "^1.0.0",
     "snarkjs": "^0.1.11",
     "truffle": "^5.0.10",

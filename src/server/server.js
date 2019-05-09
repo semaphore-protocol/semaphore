@@ -8,6 +8,8 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
 const snarkjs = require('snarkjs');
 const bigInt = snarkjs.bigInt;
 
+const crypto = require('crypto');
+
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -30,13 +32,13 @@ beInt2Buff = function(n, len) {
     let r = n;
     let o =0;
     const buff = Buffer.alloc(len);
-    while ((r.greater(wBigInt.zero))&&(o<buff.length)) {
-        let c = Number(r.and(wBigInt("255")));
+    while ((r.greater(bigInt.zero))&&(o<buff.length)) {
+        let c = Number(r.and(bigInt("255")));
         buff[buff.length - o - 1] = c;
         o++;
         r = r.shr(8);
     }
-    if (r.greater(wBigInt.zero)) throw new Error("Number does not feed in buffer");
+    if (r.greater(bigInt.zero)) throw new Error("Number does not feed in buffer");
     return buff;
 };
 
@@ -61,28 +63,32 @@ class SemaphoreServer {
             console.log(`last_processed_block: ${last_processed_block}`);
             console.log(`current_block_number: ${current_block_number}`);
 
+            const code = await this.web3.eth.getCode(this.contract_address, last_processed_block);
+            if ( code == '0x') {
+                await this.storage.put(last_block_key, (last_processed_block + 1).toString());
+                continue;
+            }
+
             const state_root = await this.contract.methods.root().call({from: from_address}, last_processed_block);
             const state_signal_rolling_hash = await this.contract.methods.signal_rolling_hash().call({from: from_address}, last_processed_block);
             console.log(`state_root: ${state_root}, state_signal_rolling_hash: ${state_signal_rolling_hash}`);
 
             const saved_state_block = await this.get_state_for_block(last_processed_block);
-            console.log(`saved_state_block: ${saved_state_block}`);
+            console.log(`saved_state_block: ${JSON.stringify(saved_state_block)}`);
 
-            if (state_root != saved_state_block.root || 
-                state_signal_rolling_hash != saved_state_block.signal_rolling_hash) {
-                await this.rollback_one_step();
+            if ( saved_state_block.root && (state_root != saved_state_block.root || 
+                state_signal_rolling_hash != saved_state_block.signal_rolling_hash)) {
+                await this.rollback_one_step(last_processed_block);
                 continue;
             }
 
             const target_block_number = Math.min(current_block_number, last_processed_block + 10);
 
-            const logs = await this.web3.eth.getPastLogs({
+            const logs = await this.contract.getPastEvents('allEvents', {
                 fromBlock: last_processed_block + 1,
                 toBlock: target_block_number,
                 address: this.contract_address,
             });
-            console.log(logs);
-
             await this.save_events(
                 logs, 
                 state_signal_rolling_hash,
@@ -97,10 +103,15 @@ class SemaphoreServer {
 
     async rollback_one_step(current_block) {
         while (true) {
-            const state_for_block = get_state_for_block(current_block--);
+            if (current_block < 0) {
+                throw new Error('cannot roll back to a negative block');
+            }
+            const state_for_block = this.get_state_for_block(current_block--);
             if (state_for_block.root) {
                 await this.tree.rollback_to_root(state_for_block.root);
                 await this.rollback_signals_to_rolling_hash(state_for_block.signal_rolling_hash);
+
+                await this.storage.put(last_block_key, current_block.toString());
 
                 break;
             }
@@ -125,30 +136,35 @@ class SemaphoreServer {
         let key_values = [];
         for (let i = 0; i < events.length; i++) {
             const event = events[i];
-            console.log(event);
 
             if (event.event == 'LeafAdded') {
-                await tree.update(event.returnValues.leaf_index, event.returnValues.leaf);
+                await tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
             } else if (event.event == 'LeafUpdated') {
-                await tree.update(event.returnValues.leaf_index, event.returnValues.leaf);
+                await tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
             } else if (event.event == 'SignalBroadcast') {
-                rolling_hash = beBuff2int(crypto.createHash('sha256').update(beInt2Buff(rolling_hash), 'utf8').update(event.returnValues.signal, 'utf8').digest());
-                const adds = await prepare_signal_add(
+                console.log(event.returnValues);
+                rolling_hash = bigInt.leBuff2int(
+                    crypto.createHash('sha256').update(bigInt.leInt2Buff(rolling_hash, 256)).update(
+                        crypto.createHash('sha256').update(bigInt.leInt2Buff(bigInt(event.returnValues.signal), 256)).digest()
+                    ).digest()
+                );
+                const adds = await this.prepare_signal_add(
                     event.returnValues.signal,
                     event.returnValues.nullifiers_hash,
                     block_number,
-                    rolling_hash,
+                    rolling_hash.toString(),
                 );
                 key_values.push(adds[0]);
                 key_values.push(adds[1]);
             } else {
-                console.log(`Unknown event: ${event}`);
+                console.log(`Unknown event: ${JSON.stringify(event)}`);
             }
         }
 
         key_values.push({ key: last_block_key, value: block_number.toString()});
-        key_values.push(await prepare_save_state_for_block(block_number, {
-            root: tree.root(),
+        const root = await tree.root();
+        key_values.push(await this.prepare_save_state_for_block(block_number, {
+            root,
             signal_rolling_hash: rolling_hash.toString(),
         }));
         await this.storage.put_batch(key_values);
@@ -158,7 +174,7 @@ class SemaphoreServer {
         return parseInt(await this.storage.get_or_element(last_block_key, '0'));
     }
 
-    async prepare_signal_add(signal, nullifiers_hash, block_number) {
+    async prepare_signal_add(signal, nullifiers_hash, block_number, rolling_hash) {
         let current_index = parseInt(await this.storage.get_or_element(signal_index_key, '0'));
         current_index++;
 
@@ -217,12 +233,16 @@ semaphore.event_processing_loop()
 .catch((err) => console.log(err));
 
 const express = require('express');
+var bodyParser = require('body-parser')
+
 const app = express();
+app.use(bodyParser.json());
 const port = process.env.SEMAPHORE_PORT;
 
 app.get('/path/:index', async (req, res) => {
     const leaf_index = req.params.index;
-    res.send(await semaphore.tree.path(leaf_index));
+    const path = await semaphore.tree.path(parseInt(leaf_index));
+    res.send(path);
 });
 
 const check_login = (req) => {
@@ -231,25 +251,41 @@ const check_login = (req) => {
 
 const from_address = process.env.FROM_ADDRESS;
 const from_private_key = process.env.FROM_PRIVATE_KEY;
+const chain_id = parseInt(process.env.CHAIN_ID);
 
 app.post('/add_identity', async (req, res) => {
     if (check_login) {
         const leaf = req.body.leaf;
-        const encoded = await semaphore.contract.insertIdentity(leaf).encodeABI();
-        const gas_price = await semaphore.web3.getGasPrice().toString(16);
-        const gas = await semaphore.web3.estimateGas(encoded).toString(16);
+        const encoded = await semaphore.contract.methods.insertIdentity(leaf).encodeABI();
+        console.log('encoded: ' + encoded);
+        const gas_price = '0x' + (await semaphore.web3.eth.getGasPrice()).toString(16);
+        console.log('gas_price: ' + gas_price);
+        const gas = '0x' + (await semaphore.web3.eth.estimateGas({
+            from: from_address,
+            to: semaphore.contract_address,
+            data: encoded
+        })).toString(16);
+        console.log('gas: ' + gas);
+        const nonce = await semaphore.web3.eth.getTransactionCount(from_address);
+        console.log('nonce: ' + nonce);
+        console.log('chain_id: ' + chain_id);
         const tx_object = {
             gas: gas,
             gasPrice: gas_price,
             from: from_address,
+            to: semaphore.contract_address,
             data: encoded,
+            chainId: chain_id,
+            nonce: nonce,
         };
-        const signed_tx = await semaphore.web3.eth.signTransaction(tx_object, from_private_key);
+        console.log(JSON.stringify(tx_object));
+        const wallet = await semaphore.web3.eth.accounts.wallet.add(from_private_key);
+        const signed_tx = await wallet.signTransaction(tx_object, from_address);
         await semaphore.web3.eth.sendSignedTransaction(signed_tx.rawTransaction);
-        res.send();
+        res.json({});
     } else {
-        res.status(400).send();
+        res.status(400).json({});
     }
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Semaphore running on port ${port}.`))
