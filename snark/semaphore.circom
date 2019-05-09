@@ -28,6 +28,8 @@ template Selector() {
   signal right_selector_1;
   signal right_selector_2;
 
+  path_index * (1-path_index) === 0
+
   left_selector_1 <== (1 - path_index)*input_elem;
   left_selector_2 <== (path_index)*path_elem;
   right_selector_1 <== (path_index)*input_elem;
@@ -116,4 +118,4 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     msg_hasher.out ==> sig_verifier.M;
 }
 
-component main = Semaphore(251, 20, 91);
+component main = Semaphore(251, 4, 91);
