@@ -116,6 +116,8 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     auth_sig_r[1] ==> sig_verifier.R8y;
     auth_sig_s ==> sig_verifier.S;
     msg_hasher.out ==> sig_verifier.M;
+
+    // END verify sig
 }
 
 component main = Semaphore(251, 4, 91);
