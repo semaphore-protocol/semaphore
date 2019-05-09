@@ -1,3 +1,23 @@
+/*
+ * semaphorejs - Zero-knowledge signaling on Ethereum
+ * Copyright (C) 2019 Kobi Gurkan <kobigurk@gmail.com>
+ *
+ * This file is part of semaphorejs.
+ *
+ * semaphorejs is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * semaphorejs is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with semaphorejs.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 pragma solidity >=0.4.21;
 
 import "./verifier.sol";
@@ -107,11 +127,11 @@ contract Semaphore is Verifier, MultipleMerkleTree {
       index = signal_tree_index;
     }
 
-    function setExternalNullifier(uint256 new_external_nullifier) {
+    function setExternalNullifier(uint256 new_external_nullifier) public onlyOwner {
       external_nullifier = new_external_nullifier;
     }
 
-    function setMaxGasPrice(uint256 new_max_gas_price) {
+    function setMaxGasPrice(uint256 new_max_gas_price) public onlyOwner {
       gas_price_max = new_max_gas_price;
     }
 }

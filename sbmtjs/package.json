@@ -1,7 +1,7 @@
 {
   "name": "sbmtjs",
   "version": "0.1.0",
-  "description": "Storage backed merkle tree",
+  "description": "Storage-backed Merkle tree",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
