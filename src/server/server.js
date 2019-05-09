@@ -11,6 +11,8 @@ const bigInt = snarkjs.bigInt;
 const crypto = require('crypto');
 const winston = require('winston');
 
+const transaction_confirmation_blocks = parseInt(process.env.TRANSACTION_CONFIRMATION_BLOCKS) || 24;
+
 const logger = winston.createLogger({
     level: process.env.LOG_LEVEL,
     format: winston.format.json(),
@@ -61,8 +63,9 @@ class SemaphoreServer {
 
     constructor(storage, node_url, contract_address, tree) {
         this.storage = storage;
-        this.web3 = new Web3(node_url);
-        this.web3.eth.transactionConfirmationBlocks = 24;
+        this.web3 = new Web3(new Web3.providers.HttpProvider(node_url));
+        this.web3.eth.transactionConfirmationBlocks = transaction_confirmation_blocks;
+        logger.verbose(`transaction confirmation blocks: ${this.web3.eth.transactionConfirmationBlocks}`);
         this.contract_address = contract_address;
         this.tree = tree;
         this.contract = new this.web3.eth.Contract(
@@ -110,6 +113,15 @@ class SemaphoreServer {
                 state_signal_rolling_hash,
                 target_block_number
             );
+
+            if (logs.length > 0) {
+                const state_root = await this.contract.methods.root().call({from: from_address}, last_processed_block);
+                const state_signal_rolling_hash = await this.contract.methods.signal_rolling_hash().call({from: from_address}, last_processed_block);
+                logger.verbose(`state_root: ${state_root}, state_signal_rolling_hash: ${state_signal_rolling_hash}`);
+
+                const saved_state_block = await this.get_state_for_block(last_processed_block);
+                logger.verbose(`saved_state_block: ${JSON.stringify(saved_state_block)}`);
+            }
 
             if (target_block_number == current_block_number) {
                 await timeout(5000);
@@ -336,18 +348,18 @@ app.post('/add_identity', async (req, res) => {
     if (check_login) {
         const leaf = req.body.leaf;
         const encoded = await semaphore.contract.methods.insertIdentity(leaf).encodeABI();
-        //logger.debug('encoded: ' + encoded);
+        //logger.verbose('encoded: ' + encoded);
         const gas_price = '0x' + (await semaphore.web3.eth.getGasPrice()).toString(16);
-        //logger.debug('gas_price: ' + gas_price);
+        //logger.verbose('gas_price: ' + gas_price);
         const gas = '0x' + (await semaphore.web3.eth.estimateGas({
             from: from_address,
             to: semaphore.contract_address,
             data: encoded
         })).toString(16);
-        //logger.debug('gas: ' + gas);
+        //logger.verbose('gas: ' + gas);
         const nonce = await semaphore.web3.eth.getTransactionCount(from_address);
-        logger.debug('nonce: ' + nonce);
-        logger.debug('chain_id: ' + chain_id);
+        logger.verbose('nonce: ' + nonce);
+        logger.verbose('chain_id: ' + chain_id);
         const tx_object = {
             gas: gas,
             gasPrice: gas_price,
@@ -357,17 +369,17 @@ app.post('/add_identity', async (req, res) => {
             chainId: chain_id,
             nonce: nonce,
         };
-        logger.debug(`tx_object: ${JSON.stringify(tx_object)}`);
-        logger.debug('adding wallet');
-        const wallet = await semaphore.web3.eth.accounts.wallet.add(from_private_key);
-        logger.debug('signing tx');
-        const signed_tx = await wallet.signTransaction(tx_object, from_address);
+        logger.verbose(`tx_object: ${JSON.stringify(tx_object)}`);
+        logger.verbose('signing tx');
+        const signed_tx = await semaphore.web3.eth.accounts.signTransaction(tx_object, from_private_key);
         logger.info(`sending tx: ${signed_tx.messageHash}`);
+
         semaphore.web3.eth.sendSignedTransaction(signed_tx.rawTransaction)
         .on('receipt', () => {
-            logger.debug(`tx sent: ${signed_tx.messageHash}`);
+            logger.verbose(`tx sent: ${signed_tx.messageHash}`);
         })
-        .catch((err) => logger.error(`tx send error: ${err.message}`));
+        .catch((err) => logger.error(`tx send error: ${JSON.stringify(err)}`));
+
         res.json({});
     } else {
         res.status(400).json({error: 'Invalid login'});
@@ -384,4 +396,4 @@ process.on('uncaughtException', function(err) {
     process.exit(1);
 });
 
-app.listen(port, () => logger.debug(`Semaphore running on port ${port}.`))
+app.listen(port, () => logger.verbose(`Semaphore running on port ${port}.`))

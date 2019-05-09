@@ -26,6 +26,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
 
 const generated_identity_path = process.env.IDENTITY_PATH || 'semaphore_identity.json';
 
+const transaction_confirmation_blocks = parseInt(process.env.TRANSACTION_CONFIRMATION_BLOCKS) || 24;
 
 const logger = winston.createLogger({
     level: process.env.LOG_LEVEL,
@@ -80,8 +81,9 @@ class SemaphoreClient {
 
         this.identity_commitment = mimc7.multiHash([pubKey[0], pubKey[1], this.identity_nullifier, this.identity_r]);
 
-        this.web3 = new Web3(node_url);
-        this.web3.eth.transactionConfirmationBlocks = 24;
+        this.web3 = new Web3(new Web3.providers.HttpProvider(node_url));
+        this.web3.eth.transactionConfirmationBlocks = transaction_confirmation_blocks;
+        logger.verbose(`transaction confirmation blocks: ${this.web3.eth.transactionConfirmationBlocks}`);
         this.contract_address = contract_address;
         this.from_private_key = from_private_key;
         this.from_address = from_address;
@@ -197,7 +199,7 @@ class SemaphoreClient {
         .on('receipt', () => {
             logger.debug(`tx sent: ${signed_tx.messageHash}`);
         })
-        .catch((err) => logger.error(`tx send error: ${err.message}`));
+        .catch((err) => logger.error(`tx send error: ${JSON.stringify(err)}`));
     }
 }
 
