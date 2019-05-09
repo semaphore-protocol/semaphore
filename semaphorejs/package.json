@@ -1,13 +1,21 @@
 {
   "name": "semaphorejs",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "Zero-knowledge signaling on Ethereum",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "bin": {
+    "semaphorejs-server": "./src/server/server.js",
+    "semaphorejs-client": "./src/client/client.js"
+  },
+  "author": "Kobi Gurkan",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kobigurk/semaphore.git"
+  },
   "dependencies": {
     "circom": "0.0.24",
     "circomlib": "git+https://github.com/kobigurk/circomlib.git",

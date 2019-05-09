@@ -4,11 +4,9 @@
 
 ## Introduction
 
-Semaphore has been introduced by [barryWhiteHat](https://github.com/barryWhiteHat) as a method of zero-knowledge signaling. This repository is an implementation of the concept, including the zero-knowledge circuits and the tools necessary to use it, both server-side and client-side.
+Semaphore has been introduced by [barryWhiteHat](https://github.com/barryWhiteHat) as a method of zero-knowledge signaling. This repository is an implementation of an upgraded version of the concept, including the zero-knowledge circuits and the tools necessary to use it, both server-side and client-side.
 
-Read the work-in-progress spec [here](https://hackmd.io/URAiVCeiTpGO-MpPrG3amg).
-
-The project is implemented in Node.JS and uses [circom](https://github.com/iden3/circom) for the zero-knowledge proofs.
+The project is implemented in plain Node.JS and uses [circom](https://github.com/iden3/circom) for the zero-knowledge proofs.
 
 ## Repository structure
 
@@ -25,7 +23,7 @@ The project is implemented in Node.JS and uses [circom](https://github.com/iden3
       * [**Semaphore.sol**](semaphorejs/contracts/Semaphore.sol):
         * Semaphore's main contract, implementing onboarding and signalling. Onboarding verifies the creator of the contract is the one adding identities. Signalling verifies a zero-knowledge proof, some other conditions and updates the state of Semaphore, consisting of a merkle root and a signal rolling hash. The contract also includes an *external_nullifier*, which is a mechanism for detecting multiple signals from the same identity.
       * [**MerkleTree.sol**](semaphorejs/contracts/MerkleTree.sol):
-        * An append-only merkle tree, allowing efficient inserts without race conditions. Additionally, it allows updates. 
+        * An append-only merkle tree, allowing efficient inserts without race conditions. Additionally, it allows updates.
     * [**snark**](semaphorejs/snark):
       * [**semaphore.circom**](semaphorejs/snark/semaphore.circom): implements the circuit as defined in the spec. Two main components are worth noting here as well:
         * **nullifiers_hash** - this is derived from the *external_nullifier* set in the contract and the *nullifier* which is part of the identity. It is the same for each signal of the identity, allowing the detection of multiple signals by the same identity.
