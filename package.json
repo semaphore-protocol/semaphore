@@ -21,6 +21,7 @@
     "truffle": "^5.0.10",
     "truffle-artifactor": "^4.0.10",
     "truffle-contract": "^4.0.11",
-    "web3": "^1.0.0-beta.51"
+    "web3": "^1.0.0-beta.51",
+    "winston": "^3.2.1"
   }
 }

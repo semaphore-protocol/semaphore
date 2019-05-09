@@ -48,7 +48,7 @@ contract('Semaphore', function () {
         const external_nullifier = bigInt('12312');
         const signal_str = 'hello!';
         const signal_hash_raw = crypto.createHash('sha256').update(signal_str, 'utf8').digest();
-        const signal_hash = bigInt.leBuff2int(signal_hash_raw.slice(0, 31));
+        const signal_hash = beBuff2int(signal_hash_raw.slice(0, 31));
         const signal_to_contract = web3.utils.asciiToHex(signal_str);
 
         const msg = mimc7.multiHash([external_nullifier, signal_hash]);

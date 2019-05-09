@@ -44,7 +44,7 @@ contract Semaphore is Verifier, MerkleTree {
         uint[2] c,
         uint[4] input // (root, nullifiers_hash, signal_hash, external_nullifier)
     ) public {
-        uint256 signal_hash = uint256(sha256(signal) >> 8);
+        uint256 signal_hash = uint256(sha256(signal)) >> 8;
         require(signal_hash == input[2]);
         require(external_nullifier == input[3]);
         require(verifyProof(a, b, c, input));
