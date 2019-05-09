@@ -95,6 +95,7 @@ const semaphore = new SemaphoreClient(
     process.env.FROM_ADDRESS,
     parseInt(process.env.CHAIN_ID),
     transaction_confirmation_blocks,
+    true,
     logger,
 );
 semaphore.broadcast_signal(process.argv[3])

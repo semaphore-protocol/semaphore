@@ -34,7 +34,7 @@ beBuff2int = function(buff) {
 
 
 class SemaphoreClient {
-    constructor(node_url, loaded_identity, semaphoreABI, cir_def, proving_key, verifier_key, external_nullifier, identity_index, semaphore_server_url, contract_address, from_private_key, from_address, chain_id, transaction_confirmation_blocks, logger_handler) {
+    constructor(node_url, loaded_identity, semaphoreABI, cir_def, proving_key, verifier_key, external_nullifier, identity_index, semaphore_server_url, contract_address, from_private_key, from_address, chain_id, transaction_confirmation_blocks, server_broadcast, logger_handler) {
         logger = logger_handler;
         this.cir_def = cir_def;
 

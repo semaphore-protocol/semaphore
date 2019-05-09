@@ -4,19 +4,20 @@ rm -rf semaphore_server.db
 
 export CHAIN_ID=5777
 export NODE_URL=http://localhost:7545
+export SERVER_NODE_URL=http://localhost:7545
 export DEPLOY_TO=local
 
 if [ "$1" == "goerli" ]; then
   CHAIN_ID=5
   NODE_URL=https://goerli.infura.io/v3/f4a3ad81db3f4750bd201955c8d20066
-  SERVER_NODE_URL=http://localhost:8545
+  SERVER_NODE_URL=https://goerli.infura.io/v3/f4a3ad81db3f4750bd201955c8d20066
   DEPLOY_TO=goerli
 fi
 
 if [ "$1" == "ropsten" ]; then
   CHAIN_ID=3
   NODE_URL=https://ropsten.infura.io/v3/f4a3ad81db3f4750bd201955c8d20066
-  SERVER_NODE_URL=http://localhost:8545
+  SERVER_NODE_URL=https://ropsten.infura.io/v3/f4a3ad81db3f4750bd201955c8d20066
   DEPLOY_TO=ropsten
 fi
 

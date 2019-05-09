@@ -18,11 +18,18 @@
     .mdl-textfield {
       width: 600px;
     }
+    .verify-error {
+      background-color: red !important;
+    }
+    .verify-ok {
+    }
+
   </style>
 
   <form action="#">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="text" id="f_node_url" value="wss://rinkeby.infura.io/ws/v3/f4a3ad81db3f4750bd201955c8d20066">
+      <!-- <input class="mdl-textfield__input" type="text" id="f_node_url" value="wss://rinkeby.infura.io/ws/v3/f4a3ad81db3f4750bd201955c8d20066"> -->
+      <input class="mdl-textfield__input" type="text" id="f_node_url" value="ws://localhost:7545">
       <label class="mdl-textfield__label" for="f_node_url">Node URL...</label>
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -31,7 +38,8 @@
     </div>
     <br />
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="text" id="f_semaphore_server_url" value="http://semaphore-server.kobi.one">
+      <!-- <input class="mdl-textfield__input" type="text" id="f_semaphore_server_url" value="http://semaphore-server.kobi.one"> -->
+      <input class="mdl-textfield__input" type="text" id="f_semaphore_server_url" value="http://localhost:3000">
       <label class="mdl-textfield__label" for="f_semaphore_server_url">Semaphore server url...</label>
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -69,12 +77,12 @@
       <td id="s_block_number">Not yet...</td>
     </tr>
     <tr>
-      <td class="mdl-data-table__cell--non-numeric">Root</td>
+      <td class="mdl-data-table__cell--non-numeric">ID root</td>
       <td id="s_root">Not yet...</td>
     </tr>
     <tr>
-      <td class="mdl-data-table__cell--non-numeric">Rolling hash</td>
-      <td id="s_rolling_hash">Not yet...</td>
+      <td class="mdl-data-table__cell--non-numeric">Signals root</td>
+      <td id="s_signals_root">Not yet...</td>
     </tr>
     <tr>
       <td class="mdl-data-table__cell--non-numeric">External nullifier</td>
@@ -90,7 +98,6 @@
             <th>Nullifiers hash</th>
             <th>External nullifier</th>
             <th>Block number</th>
-            <th>Rolling hash</th>
         </tr>
     </thead>
   </table>
@@ -184,22 +191,8 @@
         ordering:  false
     });
 
-    window.signals_table = $('#signals').DataTable({
-        "searching": false,
-        "processing": true,
-        "serverSide": true,
-        "ajax": $('#f_semaphore_server_url').val() + "/signals_datatable",
-				"columnDefs": [
-					{ "orderable": true, "targets": 0 }
-				],
-        "columns": [
-            { "data": "signal" },
-            { "data": "nullifiers_hash" },
-            { "data": "external_nullifier" },
-            { "data": "block_number" },
-            { "data": "rolling_hash" },
-        ]
-    });
+
+
   });
   </script>
 </head>

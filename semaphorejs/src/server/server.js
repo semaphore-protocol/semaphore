@@ -61,7 +61,7 @@ beInt2Buff = function(n, len) {
 
 class SemaphoreServer {
 
-    constructor(storage, node_url, contract_address, creation_hash, tree) {
+    constructor(storage, node_url, contract_address, creation_hash, tree, signal_tree) {
         this.storage = storage;
         this.node_url = node_url;
         this.web3 = new Web3(new Web3.providers.HttpProvider(node_url));
@@ -70,6 +70,7 @@ class SemaphoreServer {
         this.contract_address = contract_address;
         this.creation_hash = creation_hash;
         this.tree = tree;
+        this.signal_tree = signal_tree;
         this.contract = new this.web3.eth.Contract(
             SemaphoreABI.abi,
             this.contract_address,
@@ -96,15 +97,18 @@ class SemaphoreServer {
                   continue;
               }
 
-              const state_root = await this.contract.methods.root().call({from: from_address}, last_processed_block);
-              const state_signal_rolling_hash = await this.contract.methods.signal_rolling_hash().call({from: from_address}, last_processed_block);
-              logger.debug(`state_root: ${state_root}, state_signal_rolling_hash: ${state_signal_rolling_hash}`);
+              this.identity_tree_index = await this.contract.methods.get_id_tree_index().call({from: from_address}, last_processed_block);
+              this.signal_tree_index = await this.contract.methods.get_signal_tree_index().call({from: from_address}, last_processed_block);
+
+              const state_root = await this.contract.methods.roots(this.identity_tree_index).call({from: from_address}, last_processed_block);
+              const state_signal_root = await this.contract.methods.roots(this.signal_tree_index).call({from: from_address}, last_processed_block);
+              logger.debug(`state_root: ${state_root}, state_signal_root: ${state_signal_root}`);
 
               const saved_state_block = await this.get_state_for_block(last_processed_block);
               logger.debug(`saved_state_block: ${JSON.stringify(saved_state_block)}`);
 
               if ( saved_state_block.root && (state_root != saved_state_block.root ||
-                  state_signal_rolling_hash != saved_state_block.signal_rolling_hash)) {
+                  state_signal_root != saved_state_block.signal_root)) {
                   await this.rollback_one_step(last_processed_block);
                   continue;
               }
@@ -118,14 +122,15 @@ class SemaphoreServer {
               });
               await this.save_events(
                   logs,
-                  state_signal_rolling_hash,
+                  this.identity_tree_index,
+                  this.signal_tree_index,
                   target_block_number
               );
 
               if (logs.length > 0) {
-                  const state_root = await this.contract.methods.root().call({from: from_address}, target_block_number);
-                  const state_signal_rolling_hash = await this.contract.methods.signal_rolling_hash().call({from: from_address}, target_block_number);
-                  logger.verbose(`state_root: ${state_root}, state_signal_rolling_hash: ${state_signal_rolling_hash}`);
+                  const state_root = await this.contract.methods.roots(this.identity_tree_index).call({from: from_address}, target_block_number);
+                  const state_signal_root = await this.contract.methods.roots(this.signal_tree_index).call({from: from_address}, target_block_number);
+                  logger.verbose(`state_root: ${state_root}, state_signal_root: ${state_signal_root}`);
 
                   const saved_state_block = await this.get_state_for_block(target_block_number);
                   logger.verbose(`saved_state_block: ${JSON.stringify(saved_state_block)}`);
@@ -135,7 +140,7 @@ class SemaphoreServer {
                   await timeout(5000);
               }
           } catch(e) {
-            logger.error(`Error in loop: ${e}`);
+            logger.error(`Error in loop: ${e.stack}`);
             await timeout(1000);
 
             this.web3 = new Web3(new Web3.providers.HttpProvider(this.node_url));
@@ -156,7 +161,7 @@ class SemaphoreServer {
             const state_for_block = this.get_state_for_block(current_block--);
             if (state_for_block.root) {
                 await this.tree.rollback_to_root(state_for_block.root);
-                await this.rollback_signals_to_rolling_hash(state_for_block.signal_rolling_hash);
+                await this.signal_tree.rollback_to_root(state_for_block.signal_root);
 
                 await this.storage.put(last_block_key, current_block.toString());
 
@@ -177,34 +182,32 @@ class SemaphoreServer {
         }
     }
 
-    async save_events(events, rolling_hash, block_number) {
+    async save_events(events, identity_tree_index, signal_tree_index, block_number) {
         let current_index = parseInt(await this.storage.get_or_element(signal_index_key, '0'));
-
-        rolling_hash = bigInt(rolling_hash);
 
         let key_values = [];
         for (let i = 0; i < events.length; i++) {
             const event = events[i];
 
             logger.info(`got event ${event.event} with values ${JSON.stringify(event.returnValues)}`);
-            if (event.event == 'LeafAdded') {
-                await tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
-            } else if (event.event == 'LeafUpdated') {
-                await tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
+            if (event.event == 'LeafAdded' && event.returnValues.tree_index == identity_tree_index) {
+                await this.tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
+            } else if (event.event == 'LeafUpdated' && event.returnValues.tree_index == identity_tree_index) {
+                await this.tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
+            } else if (event.event == 'LeafAdded' && event.returnValues.tree_index == signal_tree_index) {
+                await this.signal_tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
+            } else if (event.event == 'LeafUpdated' && event.returnValues.tree_index == signal_tree_index) {
+                await this.signal_tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
             } else if (event.event == 'SignalBroadcast') {
-                rolling_hash = beBuff2int(
-                    crypto.createHash('sha256').update(beInt2Buff(rolling_hash, 32)).update(
-                        ('00' + crypto.createHash('sha256').update(event.returnValues.signal.slice(2), 'hex').digest().slice(0,31).toString('hex')), 'hex'
-                    ).digest()
-                );
+                const signal_hash = '00' + crypto.createHash('sha256').update(event.returnValues.signal.slice(2), 'hex').digest().slice(0,31).toString('hex');
 
                 current_index++;
                 const adds = await this.prepare_signal_add(
                     event.returnValues.signal,
+                    signal_hash,
                     event.returnValues.nullifiers_hash.toString(),
                     event.returnValues.external_nullifier.toString(),
                     event.blockNumber,
-                    rolling_hash.toString(),
                     current_index,
                 );
                 key_values.push(adds);
@@ -218,10 +221,11 @@ class SemaphoreServer {
             key: signal_index_key,
             value: current_index,
         });
-        const root = await tree.root();
+        const root = await this.tree.root();
+        const signal_root = await this.signal_tree.root();
         key_values.push(await this.prepare_save_state_for_block(block_number, {
             root,
-            signal_rolling_hash: rolling_hash.toString(),
+            signal_root,
         }));
         await this.storage.put_batch(key_values);
     }
@@ -230,34 +234,21 @@ class SemaphoreServer {
         return parseInt(await this.storage.get_or_element(last_block_key, this.creation_block.toString()));
     }
 
-    async prepare_signal_add(signal, nullifiers_hash, external_nullifier, block_number, rolling_hash, current_index) {
+    async prepare_signal_add(signal, signal_hash, nullifiers_hash, external_nullifier, block_number, current_index) {
         const signal_key = `${signal_key_prefix}_${current_index}`;
         return {
             key: signal_key,
             value: JSON.stringify({
                 signal,
+                signal_hash,
                 external_nullifier,
                 nullifiers_hash,
                 block_number,
-                rolling_hash,
+                current_index,
             }),
         };
     }
 
-    async rollback_signals_to_rolling_hash(rolling_hash) {
-        while (true) {
-            let current_index = parseInt(await this.storage.get_or_element(signal_index_key, '0'));
-            current_index--;
-            const signal_key = `${signal_key_prefix}_${current_index}`;
-            const signal_data = await this.storage.get(signal_key);
-            if (signal_data.rolling_hash == rolling_hash) {
-                break;
-            } else {
-                await this.storage.put(signal_index_key, current_index);
-                await this.storage.del(signal_key);
-            }
-        }
-    }
 }
 
 const prefix = 'semaphore';
@@ -266,11 +257,19 @@ const hasher = new Mimc7Hasher();
 const default_value = '0';
 
 const tree = new MerkleTree(
-    prefix,
+    `${prefix}_id_tree`,
     storage,
     hasher,
     20,
     default_value,
+);
+
+const signal_tree = new MerkleTree(
+  `${prefix}_signal_tree`,
+  storage,
+  hasher,
+  20,
+  default_value,
 );
 
 const semaphore = new SemaphoreServer(
@@ -279,10 +278,11 @@ const semaphore = new SemaphoreServer(
     process.env.CONTRACT_ADDRESS,
     process.env.CREATION_HASH,
     tree,
+    signal_tree,
 );
 
 semaphore.event_processing_loop()
-.catch((err) => logger.error(`Semaphore error: ${err}`));
+.catch((err) => logger.error(`Semaphore error: ${err.stack}`));
 
 const express = require('express');
 var cors = require('cors');
@@ -355,6 +355,13 @@ async function get_signals(start_index, amount, order) {
 }
 
 
+function convert_path(path) {
+  path.root = '0x' + bigInt(path.root).toString(16);
+  path.path_elements = path.path_elements.map(x => '0x' + bigInt(x).toString(16));
+  return path;
+}
+
+
 app.get('/signals/:start_index/:amount/:order', async (req, res) => {
   try {
     const amount = parseInt(req.params.amount);
@@ -370,6 +377,16 @@ app.get('/signals/:start_index/:amount/:order', async (req, res) => {
         return;
     }
     const data = await get_signals(start_index, amount, order);
+    data.signals = await Promise.all(data.signals.map( async (e) => {
+      e.signal = semaphore.web3.utils.toAscii(e.signal).replace(/\0/g,'');
+      e.signal_hash = '0x' + e.signal_hash;
+      e.nullifiers_hash = '0x' + bigInt(e.nullifiers_hash).toString(16);
+      e.external_nullifier = '0x' + bigInt(e.external_nullifier).toString(16);
+      e.index = '0x' + bigInt(e.current_index).toString(16);
+      e.path = convert_path(await semaphore.signal_tree.path(parseInt(e.current_index) - 1));
+      return e;
+    }));
+
     res.send(data);
   } catch(err) {
     res.status(400).send({error: err.message});
@@ -392,13 +409,16 @@ app.get('/signals_datatable', async (req, res) => {
         return;
     }
     const data = await get_signals(start_index, amount, order);
-    data.signals = data.signals.map( (e) => {
+    data.signals = await Promise.all(data.signals.map( async (e) => {
       e.signal = semaphore.web3.utils.toAscii(e.signal).replace(/\0/g,'');
+      e.signal_hash = '0x' + e.signal_hash;
       e.nullifiers_hash = '0x' + bigInt(e.nullifiers_hash).toString(16);
       e.external_nullifier = '0x' + bigInt(e.external_nullifier).toString(16);
-      e.rolling_hash = '0x' + bigInt(e.rolling_hash).toString(16);
+      e.index = '0x' + bigInt(e.current_index).toString(16);
+      e.path = convert_path(await semaphore.signal_tree.path(parseInt(e.current_index) - 1));
       return e;
-    });
+    }));
+
     res.send({
       draw: req.query.draw,
       recordsFiltered: data.filtered,

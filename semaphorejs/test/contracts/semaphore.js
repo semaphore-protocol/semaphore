@@ -23,6 +23,8 @@ const assert = chai.assert;
 
 const Semaphore = artifacts.require('Semaphore');
 
+const proof_util = require('../../src/util');
+
 const RocksDb = require('../../../sbmtjs/src/storage/rocksdb');
 const MerkleTree = require('../../../sbmtjs/src/tree');
 const Mimc7Hasher = require('../../../sbmtjs/src/hasher/mimc7');
@@ -63,7 +65,7 @@ contract('Semaphore', function () {
         if (fs.existsSync(storage_path)) {
             del.sync(storage_path, { force: true });
         }
-        const default_value = '5';
+        const default_value = '0';
         const storage = new RocksDb(storage_path);
         hasher = new Mimc7Hasher();
         const prefix = 'semaphore';
@@ -71,7 +73,7 @@ contract('Semaphore', function () {
             prefix,
             storage,
             hasher,
-            4,
+            20,
             default_value,
         );
 
@@ -101,7 +103,7 @@ contract('Semaphore', function () {
 
         const semaphore = await Semaphore.deployed();
         await semaphore.insertIdentity(identity_commitment.toString());
-        
+
         const root = w[circuit.getSignalIdx('main.root')];
         const nullifiers_hash = w[circuit.getSignalIdx('main.nullifiers_hash')];
         assert(circuit.checkWitness(w));
@@ -118,10 +120,12 @@ contract('Semaphore', function () {
         console.log(w[circuit.getSignalIdx('main.identity_commitment.out')]);
         */
 
-        const vk_proof = unstringifyBigInts(JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/proving_key.json')).toString()));
-        const {proof, publicSignals} = groth.genProof(vk_proof, w);
+        const vk_proof = fs.readFileSync(path.join(__dirname,'../../build/proving_key.bin'));
+        const witness_bin = proof_util.convertWitness(snarkjs.stringifyBigInts(w));
+        const publicSignals = w.slice(1, circuit.nPubInputs + circuit.nOutputs+1);
+        const proof = await proof_util.prove(witness_bin.buffer, vk_proof.buffer);
         await semaphore.broadcastSignal(
-            signal_to_contract, 
+            signal_to_contract,
             [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
             [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ],
             [ proof.pi_c[0].toString(), proof.pi_c[1].toString() ],

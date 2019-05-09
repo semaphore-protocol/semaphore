@@ -21,7 +21,7 @@ describe('circuit test', function () {
     this.timeout(100000);
 
     before( async () => {
-      const cirDef = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit-test.json')).toString());
+      const cirDef = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit.json')).toString());
       circuit = new snarkjs.Circuit(cirDef);
 
       console.log('NConstrains Semaphore: ' + circuit.nConstraints);
@@ -42,10 +42,11 @@ describe('circuit test', function () {
 
         const identity_nullifier = bigInt('230');
         const identity_r = bigInt('12311');
-        const tree = build_merkle_tree_example(4, 5, mimc7.multiHash([pubKey[0], pubKey[1], identity_nullifier, identity_r]));
+        const tree = build_merkle_tree_example(20, mimc7.multiHash([pubKey[0], pubKey[1], identity_nullifier, identity_r]));
 
-        const identity_path_elements = tree[2];
-        const identity_path_index = tree[3];
+        const identity_path_elements = tree[1];
+        const identity_path_index = tree[2];
+        //console.log(tree);
 
         const w = circuit.calculateWitness({
             'identity_pk[0]': pubKey[0],
