@@ -34,8 +34,9 @@ describe('circuit test', function () {
 
         const external_nullifier = bigInt('1');
         const signal_hash = bigInt('5');
+        const broadcaster_address = bigInt('0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413');
 
-        const msg = mimc7.multiHash([external_nullifier, signal_hash]);
+        const msg = mimc7.multiHash([external_nullifier, signal_hash, broadcaster_address]);
         const signature = eddsa.signMiMC(prvKey, msg);
 
         assert(eddsa.verifyMiMC(msg, signature, pubKey));
@@ -60,9 +61,11 @@ describe('circuit test', function () {
             identity_r,
             identity_path_elements,
             identity_path_index,
+            broadcaster_address,
         });
         //console.log(w[circuit.getSignalIdx('main.signal_hash')]);
         //console.log(w[circuit.getSignalIdx('main.root')]);
+        assert.equal(w[circuit.getSignalIdx('main.broadcaster_address')].toString(16), broadcaster_address.toString(16));
         assert(circuit.checkWitness(w));
         assert(w[circuit.getSignalIdx('main.root')] == tree[0]);
   });

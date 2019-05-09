@@ -14,14 +14,28 @@ contract Semaphore is Verifier, MultipleMerkleTree {
     uint256[root_history_size] root_history;
     uint8 current_root_index = 0;
 
+    mapping (uint => bool) nullifiers_set;
+
+    uint256 reward;
+
     event SignalBroadcast(bytes signal, uint256 nullifiers_hash, uint256 external_nullifier);
 
-    constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in) public {
+    uint256 constant gas_price_max = 30000000000;
+
+    constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in, uint256 reward_amount_in_max_gas_price) public {
         owner = msg.sender;
 
         external_nullifier = external_nullifier_in;
         id_tree_index = init_tree(tree_levels, zero_value);
         signal_tree_index = init_tree(tree_levels, zero_value);
+
+        reward = reward_amount_in_max_gas_price;
+    }
+
+    event Funded(uint256 amount);
+
+    function fund() public payable {
+      emit Funded(msg.value);
     }
 
     modifier onlyOwner() {
@@ -44,12 +58,17 @@ contract Semaphore is Verifier, MultipleMerkleTree {
         uint[2] a,
         uint[2][2] b,
         uint[2] c,
-        uint[4] input // (root, nullifiers_hash, signal_hash, external_nullifier)
+        uint[5] input // (root, nullifiers_hash, signal_hash, external_nullifier, broadcaster_address)
     ) public {
+        uint256 start_gas = gasleft();
+
         uint256 signal_hash = uint256(sha256(signal)) >> 8;
         require(signal_hash == input[2]);
         require(external_nullifier == input[3]);
         require(verifyProof(a, b, c, input));
+        require(nullifiers_set[input[1]] == false);
+        address broadcaster = address(input[4]);
+        require(broadcaster == msg.sender);
 
         bool found_root = false;
         for (uint8 i = 0; i < root_history_size; i++) {
@@ -61,7 +80,19 @@ contract Semaphore is Verifier, MultipleMerkleTree {
         require(found_root);
 
         insert(signal_tree_index, signal_hash);
+        nullifiers_set[input[1]] = true;
         emit SignalBroadcast(signal, input[1], external_nullifier);
+
+        uint256 gas_price = gas_price_max;
+        if (tx.gasprice < gas_price) {
+          gas_price = tx.gasprice;
+        }
+        uint256 gas_used = start_gas - gasleft();
+
+        // pay back gas: 21000 constant cost + gas used + reward
+        //require((msg.sender).send((21000 + gas_used)*tx.gasprice + reward));
+        require((msg.sender).send((21000 + gas_used + reward)*gas_price));
+        //require(msg.sender.send(1 wei));
     }
 
     function roots(uint8 tree_index) public view returns (uint256 root) {
