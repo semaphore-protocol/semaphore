@@ -1,5 +1,5 @@
 {
-  "name": "sbmtjs",
+  "name": "zkp-sbmtjs",
   "version": "0.1.0",
   "description": "Storage-backed Merkle tree",
   "main": "index.js",
