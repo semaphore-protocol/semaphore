@@ -68,6 +68,11 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
       logger,
     );
     */
+    let external_nullifier = $('#f_external_nullifier').val();
+    if (external_nullifier === 'auto') {
+      external_nullifier = await semaphore_contract.methods.external_nullifier().call();
+    }
+
     const semaphore = new SemaphoreClient(
       $('#f_node_url').val(),
       identity,
@@ -75,7 +80,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
       cir_def,
       proving_key,
       verification_key,
-      $('#f_external_nullifier').val(),
+      external_nullifier,
       null,
       $('#f_semaphore_server_url').val(),
       $('#f_semaphore_contract_address').val(),
@@ -118,7 +123,8 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
     $('#s_root').text('0x' + bigInt(await semaphore_contract.methods.roots(0).call()).toString(16));
     const signals_root = await semaphore_contract.methods.roots(1).call();
     $('#s_signals_root').text('0x' + bigInt(signals_root).toString(16));
-    $('#s_external_nullifier').text(await semaphore_contract.methods.external_nullifier().call());
+    $('#s_external_nullifier').text('0x' + bigInt(await semaphore_contract.methods.external_nullifier().call()).toString(16));
+    $('#s_gas_price_max').text(await semaphore_contract.methods.gas_price_max().call());
     if (window.table_inited) {
       window.signals_table.ajax.reload(null, false);
     }
@@ -194,6 +200,54 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
       $('#d_status').text(e.message);
     }
   });
+
+  $('#btn_set_ex_null').click(async () => {
+    try {
+      $('#d_status').text('Setting external nullifier...');
+      const semaphore_server_url = $('#f_semaphore_server_url').val();
+      const response = await fetch(`${semaphore_server_url}/set_external_nullifier`, {
+        method: 'post',
+        body: JSON.stringify({
+          external_nullifier: $('#a_ex_null').val()
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          login: $('#a_login').val()
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`Error, got status ${response.statusText}`);
+      }
+      $('#d_status').text('Setting external nullifier successful.');
+    } catch(e) {
+      $('#d_status').text(e.message);
+    }
+  });
+
+  $('#btn_set_max_gas_price').click(async () => {
+    try {
+      $('#d_status').text('Setting max gas price...');
+      const semaphore_server_url = $('#f_semaphore_server_url').val();
+      const response = await fetch(`${semaphore_server_url}/set_max_gas_price`, {
+        method: 'post',
+        body: JSON.stringify({
+          max_gas_price: $('#a_max_gas_price').val()
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          login: $('#a_login').val()
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`Error, got status ${response.statusText}`);
+      }
+      $('#d_status').text('Setting max gas price successful.');
+    } catch(e) {
+      $('#d_status').text(e.message);
+    }
+  });
+
+
 
   window.download = function(text, name, type) {
     var blob = new Blob([text], {type: 'application/json;charset=utf-8'});
