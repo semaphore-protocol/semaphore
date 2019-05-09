@@ -46,7 +46,7 @@ let build_merkle_tree_example = (n_levels, index, identity_commitment) => {
   return [root, tree, path_elements, path_index];
 };
 
-describe('whole use case test', function () {
+describe('circuit test', function () {
     let circuit;
 
     this.timeout(100000);
