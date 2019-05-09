@@ -1,6 +1,6 @@
 # Semaphore
 
-[![CircleCI](https://circleci.com/gh/kobigurk/semaphore.svg?style=svg)](https://circleci.com/gh/kobigurk/semaphore)
+[![CircleCI](https://circleci.com/gh/kobigurk/semaphore.svg?style=svg&circle-token=57fa2a6c591cd8d09ddae610313452bdd7b0fb14)](https://circleci.com/gh/kobigurk/semaphore)
 
 ## Introduction
 
@@ -14,11 +14,11 @@ The project is implemented in Node.JS and uses [circom](https://github.com/iden3
 
 * [**sbmtjs**](sbmtjs) - *storage-backed merkle tree*. Semaphore requires managing a growing merkle tree containing the identities allowed to signal. sbmtjs manages the tree using a database, making the tree scale by the disk size.
 * [**semaphorejs**](semaphorejs) - server, client, smart contract and circuit implementation of Semaphore.
-    * [**src/server/server.js**](semaphorejs/src/server.js) - acts as a manager of the identities merkle tree and as an identity onboarder. The REST API allows:
+    * [**src/server/server.js**](semaphorejs/src/server/server.js) - acts as a manager of the identities merkle tree and as an identity onboarder. The REST API allows:
         * An onboarder to submit a transaction that adds an identity to the merkle tree, provided proper authentication.
         * A client to ask for a path from an identity commitment to the current root of the tree, relieving the client from the need to manage this tree by themselves.
     The server relies on the smart contract to synchronize to the current state and handle rollbacks if they occur.
-    * [**src/client/client.js**](semaphorejs/src/client.js) - enables signalling their support of an arbitrary statemnt, given identity secrets of an identity existing in the tree. The client has 2 CLI functions:
+    * [**src/client/client.js**](semaphorejs/src/client/client.js) - enables signalling their support of an arbitrary statemnt, given identity secrets of an identity existing in the tree. The client has 2 CLI functions:
       * **generate_identity** - generate random identity secrets and randomness, save them to disk and print the identity commitment. The client can then send the commitment to the onboarder (using another channel), requesting they add them to the tree.
       * **signal STRING** - given an arbitrary string, generates a zero-knowledge proof of the client's authorization to signal. The signalling requests the path of the identity commitment from the server, and broadcasts the transaction directly to the contract.
     * [**contracts**](semaphorejs/contracts):
@@ -61,5 +61,5 @@ The server and the client accept most of their configuration as environment vari
     * SEMAPHORE_SERVER_URL - the URL of the Semaphore RESET server.
 
 Examples of run commands:
-* LOG_LEVEL=verbose CHAIN_ID=5777 CONTRACT_ADDRESS=$ADDRESS NODE_URL=http://127.0.0.1:7545 SEMAPHORE_PORT=3000 FROM_ADDRESS=0x1929c15f4e818abf2549510622a50c440c474223 FROM_PRIVATE_KEY=0x6738837df169e8d6ffc6e33a2947e58096d644fa4aa6d74358c8d9d57c12cd21 TRANSACTION_CONFIRMATION_BLOCKS=1 node src/server/server.js
-* LOG_LEVEL=verbose TRANSACTION_CONFIRMATION_BLOCKS=1 CHAIN_ID=5777 CONTRACT_ADDRESS=$ADDRESS FROM_ADDRESS=0x1929c15f4e818abf2549510622a50c440c474223 FROM_PRIVATE_KEY=0x6738837df169e8d6ffc6e33a2947e58096d644fa4aa6d74358c8d9d57c12cd21 NODE_URL=http://localhost:7545 EXTERNAL_NULLIFIER=12312 SEMAPHORE_SERVER_URL=http://localhost:3000 node ../src/client/client.js signal "I vote for fork A"
+* `LOG_LEVEL=verbose CHAIN_ID=5777 CONTRACT_ADDRESS=$ADDRESS NODE_URL=http://127.0.0.1:7545 SEMAPHORE_PORT=3000 FROM_ADDRESS=0x1929c15f4e818abf2549510622a50c440c474223 FROM_PRIVATE_KEY=0x6738837df169e8d6ffc6e33a2947e58096d644fa4aa6d74358c8d9d57c12cd21 TRANSACTION_CONFIRMATION_BLOCKS=1 node src/server/server.js`
+* `LOG_LEVEL=verbose TRANSACTION_CONFIRMATION_BLOCKS=1 CHAIN_ID=5777 CONTRACT_ADDRESS=$ADDRESS FROM_ADDRESS=0x1929c15f4e818abf2549510622a50c440c474223 FROM_PRIVATE_KEY=0x6738837df169e8d6ffc6e33a2947e58096d644fa4aa6d74358c8d9d57c12cd21 NODE_URL=http://localhost:7545 EXTERNAL_NULLIFIER=12312 SEMAPHORE_SERVER_URL=http://localhost:3000 node ../src/client/client.js signal "I vote for fork A"`
