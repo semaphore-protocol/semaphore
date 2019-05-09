@@ -13,6 +13,9 @@ contract MerkleTree {
 
     uint32 next_index = 0;
 
+    event LeafAdded(uint256 leaf, uint32 leaf_index);
+    event LeafUpdated(uint256 leaf, uint32 leaf_index);
+
     constructor(uint8 tree_levels, uint256 zero_value) public {
         levels = tree_levels;
 
@@ -67,5 +70,27 @@ contract MerkleTree {
         emit LeafAdded(leaf, current_index);
     }
 
-    event LeafAdded(uint256 leaf, uint32 leaf_index);
+    function update(uint256 leaf, uint32 leaf_index, uint256[] memory path) internal {
+        uint32 current_index = leaf_index;
+
+        uint256 current_level_hash = leaf;
+        uint256 left;
+        uint256 right;
+
+        for (uint8 i = 0; i < levels; i++) {
+            if (current_index % 2 == 0) {
+                left = current_level_hash;
+                right = path[i];
+            } else {
+                left = path[i];
+                right = current_level_hash;
+            }
+
+            current_level_hash = HashLeftRight(left, right);
+
+            current_index /= 2;
+        }
+
+        emit LeafUpdated(leaf, current_index);
+    }
 }
