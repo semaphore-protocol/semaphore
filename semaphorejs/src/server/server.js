@@ -327,7 +327,7 @@ async function send_transaction(encoded, value) {
         to: semaphore.contract_address,
         data: encoded,
         value,
-    })) + 10000).toString(16);
+    })) + 100000).toString(16);
     //logger.verbose('gas: ' + gas);
     const nonce = await semaphore.web3.eth.getTransactionCount(from_address);
     logger.verbose('nonce: ' + nonce);
