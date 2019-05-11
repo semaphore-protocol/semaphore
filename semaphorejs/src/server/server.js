@@ -20,9 +20,9 @@
  * along with semaphorejs.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const RocksDb = require('sbmtjs/src/storage/rocksdb');
-const MerkleTree = require('sbmtjs/src/tree');
-const Mimc7Hasher = require('sbmtjs/src/hasher/mimc7');
+const RocksDb = require('zkp-sbmtjs/src/storage/rocksdb');
+const MerkleTree = require('zkp-sbmtjs/src/tree');
+const Mimc7Hasher = require('zkp-sbmtjs/src/hasher/mimc7');
 
 const Web3 = require('web3');
 const SemaphoreABI = require('../../build/contracts/Semaphore.json');

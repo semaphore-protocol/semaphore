@@ -60,8 +60,13 @@ contract MultipleMerkleTree {
     }
 
     function HashLeftRight(uint256 left, uint256 right) public pure returns (uint256 mimc_hash) {
-        uint256 intermediate = MiMC.MiMCpe7(15021630795539610737508582392395901278341266317943626182700664337106830745361, left);
-        mimc_hash = MiMC.MiMCpe7(intermediate, right);
+        uint256 k =  21888242871839275222246405745257275088548364400416034343698204186575808495617;
+        uint256 r0 = 0;
+        uint256 h0 = MiMC.MiMCpe7(left, r0);
+        uint256 r1 = addmod(r0, addmod(left, h0, k), k);
+        uint256 h1 = MiMC.MiMCpe7(right, r1);
+        uint256 r2 = addmod(r1, addmod(right, h1, k), k);
+        mimc_hash = r2;
     }
 
     function insert(uint8 tree_index, uint256 leaf) internal {

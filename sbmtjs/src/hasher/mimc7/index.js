@@ -26,7 +26,7 @@ const bigInt = snarkjs.bigInt;
 
 class Mimc7Hasher {
     hash(level, left, right) {
-        return mimc7.multiHash([left, right]).toString();
+        return mimc7.multiHash([bigInt(left), bigInt(right)]).toString();
     }
 }
 
