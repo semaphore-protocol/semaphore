@@ -33,7 +33,7 @@ let build_merkle_tree_example = (n_levels, identity_commitment) => {
     let current_element = identity_commitment;
     for (let i = 0; i < n_levels; i++) {
       path_elements.push(bigInt(0));
-      current_element = mimc7.multiHash([ current_element, 0 ]);
+      current_element = mimc7.multiHash([ bigInt(current_element), bigInt(0) ]);
 
       path_index.push(current_index % 2);
       current_index = Math.floor(current_index / 2);
