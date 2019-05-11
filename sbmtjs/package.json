@@ -15,7 +15,7 @@
   "dependencies": {
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "circomlib": "0.0.6",
+    "circomlib": "git+https://github.com/kobigurk/circomlib.git",
     "del": "^4.0.0",
     "level-rocksdb": "^3.0.1",
     "snarkjs": "^0.1.11",
