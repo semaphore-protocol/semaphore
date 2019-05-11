@@ -11,6 +11,7 @@ template HashLeftRight(n_rounds) {
   component hasher = MultiMiMC7(2, n_rounds);
   left ==> hasher.in[0];
   right ==> hasher.in[1];
+  hasher.k <== 0;
 
   hash <== hasher.out;
 }
@@ -70,6 +71,7 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     identity_commitment.in[1] <== identity_pk[1];
     identity_commitment.in[2] <== identity_nullifier;
     identity_commitment.in[3] <== identity_r;
+    identity_commitment.k <== 0;
     // END identity commitment
 
     // BEGIN tree
@@ -100,6 +102,7 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     component nullifiers_hasher = MultiMiMC7(2, n_rounds);
     nullifiers_hasher.in[0] <== identity_nullifier;
     nullifiers_hasher.in[1] <== external_nullifier;
+    nullifiers_hasher.k <== 0;
 
     nullifiers_hash <== nullifiers_hasher.out;
     // END nullifiers
@@ -109,6 +112,7 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     msg_hasher.in[0] <== external_nullifier;
     msg_hasher.in[1] <== signal_hash;
     msg_hasher.in[2] <== broadcaster_address;
+    msg_hasher.k <== 0;
 
     component sig_verifier = EdDSAMiMCVerifier();
     1 ==> sig_verifier.enabled;
