@@ -56,14 +56,14 @@ describe('circuit test', function () {
         const signal_hash = bigInt('5');
         const broadcaster_address = bigInt('0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413');
 
-        const msg = mimc7.multiHash([external_nullifier, signal_hash, broadcaster_address]);
+        const msg = mimc7.multiHash([bigInt(external_nullifier), bigInt(signal_hash), bigInt(broadcaster_address)]);
         const signature = eddsa.signMiMC(prvKey, msg);
 
         assert(eddsa.verifyMiMC(msg, signature, pubKey));
 
         const identity_nullifier = bigInt('230');
         const identity_r = bigInt('12311');
-        const tree = build_merkle_tree_example(20, mimc7.multiHash([pubKey[0], pubKey[1], identity_nullifier, identity_r]));
+        const tree = build_merkle_tree_example(20, mimc7.multiHash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(identity_nullifier), bigInt(identity_r)]));
 
         const identity_path_elements = tree[1];
         const identity_path_index = tree[2];

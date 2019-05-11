@@ -74,7 +74,7 @@ contract('Semaphore', function () {
         const signal_to_contract = web3.utils.asciiToHex(signal_str);
         const broadcaster_address = bigInt('0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413');
 
-        const msg = mimc7.multiHash([external_nullifier, signal_hash, broadcaster_address]);
+        const msg = mimc7.multiHash([bigInt(external_nullifier), bigInt(signal_hash), bigInt(broadcaster_address)]);
         const signature = eddsa.signMiMC(prvKey, msg);
 
         assert(eddsa.verifyMiMC(msg, signature, pubKey));
@@ -98,7 +98,7 @@ contract('Semaphore', function () {
             default_value,
         );
 
-        const identity_commitment = mimc7.multiHash([pubKey[0], pubKey[1], identity_nullifier, identity_r]);
+        const identity_commitment = mimc7.multiHash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(identity_nullifier), bigInt(identity_r)]);
         await tree.update(0, identity_commitment.toString());
         const identity_path = await tree.path(0);
 
