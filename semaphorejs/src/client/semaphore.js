@@ -76,7 +76,7 @@ class SemaphoreClient {
         this.identity_nullifier = loaded_identity.identity_nullifier;
         this.identity_r = loaded_identity.identity_r;
 
-        this.identity_commitment = mimc7.multiHash([pubKey[0], pubKey[1], this.identity_nullifier, this.identity_r]);
+        this.identity_commitment = mimc7.multiHash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(this.identity_nullifier), bigInt(this.identity_r)]);
         logger.verbose(`identity_commitment: ${this.identity_commitment}`);
 
         this.web3 = new Web3(node_url);
@@ -253,9 +253,9 @@ function generate_identity(logger) {
 
     const identity_nullifier = '0x' + crypto.randomBytes(31).toString('hex');
     const identity_r = '0x' + crypto.randomBytes(31).toString('hex');
-    logger.info(`generate identity from (private_key, identity_nullifier, identity_r): (${private_key}, ${identity_nullifier}, ${identity_r})`);
+    logger.info(`generate identity from (private_key, public_key[0], public_key[1], identity_nullifier, identity_r): (${private_key}, ${pubKey[0]}, ${pubKey[1]}, ${identity_nullifier}, ${identity_r})`);
 
-    const identity_commitment = mimc7.multiHash([pubKey[0], pubKey[1], identity_nullifier, identity_r]);
+    const identity_commitment = mimc7.multiHash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(identity_nullifier), bigInt(identity_r)]);
 
     logger.info(`identity_commitment : ${identity_commitment}`);
     const generated_identity = {

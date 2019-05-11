@@ -45,9 +45,9 @@ const Semaphore = artifacts.require('Semaphore');
 
 const proof_util = require('../../src/util');
 
-const RocksDb = require('sbmtjs/src/storage/rocksdb');
-const MerkleTree = require('sbmtjs/src/tree');
-const Mimc7Hasher = require('sbmtjs/src/hasher/mimc7');
+const RocksDb = require('zkp-sbmtjs/src/storage/rocksdb');
+const MerkleTree = require('zkp-sbmtjs/src/tree');
+const Mimc7Hasher = require('zkp-sbmtjs/src/hasher/mimc7');
 
 beBuff2int = function(buff) {
     let res = bigInt.zero;

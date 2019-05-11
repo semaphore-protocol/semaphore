@@ -51,8 +51,12 @@ contract MerkleTree {
     }
 
     function HashLeftRight(uint256 left, uint256 right) public pure returns (uint256 mimc_hash) {
-        uint256 intermediate = MiMC.MiMCpe7(15021630795539610737508582392395901278341266317943626182700664337106830745361, left);
-        mimc_hash = MiMC.MiMCpe7(intermediate, right);
+        uint256 r0 = 0;
+        uint256 h0 = MiMC.MiMCpe7(left, r0);
+        uint256 r1 = r0 + left + h0;
+        uint256 h1 = MiMC.MiMCpe7(right, r1);
+        uint256 r2 = r1 + right + h1;
+        mimc_hash = r2;
     }
 
     function insert(uint256 leaf) internal {
