@@ -1,6 +1,7 @@
 include "../node_modules/circomlib/circuits/mimc.circom";
 include "../node_modules/circomlib/circuits/bitify.circom";
 include "../node_modules/circomlib/circuits/eddsamimc.circom";
+include "./blake2s/blake2s.circom";
 
 template HashLeftRight(n_rounds) {
   signal input left;
@@ -99,12 +100,24 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     // END tree
 
     // BEGIN nullifiers
-    component nullifiers_hasher = MultiMiMC7(2, n_rounds);
-    nullifiers_hasher.in[0] <== identity_nullifier;
-    nullifiers_hasher.in[1] <== external_nullifier;
-    nullifiers_hasher.k <== 0;
+    component identity_nullifier_bits = Num2Bits(254);
+    identity_nullifier_bits.in <== identity_nullifier;
+    component external_nullifier_bits = Num2Bits(254);
+    external_nullifier_bits.in <== external_nullifier;
 
-    nullifiers_hash <== nullifiers_hasher.out;
+    component nullifiers_hasher = Blake2s(508, 248018401820981);
+    for (var i = 0; i < 254; i++) {
+      nullifiers_hasher.in_bits[i] <== identity_nullifier_bits.out[i];
+      nullifiers_hasher.in_bits[254 + i] <== external_nullifier_bits.out[i];
+    }
+
+    component nullifiers_hash_num = Bits2Num(254);
+    for (var i = 0; i < 254; i++) {
+      nullifiers_hash_num.in[i] <== nullifiers_hasher.out[i];
+    }
+
+    nullifiers_hash <== nullifiers_hash_num.out;
+
     // END nullifiers
 
     // BEGIN verify sig
