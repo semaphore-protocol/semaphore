@@ -25,7 +25,7 @@ const compiler = require('circom');
 const fs = require('fs');
 const circomlib = require('circomlib');
 
-const test_util = require('../../src/test_util');
+const test_util = require('../../../src/test_util');
 const build_merkle_tree_example = test_util.build_merkle_tree_example;
 
 const assert = chai.assert;
@@ -41,7 +41,7 @@ describe('circuit test', function () {
     this.timeout(100000);
 
     before( async () => {
-      const cirDef = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit.json')).toString());
+      const cirDef = JSON.parse(fs.readFileSync(path.join(__dirname,'../../../build/circuit.json')).toString());
       circuit = new snarkjs.Circuit(cirDef);
 
       console.log('NConstrains Semaphore: ' + circuit.nConstraints);
