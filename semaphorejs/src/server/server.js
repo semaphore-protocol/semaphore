@@ -228,6 +228,7 @@ class SemaphoreServer {
                 await this.signal_tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
             } else if (event.event == 'LeafUpdated' && event.returnValues.tree_index == signal_tree_index) {
                 await this.signal_tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
+            } else if (event.event == 'Funded') {
             } else if (event.event == 'SignalBroadcast') {
                 const signal_hash = '00' + crypto.createHash('sha256').update(event.returnValues.signal.slice(2), 'hex').digest().slice(0,31).toString('hex');
 

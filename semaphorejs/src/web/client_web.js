@@ -90,7 +90,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
     */
     let external_nullifier = $('#f_external_nullifier').val();
     if (external_nullifier === 'auto') {
-      external_nullifier = await semaphore_contract.methods.external_nullifier().call();
+      external_nullifier = (await semaphore_contract.methods.external_nullifier().call()).toString();
     }
 
     const semaphore = new SemaphoreClient(
@@ -140,11 +140,14 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
 
   async function update_state() {
     $('#s_block_number').text(await web3js.eth.getBlockNumber());
-    $('#s_root').text('0x' + bigInt(await semaphore_contract.methods.roots(0).call()).toString(16));
+    const root = await semaphore_contract.methods.roots(0).call();
+    $('#s_root').text('0x' + bigInt(root.toString()).toString(16));
     const signals_root = await semaphore_contract.methods.roots(1).call();
-    $('#s_signals_root').text('0x' + bigInt(signals_root).toString(16));
-    $('#s_external_nullifier').text('0x' + bigInt(await semaphore_contract.methods.external_nullifier().call()).toString(16));
-    $('#s_gas_price_max').text(await semaphore_contract.methods.gas_price_max().call());
+    $('#s_signals_root').text('0x' + bigInt(signals_root.toString()).toString(16));
+    const external_nullifier = await semaphore_contract.methods.external_nullifier().call();
+    $('#s_external_nullifier').text('0x' + bigInt(external_nullifier.toString()).toString(16));
+    const gas_price_max = await semaphore_contract.methods.gas_price_max().call();
+    $('#s_gas_price_max').text(gas_price_max.toString());
     if (window.table_inited) {
       window.signals_table.ajax.reload(null, false);
     }
