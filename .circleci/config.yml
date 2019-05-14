@@ -35,4 +35,7 @@ jobs:
           key: v1.1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: cd scripts && ./ci.sh
+      - run:
+          name: end-to-end
+          command: cd scripts && ./ci.sh
+          no_output_timeout: 30m
