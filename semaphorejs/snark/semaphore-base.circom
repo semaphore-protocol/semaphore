@@ -111,8 +111,8 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
       nullifiers_hasher.in_bits[254 + i] <== external_nullifier_bits.out[i];
     }
 
-    component nullifiers_hash_num = Bits2Num(254);
-    for (var i = 0; i < 254; i++) {
+    component nullifiers_hash_num = Bits2Num(253);
+    for (var i = 0; i < 253; i++) {
       nullifiers_hash_num.in[i] <== nullifiers_hasher.out[i];
     }
 
