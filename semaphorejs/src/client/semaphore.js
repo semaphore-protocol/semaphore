@@ -103,7 +103,13 @@ class SemaphoreClient {
 
         const pubKey = eddsa.prv2pub(prvKey);
 
-        const external_nullifier = bigInt(this.external_nullifier);
+        let external_nullifier;
+        if (this.external_nullifier == 'auto') {
+          const external_nullifier_from_contract = await this.contract.methods.external_nullifier().call();
+          external_nullifier = bigInt(external_nullifier_from_contract.toString());
+        } else {
+          external_nullifier = bigInt(this.external_nullifier);
+        }
         const signal_to_contract = this.web3.utils.asciiToHex(signal_str);
         const signal_hash_raw = crypto.createHash('sha256').update(signal_to_contract.slice(2), 'hex').digest();
         const signal_hash = beBuff2int(signal_hash_raw.slice(0, 31));

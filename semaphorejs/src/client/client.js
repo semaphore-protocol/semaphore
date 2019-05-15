@@ -45,7 +45,9 @@ const Web3 = require('web3');
 
 const winston = require('winston');
 
-const SemaphoreABI = require('../../build/contracts/Semaphore.json');
+const BASE_DIR = process.env.BASE_DIR || process.cwd();
+
+const SemaphoreABI = require(BASE_DIR + '/build/contracts/Semaphore.json');
 
 const SemaphoreModules = require('./semaphore.js');
 const SemaphoreClient = SemaphoreModules.client;
@@ -54,7 +56,7 @@ const generate_identity = SemaphoreModules.generate_identity;
 if (process.env.CONFIG_ENV) {
   client_config = process.env;
 } else {
-  client_config = require(process.env.CONFIG_PATH || './client-config.json');
+  client_config = require(process.env.CONFIG_PATH || BASE_DIR + '/client-config.json');
 }
 
 const logger = winston.createLogger({
@@ -103,9 +105,9 @@ if (fs.existsSync(stored_identity_path)) {
 }
 
 
-const cir_def = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit.json'), 'utf8'));
-const proving_key = fs.readFileSync(path.join(__dirname,'../../build/proving_key.bin'));
-const verification_key = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/verification_key.json'), 'utf8'));
+const cir_def = JSON.parse(fs.readFileSync(BASE_DIR + '/build/circuit.json', 'utf8'));
+const proving_key = fs.readFileSync(BASE_DIR + '/build/proving_key.bin');
+const verification_key = JSON.parse(fs.readFileSync(BASE_DIR + '/build/verification_key.json', 'utf8'));
 const transaction_confirmation_blocks = parseInt(client_config.TRANSACTION_CONFIRMATION_BLOCKS) || 24;
 
 const semaphore = new SemaphoreClient(
