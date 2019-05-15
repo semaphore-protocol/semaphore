@@ -39,7 +39,7 @@
     "webpack": "^4.30.0",
     "websnark": "git+https://github.com/kobigurk/websnark.git#30a4b3d7fba78421aaf9e6b11e6c8b399eacced2",
     "winston": "^3.2.1",
-    "zkp-sbmtjs": "^0.2.0"
+    "zkp-sbmtjs": "^0.2.1"
   },
   "devDependencies": {
     "npm-update-git-deps": "^1.2.4",
