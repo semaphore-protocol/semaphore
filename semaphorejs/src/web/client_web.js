@@ -67,9 +67,16 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
 (async () => {
   //window.semaphore = semaphore;
   window.broadcast = async function(signal_str, identity) {
+    logger.info('starting a broadcast...');
+    logger.info(`downloading the circuit definition (started at ${Date.now()}`);
     const cir_def = await (await fetch('circuit.json')).json();
+    logger.info(`downloading the circuit definition (ended at ${Date.now()}`);
+    logger.info(`downloading the proving key (started at ${Date.now()}`);
     const proving_key = Buffer.from(await (await fetch('proving_key.bin')).arrayBuffer());
+    logger.info(`downloading the proving key (ended at ${Date.now()}`);
+    logger.info(`downloading the verification key (started at ${Date.now()}`);
     const verification_key = await (await fetch('verification_key.json')).json();
+    logger.info(`downloading the verification key (ended at ${Date.now()}`);
 
     /*
     const semaphore = new SemaphoreClient(
@@ -207,6 +214,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
   $('#btn_add_identity').click(async () => {
     try {
       $('#d_status').text('Adding identity...');
+      logger.info(`adding identity ${$('#a_comm').val()}`);
       const semaphore_server_url = $('#f_semaphore_server_url').val();
       const response = await fetch(`${semaphore_server_url}/add_identity`, {
         method: 'post',
@@ -222,6 +230,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
         throw new Error(`Error, got status ${response.statusText}`);
       }
       $('#d_status').text('Adding identity successful.');
+      logger.info(`adding identity successful.`);
     } catch(e) {
       logger.error(`add identity error: ${e.message}`);
       $('#d_status').text(e.message);
@@ -230,6 +239,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
 
   $('#btn_set_ex_null').click(async () => {
     try {
+      logger.info(`setting external nullifier to ${$('#a_ex_null').val()}`);
       $('#d_status').text('Setting external nullifier...');
       const semaphore_server_url = $('#f_semaphore_server_url').val();
       const response = await fetch(`${semaphore_server_url}/set_external_nullifier`, {
@@ -246,6 +256,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
         throw new Error(`Error, got status ${response.statusText}`);
       }
       $('#d_status').text('Setting external nullifier successful.');
+      logger.info('setting external nullifier successful.');
     } catch(e) {
       logger.error(`set external nullifier error: ${e.message}`);
       $('#d_status').text(e.message);
@@ -254,6 +265,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
 
   $('#btn_set_max_gas_price').click(async () => {
     try {
+      logger.info(`setting max gas price to ${$('#a_max_gas_price').val()}`);
       $('#d_status').text('Setting max gas price...');
       const semaphore_server_url = $('#f_semaphore_server_url').val();
       const response = await fetch(`${semaphore_server_url}/set_max_gas_price`, {
@@ -270,6 +282,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
         throw new Error(`Error, got status ${response.statusText}`);
       }
       $('#d_status').text('Setting max gas price successful.');
+      logger.info('setting max gas price successful.');
     } catch(e) {
       logger.error(`set max gas price error: ${e.message}`);
       $('#d_status').text(e.message);
