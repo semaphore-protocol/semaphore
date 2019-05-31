@@ -68,15 +68,15 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
   //window.semaphore = semaphore;
   window.broadcast = async function(signal_str, identity) {
     logger.info('starting a broadcast...');
-    logger.info(`downloading the circuit definition (started at ${Date.now()}`);
+    logger.info(`downloading the circuit definition (started at ${Date.now()})`);
     const cir_def = await (await fetch('circuit.json')).json();
-    logger.info(`downloading the circuit definition (ended at ${Date.now()}`);
-    logger.info(`downloading the proving key (started at ${Date.now()}`);
+    logger.info(`downloading the circuit definition (ended at ${Date.now()})`);
+    logger.info(`downloading the proving key (started at ${Date.now()})`);
     const proving_key = Buffer.from(await (await fetch('proving_key.bin')).arrayBuffer());
-    logger.info(`downloading the proving key (ended at ${Date.now()}`);
-    logger.info(`downloading the verification key (started at ${Date.now()}`);
+    logger.info(`downloading the proving key (ended at ${Date.now()})`);
+    logger.info(`downloading the verification key (started at ${Date.now()})`);
     const verification_key = await (await fetch('verification_key.json')).json();
-    logger.info(`downloading the verification key (ended at ${Date.now()}`);
+    logger.info(`downloading the verification key (ended at ${Date.now()})`);
 
     /*
     const semaphore = new SemaphoreClient(
