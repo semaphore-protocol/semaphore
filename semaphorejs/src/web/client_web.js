@@ -43,8 +43,10 @@ const generate_identity = SemaphoreModules.generate_identity;
 const logger = {
     info: (msg) => console.log(`INFO: ${msg}`),
     error: (msg) => console.log(`ERRROR: ${msg}`),
-    debug: (msg) => console.log(`DEBUG: ${msg}`),
-    verbose: (msg) => console.log(`VERBOSE: ${msg}`),
+    debug: (msg) => {},
+    verbose: (msg) => {},
+    //debug: (msg) => console.log(`DEBUG: ${msg}`),
+    //verbose: (msg) => console.log(`VERBOSE: ${msg}`),
 };
 
 let web3js;
@@ -196,6 +198,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
       $('#d_status').text('Broadcast successful.');
       $('#d_broadcasting').hide();
     } catch(e) {
+      logger.error(`broadcast error: ${e.message}`);
       $('#d_status').text(e.message);
       $('#d_broadcasting').hide();
     }
@@ -220,6 +223,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
       }
       $('#d_status').text('Adding identity successful.');
     } catch(e) {
+      logger.error(`add identity error: ${e.message}`);
       $('#d_status').text(e.message);
     }
   });
@@ -243,6 +247,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
       }
       $('#d_status').text('Setting external nullifier successful.');
     } catch(e) {
+      logger.error(`set external nullifier error: ${e.message}`);
       $('#d_status').text(e.message);
     }
   });
@@ -266,6 +271,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
       }
       $('#d_status').text('Setting max gas price successful.');
     } catch(e) {
+      logger.error(`set max gas price error: ${e.message}`);
       $('#d_status').text(e.message);
     }
   });
