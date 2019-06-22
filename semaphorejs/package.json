@@ -38,7 +38,7 @@
     "truffle-privatekey-provider": "^1.1.0",
     "web3": "^1.0.0-beta.51",
     "webpack": "^4.30.0",
-    "websnark": "git+https://github.com/kobigurk/websnark.git#578fc6ae2c79ee12428804223cba4f0a432c3b6c",
+    "websnark": "git+https://github.com/kobigurk/websnark.git#f45b0a95b18746095ea22c80b2e4f6c24c620cc2",
     "winston": "^3.2.1",
     "zkp-sbmtjs": "^0.2.1"
   },
