@@ -277,7 +277,7 @@ class SemaphoreClient {
     }
 }
 
-async function generate_identity(logger) {
+function generate_identity(logger) {
 
     const private_key = crypto.randomBytes(32).toString('hex');
     const prvKey = Buffer.from(private_key, 'hex');
