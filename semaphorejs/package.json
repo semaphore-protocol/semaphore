@@ -18,8 +18,9 @@
     "url": "https://github.com/kobigurk/semaphore.git"
   },
   "dependencies": {
+    "blake2": "^2.0.1",
     "circom": "0.0.27",
-    "circomlib": "git+https://github.com/iden3/circomlib.git#d91afa804ace6481f4468eebc0bf55229771e24c",
+    "circomlib": "git+https://github.com/kobigurk/circomlib.git#f4a7f30faa9867be77522aea42332585338c235d",
     "cors": "^2.8.5",
     "del": "^4.1.0",
     "file-saver": "^2.0.1",
@@ -37,7 +38,7 @@
     "truffle-privatekey-provider": "^1.1.0",
     "web3": "^1.0.0-beta.51",
     "webpack": "^4.30.0",
-    "websnark": "git+https://github.com/kobigurk/websnark.git#30a4b3d7fba78421aaf9e6b11e6c8b399eacced2",
+    "websnark": "git+https://github.com/kobigurk/websnark.git#578fc6ae2c79ee12428804223cba4f0a432c3b6c",
     "winston": "^3.2.1",
     "zkp-sbmtjs": "^0.2.1"
   },

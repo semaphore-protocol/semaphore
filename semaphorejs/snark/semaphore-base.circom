@@ -1,6 +1,6 @@
-include "../node_modules/circomlib/circuits/mimc.circom";
+include "../node_modules/circomlib/circuits/mimcsponge.circom";
 include "../node_modules/circomlib/circuits/bitify.circom";
-include "../node_modules/circomlib/circuits/eddsamimc.circom";
+include "../node_modules/circomlib/circuits/eddsamimcsponge.circom";
 include "./blake2s/blake2s.circom";
 
 template HashLeftRight(n_rounds) {
@@ -9,12 +9,12 @@ template HashLeftRight(n_rounds) {
 
   signal output hash;
 
-  component hasher = MultiMiMC7(2, n_rounds);
-  left ==> hasher.in[0];
-  right ==> hasher.in[1];
+  component hasher = MiMCSponge(2, n_rounds, 1);
+  left ==> hasher.ins[0];
+  right ==> hasher.ins[1];
   hasher.k <== 0;
 
-  hash <== hasher.out;
+  hash <== hasher.outs[0];
 }
 
 template Selector() {
@@ -65,14 +65,27 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
 
     // END signals
 
-    component identity_commitment = MultiMiMC7(4, n_rounds);
 
+    component identity_nullifier_bits = Num2Bits(256);
+    identity_nullifier_bits.in <== identity_nullifier;
+
+    component identity_pk_0_bits = Num2Bits(256);
+    identity_pk_0_bits.in <== identity_pk[0];
+
+    component identity_pk_1_bits = Num2Bits(256);
+    identity_pk_1_bits.in <== identity_pk[1];
+
+    component identity_r_bits = Num2Bits(256);
+    identity_r_bits.in <== identity_r;
+
+    component identity_commitment = Blake2s(4*256, 0);
     // BEGIN identity commitment
-    identity_commitment.in[0] <== identity_pk[0];
-    identity_commitment.in[1] <== identity_pk[1];
-    identity_commitment.in[2] <== identity_nullifier;
-    identity_commitment.in[3] <== identity_r;
-    identity_commitment.k <== 0;
+    for (var i = 0; i < 256; i++) {
+      identity_commitment.in_bits[i] <== identity_pk_0_bits.out[i];
+      identity_commitment.in_bits[i + 256] <== identity_pk_1_bits.out[i];
+      identity_commitment.in_bits[i + 2*256] <== identity_nullifier_bits.out[i];
+      identity_commitment.in_bits[i + 3*256] <== identity_r_bits.out[i];
+    }
     // END identity commitment
 
     // BEGIN tree
@@ -90,7 +103,12 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
       selectors[i].right ==> hashers[i].right;
     }
 
-    identity_commitment.out ==> selectors[0].input_elem;
+    component identity_commitment_num = Bits2Num(253);
+    for (var i = 0; i < 253; i++) {
+      identity_commitment_num.in[i] <== identity_commitment.out[i];
+    }
+
+    identity_commitment_num.out ==> selectors[0].input_elem;
 
     for (var i = 1; i < n_levels; i++) {
       hashers[i-1].hash ==> selectors[i].input_elem;
@@ -100,15 +118,13 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     // END tree
 
     // BEGIN nullifiers
-    component identity_nullifier_bits = Num2Bits(254);
-    identity_nullifier_bits.in <== identity_nullifier;
-    component external_nullifier_bits = Num2Bits(254);
+    component external_nullifier_bits = Num2Bits(256);
     external_nullifier_bits.in <== external_nullifier;
 
-    component nullifiers_hasher = Blake2s(508, 248018401820981);
-    for (var i = 0; i < 254; i++) {
+    component nullifiers_hasher = Blake2s(512, 0);
+    for (var i = 0; i < 256; i++) {
       nullifiers_hasher.in_bits[i] <== identity_nullifier_bits.out[i];
-      nullifiers_hasher.in_bits[254 + i] <== external_nullifier_bits.out[i];
+      nullifiers_hasher.in_bits[256 + i] <== external_nullifier_bits.out[i];
     }
 
     component nullifiers_hash_num = Bits2Num(253);
@@ -121,20 +137,20 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     // END nullifiers
 
     // BEGIN verify sig
-    component msg_hasher = MultiMiMC7(3, n_rounds);
-    msg_hasher.in[0] <== external_nullifier;
-    msg_hasher.in[1] <== signal_hash;
-    msg_hasher.in[2] <== broadcaster_address;
+    component msg_hasher = MiMCSponge(3, n_rounds, 1);
+    msg_hasher.ins[0] <== external_nullifier;
+    msg_hasher.ins[1] <== signal_hash;
+    msg_hasher.ins[2] <== broadcaster_address;
     msg_hasher.k <== 0;
 
-    component sig_verifier = EdDSAMiMCVerifier();
+    component sig_verifier = EdDSAMiMCSpongeVerifier();
     1 ==> sig_verifier.enabled;
     identity_pk[0] ==> sig_verifier.Ax;
     identity_pk[1] ==> sig_verifier.Ay;
     auth_sig_r[0] ==> sig_verifier.R8x;
     auth_sig_r[1] ==> sig_verifier.R8y;
     auth_sig_s ==> sig_verifier.S;
-    msg_hasher.out ==> sig_verifier.M;
+    msg_hasher.outs[0] ==> sig_verifier.M;
 
     // END verify sig
 }

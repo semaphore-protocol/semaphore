@@ -21,6 +21,7 @@
 const crypto = require('crypto');
 const path = require('path');
 const {unstringifyBigInts, stringifyBigInts} = require('websnark/tools/stringifybigint.js');
+const blake2 = require('blake2');
 
 
 const chai = require('chai');
@@ -32,7 +33,7 @@ const circomlib = require('circomlib');
 const bigInt = snarkjs.bigInt;
 
 const eddsa = circomlib.eddsa;
-const mimc7 = circomlib.mimc7;
+const mimcsponge = circomlib.mimcsponge;
 
 const proof_util = require('../util');
 
@@ -41,6 +42,12 @@ const fetch = require('node-fetch');
 const Web3 = require('web3');
 
 let logger;
+
+const cutDownBits = function(b, bits) {
+  let mask = bigInt(1);
+  mask = mask.shl(bits).sub(bigInt(1));
+  return b.and(mask);
+}
 
 beBuff2int = function(buff) {
     let res = bigInt.zero;
@@ -76,7 +83,18 @@ class SemaphoreClient {
         this.identity_nullifier = loaded_identity.identity_nullifier;
         this.identity_r = loaded_identity.identity_r;
 
-        this.identity_commitment = mimc7.multiHash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(this.identity_nullifier), bigInt(this.identity_r)]);
+        const identity_commitment_ints = [bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(this.identity_nullifier), bigInt(this.identity_r)];
+        const identity_commitment_buffer = Buffer.concat(
+           identity_commitment_ints.map(x => x.leInt2Buff(32))
+        );
+        const h = blake2.createHash('blake2s');
+        h.update(identity_commitment_buffer);
+
+        const identity_commitment_digest = h.digest('hex');
+        logger.verbose(`identity_commitment digest: ${identity_commitment_digest}`);
+        const identity_commitment_uncut = beBuff2int(new Buffer(identity_commitment_digest, 'hex'));
+        logger.verbose(`identity_commitment_uncut: ${identity_commitment_uncut}`);
+        this.identity_commitment = cutDownBits(identity_commitment_uncut, 253);
         logger.verbose(`identity_commitment: ${this.identity_commitment}`);
 
         this.web3 = new Web3(node_url);
@@ -115,10 +133,10 @@ class SemaphoreClient {
         const signal_hash = beBuff2int(signal_hash_raw.slice(0, 31));
         const broadcaster_address = bigInt(this.broadcaster_address);
 
-        const msg = mimc7.multiHash([external_nullifier, signal_hash, broadcaster_address]);
-        const signature = eddsa.signMiMC(prvKey, msg);
+        const msg = mimcsponge.multiHash([external_nullifier, signal_hash, broadcaster_address]);
+        const signature = eddsa.signMiMCSponge(prvKey, msg);
 
-        assert(eddsa.verifyMiMC(msg, signature, pubKey));
+        assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
 
         const identity_nullifier = this.identity_nullifier;
         const identity_r = this.identity_r;
@@ -165,6 +183,7 @@ class SemaphoreClient {
         const root = w[this.circuit.getSignalIdx('main.root')];
         const nullifiers_hash = w[this.circuit.getSignalIdx('main.nullifiers_hash')];
         assert(this.circuit.checkWitness(w));
+        logger.info(`identity commitment from proof: ${w[this.circuit.getSignalIdx('main.identity_commitment_num.out')].toString()}`);
         assert.equal(w[this.circuit.getSignalIdx('main.root')].toString(), identity_path.root);
 
         logger.info(`generating proof (started at ${Date.now()})`);
@@ -261,7 +280,14 @@ function generate_identity(logger) {
     const identity_r = '0x' + crypto.randomBytes(31).toString('hex');
     logger.info(`generate identity from (private_key, public_key[0], public_key[1], identity_nullifier, identity_r): (${private_key}, ${pubKey[0]}, ${pubKey[1]}, ${identity_nullifier}, ${identity_r})`);
 
-    const identity_commitment = mimc7.multiHash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(identity_nullifier), bigInt(identity_r)]);
+    const identity_commitment_ints = [bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(identity_nullifier), bigInt(identity_r)];
+    const identity_commitment_buffer = Buffer.concat(
+       identity_commitment_ints.map(x => x.leInt2Buff(32))
+    );
+    const h = blake2.createHash('blake2s');
+    h.update(identity_commitment_buffer);
+
+    const identity_commitment = cutDownBits(beBuff2int(new Buffer(h.digest('hex'), 'hex')), 253);
 
     logger.info(`identity_commitment : ${identity_commitment}`);
     const generated_identity = {

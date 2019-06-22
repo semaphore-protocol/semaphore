@@ -22,7 +22,7 @@
 
 const RocksDb = require('zkp-sbmtjs/src/storage/rocksdb');
 const MerkleTree = require('zkp-sbmtjs/src/tree');
-const Mimc7Hasher = require('zkp-sbmtjs/src/hasher/mimc7');
+const MimcSpongeHasher = require('zkp-sbmtjs/src/hasher/mimcsponge');
 
 const Web3 = require('web3');
 const SemaphoreABI = require('../../build/contracts/Semaphore.json');
@@ -284,7 +284,7 @@ class SemaphoreServer {
 
 const prefix = 'semaphore';
 const storage = new RocksDb(server_config.DB_PATH || 'semaphore_server.db');
-const hasher = new Mimc7Hasher();
+const hasher = new MimcSpongeHasher();
 const default_value = '0';
 
 const tree = new MerkleTree(
