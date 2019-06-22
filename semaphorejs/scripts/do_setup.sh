@@ -22,5 +22,6 @@
 mkdir -p ../build
 cd ../build
 
+export NODE_OPTIONS=--max-old-space-size=64384
 npx snarkjs setup --protocol groth
 
