@@ -34,7 +34,7 @@ const browserConfig = {
   resolve: {
   },
   mode: prod ? 'production' : 'development',
-  externals: /^(worker_threads)$/
+  externals: /^(worker_threads,blake2.wasm)$/
 };
 
 module.exports = browserConfig;
