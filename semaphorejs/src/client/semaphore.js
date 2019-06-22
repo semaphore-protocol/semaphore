@@ -21,8 +21,7 @@
 const crypto = require('crypto');
 const path = require('path');
 const {unstringifyBigInts, stringifyBigInts} = require('websnark/tools/stringifybigint.js');
-const blake2 = require('blake2');
-
+const blake2 = require('blake2.wasm');
 
 const chai = require('chai');
 const assert = chai.assert;
@@ -42,6 +41,14 @@ const fetch = require('node-fetch');
 const Web3 = require('web3');
 
 let logger;
+
+/* uint8array to hex */
+
+function hex(byteArray) {
+  return Array.prototype.map.call(byteArray, function(byte) {
+    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+  }).join('');
+}
 
 const cutDownBits = function(b, bits) {
   let mask = bigInt(1);
@@ -87,15 +94,7 @@ class SemaphoreClient {
         const identity_commitment_buffer = Buffer.concat(
            identity_commitment_ints.map(x => x.leInt2Buff(32))
         );
-        const h = blake2.createHash('blake2s');
-        h.update(identity_commitment_buffer);
-
-        const identity_commitment_digest = h.digest('hex');
-        logger.verbose(`identity_commitment digest: ${identity_commitment_digest}`);
-        const identity_commitment_uncut = beBuff2int(new Buffer(identity_commitment_digest, 'hex'));
-        logger.verbose(`identity_commitment_uncut: ${identity_commitment_uncut}`);
-        this.identity_commitment = cutDownBits(identity_commitment_uncut, 253);
-        logger.verbose(`identity_commitment: ${this.identity_commitment}`);
+        this.identity_commitment_buffer = identity_commitment_buffer;
 
         this.web3 = new Web3(node_url);
         this.web3.eth.transactionConfirmationBlocks = transaction_confirmation_blocks;
@@ -116,6 +115,23 @@ class SemaphoreClient {
 
     async broadcast_signal(signal_str) {
         logger.info(`broadcasting signal ${signal_str}`);
+        const blake2promise = new Promise((resolve, reject) => {
+          blake2.ready(() => resolve());
+        });
+
+        await blake2promise;
+
+
+
+        const h = blake2.Blake2s();
+        h.update(this.identity_commitment_buffer);
+
+        const identity_commitment_digest = hex(h.final());
+        logger.verbose(`identity_commitment digest: ${identity_commitment_digest}`);
+        const identity_commitment_uncut = beBuff2int(new Buffer(identity_commitment_digest, 'hex'));
+        logger.verbose(`identity_commitment_uncut: ${identity_commitment_uncut}`);
+        this.identity_commitment = cutDownBits(identity_commitment_uncut, 253);
+        logger.verbose(`identity_commitment: ${this.identity_commitment}`);
         //const prvKey = Buffer.from('0001020304050607080900010203040506070809000102030405060708090001', 'hex');
         const prvKey = Buffer.from(this.private_key, 'hex');
 
@@ -271,7 +287,14 @@ class SemaphoreClient {
     }
 }
 
-function generate_identity(logger) {
+async function generate_identity(logger) {
+    const blake2promise = new Promise((resolve, reject) => {
+      blake2.ready(() => resolve());
+    });
+
+    await blake2promise;
+
+
     const private_key = crypto.randomBytes(32).toString('hex');
     const prvKey = Buffer.from(private_key, 'hex');
     const pubKey = eddsa.prv2pub(prvKey);
@@ -284,10 +307,10 @@ function generate_identity(logger) {
     const identity_commitment_buffer = Buffer.concat(
        identity_commitment_ints.map(x => x.leInt2Buff(32))
     );
-    const h = blake2.createHash('blake2s');
+    const h = blake2.Blake2s();
     h.update(identity_commitment_buffer);
 
-    const identity_commitment = cutDownBits(beBuff2int(new Buffer(h.digest('hex'), 'hex')), 253);
+    const identity_commitment = cutDownBits(beBuff2int(new Buffer(hex(h.final()), 'hex')), 253);
 
     logger.info(`identity_commitment : ${identity_commitment}`);
     const generated_identity = {

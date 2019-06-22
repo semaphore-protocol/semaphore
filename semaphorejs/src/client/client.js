@@ -86,8 +86,11 @@ const stored_identity_path = client_config.IDENTITY_PATH || 'semaphore_identity.
 
 switch(process.argv[2]) {
 case 'generate_identity':
-const generated_identity = generate_identity(logger);
-fs.writeFileSync(stored_identity_path, JSON.stringify(generated_identity));
+generate_identity(logger)
+.then((generated_identity) => {
+  fs.writeFileSync(stored_identity_path, JSON.stringify(generated_identity));
+  process.exit(0);
+});
 break;
 
 case 'signal':
