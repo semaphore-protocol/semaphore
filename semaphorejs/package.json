@@ -18,7 +18,7 @@
     "url": "https://github.com/kobigurk/semaphore.git"
   },
   "dependencies": {
-    "blake2.wasm": "^0.1.0",
+    "blakejs": "^1.1.0",
     "circom": "0.0.27",
     "circomlib": "git+https://github.com/kobigurk/circomlib.git#f4a7f30faa9867be77522aea42332585338c235d",
     "cors": "^2.8.5",

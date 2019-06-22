@@ -21,7 +21,7 @@
 const crypto = require('crypto');
 const path = require('path');
 const {unstringifyBigInts, stringifyBigInts} = require('websnark/tools/stringifybigint.js');
-const blake2 = require('blake2.wasm');
+const blake2 = require('blakejs');
 
 const chai = require('chai');
 const assert = chai.assert;
@@ -115,18 +115,8 @@ class SemaphoreClient {
 
     async broadcast_signal(signal_str) {
         logger.info(`broadcasting signal ${signal_str}`);
-        const blake2promise = new Promise((resolve, reject) => {
-          blake2.ready(() => resolve());
-        });
 
-        await blake2promise;
-
-
-
-        const h = blake2.Blake2s();
-        h.update(this.identity_commitment_buffer);
-
-        const identity_commitment_digest = hex(h.final());
+        const identity_commitment_digest = blake2.blake2sHex(this.identity_commitment_buffer);
         logger.verbose(`identity_commitment digest: ${identity_commitment_digest}`);
         const identity_commitment_uncut = beBuff2int(new Buffer(identity_commitment_digest, 'hex'));
         logger.verbose(`identity_commitment_uncut: ${identity_commitment_uncut}`);
@@ -288,12 +278,6 @@ class SemaphoreClient {
 }
 
 async function generate_identity(logger) {
-    const blake2promise = new Promise((resolve, reject) => {
-      blake2.ready(() => resolve());
-    });
-
-    await blake2promise;
-
 
     const private_key = crypto.randomBytes(32).toString('hex');
     const prvKey = Buffer.from(private_key, 'hex');
@@ -307,10 +291,7 @@ async function generate_identity(logger) {
     const identity_commitment_buffer = Buffer.concat(
        identity_commitment_ints.map(x => x.leInt2Buff(32))
     );
-    const h = blake2.Blake2s();
-    h.update(identity_commitment_buffer);
-
-    const identity_commitment = cutDownBits(beBuff2int(new Buffer(hex(h.final()), 'hex')), 253);
+    const identity_commitment = cutDownBits(beBuff2int(new Buffer(blake2.blake2sHex(identity_commitment_buffer), 'hex')), 253);
 
     logger.info(`identity_commitment : ${identity_commitment}`);
     const generated_identity = {
