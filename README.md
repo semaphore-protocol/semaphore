@@ -156,11 +156,11 @@ The server and the client look for **server-config.json** and **client-config.js
 
 The easiest way to try Semaphore out is to use [https://semaphore.kobi.one](https://semaphore.kobi.one) - a web interface to broadcast to a remote server and generate proofs locally. First, load the Rinkeby config using the button at the top. Then, you can generate an identity and send the commitment to @kobigurk on Telegram or open an issue in the repository. Then, you can broadcast signals, including the proof generation, directly in the browser. Lastly, you can see the signals that have been broadcast to date in the table.
 
-* To try Semaphore locally out you can clone the repository and run:
-  * **npm install**
+* To try out Semaphore locally you can clone the repository and run the following in `semaphore/semaphorejs/`:
+  * **npm install && npm link**
   * **cd scripts && ./compile.sh && ./do_setup.sh && ./build_verifier.sh** - compile, do a setup and build the verifier of the Semaphore circuit.
 
-  * **scripts/run_ganache.sh** - runs ganache with appropriate parameters for Semaphroe testing.
+  * **scripts/run_ganache.sh** - runs ganache with appropriate parameters for Semaphore testing.
   * **scripts/run_all_test.sh** - runs a server and a client, generates a new random identity and broadcasts a signal.
 
 It assumes bash, node and truffle are globally available.
