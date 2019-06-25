@@ -149,9 +149,7 @@ contract('Semaphore', function () {
         const vk_proof = fs.readFileSync(path.join(__dirname,'../../build/proving_key.bin'));
         const witness_bin = proof_util.convertWitness(snarkjs.stringifyBigInts(w));
         const publicSignals = w.slice(1, circuit.nPubInputs + circuit.nOutputs+1);
-        console.log(`calling prove`);
         const proof = await proof_util.prove(witness_bin.buffer, vk_proof.buffer);
-        console.log(`finished proving`);
         await semaphore.broadcastSignal(
             signal_to_contract,
             [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
