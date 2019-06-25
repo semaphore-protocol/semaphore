@@ -58,6 +58,17 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     signal private input auth_sig_r[2];
     signal private input auth_sig_s;
 
+    // get a prime subgroup element derived from identity_pk
+    component dbl1 = BabyDbl();
+    dbl1.x <== identity_pk[0];
+    dbl1.y <== identity_pk[1];
+    component dbl2 = BabyDbl();
+    dbl2.x <== dbl1.xout;
+    dbl2.y <== dbl1.yout;
+    component dbl3 = BabyDbl();
+    dbl3.x <== dbl2.xout;
+    dbl3.y <== dbl2.yout;
+
     // mimc hash
     signal output root;
     signal output nullifiers_hash;
@@ -69,17 +80,13 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     identity_nullifier_bits.in <== identity_nullifier;
 
     component identity_pk_0_bits = Num2Bits(256);
-    identity_pk_0_bits.in <== identity_pk[0];
+    identity_pk_0_bits.in <== dbl3.xout;
 
-    component identity_pk_1_bits = Num2Bits(256);
-    identity_pk_1_bits.in <== identity_pk[1];
-
-    component identity_commitment = Blake2s(4*256, 0);
+    component identity_commitment = Blake2s(2*256, 0);
     // BEGIN identity commitment
     for (var i = 0; i < 256; i++) {
       identity_commitment.in_bits[i] <== identity_pk_0_bits.out[i];
-      identity_commitment.in_bits[i + 256] <== identity_pk_1_bits.out[i];
-      identity_commitment.in_bits[i + 2*256] <== identity_nullifier_bits.out[i];
+      identity_commitment.in_bits[i + 256] <== identity_nullifier_bits.out[i];
     }
     // END identity commitment
 
