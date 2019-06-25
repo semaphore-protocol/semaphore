@@ -72,7 +72,8 @@ contract('Semaphore', function () {
         const signal_hash_raw = crypto.createHash('sha256').update(signal_str, 'utf8').digest();
         const signal_hash = beBuff2int(signal_hash_raw.slice(0, 31));
         const signal_to_contract = web3.utils.asciiToHex(signal_str);
-        const broadcaster_address = bigInt('0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413');
+        const accounts = await web3.eth.getAccounts();
+        const broadcaster_address = bigInt(accounts[0].toString());
 
         const msg = mimc7.multiHash([bigInt(external_nullifier), bigInt(signal_hash), bigInt(broadcaster_address)]);
         const signature = eddsa.signMiMC(prvKey, msg);
@@ -88,7 +89,7 @@ contract('Semaphore', function () {
         }
         const default_value = '0';
         const storage = new RocksDb(storage_path);
-        hasher = new Mimc7Hasher();
+        const hasher = new Mimc7Hasher();
         const prefix = 'semaphore';
         const tree = new MerkleTree(
             prefix,
@@ -99,8 +100,14 @@ contract('Semaphore', function () {
         );
 
         const identity_commitment = mimc7.multiHash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(identity_nullifier), bigInt(identity_r)]);
-        await tree.update(0, identity_commitment.toString());
-        const identity_path = await tree.path(0);
+        const semaphore = await Semaphore.deployed();
+        const receipt = await semaphore.insertIdentity(identity_commitment.toString());
+        assert.equal(receipt.logs[0].event, 'LeafAdded');
+        const next_index = parseInt(receipt.logs[0].args.leaf_index.toString());
+        await semaphore.fund({value: web3.utils.toWei('10')});
+
+        await tree.update(next_index, identity_commitment.toString());
+        const identity_path = await tree.path(next_index);
 
         const identity_path_elements = identity_path.path_elements;
         const identity_path_index = identity_path.path_index;
@@ -122,9 +129,6 @@ contract('Semaphore', function () {
             identity_path_index,
             broadcaster_address,
         });
-
-        const semaphore = await Semaphore.deployed();
-        await semaphore.insertIdentity(identity_commitment.toString());
 
         const root = w[circuit.getSignalIdx('main.root')];
         const nullifiers_hash = w[circuit.getSignalIdx('main.nullifiers_hash')];
@@ -151,7 +155,7 @@ contract('Semaphore', function () {
             [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
             [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ],
             [ proof.pi_c[0].toString(), proof.pi_c[1].toString() ],
-            [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString() ],
+            [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString(), publicSignals[4].toString() ],
         );
 
         /*
