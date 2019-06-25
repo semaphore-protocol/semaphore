@@ -80,8 +80,7 @@ describe('circuit test', function () {
         assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
 
         const identity_nullifier = bigInt('230');
-        const identity_r = bigInt('12311');
-        const identity_commitment_ints = [bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(identity_nullifier), bigInt(identity_r)];
+        const identity_commitment_ints = [bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)];
         const identity_commitment_buffer = Buffer.concat(
            identity_commitment_ints.map(x => x.leInt2Buff(32))
         );
@@ -103,7 +102,6 @@ describe('circuit test', function () {
             signal_hash,
             external_nullifier,
             identity_nullifier,
-            identity_r,
             identity_path_elements,
             identity_path_index,
             broadcaster_address,

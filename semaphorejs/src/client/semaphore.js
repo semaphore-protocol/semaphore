@@ -88,9 +88,8 @@ class SemaphoreClient {
         const pubKey = eddsa.prv2pub(prvKey);
 
         this.identity_nullifier = loaded_identity.identity_nullifier;
-        this.identity_r = loaded_identity.identity_r;
 
-        const identity_commitment_ints = [bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(this.identity_nullifier), bigInt(this.identity_r)];
+        const identity_commitment_ints = [bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(this.identity_nullifier)];
         const identity_commitment_buffer = Buffer.concat(
            identity_commitment_ints.map(x => x.leInt2Buff(32))
         );
@@ -145,7 +144,6 @@ class SemaphoreClient {
         assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
 
         const identity_nullifier = this.identity_nullifier;
-        const identity_r = this.identity_r;
 
         let identity_path;
         if (this.identity_index === null) {
@@ -176,7 +174,6 @@ class SemaphoreClient {
             signal_hash,
             external_nullifier,
             identity_nullifier,
-            identity_r,
             identity_path_elements,
             identity_path_index,
             broadcaster_address,
@@ -284,10 +281,9 @@ function generate_identity(logger) {
     const pubKey = eddsa.prv2pub(prvKey);
 
     const identity_nullifier = '0x' + crypto.randomBytes(31).toString('hex');
-    const identity_r = '0x' + crypto.randomBytes(31).toString('hex');
-    logger.info(`generate identity from (private_key, public_key[0], public_key[1], identity_nullifier, identity_r): (${private_key}, ${pubKey[0]}, ${pubKey[1]}, ${identity_nullifier}, ${identity_r})`);
+    logger.info(`generate identity from (private_key, public_key[0], public_key[1], identity_nullifier): (${private_key}, ${pubKey[0]}, ${pubKey[1]}, ${identity_nullifier})`);
 
-    const identity_commitment_ints = [bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(identity_nullifier), bigInt(identity_r)];
+    const identity_commitment_ints = [bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)];
     const identity_commitment_buffer = Buffer.concat(
        identity_commitment_ints.map(x => x.leInt2Buff(32))
     );
@@ -297,7 +293,6 @@ function generate_identity(logger) {
     const generated_identity = {
         private_key,
         identity_nullifier: identity_nullifier.toString(),
-        identity_r: identity_r.toString(),
         identity_commitment: identity_commitment.toString(),
     };
 
