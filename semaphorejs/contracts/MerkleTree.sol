@@ -51,11 +51,12 @@ contract MerkleTree {
     }
 
     function HashLeftRight(uint256 left, uint256 right) public pure returns (uint256 mimc_hash) {
+        uint256 k =  21888242871839275222246405745257275088548364400416034343698204186575808495617;
         uint256 r0 = 0;
         uint256 h0 = MiMC.MiMCpe7(left, r0);
-        uint256 r1 = r0 + left + h0;
+        uint256 r1 = addmod(r0, addmod(left, h0, k), k);
         uint256 h1 = MiMC.MiMCpe7(right, r1);
-        uint256 r2 = r1 + right + h1;
+        uint256 r2 = addmod(r1, addmod(right, h1, k), k);
         mimc_hash = r2;
     }
 
@@ -89,14 +90,34 @@ contract MerkleTree {
         emit LeafAdded(leaf, leaf_index);
     }
 
-    function update(uint256 leaf, uint32 leaf_index, uint256[] memory path) internal {
+    function update(uint256 old_leaf, uint256 leaf, uint32 leaf_index, uint256[] memory old_path, uint256[] memory path) internal {
         uint32 current_index = leaf_index;
 
-        uint256 current_level_hash = leaf;
+        uint256 current_level_hash = old_leaf;
         uint256 left;
         uint256 right;
 
         for (uint8 i = 0; i < levels; i++) {
+            if (current_index % 2 == 0) {
+                left = current_level_hash;
+                right = old_path[i];
+            } else {
+                left = old_path[i];
+                right = current_level_hash;
+            }
+
+            current_level_hash = HashLeftRight(left, right);
+
+            current_index /= 2;
+        }
+
+        require(root == current_level_hash);
+
+        current_index = leaf_index;
+
+        current_level_hash = leaf;
+
+        for (i = 0; i < levels; i++) {
             if (current_index % 2 == 0) {
                 left = current_level_hash;
                 right = path[i];
@@ -109,6 +130,8 @@ contract MerkleTree {
 
             current_index /= 2;
         }
+
+        root = current_level_hash;
 
         emit LeafUpdated(leaf, leaf_index);
     }
