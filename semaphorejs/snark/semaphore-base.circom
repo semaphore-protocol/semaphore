@@ -51,7 +51,6 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     // mimc vector commitment
     signal private input identity_pk[2];
     signal private input identity_nullifier;
-    signal private input identity_r;
     signal private input identity_path_elements[n_levels];
     signal private input identity_path_index[n_levels];
 
@@ -75,16 +74,12 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     component identity_pk_1_bits = Num2Bits(256);
     identity_pk_1_bits.in <== identity_pk[1];
 
-    component identity_r_bits = Num2Bits(256);
-    identity_r_bits.in <== identity_r;
-
     component identity_commitment = Blake2s(4*256, 0);
     // BEGIN identity commitment
     for (var i = 0; i < 256; i++) {
       identity_commitment.in_bits[i] <== identity_pk_0_bits.out[i];
       identity_commitment.in_bits[i + 256] <== identity_pk_1_bits.out[i];
       identity_commitment.in_bits[i + 2*256] <== identity_nullifier_bits.out[i];
-      identity_commitment.in_bits[i + 3*256] <== identity_r_bits.out[i];
     }
     // END identity commitment
 
@@ -122,9 +117,17 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     external_nullifier_bits.in <== external_nullifier;
 
     component nullifiers_hasher = Blake2s(512, 0);
-    for (var i = 0; i < 256; i++) {
+    for (var i = 0; i < 240; i++) {
       nullifiers_hasher.in_bits[i] <== identity_nullifier_bits.out[i];
-      nullifiers_hasher.in_bits[256 + i] <== external_nullifier_bits.out[i];
+      nullifiers_hasher.in_bits[240 + i] <== external_nullifier_bits.out[i];
+    }
+
+    for (var i = 0; i < 32; i++) {
+      if (i < n_levels) {
+        nullifiers_hasher.in_bits[2*240 + i] <== identity_path_index[i];
+      } else {
+        nullifiers_hasher.in_bits[2*240 + i] <== 0;
+      }
     }
 
     component nullifiers_hash_num = Bits2Num(253);
