@@ -96,7 +96,7 @@ contract('Semaphore', function () {
         }
         const default_value = '0';
         const storage = new RocksDb(storage_path);
-        const hasher = new Mimc7Hasher();
+        const hasher = new MimcSpongeHasher();
         const prefix = 'semaphore';
         const tree = new MerkleTree(
             prefix,
