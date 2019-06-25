@@ -122,7 +122,11 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
       if (i < 224) {
         nullifiers_hasher.in_bits[256 + i] <== external_nullifier_bits.out[i];
       } else {
-        nullifiers_hasher.in_bits[256 + i] <== identity_path_index[i - 224];
+        if ( (i-224) < n_levels ) {
+          nullifiers_hasher.in_bits[256 + i] <== identity_path_index[i - 224];
+        } else {
+          nullifiers_hasher.in_bits[256 + i] <== 0;
+        }
       }
     }
 
