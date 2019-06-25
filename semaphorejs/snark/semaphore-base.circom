@@ -117,16 +117,12 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     external_nullifier_bits.in <== external_nullifier;
 
     component nullifiers_hasher = Blake2s(512, 0);
-    for (var i = 0; i < 240; i++) {
+    for (var i = 0; i < 256; i++) {
       nullifiers_hasher.in_bits[i] <== identity_nullifier_bits.out[i];
-      nullifiers_hasher.in_bits[240 + i] <== external_nullifier_bits.out[i];
-    }
-
-    for (var i = 0; i < 32; i++) {
-      if (i < n_levels) {
-        nullifiers_hasher.in_bits[2*240 + i] <== identity_path_index[i];
+      if (i < 224) {
+        nullifiers_hasher.in_bits[256 + i] <== external_nullifier_bits.out[i];
       } else {
-        nullifiers_hasher.in_bits[2*240 + i] <== 0;
+        nullifiers_hasher.in_bits[256 + i] <== identity_path_index[i - 224];
       }
     }
 
