@@ -32,7 +32,7 @@ const MerkleTreeTester = artifacts.require('MerkleTreeTester');
 
 const RocksDb = require('zkp-sbmtjs/src/storage/rocksdb');
 const MerkleTreeLib = require('zkp-sbmtjs/src/tree');
-const Mimc7Hasher = require('zkp-sbmtjs/src/hasher/mimc7');
+const MimcSpongeHasher = require('zkp-sbmtjs/src/hasher/mimcsponge');
 
 
 
@@ -44,7 +44,7 @@ contract('MerkleTree', () => {
         }
         const default_value = '4';
         const storage = new RocksDb(storage_path);
-        const hasher = new Mimc7Hasher();
+        const hasher = new MimcSpongeHasher();
         const prefix = 'semaphore';
         const tree = new MerkleTreeLib(
             prefix,
@@ -67,7 +67,7 @@ contract('MerkleTree', () => {
         }
         const default_value = '4';
         const storage = new RocksDb(storage_path);
-        const hasher = new Mimc7Hasher();
+        const hasher = new MimcSpongeHasher();
         const prefix = 'semaphore';
         const tree = new MerkleTreeLib(
             prefix,

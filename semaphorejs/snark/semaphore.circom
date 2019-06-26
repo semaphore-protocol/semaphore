@@ -1,3 +1,3 @@
 include "./semaphore-base.circom";
 
-component main = Semaphore(251, 20, 91);
+component main = Semaphore(251, 20, 220);

@@ -19,5 +19,6 @@
 # along with semaphorejs.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+export NODE_OPTIONS=--max-old-space-size=4096
 node ../node_modules/websnark/tools/buildpkey.js -i ../build/proving_key.json -o ../build/proving_key.bin
 

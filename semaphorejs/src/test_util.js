@@ -24,7 +24,7 @@ const circomlib = require('circomlib');
 
 const bigInt = snarkjs.bigInt;
 
-const mimc7 = circomlib.mimc7;
+const mimcsponge = circomlib.mimcsponge;
 
 let build_merkle_tree_example = (n_levels, identity_commitment) => {
     let current_index = 0;
@@ -33,7 +33,7 @@ let build_merkle_tree_example = (n_levels, identity_commitment) => {
     let current_element = identity_commitment;
     for (let i = 0; i < n_levels; i++) {
       path_elements.push(bigInt(0));
-      current_element = mimc7.multiHash([ bigInt(current_element), bigInt(0) ]);
+      current_element = mimcsponge.multiHash([ bigInt(current_element), bigInt(0) ]);
 
       path_index.push(current_index % 2);
       current_index = Math.floor(current_index / 2);
@@ -60,7 +60,7 @@ let build_full_merkle_tree_example = (n_levels, index, identity_commitment) => {
             tree_level.push(bigInt(j));
           }
         } else {
-          tree_level.push(mimc7.multiHash([ tree[i-1][2*j], tree[i-1][2*j+1] ]));
+          tree_level.push(mimcsponge.multiHash([ tree[i-1][2*j], tree[i-1][2*j+1] ]));
         }
       }
       if (current_index % 2 == 0) {
@@ -73,7 +73,7 @@ let build_full_merkle_tree_example = (n_levels, index, identity_commitment) => {
       current_index = Math.floor(current_index / 2);
     }
 
-    const root = mimc7.multiHash([ tree[n_levels - 1][0], tree[n_levels - 1][1] ]);
+    const root = mimcsponge.multiHash([ tree[n_levels - 1][0], tree[n_levels - 1][1] ]);
 
     return [root, tree, path_elements, path_index];
 };
