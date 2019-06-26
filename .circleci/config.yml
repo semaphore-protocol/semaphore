@@ -39,3 +39,7 @@ jobs:
           name: end-to-end
           command: cd scripts && ./ci.sh
           no_output_timeout: 600m
+
+      - store_artifacts:
+          path: ~/semaphore/semaphorejs/build
+
