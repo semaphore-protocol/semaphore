@@ -21,7 +21,7 @@
 pragma solidity >=0.4.21;
 
 library MiMC {
-    function MiMCpe7(uint256 in_x, uint256 in_k)  pure public returns (uint256 out_x);
+    function MiMCSponge(uint256 in_xL, uint256 in_xR, uint256 in_k)  pure public returns (uint256 xL, uint256 xR);
 }
 
 contract MultipleMerkleTree {
@@ -61,12 +61,16 @@ contract MultipleMerkleTree {
 
     function HashLeftRight(uint256 left, uint256 right) public pure returns (uint256 mimc_hash) {
         uint256 k =  21888242871839275222246405745257275088548364400416034343698204186575808495617;
-        uint256 r0 = 0;
-        uint256 h0 = MiMC.MiMCpe7(left, r0);
-        uint256 r1 = addmod(r0, addmod(left, h0, k), k);
-        uint256 h1 = MiMC.MiMCpe7(right, r1);
-        uint256 r2 = addmod(r1, addmod(right, h1, k), k);
-        mimc_hash = r2;
+        uint256 R = 0;
+        uint256 C = 0;
+
+        R = addmod(R, left, k);
+        (R, C) = MiMC.MiMCSponge(R, C, 0);
+
+        R = addmod(R, right, k);
+        (R, C) = MiMC.MiMCSponge(R, C, 0);
+
+        mimc_hash = R;
     }
 
     function insert(uint8 tree_index, uint256 leaf) internal {

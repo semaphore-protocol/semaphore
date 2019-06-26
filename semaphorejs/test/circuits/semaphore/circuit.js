@@ -24,6 +24,7 @@ const snarkjs = require('snarkjs');
 const compiler = require('circom');
 const fs = require('fs');
 const circomlib = require('circomlib');
+const blake2 = require('blakejs');
 
 const test_util = require('../../../src/test_util');
 const build_merkle_tree_example = test_util.build_merkle_tree_example;
@@ -33,7 +34,24 @@ const assert = chai.assert;
 const bigInt = snarkjs.bigInt;
 
 const eddsa = circomlib.eddsa;
-const mimc7 = circomlib.mimc7;
+const mimcsponge = circomlib.mimcsponge;
+
+const cutDownBits = function(b, bits) {
+  let mask = bigInt(1);
+  mask = mask.shl(bits).sub(bigInt(1));
+  return b.and(mask);
+}
+
+beBuff2int = function(buff) {
+    let res = bigInt.zero;
+    for (let i=0; i<buff.length; i++) {
+        const n = bigInt(buff[buff.length - i - 1]);
+        res = res.add(n.shl(i*8));
+    }
+    return res;
+};
+
+
 
 describe('circuit test', function () {
     let circuit;
@@ -56,14 +74,20 @@ describe('circuit test', function () {
         const signal_hash = bigInt('5');
         const broadcaster_address = bigInt('0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413');
 
-        const msg = mimc7.multiHash([bigInt(external_nullifier), bigInt(signal_hash), bigInt(broadcaster_address)]);
-        const signature = eddsa.signMiMC(prvKey, msg);
+        const msg = mimcsponge.multiHash([bigInt(external_nullifier), bigInt(signal_hash), bigInt(broadcaster_address)]);
+        const signature = eddsa.signMiMCSponge(prvKey, msg);
 
-        assert(eddsa.verifyMiMC(msg, signature, pubKey));
+        assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
 
         const identity_nullifier = bigInt('230');
-        const identity_r = bigInt('12311');
-        const tree = build_merkle_tree_example(20, mimc7.multiHash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(identity_nullifier), bigInt(identity_r)]));
+        const identity_commitment_ints = [bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)];
+        const identity_commitment_buffer = Buffer.concat(
+           identity_commitment_ints.map(x => x.leInt2Buff(32))
+        );
+        const identity_commitment = cutDownBits(beBuff2int(new Buffer(blake2.blake2sHex(identity_commitment_buffer), 'hex')), 253);
+
+
+        const tree = build_merkle_tree_example(20, identity_commitment);
 
         const identity_path_elements = tree[1];
         const identity_path_index = tree[2];
@@ -78,7 +102,6 @@ describe('circuit test', function () {
             signal_hash,
             external_nullifier,
             identity_nullifier,
-            identity_r,
             identity_path_elements,
             identity_path_index,
             broadcaster_address,

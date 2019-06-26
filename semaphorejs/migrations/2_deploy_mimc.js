@@ -20,10 +20,10 @@
 
 const path = require('path');
 
-const mimcGenContract = require('circomlib/src/mimc_gencontract.js');
+const mimcGenContract = require('circomlib/src/mimcsponge_gencontract.js');
 const Artifactor = require('truffle-artifactor');
 
-const SEED = 'mimc';
+const SEED = 'mimcsponge';
 
 
 module.exports = function(deployer) {
@@ -34,7 +34,7 @@ module.exports = function(deployer) {
     await artifactor.save({
       contractName: mimcContractName,
       abi: mimcGenContract.abi,
-      unlinked_binary: mimcGenContract.createCode(SEED, 91),
+      unlinked_binary: mimcGenContract.createCode(SEED, 220),
     })
     .then(async () => {
       const MiMC = artifacts.require(mimcContractName);

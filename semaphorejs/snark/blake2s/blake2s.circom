@@ -122,10 +122,12 @@ template Blake2sCompression(t, f) {
   }
 
   signal v_pass_1[16][32];
+  component v_12_xor = Uint32Xor();
+  component v_13_xor = Uint32Xor();
+  component v_14_xor = Uint32Xor();
 
   for (var i = 0; i < 16; i++) {
     if (i == 12) {
-      component v_12_xor = Uint32Xor();
       for (var j = 0; j < 32; j++) {
         v_12_xor.a_bits[j] <== v_h[i][j];
         v_12_xor.b_bits[j] <== (t >> j) & 1;
@@ -134,7 +136,6 @@ template Blake2sCompression(t, f) {
         v_pass_1[i][j] <== v_12_xor.out_bits[j];
       }
     } else if (i == 13) {
-      component v_13_xor = Uint32Xor();
       for (var j = 0; j < 32; j++) {
         v_13_xor.a_bits[j] <== v_h[i][j];
         v_13_xor.b_bits[j] <== (t >> (32 + j)) & 1;
@@ -142,14 +143,23 @@ template Blake2sCompression(t, f) {
       for (var j = 0; j < 32; j++) {
         v_pass_1[i][j] <== v_13_xor.out_bits[j];
       }
-    } else if ((i == 14) && (f == 1)) {
-      component v_14_xor = Uint32Xor();
-      for (var j = 0; j < 32; j++) {
-        v_14_xor.a_bits[j] <== v_h[i][j];
-        v_14_xor.b_bits[j] <== 1;
-      }
-      for (var j = 0; j < 32; j++) {
-        v_pass_1[i][j] <== v_14_xor.out_bits[j];
+    } else if ((i == 14)) {
+      if (f == 1) {
+        for (var j = 0; j < 32; j++) {
+          v_14_xor.a_bits[j] <== v_h[i][j];
+          v_14_xor.b_bits[j] <== 1;
+        }
+        for (var j = 0; j < 32; j++) {
+          v_pass_1[i][j] <== v_14_xor.out_bits[j];
+        }
+      } else {
+        for (var j = 0; j < 32; j++) {
+          v_14_xor.a_bits[j] <== v_h[i][j];
+          v_14_xor.b_bits[j] <== 0;
+        }
+        for (var j = 0; j < 32; j++) {
+          v_pass_1[i][j] <== v_h[i][j];
+        }
       }
     } else {
       for (var j = 0; j < 32; j++) {
@@ -352,7 +362,7 @@ template Blake2s(n_bits, personalization) {
         }
       }
       for (var l = 0; l < 16; l++) {
-        current_bit = 32*l + j;
+        current_bit = 512*i + 32*l + j;
         if (current_bit < n_bits) {
           compressions[i].in_m[l][j] <== in_bits[current_bit];
         } else {

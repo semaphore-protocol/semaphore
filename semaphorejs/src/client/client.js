@@ -35,7 +35,6 @@ const circomlib = require('circomlib');
 const bigInt = snarkjs.bigInt;
 
 const eddsa = circomlib.eddsa;
-const mimc7 = circomlib.mimc7;
 
 const groth = snarkjs.groth;
 

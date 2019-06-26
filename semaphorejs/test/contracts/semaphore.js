@@ -34,7 +34,7 @@ const test_util = require('../../src/test_util');
 const bigInt = snarkjs.bigInt;
 
 const eddsa = circomlib.eddsa;
-const mimc7 = circomlib.mimc7;
+const mimcsponge = circomlib.mimcsponge;
 
 const groth = snarkjs.groth;
 const {unstringifyBigInts} = require('snarkjs/src/stringifybigint.js');
@@ -47,7 +47,9 @@ const proof_util = require('../../src/util');
 
 const RocksDb = require('zkp-sbmtjs/src/storage/rocksdb');
 const MerkleTree = require('zkp-sbmtjs/src/tree');
-const Mimc7Hasher = require('zkp-sbmtjs/src/hasher/mimc7');
+const MimcSpongeHasher = require('zkp-sbmtjs/src/hasher/mimcsponge');
+
+const blake2 = require('blakejs');
 
 beBuff2int = function(buff) {
     let res = bigInt.zero;
@@ -57,6 +59,12 @@ beBuff2int = function(buff) {
     }
     return res;
 };
+
+const cutDownBits = function(b, bits) {
+  let mask = bigInt(1);
+  mask = mask.shl(bits).sub(bigInt(1));
+  return b.and(mask);
+}
 
 contract('Semaphore', function () {
     it('tests proof', async () => {
@@ -75,13 +83,12 @@ contract('Semaphore', function () {
         const accounts = await web3.eth.getAccounts();
         const broadcaster_address = bigInt(accounts[0].toString());
 
-        const msg = mimc7.multiHash([bigInt(external_nullifier), bigInt(signal_hash), bigInt(broadcaster_address)]);
-        const signature = eddsa.signMiMC(prvKey, msg);
+        const msg = mimcsponge.multiHash([bigInt(external_nullifier), bigInt(signal_hash), bigInt(broadcaster_address)]);
+        const signature = eddsa.signMiMCSponge(prvKey, msg);
 
-        assert(eddsa.verifyMiMC(msg, signature, pubKey));
+        assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
 
         const identity_nullifier = bigInt('230');
-        const identity_r = bigInt('12311');
 
         const storage_path = '/tmp/rocksdb_semaphore_test';
         if (fs.existsSync(storage_path)) {
@@ -89,7 +96,7 @@ contract('Semaphore', function () {
         }
         const default_value = '0';
         const storage = new RocksDb(storage_path);
-        const hasher = new Mimc7Hasher();
+        const hasher = new MimcSpongeHasher();
         const prefix = 'semaphore';
         const tree = new MerkleTree(
             prefix,
@@ -99,7 +106,13 @@ contract('Semaphore', function () {
             default_value,
         );
 
-        const identity_commitment = mimc7.multiHash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(identity_nullifier), bigInt(identity_r)]);
+        const identity_commitment_ints = [bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)];
+        const identity_commitment_buffer = Buffer.concat(
+           identity_commitment_ints.map(x => x.leInt2Buff(32))
+        );
+        const identity_commitment = cutDownBits(beBuff2int(new Buffer(blake2.blake2sHex(identity_commitment_buffer), 'hex')), 253);
+
+
         const semaphore = await Semaphore.deployed();
         const receipt = await semaphore.insertIdentity(identity_commitment.toString());
         assert.equal(receipt.logs[0].event, 'LeafAdded');
@@ -124,7 +137,6 @@ contract('Semaphore', function () {
             signal_hash,
             external_nullifier,
             identity_nullifier,
-            identity_r,
             identity_path_elements,
             identity_path_index,
             broadcaster_address,

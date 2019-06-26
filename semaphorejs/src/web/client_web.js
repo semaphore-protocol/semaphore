@@ -29,7 +29,7 @@ const snarkjs = require('snarkjs');
 const bigInt = snarkjs.bigInt;
 
 const eddsa = require('circomlib/src/eddsa');
-const mimc7 = require('circomlib/src/mimc7');
+const mimcsponge = require('circomlib/src/mimcsponge');
 
 const groth = snarkjs.groth;
 
@@ -136,7 +136,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
           left = data.path.path_elements[i];
           right = current_hash;
         }
-        current_hash = bigInt(mimc7.multiHash([bigInt(left), bigInt(right)]));
+        current_hash = bigInt(mimcsponge.multiHash([bigInt(left), bigInt(right)]));
       }
       const expected_root = '0x' + current_hash.toString(16);
       const signals_root = $('#s_signals_root').text();
