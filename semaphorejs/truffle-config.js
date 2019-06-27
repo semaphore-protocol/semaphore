@@ -69,6 +69,7 @@ module.exports = {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 7545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
+      gas: 8800000,
     },
     goerli: {
       provider: () => new HDWalletProvider(privateKey, "https://goerli.infura.io/v3/f4a3ad81db3f4750bd201955c8d20066"),
