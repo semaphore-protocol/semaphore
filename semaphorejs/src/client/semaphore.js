@@ -21,7 +21,7 @@
 const crypto = require('crypto');
 const path = require('path');
 const {unstringifyBigInts, stringifyBigInts} = require('websnark/tools/stringifybigint.js');
-
+const blake2 = require('blakejs');
 
 const chai = require('chai');
 const assert = chai.assert;
@@ -32,7 +32,7 @@ const circomlib = require('circomlib');
 const bigInt = snarkjs.bigInt;
 
 const eddsa = circomlib.eddsa;
-const mimc7 = circomlib.mimc7;
+const mimcsponge = circomlib.mimcsponge;
 
 const proof_util = require('../util');
 
@@ -41,6 +41,20 @@ const fetch = require('node-fetch');
 const Web3 = require('web3');
 
 let logger;
+
+/* uint8array to hex */
+
+function hex(byteArray) {
+  return Array.prototype.map.call(byteArray, function(byte) {
+    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+  }).join('');
+}
+
+const cutDownBits = function(b, bits) {
+  let mask = bigInt(1);
+  mask = mask.shl(bits).sub(bigInt(1));
+  return b.and(mask);
+}
 
 beBuff2int = function(buff) {
     let res = bigInt.zero;
@@ -74,10 +88,12 @@ class SemaphoreClient {
         const pubKey = eddsa.prv2pub(prvKey);
 
         this.identity_nullifier = loaded_identity.identity_nullifier;
-        this.identity_r = loaded_identity.identity_r;
 
-        this.identity_commitment = mimc7.multiHash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(this.identity_nullifier), bigInt(this.identity_r)]);
-        logger.verbose(`identity_commitment: ${this.identity_commitment}`);
+        const identity_commitment_ints = [bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(this.identity_nullifier)];
+        const identity_commitment_buffer = Buffer.concat(
+           identity_commitment_ints.map(x => x.leInt2Buff(32))
+        );
+        this.identity_commitment_buffer = identity_commitment_buffer;
 
         this.web3 = new Web3(node_url);
         this.web3.eth.transactionConfirmationBlocks = transaction_confirmation_blocks;
@@ -98,6 +114,13 @@ class SemaphoreClient {
 
     async broadcast_signal(signal_str) {
         logger.info(`broadcasting signal ${signal_str}`);
+
+        const identity_commitment_digest = blake2.blake2sHex(this.identity_commitment_buffer);
+        logger.verbose(`identity_commitment digest: ${identity_commitment_digest}`);
+        const identity_commitment_uncut = beBuff2int(new Buffer(identity_commitment_digest, 'hex'));
+        logger.verbose(`identity_commitment_uncut: ${identity_commitment_uncut}`);
+        this.identity_commitment = cutDownBits(identity_commitment_uncut, 253);
+        logger.verbose(`identity_commitment: ${this.identity_commitment}`);
         //const prvKey = Buffer.from('0001020304050607080900010203040506070809000102030405060708090001', 'hex');
         const prvKey = Buffer.from(this.private_key, 'hex');
 
@@ -115,13 +138,12 @@ class SemaphoreClient {
         const signal_hash = beBuff2int(signal_hash_raw.slice(0, 31));
         const broadcaster_address = bigInt(this.broadcaster_address);
 
-        const msg = mimc7.multiHash([external_nullifier, signal_hash, broadcaster_address]);
-        const signature = eddsa.signMiMC(prvKey, msg);
+        const msg = mimcsponge.multiHash([external_nullifier, signal_hash, broadcaster_address]);
+        const signature = eddsa.signMiMCSponge(prvKey, msg);
 
-        assert(eddsa.verifyMiMC(msg, signature, pubKey));
+        assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
 
         const identity_nullifier = this.identity_nullifier;
-        const identity_r = this.identity_r;
 
         let identity_path;
         if (this.identity_index === null) {
@@ -152,7 +174,6 @@ class SemaphoreClient {
             signal_hash,
             external_nullifier,
             identity_nullifier,
-            identity_r,
             identity_path_elements,
             identity_path_index,
             broadcaster_address,
@@ -165,6 +186,7 @@ class SemaphoreClient {
         const root = w[this.circuit.getSignalIdx('main.root')];
         const nullifiers_hash = w[this.circuit.getSignalIdx('main.nullifiers_hash')];
         assert(this.circuit.checkWitness(w));
+        logger.info(`identity commitment from proof: ${w[this.circuit.getSignalIdx('main.identity_commitment_num.out')].toString()}`);
         assert.equal(w[this.circuit.getSignalIdx('main.root')].toString(), identity_path.root);
 
         logger.info(`generating proof (started at ${Date.now()})`);
@@ -253,21 +275,24 @@ class SemaphoreClient {
 }
 
 function generate_identity(logger) {
+
     const private_key = crypto.randomBytes(32).toString('hex');
     const prvKey = Buffer.from(private_key, 'hex');
     const pubKey = eddsa.prv2pub(prvKey);
 
     const identity_nullifier = '0x' + crypto.randomBytes(31).toString('hex');
-    const identity_r = '0x' + crypto.randomBytes(31).toString('hex');
-    logger.info(`generate identity from (private_key, public_key[0], public_key[1], identity_nullifier, identity_r): (${private_key}, ${pubKey[0]}, ${pubKey[1]}, ${identity_nullifier}, ${identity_r})`);
+    logger.info(`generate identity from (private_key, public_key[0], public_key[1], identity_nullifier): (${private_key}, ${pubKey[0]}, ${pubKey[1]}, ${identity_nullifier})`);
 
-    const identity_commitment = mimc7.multiHash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(identity_nullifier), bigInt(identity_r)]);
+    const identity_commitment_ints = [bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)];
+    const identity_commitment_buffer = Buffer.concat(
+       identity_commitment_ints.map(x => x.leInt2Buff(32))
+    );
+    const identity_commitment = cutDownBits(beBuff2int(new Buffer(blake2.blake2sHex(identity_commitment_buffer), 'hex')), 253);
 
     logger.info(`identity_commitment : ${identity_commitment}`);
     const generated_identity = {
         private_key,
         identity_nullifier: identity_nullifier.toString(),
-        identity_r: identity_r.toString(),
         identity_commitment: identity_commitment.toString(),
     };
 

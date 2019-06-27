@@ -1,6 +1,6 @@
 include "../../../snark/blake2s/blake2s.circom";
 
-component main = Blake2s(512, 248018401820981);
+component main = Blake2s(1024, 0);
 /*
   49 * 2**(0*8) +
   50 * 2**(1*8) +
