@@ -11,7 +11,7 @@ Semaphore has been introduced by [barryWhiteHat](https://github.com/barryWhiteHa
 The project is implemented in plain Node.JS and uses [circom](https://github.com/iden3/circom) for the zero-knowledge proofs.
 
 ## Design
-  Semaphore is comprised of a zkSNARK statement, a few smart contracts, a server application and a client application.
+Semaphore is comprised of a zkSNARK statement, a few smart contracts, a server application and a client application.
 
 ### Smart contracts
 Implemented in [**semaphorejs/contracts**](semaphorejs/contracts).
