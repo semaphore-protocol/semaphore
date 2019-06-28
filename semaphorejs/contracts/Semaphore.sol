@@ -22,7 +22,7 @@ pragma solidity >=0.4.21;
 
 import "./verifier.sol";
 import "./MerkleTreeLib.sol";
-import "node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "./Ownable.sol";
 
 contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
     uint256 public external_nullifier;
