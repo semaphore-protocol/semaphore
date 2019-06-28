@@ -23,16 +23,17 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1.2-dependencies-{{ checksum "package.json" }}
+            - v1.3-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v1.2-dependencies-
+            - v1.3-dependencies-
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: v1.2-dependencies-{{ checksum "package.json" }}
+            - semaphorejs/build/
+          key: v1.3-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run:
