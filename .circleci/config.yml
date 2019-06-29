@@ -20,6 +20,9 @@ jobs:
       - checkout:
           path: ~/semaphore
 
+      # Make sure that build/ exists so that circleci can checksum it in restore_cache
+      - run: mkdir -p build/
+
       # Download and cache dependencies
       - restore_cache:
           keys:
