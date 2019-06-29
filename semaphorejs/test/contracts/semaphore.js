@@ -66,7 +66,17 @@ const cutDownBits = function(b, bits) {
   return b.and(mask);
 }
 
-contract('Semaphore', function () {
+contract('Semaphore', function (accounts) {
+    let semaphore;
+
+    before(async () => {
+        semaphore = await Semaphore.deployed();
+    })
+
+    it('semaphore belongs to the correct owner', async () => {
+        assert.equal(await semaphore.owner(), accounts[0]);
+    })
+
     it('tests proof', async () => {
         const cirDef = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit.json')).toString());
         circuit = new snarkjs.Circuit(cirDef);

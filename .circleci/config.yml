@@ -20,19 +20,28 @@ jobs:
       - checkout:
           path: ~/semaphore
 
+      # Make sure that build/ exists so that circleci can checksum it in restore_cache
+      - run: mkdir -p build/
+
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1.2-dependencies-{{ checksum "package.json" }}
+            #- v1.5-dependencies-{{ checksum "build/circuit.json" }}
+            - v1.5-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v1.2-dependencies-
+            - v1.5-dependencies-
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: v1.2-dependencies-{{ checksum "package.json" }}
+            #- semaphorejs/build/circuit.json
+            #- semaphorejs/build/proving_key.bin
+            #- semaphorejs/build/proving_key.json
+            #- semaphorejs/build/verification_key.json
+            #- semaphorejs/build/verifier.sol
+          key: v1.5-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run:

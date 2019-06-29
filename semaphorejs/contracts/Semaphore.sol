@@ -22,10 +22,9 @@ pragma solidity >=0.4.21;
 
 import "./verifier.sol";
 import "./MerkleTreeLib.sol";
+import "./Ownable.sol";
 
-contract Semaphore is Verifier, MultipleMerkleTree {
-    address public owner;
-
+contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
     uint256 public external_nullifier;
     uint8 signal_tree_index;
     uint8 id_tree_index;
@@ -42,8 +41,8 @@ contract Semaphore is Verifier, MultipleMerkleTree {
 
     uint256 public gas_price_max = 30000000000;
 
-    constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in, uint256 reward_amount_in_max_gas_price) public {
-        owner = msg.sender;
+    constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in, uint256 reward_amount_in_max_gas_price) Ownable() public 
+    {
 
         external_nullifier = external_nullifier_in;
         id_tree_index = init_tree(tree_levels, zero_value);
@@ -56,11 +55,6 @@ contract Semaphore is Verifier, MultipleMerkleTree {
 
     function fund() public payable {
       emit Funded(msg.value);
-    }
-
-    modifier onlyOwner() {
-        require (msg.sender == owner);
-        _;
     }
 
     function insertIdentity(uint256 leaf) public onlyOwner {
