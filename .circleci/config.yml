@@ -23,8 +23,8 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1.3-dependencies-{{ checksum "build/" }}
-            - v1.3-dependencies-{{ checksum "package.json" }}
+            - v1.4-dependencies-{{ checksum "build/" }}
+            - v1.4-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1.3-dependencies-
 
@@ -38,7 +38,7 @@ jobs:
             - semaphorejs/build/proving_key.json
             - semaphorejs/build/verification_key.json
             - semaphorejs/build/verifier.sol
-          key: v1.3-dependencies-{{ checksum "package.json" }}
+          key: v1.4-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run:
