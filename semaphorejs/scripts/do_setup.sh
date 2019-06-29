@@ -22,6 +22,7 @@
 mkdir -p ../build
 cd ../build
 
-export NODE_OPTIONS=--max-old-space-size=4096
-npx snarkjs setup --protocol groth
-
+if [ ! -f ../build/proving_key.json ]; then
+    export NODE_OPTIONS=--max-old-space-size=4096
+    npx snarkjs setup --protocol groth
+fi
