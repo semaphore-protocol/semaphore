@@ -22,5 +22,6 @@
 mkdir -p ../build
 cd ../build
 
-npx snarkjs generateverifier --vk ../build/verification_key.json -v ../build/verifier.sol
-
+if [ ! -f ../build/verifier.sol ]; then
+    npx snarkjs generateverifier --vk ../build/verification_key.json -v ../build/verifier.sol
+fi
