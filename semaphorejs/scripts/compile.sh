@@ -22,6 +22,7 @@
 mkdir -p ../build
 cd ../build
 
-export NODE_OPTIONS=--max-old-space-size=4096
-npx circom ../snark/semaphore.circom
-
+if [ ! -f ./circuit.json ]; then
+    export NODE_OPTIONS=--max-old-space-size=4096
+    npx circom ../snark/semaphore.circom
+fi
