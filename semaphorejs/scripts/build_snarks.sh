@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -xe
 #
 # semaphorejs - Zero-knowledge signaling on Ethereum
 # Copyright (C) 2019 Kobi Gurkan <kobigurk@gmail.com>
@@ -19,9 +19,8 @@
 # along with semaphorejs.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-mkdir -p ../build
-cd ../build
-
-if [ ! -f ../build/verifier.sol ]; then
-    npx snarkjs generateverifier --vk ../build/verification_key.json -v ../build/verifier.sol
-fi
+echo "Working directory: `pwd`"
+./compile.sh
+./do_setup.sh
+./convert_to_wasm.sh
+./build_verifier.sh
