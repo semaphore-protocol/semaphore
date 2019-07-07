@@ -50,6 +50,13 @@ function hex(byteArray) {
   }).join('');
 }
 
+function pedersenHash(ints) {
+  const p = circomlib.babyJub.unpackPoint(circomlib.pedersenHash.hash(Buffer.concat(
+             ints.map(x => x.leInt2Buff(32))
+  )));
+  return bigInt(p[0]);
+}
+
 const cutDownBits = function(b, bits) {
   let mask = bigInt(1);
   mask = mask.shl(bits).sub(bigInt(1));
@@ -89,11 +96,7 @@ class SemaphoreClient {
 
         this.identity_nullifier = loaded_identity.identity_nullifier;
 
-        const identity_commitment_ints = [bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(this.identity_nullifier)];
-        const identity_commitment_buffer = Buffer.concat(
-           identity_commitment_ints.map(x => x.leInt2Buff(32))
-        );
-        this.identity_commitment_buffer = identity_commitment_buffer;
+        this.identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(this.identity_nullifier)]);
 
         this.web3 = new Web3(node_url);
         this.web3.eth.transactionConfirmationBlocks = transaction_confirmation_blocks;
@@ -115,11 +118,6 @@ class SemaphoreClient {
     async broadcast_signal(signal_str) {
         logger.info(`broadcasting signal ${signal_str}`);
 
-        const identity_commitment_digest = blake2.blake2sHex(this.identity_commitment_buffer);
-        logger.verbose(`identity_commitment digest: ${identity_commitment_digest}`);
-        const identity_commitment_uncut = beBuff2int(new Buffer(identity_commitment_digest, 'hex'));
-        logger.verbose(`identity_commitment_uncut: ${identity_commitment_uncut}`);
-        this.identity_commitment = cutDownBits(identity_commitment_uncut, 253);
         logger.verbose(`identity_commitment: ${this.identity_commitment}`);
         //const prvKey = Buffer.from('0001020304050607080900010203040506070809000102030405060708090001', 'hex');
         const prvKey = Buffer.from(this.private_key, 'hex');
@@ -186,7 +184,7 @@ class SemaphoreClient {
         const root = w[this.circuit.getSignalIdx('main.root')];
         const nullifiers_hash = w[this.circuit.getSignalIdx('main.nullifiers_hash')];
         assert(this.circuit.checkWitness(w));
-        logger.info(`identity commitment from proof: ${w[this.circuit.getSignalIdx('main.identity_commitment_num.out')].toString()}`);
+        logger.info(`identity commitment from proof: ${w[this.circuit.getSignalIdx('main.identity_commitment.out[0]')].toString()}`);
         assert.equal(w[this.circuit.getSignalIdx('main.root')].toString(), identity_path.root);
 
         logger.info(`generating proof (started at ${Date.now()})`);
@@ -283,11 +281,7 @@ function generate_identity(logger) {
     const identity_nullifier = '0x' + crypto.randomBytes(31).toString('hex');
     logger.info(`generate identity from (private_key, public_key[0], public_key[1], identity_nullifier): (${private_key}, ${pubKey[0]}, ${pubKey[1]}, ${identity_nullifier})`);
 
-    const identity_commitment_ints = [bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)];
-    const identity_commitment_buffer = Buffer.concat(
-       identity_commitment_ints.map(x => x.leInt2Buff(32))
-    );
-    const identity_commitment = cutDownBits(beBuff2int(new Buffer(blake2.blake2sHex(identity_commitment_buffer), 'hex')), 253);
+		const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)]);
 
     logger.info(`identity_commitment : ${identity_commitment}`);
     const generated_identity = {

@@ -1,3 +1,4 @@
+include "../node_modules/circomlib/circuits/pedersen.circom";
 include "../node_modules/circomlib/circuits/mimcsponge.circom";
 include "../node_modules/circomlib/circuits/bitify.circom";
 include "../node_modules/circomlib/circuits/eddsamimcsponge.circom";
@@ -82,11 +83,11 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     component identity_pk_0_bits = Num2Bits(256);
     identity_pk_0_bits.in <== dbl3.xout;
 
-    component identity_commitment = Blake2s(2*256, 0);
+    component identity_commitment = Pedersen(2*256);
     // BEGIN identity commitment
     for (var i = 0; i < 256; i++) {
-      identity_commitment.in_bits[i] <== identity_pk_0_bits.out[i];
-      identity_commitment.in_bits[i + 256] <== identity_nullifier_bits.out[i];
+      identity_commitment.in[i] <== identity_pk_0_bits.out[i];
+      identity_commitment.in[i + 256] <== identity_nullifier_bits.out[i];
     }
     // END identity commitment
 
@@ -105,12 +106,7 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
       selectors[i].right ==> hashers[i].right;
     }
 
-    component identity_commitment_num = Bits2Num(253);
-    for (var i = 0; i < 253; i++) {
-      identity_commitment_num.in[i] <== identity_commitment.out[i];
-    }
-
-    identity_commitment_num.out ==> selectors[0].input_elem;
+    identity_commitment.out[0] ==> selectors[0].input_elem;
 
     for (var i = 1; i < n_levels; i++) {
       hashers[i-1].hash ==> selectors[i].input_elem;
