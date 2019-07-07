@@ -50,8 +50,8 @@ function hex(byteArray) {
   }).join('');
 }
 
-function pedersen_hash(ints) {
-  const p = babyJub.unpackPoint(pedersenHash.hash(Buffer.concat(
+function pedersenHash(ints) {
+  const p = circomlib.babyJub.unpackPoint(circomlib.pedersenHash.hash(Buffer.concat(
              ints.map(x => x.leInt2Buff(32))
   )));
   return bigInt(p[0]);
@@ -96,7 +96,7 @@ class SemaphoreClient {
 
         this.identity_nullifier = loaded_identity.identity_nullifier;
 
-        this.identity_commitment = pedersen_hash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(this.identity_nullifier), bigInt(this.identity_r)]);
+        this.identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(this.identity_nullifier)]);
 
         this.web3 = new Web3(node_url);
         this.web3.eth.transactionConfirmationBlocks = transaction_confirmation_blocks;
@@ -184,7 +184,7 @@ class SemaphoreClient {
         const root = w[this.circuit.getSignalIdx('main.root')];
         const nullifiers_hash = w[this.circuit.getSignalIdx('main.nullifiers_hash')];
         assert(this.circuit.checkWitness(w));
-        logger.info(`identity commitment from proof: ${w[this.circuit.getSignalIdx('main.identity_commitment_num.out')].toString()}`);
+        logger.info(`identity commitment from proof: ${w[this.circuit.getSignalIdx('main.identity_commitment.out[0]')].toString()}`);
         assert.equal(w[this.circuit.getSignalIdx('main.root')].toString(), identity_path.root);
 
         logger.info(`generating proof (started at ${Date.now()})`);
@@ -281,7 +281,7 @@ function generate_identity(logger) {
     const identity_nullifier = '0x' + crypto.randomBytes(31).toString('hex');
     logger.info(`generate identity from (private_key, public_key[0], public_key[1], identity_nullifier): (${private_key}, ${pubKey[0]}, ${pubKey[1]}, ${identity_nullifier})`);
 
-		const identity_commitment = pedersen_hash([bigInt(pubKey[0]), bigInt(pubKey[1]), bigInt(this.identity_nullifier), bigInt(this.identity_r)]);
+		const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)]);
 
     logger.info(`identity_commitment : ${identity_commitment}`);
     const generated_identity = {
