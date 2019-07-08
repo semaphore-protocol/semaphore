@@ -1,6 +1,6 @@
 {
   "name": "zkp-semaphorejs",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Zero-knowledge signaling on Ethereum",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   "dependencies": {
     "blakejs": "^1.1.0",
     "circom": "0.0.27",
-    "circomlib": "git+https://github.com/kobigurk/circomlib.git",
+    "circomlib": "git+https://github.com/kobigurk/circomlib.git#323966c0584bafebf9652681c44d9ea348fe9bb5",
     "cors": "^2.8.5",
     "del": "^4.1.0",
     "file-saver": "^2.0.1",
@@ -40,7 +40,7 @@
     "webpack": "^4.30.0",
     "websnark": "git+https://github.com/iden3/websnark.git",
     "winston": "^3.2.1",
-    "zkp-sbmtjs": "^0.3.1"
+    "zkp-sbmtjs": "^0.3.3"
   },
   "devDependencies": {
     "npm-update-git-deps": "^1.2.4",
