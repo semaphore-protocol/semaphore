@@ -85,6 +85,7 @@ module.exports = {
       provider: () => {
 				return new HDWalletProvider(privateKey, "https://rinkeby.infura.io/v3/f4a3ad81db3f4750bd201955c8d20066");
 			},
+      gas: 7000000,
       network_id: 4,
       skipDryRun: true
     },
