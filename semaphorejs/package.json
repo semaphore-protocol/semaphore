@@ -20,7 +20,7 @@
   "dependencies": {
     "blakejs": "^1.1.0",
     "circom": "0.0.27",
-    "circomlib": "git+https://github.com/kobigurk/circomlib.git#d1f0aafcffcd8aafa25c0c44e0f4c5a143a8bee2",
+    "circomlib": "git+https://github.com/kobigurk/circomlib.git#323966c0584bafebf9652681c44d9ea348fe9bb5",
     "cors": "^2.8.5",
     "del": "^4.1.0",
     "file-saver": "^2.0.1",
