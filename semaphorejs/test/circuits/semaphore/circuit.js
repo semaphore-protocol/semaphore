@@ -36,6 +36,13 @@ const bigInt = snarkjs.bigInt;
 const eddsa = circomlib.eddsa;
 const mimcsponge = circomlib.mimcsponge;
 
+function pedersenHash(ints) {
+  const p = circomlib.babyJub.unpackPoint(circomlib.pedersenHash.hash(Buffer.concat(
+             ints.map(x => x.leInt2Buff(32))
+  )));
+  return bigInt(p[0]);
+}
+
 const cutDownBits = function(b, bits) {
   let mask = bigInt(1);
   mask = mask.shl(bits).sub(bigInt(1));
@@ -80,12 +87,7 @@ describe('circuit test', function () {
         assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
 
         const identity_nullifier = bigInt('230');
-        const identity_commitment_ints = [bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)];
-        const identity_commitment_buffer = Buffer.concat(
-           identity_commitment_ints.map(x => x.leInt2Buff(32))
-        );
-        const identity_commitment = cutDownBits(beBuff2int(new Buffer(blake2.blake2sHex(identity_commitment_buffer), 'hex')), 253);
-
+        const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)]);
 
         const tree = build_merkle_tree_example(20, identity_commitment);
 
