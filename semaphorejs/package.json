@@ -40,7 +40,7 @@
     "webpack": "^4.30.0",
     "websnark": "git+https://github.com/iden3/websnark.git",
     "winston": "^3.2.1",
-    "zkp-sbmtjs": "^0.3.1"
+    "zkp-sbmtjs": "^0.3.2"
   },
   "devDependencies": {
     "npm-update-git-deps": "^1.2.4",
