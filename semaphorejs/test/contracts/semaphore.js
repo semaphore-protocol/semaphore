@@ -53,6 +53,13 @@ const MimcSpongeHasher = require('zkp-sbmtjs/src/hasher/mimcsponge');
 
 const blake2 = require('blakejs');
 
+function pedersenHash(ints) {
+  const p = circomlib.babyJub.unpackPoint(circomlib.pedersenHash.hash(Buffer.concat(
+             ints.map(x => x.leInt2Buff(32))
+  )));
+  return bigInt(p[0]);
+}
+
 beBuff2int = function(buff) {
     let res = bigInt.zero;
     for (let i=0; i<buff.length; i++) {
@@ -127,12 +134,7 @@ contract('Semaphore', function (accounts) {
             default_value,
         );
 
-        const identity_commitment_ints = [bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)];
-        const identity_commitment_buffer = Buffer.concat(
-           identity_commitment_ints.map(x => x.leInt2Buff(32))
-        );
-        const identity_commitment = cutDownBits(beBuff2int(new Buffer(blake2.blake2sHex(identity_commitment_buffer), 'hex')), 253);
-
+        const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)]);
 
         const semaphore = await Semaphore.deployed();
         const receipt = await semaphore.insertIdentity(identity_commitment.toString());
