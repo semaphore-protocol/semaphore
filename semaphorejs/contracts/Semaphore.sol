@@ -26,29 +26,24 @@ import "./Ownable.sol";
 
 contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
     uint256 public external_nullifier;
-    uint8 signal_tree_index;
-    uint8 id_tree_index;
+    uint8 public id_tree_index;
 
     uint8 constant root_history_size = 100;
+    mapping (uint256 => uint8) root_history_indices;
     uint256[root_history_size] root_history;
     uint8 current_root_index = 0;
 
     mapping (uint => bool) nullifiers_set;
 
-    uint256 reward;
+    mapping (uint => bytes) public signals;
+    uint public current_signal_index = 0;
 
     event SignalBroadcast(bytes signal, uint256 nullifiers_hash, uint256 external_nullifier);
 
-    uint256 public gas_price_max = 30000000000;
-
-    constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in, uint256 reward_amount_in_max_gas_price) Ownable() public 
+    constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in) Ownable() public
     {
-
         external_nullifier = external_nullifier_in;
         id_tree_index = init_tree(tree_levels, zero_value);
-        signal_tree_index = init_tree(tree_levels, zero_value);
-
-        reward = reward_amount_in_max_gas_price;
     }
 
     event Funded(uint256 amount);
@@ -59,12 +54,16 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
 
     function insertIdentity(uint256 leaf) public onlyOwner {
         insert(id_tree_index, leaf);
-        root_history[current_root_index++ % root_history_size] = tree_roots[id_tree_index];
+        uint8 root_index = current_root_index++ % root_history_size;
+        root_history[root_index] = tree_roots[id_tree_index];
+        root_history_indices[tree_roots[id_tree_index]] = root_index;
     }
 
     function updateIdentity(uint256 old_leaf, uint256 leaf, uint32 leaf_index, uint256[] memory old_path, uint256[] memory path) public onlyOwner {
         update(id_tree_index, old_leaf, leaf, leaf_index, old_path, path);
-        root_history[current_root_index++ % root_history_size] = tree_roots[id_tree_index];
+        uint8 root_index = current_root_index++ % root_history_size;
+        root_history[root_index] = tree_roots[id_tree_index];
+        root_history_indices[tree_roots[id_tree_index]] = root_index;
     }
 
     function broadcastSignal(
@@ -74,8 +73,6 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         uint[2] c,
         uint[5] input // (root, nullifiers_hash, signal_hash, external_nullifier, broadcaster_address)
     ) public {
-        uint256 start_gas = gasleft();
-
         uint256 signal_hash = uint256(sha256(signal)) >> 8;
         require(signal_hash == input[2]);
         require(external_nullifier == input[3]);
@@ -85,28 +82,14 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         require(broadcaster == msg.sender);
 
         bool found_root = false;
-        for (uint8 i = 0; i < root_history_size; i++) {
-            if (root_history[i] == input[0]) {
-                found_root = true;
-                break;
-            }
+        if (root_history[root_history_indices[input[0]]] == input[0]) {
+            found_root = true;
         }
         require(found_root);
 
-        insert(signal_tree_index, signal_hash);
+        signals[current_signal_index++] = signal;
         nullifiers_set[input[1]] = true;
         emit SignalBroadcast(signal, input[1], external_nullifier);
-
-        uint256 gas_price = gas_price_max;
-        if (tx.gasprice < gas_price) {
-          gas_price = tx.gasprice;
-        }
-        uint256 gas_used = start_gas - gasleft();
-
-        // pay back gas: 21000 constant cost + gas used + reward
-        //require((msg.sender).send((21000 + gas_used)*tx.gasprice + reward));
-        require((msg.sender).send((21000 + gas_used + reward)*gas_price));
-        //require(msg.sender.send(1 wei));
     }
 
     function roots(uint8 tree_index) public view returns (uint256 root) {
@@ -117,15 +100,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
       index = id_tree_index;
     }
 
-    function getSignalTreeIndex() public  view returns (uint8 index) {
-      index = signal_tree_index;
-    }
-
     function setExternalNullifier(uint256 new_external_nullifier) public onlyOwner {
       external_nullifier = new_external_nullifier;
-    }
-
-    function setMaxGasPrice(uint256 new_max_gas_price) public onlyOwner {
-      gas_price_max = new_max_gas_price;
     }
 }

@@ -91,7 +91,7 @@ beInt2Buff = function(n, len) {
 
 class SemaphoreServer {
 
-    constructor(storage, node_url, contract_address, creation_hash, tree, signal_tree) {
+    constructor(storage, node_url, contract_address, creation_hash, tree) {
         this.storage = storage;
         this.node_url = node_url;
         this.web3 = new Web3(new Web3.providers.HttpProvider(node_url));
@@ -100,7 +100,6 @@ class SemaphoreServer {
         this.contract_address = contract_address;
         this.creation_hash = creation_hash;
         this.tree = tree;
-        this.signal_tree = signal_tree;
         this.contract = new this.web3.eth.Contract(
             SemaphoreABI.abi,
             this.contract_address,
@@ -128,17 +127,14 @@ class SemaphoreServer {
               }
 
               this.identity_tree_index = await this.contract.methods.getIdTreeIndex().call({from: from_address}, last_processed_block);
-              this.signal_tree_index = await this.contract.methods.getSignalTreeIndex().call({from: from_address}, last_processed_block);
 
               const state_root = await this.contract.methods.roots(this.identity_tree_index).call({from: from_address}, last_processed_block);
-              const state_signal_root = await this.contract.methods.roots(this.signal_tree_index).call({from: from_address}, last_processed_block);
-              logger.debug(`state_root: ${state_root}, state_signal_root: ${state_signal_root}`);
+              logger.debug(`state_root: ${state_root}`);
 
               const saved_state_block = await this.get_state_for_block(last_processed_block);
               logger.debug(`saved_state_block: ${JSON.stringify(saved_state_block)}`);
 
-              if ( saved_state_block.root && (state_root != saved_state_block.root ||
-                  state_signal_root != saved_state_block.signal_root)) {
+              if ( saved_state_block.root && (state_root != saved_state_block.root)) {
                   await this.rollback_one_step(last_processed_block);
                   continue;
               }
@@ -153,14 +149,12 @@ class SemaphoreServer {
               await this.save_events(
                   logs,
                   this.identity_tree_index,
-                  this.signal_tree_index,
                   target_block_number
               );
 
               if (logs.length > 0) {
                   const state_root = await this.contract.methods.roots(this.identity_tree_index).call({from: from_address}, target_block_number);
-                  const state_signal_root = await this.contract.methods.roots(this.signal_tree_index).call({from: from_address}, target_block_number);
-                  logger.verbose(`state_root: ${state_root}, state_signal_root: ${state_signal_root}`);
+                  logger.verbose(`state_root: ${state_root}`);
 
                   const saved_state_block = await this.get_state_for_block(target_block_number);
                   logger.verbose(`saved_state_block: ${JSON.stringify(saved_state_block)}`);
@@ -191,7 +185,6 @@ class SemaphoreServer {
             const state_for_block = this.get_state_for_block(current_block--);
             if (state_for_block.root) {
                 await this.tree.rollback_to_root(state_for_block.root);
-                await this.signal_tree.rollback_to_root(state_for_block.signal_root);
 
                 await this.storage.put(last_block_key, current_block.toString());
 
@@ -212,7 +205,7 @@ class SemaphoreServer {
         }
     }
 
-    async save_events(events, identity_tree_index, signal_tree_index, block_number) {
+    async save_events(events, identity_tree_index, block_number) {
         let current_index = parseInt(await this.storage.get_or_element(signal_index_key, '0'));
 
         let key_values = [];
@@ -224,15 +217,10 @@ class SemaphoreServer {
                 await this.tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
             } else if (event.event == 'LeafUpdated' && event.returnValues.tree_index == identity_tree_index) {
                 await this.tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
-            } else if (event.event == 'LeafAdded' && event.returnValues.tree_index == signal_tree_index) {
-                await this.signal_tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
-            } else if (event.event == 'LeafUpdated' && event.returnValues.tree_index == signal_tree_index) {
-                await this.signal_tree.update(event.returnValues.leaf_index, event.returnValues.leaf.toString());
             } else if (event.event == 'Funded') {
             } else if (event.event == 'SignalBroadcast') {
                 const signal_hash = '00' + crypto.createHash('sha256').update(event.returnValues.signal.slice(2), 'hex').digest().slice(0,31).toString('hex');
 
-                current_index++;
                 const adds = await this.prepare_signal_add(
                     event.returnValues.signal,
                     signal_hash,
@@ -241,6 +229,7 @@ class SemaphoreServer {
                     event.blockNumber,
                     current_index,
                 );
+                current_index++;
                 key_values.push(adds);
             } else {
                 logger.error(`Unknown event: ${JSON.stringify(event)}`);
@@ -253,10 +242,8 @@ class SemaphoreServer {
             value: current_index,
         });
         const root = await this.tree.root();
-        const signal_root = await this.signal_tree.root();
         key_values.push(await this.prepare_save_state_for_block(block_number, {
             root,
-            signal_root,
         }));
         await this.storage.put_batch(key_values);
     }
@@ -295,21 +282,12 @@ const tree = new MerkleTree(
     default_value,
 );
 
-const signal_tree = new MerkleTree(
-  `${prefix}_signal_tree`,
-  storage,
-  hasher,
-  20,
-  default_value,
-);
-
 const semaphore = new SemaphoreServer(
     storage,
     server_config.NODE_URL,
     server_config.CONTRACT_ADDRESS,
     server_config.CREATION_HASH,
     tree,
-    signal_tree,
 );
 
 semaphore.event_processing_loop()
@@ -351,8 +329,8 @@ async function send_transaction(encoded, value) {
 
     const promise = new Promise((resolve, reject) => {
       semaphore.web3.eth.sendSignedTransaction(signed_tx.rawTransaction)
-      .on('receipt', () => {
-          logger.debug(`tx sent: ${signed_tx.messageHash}`);
+      .on('receipt', (receipt) => {
+          logger.debug(`tx sent: ${signed_tx.messageHash}, gas used: ${receipt.gasUsed}`);
           resolve();
       })
       .catch((err) => {
@@ -481,7 +459,6 @@ if (process.argv[2] == 'fund') {
         e.nullifiers_hash = '0x' + bigInt(e.nullifiers_hash).toString(16);
         e.external_nullifier = '0x' + bigInt(e.external_nullifier).toString(16);
         e.index = '0x' + bigInt(e.current_index).toString(16);
-        e.path = convert_path(await semaphore.signal_tree.path(parseInt(e.current_index) - 1));
         return e;
       }));
 
@@ -513,7 +490,6 @@ if (process.argv[2] == 'fund') {
         e.nullifiers_hash = '0x' + bigInt(e.nullifiers_hash).toString(16);
         e.external_nullifier = '0x' + bigInt(e.external_nullifier).toString(16);
         e.index = '0x' + bigInt(e.current_index).toString(16);
-        e.path = convert_path(await semaphore.signal_tree.path(parseInt(e.current_index) - 1));
         return e;
       }));
 
