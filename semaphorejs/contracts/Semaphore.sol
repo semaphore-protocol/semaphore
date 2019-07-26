@@ -67,22 +67,20 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         root_history[current_root_index++ % root_history_size] = tree_roots[id_tree_index];
     }
 
-    function broadcastSignal(
-        bytes memory signal,
+    function preBroadcastVerification (
         uint[2] a,
         uint[2][2] b,
         uint[2] c,
-        uint[5] input // (root, nullifiers_hash, signal_hash, external_nullifier, broadcaster_address)
-    ) public {
-        uint256 start_gas = gasleft();
+        uint[5] input,
+        uint256 signal_hash
+    ) public view returns (bool) {
 
-        uint256 signal_hash = uint256(sha256(signal)) >> 8;
-        require(signal_hash == input[2]);
-        require(external_nullifier == input[3]);
-        require(verifyProof(a, b, c, input));
-        require(nullifiers_set[input[1]] == false);
-        address broadcaster = address(input[4]);
-        require(broadcaster == msg.sender);
+        bool correctInputs = 
+            signal_hash == input[2] &&
+            external_nullifier == input[3] &&
+            verifyProof(a, b, c, input) &&
+            nullifiers_set[input[1]] == false &&
+            address(input[4]) == msg.sender;
 
         bool found_root = false;
         for (uint8 i = 0; i < root_history_size; i++) {
@@ -91,7 +89,24 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
                 break;
             }
         }
-        require(found_root);
+
+        bool isValid = found_root && correctInputs;
+
+        return isValid;
+    }
+
+    function broadcastSignal(
+        bytes memory signal,
+        uint[2] a,
+        uint[2][2] b,
+        uint[2] c,
+        uint[5] input // (root, nullifiers_hash, signal_hash, external_nullifier, broadcaster_address)
+    ) public {
+        uint256 start_gas = gasleft();
+        uint256 signal_hash = uint256(sha256(signal)) >> 8;
+
+        // Check and verify the proof and inputs
+        require(preBroadcastVerification(a, b, c, input, signal_hash));
 
         insert(signal_tree_index, signal_hash);
         nullifiers_set[input[1]] = true;

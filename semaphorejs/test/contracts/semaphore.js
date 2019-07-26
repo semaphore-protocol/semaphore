@@ -45,11 +45,13 @@ const Semaphore = artifacts.require('Semaphore');
 
 const proof_util = require('../../src/util');
 
-const RocksDb = require('zkp-sbmtjs/src/storage/rocksdb');
-const MerkleTree = require('zkp-sbmtjs/src/tree');
-const MimcSpongeHasher = require('zkp-sbmtjs/src/hasher/mimcsponge');
+const RocksDb = require('../../src/util/rocksdb')
 
-const blake2 = require('blakejs');
+const SemaphoreMerkleTree = require('semaphore-merkle-tree')
+const MemStorage = SemaphoreMerkleTree.storage.MemStorage
+const MerkleTree = SemaphoreMerkleTree.tree.MerkleTree
+const MimcSpongeHasher = SemaphoreMerkleTree.hashers.MimcSpongeHasher
+
 
 function pedersenHash(ints) {
   const p = circomlib.babyJub.unpackPoint(circomlib.pedersenHash.hash(Buffer.concat(
@@ -113,6 +115,7 @@ contract('Semaphore', function (accounts) {
         }
         const default_value = '0';
         const storage = new RocksDb(storage_path);
+        const memStorage = new MemStorage();
         const hasher = new MimcSpongeHasher();
         const prefix = 'semaphore';
         const tree = new MerkleTree(
@@ -123,8 +126,15 @@ contract('Semaphore', function (accounts) {
             default_value,
         );
 
-        const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)]);
+        const memTree = new MerkleTree(
+            prefix,
+            memStorage,
+            hasher,
+            20,
+            default_value,
+        );
 
+        const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)]);
 
         const semaphore = await Semaphore.deployed();
         const receipt = await semaphore.insertIdentity(identity_commitment.toString());
@@ -133,7 +143,11 @@ contract('Semaphore', function (accounts) {
         await semaphore.fund({value: web3.utils.toWei('10')});
 
         await tree.update(next_index, identity_commitment.toString());
+        await memTree.update(next_index, identity_commitment.toString());
         const identity_path = await tree.path(next_index);
+        const mem_identity_path = await memTree.path(next_index);
+        
+        assert.equal(JSON.stringify(identity_path), JSON.stringify(mem_identity_path))
 
         const identity_path_elements = identity_path.path_elements;
         const identity_path_index = identity_path.path_index;
