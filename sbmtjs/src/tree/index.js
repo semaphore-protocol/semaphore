@@ -139,8 +139,10 @@ class MerkleTree {
     };
   }
 
-  async update(index, element, update_log_index) {
-    await this.lock.acquireAsync();
+  async update(index, element, update_log_index, lock_already_acquired) {
+    if (!lock_already_acquired) {
+      await this.lock.acquireAsync();
+    }
     try {
       //console.log(`updating ${index}, ${element}`);
       class UpdateTraverser {
@@ -218,7 +220,9 @@ class MerkleTree {
       const root = await this.root();
       //console.log(`updated root ${root}`);
     } finally {
-      this.lock.release();
+      if (!lock_already_acquired) {
+        this.lock.release();
+      }
     }
   }
 
@@ -245,7 +249,7 @@ class MerkleTree {
         const update_log_element_key = MerkleTree.update_log_element_to_key(this.prefix, update_log_index - i);
         const update_element_log = JSON.parse(await this.storage.get(update_log_element_key));
 
-        await this.update(update_element_log.index, update_element_log.old_element, update_log_index - i - 1);
+        await this.update(update_element_log.index, update_element_log.old_element, update_log_index - i - 1, true);
       }
     } finally {
       this.lock.release();
@@ -258,15 +262,15 @@ class MerkleTree {
       const update_log_key = MerkleTree.update_log_to_key(this.prefix);
       let update_log_index = await this.storage.get(update_log_key);
       while (update_log_index >= 0) {
-        update_log_index -= 1;
-        const update_log_element_key = MerkleTree.update_log_element_to_key(this.prefix, update_log_index - i);
+        const update_log_element_key = MerkleTree.update_log_element_to_key(this.prefix, update_log_index);
         const update_element_log = JSON.parse(await this.storage.get(update_log_element_key));
 
-        await this.update(update_element_log.index, update_element_log.old_element, update_log_index);
+        await this.update(update_element_log.index, update_element_log.old_element, update_log_index, true);
         const current_root = await this.root();
         if (current_root == root) {
           break;
         }
+        update_log_index -= 1;
       }
       if (await this.root() != root) {
         throw new Error(`could not rollback to root ${root}`);
