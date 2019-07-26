@@ -18,7 +18,7 @@
  * along with semaphorejs.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-pragma solidity >=0.4.21;
+pragma solidity ^0.5.0;
 
 import "./verifier.sol";
 import "./MerkleTreeLib.sol";
@@ -68,10 +68,10 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
 
     function broadcastSignal(
         bytes memory signal,
-        uint[2] a,
-        uint[2][2] b,
-        uint[2] c,
-        uint[5] input // (root, nullifiers_hash, signal_hash, external_nullifier, broadcaster_address)
+        uint[2] memory a,
+        uint[2][2] memory b,
+        uint[2] memory c,
+        uint[5] memory input // (root, nullifiers_hash, signal_hash, external_nullifier, broadcaster_address)
     ) public {
         uint256 signal_hash = uint256(sha256(signal)) >> 8;
         require(signal_hash == input[2]);
@@ -94,6 +94,14 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
 
     function roots(uint8 tree_index) public view returns (uint256 root) {
       root = tree_roots[tree_index];
+    }
+
+    function leaves(uint8 tree_index) public view returns (uint256[] memory) {
+      return tree_leaves[tree_index];
+    }
+
+    function leaf(uint8 tree_index, uint256 leaf_index) public view returns (uint256) {
+      return tree_leaves[tree_index][leaf_index];
     }
 
     function getIdTreeIndex() public view returns (uint8 index) {

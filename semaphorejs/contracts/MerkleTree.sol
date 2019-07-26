@@ -18,7 +18,7 @@
  * along with semaphorejs.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-pragma solidity >=0.4.21;
+pragma solidity ^0.5.0;
 
 library MiMC {
     function MiMCSponge(uint256 in_xL, uint256 in_xR, uint256 in_k)  pure public returns (uint256 xL, uint256 xR);
