@@ -28,9 +28,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
     uint256 public external_nullifier;
     uint8 public id_tree_index;
 
-    uint8 constant root_history_size = 100;
-    mapping (uint256 => uint8) root_history_indices;
-    uint256[root_history_size] root_history;
+    mapping (uint256 => bool) root_history;
     uint8 current_root_index = 0;
 
     mapping (uint => bool) nullifiers_set;
@@ -54,16 +52,12 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
 
     function insertIdentity(uint256 leaf) public onlyOwner {
         insert(id_tree_index, leaf);
-        uint8 root_index = current_root_index++ % root_history_size;
-        root_history[root_index] = tree_roots[id_tree_index];
-        root_history_indices[tree_roots[id_tree_index]] = root_index;
+        root_history[tree_roots[id_tree_index]] = true;
     }
 
     function updateIdentity(uint256 old_leaf, uint256 leaf, uint32 leaf_index, uint256[] memory old_path, uint256[] memory path) public onlyOwner {
         update(id_tree_index, old_leaf, leaf, leaf_index, old_path, path);
-        uint8 root_index = current_root_index++ % root_history_size;
-        root_history[root_index] = tree_roots[id_tree_index];
-        root_history_indices[tree_roots[id_tree_index]] = root_index;
+        root_history[tree_roots[id_tree_index]] = true;
     }
 
     function broadcastSignal(
@@ -81,11 +75,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         address broadcaster = address(input[4]);
         require(broadcaster == msg.sender);
 
-        bool found_root = false;
-        if (root_history[root_history_indices[input[0]]] == input[0]) {
-            found_root = true;
-        }
-        require(found_root);
+        require(root_history[input[0]]);
 
         signals[current_signal_index++] = signal;
         nullifiers_set[input[1]] = true;
