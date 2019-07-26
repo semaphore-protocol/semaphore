@@ -45,13 +45,13 @@ const Semaphore = artifacts.require('Semaphore');
 
 const proof_util = require('../../src/util');
 
-const RocksDb = require('zkp-sbmtjs/src/storage/rocksdb');
-//const MemStorage = require('zkp-sbmtjs/src/storage/memory');
-const MemStorage = require('../../../sbmtjs/src/storage/memory')
-const MerkleTree = require('zkp-sbmtjs/src/tree');
-const MimcSpongeHasher = require('zkp-sbmtjs/src/hasher/mimcsponge');
+const RocksDb = require('../../src/util/rocksdb')
 
-const blake2 = require('blakejs');
+const SemaphoreMerkleTree = require('semaphore-merkle-tree')
+const MemStorage = SemaphoreMerkleTree.storage.MemStorage
+const MerkleTree = SemaphoreMerkleTree.tree.MerkleTree
+const MimcSpongeHasher = SemaphoreMerkleTree.hashers.MimcSpongeHasher
+
 
 function pedersenHash(ints) {
   const p = circomlib.babyJub.unpackPoint(circomlib.pedersenHash.hash(Buffer.concat(
