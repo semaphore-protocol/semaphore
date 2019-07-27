@@ -60,6 +60,28 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         root_history[tree_roots[id_tree_index]] = true;
     }
 
+    function hasNullifier(uint n) public view returns (bool) {
+        return nullifiers_set[n];
+    }
+
+    function isInRootHistory(uint n) public view returns (bool) {
+        return root_history[n];
+    }
+
+    function preBroadcastCheck (
+        uint[2] memory a,
+        uint[2][2] memory b,
+        uint[2] memory c,
+        uint[5] memory input,
+        uint256 signal_hash
+    ) public view returns (bool) {
+        return hasNullifier(input[1]) == false &&
+            signal_hash == input[2] &&
+            external_nullifier == input[3] &&
+            isInRootHistory(input[0]) &&
+            verifyProof(a, b, c, input);
+    }
+
     function broadcastSignal(
         bytes memory signal,
         uint[2] memory a,
@@ -68,14 +90,13 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         uint[5] memory input // (root, nullifiers_hash, signal_hash, external_nullifier, broadcaster_address)
     ) public {
         uint256 signal_hash = uint256(sha256(signal)) >> 8;
-        require(signal_hash == input[2]);
-        require(external_nullifier == input[3]);
-        require(verifyProof(a, b, c, input));
-        require(nullifiers_set[input[1]] == false);
+
+        // Check the inputs
+        require(preBroadcastCheck(a, b, c, input, signal_hash) == true);
+
+        // Verify the broadcaster's address
         address broadcaster = address(input[4]);
         require(broadcaster == msg.sender);
-
-        require(root_history[input[0]]);
 
         signals[current_signal_index++] = signal;
         nullifiers_set[input[1]] = true;
