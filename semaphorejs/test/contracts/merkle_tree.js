@@ -30,10 +30,11 @@ const path = require('path');
 const MerkleTree = artifacts.require('MerkleTree');
 const MerkleTreeTester = artifacts.require('MerkleTreeTester');
 
-const RocksDb = require('zkp-sbmtjs/src/storage/rocksdb');
-const MerkleTreeLib = require('zkp-sbmtjs/src/tree');
-const MimcSpongeHasher = require('zkp-sbmtjs/src/hasher/mimcsponge');
+const RocksDb = require('../../src/util/rocksdb')
 
+const SemaphoreMerkleTree = require('semaphore-merkle-tree')
+const MerkleTreeLib = SemaphoreMerkleTree.tree.MerkleTree
+const MimcSpongeHasher = SemaphoreMerkleTree.hashers.MimcSpongeHasher
 
 
 contract('MerkleTree', () => {
