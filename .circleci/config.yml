@@ -19,14 +19,14 @@ jobs:
       - restore_cache:
           name: restore-npm-cache
           keys:
-            - v1.5-dependencies-{{ checksum "package-lock.json" }}
+            - v1.6-dependencies-{{ checksum "package-lock.json" }}
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: v1.5-dependencies-{{ checksum "package-lock.json" }}
+          key: v1.6-dependencies-{{ checksum "package-lock.json" }}
 
       # checksum the snarks definitions
       - run:
@@ -37,7 +37,7 @@ jobs:
       - restore_cache:
           name: restore-snark-cache
           keys:
-            - v1.5-dependencies-{{ checksum "build/.snark_checksum" }}
+            - v1.6-dependencies-{{ checksum "build/.snark_checksum" }}
 
       # build snarks
       - run:
@@ -47,7 +47,7 @@ jobs:
 
       # cache generated snark circuit and keys
       - save_cache:
-          key: v1.5-dependencies-{{ checksum "build/.snark_checksum" }}
+          key: v1.6-dependencies-{{ checksum "build/.snark_checksum" }}
           paths:
             - build/circuit.json
             - build/proving_key.bin

@@ -18,7 +18,7 @@
  * along with semaphorejs.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-pragma solidity >=0.4.21;
+pragma solidity ^0.5.0;
 
 library MiMC {
     function MiMCSponge(uint256 in_xL, uint256 in_xR, uint256 in_k)  pure public returns (uint256 xL, uint256 xR);
@@ -32,6 +32,8 @@ contract MultipleMerkleTree {
     uint256[][] zeros;
 
     uint32[] next_index;
+
+    uint256[][] internal tree_leaves;
 
     event LeafAdded(uint8 tree_index, uint256 leaf, uint32 leaf_index);
     event LeafUpdated(uint8 tree_index, uint256 leaf, uint32 leaf_index);
@@ -55,6 +57,8 @@ contract MultipleMerkleTree {
 
         tree_roots.push(HashLeftRight(current_zeros[tree_levels - 1], current_zeros[tree_levels - 1]));
         next_index.push(0);
+
+        tree_leaves.push(new uint256[](0));
 
         return uint8(tree_roots.length) - 1;
     }
@@ -100,6 +104,7 @@ contract MultipleMerkleTree {
 
         tree_roots[tree_index] = current_level_hash;
 
+        tree_leaves[tree_index].push(leaf);
         emit LeafAdded(tree_index, leaf, leaf_index);
     }
 
@@ -130,7 +135,7 @@ contract MultipleMerkleTree {
 
         current_level_hash = leaf;
 
-        for (i = 0; i < levels[tree_index]; i++) {
+        for (uint8 i = 0; i < levels[tree_index]; i++) {
             if (current_index % 2 == 0) {
                 left = current_level_hash;
                 right = path[i];
@@ -146,6 +151,7 @@ contract MultipleMerkleTree {
 
         tree_roots[tree_index] = current_level_hash;
 
+        tree_leaves[tree_index][leaf_index] = leaf;
         emit LeafUpdated(tree_index, leaf, leaf_index);
     }
 }

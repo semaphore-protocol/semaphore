@@ -18,7 +18,7 @@
  * along with semaphorejs.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-pragma solidity >=0.4.21;
+pragma solidity ^0.5.0;
 
 library MiMC {
     function MiMCSponge(uint256 in_xL, uint256 in_xR, uint256 in_k)  pure public returns (uint256 xL, uint256 xR);
@@ -51,7 +51,7 @@ contract MerkleTree {
     }
 
     function HashLeftRight(uint256 left, uint256 right) public pure returns (uint256 mimc_hash) {
-        uint256 k =  21888242871839275222246405745257275088548364400416034343698204186575808495617;
+        uint256 k = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
         uint256 R = 0;
         uint256 C = 0;
 

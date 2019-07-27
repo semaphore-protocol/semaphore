@@ -124,23 +124,12 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
     await semaphore.broadcast_signal(signal_str);
   };
 
-  window.verify_row = function (row, data, index) {
-      let current_hash = data.signal_hash;
-      let left;
-      let right;
-      for (let i = 0; i < data.path.path_elements.length; i++) {
-        if (data.path.path_index[i] == 0) {
-          left = current_hash;
-          right = data.path.path_elements[i];
-        } else {
-          left = data.path.path_elements[i];
-          right = current_hash;
-        }
-        current_hash = bigInt(mimcsponge.multiHash([bigInt(left), bigInt(right)]));
-      }
-      const expected_root = '0x' + current_hash.toString(16);
-      const signals_root = $('#s_signals_root').text();
-      if (expected_root != signals_root) {
+  window.verify_row = async function (row, data, index) {
+      let signal = data.signal;
+      let signal_index = data.index;
+      let signal_from_contract = await semaphore_contract.methods.signals(bigInt(signal_index).toString()).call();
+      signal_from_contract = web3.toAscii(signal_from_contract).replace(/\0/g,'');
+      if (signal != signal_from_contract) {
         $(row).addClass('verify-error');
       } else {
         $(row).addClass('verify-ok');
@@ -149,14 +138,11 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
 
   async function update_state() {
     $('#s_block_number').text(await web3js.eth.getBlockNumber());
-    const root = await semaphore_contract.methods.roots(0).call();
+    const id_tree_index = await semaphore_contract.methods.id_tree_index().call();
+    const root = await semaphore_contract.methods.roots(id_tree_index.toString()).call();
     $('#s_root').text('0x' + bigInt(root.toString()).toString(16));
-    const signals_root = await semaphore_contract.methods.roots(1).call();
-    $('#s_signals_root').text('0x' + bigInt(signals_root.toString()).toString(16));
     const external_nullifier = await semaphore_contract.methods.external_nullifier().call();
     $('#s_external_nullifier').text('0x' + bigInt(external_nullifier.toString()).toString(16));
-    const gas_price_max = await semaphore_contract.methods.gas_price_max().call();
-    $('#s_gas_price_max').text(gas_price_max.toString());
     if (window.table_inited) {
       window.signals_table.ajax.reload(null, false);
     }
@@ -262,34 +248,6 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
       $('#d_status').text(e.message);
     }
   });
-
-  $('#btn_set_max_gas_price').click(async () => {
-    try {
-      logger.info(`setting max gas price to ${$('#a_max_gas_price').val()}`);
-      $('#d_status').text('Setting max gas price...');
-      const semaphore_server_url = $('#f_semaphore_server_url').val();
-      const response = await fetch(`${semaphore_server_url}/set_max_gas_price`, {
-        method: 'post',
-        body: JSON.stringify({
-          max_gas_price: $('#a_max_gas_price').val()
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          login: $('#a_login').val()
-        }
-      });
-      if (!response.ok) {
-        throw new Error(`Error, got status ${response.statusText}`);
-      }
-      $('#d_status').text('Setting max gas price successful.');
-      logger.info('setting max gas price successful.');
-    } catch(e) {
-      logger.error(`set max gas price error: ${e.message}`);
-      $('#d_status').text(e.message);
-    }
-  });
-
-
 
   window.download = function(text, name, type) {
     var blob = new Blob([text], {type: 'application/json;charset=utf-8'});
