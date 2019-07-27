@@ -259,7 +259,7 @@ class SemaphoreClient {
           const promise = new Promise((resolve, reject) => {
             this.web3.eth.sendSignedTransaction(signed_tx.rawTransaction)
             .on('receipt', () => {
-                logger.info(`tx sent: ${signed_tx.messageHash}`);
+                logger.info(`tx sent: ${signed_tx.messageHash}, gas used: ${receipt.gasUsed}`);
                 resolve();
             })
             .catch((err) => {

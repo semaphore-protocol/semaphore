@@ -21,7 +21,6 @@
   "dependencies": {
     "blakejs": "^1.1.0",
     "circom": "0.0.27",
-    "circomlib": "git+https://github.com/kobigurk/circomlib.git#323966c0584bafebf9652681c44d9ea348fe9bb5",
     "cors": "^2.8.5",
     "del": "^4.1.0",
     "file-saver": "^2.0.1",
@@ -33,7 +32,7 @@
     "node-fetch": "^2.3.0",
     "require-nocache": "^1.0.0",
     "semaphore-merkle-tree": "^1.0.4",
-    "snarkjs": "^0.1.13",
+    "snarkjs": "git+https://github.com/iden3/snarkjs.git#f8ba7cbfa7d526e186fd3a706be00f63b65812d8",
     "truffle": "^5.0.10",
     "truffle-artifactor": "^4.0.10",
     "truffle-contract": "^4.0.11",
