@@ -190,6 +190,8 @@ contract('Semaphore', function (accounts) {
         const publicSignals = w.slice(1, circuit.nPubInputs + circuit.nOutputs+1);
         const proof = await proof_util.prove(witness_bin.buffer, vk_proof.buffer);
         let failed = false;
+        let reason = '';
+
         try {
           await semaphore.broadcastSignal(
               signal_to_contract,
@@ -200,8 +202,10 @@ contract('Semaphore', function (accounts) {
           );
         } catch(e) {
           failed = true;
+          reason = e.reason
         }
         assert.equal(failed, true);
+        assert.equal(reason, 'Semaphore: root not seen');
 
         failed = false;
         try {
@@ -214,8 +218,10 @@ contract('Semaphore', function (accounts) {
           );
         } catch(e) {
           failed = true;
+          reason = e.reason
         }
         assert.equal(failed, true);
+        assert.equal(reason, 'verifier-gte-snark-scalar-field');
 
         const a = [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ]
         const b = [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ]
