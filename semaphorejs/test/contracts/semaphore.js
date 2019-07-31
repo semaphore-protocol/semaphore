@@ -100,9 +100,8 @@ contract('Semaphore', function (accounts) {
         const signal_hash = beBuff2int(signal_hash_raw.slice(0, 31));
         const signal_to_contract = web3.utils.asciiToHex(signal_str);
         const accounts = await web3.eth.getAccounts();
-        const broadcaster_address = bigInt(accounts[0].toString());
 
-        const msg = mimcsponge.multiHash([bigInt(external_nullifier), bigInt(signal_hash), bigInt(broadcaster_address)]);
+        const msg = mimcsponge.multiHash([bigInt(external_nullifier), bigInt(signal_hash)]);
         const signature = eddsa.signMiMCSponge(prvKey, msg);
 
         assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
@@ -166,7 +165,6 @@ contract('Semaphore', function (accounts) {
             identity_nullifier,
             identity_path_elements,
             identity_path_index,
-            broadcaster_address,
         });
 
         const root = w[circuit.getSignalIdx('main.root')];
@@ -198,7 +196,7 @@ contract('Semaphore', function (accounts) {
               [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
               [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ],
               [ proof.pi_c[0].toString(), proof.pi_c[1].toString() ],
-              [ publicSignals[1].toString(), publicSignals[0].toString(), publicSignals[2].toString(), publicSignals[3].toString(), publicSignals[4].toString() ],
+              [ publicSignals[1].toString(), publicSignals[0].toString(), publicSignals[2].toString(), publicSignals[3].toString() ],
           );
         } catch(e) {
           failed = true;
@@ -214,7 +212,7 @@ contract('Semaphore', function (accounts) {
               [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
               [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ],
               [ proof.pi_c[0].toString(), proof.pi_c[1].toString() ],
-              [ publicSignals[0].toString(), (publicSignals[1].add(bigInt('21888242871839275222246405745257275088548364400416034343698204186575808495617'))).toString(), publicSignals[2].toString(), publicSignals[3].toString(), publicSignals[4].toString() ],
+              [ publicSignals[0].toString(), (publicSignals[1].add(bigInt('21888242871839275222246405745257275088548364400416034343698204186575808495617'))).toString(), publicSignals[2].toString(), publicSignals[3].toString() ],
           );
         } catch(e) {
           failed = true;
@@ -226,7 +224,7 @@ contract('Semaphore', function (accounts) {
         const a = [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ]
         const b = [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ]
         const c = [ proof.pi_c[0].toString(), proof.pi_c[1].toString() ]
-        const input = [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString(), publicSignals[4].toString() ]
+        const input = [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString() ]
 
         const check = await semaphore.preBroadcastCheck(a, b, c, input, bigInt(signal_hash).toString())
         assert.isTrue(check)

@@ -72,7 +72,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         uint[2] memory a,
         uint[2][2] memory b,
         uint[2] memory c,
-        uint[5] memory input,
+        uint[4] memory input,
         uint256 signal_hash
     ) public view returns (bool) {
         return hasNullifier(input[1]) == false &&
@@ -86,7 +86,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         uint[2] memory a,
         uint[2][2] memory b,
         uint[2] memory c,
-        uint[5] memory input,
+        uint[4] memory input,
         uint256 signal_hash
     ) public {
         // Note that we only verify the broadcaster's address (input[4]) in the
@@ -104,7 +104,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         uint[2] memory a,
         uint[2][2] memory b,
         uint[2] memory c,
-        uint[5] memory input // (root, nullifiers_hash, signal_hash, external_nullifier, broadcaster_address)
+        uint[4] memory input // [root, nullifiers_hash, signal_hash, external_nullifier]
     ) public {
         // Hash the signal
         uint256 signal_hash = uint256(sha256(signal)) >> 8;

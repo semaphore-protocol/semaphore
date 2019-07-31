@@ -47,7 +47,6 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
 
     signal input signal_hash;
     signal input external_nullifier;
-    signal input broadcaster_address;
 
     // mimc vector commitment
     signal private input identity_pk[2];
@@ -143,10 +142,9 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     // END nullifiers
 
     // BEGIN verify sig
-    component msg_hasher = MiMCSponge(3, n_rounds, 1);
+    component msg_hasher = MiMCSponge(2, n_rounds, 1);
     msg_hasher.ins[0] <== external_nullifier;
     msg_hasher.ins[1] <== signal_hash;
-    msg_hasher.ins[2] <== broadcaster_address;
     msg_hasher.k <== 0;
 
     component sig_verifier = EdDSAMiMCSpongeVerifier();
