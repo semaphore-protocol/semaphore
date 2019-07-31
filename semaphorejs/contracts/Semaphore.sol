@@ -27,6 +27,7 @@ import "./Ownable.sol";
 contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
     uint256 public external_nullifier;
     uint8 public id_tree_index;
+    bool public is_broadcast_permissioned = true;
 
     mapping (uint256 => bool) root_history;
     uint8 current_root_index = 0;
@@ -38,16 +39,15 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
 
     event SignalBroadcast(bytes signal, uint256 nullifiers_hash, uint256 external_nullifier);
 
+    modifier onlyOwnerIfPermissioned() {
+        require(!is_broadcast_permissioned || isOwner(), "onlyOwnerIfPermissioned: caller is not the owner");
+        _;
+    }
+
     constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in) Ownable() public
     {
         external_nullifier = external_nullifier_in;
         id_tree_index = init_tree(tree_levels, zero_value);
-    }
-
-    event Funded(uint256 amount);
-
-    function fund() public payable {
-      emit Funded(msg.value);
     }
 
     function insertIdentity(uint256 leaf) public onlyOwner {
@@ -102,9 +102,9 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         uint[2][2] memory b,
         uint[2] memory c,
         uint[5] memory input // (root, nullifiers_hash, signal_hash, external_nullifier, broadcaster_address)
-    ) public {
+    ) public onlyOwnerIfPermissioned {
         // Hash the signal
-        uint256 signal_hash = uint256(sha256(signal)) >> 8;
+        uint256 signal_hash = uint256(keccak256(signal)) >> 8;
 
         // Check the inputs
         preBroadcastRequire(a, b, c, input, signal_hash);
@@ -136,5 +136,9 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
 
     function setExternalNullifier(uint256 new_external_nullifier) public onlyOwner {
       external_nullifier = new_external_nullifier;
+    }
+
+    function disablePermissioning() public onlyOwner {
+      is_broadcast_permissioned = false;
     }
 }

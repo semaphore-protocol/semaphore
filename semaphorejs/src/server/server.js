@@ -350,8 +350,22 @@ async function fund() {
   );
 }
 
+async function disablePermissioning() {
+  const encoded = await semaphore.contract.methods.disablePermissioning().encodeABI();
+  await send_transaction(encoded);
+}
+
 if (process.argv[2] == 'fund') {
   fund()
+  .then(() => {
+    process.exit(0);
+  })
+  .catch((err) => {
+    logger.error(`error funding: ${err.stack}`);
+    process.exit(1);
+  });
+else if (process.argv[2] == 'disable_permissioning') {
+  disablePermissioning()
   .then(() => {
     process.exit(0);
   })
