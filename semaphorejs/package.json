@@ -33,7 +33,7 @@
     "node-fetch": "^2.3.0",
     "require-nocache": "^1.0.0",
     "semaphore-merkle-tree": "^1.0.4",
-    "snarkjs": "git+https://github.com/iden3/snarkjs.git#f8ba7cbfa7d526e186fd3a706be00f63b65812d8",
+    "snarkjs": "git+https://github.com/iden3/snarkjs.git#c428706ef69930e378c31199ff8d66ee13fada85",
     "truffle": "^5.0.10",
     "truffle-artifactor": "^4.0.10",
     "truffle-contract": "^4.0.11",
