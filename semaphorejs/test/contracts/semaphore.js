@@ -29,6 +29,8 @@ const path = require('path');
 const snarkjs = require('snarkjs');
 const circomlib = require('circomlib');
 
+const ethers = require('ethers');
+
 const test_util = require('../../src/test_util');
 
 const bigInt = snarkjs.bigInt;
@@ -96,9 +98,16 @@ contract('Semaphore', function (accounts) {
 
         const external_nullifier = bigInt('12312');
         const signal_str = 'hello!';
-        const signal_hash_raw = crypto.createHash('sha256').update(signal_str, 'utf8').digest();
-        const signal_hash = beBuff2int(signal_hash_raw.slice(0, 31));
         const signal_to_contract = web3.utils.asciiToHex(signal_str);
+        const signal_to_contract_bytes = new Buffer(signal_to_contract.slice(2), 'hex');
+
+        const signal_hash_raw = ethers.utils.solidityKeccak256(
+            ['bytes'],
+            [signal_to_contract_bytes],
+        );
+        const signal_hash_raw_bytes = new Buffer(signal_hash_raw.slice(2), 'hex');
+        const signal_hash = beBuff2int(signal_hash_raw_bytes.slice(0, 31));
+
         const accounts = await web3.eth.getAccounts();
 
         const msg = mimcsponge.multiHash([bigInt(external_nullifier), bigInt(signal_hash)]);
@@ -139,13 +148,12 @@ contract('Semaphore', function (accounts) {
         const receipt = await semaphore.insertIdentity(identity_commitment.toString());
         assert.equal(receipt.logs[0].event, 'LeafAdded');
         const next_index = parseInt(receipt.logs[0].args.leaf_index.toString());
-        await semaphore.fund({value: web3.utils.toWei('10')});
 
         await tree.update(next_index, identity_commitment.toString());
         await memTree.update(next_index, identity_commitment.toString());
         const identity_path = await tree.path(next_index);
         const mem_identity_path = await memTree.path(next_index);
-        
+
         assert.equal(JSON.stringify(identity_path), JSON.stringify(mem_identity_path))
 
         const identity_path_elements = identity_path.path_elements;
@@ -220,6 +228,28 @@ contract('Semaphore', function (accounts) {
         }
         assert.equal(failed, true);
         assert.equal(reason, 'verifier-gte-snark-scalar-field');
+
+        await semaphore.transferOwnership(accounts[1]);
+        assert.equal(await semaphore.owner(), accounts[1]);
+
+        failed = false;
+        try {
+          await semaphore.broadcastSignal(
+
+              signal_to_contract,
+              [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
+              [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ],
+              [ proof.pi_c[0].toString(), proof.pi_c[1].toString() ],
+              [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString() ],
+          );
+        } catch(e) {
+          failed = true;
+          reason = e.reason
+        }
+        assert.equal(failed, true);
+        assert.equal(reason, 'Semaphore: Broadcast permission denied');
+
+        await semaphore.disablePermissioning({ from: accounts[1] });
 
         const a = [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ]
         const b = [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ]

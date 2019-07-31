@@ -25,7 +25,7 @@ export CHAIN_ID=5777
 export NODE_URL=http://localhost:7545
 export SERVER_NODE_URL=http://localhost:7545
 export DEPLOY_TO=local
-export SLEEP_TIME=7
+export SLEEP_TIME=10
 
 if [ "$1" == "goerli" ]; then
   CHAIN_ID=5

@@ -137,8 +137,9 @@ class SemaphoreClient {
         const signal_hash_raw = ethers.utils.solidityKeccak256(
             ['bytes'],
             [signal_to_contract_bytes],
-        )
-        const signal_hash = beBuff2int(signal_hash_raw.slice(0, 31));
+        );
+        const signal_hash_raw_bytes = new Buffer(signal_hash_raw.slice(2), 'hex');
+        const signal_hash = beBuff2int(signal_hash_raw_bytes.slice(0, 31));
 
         const msg = mimcsponge.multiHash([external_nullifier, signal_hash]);
         const signature = eddsa.signMiMCSponge(prvKey, msg);
@@ -200,7 +201,7 @@ class SemaphoreClient {
         logger.debug(`publicSignals: ${publicSignals}`);
 
         // publicSignals = (root, nullifiers_hash, signal_hash, external_nullifier)
-        const public_signals_to_broadcast = [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString(), publicSignals[4].toString() ];
+        const public_signals_to_broadcast = [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString() ];
         const proof_to_broadcast = [
           [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
           [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ],

@@ -364,7 +364,7 @@ if (process.argv[2] == 'fund') {
     logger.error(`error funding: ${err.stack}`);
     process.exit(1);
   });
-else if (process.argv[2] == 'disable_permissioning') {
+} else if (process.argv[2] == 'disable_permissioning') {
   disablePermissioning()
   .then(() => {
     process.exit(0);
