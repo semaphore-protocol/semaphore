@@ -40,7 +40,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
     event SignalBroadcast(bytes signal, uint256 nullifiers_hash, uint256 external_nullifier);
 
     modifier onlyOwnerIfPermissioned() {
-        require(!is_broadcast_permissioned || isOwner(), "Semaphore: Broadcast permission denied");
+        require(!is_broadcast_permissioned || isOwner(), "Semaphore: broadcast permission denied");
         _;
     }
 
@@ -135,7 +135,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
       external_nullifier = new_external_nullifier;
     }
 
-    function disablePermissioning() public onlyOwner {
-      is_broadcast_permissioned = false;
+    function setPermissioning(bool _newPermission) public onlyOwner {
+      is_broadcast_permissioned = _newPermission;
     }
 }
