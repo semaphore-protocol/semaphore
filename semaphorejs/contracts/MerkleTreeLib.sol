@@ -129,7 +129,7 @@ contract MultipleMerkleTree {
             current_index /= 2;
         }
 
-        require(tree_roots[tree_index] == current_level_hash);
+        require(tree_roots[tree_index] == current_level_hash, "MultipleMerkleTree: tree root / current level hash mismatch");
 
         current_index = leaf_index;
 
