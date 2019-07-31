@@ -89,6 +89,9 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         uint[5] memory input,
         uint256 signal_hash
     ) public {
+        // Note that we only verify the broadcaster's address (input[4]) in the
+        // snark via verifyProof().
+
         require(hasNullifier(input[1]) == false, "Semaphore: nullifier already seen");
         require(signal_hash == input[2], "Semaphore: signal hash mismatch");
         require(external_nullifier == input[3], "Semaphore: external nullifier mismatch");
@@ -108,10 +111,6 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
 
         // Check the inputs
         preBroadcastRequire(a, b, c, input, signal_hash);
-
-        // Verify the broadcaster's address
-        address broadcaster = address(input[4]);
-        require(broadcaster == msg.sender, "Semaphore: wrong broadcaster's address");
 
         signals[current_signal_index++] = signal;
         nullifiers_set[input[1]] = true;
