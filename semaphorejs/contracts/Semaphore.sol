@@ -50,6 +50,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         id_tree_index = init_tree(tree_levels, zero_value);
     }
 
+
     function insertIdentity(uint256 leaf) public onlyOwner {
         insert(id_tree_index, leaf);
         root_history[tree_roots[id_tree_index]] = true;
@@ -72,7 +73,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         uint[2] memory a,
         uint[2][2] memory b,
         uint[2] memory c,
-        uint[5] memory input,
+        uint[4] memory input,
         uint256 signal_hash
     ) public view returns (bool) {
         return hasNullifier(input[1]) == false &&
@@ -86,7 +87,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         uint[2] memory a,
         uint[2][2] memory b,
         uint[2] memory c,
-        uint[5] memory input,
+        uint[4] memory input,
         uint256 signal_hash
     ) public {
         require(hasNullifier(input[1]) == false, "Semaphore: nullifier already seen");
@@ -101,17 +102,13 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         uint[2] memory a,
         uint[2][2] memory b,
         uint[2] memory c,
-        uint[5] memory input // (root, nullifiers_hash, signal_hash, external_nullifier, broadcaster_address)
+        uint[4] memory input // (root, nullifiers_hash, signal_hash, external_nullifier)
     ) public onlyOwnerIfPermissioned {
         // Hash the signal
         uint256 signal_hash = uint256(keccak256(signal)) >> 8;
 
         // Check the inputs
         preBroadcastRequire(a, b, c, input, signal_hash);
-
-        // Verify the broadcaster's address
-        address broadcaster = address(input[4]);
-        require(broadcaster == msg.sender, "Semaphore: wrong broadcaster's address");
 
         signals[current_signal_index++] = signal;
         nullifiers_set[input[1]] = true;
