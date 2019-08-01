@@ -24,6 +24,7 @@
     "circomlib": "0.0.10",
     "cors": "^2.8.5",
     "del": "^4.1.0",
+    "ethers": "^4.0.33",
     "file-saver": "^2.0.1",
     "ganache-cli": "^6.4.1",
     "ganache-core": "^2.5.3",

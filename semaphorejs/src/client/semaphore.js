@@ -21,7 +21,6 @@
 const crypto = require('crypto');
 const path = require('path');
 const {unstringifyBigInts, stringifyBigInts} = require('websnark/tools/stringifybigint.js');
-const blake2 = require('blakejs');
 
 const chai = require('chai');
 const assert = chai.assert;
@@ -39,6 +38,8 @@ const proof_util = require('../util');
 const fetch = require('node-fetch');
 
 const Web3 = require('web3');
+
+const ethers = require('ethers');
 
 let logger;
 
@@ -112,7 +113,6 @@ class SemaphoreClient {
 
         this.chain_id = chain_id;
         this.server_broadcast = server_broadcast;
-        this.broadcaster_address = server_broadcast_address;
     }
 
     async broadcast_signal(signal_str) {
@@ -132,11 +132,16 @@ class SemaphoreClient {
           external_nullifier = bigInt(this.external_nullifier);
         }
         const signal_to_contract = this.web3.utils.asciiToHex(signal_str);
-        const signal_hash_raw = crypto.createHash('sha256').update(signal_to_contract.slice(2), 'hex').digest();
-        const signal_hash = beBuff2int(signal_hash_raw.slice(0, 31));
-        const broadcaster_address = bigInt(this.broadcaster_address);
+        const signal_to_contract_bytes = new Buffer(signal_to_contract.slice(2), 'hex');
 
-        const msg = mimcsponge.multiHash([external_nullifier, signal_hash, broadcaster_address]);
+        const signal_hash_raw = ethers.utils.solidityKeccak256(
+            ['bytes'],
+            [signal_to_contract_bytes],
+        );
+        const signal_hash_raw_bytes = new Buffer(signal_hash_raw.slice(2), 'hex');
+        const signal_hash = beBuff2int(signal_hash_raw_bytes.slice(0, 31));
+
+        const msg = mimcsponge.multiHash([external_nullifier, signal_hash]);
         const signature = eddsa.signMiMCSponge(prvKey, msg);
 
         assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
@@ -174,7 +179,6 @@ class SemaphoreClient {
             identity_nullifier,
             identity_path_elements,
             identity_path_index,
-            broadcaster_address,
         };
         const w = this.circuit.calculateWitness(inputs);
         const witness_bin = proof_util.convertWitness(snarkjs.stringifyBigInts(w));
@@ -196,8 +200,8 @@ class SemaphoreClient {
 
         logger.debug(`publicSignals: ${publicSignals}`);
 
-        // publicSignals = (root, nullifiers_hash, signal_hash, external_nullifier, broadcaster_address)
-        const public_signals_to_broadcast = [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString(), publicSignals[4].toString() ];
+        // publicSignals = (root, nullifiers_hash, signal_hash, external_nullifier)
+        const public_signals_to_broadcast = [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString() ];
         const proof_to_broadcast = [
           [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
           [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ],

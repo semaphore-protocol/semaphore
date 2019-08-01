@@ -76,17 +76,26 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     // END signals
 
 
-    component identity_nullifier_bits = Num2Bits(256);
+    component identity_nullifier_bits = Num2Bits(248);
     identity_nullifier_bits.in <== identity_nullifier;
 
-    component identity_pk_0_bits = Num2Bits(256);
+    component identity_pk_0_bits = Num2Bits_strict();
     identity_pk_0_bits.in <== dbl3.xout;
 
     component identity_commitment = Pedersen(2*256);
     // BEGIN identity commitment
     for (var i = 0; i < 256; i++) {
-      identity_commitment.in[i] <== identity_pk_0_bits.out[i];
-      identity_commitment.in[i + 256] <== identity_nullifier_bits.out[i];
+      if (i < 254) {
+        identity_commitment.in[i] <== identity_pk_0_bits.out[i];
+      } else {
+        identity_commitment.in[i] <== 0;
+      }
+
+      if (i < 248) {
+        identity_commitment.in[i + 256] <== identity_nullifier_bits.out[i];
+      } else {
+        identity_commitment.in[i + 256] <== 0;
+      }
     }
     // END identity commitment
 
@@ -115,21 +124,24 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     // END tree
 
     // BEGIN nullifiers
-    component external_nullifier_bits = Num2Bits(256);
+    component external_nullifier_bits = Num2Bits(232);
     external_nullifier_bits.in <== external_nullifier;
 
     component nullifiers_hasher = Blake2s(512, 0);
-    for (var i = 0; i < 256; i++) {
+    for (var i = 0; i < 248; i++) {
       nullifiers_hasher.in_bits[i] <== identity_nullifier_bits.out[i];
-      if (i < 224) {
-        nullifiers_hasher.in_bits[256 + i] <== external_nullifier_bits.out[i];
-      } else {
-        if ( (i-224) < n_levels ) {
-          nullifiers_hasher.in_bits[256 + i] <== identity_path_index[i - 224];
-        } else {
-          nullifiers_hasher.in_bits[256 + i] <== 0;
-        }
-      }
+    }
+
+    for (var i = 0; i < 232; i++) {
+      nullifiers_hasher.in_bits[248 + i] <== external_nullifier_bits.out[i];
+    }
+
+    for (var i = 0; i < n_levels; i++) {
+      nullifiers_hasher.in_bits[248 + 232 + i] <== identity_path_index[i];
+    }
+
+    for (var i = (248 + 232 + n_levels); i < 512; i++) {
+      nullifiers_hasher.in_bits[i] <== 0;
     }
 
     component nullifiers_hash_num = Bits2Num(253);
