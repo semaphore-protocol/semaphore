@@ -200,6 +200,7 @@ contract('Semaphore', function (accounts) {
         let failed = false;
         let reason = '';
 
+        // Test if the transaction correctly reverts if the root is not in the root history
         try {
           await semaphore.broadcastSignal(
               signal_to_contract,
@@ -215,6 +216,8 @@ contract('Semaphore', function (accounts) {
         assert.equal(failed, true);
         assert.equal(reason, 'Semaphore: root not seen');
 
+        // Test for the alisasing bug in
+        // https://github.com/kobigurk/semaphore/issues/16
         failed = false;
         try {
           await semaphore.broadcastSignal(

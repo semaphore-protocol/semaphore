@@ -25,50 +25,102 @@ import "./MerkleTreeLib.sol";
 import "./Ownable.sol";
 
 contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
+    // The external_nullifier helps to prevent double-signalling by the same
+    // user.
     uint256 public external_nullifier;
+
     uint8 public id_tree_index;
+
+    // Whether broadcastSignal() can only be called by the owner of this
+    // contract. This is the case as a safe default.
     bool public is_broadcast_permissioned = true;
 
+    // Whether the contract has already seen a particular Merkle tree root
     mapping (uint256 => bool) root_history;
+
     uint8 current_root_index = 0;
 
-    mapping (uint => bool) nullifiers_set;
+    // Whether the contract has already seen a particular nullifier hash
+    mapping (uint => bool) nullifier_hash_history;
 
+    // All signals broadcasted
     mapping (uint => bytes) public signals;
+
+    // The higest index of the `signals` mapping
     uint public current_signal_index = 0;
 
     event SignalBroadcast(bytes signal, uint256 nullifiers_hash, uint256 external_nullifier);
 
+    /*
+     * If broadcastSignal is permissioned, check if msg.sender is the contract owner
+     */
     modifier onlyOwnerIfPermissioned() {
         require(!is_broadcast_permissioned || isOwner(), "Semaphore: broadcast permission denied");
         _;
     }
 
-    constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in) Ownable() public
-    {
+    constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in) Ownable() public {
         external_nullifier = external_nullifier_in;
         id_tree_index = init_tree(tree_levels, zero_value);
     }
 
 
-    function insertIdentity(uint256 leaf) public onlyOwner {
-        insert(id_tree_index, leaf);
+    /*
+     * Register a new user.
+     * @param identity_commitment The user's identity commitment, which is the
+     *                            hash of their public key and their identity
+     *                            nullifier (a random 31-byte value)
+     */
+    function insertIdentity(uint256 identity_commitment) public onlyOwner {
+        insert(id_tree_index, identity_commitment);
         root_history[tree_roots[id_tree_index]] = true;
     }
 
-    function updateIdentity(uint256 old_leaf, uint256 leaf, uint32 leaf_index, uint256[] memory old_path, uint256[] memory path) public onlyOwner {
+    /*
+     * Change a user's identity commitment.
+     * @param old_leaf The user's original identity commitment
+     * @param leaf The user's new identity commitment
+     * @param leaf_index The index of the original identity commitment in the tree
+     * @param old_path The Merkle path to the original identity commitment
+     * @param path The Merkle path to the new identity commitment
+     */
+    function updateIdentity(
+        uint256 old_leaf,
+        uint256 leaf,
+        uint32 leaf_index,
+        uint256[] memory old_path,
+        uint256[] memory path
+    ) public onlyOwner {
         update(id_tree_index, old_leaf, leaf, leaf_index, old_path, path);
         root_history[tree_roots[id_tree_index]] = true;
     }
 
+    /*
+     * @param n The nulllifier hash to check
+     * @return True if the nullifier hash has previously been stored in the
+     *         contract
+     */
     function hasNullifier(uint n) public view returns (bool) {
-        return nullifiers_set[n];
+        return nullifier_hash_history[n];
     }
 
+    /*
+     * @param The Merkle root to check
+     * @return True if the root has previously been stored in the
+     *         contract
+     */
     function isInRootHistory(uint n) public view returns (bool) {
         return root_history[n];
     }
 
+    /*
+     * A convenience view function which helps operators to easily verify all
+     * inputs to broadcastSignal() using a single contract call. This helps
+     * them to save gas by detecting invalid inputs before they invoke
+     * broadcastSignal(). Note that this function does the same checks as
+     * `isValidSignalAndProof` but returns a bool instead of using require()
+     * statements.
+     */
     function preBroadcastCheck (
         uint[2] memory a,
         uint[2][2] memory b,
@@ -83,6 +135,14 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
             verifyProof(a, b, c, input);
     }
 
+    /*
+     * A modifier which ensures that the signal and proof are valid.
+     * @param signal The signal to broadcast
+     * @param a The corresponding `a` parameter to verifier.sol's verifyProof()
+     * @param b The corresponding `b` parameter to verifier.sol's verifyProof()
+     * @param c The corresponding `c` parameter to verifier.sol's verifyProof()
+     * @param input The public inputs to the zk-SNARK
+     */
     modifier isValidSignalAndProof (
         bytes memory signal,
         uint[2] memory a,
@@ -101,6 +161,14 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         _;
     }
 
+    /*
+     * Broadcast the signal.
+     * @param signal The signal to broadcast
+     * @param a The corresponding `a` parameter to verifier.sol's verifyProof()
+     * @param b The corresponding `b` parameter to verifier.sol's verifyProof()
+     * @param c The corresponding `c` parameter to verifier.sol's verifyProof()
+     * @param input The public inputs to the zk-SNARK
+     */
     function broadcastSignal(
         bytes memory signal,
         uint[2] memory a,
@@ -111,31 +179,57 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
     onlyOwnerIfPermissioned
     isValidSignalAndProof(signal, a, b, c, input)
     {
+        uint nullifiers_hash = input[1];
         signals[current_signal_index++] = signal;
-        nullifiers_set[input[1]] = true;
-        emit SignalBroadcast(signal, input[1], external_nullifier);
+        nullifier_hash_history[nullifiers_hash] = true;
+        emit SignalBroadcast(signal, nullifiers_hash, external_nullifier);
     }
 
-    function roots(uint8 tree_index) public view returns (uint256 root) {
-      root = tree_roots[tree_index];
+    /*
+     * @param tree_index The tree in question
+     * @return The Merkle root
+     */
+    function root(uint8 tree_index) public view returns (uint256) {
+      return tree_roots[tree_index];
     }
 
+    /*
+     * @param tree_index The tree in question
+     * @return The leaves of the tree
+     */
     function leaves(uint8 tree_index) public view returns (uint256[] memory) {
       return tree_leaves[tree_index];
     }
 
+    /*
+     * @param tree_index The tree in question
+     * @param leaf_index The index of the leaf to fetch
+     * @return The leaf at leaf_index of the tree with index tree_index
+     */
     function leaf(uint8 tree_index, uint256 leaf_index) public view returns (uint256) {
       return tree_leaves[tree_index][leaf_index];
     }
 
-    function getIdTreeIndex() public view returns (uint8 index) {
-      index = id_tree_index;
+    /*
+     * @return The index of the identity tree in MultipleMerkleTree
+     */
+    function getIdTreeIndex() public view returns (uint8) {
+      return id_tree_index;
     }
 
+    /*
+     * Sets a new external nullifier for the contract. Only the owner can do this.
+     * @param new_external_nullifier The new external nullifier to set
+     */
     function setExternalNullifier(uint256 new_external_nullifier) public onlyOwner {
       external_nullifier = new_external_nullifier;
     }
 
+    /*
+     * Sets the `is_broadcast_permissioned` storage variable, which determines
+     * whether broadcastSignal can or cannot be called by only the contract
+     * owner.
+     */
     function setPermissioning(bool _newPermission) public onlyOwner {
       is_broadcast_permissioned = _newPermission;
     }
