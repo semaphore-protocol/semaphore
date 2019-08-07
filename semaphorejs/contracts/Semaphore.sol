@@ -83,18 +83,22 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
             verifyProof(a, b, c, input);
     }
 
-    function preBroadcastRequire (
+    modifier isValidSignalAndProof (
+        bytes memory signal,
         uint[2] memory a,
         uint[2][2] memory b,
         uint[2] memory c,
-        uint[4] memory input,
-        uint256 signal_hash
-    ) public {
+        uint[4] memory input
+    ) {
+        // Hash the signal
+        uint256 signal_hash = uint256(keccak256(signal)) >> 8;
+
         require(hasNullifier(input[1]) == false, "Semaphore: nullifier already seen");
         require(signal_hash == input[2], "Semaphore: signal hash mismatch");
         require(external_nullifier == input[3], "Semaphore: external nullifier mismatch");
         require(isInRootHistory(input[0]), "Semaphore: root not seen");
         require(verifyProof(a, b, c, input), "Semaphore: invalid proof");
+        _;
     }
 
     function broadcastSignal(
@@ -103,13 +107,10 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         uint[2][2] memory b,
         uint[2] memory c,
         uint[4] memory input // (root, nullifiers_hash, signal_hash, external_nullifier)
-    ) public onlyOwnerIfPermissioned {
-        // Hash the signal
-        uint256 signal_hash = uint256(keccak256(signal)) >> 8;
-
-        // Check the inputs
-        preBroadcastRequire(a, b, c, input, signal_hash);
-
+    ) public 
+    onlyOwnerIfPermissioned
+    isValidSignalAndProof(signal, a, b, c, input)
+    {
         signals[current_signal_index++] = signal;
         nullifiers_set[input[1]] = true;
         emit SignalBroadcast(signal, input[1], external_nullifier);
