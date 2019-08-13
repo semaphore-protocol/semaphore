@@ -63,7 +63,6 @@ The statement assures that given public inputs:
 and private inputs:
   * **identity_pk**
   * **identity_nullifier**
-  * **identity_r**
   * **identity_path_elements**
   * **identity_path_index**
   * **auth_sig_r**
@@ -71,7 +70,7 @@ and private inputs:
 
 the following conditions hold:
 
-  * The commitment of the identity structure (**identity_pk**, **identity_nullifier**, **identity_r**) exists in the identity tree with the root **root**, using the path (**identity_path_elements**, **identity_path_index**). This ensures that the user was added to the system at some point in the past.
+  * The commitment of the identity structure (**identity_pk**, **identity_nullifier**) exists in the identity tree with the root **root**, using the path (**identity_path_elements**, **identity_path_index**). This ensures that the user was added to the system at some point in the past.
   * **nullifiers_hash** is uniquely derived from **external_nullifier** and **identity_nullifier**. This ensures a user cannot broadcast a signal with the same **external_nullifier** more than once.
   * The message (**external_nullifier**, **signal_hash**, **broadcaster_address**) is signed by the secret key corresponding to **identity_pk**, having the signature (**auth_sig_r**, **auth_sig_s**). This ensures that the user approves the signal broadcast by a specific **broadcaster_address**, preventing front-running attacks, and a specific state of the contract having a specific **external_nullifier**, ensuring no double-signaling.
 
