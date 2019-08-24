@@ -71,11 +71,11 @@ function convertWitness(witnessJson) {
   return Buffer.from(buff);
 }
 
-const buildGroth16 = require('websnark/src/groth16.js');
+const buildGroth16 = require('websnark/src/bn128.js');
 
 async function prove(witness, provingKey) {
   const groth16 = await buildGroth16();
-  const p = await groth16.proof(witness, provingKey);
+  const p = await groth16.groth16GenProof(witness, provingKey);
   //groth16.terminate();
   return snarkjs.unstringifyBigInts(p);
 }

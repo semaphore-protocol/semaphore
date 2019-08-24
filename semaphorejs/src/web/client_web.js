@@ -139,7 +139,7 @@ const SemaphoreABI = require('../../build/contracts/Semaphore.json');
   async function update_state() {
     $('#s_block_number').text(await web3js.eth.getBlockNumber());
     const id_tree_index = await semaphore_contract.methods.id_tree_index().call();
-    const root = await semaphore_contract.methods.roots(id_tree_index.toString()).call();
+    const root = await semaphore_contract.methods.root(id_tree_index.toString()).call();
     $('#s_root').text('0x' + bigInt(root.toString()).toString(16));
     const external_nullifier = await semaphore_contract.methods.external_nullifier().call();
     $('#s_external_nullifier').text('0x' + bigInt(external_nullifier.toString()).toString(16));

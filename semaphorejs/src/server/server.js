@@ -128,7 +128,7 @@ class SemaphoreServer {
 
               this.identity_tree_index = await this.contract.methods.getIdTreeIndex().call({from: from_address}, last_processed_block);
 
-              const state_root = await this.contract.methods.roots(this.identity_tree_index).call({from: from_address}, last_processed_block);
+              const state_root = await this.contract.methods.root(this.identity_tree_index).call({from: from_address}, last_processed_block);
               logger.debug(`state_root: ${state_root}`);
 
               const saved_state_block = await this.get_state_for_block(last_processed_block);
@@ -153,7 +153,7 @@ class SemaphoreServer {
               );
 
               if (logs.length > 0) {
-                  const state_root = await this.contract.methods.roots(this.identity_tree_index).call({from: from_address}, target_block_number);
+                  const state_root = await this.contract.methods.root(this.identity_tree_index).call({from: from_address}, target_block_number);
                   logger.verbose(`state_root: ${state_root}`);
 
                   const saved_state_block = await this.get_state_for_block(target_block_number);
@@ -351,7 +351,7 @@ async function fund() {
 }
 
 async function disablePermissioning() {
-  const encoded = await semaphore.contract.methods.disablePermissioning().encodeABI();
+  const encoded = await semaphore.contract.methods.setPermissioning(false).encodeABI();
   await send_transaction(encoded);
 }
 
