@@ -21,7 +21,7 @@
   "dependencies": {
     "blakejs": "^1.1.0",
     "circom": "0.0.30",
-    "circomlib": "0.0.12",
+    "circomlib": "0.0.13",
     "cors": "^2.8.5",
     "del": "^4.1.0",
     "ethers": "^4.0.33",
@@ -34,7 +34,7 @@
     "node-fetch": "^2.3.0",
     "require-nocache": "^1.0.0",
     "semaphore-merkle-tree": "1.0.5",
-    "snarkjs": "0.1.16",
+    "snarkjs": "0.1.17",
     "truffle": "^5.0.10",
     "truffle-artifactor": "^4.0.10",
     "truffle-contract": "^4.0.11",
