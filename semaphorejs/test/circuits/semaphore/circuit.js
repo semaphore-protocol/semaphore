@@ -87,7 +87,8 @@ describe('circuit test', function () {
         assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
 
         const identity_nullifier = bigInt('230');
-        const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)]);
+        const identity_trapddoor = bigInt('231');
+        const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier), bigInt(identity_trapddoor)]);
 
         const tree = build_merkle_tree_example(20, identity_commitment);
 
@@ -104,6 +105,7 @@ describe('circuit test', function () {
             signal_hash,
             external_nullifier,
             identity_nullifier,
+            identity_trapddoor,
             identity_path_elements,
             identity_path_index,
         });
