@@ -95,7 +95,7 @@ Implemented in [**semaphorejs/src/server/server.js**](semaphorejs/src/server/ser
 
 The server relies on an Ethereum node and the events in the smart contract to synchronize to the current state and handle rollbacks if they occur.
 
-It uses [**sbmtjs**](sbmtjs) - *storage-backed merkle tree*. Semaphore requires managing a growing merkle tree containing the identities allowed to signal and the signals broadcast by users. sbmtjs manages the trees using a database, making the tree scale by the disk size.
+It uses [**semaphore-merkle-tree**](https://github.com/weijiekoh/semaphore-merkle-tree) - Semaphore requires managing a growing merkle tree containing the identities allowed to signal and the signals broadcast by users. semaphore-merkle-tree manages the trees either in-memory, for browser usage or a database, making the tree scale by the disk size.
 
 ### Client
 
