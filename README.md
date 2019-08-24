@@ -28,12 +28,12 @@ The contract allows administrative operations that only the owner is allowed to 
 
   * Managing identities using the **insertIdentity** and **updateIdentity** methods.
   * Setting the **external_nullifier**.
-  * Setting the **gas_price_max**.
+  * Setting the broadcast permissioning - whether only the owner can broadcast.
 
 The contract allows anyone to read the current state:
 
 * Reading the roots of the two trees.
-* Reading the current parameters of **external_nullifier** and **gas_price_max**.
+* Reading the current parameters of **external_nullifier**.
 
 The contract allows anyone to attempt broadcasting a signal, given a signal, a proof and the relevant public inputs.
 The contract allows anyone to fund the contract for gas refund and rewards.
@@ -63,6 +63,7 @@ The statement assures that given public inputs:
 and private inputs:
   * **identity_pk**
   * **identity_nullifier**
+  * **identity_trapdoor**
   * **identity_path_elements**
   * **identity_path_index**
   * **auth_sig_r**
@@ -70,8 +71,8 @@ and private inputs:
 
 the following conditions hold:
 
-  * The commitment of the identity structure (**identity_pk**, **identity_nullifier**) exists in the identity tree with the root **root**, using the path (**identity_path_elements**, **identity_path_index**). This ensures that the user was added to the system at some point in the past.
-  * **nullifiers_hash** is uniquely derived from **external_nullifier** and **identity_nullifier**. This ensures a user cannot broadcast a signal with the same **external_nullifier** more than once.
+  * The commitment of the identity structure (**identity_pk**, **identity_nullifier**, **identity_trapdoor**) exists in the identity tree with the root **root**, using the path (**identity_path_elements**, **identity_path_index**). This ensures that the user was added to the system at some point in the past.
+  * **nullifiers_hash** is uniquely derived from **external_nullifier**, **identity_nullifier** and the identity's position in the tree. This ensures a user cannot broadcast a signal with the same **external_nullifier** more than once.
   * The message (**external_nullifier**, **signal_hash**, **broadcaster_address**) is signed by the secret key corresponding to **identity_pk**, having the signature (**auth_sig_r**, **auth_sig_s**). This ensures that the user approves the signal broadcast by a specific **broadcaster_address**, preventing front-running attacks, and a specific state of the contract having a specific **external_nullifier**, ensuring no double-signaling.
 
 #### Cryptographic primitives
@@ -91,7 +92,6 @@ Implemented in [**semaphorejs/src/server/server.js**](semaphorejs/src/server/ser
   * A client to ask for a path from an identity commitment to the current root of the tree, relieving the client from the need to manage this tree by themselves.
   * A client to ask a list of signals, together with their paths to the signals tree root.
   * An owner to set the external nullifier.
-  * An owner to set the max gas price.
 
 The server relies on an Ethereum node and the events in the smart contract to synchronize to the current state and handle rollbacks if they occur.
 
