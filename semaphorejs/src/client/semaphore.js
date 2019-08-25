@@ -96,8 +96,9 @@ class SemaphoreClient {
         const pubKey = eddsa.prv2pub(prvKey);
 
         this.identity_nullifier = loaded_identity.identity_nullifier;
+        this.identity_trapdoor = loaded_identity.identity_trapdoor;
 
-        this.identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(this.identity_nullifier)]);
+        this.identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(this.identity_nullifier), bigInt(this.identity_trapdoor)]);
 
         this.web3 = new Web3(node_url);
         this.web3.eth.transactionConfirmationBlocks = transaction_confirmation_blocks;
@@ -147,6 +148,7 @@ class SemaphoreClient {
         assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
 
         const identity_nullifier = this.identity_nullifier;
+        const identity_trapdoor = this.identity_trapdoor;
 
         let identity_path;
         if (this.identity_index === null) {
@@ -177,6 +179,7 @@ class SemaphoreClient {
             signal_hash,
             external_nullifier,
             identity_nullifier,
+            identity_trapdoor,
             identity_path_elements,
             identity_path_index,
         };
@@ -283,14 +286,16 @@ function generate_identity(logger) {
     const pubKey = eddsa.prv2pub(prvKey);
 
     const identity_nullifier = '0x' + crypto.randomBytes(31).toString('hex');
-    logger.info(`generate identity from (private_key, public_key[0], public_key[1], identity_nullifier): (${private_key}, ${pubKey[0]}, ${pubKey[1]}, ${identity_nullifier})`);
+    const identity_trapdoor = '0x' + crypto.randomBytes(31).toString('hex');
+    logger.info(`generate identity from (private_key, public_key[0], public_key[1], identity_nullifier): (${private_key}, ${pubKey[0]}, ${pubKey[1]}, ${identity_nullifier}, ${identity_trapdoor})`);
 
-		const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)]);
+		const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier), bigInt(identity_trapdoor)]);
 
     logger.info(`identity_commitment : ${identity_commitment}`);
     const generated_identity = {
         private_key,
         identity_nullifier: identity_nullifier.toString(),
+        identity_trapdoor: identity_trapdoor.toString(),
         identity_commitment: identity_commitment.toString(),
     };
 
