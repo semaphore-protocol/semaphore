@@ -51,6 +51,7 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     // mimc vector commitment
     signal private input identity_pk[2];
     signal private input identity_nullifier;
+    signal private input identity_trapdoor;
     signal private input identity_path_elements[n_levels];
     signal private input identity_path_index[n_levels];
 
@@ -79,10 +80,13 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     component identity_nullifier_bits = Num2Bits(248);
     identity_nullifier_bits.in <== identity_nullifier;
 
+    component identity_trapdoor_bits = Num2Bits(248);
+    identity_trapdoor_bits.in <== identity_trapdoor;
+
     component identity_pk_0_bits = Num2Bits_strict();
     identity_pk_0_bits.in <== dbl3.xout;
 
-    component identity_commitment = Pedersen(2*256);
+    component identity_commitment = Pedersen(3*256);
     // BEGIN identity commitment
     for (var i = 0; i < 256; i++) {
       if (i < 254) {
@@ -93,8 +97,10 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
 
       if (i < 248) {
         identity_commitment.in[i + 256] <== identity_nullifier_bits.out[i];
+        identity_commitment.in[i + 2*256] <== identity_trapdoor_bits.out[i];
       } else {
         identity_commitment.in[i + 256] <== 0;
+        identity_commitment.in[i + 2*256] <== 0;
       }
     }
     // END identity commitment

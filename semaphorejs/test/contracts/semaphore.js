@@ -117,6 +117,7 @@ contract('Semaphore', function (accounts) {
         assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
 
         const identity_nullifier = bigInt('231');
+        const identity_trapdoor = bigInt('232');
 
         const storage_path = '/tmp/rocksdb_semaphore_test';
         if (fs.existsSync(storage_path)) {
@@ -143,7 +144,7 @@ contract('Semaphore', function (accounts) {
             default_value,
         );
 
-        const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)]);
+        const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier), bigInt(identity_trapdoor)]);
         identity_commitment1 = identity_commitment;
 
         const semaphore = await Semaphore.deployed();
@@ -173,6 +174,7 @@ contract('Semaphore', function (accounts) {
             signal_hash,
             external_nullifier,
             identity_nullifier,
+            identity_trapdoor,
             identity_path_elements,
             identity_path_index,
         });
@@ -286,6 +288,7 @@ contract('Semaphore', function (accounts) {
         assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
 
         const identity_nullifier = bigInt('230');
+        const identity_trapdoor = bigInt('233');
 
         const storage_path = '/tmp/rocksdb_semaphore_test';
         if (fs.existsSync(storage_path)) {
@@ -313,7 +316,7 @@ contract('Semaphore', function (accounts) {
         );
 
 
-        const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier)]);
+        const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier), bigInt(identity_trapdoor)]);
 
         const semaphore = await Semaphore.deployed();
         const receipt = await semaphore.insertIdentity(identity_commitment.toString());
@@ -344,6 +347,7 @@ contract('Semaphore', function (accounts) {
             signal_hash,
             external_nullifier,
             identity_nullifier,
+            identity_trapdoor,
             identity_path_elements,
             identity_path_index,
         });

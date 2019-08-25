@@ -62,6 +62,7 @@ CREATION_HASH=`cat ../build/contracts/Semaphore.json | jq ".networks.\"${CHAIN_I
 
 CHAIN_ID=${CHAIN_ID} CONTRACT_ADDRESS=$ADDRESS FROM_ADDRESS=0x1929c15f4e818abf2549510622a50c440c474223 FROM_PRIVATE_KEY=0x6738837df169e8d6ffc6e33a2947e58096d644fa4aa6d74358c8d9d57c12cd21 NODE_URL=${NODE_URL} EXTERNAL_NULLIFIER=12312 SEMAPHORE_SERVER_URL=http://localhost:3000 CONFIG_ENV=true BASE_DIR=../.. npx semaphorejs-client generate_identity
 
+echo done
 IDENTITY_COMMITMENT=`cat ./semaphore_identity.json | jq '.identity_commitment' | sed 's/"//g'`
 echo ${IDENTITY_COMMITMENT}
 
