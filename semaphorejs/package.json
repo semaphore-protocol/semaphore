@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "blakejs": "^1.1.0",
-    "circom": "0.0.30",
+    "circom": "0.0.33",
     "circomlib": "0.0.13",
     "cors": "^2.8.5",
     "del": "^4.1.0",
