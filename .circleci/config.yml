@@ -37,7 +37,7 @@ jobs:
       - restore_cache:
           name: restore-snark-cache
           keys:
-            - v1.10-dependencies-{{ checksum "build/.snark_checksum" }}
+            - v1.11-dependencies-{{ checksum "build/.snark_checksum" }}
 
       # build snarks
       - run:
@@ -47,7 +47,7 @@ jobs:
 
       # cache generated snark circuit and keys
       - save_cache:
-          key: v1.10-dependencies-{{ checksum "build/.snark_checksum" }}
+          key: v1.11-dependencies-{{ checksum "build/.snark_checksum" }}
           paths:
             - build/circuit.json
             - build/proving_key.bin
