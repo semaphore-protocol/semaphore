@@ -37,7 +37,7 @@ template Uint32Add(n) {
   coeff = 1;
   for (var i = 0; i < result_num_bits; i++) {
 
-    result_bits[i] <== (result_val[n-1] >> i) & 1;
+    result_bits[i] <-- (result_val[n-1] >> i) & 1;
     result_bits[i] * (result_bits[i] - 1) === 0;
 
     result_lc += result_bits[i]*coeff;
