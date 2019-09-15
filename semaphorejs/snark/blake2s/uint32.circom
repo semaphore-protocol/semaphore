@@ -23,12 +23,12 @@ template Uint32Add(n) {
       num_lc += nums_bits[i][j]*coeff;
       coeff *= 2;
     }
-    nums_vals[i] <-- num_lc;
+    nums_vals[i] <== num_lc;
 
     if (i == 0) {
-      result_val[i] <-- nums_vals[i];
+      result_val[i] <== nums_vals[i];
     } else {
-      result_val[i] <-- result_val[i-1] + nums_vals[i];
+      result_val[i] <== result_val[i-1] + nums_vals[i];
     }
 
   }
@@ -37,7 +37,7 @@ template Uint32Add(n) {
   coeff = 1;
   for (var i = 0; i < result_num_bits; i++) {
 
-    result_bits[i] <-- (result_val[n-1] >> i) & 1;
+    result_bits[i] <== (result_val[n-1] >> i) & 1;
     result_bits[i] * (result_bits[i] - 1) === 0;
 
     result_lc += result_bits[i]*coeff;
