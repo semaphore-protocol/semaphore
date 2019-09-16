@@ -74,7 +74,6 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
 
     // mimc hash
     signal output root;
-    fake_zero * root === fake_zero;
     signal output nullifiers_hash;
 
     // END signals
@@ -130,6 +129,7 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     }
 
     root <== hashers[n_levels - 1].hash;
+    fake_zero * root === fake_zero;
     // END tree
 
     // BEGIN nullifiers
