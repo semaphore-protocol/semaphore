@@ -169,16 +169,13 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     msg_hasher.k <== 0;
 
     component sig_verifier = EdDSAMiMCSpongeVerifier();
-    1 ==> sig_verifier.enabled;
+    (1 - fake_zero) ==> sig_verifier.enabled;
     identity_pk[0] ==> sig_verifier.Ax;
     identity_pk[1] ==> sig_verifier.Ay;
     auth_sig_r[0] ==> sig_verifier.R8x;
     auth_sig_r[1] ==> sig_verifier.R8y;
     auth_sig_s ==> sig_verifier.S;
     msg_hasher.outs[0] ==> sig_verifier.M;
-
-    fake_zero * sig_verifier.eqCheckX.isz.inv === fake_zero;
-    fake_zero * sig_verifier.eqCheckY.isz.inv === fake_zero;
 
     // END verify sig
 }
