@@ -182,6 +182,7 @@ class SemaphoreClient {
             identity_trapdoor,
             identity_path_elements,
             identity_path_index,
+            fake_zero: bigInt(0),
         };
         const w = this.circuit.calculateWitness(inputs);
         const witness_bin = proof_util.convertWitness(snarkjs.stringifyBigInts(w));

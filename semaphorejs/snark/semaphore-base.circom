@@ -47,6 +47,8 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
 
     signal input signal_hash;
     signal input external_nullifier;
+    
+    signal input fake_zero;
 
     // mimc vector commitment
     signal private input identity_pk[2];
@@ -72,6 +74,7 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
 
     // mimc hash
     signal output root;
+    fake_zero * root === fake_zero;
     signal output nullifiers_hash;
 
     // END signals
@@ -173,6 +176,9 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     auth_sig_r[1] ==> sig_verifier.R8y;
     auth_sig_s ==> sig_verifier.S;
     msg_hasher.outs[0] ==> sig_verifier.M;
+
+    fake_zero * sig_verifier.eqCheckX.isz.inv === fake_zero;
+    fake_zero * sig_verifier.eqCheckY.isz.inv === fake_zero;
 
     // END verify sig
 }

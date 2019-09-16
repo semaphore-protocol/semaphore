@@ -177,6 +177,7 @@ contract('Semaphore', function (accounts) {
             identity_trapdoor,
             identity_path_elements,
             identity_path_index,
+            fake_zero: bigInt(0),
         });
 
         const root = w[circuit.getSignalIdx('main.root')];
@@ -350,6 +351,7 @@ contract('Semaphore', function (accounts) {
             identity_trapdoor,
             identity_path_elements,
             identity_path_index,
+            fake_zero: bigInt(0),
         });
 
         const root = w[circuit.getSignalIdx('main.root')];
