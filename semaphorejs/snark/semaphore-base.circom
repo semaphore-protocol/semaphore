@@ -48,7 +48,7 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     signal input signal_hash;
     signal input external_nullifier;
     
-    signal input fake_zero;
+    signal private input fake_zero;
 
     // mimc vector commitment
     signal private input identity_pk[2];
