@@ -108,6 +108,7 @@ describe('circuit test', function () {
             identity_trapdoor,
             identity_path_elements,
             identity_path_index,
+            fake_zero: bigInt(0),
         });
         //console.log(w[circuit.getSignalIdx('main.signal_hash')]);
         //console.log(w[circuit.getSignalIdx('main.root')]);
