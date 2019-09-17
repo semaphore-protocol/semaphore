@@ -129,7 +129,6 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     }
 
     root <== hashers[n_levels - 1].hash;
-    fake_zero * root === fake_zero;
     // END tree
 
     // BEGIN nullifiers
