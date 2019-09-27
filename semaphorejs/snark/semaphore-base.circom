@@ -50,6 +50,8 @@ template Semaphore(jubjub_field_size, n_levels, n_rounds) {
     
     signal private input fake_zero;
 
+    fake_zero === 0;
+
     // mimc vector commitment
     signal private input identity_pk[2];
     signal private input identity_nullifier;
