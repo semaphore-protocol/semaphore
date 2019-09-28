@@ -17,17 +17,17 @@ Semaphore is comprised of a zkSNARK statement, a few smart contracts, a server a
 Implemented in [**semaphorejs/contracts**](semaphorejs/contracts).
 
 #### Semaphore
-  The Semaphore contract is the base layer of Semaphore. Other contracts can build upon this to create applications that rely on anonymous signaling. Semaphore has a tree of allowed identities, a tree of signals, a set of previously broadcast nullifiers hashes, an external nullifier and a gas price refund price:
+  The Semaphore contract is the base layer of Semaphore. Other contracts can build upon this to create applications that rely on anonymous signaling. Semaphore has a tree of allowed identities, a tree of signals, a set of previously broadcast nullifiers hashes, multiple external nullifiers and a gas price refund price:
 
   * The tree of allowed identities allows a prover to show that they are an identity which is approved to signal.
   * The tree of signals allows a user to verify the integrity of a list of signals.
-  * The nullifiers hashes set and external nullifier allows the contract to prevent double signals by the same user, without exposing the specific user.
+  * The nullifiers hashes set and external nullifier allows the contract to prevent double signals by the same user, within the context of each external nullifier, without exposing the specific user.
   * The gas price refund price is a mechanism that supports transaction abstraction - a server can broadcast on behalf of a user to provide further anonymity, and in return they receive a refund and a small reward, with a maximum gas price for their transaction.
 
 The contract allows administrative operations that only the owner is allowed to perform:
 
   * Managing identities using the **insertIdentity** and **updateIdentity** methods.
-  * Setting the **external_nullifier**.
+  * Adding or removing an **external_nullifier**.
   * Setting the broadcast permissioning - whether only the owner can broadcast.
 
 The contract allows anyone to read the current state:
