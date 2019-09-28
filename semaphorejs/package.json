@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "truffle test --network=local",
+    "test-semaphore": "truffle test --network=local test/contracts/semaphore.js",
     "migrate": "truffle migrate --network=local",
     "npm-update-git-deps": "npm-update-git-deps"
   },
