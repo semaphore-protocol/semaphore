@@ -77,6 +77,9 @@ const cutDownBits = function(b, bits) {
   return b.and(mask);
 }
 
+const cirDef = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit.json')).toString());
+const circuit = new snarkjs.Circuit(cirDef);
+
 contract('Semaphore', function (accounts) {
     let semaphore;
     let identity_commitment1;
@@ -90,8 +93,6 @@ contract('Semaphore', function (accounts) {
     })
 
     it('tests proof', async () => {
-        const cirDef = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit.json')).toString());
-        circuit = new snarkjs.Circuit(cirDef);
 
         const prvKey = Buffer.from('0001020304050607080900010203040506070809000102030405060708090001', 'hex');
 
@@ -187,14 +188,12 @@ contract('Semaphore', function (accounts) {
 
         //console.log(w[circuit.getSignalIdx('main.root')]);
 
-        /*
-        console.log(tree[0]);
-        console.log(w[circuit.getSignalIdx('main.signal_hash')]);
-        console.log(w[circuit.getSignalIdx('main.external_nullifier')]);
-        console.log(w[circuit.getSignalIdx('main.root')]);
-        console.log(w[circuit.getSignalIdx('main.nullifiers_hash')]);
-        console.log(w[circuit.getSignalIdx('main.identity_commitment.out')]);
-        */
+        //console.log(tree[0]);
+        //console.log(w[circuit.getSignalIdx('main.signal_hash')]);
+        //console.log(w[circuit.getSignalIdx('main.external_nullifier')]);
+        //console.log(w[circuit.getSignalIdx('main.root')]);
+        //console.log(w[circuit.getSignalIdx('main.nullifiers_hash')]);
+        //console.log(w[circuit.getSignalIdx('main.identity_commitment.out')]);
 
         const vk_proof = fs.readFileSync(path.join(__dirname,'../../build/proving_key.bin'));
         const witness_bin = proof_util.convertWitness(snarkjs.stringifyBigInts(w));
@@ -252,19 +251,114 @@ contract('Semaphore', function (accounts) {
 
         assert.isTrue(broadcastTx.receipt.status)
 
-        /*
-        const evs = await semaphore.getPastEvents('allEvents', {
-            fromBlock: 0,
-            toBlock: 'latest'
+        //const evs = await semaphore.getPastEvents('allEvents', {
+            //fromBlock: 0,
+            //toBlock: 'latest'
+        //});
+        //console.log(evs);
+    });
+
+    it('test with an additional external nullifier', async () => {
+        const prvKey = Buffer.from('0001020304050607080900010203040506070809000102030405060708090001', 'hex');
+
+        const pubKey = eddsa.prv2pub(prvKey);
+
+        const external_nullifier = bigInt('1234569876');
+        const signal_str = 'hello, world!';
+        const signal_to_contract = web3.utils.asciiToHex(signal_str);
+        const signal_to_contract_bytes = new Buffer(signal_to_contract.slice(2), 'hex');
+
+        const signal_hash_raw = ethers.utils.solidityKeccak256(
+            ['bytes'],
+            [signal_to_contract_bytes],
+        );
+        const signal_hash_raw_bytes = new Buffer(signal_hash_raw.slice(2), 'hex');
+        const signal_hash = beBuff2int(signal_hash_raw_bytes.slice(0, 31));
+
+        const accounts = await web3.eth.getAccounts();
+
+        const msg = mimcsponge.multiHash([bigInt(external_nullifier), bigInt(signal_hash)]);
+        const signature = eddsa.signMiMCSponge(prvKey, msg);
+
+        assert(eddsa.verifyMiMCSponge(msg, signature, pubKey));
+
+        const identity_nullifier = bigInt('231');
+        const identity_trapdoor = bigInt('232');
+
+        const default_value = '0';
+        const memStorage = new MemStorage();
+        const hasher = new MimcSpongeHasher();
+        const prefix = 'semaphore';
+
+        const memTree = new MerkleTree(
+            prefix,
+            memStorage,
+            hasher,
+            20,
+            default_value,
+        );
+
+        const identity_commitment = pedersenHash([bigInt(circomlib.babyJub.mulPointEscalar(pubKey, 8)[0]), bigInt(identity_nullifier), bigInt(identity_trapdoor)]);
+        identity_commitment1 = identity_commitment;
+
+        const semaphore = await Semaphore.deployed();
+        await semaphore.addExternalNullifier(external_nullifier.toString())
+        assert.isTrue(await semaphore.hasExternalNullifier(external_nullifier.toString()))
+
+        const receipt = await semaphore.insertIdentity(identity_commitment.toString());
+        assert.equal(receipt.logs[0].event, 'LeafAdded');
+        const next_index = parseInt(receipt.logs[0].args.leaf_index.toString());
+
+        await memTree.update(next_index, identity_commitment.toString());
+        const mem_identity_path = await memTree.path(next_index);
+
+        const identity_path_elements = mem_identity_path.path_elements;
+        const identity_path_index = mem_identity_path.path_index;
+
+        const w = circuit.calculateWitness({
+            'identity_pk[0]': pubKey[0],
+            'identity_pk[1]': pubKey[1],
+            'auth_sig_r[0]': signature.R8[0],
+            'auth_sig_r[1]': signature.R8[1],
+            auth_sig_s: signature.S,
+            signal_hash,
+            external_nullifier,
+            identity_nullifier,
+            identity_trapdoor,
+            identity_path_elements,
+            identity_path_index,
+            fake_zero: bigInt(0),
         });
-        console.log(evs);
-        */
+
+        const root = w[circuit.getSignalIdx('main.root')];
+        const nullifiers_hash = w[circuit.getSignalIdx('main.nullifiers_hash')];
+        assert(circuit.checkWitness(w));
+        assert.equal(w[circuit.getSignalIdx('main.root')].toString(), mem_identity_path.root);
+
+        const vk_proof = fs.readFileSync(path.join(__dirname,'../../build/proving_key.bin'));
+        const witness_bin = proof_util.convertWitness(snarkjs.stringifyBigInts(w));
+        const publicSignals = w.slice(1, circuit.nPubInputs + circuit.nOutputs+1);
+        const proof = await proof_util.prove(witness_bin.buffer, vk_proof.buffer);
+        let failed = false;
+        let reason = '';
+
+        const a = [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ]
+        const b = [ [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ], [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ] ]
+        const c = [ proof.pi_c[0].toString(), proof.pi_c[1].toString() ]
+        const input = [ publicSignals[0].toString(), publicSignals[1].toString(), publicSignals[2].toString(), publicSignals[3].toString() ]
+
+        const check = await semaphore.preBroadcastCheck(a, b, c, input, bigInt(signal_hash).toString())
+        assert.isTrue(check)
+
+        const broadcastTx = await semaphore.broadcastSignal(
+            signal_to_contract,
+            a, b, c, input
+        );
+
+        assert.isTrue(broadcastTx.receipt.status)
     });
 
     it('tests permissioning', async () => {
-        const cirDef = JSON.parse(fs.readFileSync(path.join(__dirname,'../../build/circuit.json')).toString());
-        circuit = new snarkjs.Circuit(cirDef);
-
         const prvKey = Buffer.from('0001020304050607080900010203040506070809000102030405060708080001', 'hex');
 
         const pubKey = eddsa.prv2pub(prvKey);
@@ -361,14 +455,12 @@ contract('Semaphore', function (accounts) {
 
         //console.log(w[circuit.getSignalIdx('main.root')]);
 
-        /*
-        console.log(tree[0]);
-        console.log(w[circuit.getSignalIdx('main.signal_hash')]);
-        console.log(w[circuit.getSignalIdx('main.external_nullifier')]);
-        console.log(w[circuit.getSignalIdx('main.root')]);
-        console.log(w[circuit.getSignalIdx('main.nullifiers_hash')]);
-        console.log(w[circuit.getSignalIdx('main.identity_commitment.out')]);
-        */
+        //console.log(tree[0]);
+        //console.log(w[circuit.getSignalIdx('main.signal_hash')]);
+        //console.log(w[circuit.getSignalIdx('main.external_nullifier')]);
+        //console.log(w[circuit.getSignalIdx('main.root')]);
+        //console.log(w[circuit.getSignalIdx('main.nullifiers_hash')]);
+        //console.log(w[circuit.getSignalIdx('main.identity_commitment.out')]);
 
         const vk_proof = fs.readFileSync(path.join(__dirname,'../../build/proving_key.bin'));
         const witness_bin = proof_util.convertWitness(snarkjs.stringifyBigInts(w));
@@ -414,12 +506,10 @@ contract('Semaphore', function (accounts) {
 
         assert.isTrue(broadcastTx.receipt.status)
 
-        /*
-        const evs = await semaphore.getPastEvents('allEvents', {
-            fromBlock: 0,
-            toBlock: 'latest'
-        });
-        console.log(evs);
-        */
+        //const evs = await semaphore.getPastEvents('allEvents', {
+            //fromBlock: 0,
+            //toBlock: 'latest'
+        //});
+        //console.log(evs);
     });
 });

@@ -26,8 +26,12 @@ import "./Ownable.sol";
 
 contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
     // The external_nullifier helps to prevent double-signalling by the same
-    // user.
-    uint256 public external_nullifier;
+    // user. The external_nullifiers mapping allows for quick lookups of the
+    // existence of an external nullifier, and the external_nullifiers_by_index
+    // allows for easy enumeration of all external nullifiers.
+    mapping (uint256 => bool) external_nullifiers;
+    mapping (uint256 => uint256) external_nullifiers_by_index;
+    uint256 private next_external_nullifier_index;
 
     uint8 public id_tree_index;
 
@@ -59,8 +63,8 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         _;
     }
 
-    constructor(uint8 tree_levels, uint256 zero_value, uint256 external_nullifier_in) Ownable() public {
-        external_nullifier = external_nullifier_in;
+    constructor(uint8 tree_levels, uint256 zero_value, uint256 first_external_nullifier) Ownable() public {
+        addExternalNullifier(first_external_nullifier);
         id_tree_index = init_tree(tree_levels, zero_value);
     }
 
@@ -130,7 +134,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
     ) public view returns (bool) {
         return hasNullifier(input[1]) == false &&
             signal_hash == input[2] &&
-            external_nullifier == input[3] &&
+            hasExternalNullifier(input[3]) &&
             isInRootHistory(input[0]) &&
             verifyProof(a, b, c, input);
     }
@@ -155,7 +159,7 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
 
         require(hasNullifier(input[1]) == false, "Semaphore: nullifier already seen");
         require(signal_hash == input[2], "Semaphore: signal hash mismatch");
-        require(external_nullifier == input[3], "Semaphore: external nullifier mismatch");
+        require(hasExternalNullifier(input[3]), "Semaphore: external nullifier mismatch");
         require(isInRootHistory(input[0]), "Semaphore: root not seen");
         require(verifyProof(a, b, c, input), "Semaphore: invalid proof");
         _;
@@ -176,13 +180,15 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         uint[2] memory c,
         uint[4] memory input // (root, nullifiers_hash, signal_hash, external_nullifier)
     ) public 
-    onlyOwnerIfPermissioned
-    isValidSignalAndProof(signal, a, b, c, input)
+        onlyOwnerIfPermissioned
+        isValidSignalAndProof(signal, a, b, c, input)
     {
         uint nullifiers_hash = input[1];
+
         signals[current_signal_index++] = signal;
         nullifier_hash_history[nullifiers_hash] = true;
-        emit SignalBroadcast(signal, nullifiers_hash, external_nullifier);
+
+        emit SignalBroadcast(signal, nullifiers_hash, input[3]);
     }
 
     /*
@@ -218,11 +224,42 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
     }
 
     /*
-     * Sets a new external nullifier for the contract. Only the owner can do this.
+     * Adds an external nullifier to the contract. Only the owner can do this.
      * @param new_external_nullifier The new external nullifier to set
      */
-    function setExternalNullifier(uint256 new_external_nullifier) public onlyOwner {
-      external_nullifier = new_external_nullifier;
+    function addExternalNullifier(uint256 _external_nullifier) public onlyOwner {
+        // The external nullifier must not have already been set
+        require(external_nullifiers[_external_nullifier] == false, "Semaphore: external nullifier already set");
+
+        // Add a new external nullifier
+        external_nullifiers[_external_nullifier] = true;
+        external_nullifiers_by_index[next_external_nullifier_index] = _external_nullifier;
+
+        // Update the next index
+        next_external_nullifier_index += 1;
+    }
+
+    /*
+     * Returns the next external nullifier index.
+     */
+    function getNextExternalNullifierIndex() public view returns (uint256) {
+        return next_external_nullifier_index;
+    }
+
+    /*
+     * Returns the external nullifier at _index.
+     * @param _index The index to use to look up the external_nullifiers_by_index mapping
+     */
+    function getExternalNullifierByIndex(uint256 _index) public view returns (uint256) {
+        return external_nullifiers_by_index[_index];
+    }
+
+    /*
+     * Returns true if and only if the specified external nullifier exists
+     * @param _external_nullifier The specified external nullifier
+     */
+    function hasExternalNullifier(uint256 _external_nullifier) public view returns (bool) {
+        return external_nullifiers[_external_nullifier];
     }
 
     /*
