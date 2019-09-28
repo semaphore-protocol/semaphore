@@ -123,22 +123,23 @@ contract('Semaphore', function (accounts) {
         const identity_nullifier = bigInt('231');
         const identity_trapdoor = bigInt('232');
 
-        const storage_path = '/tmp/rocksdb_semaphore_test';
-        if (fs.existsSync(storage_path)) {
-            del.sync(storage_path, { force: true });
-        }
+        //const storage_path = '/tmp/rocksdb_semaphore_test';
+        //if (fs.existsSync(storage_path)) {
+            //del.sync(storage_path, { force: true });
+        //}
         const default_value = '0';
-        const storage = new RocksDb(storage_path);
+        //const storage = new RocksDb(storage_path);
         const memStorage = new MemStorage();
         const hasher = new MimcSpongeHasher();
         const prefix = 'semaphore';
-        const tree = new MerkleTree(
-            prefix,
-            storage,
-            hasher,
-            20,
-            default_value,
-        );
+
+        //const tree = new MerkleTree(
+            //prefix,
+            //storage,
+            //hasher,
+            //20,
+            //default_value,
+        //);
 
         const memTree = new MerkleTree(
             prefix,
@@ -158,17 +159,17 @@ contract('Semaphore', function (accounts) {
 
         for (let i=0; i < identity_commitments.length; i++) {
           const idc = identity_commitments[i];
-          await tree.update(next_index, idc.toString());
+          //await tree.update(next_index, idc.toString());
           await memTree.update(next_index, idc.toString());
         }
 
-        const identity_path = await tree.path(next_index);
+        //const identity_path = await tree.path(next_index);
         const mem_identity_path = await memTree.path(next_index);
 
-        assert.equal(JSON.stringify(identity_path), JSON.stringify(mem_identity_path))
+        //assert.equal(JSON.stringify(identity_path), JSON.stringify(mem_identity_path))
 
-        const identity_path_elements = identity_path.path_elements;
-        const identity_path_index = identity_path.path_index;
+        const identity_path_elements = mem_identity_path.path_elements;
+        const identity_path_index = mem_identity_path.path_index;
 
         //console.log(identity_commitment.toString());
         //console.log(identity_path_elements, identity_path_index, identity_path.root);
@@ -191,7 +192,7 @@ contract('Semaphore', function (accounts) {
         const root = w[circuit.getSignalIdx('main.root')];
         const nullifiers_hash = w[circuit.getSignalIdx('main.nullifiers_hash')];
         assert(circuit.checkWitness(w));
-        assert.equal(w[circuit.getSignalIdx('main.root')].toString(), identity_path.root);
+        assert.equal(w[circuit.getSignalIdx('main.root')].toString(), mem_identity_path.root);
 
         //console.log(w[circuit.getSignalIdx('main.root')]);
 
