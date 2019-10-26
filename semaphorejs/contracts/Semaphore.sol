@@ -26,13 +26,15 @@ import "./Ownable.sol";
 
 contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
     // The external_nullifier helps to prevent double-signalling by the same
-    // user. The active_external_nullifiers mapping allows for quick lookups of the
-    // existence of an external nullifier, and the external_nullifier_history
-    // allows for easy enumeration of all external nullifiers.
+    // user. The active_external_nullifiers mapping allows for quick lookups of
+    // whether an external nullifier is active, and the
+    // external_nullifier_history allows for easy enumeration of all external
+    // nullifiers.
     // Note that external_nullifier_history(index) IS NOT the source of truth
-    // about whether an external nullifier exists, as removeExternalNullifier()
-    // only sets the boolean of the active_external_nullifiers mapping to false, and
-    // doesn't touch external_nullifier_history
+    // about whether an external nullifier is active, as
+    // deactivateExternalNullifier() only sets the boolean of the
+    // active_external_nullifiers mapping to false, and doesn't touch
+    // external_nullifier_history.
     mapping (uint256 => bool) active_external_nullifiers;
     mapping (uint256 => uint256) external_nullifier_history;
     uint256 private next_external_nullifier_history_index;
@@ -53,6 +55,9 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
 
     // All signals broadcasted
     mapping (uint => bytes) public signals;
+
+    // A mapping between signal indices to external nullifiers
+    mapping (uint => uint256) public signal_index_to_external_nullifier;
 
     // The higest index of the `signals` mapping
     uint public current_signal_index = 0;
@@ -190,7 +195,12 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
     {
         uint nullifiers_hash = input[1];
 
-        signals[current_signal_index++] = signal;
+        signals[current_signal_index] = signal;
+
+        signal_index_to_external_nullifier[current_signal_index] = uint256(input[3]);
+
+        current_signal_index ++;
+
         nullifier_hash_history[nullifiers_hash] = true;
 
         emit SignalBroadcast(signal, nullifiers_hash, input[3]);
@@ -244,11 +254,11 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
         next_external_nullifier_history_index ++;
     }
 
-    function removeExternalNullifier(uint256 _external_nullifier) public onlyOwner {
+    function deactivateExternalNullifier(uint256 _external_nullifier) public onlyOwner {
         // The external nullifier must have already been set
         require(active_external_nullifiers[_external_nullifier] == true, "Semaphore: external nullifier not found");
 
-        // Remove the external nullifier
+        // Deactivate the external nullifier
         active_external_nullifiers[_external_nullifier] = false;
     }
 
@@ -265,6 +275,14 @@ contract Semaphore is Verifier, MultipleMerkleTree, Ownable {
      */
     function getExternalNullifierByIndex(uint256 _index) public view returns (uint256) {
         return external_nullifier_history[_index];
+    }
+
+    /*
+     * Returns the external nullifier which a signal at _index broadcasted to
+     * @param _index The index to use to look up the signal_index_to_external_nullifier mapping
+     */
+    function getExternalNullifierBySignalIndex(uint _index) public view returns (uint256) {
+        return signal_index_to_external_nullifier[_index];
     }
 
     /*
