@@ -123,23 +123,10 @@ contract('Semaphore', function (accounts) {
         const identity_nullifier = bigInt('231');
         const identity_trapdoor = bigInt('232');
 
-        //const storage_path = '/tmp/rocksdb_semaphore_test';
-        //if (fs.existsSync(storage_path)) {
-            //del.sync(storage_path, { force: true });
-        //}
         const default_value = '0';
-        //const storage = new RocksDb(storage_path);
         const memStorage = new MemStorage();
         const hasher = new MimcSpongeHasher();
         const prefix = 'semaphore';
-
-        //const tree = new MerkleTree(
-            //prefix,
-            //storage,
-            //hasher,
-            //20,
-            //default_value,
-        //);
 
         const memTree = new MerkleTree(
             prefix,
@@ -159,14 +146,10 @@ contract('Semaphore', function (accounts) {
 
         for (let i=0; i < identity_commitments.length; i++) {
           const idc = identity_commitments[i];
-          //await tree.update(next_index, idc.toString());
           await memTree.update(next_index, idc.toString());
         }
 
-        //const identity_path = await tree.path(next_index);
         const mem_identity_path = await memTree.path(next_index);
-
-        //assert.equal(JSON.stringify(identity_path), JSON.stringify(mem_identity_path))
 
         const identity_path_elements = mem_identity_path.path_elements;
         const identity_path_index = mem_identity_path.path_index;
@@ -255,6 +238,10 @@ contract('Semaphore', function (accounts) {
             signal_to_contract,
             a, b, c, input
         );
+
+        // check the signal_index_to_external_nullifier mapping
+        const en = await semaphore.getExternalNullifierBySignalIndex(0)
+        assert.equal(en.toString(), external_nullifier.toString())
 
         assert.isTrue(broadcastTx.receipt.status)
 
@@ -409,7 +396,7 @@ contract('Semaphore', function (accounts) {
         identity_commitments.push(identity_commitment)
 
         const semaphore = await Semaphore.deployed();
-        await semaphore.removeExternalNullifier(new_external_nullifier.toString())
+        await semaphore.deactivateExternalNullifier(new_external_nullifier.toString())
         assert.isFalse(await semaphore.hasExternalNullifier(new_external_nullifier.toString()))
 
         const receipt = await semaphore.insertIdentity(identity_commitment.toString());
@@ -603,6 +590,10 @@ contract('Semaphore', function (accounts) {
             signal_to_contract,
             a, b, c, input
         );
+
+        // check the signal_index_to_external_nullifier mapping
+        const en = await semaphore.getExternalNullifierBySignalIndex(1)
+        assert.equal(en.toString(), new_external_nullifier.toString())
 
         assert.isTrue(broadcastTx.receipt.status)
 
