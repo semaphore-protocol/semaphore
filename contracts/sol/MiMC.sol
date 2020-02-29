@@ -21,15 +21,10 @@
 
 pragma solidity ^0.5.0;
 
-import { IncrementalMerkleTree } from './IncrementalMerkleTree.sol';
-
-contract IncrementalMerkleTreeClient is IncrementalMerkleTree{
-    constructor(uint8 _treeLevels, uint256 _zeroValue)
-        IncrementalMerkleTree(_treeLevels, _zeroValue)
-        public {
-    }
-
-    function insertLeafAsClient(uint256 _leaf) public {
-        insertLeaf(_leaf);
-    }
+library MiMC {
+    // Note that this function could also be called "MiMCFeistel", but we name
+    // it "MiMCSponge" for consistency.
+    function MiMCSponge(uint256 in_xL, uint256 in_xR) pure public 
+               returns (uint256 xL, uint256 xR);
 }
+

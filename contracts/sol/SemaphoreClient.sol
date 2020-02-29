@@ -1,3 +1,24 @@
+/*
+ * Semaphore - Zero-knowledge signaling on Ethereum
+ * Copyright (C) 2020 Barry WhiteHat <barrywhitehat@protonmail.com>, Kobi
+ * Gurkan <kobigurk@gmail.com> and Koh Wei Jie (contact@kohweijie.com)
+ *
+ * This file is part of Semaphore.
+ *
+ * Semaphore is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Semaphore is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Semaphore.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 pragma solidity ^0.5.0;
 
 import { Semaphore } from './Semaphore.sol';
@@ -35,26 +56,24 @@ contract SemaphoreClient {
         identityCommitments.push(_leaf);
     }
 
-    function addExternalNullifier(uint256 _externalNullifier) public {
+    function addExternalNullifier(uint232 _externalNullifier) public {
         semaphore.addExternalNullifier(_externalNullifier);
     }
 
-    function deactivateExternalNullifier(uint256 _externalNullifier) public {
+    function deactivateExternalNullifier(uint232 _externalNullifier) public {
         semaphore.deactivateExternalNullifier(_externalNullifier);
     }
 
-    function reactivateExternalNullifier(uint256 _externalNullifier) public {
+    function reactivateExternalNullifier(uint232 _externalNullifier) public {
         semaphore.reactivateExternalNullifier(_externalNullifier);
     }
 
     function broadcastSignal(
         bytes memory _signal,
-        uint256[2] memory _a,
-        uint256[2][2] memory _b,
-        uint256[2] memory _c,
+        uint256[8] memory _proof,
         uint256 _root,
         uint256 _nullifiersHash,
-        uint256 _externalNullifier
+        uint232 _externalNullifier
     ) public {
         uint256 signalIndex = nextSignalIndex;
 
@@ -68,7 +87,7 @@ contract SemaphoreClient {
         nextSignalIndex ++;
 
         // broadcast the signal
-        semaphore.broadcastSignal(_signal, _a, _b, _c, _root, _nullifiersHash, _externalNullifier);
+        semaphore.broadcastSignal(_signal, _proof, _root, _nullifiersHash, _externalNullifier);
 
         emit SignalBroadcastByClient(signalIndex);
     }
@@ -79,5 +98,9 @@ contract SemaphoreClient {
      */
     function getExternalNullifierBySignalIndex(uint256 _index) public view returns (uint256) {
         return signalIndexToExternalNullifier[_index];
+    }
+
+    function setPermissioning(bool _newPermission) public {
+        semaphore.setPermissioning(_newPermission);
     }
 }

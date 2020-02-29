@@ -2,10 +2,10 @@
 
 cd "$(dirname "$0")"
 
-CIRCUIT_JSON="https://www.dropbox.com/s/5pdqaxl80cl4bkn/circuit.json?dl=1"
-PROVING_KEY_BIN="https://www.dropbox.com/s/1221knka63bowio/proving_key.bin?dl=1"
-VERIFICATION_KEY_JSON="https://www.dropbox.com/s/yi423k5mx3qgsb7/verification_key.json?dl=1"
-VERIFIER_SOL="https://www.dropbox.com/s/ejxa3srnf02h6b4/verifier.sol?dl=1"
+CIRCUIT_JSON="https://www.dropbox.com/s/3gzxjibqgb6ke13/circuit.json?dl=1"
+PROVING_KEY_BIN="https://www.dropbox.com/s/qjlu6v125g7jkcq/proving_key.bin?dl=1"
+VERIFICATION_KEY_JSON="https://www.dropbox.com/s/rwjwu31c7pzhsth/verification_key.json?dl=1"
+VERIFIER_SOL="https://www.dropbox.com/s/q5fjzu4zxhc0393/verifier.sol?dl=1"
 
 CIRCUIT_JSON_PATH="../build/circuit.json"
 PROVING_KEY_BIN_PATH="../build/proving_key.bin"
@@ -30,6 +30,6 @@ if [ ! -f "$VERIFICATION_KEY_PATH" ]; then
 fi
 
 if [ ! -f "$VERIFIER_SOL_PATH" ]; then
-    echo "Downloading verification_key.json"
+    echo "Downloading verifier.sol"
     wget --quiet $VERIFIER_SOL -O $VERIFIER_SOL_PATH
 fi
