@@ -1,0 +1,17 @@
+{
+  "name": "semaphore",
+  "version": "0.0.1",
+  "description": "Solidity contracts, zk-SNARk circuits, and test scripts for the Semaphore zero-knowledge signalling gadget",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "jest",
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build"
+  },
+  "author": "Barry WhiteHat, Kobi Gurkan, Koh Wei Jie",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "lerna": "^3.18.3",
+    "typescript": "^3.6.4"
+  }
+}
