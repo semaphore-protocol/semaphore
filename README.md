@@ -37,6 +37,7 @@ To download the circuit, proving key, and verification key, run:
 
 ```bash
 # Start from the base directory
+
 cd circuits && \
 ./circuits/scripts/download_snarks.sh
 ```
@@ -45,6 +46,7 @@ To generate the above files locally instead, run:
 
 ```bash
 # Start from the base directory
+
 cd circuits && \
 ./circuits/scripts/build_snarks.sh
 ```
@@ -55,6 +57,7 @@ Build the Solidity contracts (you need `solc` v 0.5.12 installed in your `$PATH`
 
 ```bash
 # Start from the base directory
+
 cd contracts && \
 npm run compileSol
 ```
@@ -62,8 +65,9 @@ npm run compileSol
 Run tests while still in the `contracts/` directory:
 
 ```bash
-# The first command tests the Merkle tree contract and the second # tests the
-Semaphore contract
+# The first command tests the Merkle tree contract and the second
+# tests the Semaphore contract
+
 npm run test-semaphore && \ 
 npm run test-mt
 ```

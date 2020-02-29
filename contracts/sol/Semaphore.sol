@@ -99,11 +99,11 @@ contract Semaphore is Verifier, IncrementalMerkleTree, Ownable {
 
     /*
      * Registers a new user. 
-     * @param identity_commitment The user's identity commitment, which is the
+     * @param _identity_commitment The user's identity commitment, which is the
      *                            hash of their public key and their identity
      *                            nullifier (a random 31-byte value). It should
      *                            be the output of a Pedersen hash. It is the
-     *                            responsibilty of the caller to verify this.
+     *                            responsibility of the caller to verify this.
      */
     function insertIdentity(uint256 _identityCommitment) public onlyOwner
     returns (uint256) {
