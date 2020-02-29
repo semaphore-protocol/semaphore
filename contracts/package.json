@@ -1,0 +1,38 @@
+{
+    "name": "semaphore-contracts",
+    "version": "0.0.1",
+    "description": "",
+    "main": "build/index.js",
+    "scripts": {
+        "watch": "tsc --watch",
+        "ganache": "./scripts/runGanache.sh",
+        "compileSol": "./scripts/compileSol.sh",
+        "test-semaphore": "NODE_ENV=local-dev jest --forceExit --testPathPattern Semaphore.test.ts",
+        "test-semaphore-debug": "NODE_ENV=local-dev node --inspect-brk ./node_modules/jest/bin/jest.js --testPathPattern Semaphore.test.ts",
+        "test-verifier": "NODE_ENV=local-dev jest --forceExit --testPathPattern FixedVerifier.test.ts",
+        "test-verifier-debug": "NODE_ENV=local-dev node --inspect-brk ./node_modules/jest/bin/jest.js --testPathPattern FixedVerifier.test.ts",
+        "test-mt": "NODE_ENV=local-dev jest --forceExit --testPathPattern IncrementalMerkleTree.test.ts",
+        "test-mt-debug": "NODE_ENV=local-dev node --inspect-brk ./node_modules/jest/bin/jest.js --testPathPattern IncrementalMerkleTree.test.ts",
+        "build": "tsc"
+    },
+  "_moduleAliases": {
+    "@semaphore-contracts": "."
+  },
+    "dependencies": {
+        "semaphore-config": "0.0.1",
+        "ethers": "4.0.38",
+        "circomlib": "https://github.com/kobigurk/circomlib.git#347822604996bf25f659f96ee0f02810a1f71bb0",
+        "ganache-cli": "^6.7.0"
+    },
+    "devDependencies": {
+        "@types/jest": "^24.0.20",
+        "@types/node": "^12.7.7",
+        "etherlime": "^2.2.4",
+        "etherlime-lib": "^1.1.5",
+        "jest": "^24.9.0",
+        "libsemaphore": "^1.0.4",
+        "module-alias": "^2.2.2",
+        "truffle-artifactor": "^4.0.30",
+        "ts-jest": "^24.1.0"
+    }
+}

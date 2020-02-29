@@ -1,0 +1,24 @@
+{
+    "name": "semaphore-circuits",
+    "version": "0.0.1",
+    "description": "",
+    "main": "build/index.js",
+    "scripts": {
+        "watch": "tsc --watch",
+        "build": "tsc",
+        "test-blake2s": "NODE_ENV=local-dev jest --forceExit --testPathPattern Blake2s.test.ts Uint32.test.ts"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@types/jest": "^24.0.20",
+        "@types/node": "^12.7.7",
+        "circom": "0.0.34",
+        "circomlib": "git+https://github.com/kobigurk/circomlib.git#4284dc1ef984a204db08864f5da530c97f9376ef",
+        "jest": "^24.9.0",
+        "module-alias": "^2.2.2",
+        "snarkjs": "file://../snarkjs_patched/",
+        "ts-jest": "^24.1.0",
+        "typescript": "^3.7.3",
+        "websnark": "0.0.5"
+    }
+}
