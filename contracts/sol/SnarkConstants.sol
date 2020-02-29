@@ -21,15 +21,7 @@
 
 pragma solidity ^0.5.0;
 
-import { IncrementalMerkleTree } from './IncrementalMerkleTree.sol';
-
-contract IncrementalMerkleTreeClient is IncrementalMerkleTree{
-    constructor(uint8 _treeLevels, uint256 _zeroValue)
-        IncrementalMerkleTree(_treeLevels, _zeroValue)
-        public {
-    }
-
-    function insertLeafAsClient(uint256 _leaf) public {
-        insertLeaf(_leaf);
-    }
+contract SnarkConstants {
+    // The scalar field
+    uint256 internal constant SNARK_SCALAR_FIELD = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
 }

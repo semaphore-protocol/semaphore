@@ -9,58 +9,77 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:11.14.0
 
-    working_directory: ~/semaphore/semaphorejs
+    working_directory: ~/semaphore_private/
 
     steps:
       - checkout:
-          path: ~/semaphore
+          path: ~/semaphore_private/
 
-      # restore or install npm packages
+      - run:
+          name: Install solc
+          command: wget https://github.com/ethereum/solidity/releases/download/v0.5.12/solc-static-linux && chmod a+x solc-static-linux && sudo mv solc-static-linux /usr/bin/solc
+
       - restore_cache:
-          name: restore-npm-cache
           keys:
-            - v1.10-dependencies-{{ checksum "package-lock.json" }}
+            - v1.9-dependencies-{{ checksum "package-lock.json" }}
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: v1.10-dependencies-{{ checksum "package-lock.json" }}
+          key: v1.9-dependencies-{{ checksum "package-lock.json" }}
+
+      - restore_cache:
+          keys:
+            - v1.9-dependencies-{{ checksum "contracts/package-lock.json" }}-{{ checksum "circuits/package-lock.json" }}-{{ checksum "config/package-lock.json" }}
+
+      - run: npm run bootstrap && npm run build
+
+      - save_cache:
+          paths:
+            - contracts/node_modules
+            - config/node_modules
+            - circuits/node_modules
+          key: v1.8-dependencies-{{ checksum "contracts/package-lock.json" }}-{{ checksum "circuits/package-lock.json" }}-{{ checksum "config/package-lock.json" }}
 
       # checksum the snarks definitions
       - run:
-          name: checksum-snarks
-          command: cd scripts && ./checksum_snarks.sh
+          name: Checksum snark files
+          command: cd circuits/ && ./scripts/checksum_snarks.sh
 
-      # Download and cache dependencies
       - restore_cache:
           name: restore-snark-cache
           keys:
-            - v1.13-dependencies-{{ checksum "build/.snark_checksum" }}
+            - v1.9-dependencies-{{ checksum "circuits/build/.snark_checksum" }}
 
       # build snarks
       - run:
-          name: end-to-end
-          command: cd scripts && ./build_snarks.sh
+          name: Build snark files
+          command: cd circuits && ./scripts/build_snarks.sh
           no_output_timeout: 600m
 
       # cache generated snark circuit and keys
       - save_cache:
-          key: v1.13-dependencies-{{ checksum "build/.snark_checksum" }}
+          key: v1.9-dependencies-{{ checksum "circuits/build/.snark_checksum" }}
           paths:
-            - build/circuit.json
-            - build/proving_key.bin
-            - build/proving_key.json
-            - build/verification_key.json
-            - build/verifier.sol
+            - circuits/build/circuit.json
+            - circuits/build/proving_key.bin
+            - circuits/build/proving_key.json
+            - circuits/build/verification_key.json
+            - circuits/build/verifier.sol
 
-      # build snarks
       - run:
-          name: integration_tests
-          command: cd scripts && ./integration_tests.sh
-          no_output_timeout: 600m
+          name: Compile contracts
+          command: cd contracts && npm run compileSol
+
+      - run:
+          name: Run circuit tests
+          command: cd circuits && ./scripts/runTestsInCircleCi.sh
+
+      - run:
+          name: Run contract tests
+          command: cd contracts && ./scripts/runTestsInCircleCi.sh
 
       - store_artifacts:
-          path: ~/semaphore/semaphorejs/build
-
+          path: circuits/build

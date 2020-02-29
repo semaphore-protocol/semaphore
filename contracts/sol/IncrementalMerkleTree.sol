@@ -1,7 +1,7 @@
 /*
  * Semaphore - Zero-knowledge signaling on Ethereum
- * Copyright (C) 2019 Kobi Gurkan <kobigurk@gmail.com> and Koh Wei Jie
- * (contact@kohweijie.com)
+ * Copyright (C) 2020 Barry WhiteHat <barrywhitehat@protonmail.com>, Kobi
+ * Gurkan <kobigurk@gmail.com> and Koh Wei Jie (contact@kohweijie.com)
  *
  * This file is part of Semaphore.
  *
@@ -21,44 +21,55 @@
 
 pragma solidity ^0.5.0;
 
-library MiMC {
-    function MiMCSponge(uint256 in_xL, uint256 in_xR) pure public 
-               returns (uint256 xL, uint256 xR);
-}
+import { SnarkConstants } from "./SnarkConstants.sol";
+import { MiMC } from "./MiMC.sol";
 
-contract IncrementalMerkleTree {
-    uint256 constant order =  21888242871839275222246405745257275088548364400416034343698204186575808495617;
+contract IncrementalMerkleTree is SnarkConstants {
+    // The maximum tree depth
+    uint8 internal constant MAX_DEPTH = 32;
 
     // The tree depth
     uint8 internal treeLevels;
 
     // The number of inserted leaves
-    uint32 internal nextLeafIndex = 0;
+    uint256 internal nextLeafIndex = 0;
 
     // The Merkle root
-    uint256 internal treeRoot;
+    uint256 public root;
 
     // The Merkle path to the leftmost leaf upon initialisation. It *should
     // not* be modified after it has been set by the `initMerkleTree` function.
     // Caching these values is essential to efficient appends.
-    uint256[] zeros;
+    uint256[MAX_DEPTH] internal zeros;
 
     // Allows you to compute the path to the element (but it's not the path to
     // the elements). Caching these values is essential to efficient appends.
-    uint256[] filledSubtrees;
+    uint256[MAX_DEPTH] internal filledSubtrees;
 
-    event LeafInsertion(uint256 indexed leaf, uint32 indexed leafIndex);
+    // Whether the contract has already seen a particular Merkle tree root
+    mapping (uint256 => bool) public rootHistory;
+
+    event LeafInsertion(uint256 indexed leaf, uint256 indexed leafIndex);
 
     /*
-     * Store the Merkle root and intermediate values (the Merkle path to the
+     * Stores the Merkle root and intermediate values (the Merkle path to the
      * the first leaf) assuming that all leaves are set to _zeroValue.
      * @param _treeLevels The number of levels of the tree
-     * @param _zeroValue The value to set for every leaf
+     * @param _zeroValue The value to set for every leaf. Ideally, this should
+     *                   be a nothing-up-my-sleeve value, so that nobody can
+     *                   say that the deployer knows the preimage of an empty
+     *                   leaf.
      */
-    function initMerkleTree(uint8 _treeLevels, uint256 _zeroValue) internal {
+    constructor(uint8 _treeLevels, uint256 _zeroValue) internal {
+        // Limit the Merkle tree to MAX_DEPTH levels
+        require(
+            _treeLevels > 0 && _treeLevels <= MAX_DEPTH,
+            "IncrementalMerkleTree: _treeLevels must be between 0 and 33"
+        );
+        
         /*
            To initialise the Merkle tree, we need to calculate the Merkle root
-           assuming that every leaf is 0 (a = b = c = d = 0)
+           assuming that each leaf is the zero value.
 
             H(H(a,b), H(c,d))
              /             \
@@ -66,66 +77,54 @@ contract IncrementalMerkleTree {
              /   \        /    \
             a     b      c      d
 
-           `zeros` and `filledSubtrees` will come in handly later when we do
+           `zeros` and `filledSubtrees` will come in handy later when we do
            inserts or updates. e.g when we insert a value in index 1, we will
            need to look up values from those arrays to recalculate the Merkle
            root.
          */
         treeLevels = _treeLevels;
 
-        // zeroes is in storage, while currentZeros is in memory
-        uint256[] memory currentZeros = new uint256[](_treeLevels);
+        zeros[0] = _zeroValue;
 
-        // write to currentZeros
-        currentZeros[0] = _zeroValue;
+        uint256 currentZero = _zeroValue;
         for (uint8 i = 1; i < _treeLevels; i++) {
-            uint256 currentZero = currentZeros[i-1];
             uint256 hashed = hashLeftRight(currentZero, currentZero);
-            currentZeros[i] = hashed;
+            zeros[i] = hashed;
+            filledSubtrees[i] = hashed;
+            currentZero = hashed;
         }
 
-        // store the in-memory currentZeros array to zeros and filledSubtrees
-        zeros = currentZeros;
-        filledSubtrees = currentZeros;
-
-        uint256 lastZero = zeros[_treeLevels - 1];
-        treeRoot = hashLeftRight(lastZero, lastZero);
+        root = hashLeftRight(currentZero, currentZero);
     }
 
-    function insertLeaf(uint256 _leaf) internal {
+    /*
+     * Inserts a leaf into the Merkle tree and updates the root and filled
+     * subtrees.
+     * @param _leaf The value to insert. It must be less than the snark scalar
+     *              field or this function will throw.
+     * @return The leaf index.
+     */
+    function insertLeaf(uint256 _leaf) internal returns (uint256) {
         require(
-            _leaf < order,
-            "MerkleTreeLib: insertLeaf argument must be < order"
+            _leaf < SNARK_SCALAR_FIELD,
+            "IncrementalMerkleTree: insertLeaf argument must be < SNARK_SCALAR_FIELD"
         );
 
-        uint32 currentIndex = nextLeafIndex;
+        uint256 currentIndex = nextLeafIndex;
 
-        uint32 depth = treeLevels;
-        if (depth == 32) {
-            // uint32(2) ** 32 overflows to 0, so if the depth is 32, we have
-            // to limit the number of leaves to (2 ** 32 - 1)
-            require(
-                currentIndex <= uint32(2) ** depth - 1,
-                "MerkleTreeLib: tree is full (depth 32)"
-            );
-
-        } else {
-            require(
-                currentIndex <= uint32(2) ** depth,
-                "MerkleTreeLib: tree is full"
-            );
-        }
+        uint256 depth = uint256(treeLevels);
+        require(currentIndex < uint256(2) ** depth, "IncrementalMerkleTree: tree is full");
 
         uint256 currentLevelHash = _leaf;
         uint256 left;
         uint256 right;
 
         for (uint8 i = 0; i < treeLevels; i++) {
-            // if current_index is 5, for instance, over the iterations it will look like this:
-            // 5, 2, 1, 0, 0, 0 ...
+            // if current_index is 5, for instance, over the iterations it will
+            // look like this: 5, 2, 1, 0, 0, 0 ...
 
             if (currentIndex % 2 == 0) {
-                // For later values of `i`, use the prevous hash as `left`, and
+                // For later values of `i`, use the previous hash as `left`, and
                 // the (hashed) zero value for `right`
                 left = currentLevelHash;
                 right = zeros[i];
@@ -138,20 +137,19 @@ contract IncrementalMerkleTree {
 
             currentLevelHash = hashLeftRight(left, right);
 
-            currentIndex /= 2;
+            // equivalent to currentIndex /= 2;
+            currentIndex >>= 1;
         }
 
-        treeRoot = currentLevelHash;
+        root = currentLevelHash;
+        rootHistory[root] = true;
+
+        uint256 n = nextLeafIndex;
         nextLeafIndex += 1;
 
-        emit LeafInsertion(_leaf, currentIndex);
-    }
+        emit LeafInsertion(_leaf, n);
 
-    /*
-     * @return The current tree root
-     */
-    function getTreeRoot() public view returns (uint256) {
-        return treeRoot;
+        return currentIndex;
     }
 
     /*
@@ -161,9 +159,7 @@ contract IncrementalMerkleTree {
      * @param _right The second value
      * @return The uint256 hash of _left and _right
      */
-    function hashLeftRight(uint256 _left, uint256 _right) public pure returns (uint256 mimc_hash) {
-        uint256 R = 0;
-        uint256 C = 0;
+    function hashLeftRight(uint256 _left, uint256 _right) internal pure returns (uint256) {
 
         // Solidity documentation states:
         // `addmod(uint x, uint y, uint k) returns (uint)`:
@@ -171,12 +167,14 @@ contract IncrementalMerkleTree {
         // precision and does not wrap around at 2**256. Assert that k != 0
         // starting from version 0.5.0.
 
-        R = _left;
+        uint256 R = _left;
+        uint256 C = 0;
+
+        (R, C) = MiMC.MiMCSponge(R, 0);
+
+        R = addmod(R, _right, SNARK_SCALAR_FIELD);
         (R, C) = MiMC.MiMCSponge(R, C);
 
-        R = addmod(R, _right, order);
-        (R, C) = MiMC.MiMCSponge(R, C);
-
-        mimc_hash = R;
+        return R;
     }
 }

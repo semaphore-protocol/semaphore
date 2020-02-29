@@ -22,7 +22,15 @@ import {
 const LEVELS = 20
 let tree
 
+const ZERO_VALUE = 
+    ethers.utils.solidityKeccak256(
+        ['bytes'],
+        [ethers.utils.toUtf8Bytes('Semaphore')]
+    )
+
 describe('IncrementalMerkleTree functions should match the semaphore-merkle-tree implementation', () => {
+    let libraries
+
     beforeAll(async () => {
         tree = setupTree(LEVELS)
 
@@ -38,33 +46,59 @@ describe('IncrementalMerkleTree functions should match the semaphore-merkle-tree
         console.log('Deploying MiMC')
         mimcContract = await deployer.deploy(MiMC, {})
 
-        const libraries = {
+        libraries = {
             MiMC: mimcContract.contractAddress,
         }
+    })
 
+    test('deployment', async () => {
         console.log('Deploying IncrementalMerkleTreeClient')
-        mtContract = await deployer.deploy(IncrementalMerkleTreeClient, libraries)
-    })
 
-    test('hashLeftRight', async () => {
-        const left = genIdentityCommitment(genIdentity()).toString()
-        const right = genIdentityCommitment(genIdentity()).toString()
-        const hash = await mtContract.hashLeftRight(left, right)
-        const hash2 = mimcSpongeHasher.hash(0, left, right)
-        expect(hash.toString()).toEqual(hash2)
-    })
-
-    test('initMerkleTree (via initMerkleTreeAsClient)', async () => {
-        const tx = await mtContract.initMerkleTreeAsClient(
+        mtContract = await deployer.deploy(
+            IncrementalMerkleTreeClient,
+            libraries,
             LEVELS,
-            ethers.utils.solidityKeccak256(['bytes'], [ethers.utils.toUtf8Bytes('Semaphore')]),
+            ZERO_VALUE,
         )
-        const receipt = await tx.wait()
 
-        console.log('Gas used by initMerkleTreeAsClient:', receipt.gasUsed.toString())
-        const root = await mtContract.getTreeRoot()
+        const root = await mtContract.root()
         const root2 = await tree.root()
         expect(root.toString()).toEqual(root2)
+    })
+
+    test('deployment should fail if the specified number of levels is 0', async () => {
+        try {
+            await deployer.deploy(
+                IncrementalMerkleTreeClient,
+                libraries,
+                0,
+                ZERO_VALUE,
+            )
+        } catch (e) {
+            expect(e.message.endsWith('IncrementalMerkleTree: _treeLevels must be between 0 and 33')).toBeTruthy()
+        }
+    })
+
+    test('initMerkleTree should fail if the specified number of levels exceeds 32', async () => {
+        try {
+            await deployer.deploy(
+                IncrementalMerkleTreeClient,
+                libraries,
+                33,
+                ZERO_VALUE,
+            )
+        } catch (e) {
+            expect(e.message.endsWith('IncrementalMerkleTree: _treeLevels must be between 0 and 33')).toBeTruthy()
+        }
+    })
+
+    test('insertLeaf should fail if the leaf > the snark scalar field', async () => {
+        const leaf = '21888242871839275222246405745257275088548364400416034343698204186575808495618'
+        try {
+            await mtContract.insertLeafAsClient(leaf)
+        } catch (e) {
+            expect(e.message.endsWith('IncrementalMerkleTree: insertLeaf argument must be < SNARK_SCALAR_FIELD'))
+        }
     })
 
     test('insertLeaf (via insertLeafAsClient)', async () => {
@@ -73,10 +107,24 @@ describe('IncrementalMerkleTree functions should match the semaphore-merkle-tree
         const receipt = await tx.wait()
 
         console.log('Gas used by insertLeaf:', receipt.gasUsed.toString())
-        tree.update(0, leaf)
+        await tree.update(0, leaf)
 
-        const root = await mtContract.getTreeRoot()
+        const root = await mtContract.root()
         const root2 = await tree.root()
         expect(root.toString()).toEqual(root2)
+    })
+
+    test('inserting a few leaves should work', async () => {
+        for (let i = 1; i < 9; i++) {
+            const leaf = genIdentityCommitment(genIdentity()).toString()
+            const tx = await mtContract.insertLeafAsClient(leaf)
+            const receipt = await tx.wait()
+
+            await tree.update(i, leaf)
+
+            const root = await mtContract.root()
+            const root2 = await tree.root()
+            expect(root.toString()).toEqual(root2)
+        }
     })
 })

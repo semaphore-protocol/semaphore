@@ -51,9 +51,8 @@ let mimcContract
 
 // hex representations of all inserted identity commitments
 let insertedIdentityCommitments: string[] = []
-const activeEn = genExternalNullifier(Date.now().toString())
-const inactiveEn = genExternalNullifier(Date.now().toString())
-const invalidEn = BigInt(Math.pow(2, 232)).toString()
+const activeEn = genExternalNullifier('1111')
+const inactiveEn = genExternalNullifier('2222')
 
 let deployer
 
@@ -114,22 +113,12 @@ describe('Semaphore', () => {
         expect(receipt.status).toEqual(1)
 
         const numInserted = await semaphoreContract.getNumIdentityCommitments()
-        expect(numInserted).toEqual(1)
+        expect(numInserted.toString()).toEqual('1')
 
         console.log('Gas used by insertIdentityAsClient():', receipt.gasUsed.toString())
 
         insertedIdentityCommitments.push('0x' + identityCommitment.toString(16))
         expect(hasEvent(receipt, semaphoreContract, 'LeafInsertion')).toBeTruthy()
-    })
-
-    test('inserting an identity commitment of the nothing-up-my-sleeve value should fail', async () => {
-        expect.assertions(1)
-        const nothingUpMySleeve = ethers.utils.solidityKeccak256(['bytes'], [ethers.utils.toUtf8Bytes('Semaphore')])
-        try {
-            await semaphoreClientContract.insertIdentityAsClient(nothingUpMySleeve)
-        } catch (e) {
-            expect(e.message.endsWith('Semaphore: identity commitment cannot be keccak256(0)')).toBeTruthy()
-        }
     })
 
     describe('identity insertions', () => {
@@ -159,83 +148,125 @@ describe('Semaphore', () => {
                 expect(idCommsBigint.indexOf(leafHex) > -1).toBeTruthy()
             }
         })
+
+        test('inserting an identity commitment of the nothing-up-my-sleeve value should fail', async () => {
+            expect.assertions(1)
+            const nothingUpMySleeve = 
+                BigInt(ethers.utils.solidityKeccak256(['bytes'], [ethers.utils.toUtf8Bytes('Semaphore')]))
+                %
+                BigInt('21888242871839275222246405745257275088548364400416034343698204186575808495617')
+
+            try {
+                await semaphoreClientContract.insertIdentityAsClient(nothingUpMySleeve.toString())
+            } catch (e) {
+                expect(e.message.endsWith('Semaphore: identity commitment cannot be the nothing-up-my-sleeve-value')).toBeTruthy()
+            }
+        })
+
     })
 
-    test('should be able to add an external nullifier', async () => {
-        expect.assertions(3)
-        const tx = await semaphoreClientContract.addExternalNullifier(
-            activeEn,
-            { gasLimit: 100000 },
-        )
-        const receipt = await tx.wait()
+    describe('external nullifiers', () => {
 
-        expect(receipt.status).toEqual(1)
-        expect(await semaphoreContract.isExternalNullifierActive(activeEn)).toBeTruthy()
-        expect(hasEvent(receipt, semaphoreContract, 'ExternalNullifierAdd')).toBeTruthy()
-    })
+        test('when there is only 1 external nullifier, the first and last external nullifier variables should be the same', async () => {
+            expect((await semaphoreContract.numExternalNullifiers()).toNumber()).toEqual(1)
+            const firstEn = await semaphoreContract.firstExternalNullifier()
+            const lastEn = await semaphoreContract.lastExternalNullifier()
+            expect(firstEn.toString()).toEqual(lastEn.toString())
+        })
 
-    test('adding an invalid external nullifier should fail', async () => {
-        expect.assertions(1)
-        try {
-            await semaphoreClientContract.addExternalNullifier(invalidEn)
-        } catch (e) {
-            expect(e.message.endsWith('Semaphore: external nullifier too large')).toBeTruthy()
-        }
-    })
+        test('getNextExternalNullifier should throw if there is only 1 external nullifier', async () => {
+            expect((await semaphoreContract.numExternalNullifiers()).toNumber()).toEqual(1)
+            const firstEn = await semaphoreContract.firstExternalNullifier()
+            try {
+                await semaphoreContract.getNextExternalNullifier(firstEn)
+            } catch (e) {
+                expect(e.message.endsWith('Semaphore: no external nullifier exists after the specified one')).toBeTruthy()
+            }
+        })
 
-    test('should be able to deactivate an external nullifier', async () => {
-        await (await semaphoreClientContract.addExternalNullifier(
-            inactiveEn,
-            { gasLimit: 100000 },
-        )).wait()
-        const tx = await semaphoreClientContract.deactivateExternalNullifier(
-            inactiveEn,
-            { gasLimit: 100000 },
-        )
-        const receipt = await tx.wait()
-        expect(receipt.status).toEqual(1)
-
-        expect(await semaphoreContract.isExternalNullifierActive(inactiveEn)).toBeFalsy()
-    })
-
-    test('reactivating a deactivated external nullifier and then deactivating it should work', async () => {
-        expect.assertions(4)
-
-        // inactiveEn should be inactive
-        expect(await semaphoreContract.isExternalNullifierActive(inactiveEn)).toBeFalsy()
-        
-        const en = (await semaphoreContract.getExternalNullifierByIndex(2)).toString()
-        expect(BigInt(en)).toEqual(BigInt(inactiveEn))
-
-        // reactivate inactiveEn
-        let tx = await semaphoreClientContract.reactivateExternalNullifier(2, { gasLimit: 100000 }) 
-        await tx.wait()
-
-        expect(await semaphoreContract.isExternalNullifierActive(inactiveEn)).toBeTruthy()
-
-        tx = await semaphoreClientContract.deactivateExternalNullifier(
-            inactiveEn,
-            { gasLimit: 100000 },
-        )
-        await tx.wait()
-
-        expect(await semaphoreContract.isExternalNullifierActive(inactiveEn)).toBeFalsy()
-    })
-
-    test('enumerate external nullifiers', async () => {
-        const index = await semaphoreContract.getNextExternalNullifierIndex()
-
-        const externalNullifiers: BigInt[] = []
-        for (let i = 0; i < index; i++) {
-            externalNullifiers.push(
-                BigInt((await semaphoreContract.getExternalNullifierByIndex(i)).toHexString())
+        test('should be able to add an external nullifier', async () => {
+            expect.assertions(4)
+            const tx = await semaphoreClientContract.addExternalNullifier(
+                activeEn,
+                { gasLimit: 200000 },
             )
-        }
+            const receipt = await tx.wait()
 
-        expect.assertions(externalNullifiers.length)
-        expect(externalNullifiers.indexOf(BigInt(0)) > -1).toBeTruthy()
-        expect(externalNullifiers.indexOf(BigInt(activeEn)) > -1).toBeTruthy()
-        expect(externalNullifiers.indexOf(BigInt(inactiveEn)) > -1).toBeTruthy()
+            expect(receipt.status).toEqual(1)
+            expect(hasEvent(receipt, semaphoreContract, 'ExternalNullifierAdd')).toBeTruthy()
+
+            // Check if isExternalNullifierActive works
+            const isActive = await semaphoreContract.isExternalNullifierActive(activeEn)
+            expect(isActive).toBeTruthy()
+
+            // Check if numExternalNullifiers() returns the correct value
+            expect((await semaphoreContract.numExternalNullifiers()).toNumber()).toEqual(2)
+        })
+
+        test('getNextExternalNullifier should throw if there is no such external nullifier', async () => {
+            try {
+                await semaphoreContract.getNextExternalNullifier('876876876876')
+            } catch (e) {
+                expect(e.message.endsWith('Semaphore: no such external nullifier')).toBeTruthy()
+            }
+        })
+
+        test('should be able to deactivate an external nullifier', async () => {
+            await (await semaphoreClientContract.addExternalNullifier(
+                inactiveEn,
+                { gasLimit: 200000 },
+            )).wait()
+            const tx = await semaphoreClientContract.deactivateExternalNullifier(
+                inactiveEn,
+                { gasLimit: 100000 },
+            )
+            const receipt = await tx.wait()
+            expect(receipt.status).toEqual(1)
+
+            expect(await semaphoreContract.isExternalNullifierActive(inactiveEn)).toBeFalsy()
+        })
+
+        test('reactivating a deactivated external nullifier and then deactivating it should work', async () => {
+            expect.assertions(3)
+
+            // inactiveEn should be inactive
+            expect(await semaphoreContract.isExternalNullifierActive(inactiveEn)).toBeFalsy()
+
+            // reactivate inactiveEn
+            let tx = await semaphoreClientContract.reactivateExternalNullifier(
+                inactiveEn,
+                { gasLimit: 100000 },
+            ) 
+            await tx.wait()
+
+            expect(await semaphoreContract.isExternalNullifierActive(inactiveEn)).toBeTruthy()
+
+            tx = await semaphoreClientContract.deactivateExternalNullifier(
+                inactiveEn,
+                { gasLimit: 100000 },
+            )
+            await tx.wait()
+
+            expect(await semaphoreContract.isExternalNullifierActive(inactiveEn)).toBeFalsy()
+        })
+
+        test('enumerating external nullifiers should work', async () => {
+            const firstEn = await semaphoreContract.firstExternalNullifier()
+            const lastEn = await semaphoreContract.lastExternalNullifier()
+
+            const externalNullifiers: BigInt[] = [ firstEn ]
+            let currentEn = firstEn
+
+            while (currentEn.toString() !== lastEn.toString()) {
+                currentEn = await semaphoreContract.getNextExternalNullifier(currentEn)
+                externalNullifiers.push(currentEn)
+            }
+
+            expect(externalNullifiers).toHaveLength(3)
+            expect(BigInt(externalNullifiers[0].toString())).toEqual(BigInt(firstEn.toString()))
+            expect(BigInt(externalNullifiers[1].toString())).toEqual(BigInt(activeEn.toString()))
+            expect(BigInt(externalNullifiers[2].toString())).toEqual(BigInt(inactiveEn.toString()))
+        })
     })
 
     describe('signal broadcasts', () => {
@@ -288,15 +319,28 @@ describe('Semaphore', () => {
             const signal = ethers.utils.toUtf8Bytes(SIGNAL)
             const check = await semaphoreContract.preBroadcastCheck(
                 signal,
-                params.a,
-                params.b,
-                params.c,
+                params.proof,
                 params.root,
                 params.nullifiersHash,
                 genSignalHash(signal).toString(),
                 FIRST_EXTERNAL_NULLIFIER,
             )
             expect(check).toBeTruthy()
+        })
+
+        test('the pre-broadcast check with an invalid signal should fail', async () => {
+            expect.assertions(1)
+
+            const signal = ethers.utils.toUtf8Bytes(SIGNAL)
+            const check = await semaphoreContract.preBroadcastCheck(
+                '0x0',
+                params.proof,
+                params.root,
+                params.nullifiersHash,
+                genSignalHash(signal).toString(),
+                FIRST_EXTERNAL_NULLIFIER,
+            )
+            expect(check).toBeFalsy()
         })
 
         test('broadcastSignal with an input element above the scalar field should fail', async () => {
@@ -306,9 +350,7 @@ describe('Semaphore', () => {
             try {
                 await semaphoreClientContract.broadcastSignal(
                     ethers.utils.toUtf8Bytes(SIGNAL),
-                    params.a,
-                    params.b,
-                    params.c,
+                    params.proof,
                     params.root,
                     oversizedInput,
                     FIRST_EXTERNAL_NULLIFIER,
@@ -318,17 +360,21 @@ describe('Semaphore', () => {
             }
         })
 
-        test('broadcastSignal with an invalid proof_a should fail', async () => {
+        test('broadcastSignal with an invalid proof_data should fail', async () => {
             expect.assertions(1)
             try {
                 await semaphoreClientContract.broadcastSignal(
                     ethers.utils.toUtf8Bytes(SIGNAL),
                     [
                         "21888242871839275222246405745257275088548364400416034343698204186575808495617",
-                        "21888242871839275222246405745257275088548364400416034343698204186575808495617",
+                        "7",
+                        "7",
+                        "7",
+                        "7",
+                        "7",
+                        "7",
+                        "7",
                     ],
-                    params.b,
-                    params.c,
                     params.root,
                     params.nullifiersHash,
                     FIRST_EXTERNAL_NULLIFIER,
@@ -343,9 +389,7 @@ describe('Semaphore', () => {
             try {
                 await semaphoreClientContract.broadcastSignal(
                     ethers.utils.toUtf8Bytes(SIGNAL),
-                    params.a,
-                    params.b,
-                    params.c,
+                    params.proof,
                     params.nullifiersHash, // note that this is delibrately swapped
                     params.root,
                     FIRST_EXTERNAL_NULLIFIER,
@@ -360,9 +404,7 @@ describe('Semaphore', () => {
             try {
                 await semaphoreContract.broadcastSignal(
                     ethers.utils.toUtf8Bytes(SIGNAL),
-                    params.a,
-                    params.b,
-                    params.c,
+                    params.proof,
                     params.root,
                     params.nullifiersHash,
                     FIRST_EXTERNAL_NULLIFIER,
@@ -373,12 +415,10 @@ describe('Semaphore', () => {
         })
 
         test('broadcastSignal to active external nullifier with an account with the right permissions should work', async () => {
-            expect.assertions(4)
+            expect.assertions(3)
             const tx = await semaphoreClientContract.broadcastSignal(
                 ethers.utils.toUtf8Bytes(SIGNAL),
-                params.a,
-                params.b,
-                params.c,
+                params.proof,
                 params.root,
                 params.nullifiersHash,
                 FIRST_EXTERNAL_NULLIFIER,
@@ -394,14 +434,13 @@ describe('Semaphore', () => {
 
             expect(ethers.utils.toUtf8String(signal)).toEqual(SIGNAL)
 
-            expect(hasEvent(receipt, semaphoreContract, 'SignalBroadcast')).toBeTruthy()
             expect(hasEvent(receipt, semaphoreClientContract, 'SignalBroadcastByClient')).toBeTruthy()
         })
 
         test('double-signalling to the same external nullifier should fail', async () => {
             expect.assertions(1)
             const leaves = await semaphoreClientContract.getIdentityCommitments()
-            const newSignal = Date.now.toString()
+            const newSignal = 'newSignal0'
 
             const result = await genWitness(
                 newSignal,
@@ -418,9 +457,7 @@ describe('Semaphore', () => {
             try {
                 const tx = await semaphoreClientContract.broadcastSignal(
                     ethers.utils.toUtf8Bytes(newSignal),
-                    params.a,
-                    params.b,
-                    params.c,
+                    params.proof,
                     params.root,
                     params.nullifiersHash,
                     FIRST_EXTERNAL_NULLIFIER,
@@ -433,7 +470,7 @@ describe('Semaphore', () => {
         test('signalling to a different external nullifier should work', async () => {
             expect.assertions(1)
             const leaves = await semaphoreClientContract.getIdentityCommitments()
-            const newSignal = Date.now.toString()
+            const newSignal = 'newSignal1'
 
             const result = await genWitness(
                 newSignal,
@@ -449,9 +486,7 @@ describe('Semaphore', () => {
             params = genBroadcastSignalParams(result, proof, publicSignals)
             const tx = await semaphoreClientContract.broadcastSignal(
                 ethers.utils.toUtf8Bytes(newSignal),
-                params.a,
-                params.b,
-                params.c,
+                params.proof,
                 params.root,
                 params.nullifiersHash,
                 activeEn,
@@ -488,9 +523,7 @@ describe('Semaphore', () => {
             try {
                 const tx = await semaphoreClientContract.broadcastSignal(
                     ethers.utils.toUtf8Bytes(SIGNAL),
-                    params.a,
-                    params.b,
-                    params.c,
+                    params.proof,
                     params.root,
                     params.nullifiersHash,
                     inactiveEn,
@@ -499,5 +532,50 @@ describe('Semaphore', () => {
                 expect(e.message.endsWith('Semaphore: external nullifier not found')).toBeTruthy()
             }
         })
+
+        test('setPermissioning(false) should allow anyone to broadcast a signal', async () => {
+            expect.assertions(2)
+            const leaves = await semaphoreClientContract.getIdentityCommitments()
+            const newSignal = 'newSignal2'
+
+            const result = await genWitness(
+                newSignal,
+                circuit,
+                identity,
+                leaves,
+                NUM_LEVELS,
+                activeEn,
+            )
+
+            proof = await genProof(result.witness, provingKey)
+            publicSignals = genPublicSignals(result.witness, circuit)
+            params = genBroadcastSignalParams(result, proof, publicSignals)
+            try {
+                await semaphoreContract.broadcastSignal(
+                    ethers.utils.toUtf8Bytes(newSignal),
+                    params.proof,
+                    params.root,
+                    params.nullifiersHash,
+                    activeEn,
+                    { gasLimit: 1000000 },
+                )
+            } catch (e) {
+                expect(e.message.endsWith('Semaphore: broadcast permission denied')).toBeTruthy()
+            }
+
+            await (await semaphoreClientContract.setPermissioning(false, { gasLimit: 100000 })).wait()
+
+            const tx = await semaphoreClientContract.broadcastSignal(
+                ethers.utils.toUtf8Bytes(newSignal),
+                params.proof,
+                params.root,
+                params.nullifiersHash,
+                activeEn,
+                { gasLimit: 1000000 },
+            )
+            const receipt = await tx.wait()
+            expect(receipt.status).toEqual(1)
+        })
+
     })
 })
