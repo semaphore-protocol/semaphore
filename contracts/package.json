@@ -30,7 +30,8 @@
         "etherlime": "^2.2.4",
         "etherlime-lib": "^1.1.5",
         "jest": "^24.9.0",
-        "libsemaphore": "^1.0.5",
+        "libsemaphore": "^1.0.14",
+        "semaphore-merkle-tree": "^1.0.12",
         "module-alias": "^2.2.2",
         "truffle-artifactor": "^4.0.30",
         "ts-jest": "^24.1.0"
