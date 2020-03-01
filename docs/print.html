@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">4.</strong> Trusted setup</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">5.</strong> Use Semaphore in your dApp</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">6.</strong> API reference</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">7.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">8.</strong> Credits</a></li></ol>
+                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">9.</strong> Credits</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -328,32 +328,56 @@ and roughly halves the proving time. Note, however, that the Poseidon-related
 circuits and EVM bytecode generator have not been audited, so use it with
 caution. To use it, checkout the <code>feat/poseidon</code> branch of this repository.</p>
 <h1><a class="header" href="#quick-start" id="quick-start">Quick start</a></h1>
-<h1><a class="header" href="#trusted-setup" id="trusted-setup">Trusted setup</a></h1>
+<p>You should have Node 11.14.0 installed. Use
+<a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> to install it.</p>
+<p>Clone this repository, install dependencies, and build the source code:</p>
+<pre><code class="language-bash">git clone git@github.com:kobigurk/semaphore.git &amp;&amp; \
+cd semaphore &amp;&amp; \
+npm i &amp;&amp; \
+npm run bootstrap &amp;&amp; \
+npm run build
+</code></pre>
+<p>Next, either download the compiled zk-SNARK circuit, proving key, and
+verification key (note that these keys are for testing purposes, and not for
+production, as there is no certainty that the toxic waste was securely
+discarded).</p>
+<p>To download the circuit, proving key, and verification key, run:</p>
+<pre><code class="language-bash"># Start from the base directory
+
+cd circuits &amp;&amp; \
+./circuits/scripts/download_snarks.sh
+</code></pre>
+<p>To generate the above files locally instead, run:</p>
+<pre><code class="language-bash"># Start from the base directory
+
+cd circuits &amp;&amp; \
+./circuits/scripts/build_snarks.sh
+</code></pre>
+<p>This process should take about 45 minutes.</p>
+<p>Build the Solidity contracts (you need <code>solc</code> v 0.5.12 installed in your <code>$PATH</code>):</p>
+<pre><code class="language-bash"># Start from the base directory
+
+cd contracts &amp;&amp; \
+npm run compileSol
+</code></pre>
+<p>Run tests while still in the <code>contracts/</code> directory:</p>
+<pre><code class="language-bash"># The first command tests the Merkle tree contract and the second
+# tests the Semaphore contract
+
+npm run test-semaphore &amp;&amp; \ 
+npm run test-mt
+</code></pre>
 <h1><a class="header" href="#usage" id="usage">Usage</a></h1>
-<h1><a class="header" href="#contract-api" id="contract-api">Contract API</a></h1>
-<h2><a class="header" href="#constructor" id="constructor">Constructor</a></h2>
-<p><strong>Contract ABI</strong>:</p>
-<p><code>constructor(uint8 _treeLevels, uint232 _firstExternalNullifier)</code></p>
-<ul>
-<li><code>_treeLevels</code>: The depth of the identity tree.</li>
-<li><code>_firstExternalNullifier</code>: The first identity nullifier to add.</li>
-</ul>
-<p>The depth of the identity tree determines how many identity commitments may be
-added to this contract: <code>2 ^ _treeLevels</code>. Once the tree is full, further
-insertions will fail with the revert reason <code>IncrementalMerkleTree: tree is full</code>.</p>
-<p>The first external nullifier will be added as an external nullifier to the
-contract, and this external nullifier will be active once the deployment
-completes.</p>
-<h2><a class="header" href="#identity-insertion" id="identity-insertion">Identity insertion</a></h2>
-<p><strong>Contract ABI</strong>:</p>
-<p><code>function insertIdentity(uint256 _identityCommitment)</code></p>
-<ul>
-<li><code>_identity_commitment</code>: The user's identity commitment, which is the hash of
-their public key and their identity nullifier (a random 31-byte value). It
-should be the output of a Pedersen hash. It is the responsibility of the
-caller to verify this.</li>
-</ul>
-<p><strong>Off-chain <code>libsemaphore</code> helper functions</strong>:</p>
+<p>The Semaphore contract is the base layer of Semaphore. Other contracts can
+build upon this to create applications that rely on anonymous signaling.</p>
+<p>First, you should have the proving key, verification key, and circuit file,
+which are static, easily available to your users.</p>
+<p>To have full flexibility over Semaphore's mechanisms, you should write a Client
+contract and set the owner of the Semaphore contract as the address of the
+Client contract. This allows the Client contract to call certain critical
+Semaphore functions.</p>
+<p>See <a href="./contracts/sol/SemaphoreClient.sol">SemaphoreClient.sol</a> for an example.</p>
+<h2><a class="header" href="#inserting-identities-1" id="inserting-identities-1">Inserting identities</a></h2>
 <p>To generate an identity commitment, use the <code>libsemaphore</code> functions
 <code>genIdentity()</code> and <code>genIdentityCommitment()</code> Typescript (or Javascript)
 functions:</p>
@@ -368,6 +392,88 @@ can help with this:</p>
 </code></pre>
 <p>To convert this string back into an <code>Identity</code>, use <code>unSerialiseIdentity()</code>.</p>
 <p><code>const id: Identity = unSerialiseIdentity(serialisedId)</code></p>
+<h2><a class="header" href="#broadcasting-signals-1" id="broadcasting-signals-1">Broadcasting signals</a></h2>
+<p>First obtain the leaves of the identity tree (in sequence, up to the user's
+identity commitment, or more).</p>
+<pre><code class="language-ts">const leaves = &lt;list of leaves&gt;
+</code></pre>
+<pre><code>const result = await genWitness(
+    SIGNAL,
+    circuit,
+    identity,
+    leaves,
+    NUM_LEVELS,
+    FIRST_EXTERNAL_NULLIFIER,
+)
+
+proof = await genProof(result.witness, provingKey)
+publicSignals = genPublicSignals(result.witness, circuit)
+params = genBroadcastSignalParams(result, proof, publicSignals)
+</code></pre>
+<h1><a class="header" href="#contract-api" id="contract-api">Contract API</a></h1>
+<h2><a class="header" href="#constructor" id="constructor">Constructor</a></h2>
+<p><strong>Contract ABI</strong>:</p>
+<p><code>constructor(uint8 _treeLevels, uint232 _firstExternalNullifier)</code></p>
+<ul>
+<li><code>_treeLevels</code>: The depth of the identity tree.</li>
+<li><code>_firstExternalNullifier</code>: The first identity nullifier to add.</li>
+</ul>
+<p>The depth of the identity tree determines how many identity commitments may be
+added to this contract: <code>2 ^ _treeLevels</code>. Once the tree is full, further
+insertions will fail with the revert reason <code>IncrementalMerkleTree: tree is full</code>.</p>
+<p>The first external nullifier will be added as an external nullifier to the
+contract, and this external nullifier will be active once the deployment
+completes.</p>
+<h2><a class="header" href="#inserting-identities-2" id="inserting-identities-2">Inserting identities</a></h2>
+<p><strong>Contract ABI</strong>:</p>
+<p><code>function insertIdentity(uint256 _identityCommitment)</code></p>
+<ul>
+<li><code>_identity_commitment</code>: The user's identity commitment, which is the hash of
+their public key and their identity nullifier (a random 31-byte value). It
+should be the output of a Pedersen hash. It is the responsibility of the
+caller to verify this.</li>
+</ul>
+<p><strong>Off-chain <code>libsemaphore</code> helper functions</strong>:</p>
+<p>Use <code>genIdentity()</code> to generate an <code>Identity</code> object, and
+<code>genIdentityCommitment(identity: Identity)</code> to generate the
+<code>_identityCommitment</code> value to pass to the contract.</p>
+<p>To convert <code>identity</code> to a string and back, so that you can store it in a
+database or somewhere safe, use <code>serialiseIdentity()</code> and
+<code>unSerialiseIdentity()</code>.</p>
+<p>See the <a href="./usage.html#broadcasting-signals">Usage section on inserting
+identities</a> for more information about how
+to use these helper functions and what they do.</p>
+<h2><a class="header" href="#broadcasting-signals-2" id="broadcasting-signals-2">Broadcasting signals</a></h2>
+<p><strong>Contract ABI</strong>:</p>
+<pre><code>broadcastSignal(
+    bytes memory _signal,
+    uint256[8] memory _proof,
+    uint256 _root,
+    uint256 _nullifiersHash,
+    uint232 _externalNullifier
+)
+</code></pre>
+<ul>
+<li><code>_signal</code>: the signal to broadcast.</li>
+<li><code>_proof</code>: a zk-SNARK proof (see below).</li>
+<li><code>_root</code>: The root of the identity tree, where the user's identity commitment
+is the last-inserted leaf.</li>
+<li><code>_nullifiersHash</code>: A uniquely derived hash of the external nullifier, user's
+identity nullifier, and the Merkle path index to their identity commitment.
+It ensures that a user cannot broadcast a signal with the same external
+nullifier more than once.</li>
+<li><code>_externalNullifier</code>: The external nullifier at which the signal is
+broadcast.</li>
+</ul>
+<p><strong>Off-chain <code>libsemaphore</code> helper functions</strong>:</p>
+<p>Use <code>libsemaphore</code>'s <code>genWitness()</code>, <code>genProof()</code>, <code>genPublicSignals()</code> and
+finally <code>genBroadcastSignalParams()</code> to generate the parameters to the
+contract's <code>broadcastSignal()</code> function.</p>
+<p>See the <a href="./usage.html#broadcasting-signals">Usage section on broadcasting
+signals</a> for more information about how to
+use these helper functions and what they do.</p>
+<h1><a class="header" href="#libsemaphore-api" id="libsemaphore-api">libsemaphore API</a></h1>
+<h1><a class="header" href="#trusted-setup" id="trusted-setup">Trusted setup</a></h1>
 <h1><a class="header" href="#security-audit" id="security-audit">Security audit</a></h1>
 <h1><a class="header" href="#credits" id="credits">Credits</a></h1>
 
