@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html" class="active"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">9.</strong> Credits</a></li></ol>
+                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html" class="active"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="creditsandresources.html"><strong aria-hidden="true">9.</strong> Credits and resources</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -149,8 +149,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#quick-start" id="quick-start">Quick start</a></h1>
-<p>You should have Node 11.14.0 installed. Use
-<a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> to install it.</p>
+<p>Semaphore has been tested with Node 11.14.0 and Node 12 LTE. Use
+<a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> to manage your Node version.</p>
 <p>Clone this repository, install dependencies, and build the source code:</p>
 <pre><code class="language-bash">git clone git@github.com:kobigurk/semaphore.git &amp;&amp; \
 cd semaphore &amp;&amp; \
@@ -175,7 +175,8 @@ cd circuits &amp;&amp; \
 ./circuits/scripts/build_snarks.sh
 </code></pre>
 <p>This process should take about 45 minutes.</p>
-<p>Build the Solidity contracts (you need <code>solc</code> v 0.5.12 installed in your <code>$PATH</code>):</p>
+<p>Build the Solidity contracts (you need <code>solc</code> v 0.5.12 installed in your
+<code>$PATH</code>):</p>
 <pre><code class="language-bash"># Start from the base directory
 
 cd contracts &amp;&amp; \

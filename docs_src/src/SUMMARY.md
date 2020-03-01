@@ -8,4 +8,4 @@
 - [libsemaphore](./libsemaphore.md)
 - [Trusted setup](./trustedsetup.md)
 - [Security audit](./audit.md)
-- [Credits](./credits.md)
+- [Credits and resources](./creditsandresources.md)

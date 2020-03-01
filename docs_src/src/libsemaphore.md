@@ -1,1 +1,1 @@
-# libsemaphore API
+# libsemaphore

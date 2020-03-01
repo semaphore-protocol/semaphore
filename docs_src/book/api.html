@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html" class="active"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">9.</strong> Credits</a></li></ol>
+                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html" class="active"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="creditsandresources.html"><strong aria-hidden="true">9.</strong> Credits and resources</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -162,7 +162,27 @@ insertions will fail with the revert reason <code>IncrementalMerkleTree: tree is
 <p>The first external nullifier will be added as an external nullifier to the
 contract, and this external nullifier will be active once the deployment
 completes.</p>
-<h2><a class="header" href="#inserting-identities" id="inserting-identities">Inserting identities</a></h2>
+<h2><a class="header" href="#add-deactivate-or-reactivate-external-nullifiiers" id="add-deactivate-or-reactivate-external-nullifiiers">Add, deactivate, or reactivate external nullifiiers</a></h2>
+<p><strong>Contract ABI</strong>:</p>
+<p><code>addExternalNullifier(uint232 _externalNullifier)</code></p>
+<p>Adds an external nullifier to the contract. Only the owner can do this.
+This external nullifier is active once it is added.</p>
+<ul>
+<li><code>_externalNullifier</code>: The new external nullifier to set.</li>
+</ul>
+<p><code>deactivateExternalNullifier(uint232 _externalNullifier)</code></p>
+<ul>
+<li><code>_externalNullifier</code>: The existing external nullifier to deactivate.</li>
+</ul>
+<p>Deactivate an external nullifier. The external nullifier must already be active
+for this function to work. Only the owner can do this.</p>
+<p><code>reactivateExternalNullifier(uint232 _externalNullifier)</code></p>
+<p>Reactivate an external nullifier. The external nullifier must already be
+inactive for this function to work. Only the owner can do this.</p>
+<ul>
+<li><code>_externalNullifier</code>: The deactivated external nullifier to reactivate.</li>
+</ul>
+<h2><a class="header" href="#insert-identities" id="insert-identities">Insert identities</a></h2>
 <p><strong>Contract ABI</strong>:</p>
 <p><code>function insertIdentity(uint256 _identityCommitment)</code></p>
 <ul>
@@ -178,10 +198,9 @@ caller to verify this.</li>
 <p>To convert <code>identity</code> to a string and back, so that you can store it in a
 database or somewhere safe, use <code>serialiseIdentity()</code> and
 <code>unSerialiseIdentity()</code>.</p>
-<p>See the <a href="./usage.html#broadcasting-signals">Usage section on inserting
-identities</a> for more information about how
-to use these helper functions and what they do.</p>
-<h2><a class="header" href="#broadcasting-signals" id="broadcasting-signals">Broadcasting signals</a></h2>
+<p>See the <a href="./usage.html#insert-identities">Usage section on inserting
+identities</a> for more information.</p>
+<h2><a class="header" href="#broadcast-signals" id="broadcast-signals">Broadcast signals</a></h2>
 <p><strong>Contract ABI</strong>:</p>
 <pre><code>broadcastSignal(
     bytes memory _signal,
@@ -207,9 +226,8 @@ broadcast.</li>
 <p>Use <code>libsemaphore</code>'s <code>genWitness()</code>, <code>genProof()</code>, <code>genPublicSignals()</code> and
 finally <code>genBroadcastSignalParams()</code> to generate the parameters to the
 contract's <code>broadcastSignal()</code> function.</p>
-<p>See the <a href="./usage.html#broadcasting-signals">Usage section on broadcasting
-signals</a> for more information about how to
-use these helper functions and what they do.</p>
+<p>See the <a href="./usage.html#broadcast-signals">Usage section on broadcasting
+signals</a> for more information.</p>
 
                     </main>
 

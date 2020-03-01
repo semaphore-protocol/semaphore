@@ -18,7 +18,32 @@ The first external nullifier will be added as an external nullifier to the
 contract, and this external nullifier will be active once the deployment
 completes.
 
-## Inserting identities
+## Add, deactivate, or reactivate external nullifiiers
+
+**Contract ABI**:
+
+`addExternalNullifier(uint232 _externalNullifier)`
+
+Adds an external nullifier to the contract. Only the owner can do this.
+This external nullifier is active once it is added.
+
+- `_externalNullifier`: The new external nullifier to set.
+
+`deactivateExternalNullifier(uint232 _externalNullifier)`
+
+- `_externalNullifier`: The existing external nullifier to deactivate.
+
+Deactivate an external nullifier. The external nullifier must already be active
+for this function to work. Only the owner can do this.
+
+`reactivateExternalNullifier(uint232 _externalNullifier)`
+
+Reactivate an external nullifier. The external nullifier must already be
+inactive for this function to work. Only the owner can do this.
+
+- `_externalNullifier`: The deactivated external nullifier to reactivate.
+
+## Insert identities
 
 **Contract ABI**:
 
@@ -40,10 +65,9 @@ database or somewhere safe, use `serialiseIdentity()` and
 `unSerialiseIdentity()`.
 
 See the [Usage section on inserting
-identities](./usage.html#broadcasting-signals) for more information about how
-to use these helper functions and what they do.
+identities](./usage.html#insert-identities) for more information.
 
-## Broadcasting signals
+## Broadcast signals
 
 **Contract ABI**:
 
@@ -75,5 +99,4 @@ finally `genBroadcastSignalParams()` to generate the parameters to the
 contract's `broadcastSignal()` function.
 
 See the [Usage section on broadcasting
-signals](./usage.html#broadcasting-signals) for more information about how to
-use these helper functions and what they do.
+signals](./usage.html#broadcast-signals) for more information.

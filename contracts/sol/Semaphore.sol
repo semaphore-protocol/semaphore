@@ -371,9 +371,9 @@ contract Semaphore is Verifier, IncrementalMerkleTree, Ownable {
     }
 
     /*
-     * Adds an external nullifier to the contract. Only the owner can do this.
-     * This external nullifier is active once it is added.
-     * @param new_externalNullifier The new external nullifier to set.
+     * Adds an external nullifier to the contract. This external nullifier is
+     * active once it is added. Only the owner can do this.
+     * @param _externalNullifier The new external nullifier to set.
      */
     function addExternalNullifier(uint232 _externalNullifier) public
     onlyOwner {
@@ -383,7 +383,7 @@ contract Semaphore is Verifier, IncrementalMerkleTree, Ownable {
     /*
      * Deactivate an external nullifier. The external nullifier must already be
      * active for this function to work. Only the owner can do this.
-     * @param new_externalNullifier The new external nullifier to deactivate.
+     * @param _externalNullifier The new external nullifier to deactivate.
      */
     function deactivateExternalNullifier(uint232 _externalNullifier) public
     onlyOwner {
@@ -409,7 +409,7 @@ contract Semaphore is Verifier, IncrementalMerkleTree, Ownable {
     /*
      * Reactivate an external nullifier. The external nullifier must already be
      * inactive for this function to work. Only the owner can do this.
-     * @param new_externalNullifier The new external nullifier to reactivate.
+     * @param _externalNullifier The new external nullifier to reactivate.
      */
     function reactivateExternalNullifier(uint232 _externalNullifier) public
     onlyOwner {

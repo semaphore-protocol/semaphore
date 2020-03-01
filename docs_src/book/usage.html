@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html" class="active"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">9.</strong> Credits</a></li></ol>
+                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html" class="active"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="creditsandresources.html"><strong aria-hidden="true">9.</strong> Credits and resources</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -160,10 +160,27 @@ versions of these files are not available yet.</p>
 <code>circuits/scripts/download_snarks.sh</code> script.</p>
 <p>Next, to have full flexibility over Semaphore's mechanisms, write a Client
 contract and set the owner of the Semaphore contract as the address of the
-Client contract. This allows the Client contract to call owner-only critical
-Semaphore functions.</p>
+Client contract. You may also write a Client contract which deploys a Semaphore
+contract in its constructor, or on the fly. </p>
+<p>With the Client contract as the owner of the Semaphore contract, the Client
+contract may call owner-only Semaphore functions such as
+<code>addExternalNullifier()</code>.</p>
+<h2><a class="header" href="#add-deactivate-or-reactivate-external-nullifiiers" id="add-deactivate-or-reactivate-external-nullifiiers">Add, deactivate, or reactivate external nullifiiers</a></h2>
+<p>These functions add, deactivate, and reactivate an external nullifier respectively.
+As each identity can only signal once to an external nullifier, and as a signal
+can only be successfully broadcasted to an active external nullifier, these
+functions enable use cases where it is necessary to have multiple external
+nullifiers or to activate and/or deactivate them.</p>
+<p>Refer to the <a href="https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b">high-level explanation of
+Semaphore</a>
+for more details.</p>
+<h2><a class="header" href="#set-broadcast-permissioning" id="set-broadcast-permissioning">Set broadcast permissioning</a></h2>
+<p>Note that <code>Semaphore.broadcastSignal()</code> is permissioned by default, so if you
+wish for anyone to be able to broadcast a signal, the owner of the Semaphore
+contract (either a Client contract or externally owned account) must first
+invoke <code>setPermissioning(false)</code>.</p>
 <p>See <a href="./contracts/sol/SemaphoreClient.sol">SemaphoreClient.sol</a> for an example.</p>
-<h2><a class="header" href="#inserting-identities" id="inserting-identities">Inserting identities</a></h2>
+<h2><a class="header" href="#insert-identities" id="insert-identities">Insert identities</a></h2>
 <p>To generate an identity commitment, use the <code>libsemaphore</code> functions
 <code>genIdentity()</code> and <code>genIdentityCommitment()</code> Typescript (or Javascript)
 functions:</p>
@@ -178,23 +195,54 @@ can help with this:</p>
 </code></pre>
 <p>To convert this string back into an <code>Identity</code>, use <code>unSerialiseIdentity()</code>.</p>
 <p><code>const id: Identity = unSerialiseIdentity(serialisedId)</code></p>
-<h2><a class="header" href="#broadcasting-signals" id="broadcasting-signals">Broadcasting signals</a></h2>
+<h2><a class="header" href="#broadcast-signals" id="broadcast-signals">Broadcast signals</a></h2>
 <p>First obtain the leaves of the identity tree (in sequence, up to the user's
 identity commitment, or more).</p>
 <pre><code class="language-ts">const leaves = &lt;list of leaves&gt;
 </code></pre>
+<p>Next, load the circuit from disk (or from a remote source):</p>
+<pre><code class="language-ts">const circuitPath = path.join(__dirname, '/path/to/circuit.json')
+const cirDef = JSON.parse(fs.readFileSync(circuitPath).toString())
+const circuit = genCircuit(cirDef)
+</code></pre>
+<p>Next, use <code>libsemaphore</code>'s <code>genWitness()</code> helper function as such:</p>
 <pre><code>const result = await genWitness(
-    SIGNAL,
+    signal,
     circuit,
     identity,
     leaves,
-    NUM_LEVELS,
-    FIRST_EXTERNAL_NULLIFIER,
+    num_levels,
+    external_nullifier,
 )
-
-proof = await genProof(result.witness, provingKey)
-publicSignals = genPublicSignals(result.witness, circuit)
-params = genBroadcastSignalParams(result, proof, publicSignals)
+</code></pre>
+<ul>
+<li><code>signal</code>: a string which is the signal to broadcast.</li>
+<li><code>circuit</code>: the output of <code>genCircuit()</code> (see above).</li>
+<li><code>identity</code>: the user's identity as an <code>Identity</code> object.</li>
+<li><code>leaves</code> the list of leaves in the tree (see above).</li>
+<li><code>num_levels</code>: the depth of the Merkle tree.</li>
+<li><code>external_nullifier</code>: the external nullifier at which to broadcast.</li>
+</ul>
+<p>Load the proving key from disk (or from a remote source):</p>
+<pre><code class="language-ts">const provingKeyPath = path.join(__dirname, '/path/to/proving_key.bin')
+const provingKey: SnarkProvingKey = fs.readFileSync(provingKeyPath)
+</code></pre>
+<p>Generate the proof (this takes about 30-45 seconds on a modern laptop):</p>
+<pre><code class="language-ts">const proof = await genProof(result.witness, provingKey)
+</code></pre>
+<p>Generate the <code>broadcastSignal()</code> parameters:</p>
+<pre><code class="language-ts">const publicSignals = genPublicSignals(result.witness, circuit)
+const params = genBroadcastSignalParams(result, proof, publicSignals)
+</code></pre>
+<p>Finally, invoke <code>broadcastSignal()</code> with the parameters:</p>
+<pre><code class="language-ts">const tx = await semaphoreClientContract.broadcastSignal(
+    ethers.utils.toUtf8Bytes(signal),
+    params.proof,
+    params.root,
+    params.nullifiersHash,
+    external_nullifier,
+    { gasLimit: 1000000 },
+)
 </code></pre>
 
                     </main>

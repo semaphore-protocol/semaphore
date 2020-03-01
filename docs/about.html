@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-                <ol class="chapter"><li class="expanded "><a href="about.html" class="active"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">9.</strong> Credits</a></li></ol>
+                <ol class="chapter"><li class="expanded "><a href="about.html" class="active"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="creditsandresources.html"><strong aria-hidden="true">9.</strong> Credits and resources</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -205,6 +205,21 @@ users is valid, the transaction will succeed. The second time she does so to
 the same <code>n</code>, however, her transaction will fail.</p>
 <p>Additionally, all signals broadcast transactions to a deactivated external
 nullifier will fail.</p>
+<p>Each client application must use the above features of Semaphore in a unique
+way to achieve its privacy goals. A mixer, for instance, would use one external
+nullifier as such:</p>
+<table><thead><tr><th>Signal</th><th>External nullifier</th></tr></thead><tbody>
+<tr><td>The hash of the recipient's address, relayer's address, and the relayer's fee</td><td>The mixer contract's address</td></tr>
+</tbody></table>
+<p>This allows anonymous withdrawals of funds (via a transaction relayer, who is
+rewarded with a fee), and prevents double-spending as there is only one
+external nullifier.</p>
+<p>An anonymous voting app would be configured differently:</p>
+<table><thead><tr><th>Signal</th><th>External nullifier</th></tr></thead><tbody>
+<tr><td>The hash of the respondent's answer</td><td>The hash of the question</td></tr>
+</tbody></table>
+<p>This allows any user to vote with an arbitary response (e.g. yes, no, or maybe)
+to any question. The user, however, can only vote once per question.</p>
 <h2><a class="header" href="#about-the-code" id="about-the-code">About the code</a></h2>
 <p>This repository contains the code for Semaphore's contracts written in
 Soliidty, and zk-SNARK circuits written in
@@ -244,21 +259,6 @@ for Semaphore will begin in the near future.</p>
 
         </div>
 
-        
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3001");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload(true); // force reload from server (not from cache)
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         
 
         
