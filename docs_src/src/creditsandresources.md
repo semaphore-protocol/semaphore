@@ -1,4 +1,21 @@
-# Credits and resources
+# Credits
+
+- Barry WhiteHat
+- Chih Cheng Liang
+- Kobi Gurkan
+- Koh Wei Jie
+- Harry Roberts
+
+Many thanks to:
+
+- Jordi Baylina / iden3
+- POA Network
+- PepperSec
+- Ethereum Foundation
+
+# Resources
+
+[https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b](https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b) - Koh Wei Jie
 
 [Privacy in Ethereum](https://www.youtube.com/watch?v=maDHYyj30kg) - Barry WhiteHat at the Taipei Ethereum Meetup
 
