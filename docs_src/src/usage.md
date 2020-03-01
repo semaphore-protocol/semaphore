@@ -135,6 +135,6 @@ const tx = await semaphoreClientContract.broadcastSignal(
     params.root,
     params.nullifiersHash,
     external_nullifier,
-    { gasLimit: 1000000 },
+    { gasLimit: 500000 },
 )
 ```
