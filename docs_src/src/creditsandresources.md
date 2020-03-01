@@ -15,7 +15,7 @@ Many thanks to:
 
 # Resources
 
-[https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b](https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b) - Koh Wei Jie
+[To Mixers and Beyond: presenting Semaphore, a privacy gadget built on Ethereum](https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b) - Koh Wei Jie
 
 [Privacy in Ethereum](https://www.youtube.com/watch?v=maDHYyj30kg) - Barry WhiteHat at the Taipei Ethereum Meetup
 
