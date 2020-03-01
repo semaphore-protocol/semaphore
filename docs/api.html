@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>API reference - </title>
+        <title>Contract API - </title>
         
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">4.</strong> Trusted setup</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">5.</strong> Use Semaphore in your dApp</a></li><li class="expanded "><a href="api.html" class="active"><strong aria-hidden="true">6.</strong> API reference</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">7.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">8.</strong> Credits</a></li></ol>
+                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html" class="active"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">9.</strong> Credits</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -162,7 +162,7 @@ insertions will fail with the revert reason <code>IncrementalMerkleTree: tree is
 <p>The first external nullifier will be added as an external nullifier to the
 contract, and this external nullifier will be active once the deployment
 completes.</p>
-<h2><a class="header" href="#identity-insertion" id="identity-insertion">Identity insertion</a></h2>
+<h2><a class="header" href="#inserting-identities" id="inserting-identities">Inserting identities</a></h2>
 <p><strong>Contract ABI</strong>:</p>
 <p><code>function insertIdentity(uint256 _identityCommitment)</code></p>
 <ul>
@@ -172,20 +172,44 @@ should be the output of a Pedersen hash. It is the responsibility of the
 caller to verify this.</li>
 </ul>
 <p><strong>Off-chain <code>libsemaphore</code> helper functions</strong>:</p>
-<p>To generate an identity commitment, use the <code>libsemaphore</code> functions
-<code>genIdentity()</code> and <code>genIdentityCommitment()</code> Typescript (or Javascript)
-functions:</p>
-<pre><code class="language-ts">const identity: Identity = genIdentity()
-const identityCommitment = genIdentityCommitment(identity)
+<p>Use <code>genIdentity()</code> to generate an <code>Identity</code> object, and
+<code>genIdentityCommitment(identity: Identity)</code> to generate the
+<code>_identityCommitment</code> value to pass to the contract.</p>
+<p>To convert <code>identity</code> to a string and back, so that you can store it in a
+database or somewhere safe, use <code>serialiseIdentity()</code> and
+<code>unSerialiseIdentity()</code>.</p>
+<p>See the <a href="./usage.html#broadcasting-signals">Usage section on inserting
+identities</a> for more information about how
+to use these helper functions and what they do.</p>
+<h2><a class="header" href="#broadcasting-signals" id="broadcasting-signals">Broadcasting signals</a></h2>
+<p><strong>Contract ABI</strong>:</p>
+<pre><code>broadcastSignal(
+    bytes memory _signal,
+    uint256[8] memory _proof,
+    uint256 _root,
+    uint256 _nullifiersHash,
+    uint232 _externalNullifier
+)
 </code></pre>
-<p>Be sure to store <code>identity</code> somewhere safe. The <code>serialiseIdentity()</code> function
-can help with this:</p>
-<p><code>const serialisedId: string = serialiseIdentity(identity: Identity)</code></p>
-<p>It converts an <code>Identity</code> into a JSON string which looks like this:</p>
-<pre><code class="language-text">[&quot;e82cc2b8654705e427df423c6300307a873a2e637028fab3163cf95b18bb172e&quot;,&quot;a02e517dfb3a4184adaa951d02bfe0fe092d1ee34438721d798db75b8db083&quot;,&quot;15c6540bf7bddb0616984fccda7e954a0fb5ea4679ac686509dc4bd7ba9c3b&quot;]
-</code></pre>
-<p>To convert this string back into an <code>Identity</code>, use <code>unSerialiseIdentity()</code>.</p>
-<p><code>const id: Identity = unSerialiseIdentity(serialisedId)</code></p>
+<ul>
+<li><code>_signal</code>: the signal to broadcast.</li>
+<li><code>_proof</code>: a zk-SNARK proof (see below).</li>
+<li><code>_root</code>: The root of the identity tree, where the user's identity commitment
+is the last-inserted leaf.</li>
+<li><code>_nullifiersHash</code>: A uniquely derived hash of the external nullifier, user's
+identity nullifier, and the Merkle path index to their identity commitment.
+It ensures that a user cannot broadcast a signal with the same external
+nullifier more than once.</li>
+<li><code>_externalNullifier</code>: The external nullifier at which the signal is
+broadcast.</li>
+</ul>
+<p><strong>Off-chain <code>libsemaphore</code> helper functions</strong>:</p>
+<p>Use <code>libsemaphore</code>'s <code>genWitness()</code>, <code>genProof()</code>, <code>genPublicSignals()</code> and
+finally <code>genBroadcastSignalParams()</code> to generate the parameters to the
+contract's <code>broadcastSignal()</code> function.</p>
+<p>See the <a href="./usage.html#broadcasting-signals">Usage section on broadcasting
+signals</a> for more information about how to
+use these helper functions and what they do.</p>
 
                     </main>
 
@@ -198,7 +222,7 @@ can help with this:</p>
                         
 
                         
-                            <a rel="next" href="audit.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="libsemaphore.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -216,7 +240,7 @@ can help with this:</p>
                 
 
                 
-                    <a href="audit.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="libsemaphore.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

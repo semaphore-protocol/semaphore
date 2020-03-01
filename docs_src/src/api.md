@@ -18,7 +18,7 @@ The first external nullifier will be added as an external nullifier to the
 contract, and this external nullifier will be active once the deployment
 completes.
 
-## Identity insertion
+## Inserting identities
 
 **Contract ABI**:
 
@@ -31,27 +31,49 @@ completes.
 
 **Off-chain `libsemaphore` helper functions**:
 
-To generate an identity commitment, use the `libsemaphore` functions
-`genIdentity()` and `genIdentityCommitment()` Typescript (or Javascript)
-functions:
+Use `genIdentity()` to generate an `Identity` object, and
+`genIdentityCommitment(identity: Identity)` to generate the
+`_identityCommitment` value to pass to the contract.
 
+To convert `identity` to a string and back, so that you can store it in a
+database or somewhere safe, use `serialiseIdentity()` and
+`unSerialiseIdentity()`.
 
-```ts
-const identity: Identity = genIdentity()
-const identityCommitment = genIdentityCommitment(identity)
+See the [Usage section on inserting
+identities](./usage.html#broadcasting-signals) for more information about how
+to use these helper functions and what they do.
+
+## Broadcasting signals
+
+**Contract ABI**:
+
+```
+broadcastSignal(
+    bytes memory _signal,
+    uint256[8] memory _proof,
+    uint256 _root,
+    uint256 _nullifiersHash,
+    uint232 _externalNullifier
+)
 ```
 
-Be sure to store `identity` somewhere safe. The `serialiseIdentity()` function
-can help with this:
+- `_signal`: the signal to broadcast.
+- `_proof`: a zk-SNARK proof (see below).
+- `_root`: The root of the identity tree, where the user's identity commitment
+  is the last-inserted leaf.
+- `_nullifiersHash`: A uniquely derived hash of the external nullifier, user's
+  identity nullifier, and the Merkle path index to their identity commitment.
+  It ensures that a user cannot broadcast a signal with the same external
+  nullifier more than once.
+- `_externalNullifier`: The external nullifier at which the signal is
+  broadcast.
 
-`const serialisedId: string = serialiseIdentity(identity: Identity)`
+**Off-chain `libsemaphore` helper functions**:
 
-It converts an `Identity` into a JSON string which looks like this:
+Use `libsemaphore`'s `genWitness()`, `genProof()`, `genPublicSignals()` and
+finally `genBroadcastSignalParams()` to generate the parameters to the
+contract's `broadcastSignal()` function.
 
-```text
-["e82cc2b8654705e427df423c6300307a873a2e637028fab3163cf95b18bb172e","a02e517dfb3a4184adaa951d02bfe0fe092d1ee34438721d798db75b8db083","15c6540bf7bddb0616984fccda7e954a0fb5ea4679ac686509dc4bd7ba9c3b"]
-```
-
-To convert this string back into an `Identity`, use `unSerialiseIdentity()`.
-
-`const id: Identity = unSerialiseIdentity(serialisedId)`
+See the [Usage section on broadcasting
+signals](./usage.html#broadcasting-signals) for more information about how to
+use these helper functions and what they do.

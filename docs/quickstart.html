@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html" class="active"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">4.</strong> Trusted setup</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">5.</strong> Use Semaphore in your dApp</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">6.</strong> API reference</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">7.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">8.</strong> Credits</a></li></ol>
+                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html" class="active"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">9.</strong> Credits</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -149,6 +149,45 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#quick-start" id="quick-start">Quick start</a></h1>
+<p>You should have Node 11.14.0 installed. Use
+<a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> to install it.</p>
+<p>Clone this repository, install dependencies, and build the source code:</p>
+<pre><code class="language-bash">git clone git@github.com:kobigurk/semaphore.git &amp;&amp; \
+cd semaphore &amp;&amp; \
+npm i &amp;&amp; \
+npm run bootstrap &amp;&amp; \
+npm run build
+</code></pre>
+<p>Next, either download the compiled zk-SNARK circuit, proving key, and
+verification key (note that these keys are for testing purposes, and not for
+production, as there is no certainty that the toxic waste was securely
+discarded).</p>
+<p>To download the circuit, proving key, and verification key, run:</p>
+<pre><code class="language-bash"># Start from the base directory
+
+cd circuits &amp;&amp; \
+./circuits/scripts/download_snarks.sh
+</code></pre>
+<p>To generate the above files locally instead, run:</p>
+<pre><code class="language-bash"># Start from the base directory
+
+cd circuits &amp;&amp; \
+./circuits/scripts/build_snarks.sh
+</code></pre>
+<p>This process should take about 45 minutes.</p>
+<p>Build the Solidity contracts (you need <code>solc</code> v 0.5.12 installed in your <code>$PATH</code>):</p>
+<pre><code class="language-bash"># Start from the base directory
+
+cd contracts &amp;&amp; \
+npm run compileSol
+</code></pre>
+<p>Run tests while still in the <code>contracts/</code> directory:</p>
+<pre><code class="language-bash"># The first command tests the Merkle tree contract and the second
+# tests the Semaphore contract
+
+npm run test-semaphore &amp;&amp; \ 
+npm run test-mt
+</code></pre>
 
                     </main>
 
@@ -161,7 +200,7 @@
                         
 
                         
-                            <a rel="next" href="trustedsetup.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="usage.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -179,7 +218,7 @@
                 
 
                 
-                    <a href="trustedsetup.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="usage.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

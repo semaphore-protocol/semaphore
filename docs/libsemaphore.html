@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>About - </title>
+        <title>libsemaphore - </title>
         
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">9.</strong> Credits</a></li></ol>
+                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html" class="active"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">9.</strong> Credits</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -148,81 +148,20 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#about" id="about">About</a></h1>
-<p>Semaphore is a zero-knowledge gadget which allows Ethereum users to prove their
-membership of a set which they had previously joined without revealing their
-original identity. At the same time, it allows users to signal their
-endorsement of an arbitrary string. It is designed to be a simple and generic
-privacy layer for Ethereum dApps. Use cases include private voting,
-whistleblowing, mixers, and anonymous authentication. Finally, it provides a
-simple built-in mechanism to prevent double-signalling or double-spending.</p>
-<p>This gadget comprises of smart contracts and
-<a href="https://z.cash/technology/zksnarks/">zero-knowledge</a> components which work in
-tandem. The Semaphore smart contract handles state, permissions, and proof
-verification on-chain. The zero-knowledge components work off-chain to allow
-the user to generate proofs, which allow the smart contract to update its state
-if these proofs are valid.</p>
-<p>Semaphore is designed for smart contract and dApp developers, not end users.
-Developers should abstract its features away in order to provide user-friendly
-privacy.</p>
-<p>Try a simple demo <a href="https://weijiekoh.github.io/semaphore-ui/">here</a> or read a
-high-level description of Semaphore
-<a href="https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b">here</a>.</p>
-<h2><a class="header" href="#basic-features" id="basic-features">Basic features</a></h2>
-<p>In sum, Semaphore provides the ability to:</p>
-<ol>
-<li>
-<p>Register an identity in a smart contract, and then:</p>
-</li>
-<li>
-<p>Broadcast a signal:</p>
-<ul>
-<li>
-<p>Anonymously prove that their identity is in the set of registered
-identities, and at the same time:</p>
-</li>
-<li>
-<p>Publicly store an arbitrary string in the contract, if and only if that
-string is unique to the user and the contract’s current external
-nullifier, which is a unique value akin to a topic. This means that
-double-signalling the same message under the same external nullifier is
-not possible.</p>
-</li>
-</ul>
-</li>
-</ol>
-<h3><a class="header" href="#about-external-nullifiers" id="about-external-nullifiers">About external nullifiers</a></h3>
-<p>Think of an external nullifier as a voting booth where each user may only cast
-one vote. If they try to cast a second vote a the same booth, that vote is
-invalid.</p>
-<p>An external nullifier is any 29-byte value. Semaphore always starts with one
-external nullifier, which is set upon contract deployment. The owner of the
-Semaphore contract may add more external nullifiers, deactivate, or reactivate
-existing ones.</p>
-<p>The first time a particular user broadcasts a signal to an active external
-nullifier <code>n</code>, and if the user's proof of membership of the set of registered
-users is valid, the transaction will succeed. The second time she does so to
-the same <code>n</code>, however, her transaction will fail.</p>
-<p>Additionally, all signals broadcast transactions to a deactivated external
-nullifier will fail.</p>
-<h2><a class="header" href="#about-the-code" id="about-the-code">About the code</a></h2>
-<p>This repository contains the code for Semaphore's contracts written in
-Soliidty, and zk-SNARK circuits written in
-<a href="https://github.com/iden3/circom">circom</a>. It also contains Typescript code to
-execute tests.</p>
-<p>The code has been audited by ABDK Consulting. Their suggested security and
-efficiency fixes have been applied.</p>
-<p>A multi-party computation to produce the zk-SNARK proving and verification keys
-for Semaphore will begin in the near future.</p>
+                        <h1><a class="header" href="#libsemaphore-api" id="libsemaphore-api">libsemaphore API</a></h1>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
+                            <a rel="prev" href="api.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
 
                         
-                            <a rel="next" href="howitworks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="trustedsetup.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -234,9 +173,13 @@ for Semaphore will begin in the near future.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
+                    <a href="api.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
 
                 
-                    <a href="howitworks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="trustedsetup.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
