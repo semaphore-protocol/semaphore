@@ -560,6 +560,168 @@ contract's <code>broadcastSignal()</code> function.</p>
 <p>See the <a href="./usage.html#broadcast-signals">Usage section on broadcasting
 signals</a> for more information.</p>
 <h1><a class="header" href="#libsemaphore" id="libsemaphore">libsemaphore</a></h1>
+<p><a href="https://www.npmjs.com/package/libsemaphore"><code>libsemaphore</code></a> is a helper
+library for Semaphore written in Typescript. Any dApp written in Javascript or
+Typescript should use it as it provides useful abstractions over common tasks
+and objects, such as identities and proof generation.</p>
+<p>Note that only v1.0.14 and above works with the Semaphore code in this
+repository. v0.0.x is compatible with the pre-audited Semaphore code.</p>
+<h2><a class="header" href="#available-types-interfaces-and-functions" id="available-types-interfaces-and-functions">Available types, interfaces, and functions</a></h2>
+<h3><a class="header" href="#types" id="types">Types</a></h3>
+<p><strong><code>SnarkBigInt</code></strong></p>
+<p>A big integer type compatible with the <code>snarkjs</code> library. Note that it is not
+advisable to mix variables of this type with <code>bigNumber</code>s or <code>BigInt</code>s.
+Encapsulates <code>snarkjs.bigInt</code>.</p>
+<p><strong><code>EddsaPrivateKey</code></strong></p>
+<p>An <a href="https://tools.ietf.org/html/rfc8032">EdDSA</a> private key which should be 32
+bytes long. Encapsulates a <a href="https://nodejs.org/api/buffer.html"><code>Buffer</code></a>.</p>
+<p><strong><code>EddsaPublicKey</code></strong></p>
+<p>An EdDSA public key. Encapsulates an array of <code>SnarkBigInt</code>s.</p>
+<p><strong><code>SnarkProvingKey</code></strong></p>
+<p>A proving key, which when used with a secret <em>witness</em>, generates a zk-SNARK
+proof about said witness. Encapsulates a <code>Buffer</code>.</p>
+<p><strong><code>SnarkVerifyingKey</code></strong></p>
+<p>A verifying key which when used with public inputs to a zk-SNARK and a
+<code>SnarkProof</code>, can prove the proof's validity. Encapsulates a <code>Buffer</code>.</p>
+<p><strong><code>SnarkWitness</code></strong></p>
+<p>The secret inputs to a zk-SNARK. Encapsulates an array of <code>SnarkBigInt</code>s.</p>
+<p><strong><code>SnarkPublicSignals</code></strong></p>
+<p>The public inputs to a zk-SNARK. Encapsulates an array of <code>SnarkBigInt</code>s.</p>
+<h3><a class="header" href="#interfaces" id="interfaces">Interfaces</a></h3>
+<p><strong><code>EddsaKeyPair</code></strong></p>
+<p>Encapsulates an <code>EddsaPublicKey</code> and an <code>EddsaPrivateKey</code>.</p>
+<pre><code class="language-ts">interface EddsaKeyPair {
+    pubKey: EddsaPublicKey,
+    privKey: EddsaPrivateKey,
+}
+</code></pre>
+<p><strong><code>Identity</code></strong></p>
+<p>Encapsulates all information required to generate an identity commitment, and
+is crucial to creating <code>SnarkProof</code>s to broadcast signals.</p>
+<pre><code class="language-ts">interface Identity {
+    keypair: EddsaKeyPair,
+    identityNullifier: SnarkBigInt,
+    identityTrapdoor: SnarkBigInt,
+}
+</code></pre>
+<p><strong><code>SnarkProof</code></strong></p>
+<p>Note that <code>broadcastSignal()</code> accepts a <code>uint256[8]</code> array for its <code>_proof</code>
+parameter. See <code>genBroadcastSignalParams()</code>.</p>
+<pre><code class="language-ts">interface SnarkProof {
+    pi_a: SnarkBigInt[]
+    pi_b: SnarkBigInt[][]
+    pi_c: SnarkBigInt[]
+}
+</code></pre>
+<h3><a class="header" href="#functions" id="functions">Functions</a></h3>
+<p><strong><code>genPubKey(privKey: EddsaPrivateKey): EddsaPublicKey</code></strong></p>
+<p>Generates a public EdDSA key from a supplied private key. To generate a private
+key, use <code>crypto.randomBytes(32)</code> where <code>crypto</code> is the built-in Node or
+browser module.</p>
+<p><strong><code>genIdentity(): Identity</code></strong></p>
+<p>This is a convenience function to generate a fresh and random <code>Identity</code>. That
+is, the 32-byte private key for the <code>EddsaKeyPair</code> is randomly generated, as
+are the distinct 31-byte identity nullifier and the 31-byte identity trapdoor
+values.</p>
+<p><strong><code>serialiseIdentity(identity: Identity): string</code></strong></p>
+<p>Converts an <code>Identity</code> into a JSON string which looks like this:</p>
+<pre><code class="language-text">[&quot;e82cc2b8654705e427df423c6300307a873a2e637028fab3163cf95b18bb172e&quot;,&quot;a02e517dfb3a4184adaa951d02bfe0fe092d1ee34438721d798db75b8db083&quot;,&quot;15c6540bf7bddb0616984fccda7e954a0fb5ea4679ac686509dc4bd7ba9c3b&quot;]
+</code></pre>
+<p>You can also spell this function as <code>serializeIdentity</code>.</p>
+<p>To convert this string back into an <code>Identity</code>, use <code>unSerialiseIdentity()</code>.</p>
+<p><strong><code>unSerialiseIdentity(string: serialisedId): Identity</code></strong></p>
+<p>Converts the <code>string</code> output of <code>serialiseIdentity()</code> to an <code>Identity</code>.</p>
+<p>You can also spell this function as <code>unSerializeIdentity</code>.</p>
+<p><strong><code>genIdentityCommitment(identity: Identity): SnarkBigInt</code></strong></p>
+<p>Generates an identity commitment, which is the hash of the public key, the
+identity nullifier, and the identity trapdoor.</p>
+<p><strong><code>async genProof(witness: SnarkWitness, provingKey: SnarkProvingKey): SnarkProof</code></strong></p>
+<p>Generates a <code>SnarkProof</code>, which can be sent to the Semaphore contract's
+<code>broadcastSignal()</code> function. It can also be verified off-chain using
+<code>verifyProof()</code> below.</p>
+<p><strong><code>genPublicSignals(witness: SnarkWitness, circuit: SnarkCircuit): SnarkPublicSignals</code></strong></p>
+<p>Extracts the public signals to be supplied to the contract or <code>verifyProof()</code>.</p>
+<p><strong><code>verifyProof(verifyingKey: SnarkVerifyingKey, proof: SnarkProof, publicSignals: SnarkPublicSignals): boolean</code></strong></p>
+<p>Returns <code>true</code> if the given <code>proof</code> is valid, given the correct verifying key
+and public signals.</p>
+<p>Returns <code>false</code> otherwise.</p>
+<p><strong><code>signMsg(privKey: EddsaPrivateKey, msg: SnarkBigInt): EdDSAMiMcSpongeSignature)</code></strong></p>
+<p>Encapsualtes <code>circomlib.eddsa.signMiMCSponge</code> to sign a message <code>msg</code> using private key <code>privKey</code>.</p>
+<p><strong><code>verifySignature(msg: SnarkBigInt, signature: EdDSAMiMcSpongeSignature, pubKey: EddsaPublicKey)</code>: boolean</strong></p>
+<p>Returns <code>true</code> if the cryptographic <code>signature</code> of the signed <code>msg</code> is from the
+private key associated with <code>pubKey</code>.</p>
+<p>Returns <code>false</code> otherwise.</p>
+<p><strong><code>setupTree(levels: number, prefix: string): MerkleTree</code></strong></p>
+<p>Returns a Merkle tree created using
+<a href="https://www.npmjs.com/package/semaphore-merkle-tree"><code>semaphore-merkle-tree</code></a>
+with the same number of levels which the Semaphore zk-SNARK circuit expects.
+This tree is also configured to use <code>MimcSpongeHasher</code>, which is also what the
+circuit expects.</p>
+<p><code>levels</code> sets the number of levels of the tree. A tree with 20 levels, for
+instance, supports up to 1048576 deposits.</p>
+<p><strong><code>genCircuit(circuitDefinition: any)</code></strong></p>
+<p>Returns a <code>new snarkjs.Circuit(circuitDefinition)</code>. The <code>circuitDefinition</code>
+object should be the <code>JSON.parse</code>d result of the <code>circom</code> command which
+converts a <code>.circom</code> file to a <code>.json</code> file.</p>
+<p><strong><code>async genWitness(...)</code></strong></p>
+<p>This function has the following signature:</p>
+<pre><code class="language-ts">const genWitness = async (
+    signal: string,
+    circuit: SnarkCircuit,
+    identity: Identity,
+    idCommitments: SnarkBigInt[] | BigInt[] | ethers.utils.BigNumber[],
+    treeDepth: number,
+    externalNullifier: SnarkBigInt,
+)
+</code></pre>
+<ul>
+<li><code>signal</code> is the string you wish to broadcast.</li>
+<li><code>circuit</code> is the output of <code>genCircuit()</code>.</li>
+<li><code>identity</code> is the <code>Identity</code> whose identity commitment you want to prove is
+in the set of registered identities.</li>
+<li><code>idCommitments</code> is an array of registered identity commmitments; i.e. the
+leaves of the tree.</li>
+<li><code>treeDepth</code> is the number of levels which the Merkle tree used has</li>
+<li><code>externalNullifier</code> is the current external nullifier</li>
+</ul>
+<p>It returns an object as such:</p>
+<ul>
+<li><code>witness</code>: The witness to pass to <code>genProof()</code>.</li>
+<li><code>signal</code>: The computed signal for Semaphore. This is the hash of the
+recipient's address, relayer's address, and fee.</li>
+<li><code>signalHash</code>: The hash of the computed signal.</li>
+<li><code>msg</code>: The hash of the external nullifier and the signal hash</li>
+<li><code>signature</code>: The signature on the above msg.</li>
+<li><code>tree</code>: The Merkle tree object after it has been updated with the identity commitment</li>
+<li><code>identityPath</code>: The Merkle path to the identity commmitment</li>
+<li><code>identityPathIndex</code>: The leaf index of the identity commitment</li>
+<li><code>identityPathElements</code>: The elements along the above Merkle path</li>
+</ul>
+<p>Only <code>witness</code> is essential to generate the proof; the other data is only
+useful for debugging and additional off-chain checks, such as verifying the
+signature and the Merkle tree root.</p>
+<p><strong><code>formatForVerifierContract = (proof: SnarkProof, publicSignals: SnarkPublicSignals</code></strong></p>
+<p>Converts the data in <code>proof</code> and <code>publicSignals</code> to strings and rearranges
+elements of <code>proof.pi_b</code> so that <code>snarkjs</code>'s <code>verifier.sol</code> will accept it.
+To be specific, it returns an object as such:</p>
+<pre><code class="language-ts">{
+    a: [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
+    b: [ 
+         [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ],
+         [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ],
+    ],
+    c: [ proof.pi_c[0].toString(), proof.pi_c[1].toString() ],
+    input: publicSignals.map((x) =&gt; x.toString()),
+}
+</code></pre>
+<p><strong><code>stringifyBigInts = (obj: any) =&gt; object</code></strong></p>
+<p>Encapsulates <code>snarkjs.stringifyBigInts()</code>. Makes it easy to convert <code>SnarkProof</code>s to JSON. </p>
+<p><strong><code>unstringifyBigInts = (obj: any) =&gt; object</code></strong></p>
+<p>Encapsulates <code>snarkjs.unstringifyBigInts()</code>. Makes it easy to convert JSON to <code>SnarkProof</code>s.</p>
+<p><strong><code>genExternalNullifier = (plaintext: string) =&gt; string</code></strong></p>
+<p>Each external nullifier must be at most 29 bytes large. This function
+keccak-256-hashes a given <code>plaintext</code>, takes the last 29 bytes, and pads it
+(from the start) with 0s, and returns the resulting hex string.</p>
 <h1><a class="header" href="#trusted-setup" id="trusted-setup">Trusted setup</a></h1>
 <h1><a class="header" href="#security-audit" id="security-audit">Security audit</a></h1>
 <p>The <a href="https://ethereum.org/">Ethereum Foundation</a> and <a href="https://www.poa.network/">POA
