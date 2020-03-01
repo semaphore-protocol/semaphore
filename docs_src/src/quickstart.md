@@ -1,7 +1,7 @@
 # Quick start
 
-You should have Node 11.14.0 installed. Use
-[`nvm`](https://github.com/nvm-sh/nvm) to install it.
+Semaphore has been tested with Node 11.14.0 and Node 12 LTE. Use
+[`nvm`](https://github.com/nvm-sh/nvm) to manage your Node version.
 
 Clone this repository, install dependencies, and build the source code:
 
@@ -38,7 +38,8 @@ cd circuits && \
 
 This process should take about 45 minutes.
 
-Build the Solidity contracts (you need `solc` v 0.5.12 installed in your `$PATH`):
+Build the Solidity contracts (you need `solc` v 0.5.12 installed in your
+`$PATH`):
 
 ```bash
 # Start from the base directory

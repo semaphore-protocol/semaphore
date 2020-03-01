@@ -59,6 +59,27 @@ the same `n`, however, her transaction will fail.
 Additionally, all signals broadcast transactions to a deactivated external
 nullifier will fail.
 
+Each client application must use the above features of Semaphore in a unique
+way to achieve its privacy goals. A mixer, for instance, would use one external
+nullifier as such:
+
+| Signal | External nullifier |
+|-|-|
+| The hash of the recipient's address, relayer's address, and the relayer's fee | The mixer contract's address |
+
+This allows anonymous withdrawals of funds (via a transaction relayer, who is
+rewarded with a fee), and prevents double-spending as there is only one
+external nullifier.
+
+An anonymous voting app would be configured differently:
+
+| Signal | External nullifier |
+|-|-|
+| The hash of the respondent's answer | The hash of the question |
+
+This allows any user to vote with an arbitary response (e.g. yes, no, or maybe)
+to any question. The user, however, can only vote once per question.
+
 ## About the code
 
 This repository contains the code for Semaphore's contracts written in

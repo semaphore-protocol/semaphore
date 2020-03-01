@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="credits.html"><strong aria-hidden="true">9.</strong> Credits</a></li></ol>
+                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="creditsandresources.html"><strong aria-hidden="true">9.</strong> Credits and resources</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -207,6 +207,21 @@ users is valid, the transaction will succeed. The second time she does so to
 the same <code>n</code>, however, her transaction will fail.</p>
 <p>Additionally, all signals broadcast transactions to a deactivated external
 nullifier will fail.</p>
+<p>Each client application must use the above features of Semaphore in a unique
+way to achieve its privacy goals. A mixer, for instance, would use one external
+nullifier as such:</p>
+<table><thead><tr><th>Signal</th><th>External nullifier</th></tr></thead><tbody>
+<tr><td>The hash of the recipient's address, relayer's address, and the relayer's fee</td><td>The mixer contract's address</td></tr>
+</tbody></table>
+<p>This allows anonymous withdrawals of funds (via a transaction relayer, who is
+rewarded with a fee), and prevents double-spending as there is only one
+external nullifier.</p>
+<p>An anonymous voting app would be configured differently:</p>
+<table><thead><tr><th>Signal</th><th>External nullifier</th></tr></thead><tbody>
+<tr><td>The hash of the respondent's answer</td><td>The hash of the question</td></tr>
+</tbody></table>
+<p>This allows any user to vote with an arbitary response (e.g. yes, no, or maybe)
+to any question. The user, however, can only vote once per question.</p>
 <h2><a class="header" href="#about-the-code" id="about-the-code">About the code</a></h2>
 <p>This repository contains the code for Semaphore's contracts written in
 Soliidty, and zk-SNARK circuits written in
@@ -328,8 +343,8 @@ and roughly halves the proving time. Note, however, that the Poseidon-related
 circuits and EVM bytecode generator have not been audited, so use it with
 caution. To use it, checkout the <code>feat/poseidon</code> branch of this repository.</p>
 <h1><a class="header" href="#quick-start" id="quick-start">Quick start</a></h1>
-<p>You should have Node 11.14.0 installed. Use
-<a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> to install it.</p>
+<p>Semaphore has been tested with Node 11.14.0 and Node 12 LTE. Use
+<a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> to manage your Node version.</p>
 <p>Clone this repository, install dependencies, and build the source code:</p>
 <pre><code class="language-bash">git clone git@github.com:kobigurk/semaphore.git &amp;&amp; \
 cd semaphore &amp;&amp; \
@@ -354,7 +369,8 @@ cd circuits &amp;&amp; \
 ./circuits/scripts/build_snarks.sh
 </code></pre>
 <p>This process should take about 45 minutes.</p>
-<p>Build the Solidity contracts (you need <code>solc</code> v 0.5.12 installed in your <code>$PATH</code>):</p>
+<p>Build the Solidity contracts (you need <code>solc</code> v 0.5.12 installed in your
+<code>$PATH</code>):</p>
 <pre><code class="language-bash"># Start from the base directory
 
 cd contracts &amp;&amp; \
@@ -368,16 +384,38 @@ npm run test-semaphore &amp;&amp; \
 npm run test-mt
 </code></pre>
 <h1><a class="header" href="#usage" id="usage">Usage</a></h1>
-<p>The Semaphore contract is the base layer of Semaphore. Other contracts can
-build upon this to create applications that rely on anonymous signaling.</p>
-<p>First, you should have the proving key, verification key, and circuit file,
-which are static, easily available to your users.</p>
-<p>To have full flexibility over Semaphore's mechanisms, you should write a Client
+<p>The Semaphore contract forms a base layer for other contracts to create
+applications that rely on anonymous signaling.</p>
+<p>First, you should ensure that the proving key, verification key, and circuit
+file, which are static, be easily available to your users. These may be hosted
+in a CDN or bundled with your application code.</p>
+<p>The Semaphore team has not performed a trusted setup yet, so trustworthy
+versions of these files are not available yet.</p>
+<p>Untrusted versions of these files, however, may be obtained via the
+<code>circuits/scripts/download_snarks.sh</code> script.</p>
+<p>Next, to have full flexibility over Semaphore's mechanisms, write a Client
 contract and set the owner of the Semaphore contract as the address of the
-Client contract. This allows the Client contract to call certain critical
-Semaphore functions.</p>
+Client contract. You may also write a Client contract which deploys a Semaphore
+contract in its constructor, or on the fly. </p>
+<p>With the Client contract as the owner of the Semaphore contract, the Client
+contract may call owner-only Semaphore functions such as
+<code>addExternalNullifier()</code>.</p>
+<h2><a class="header" href="#add-deactivate-or-reactivate-external-nullifiiers" id="add-deactivate-or-reactivate-external-nullifiiers">Add, deactivate, or reactivate external nullifiiers</a></h2>
+<p>These functions add, deactivate, and reactivate an external nullifier respectively.
+As each identity can only signal once to an external nullifier, and as a signal
+can only be successfully broadcasted to an active external nullifier, these
+functions enable use cases where it is necessary to have multiple external
+nullifiers or to activate and/or deactivate them.</p>
+<p>Refer to the <a href="https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b">high-level explanation of
+Semaphore</a>
+for more details.</p>
+<h2><a class="header" href="#set-broadcast-permissioning" id="set-broadcast-permissioning">Set broadcast permissioning</a></h2>
+<p>Note that <code>Semaphore.broadcastSignal()</code> is permissioned by default, so if you
+wish for anyone to be able to broadcast a signal, the owner of the Semaphore
+contract (either a Client contract or externally owned account) must first
+invoke <code>setPermissioning(false)</code>.</p>
 <p>See <a href="./contracts/sol/SemaphoreClient.sol">SemaphoreClient.sol</a> for an example.</p>
-<h2><a class="header" href="#inserting-identities-1" id="inserting-identities-1">Inserting identities</a></h2>
+<h2><a class="header" href="#insert-identities" id="insert-identities">Insert identities</a></h2>
 <p>To generate an identity commitment, use the <code>libsemaphore</code> functions
 <code>genIdentity()</code> and <code>genIdentityCommitment()</code> Typescript (or Javascript)
 functions:</p>
@@ -392,23 +430,54 @@ can help with this:</p>
 </code></pre>
 <p>To convert this string back into an <code>Identity</code>, use <code>unSerialiseIdentity()</code>.</p>
 <p><code>const id: Identity = unSerialiseIdentity(serialisedId)</code></p>
-<h2><a class="header" href="#broadcasting-signals-1" id="broadcasting-signals-1">Broadcasting signals</a></h2>
+<h2><a class="header" href="#broadcast-signals" id="broadcast-signals">Broadcast signals</a></h2>
 <p>First obtain the leaves of the identity tree (in sequence, up to the user's
 identity commitment, or more).</p>
 <pre><code class="language-ts">const leaves = &lt;list of leaves&gt;
 </code></pre>
+<p>Next, load the circuit from disk (or from a remote source):</p>
+<pre><code class="language-ts">const circuitPath = path.join(__dirname, '/path/to/circuit.json')
+const cirDef = JSON.parse(fs.readFileSync(circuitPath).toString())
+const circuit = genCircuit(cirDef)
+</code></pre>
+<p>Next, use <code>libsemaphore</code>'s <code>genWitness()</code> helper function as such:</p>
 <pre><code>const result = await genWitness(
-    SIGNAL,
+    signal,
     circuit,
     identity,
     leaves,
-    NUM_LEVELS,
-    FIRST_EXTERNAL_NULLIFIER,
+    num_levels,
+    external_nullifier,
 )
-
-proof = await genProof(result.witness, provingKey)
-publicSignals = genPublicSignals(result.witness, circuit)
-params = genBroadcastSignalParams(result, proof, publicSignals)
+</code></pre>
+<ul>
+<li><code>signal</code>: a string which is the signal to broadcast.</li>
+<li><code>circuit</code>: the output of <code>genCircuit()</code> (see above).</li>
+<li><code>identity</code>: the user's identity as an <code>Identity</code> object.</li>
+<li><code>leaves</code> the list of leaves in the tree (see above).</li>
+<li><code>num_levels</code>: the depth of the Merkle tree.</li>
+<li><code>external_nullifier</code>: the external nullifier at which to broadcast.</li>
+</ul>
+<p>Load the proving key from disk (or from a remote source):</p>
+<pre><code class="language-ts">const provingKeyPath = path.join(__dirname, '/path/to/proving_key.bin')
+const provingKey: SnarkProvingKey = fs.readFileSync(provingKeyPath)
+</code></pre>
+<p>Generate the proof (this takes about 30-45 seconds on a modern laptop):</p>
+<pre><code class="language-ts">const proof = await genProof(result.witness, provingKey)
+</code></pre>
+<p>Generate the <code>broadcastSignal()</code> parameters:</p>
+<pre><code class="language-ts">const publicSignals = genPublicSignals(result.witness, circuit)
+const params = genBroadcastSignalParams(result, proof, publicSignals)
+</code></pre>
+<p>Finally, invoke <code>broadcastSignal()</code> with the parameters:</p>
+<pre><code class="language-ts">const tx = await semaphoreClientContract.broadcastSignal(
+    ethers.utils.toUtf8Bytes(signal),
+    params.proof,
+    params.root,
+    params.nullifiersHash,
+    external_nullifier,
+    { gasLimit: 1000000 },
+)
 </code></pre>
 <h1><a class="header" href="#contract-api" id="contract-api">Contract API</a></h1>
 <h2><a class="header" href="#constructor" id="constructor">Constructor</a></h2>
@@ -424,7 +493,27 @@ insertions will fail with the revert reason <code>IncrementalMerkleTree: tree is
 <p>The first external nullifier will be added as an external nullifier to the
 contract, and this external nullifier will be active once the deployment
 completes.</p>
-<h2><a class="header" href="#inserting-identities-2" id="inserting-identities-2">Inserting identities</a></h2>
+<h2><a class="header" href="#add-deactivate-or-reactivate-external-nullifiiers-1" id="add-deactivate-or-reactivate-external-nullifiiers-1">Add, deactivate, or reactivate external nullifiiers</a></h2>
+<p><strong>Contract ABI</strong>:</p>
+<p><code>addExternalNullifier(uint232 _externalNullifier)</code></p>
+<p>Adds an external nullifier to the contract. Only the owner can do this.
+This external nullifier is active once it is added.</p>
+<ul>
+<li><code>_externalNullifier</code>: The new external nullifier to set.</li>
+</ul>
+<p><code>deactivateExternalNullifier(uint232 _externalNullifier)</code></p>
+<ul>
+<li><code>_externalNullifier</code>: The existing external nullifier to deactivate.</li>
+</ul>
+<p>Deactivate an external nullifier. The external nullifier must already be active
+for this function to work. Only the owner can do this.</p>
+<p><code>reactivateExternalNullifier(uint232 _externalNullifier)</code></p>
+<p>Reactivate an external nullifier. The external nullifier must already be
+inactive for this function to work. Only the owner can do this.</p>
+<ul>
+<li><code>_externalNullifier</code>: The deactivated external nullifier to reactivate.</li>
+</ul>
+<h2><a class="header" href="#insert-identities-1" id="insert-identities-1">Insert identities</a></h2>
 <p><strong>Contract ABI</strong>:</p>
 <p><code>function insertIdentity(uint256 _identityCommitment)</code></p>
 <ul>
@@ -440,10 +529,9 @@ caller to verify this.</li>
 <p>To convert <code>identity</code> to a string and back, so that you can store it in a
 database or somewhere safe, use <code>serialiseIdentity()</code> and
 <code>unSerialiseIdentity()</code>.</p>
-<p>See the <a href="./usage.html#broadcasting-signals">Usage section on inserting
-identities</a> for more information about how
-to use these helper functions and what they do.</p>
-<h2><a class="header" href="#broadcasting-signals-2" id="broadcasting-signals-2">Broadcasting signals</a></h2>
+<p>See the <a href="./usage.html#insert-identities">Usage section on inserting
+identities</a> for more information.</p>
+<h2><a class="header" href="#broadcast-signals-1" id="broadcast-signals-1">Broadcast signals</a></h2>
 <p><strong>Contract ABI</strong>:</p>
 <pre><code>broadcastSignal(
     bytes memory _signal,
@@ -469,13 +557,25 @@ broadcast.</li>
 <p>Use <code>libsemaphore</code>'s <code>genWitness()</code>, <code>genProof()</code>, <code>genPublicSignals()</code> and
 finally <code>genBroadcastSignalParams()</code> to generate the parameters to the
 contract's <code>broadcastSignal()</code> function.</p>
-<p>See the <a href="./usage.html#broadcasting-signals">Usage section on broadcasting
-signals</a> for more information about how to
-use these helper functions and what they do.</p>
-<h1><a class="header" href="#libsemaphore-api" id="libsemaphore-api">libsemaphore API</a></h1>
+<p>See the <a href="./usage.html#broadcast-signals">Usage section on broadcasting
+signals</a> for more information.</p>
+<h1><a class="header" href="#libsemaphore" id="libsemaphore">libsemaphore</a></h1>
 <h1><a class="header" href="#trusted-setup" id="trusted-setup">Trusted setup</a></h1>
 <h1><a class="header" href="#security-audit" id="security-audit">Security audit</a></h1>
-<h1><a class="header" href="#credits" id="credits">Credits</a></h1>
+<p>The <a href="https://ethereum.org/">Ethereum Foundation</a> and <a href="https://www.poa.network/">POA
+Network</a> commissioned <a href="https://www.abdk.consulting">ABDK
+Consulting</a> to audit the source code of Semaphore
+as well as relevant circuits in
+<a href="https://github.com/iden3/circomlib">circomlib</a>, which contains components
+which the Semaphore zk-SNARK uses.</p>
+<p>All security and performance issues have been fixed. The full audit report will
+be available soon.</p>
+<h1><a class="header" href="#credits-and-resources" id="credits-and-resources">Credits and resources</a></h1>
+<p><a href="https://www.youtube.com/watch?v=maDHYyj30kg">Privacy in Ethereum</a> - Barry WhiteHat at the Taipei Ethereum Meetup</p>
+<p><a href="https://www.youtube.com/watch?v=lv6iK9qezBY">Snarks for mixing, signaling and scaling by</a> - Barry WhiteHat at Devcon 4</p>
+<p><a href="https://www.youtube.com/watch?v=zBUo7G95wYE">Privacy in Ethereum</a> - Barry WhiteHat at Devcon 5</p>
+<p><a href="https://www.youtube.com/watch?v=GzVT16lFOHU">A trustless Ethereum mixer using zero-knowledge signalling</a> - Koh Wei Jie and Barry WhiteHat at Devcon 5</p>
+<p><a href="https://www.youtube.com/watch?v=7wd2aAN2jXI">Hands-on Applications of Zero-Knowledge Signalling</a> - Koh Wei Jie at Devcon 5</p>
 
                     </main>
 
@@ -498,21 +598,6 @@ use these helper functions and what they do.</p>
 
         </div>
 
-        
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3001");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload(true); // force reload from server (not from cache)
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         
 
         
