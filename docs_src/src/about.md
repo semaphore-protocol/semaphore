@@ -1,12 +1,13 @@
 # About
 
-Semaphore is a zero-knowledge gadget which allows Ethereum users to prove their
-membership of a set which they had previously joined without revealing their
-original identity. At the same time, it allows users to signal their
-endorsement of an arbitrary string. It is designed to be a simple and generic
-privacy layer for Ethereum dApps. Use cases include private voting,
-whistleblowing, mixers, and anonymous authentication. Finally, it provides a
-simple built-in mechanism to prevent double-signalling or double-spending.
+[Semaphore](https://github.com/appliedzkp/semaphore) is a zero-knowledge gadget
+which allows Ethereum users to prove their membership of a set which they had
+previously joined without revealing their original identity. At the same time,
+it allows users to signal their endorsement of an arbitrary string. It is
+designed to be a simple and generic privacy layer for Ethereum dApps. Use cases
+include private voting, whistleblowing, mixers, and anonymous authentication.
+Finally, it provides a simple built-in mechanism to prevent double-signalling
+or double-spending.
 
 This gadget comprises of smart contracts and
 [zero-knowledge](https://z.cash/technology/zksnarks/) components which work in
