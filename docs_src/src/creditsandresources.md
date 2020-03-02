@@ -8,6 +8,7 @@
 
 Many thanks to:
 
+- ABDK Consulting
 - Jordi Baylina / iden3
 - POA Network
 - PepperSec
