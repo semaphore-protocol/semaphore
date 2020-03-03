@@ -1,0 +1,823 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title></title>
+        
+        <meta name="robots" content="noindex" />
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div id="sidebar-scrollbox" class="sidebar-scrollbox">
+                <ol class="chapter"><li class="expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="expanded "><a href="howitworks.html"><strong aria-hidden="true">2.</strong> How it works</a></li><li class="expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quick start</a></li><li class="expanded "><a href="usage.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="expanded "><a href="api.html"><strong aria-hidden="true">5.</strong> Contract API</a></li><li class="expanded "><a href="libsemaphore.html"><strong aria-hidden="true">6.</strong> libsemaphore</a></li><li class="expanded "><a href="trustedsetup.html"><strong aria-hidden="true">7.</strong> Trusted setup</a></li><li class="expanded "><a href="audit.html"><strong aria-hidden="true">8.</strong> Security audit</a></li><li class="expanded "><a href="creditsandresources.html"><strong aria-hidden="true">9.</strong> Credits and resources</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title"></h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#about" id="about">About</a></h1>
+<p><a href="https://github.com/appliedzkp/semaphore">Semaphore</a> is a zero-knowledge gadget
+which allows Ethereum users to prove their membership of a set which they had
+previously joined without revealing their original identity. At the same time,
+it allows users to signal their endorsement of an arbitrary string. It is
+designed to be a simple and generic privacy layer for Ethereum dApps. Use cases
+include private voting, whistleblowing, mixers, and anonymous authentication.
+Finally, it provides a simple built-in mechanism to prevent double-signalling
+or double-spending.</p>
+<p>This gadget comprises of smart contracts and
+<a href="https://z.cash/technology/zksnarks/">zero-knowledge</a> components which work in
+tandem. The Semaphore smart contract handles state, permissions, and proof
+verification on-chain. The zero-knowledge components work off-chain to allow
+the user to generate proofs, which allow the smart contract to update its state
+if these proofs are valid.</p>
+<p>Semaphore is designed for smart contract and dApp developers, not end users.
+Developers should abstract its features away in order to provide user-friendly
+privacy.</p>
+<p>Try a simple demo <a href="https://weijiekoh.github.io/semaphore-ui/">here</a> or read a
+high-level description of Semaphore
+<a href="https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b">here</a>.</p>
+<h2><a class="header" href="#basic-features" id="basic-features">Basic features</a></h2>
+<p>In sum, Semaphore provides the ability to:</p>
+<ol>
+<li>
+<p>Register an identity in a smart contract, and then:</p>
+</li>
+<li>
+<p>Broadcast a signal:</p>
+<ul>
+<li>
+<p>Anonymously prove that their identity is in the set of registered
+identities, and at the same time:</p>
+</li>
+<li>
+<p>Publicly store an arbitrary string in the contract, if and only if that
+string is unique to the user and the contract’s current external
+nullifier, which is a unique value akin to a topic. This means that
+double-signalling the same message under the same external nullifier is
+not possible.</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3><a class="header" href="#about-external-nullifiers" id="about-external-nullifiers">About external nullifiers</a></h3>
+<p>Think of an external nullifier as a voting booth where each user may only cast
+one vote. If they try to cast a second vote a the same booth, that vote is
+invalid.</p>
+<p>An external nullifier is any 29-byte value. Semaphore always starts with one
+external nullifier, which is set upon contract deployment. The owner of the
+Semaphore contract may add more external nullifiers, deactivate, or reactivate
+existing ones.</p>
+<p>The first time a particular user broadcasts a signal to an active external
+nullifier <code>n</code>, and if the user's proof of membership of the set of registered
+users is valid, the transaction will succeed. The second time she does so to
+the same <code>n</code>, however, her transaction will fail.</p>
+<p>Additionally, all signals broadcast transactions to a deactivated external
+nullifier will fail.</p>
+<p>Each client application must use the above features of Semaphore in a unique
+way to achieve its privacy goals. A mixer, for instance, would use one external
+nullifier as such:</p>
+<table><thead><tr><th>Signal</th><th>External nullifier</th></tr></thead><tbody>
+<tr><td>The hash of the recipient's address, relayer's address, and the relayer's fee</td><td>The mixer contract's address</td></tr>
+</tbody></table>
+<p>This allows anonymous withdrawals of funds (via a transaction relayer, who is
+rewarded with a fee), and prevents double-spending as there is only one
+external nullifier.</p>
+<p>An anonymous voting app would be configured differently:</p>
+<table><thead><tr><th>Signal</th><th>External nullifier</th></tr></thead><tbody>
+<tr><td>The hash of the respondent's answer</td><td>The hash of the question</td></tr>
+</tbody></table>
+<p>This allows any user to vote with an arbitary response (e.g. yes, no, or maybe)
+to any question. The user, however, can only vote once per question.</p>
+<h2><a class="header" href="#about-the-code" id="about-the-code">About the code</a></h2>
+<p>This repository contains the code for Semaphore's contracts written in
+Soliidty, and zk-SNARK circuits written in
+<a href="https://github.com/iden3/circom">circom</a>. It also contains Typescript code to
+execute tests.</p>
+<p>The code has been audited by ABDK Consulting. Their suggested security and
+efficiency fixes have been applied.</p>
+<p>A multi-party computation to produce the zk-SNARK proving and verification keys
+for Semaphore will begin in the near future.</p>
+<h1><a class="header" href="#how-it-works" id="how-it-works">How it works</a></h1>
+<h2><a class="header" href="#inserting-identities" id="inserting-identities">Inserting identities</a></h2>
+<p>An identity is comprised of the following information:</p>
+<ol>
+<li>An <a href="https://en.wikipedia.org/wiki/EdDSA">EdDSA</a> private key. Note that it is
+<em>not</em> an Ethereum private key.</li>
+<li>An identity nullifier, whih is a random 32-byte value.</li>
+<li>An identity trapdoor, whih is a random 32-byte value.</li>
+</ol>
+<p>An identity commitment is the Pedersen hash of:</p>
+<ol>
+<li>The public key associated with the identity's private key.</li>
+<li>The identity nullifier.</li>
+<li>The identity trapdoor.</li>
+</ol>
+<p>To register an identity, the user must insert their identity commitment into
+Semaphore's identity tree. They can do this by calling the Semaphore contract's
+<code>insertIdentity(uint256 _identityCommitment)</code> function. See the <a href="./api.html">API
+reference</a> for more information.</p>
+<h2><a class="header" href="#broadcasting-signals" id="broadcasting-signals">Broadcasting signals</a></h2>
+<p>To broadcast a signal, the user must invoke this Semaphore contract function:</p>
+<pre><code>broadcastSignal(
+    bytes memory _signal,
+    uint256[8] memory _proof,
+    uint256 _root,
+    uint256 _nullifiersHash,
+    uint232 _externalNullifier
+)
+</code></pre>
+<ul>
+<li><code>_signal</code>: the signal to broadcast.</li>
+<li><code>_proof</code>: a zk-SNARK proof (see below).</li>
+<li><code>_root</code>: The root of the identity tree, where the user's identity commitment
+is the last-inserted leaf.</li>
+<li><code>_nullifiersHash</code>: A uniquely derived hash of the external nullifier, user's
+identity nullifier, and the Merkle path index to their identity commitment.
+It ensures that a user cannot broadcast a signal with the same external
+nullifier more than once.</li>
+<li><code>_externalNullifier</code>: The external nullifier at which the signal is
+broadcast.</li>
+</ul>
+<p>To zk-SNARK proof must satisfy the constraints created by Semaphore's zk-SNARK
+circuit as described below:</p>
+<h3><a class="header" href="#the-zk-snark-circuit" id="the-zk-snark-circuit">The zk-SNARK circuit</a></h3>
+<p>The <a href="./circuits/circom/semaphore-base.circom">semaphore-base.circom</a> circuit
+helps to prove the following:</p>
+<h3><a class="header" href="#that-the-identity-commitment-exists-in-the-merkle-tree" id="that-the-identity-commitment-exists-in-the-merkle-tree">That the identity commitment exists in the Merkle tree</a></h3>
+<p><strong>Private inputs:</strong></p>
+<ul>
+<li><code>identity_pk</code>: the user's EdDSA public key</li>
+<li><code>identity_nullifier</code>: a random 32-byte value which the user should save</li>
+<li><code>identity_trapdoor</code>: a random 32-byte value which the user should save</li>
+<li><code>identity_path_elements</code>: the values along the Merkle path to the
+user's identity commitment</li>
+<li><code>identity_path_index[n_levels]</code>: the direction (left/right) per tree level
+corresponding to the Merkle path to the user's identity commitment</li>
+</ul>
+<p><strong>Public inputs:</strong></p>
+<ul>
+<li><code>root</code>: The Merkle root of the identity tree</li>
+</ul>
+<p><strong>Procedure:</strong></p>
+<p>The circuit hashes the public key, identity nullifier, and identity trapdoor to
+generate an <strong>identity commitment</strong>. It then verifies the Merkle proof against
+the Merkle root and the identity commitment.</p>
+<h3><a class="header" href="#that-the-signal-was-only-broadcasted-once" id="that-the-signal-was-only-broadcasted-once">That the signal was only broadcasted once</a></h3>
+<p><strong>Private inputs:</strong></p>
+<ul>
+<li><code>identity_nullifier</code>: as above</li>
+<li><code>identity_path_index</code>: as above</li>
+</ul>
+<p><strong>Public inputs:</strong></p>
+<ul>
+<li><code>external_nullifier</code>: the 29-byte external nullifier - see above</li>
+<li><code>nullifiers_hash</code>: the hash of the identity nullifier, external nullifier,
+and Merkle path index (<code>identity_path_index</code>)</li>
+</ul>
+<p><strong>Procedure:</strong></p>
+<p>The circuit hashes the given identity nullifier, external nullifier, and Merkle
+path index, and checks that it matches the given nullifiers hash. Additionally,
+the smart contract ensures that it has not previously seen this nullifiers
+hash. This way, double-signalling is impossible.</p>
+<h3><a class="header" href="#that-the-signal-was-truly-broadcasted-by-the-user-who-generated-the-proof" id="that-the-signal-was-truly-broadcasted-by-the-user-who-generated-the-proof">That the signal was truly broadcasted by the user who generated the proof</a></h3>
+<p><strong>Private inputs:</strong></p>
+<ul>
+<li><code>identity_pk</code>: as above</li>
+<li><code>auth_sig_r</code>: the <code>r</code> value of the signature of the signal</li>
+<li><code>auth_sig_s</code>: the <code>s</code> value of the signature of the signal</li>
+</ul>
+<p><strong>Public inputs:</strong></p>
+<ul>
+<li><code>signal_hash</code>: the hash of the signal</li>
+<li><code>external_nullifier</code>: the 29-byte external nullifier - see above</li>
+</ul>
+<p><strong>Procedure:</strong></p>
+<p>The circuit hashes the signal hash and the external nullifier, and verifies
+this output against the given public key and signature. This ensures the
+authenticity of the signal and prevents front-running attacks.</p>
+<h2><a class="header" href="#cryptographic-primitives" id="cryptographic-primitives">Cryptographic primitives</a></h2>
+<p>Semaphore uses MiMC for the Merkle tree, Pedersen commmitments for the identity
+commitments, Blake2 for the nullifiers hash, and EdDSA for the signature.</p>
+<p>MiMC is a relatively new hash function. We use the recommended MiMC
+construction from <a href="https://eprint.iacr.org/2016/492.pdf">Albrecht et al</a>, and
+there is a prize to break MiMC at <a href="http://mimchash.org">http://mimchash.org</a>
+which has not been claimed yet.</p>
+<p>We have also implemented a version of Semaphore which uses the Poseidon hash
+function for the Merkle tree and EdDSA signature verification. This may have
+better security than MiMC, allows identity insertions to save about 20% gas,
+and roughly halves the proving time. Note, however, that the Poseidon-related
+circuits and EVM bytecode generator have not been audited, so use it with
+caution. To use it, checkout the <code>feat/poseidon</code> branch of this repository.</p>
+<h1><a class="header" href="#quick-start" id="quick-start">Quick start</a></h1>
+<p>Semaphore has been tested with Node 11.14.0 and Node 12 LTE. Use
+<a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> to manage your Node version.</p>
+<p>Clone this repository, install dependencies, and build the source code:</p>
+<pre><code class="language-bash">git clone git@github.com:kobigurk/semaphore.git &amp;&amp; \
+cd semaphore &amp;&amp; \
+npm i &amp;&amp; \
+npm run bootstrap &amp;&amp; \
+npm run build
+</code></pre>
+<p>Next, either download the compiled zk-SNARK circuit, proving key, and
+verification key (note that these keys are for testing purposes, and not for
+production, as there is no certainty that the toxic waste was securely
+discarded).</p>
+<p>To download the circuit, proving key, and verification key, run:</p>
+<pre><code class="language-bash"># Start from the base directory
+
+cd circuits &amp;&amp; \
+./circuits/scripts/download_snarks.sh
+</code></pre>
+<p>To generate the above files locally instead, run:</p>
+<pre><code class="language-bash"># Start from the base directory
+
+cd circuits &amp;&amp; \
+./circuits/scripts/build_snarks.sh
+</code></pre>
+<p>This process should take about 45 minutes.</p>
+<p>Build the Solidity contracts (you need <code>solc</code> v 0.5.12 installed in your
+<code>$PATH</code>):</p>
+<pre><code class="language-bash"># Start from the base directory
+
+cd contracts &amp;&amp; \
+npm run compileSol
+</code></pre>
+<p>Run tests while still in the <code>contracts/</code> directory:</p>
+<pre><code class="language-bash"># The first command tests the Merkle tree contract and the second
+# tests the Semaphore contract
+
+npm run test-semaphore &amp;&amp; \ 
+npm run test-mt
+</code></pre>
+<h1><a class="header" href="#usage" id="usage">Usage</a></h1>
+<p>The Semaphore contract forms a base layer for other contracts to create
+applications that rely on anonymous signaling.</p>
+<p>First, you should ensure that the proving key, verification key, and circuit
+file, which are static, be easily available to your users. These may be hosted
+in a CDN or bundled with your application code.</p>
+<p>The Semaphore team has not performed a trusted setup yet, so trustworthy
+versions of these files are not available yet.</p>
+<p>Untrusted versions of these files, however, may be obtained via the
+<code>circuits/scripts/download_snarks.sh</code> script.</p>
+<p>Next, to have full flexibility over Semaphore's mechanisms, write a Client
+contract and set the owner of the Semaphore contract as the address of the
+Client contract. You may also write a Client contract which deploys a Semaphore
+contract in its constructor, or on the fly. </p>
+<p>With the Client contract as the owner of the Semaphore contract, the Client
+contract may call owner-only Semaphore functions such as
+<code>addExternalNullifier()</code>.</p>
+<h2><a class="header" href="#add-deactivate-or-reactivate-external-nullifiiers" id="add-deactivate-or-reactivate-external-nullifiiers">Add, deactivate, or reactivate external nullifiiers</a></h2>
+<p>These functions add, deactivate, and reactivate an external nullifier respectively.
+As each identity can only signal once to an external nullifier, and as a signal
+can only be successfully broadcasted to an active external nullifier, these
+functions enable use cases where it is necessary to have multiple external
+nullifiers or to activate and/or deactivate them.</p>
+<p>Refer to the <a href="https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b">high-level explanation of
+Semaphore</a>
+for more details.</p>
+<h2><a class="header" href="#set-broadcast-permissioning" id="set-broadcast-permissioning">Set broadcast permissioning</a></h2>
+<p>Note that <code>Semaphore.broadcastSignal()</code> is permissioned by default, so if you
+wish for anyone to be able to broadcast a signal, the owner of the Semaphore
+contract (either a Client contract or externally owned account) must first
+invoke <code>setPermissioning(false)</code>.</p>
+<p>See <a href="https://github.com/appliedzkp/semaphore/blob/master/contracts/sol/SemaphoreClient.sol">SemaphoreClient.sol</a> for an example.</p>
+<h2><a class="header" href="#insert-identities" id="insert-identities">Insert identities</a></h2>
+<p>To generate an identity commitment, use the <code>libsemaphore</code> functions
+<code>genIdentity()</code> and <code>genIdentityCommitment()</code> Typescript (or Javascript)
+functions:</p>
+<pre><code class="language-ts">const identity: Identity = genIdentity()
+const identityCommitment = genIdentityCommitment(identity)
+</code></pre>
+<p>Be sure to store <code>identity</code> somewhere safe. The <code>serialiseIdentity()</code> function
+can help with this:</p>
+<p><code>const serialisedId: string = serialiseIdentity(identity: Identity)</code></p>
+<p>It converts an <code>Identity</code> into a JSON string which looks like this:</p>
+<pre><code class="language-text">[&quot;e82cc2b8654705e427df423c6300307a873a2e637028fab3163cf95b18bb172e&quot;,&quot;a02e517dfb3a4184adaa951d02bfe0fe092d1ee34438721d798db75b8db083&quot;,&quot;15c6540bf7bddb0616984fccda7e954a0fb5ea4679ac686509dc4bd7ba9c3b&quot;]
+</code></pre>
+<p>To convert this string back into an <code>Identity</code>, use <code>unSerialiseIdentity()</code>.</p>
+<p><code>const id: Identity = unSerialiseIdentity(serialisedId)</code></p>
+<h2><a class="header" href="#broadcast-signals" id="broadcast-signals">Broadcast signals</a></h2>
+<p>First obtain the leaves of the identity tree (in sequence, up to the user's
+identity commitment, or more).</p>
+<pre><code class="language-ts">const leaves = &lt;list of leaves&gt;
+</code></pre>
+<p>Next, load the circuit from disk (or from a remote source):</p>
+<pre><code class="language-ts">const circuitPath = path.join(__dirname, '/path/to/circuit.json')
+const cirDef = JSON.parse(fs.readFileSync(circuitPath).toString())
+const circuit = genCircuit(cirDef)
+</code></pre>
+<p>Next, use <code>libsemaphore</code>'s <code>genWitness()</code> helper function as such:</p>
+<pre><code>const result = await genWitness(
+    signal,
+    circuit,
+    identity,
+    leaves,
+    num_levels,
+    external_nullifier,
+)
+</code></pre>
+<ul>
+<li><code>signal</code>: a string which is the signal to broadcast.</li>
+<li><code>circuit</code>: the output of <code>genCircuit()</code> (see above).</li>
+<li><code>identity</code>: the user's identity as an <code>Identity</code> object.</li>
+<li><code>leaves</code> the list of leaves in the tree (see above).</li>
+<li><code>num_levels</code>: the depth of the Merkle tree.</li>
+<li><code>external_nullifier</code>: the external nullifier at which to broadcast.</li>
+</ul>
+<p>Load the proving key from disk (or from a remote source):</p>
+<pre><code class="language-ts">const provingKeyPath = path.join(__dirname, '/path/to/proving_key.bin')
+const provingKey: SnarkProvingKey = fs.readFileSync(provingKeyPath)
+</code></pre>
+<p>Generate the proof (this takes about 30-45 seconds on a modern laptop):</p>
+<pre><code class="language-ts">const proof = await genProof(result.witness, provingKey)
+</code></pre>
+<p>Generate the <code>broadcastSignal()</code> parameters:</p>
+<pre><code class="language-ts">const publicSignals = genPublicSignals(result.witness, circuit)
+const params = genBroadcastSignalParams(result, proof, publicSignals)
+</code></pre>
+<p>Finally, invoke <code>broadcastSignal()</code> with the parameters:</p>
+<pre><code class="language-ts">const tx = await semaphoreClientContract.broadcastSignal(
+    ethers.utils.toUtf8Bytes(signal),
+    params.proof,
+    params.root,
+    params.nullifiersHash,
+    external_nullifier,
+    { gasLimit: 500000 },
+)
+</code></pre>
+<h1><a class="header" href="#contract-api" id="contract-api">Contract API</a></h1>
+<h2><a class="header" href="#constructor" id="constructor">Constructor</a></h2>
+<p><strong>Contract ABI</strong>:</p>
+<p><code>constructor(uint8 _treeLevels, uint232 _firstExternalNullifier)</code></p>
+<ul>
+<li><code>_treeLevels</code>: The depth of the identity tree.</li>
+<li><code>_firstExternalNullifier</code>: The first identity nullifier to add.</li>
+</ul>
+<p>The depth of the identity tree determines how many identity commitments may be
+added to this contract: <code>2 ^ _treeLevels</code>. Once the tree is full, further
+insertions will fail with the revert reason <code>IncrementalMerkleTree: tree is full</code>.</p>
+<p>The first external nullifier will be added as an external nullifier to the
+contract, and this external nullifier will be active once the deployment
+completes.</p>
+<h2><a class="header" href="#add-deactivate-or-reactivate-external-nullifiiers-1" id="add-deactivate-or-reactivate-external-nullifiiers-1">Add, deactivate, or reactivate external nullifiiers</a></h2>
+<p><strong>Contract ABI</strong>:</p>
+<p><code>addExternalNullifier(uint232 _externalNullifier)</code></p>
+<p>Adds an external nullifier to the contract. Only the owner can do this.
+This external nullifier is active once it is added.</p>
+<ul>
+<li><code>_externalNullifier</code>: The new external nullifier to set.</li>
+</ul>
+<p><code>deactivateExternalNullifier(uint232 _externalNullifier)</code></p>
+<ul>
+<li><code>_externalNullifier</code>: The existing external nullifier to deactivate.</li>
+</ul>
+<p>Deactivate an external nullifier. The external nullifier must already be active
+for this function to work. Only the owner can do this.</p>
+<p><code>reactivateExternalNullifier(uint232 _externalNullifier)</code></p>
+<p>Reactivate an external nullifier. The external nullifier must already be
+inactive for this function to work. Only the owner can do this.</p>
+<ul>
+<li><code>_externalNullifier</code>: The deactivated external nullifier to reactivate.</li>
+</ul>
+<h2><a class="header" href="#insert-identities-1" id="insert-identities-1">Insert identities</a></h2>
+<p><strong>Contract ABI</strong>:</p>
+<p><code>function insertIdentity(uint256 _identityCommitment)</code></p>
+<ul>
+<li><code>_identity_commitment</code>: The user's identity commitment, which is the hash of
+their public key and their identity nullifier (a random 31-byte value). It
+should be the output of a Pedersen hash. It is the responsibility of the
+caller to verify this.</li>
+</ul>
+<p><strong>Off-chain <code>libsemaphore</code> helper functions</strong>:</p>
+<p>Use <code>genIdentity()</code> to generate an <code>Identity</code> object, and
+<code>genIdentityCommitment(identity: Identity)</code> to generate the
+<code>_identityCommitment</code> value to pass to the contract.</p>
+<p>To convert <code>identity</code> to a string and back, so that you can store it in a
+database or somewhere safe, use <code>serialiseIdentity()</code> and
+<code>unSerialiseIdentity()</code>.</p>
+<p>See the <a href="./usage.html#insert-identities">Usage section on inserting
+identities</a> for more information.</p>
+<h2><a class="header" href="#broadcast-signals-1" id="broadcast-signals-1">Broadcast signals</a></h2>
+<p><strong>Contract ABI</strong>:</p>
+<pre><code>broadcastSignal(
+    bytes memory _signal,
+    uint256[8] memory _proof,
+    uint256 _root,
+    uint256 _nullifiersHash,
+    uint232 _externalNullifier
+)
+</code></pre>
+<ul>
+<li><code>_signal</code>: the signal to broadcast.</li>
+<li><code>_proof</code>: a zk-SNARK proof (see below).</li>
+<li><code>_root</code>: The root of the identity tree, where the user's identity commitment
+is the last-inserted leaf.</li>
+<li><code>_nullifiersHash</code>: A uniquely derived hash of the external nullifier, user's
+identity nullifier, and the Merkle path index to their identity commitment.
+It ensures that a user cannot broadcast a signal with the same external
+nullifier more than once.</li>
+<li><code>_externalNullifier</code>: The external nullifier at which the signal is
+broadcast.</li>
+</ul>
+<p><strong>Off-chain <code>libsemaphore</code> helper functions</strong>:</p>
+<p>Use <code>libsemaphore</code>'s <code>genWitness()</code>, <code>genProof()</code>, <code>genPublicSignals()</code> and
+finally <code>genBroadcastSignalParams()</code> to generate the parameters to the
+contract's <code>broadcastSignal()</code> function.</p>
+<p>See the <a href="./usage.html#broadcast-signals">Usage section on broadcasting
+signals</a> for more information.</p>
+<h1><a class="header" href="#libsemaphore" id="libsemaphore">libsemaphore</a></h1>
+<p><a href="https://www.npmjs.com/package/libsemaphore"><code>libsemaphore</code></a> is a helper
+library for Semaphore written in Typescript. Any dApp written in Javascript or
+Typescript should use it as it provides useful abstractions over common tasks
+and objects, such as identities and proof generation.</p>
+<p>Note that only v1.0.14 and above works with the Semaphore code in this
+repository. v0.0.x is compatible with the pre-audited Semaphore code.</p>
+<h2><a class="header" href="#available-types-interfaces-and-functions" id="available-types-interfaces-and-functions">Available types, interfaces, and functions</a></h2>
+<h3><a class="header" href="#types" id="types">Types</a></h3>
+<p><strong><code>SnarkBigInt</code></strong></p>
+<p>A big integer type compatible with the <code>snarkjs</code> library. Note that it is not
+advisable to mix variables of this type with <code>bigNumber</code>s or <code>BigInt</code>s.
+Encapsulates <code>snarkjs.bigInt</code>.</p>
+<p><strong><code>EddsaPrivateKey</code></strong></p>
+<p>An <a href="https://tools.ietf.org/html/rfc8032">EdDSA</a> private key which should be 32
+bytes long. Encapsulates a <a href="https://nodejs.org/api/buffer.html"><code>Buffer</code></a>.</p>
+<p><strong><code>EddsaPublicKey</code></strong></p>
+<p>An EdDSA public key. Encapsulates an array of <code>SnarkBigInt</code>s.</p>
+<p><strong><code>SnarkProvingKey</code></strong></p>
+<p>A proving key, which when used with a secret <em>witness</em>, generates a zk-SNARK
+proof about said witness. Encapsulates a <code>Buffer</code>.</p>
+<p><strong><code>SnarkVerifyingKey</code></strong></p>
+<p>A verifying key which when used with public inputs to a zk-SNARK and a
+<code>SnarkProof</code>, can prove the proof's validity. Encapsulates a <code>Buffer</code>.</p>
+<p><strong><code>SnarkWitness</code></strong></p>
+<p>The secret inputs to a zk-SNARK. Encapsulates an array of <code>SnarkBigInt</code>s.</p>
+<p><strong><code>SnarkPublicSignals</code></strong></p>
+<p>The public inputs to a zk-SNARK. Encapsulates an array of <code>SnarkBigInt</code>s.</p>
+<h3><a class="header" href="#interfaces" id="interfaces">Interfaces</a></h3>
+<p><strong><code>EddsaKeyPair</code></strong></p>
+<p>Encapsulates an <code>EddsaPublicKey</code> and an <code>EddsaPrivateKey</code>.</p>
+<pre><code class="language-ts">interface EddsaKeyPair {
+    pubKey: EddsaPublicKey,
+    privKey: EddsaPrivateKey,
+}
+</code></pre>
+<p><strong><code>Identity</code></strong></p>
+<p>Encapsulates all information required to generate an identity commitment, and
+is crucial to creating <code>SnarkProof</code>s to broadcast signals.</p>
+<pre><code class="language-ts">interface Identity {
+    keypair: EddsaKeyPair,
+    identityNullifier: SnarkBigInt,
+    identityTrapdoor: SnarkBigInt,
+}
+</code></pre>
+<p><strong><code>SnarkProof</code></strong></p>
+<p>Note that <code>broadcastSignal()</code> accepts a <code>uint256[8]</code> array for its <code>_proof</code>
+parameter. See <code>genBroadcastSignalParams()</code>.</p>
+<pre><code class="language-ts">interface SnarkProof {
+    pi_a: SnarkBigInt[]
+    pi_b: SnarkBigInt[][]
+    pi_c: SnarkBigInt[]
+}
+</code></pre>
+<h3><a class="header" href="#functions" id="functions">Functions</a></h3>
+<p><strong><code>genPubKey(privKey: EddsaPrivateKey): EddsaPublicKey</code></strong></p>
+<p>Generates a public EdDSA key from a supplied private key. To generate a private
+key, use <code>crypto.randomBytes(32)</code> where <code>crypto</code> is the built-in Node or
+browser module.</p>
+<p><strong><code>genIdentity(): Identity</code></strong></p>
+<p>This is a convenience function to generate a fresh and random <code>Identity</code>. That
+is, the 32-byte private key for the <code>EddsaKeyPair</code> is randomly generated, as
+are the distinct 31-byte identity nullifier and the 31-byte identity trapdoor
+values.</p>
+<p><strong><code>serialiseIdentity(identity: Identity): string</code></strong></p>
+<p>Converts an <code>Identity</code> into a JSON string which looks like this:</p>
+<pre><code class="language-text">[&quot;e82cc2b8654705e427df423c6300307a873a2e637028fab3163cf95b18bb172e&quot;,&quot;a02e517dfb3a4184adaa951d02bfe0fe092d1ee34438721d798db75b8db083&quot;,&quot;15c6540bf7bddb0616984fccda7e954a0fb5ea4679ac686509dc4bd7ba9c3b&quot;]
+</code></pre>
+<p>You can also spell this function as <code>serializeIdentity</code>.</p>
+<p>To convert this string back into an <code>Identity</code>, use <code>unSerialiseIdentity()</code>.</p>
+<p><strong><code>unSerialiseIdentity(string: serialisedId): Identity</code></strong></p>
+<p>Converts the <code>string</code> output of <code>serialiseIdentity()</code> to an <code>Identity</code>.</p>
+<p>You can also spell this function as <code>unSerializeIdentity</code>.</p>
+<p><strong><code>genIdentityCommitment(identity: Identity): SnarkBigInt</code></strong></p>
+<p>Generates an identity commitment, which is the hash of the public key, the
+identity nullifier, and the identity trapdoor.</p>
+<p><strong><code>async genProof(witness: SnarkWitness, provingKey: SnarkProvingKey): SnarkProof</code></strong></p>
+<p>Generates a <code>SnarkProof</code>, which can be sent to the Semaphore contract's
+<code>broadcastSignal()</code> function. It can also be verified off-chain using
+<code>verifyProof()</code> below.</p>
+<p><strong><code>genPublicSignals(witness: SnarkWitness, circuit: SnarkCircuit): SnarkPublicSignals</code></strong></p>
+<p>Extracts the public signals to be supplied to the contract or <code>verifyProof()</code>.</p>
+<p><strong><code>verifyProof(verifyingKey: SnarkVerifyingKey, proof: SnarkProof, publicSignals: SnarkPublicSignals): boolean</code></strong></p>
+<p>Returns <code>true</code> if the given <code>proof</code> is valid, given the correct verifying key
+and public signals.</p>
+<p>Returns <code>false</code> otherwise.</p>
+<p><strong><code>signMsg(privKey: EddsaPrivateKey, msg: SnarkBigInt): EdDSAMiMcSpongeSignature)</code></strong></p>
+<p>Encapsualtes <code>circomlib.eddsa.signMiMCSponge</code> to sign a message <code>msg</code> using private key <code>privKey</code>.</p>
+<p><strong><code>verifySignature(msg: SnarkBigInt, signature: EdDSAMiMcSpongeSignature, pubKey: EddsaPublicKey)</code>: boolean</strong></p>
+<p>Returns <code>true</code> if the cryptographic <code>signature</code> of the signed <code>msg</code> is from the
+private key associated with <code>pubKey</code>.</p>
+<p>Returns <code>false</code> otherwise.</p>
+<p><strong><code>setupTree(levels: number, prefix: string): MerkleTree</code></strong></p>
+<p>Returns a Merkle tree created using
+<a href="https://www.npmjs.com/package/semaphore-merkle-tree"><code>semaphore-merkle-tree</code></a>
+with the same number of levels which the Semaphore zk-SNARK circuit expects.
+This tree is also configured to use <code>MimcSpongeHasher</code>, which is also what the
+circuit expects.</p>
+<p><code>levels</code> sets the number of levels of the tree. A tree with 20 levels, for
+instance, supports up to 1048576 deposits.</p>
+<p><strong><code>genCircuit(circuitDefinition: any)</code></strong></p>
+<p>Returns a <code>new snarkjs.Circuit(circuitDefinition)</code>. The <code>circuitDefinition</code>
+object should be the <code>JSON.parse</code>d result of the <code>circom</code> command which
+converts a <code>.circom</code> file to a <code>.json</code> file.</p>
+<p><strong><code>async genWitness(...)</code></strong></p>
+<p>This function has the following signature:</p>
+<pre><code class="language-ts">const genWitness = async (
+    signal: string,
+    circuit: SnarkCircuit,
+    identity: Identity,
+    idCommitments: SnarkBigInt[] | BigInt[] | ethers.utils.BigNumber[],
+    treeDepth: number,
+    externalNullifier: SnarkBigInt,
+)
+</code></pre>
+<ul>
+<li><code>signal</code> is the string you wish to broadcast.</li>
+<li><code>circuit</code> is the output of <code>genCircuit()</code>.</li>
+<li><code>identity</code> is the <code>Identity</code> whose identity commitment you want to prove is
+in the set of registered identities.</li>
+<li><code>idCommitments</code> is an array of registered identity commmitments; i.e. the
+leaves of the tree.</li>
+<li><code>treeDepth</code> is the number of levels which the Merkle tree used has</li>
+<li><code>externalNullifier</code> is the current external nullifier</li>
+</ul>
+<p>It returns an object as such:</p>
+<ul>
+<li><code>witness</code>: The witness to pass to <code>genProof()</code>.</li>
+<li><code>signal</code>: The computed signal for Semaphore. This is the hash of the
+recipient's address, relayer's address, and fee.</li>
+<li><code>signalHash</code>: The hash of the computed signal.</li>
+<li><code>msg</code>: The hash of the external nullifier and the signal hash</li>
+<li><code>signature</code>: The signature on the above msg.</li>
+<li><code>tree</code>: The Merkle tree object after it has been updated with the identity commitment</li>
+<li><code>identityPath</code>: The Merkle path to the identity commmitment</li>
+<li><code>identityPathIndex</code>: The leaf index of the identity commitment</li>
+<li><code>identityPathElements</code>: The elements along the above Merkle path</li>
+</ul>
+<p>Only <code>witness</code> is essential to generate the proof; the other data is only
+useful for debugging and additional off-chain checks, such as verifying the
+signature and the Merkle tree root.</p>
+<p><strong><code>formatForVerifierContract = (proof: SnarkProof, publicSignals: SnarkPublicSignals</code></strong></p>
+<p>Converts the data in <code>proof</code> and <code>publicSignals</code> to strings and rearranges
+elements of <code>proof.pi_b</code> so that <code>snarkjs</code>'s <code>verifier.sol</code> will accept it.
+To be specific, it returns an object as such:</p>
+<pre><code class="language-ts">{
+    a: [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
+    b: [ 
+         [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ],
+         [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ],
+    ],
+    c: [ proof.pi_c[0].toString(), proof.pi_c[1].toString() ],
+    input: publicSignals.map((x) =&gt; x.toString()),
+}
+</code></pre>
+<p><strong><code>stringifyBigInts = (obj: any) =&gt; object</code></strong></p>
+<p>Encapsulates <code>snarkjs.stringifyBigInts()</code>. Makes it easy to convert <code>SnarkProof</code>s to JSON. </p>
+<p><strong><code>unstringifyBigInts = (obj: any) =&gt; object</code></strong></p>
+<p>Encapsulates <code>snarkjs.unstringifyBigInts()</code>. Makes it easy to convert JSON to <code>SnarkProof</code>s.</p>
+<p><strong><code>genExternalNullifier = (plaintext: string) =&gt; string</code></strong></p>
+<p>Each external nullifier must be at most 29 bytes large. This function
+keccak-256-hashes a given <code>plaintext</code>, takes the last 29 bytes, and pads it
+(from the start) with 0s, and returns the resulting hex string.</p>
+<h1><a class="header" href="#multi-party-trusted-setup" id="multi-party-trusted-setup">Multi-party trusted setup</a></h1>
+<p>The Semaphore authors will use the <a href="https://github.com/weijiekoh/perpetualpowersoftau/">Perpetual Powers of
+Tau</a> ceremony and a random
+beacon as phase 1 of the trusted setup.</p>
+<p>More details about phase 2 will be released soon.</p>
+<h1><a class="header" href="#security-audit" id="security-audit">Security audit</a></h1>
+<p>The <a href="https://ethereum.org/">Ethereum Foundation</a> and <a href="https://www.poa.network/">POA
+Network</a> commissioned <a href="https://www.abdk.consulting">ABDK
+Consulting</a> to audit the source code of Semaphore
+as well as relevant circuits in
+<a href="https://github.com/iden3/circomlib">circomlib</a>, which contains components
+which the Semaphore zk-SNARK uses.</p>
+<p>All security and performance issues have been fixed. The full audit report will
+be available soon.</p>
+<h1><a class="header" href="#credits" id="credits">Credits</a></h1>
+<ul>
+<li>Barry WhiteHat</li>
+<li>Chih Cheng Liang</li>
+<li>Kobi Gurkan</li>
+<li>Koh Wei Jie</li>
+<li>Harry Roberts</li>
+</ul>
+<p>Many thanks to:</p>
+<ul>
+<li>ABDK Consulting</li>
+<li>Jordi Baylina / iden3</li>
+<li>POA Network</li>
+<li>PepperSec</li>
+<li>Ethereum Foundation</li>
+</ul>
+<h1><a class="header" href="#resources" id="resources">Resources</a></h1>
+<p><a href="https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b">To Mixers and Beyond: presenting Semaphore, a privacy gadget built on Ethereum</a> - Koh Wei Jie</p>
+<p><a href="https://www.youtube.com/watch?v=maDHYyj30kg">Privacy in Ethereum</a> - Barry WhiteHat at the Taipei Ethereum Meetup</p>
+<p><a href="https://www.youtube.com/watch?v=lv6iK9qezBY">Snarks for mixing, signaling and scaling by</a> - Barry WhiteHat at Devcon 4</p>
+<p><a href="https://www.youtube.com/watch?v=zBUo7G95wYE">Privacy in Ethereum</a> - Barry WhiteHat at Devcon 5</p>
+<p><a href="https://www.youtube.com/watch?v=GzVT16lFOHU">A trustless Ethereum mixer using zero-knowledge signalling</a> - Koh Wei Jie and Barry WhiteHat at Devcon 5</p>
+<p><a href="https://www.youtube.com/watch?v=7wd2aAN2jXI">Hands-on Applications of Zero-Knowledge Signalling</a> - Koh Wei Jie at Devcon 5</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
