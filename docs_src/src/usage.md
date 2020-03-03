@@ -41,7 +41,7 @@ wish for anyone to be able to broadcast a signal, the owner of the Semaphore
 contract (either a Client contract or externally owned account) must first
 invoke `setPermissioning(false)`.
 
-See [SemaphoreClient.sol](./contracts/sol/SemaphoreClient.sol) for an example.
+See [SemaphoreClient.sol](https://github.com/appliedzkp/semaphore/blob/master/contracts/sol/SemaphoreClient.sol) for an example.
 
 ## Insert identities
 
