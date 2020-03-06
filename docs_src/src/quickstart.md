@@ -23,7 +23,6 @@ To download the circuit, proving key, and verification key, run:
 ```bash
 # Start from the base directory
 
-cd circuits && \
 ./circuits/scripts/download_snarks.sh
 ```
 
@@ -32,7 +31,6 @@ To generate the above files locally instead, run:
 ```bash
 # Start from the base directory
 
-cd circuits && \
 ./circuits/scripts/build_snarks.sh
 ```
 
