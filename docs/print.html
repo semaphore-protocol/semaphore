@@ -345,8 +345,11 @@ and roughly halves the proving time. Note, however, that the Poseidon-related
 circuits and EVM bytecode generator have not been audited, so use it with
 caution. To use it, checkout the <code>feat/poseidon</code> branch of this repository.</p>
 <h1><a class="header" href="#quick-start" id="quick-start">Quick start</a></h1>
-<p>Semaphore has been tested with Node 11.14.0 and Node 12 LTE. Use
-<a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> to manage your Node version.</p>
+<p>Semaphore has been tested with Node 11.14.0. It will run with Node 12 LTE but
+we highly recommend using Node 11.14.0 if you wish to develop on its source
+code, as one of its dependencies, <code>script</code>, cannot compile when if you use Node
+12. </p>
+<p>Use <a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> to manage your Node version.</p>
 <p>Clone this repository, install dependencies, and build the source code:</p>
 <pre><code class="language-bash">git clone git@github.com:kobigurk/semaphore.git &amp;&amp; \
 cd semaphore &amp;&amp; \

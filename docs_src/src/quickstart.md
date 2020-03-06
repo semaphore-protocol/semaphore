@@ -1,7 +1,11 @@
 # Quick start
 
-Semaphore has been tested with Node 11.14.0 and Node 12 LTE. Use
-[`nvm`](https://github.com/nvm-sh/nvm) to manage your Node version.
+Semaphore has been tested with Node 11.14.0. It will run with Node 12 LTE but
+we highly recommend using Node 11.14.0 if you wish to develop on its source
+code, as one of its dependencies, `script`, cannot compile when if you use Node
+12. 
+
+Use [`nvm`](https://github.com/nvm-sh/nvm) to manage your Node version.
 
 Clone this repository, install dependencies, and build the source code:
 
