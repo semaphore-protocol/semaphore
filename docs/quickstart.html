@@ -161,6 +161,9 @@ npm i &amp;&amp; \
 npm run bootstrap &amp;&amp; \
 npm run build
 </code></pre>
+<p><strong>Note</strong>: we use <code>lerna</code> to manage the <code>circuits</code>, <code>config</code>, and <code>contracts</code>
+subpackages. Do not run <code>npm install</code> within any of these directories. Instead,
+just run <code>npm run bootstrap</code> in the main directory.</p>
 <p>Next, either download the compiled zk-SNARK circuit, proving key, and
 verification key (note that these keys are for testing purposes, and not for
 production, as there is no certainty that the toxic waste was securely
