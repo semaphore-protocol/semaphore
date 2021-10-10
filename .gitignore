@@ -1,9 +1,11 @@
-CNAME
-docs_src/book/
-.etherlime-store
-**/build/
-circuits/build
-contracts/compiled
 node_modules
-blake2sdef.json
-build/.snark_checksum
+build
+zkeyFiles
+.env
+
+#Hardhat files
+cache
+artifacts
+
+#Contracts
+contracts/Verifier.sol
