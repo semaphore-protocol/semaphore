@@ -60,7 +60,8 @@ template Semaphore(n_levels) {
     secret.identity_nullifier <== identity_nullifier;
     secret.identity_trapdoor <== identity_trapdoor;
 
-    signal secret_hash <-- secret.out;
+    signal secret_hash;
+    secret_hash <== secret.out;
 
     component identity_commitment = CalculateIdentityCommitment();
     identity_commitment.secret_hash <== secret_hash;
