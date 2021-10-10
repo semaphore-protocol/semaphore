@@ -1,17 +1,36 @@
 {
   "name": "semaphore",
-  "version": "0.0.1",
-  "description": "Solidity contracts, zk-SNARk circuits, and test scripts for the Semaphore zero-knowledge signalling gadget",
-  "main": "build/index.js",
+  "version": "1.0.0",
+  "description": "This is the original version of semaphore where Poseidon hash is used for all proofs and additional security with signature proof is removed",
   "scripts": {
-    "test": "jest",
-    "bootstrap": "lerna bootstrap",
-    "build": "lerna run build"
+    "test": "ts-node test/verify.ts"
   },
-  "author": "Barry WhiteHat, Kobi Gurkan, Koh Wei Jie",
-  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appliedzkp/semaphore.git.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/appliedzkp/semaphore.git/issues"
+  },
+  "homepage": "https://github.com/appliedzkp/semaphore.git#readme",
+  "dependencies": {
+    "circomlib": "^0.5.3",
+    "libsemaphore": "github:appliedzkp/libsemaphore",
+    "web3": "^1.5.2"
+  },
   "devDependencies": {
-    "lerna": "^3.18.3",
-    "typescript": "^3.6.4"
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "chai": "^4.3.4",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.4.6",
+    "hardhat": "^2.6.1",
+    "http-server": "^13.0.1",
+    "snarkjs": "^0.4.6",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
   }
 }
