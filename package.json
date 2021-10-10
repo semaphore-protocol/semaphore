@@ -1,7 +1,7 @@
 {
   "name": "semaphore",
   "version": "1.0.0",
-  "description": "This is the original version of semaphore where Poseidon hash is used for all proofs and additional security with signature proof is removed",
+  "description": "Solidity contracts, zk-SNARK circuits, and test scripts for the Semaphore zero-knowledge signalling gadget. This version uses the Poseidon hash and does not use EdDSA signatures.",
   "scripts": {
     "test": "ts-node test/verify.ts"
   },
