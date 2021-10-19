@@ -6,7 +6,8 @@ const Web3 = require('web3');
 const ZERO_VALUE = BigInt(ethers.utils.solidityKeccak256(['bytes'], [ethers.utils.toUtf8Bytes('Semaphore')]));
 const SNARK_FIELD_SIZE = BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495617");
 
-const { FastSemaphore } = require('libsemaphore');
+const { ZkIdentity } = require('@libsem/identity');
+const { Semaphore, genExternalNullifier, genSignalHash, generateMerkleProof } = require('@libsem/protocols');
 const { expect } = require('chai');
 
 describe("Semaphore", function () {
@@ -35,25 +36,25 @@ describe("Semaphore", function () {
       const hasher = await Hasher.deploy();
       await hasher.deployed();
 
-      const externalNullifier = FastSemaphore.genExternalNullifier("voting-1");
+      const externalNullifier = genExternalNullifier("voting-1");
 
-      const Semaphore = await ethers.getContractFactory("Semaphore", {
+      const SemaphoreContract = await ethers.getContractFactory("Semaphore", {
           libraries: {
               PoseidonT3: poseidonT3.address,
               PoseidonT6: poseidonT6.address,
           }
       });
-      const semaphore = await Semaphore.deploy(20, externalNullifier);
+      const semaphore = await SemaphoreContract.deploy(20, externalNullifier);
       await semaphore.deployed();
 
-      FastSemaphore.setHasher('poseidon');
       const leafIndex = 4;
 
       const idCommitments = [];
 
       for (let i=0; i<leafIndex;i++) {
-        const tmpIdentity = FastSemaphore.genIdentity();
-        const tmpCommitment = FastSemaphore.genIdentityCommitment(tmpIdentity);
+        const tmpIdentity = ZkIdentity.genIdentity();
+        const tmpIdentitySecret = ZkIdentity.genSecretFromIdentity(tmpIdentity);
+        const tmpCommitment = ZkIdentity.genIdentityCommitment(tmpIdentitySecret);
         idCommitments.push(tmpCommitment);
       }
 
@@ -65,30 +66,26 @@ describe("Semaphore", function () {
       await Promise.all(promises);
 
 
-      const identity = FastSemaphore.genIdentity();
+      const identity = ZkIdentity.genIdentity();
       let signal = 'yes';
       signal = Web3.utils.utf8ToHex(signal);
-      const signalHash = FastSemaphore.genSignalHash(signal);
-      const nullifiersHash = FastSemaphore.genNullifierHash(externalNullifier, identity.identityNullifier, 20);
-      const identityCommitment = FastSemaphore.genIdentityCommitment(identity);
+      const signalHash = genSignalHash(signal);
+      const nullifiersHash = Semaphore.genNullifierHash(externalNullifier, identity.identityNullifier, 20);
+      const identitySecret = ZkIdentity.genSecretFromIdentity(identity);
+      const identityCommitment = ZkIdentity.genIdentityCommitment(identitySecret);
 
       await semaphore.insertIdentity(identityCommitment);
+      idCommitments.push(identityCommitment);
+
+      const merkleProof = generateMerkleProof(20, ZERO_VALUE, 5, idCommitments, identityCommitment);
+      const witness = Semaphore.genWitness(identity, merkleProof, externalNullifier, signal);
 
       const wasmFilePath =  path.join('./zkeyFiles', 'semaphore.wasm');
       const finalZkeyPath = path.join('./zkeyFiles', 'semaphore_final.zkey');
 
-      idCommitments.push(identityCommitment);
-
-      const witnessData = await FastSemaphore.genProofFromIdentityCommitments(
-        identity, externalNullifier, signal, wasmFilePath, finalZkeyPath, 
-        idCommitments, 20, ZERO_VALUE, 5
-      );
+      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath);
   
-
-      const { fullProof, root } = witnessData;
-      const solidityProof = FastSemaphore.packToSolidityProof(fullProof);
-
-
+      const solidityProof = Semaphore.packToSolidityProof(fullProof);
       const packedProof = await semaphore.packProof(
         solidityProof.a, 
         solidityProof.b, 
@@ -98,7 +95,7 @@ describe("Semaphore", function () {
       const preBroadcastCheck = await semaphore.preBroadcastCheck(
           ethers.utils.hexlify(ethers.utils.toUtf8Bytes(signal)),
           packedProof,
-          root,
+          merkleProof.root,
           nullifiersHash,
           signalHash,
           externalNullifier
@@ -109,7 +106,7 @@ describe("Semaphore", function () {
       const res = await semaphore.broadcastSignal(
             ethers.utils.hexlify(ethers.utils.toUtf8Bytes(signal)),
             packedProof,
-            root,
+            merkleProof.root,
             nullifiersHash,
             externalNullifier
       )

@@ -17,8 +17,9 @@
   },
   "homepage": "https://github.com/appliedzkp/semaphore.git#readme",
   "dependencies": {
+    "@libsem/identity": "^1.0.6",
+    "@libsem/protocols": "^1.0.7",
     "circomlib": "^0.5.3",
-    "libsemaphore": "github:appliedzkp/libsemaphore",
     "web3": "^1.5.2"
   },
   "devDependencies": {
@@ -29,7 +30,7 @@
     "ethers": "^5.4.6",
     "hardhat": "^2.6.1",
     "http-server": "^13.0.1",
-    "snarkjs": "^0.4.6",
+    "snarkjs": "^0.4.7",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.2"
   }
