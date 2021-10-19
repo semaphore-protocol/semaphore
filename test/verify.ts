@@ -1,45 +1,51 @@
 const snarkjs = require("snarkjs");
 import * as fs from 'fs';
-import { FastSemaphore, Identity, IWitnessData } from 'libsemaphore';
+import * as path from 'path';
+import { ZkIdentity, Identity } from '@libsem/identity';
+import { Semaphore, MerkleProof, IProof, generateMerkleProof, genExternalNullifier, genSignalHash } from '@libsem/protocols';
 import * as ethers from 'ethers';
 
 const ZERO_VALUE = BigInt(ethers.utils.solidityKeccak256(['bytes'], [ethers.utils.toUtf8Bytes('Semaphore')]));
 
 async function run() {
-    FastSemaphore.setHasher('poseidon');
-    const n_levels = 20;
-    const externalNullifier = FastSemaphore.genExternalNullifier('fast-sempahore-demo');
-    const signalHash = FastSemaphore.genSignalHash('hello fast semaphore');
-    const identity: Identity = FastSemaphore.genIdentity();
-    const idCom = FastSemaphore.genIdentityCommitment(identity);
+    const identityCommitments: Array<bigint> = [];
+    const leafIndex = 3;
 
-    
-    const tree = FastSemaphore.createTree(20, ZERO_VALUE, 5);
-    tree.insert(idCom);
-    const merkleeProof = tree.genMerklePath(0);
-    // console.log(tree.zeros.length)
-
-    const nullifierHash = FastSemaphore.genNullifierHash(externalNullifier, identity.identityNullifier, n_levels);
-    const { proof, publicSignals } = await snarkjs.groth16.fullProve(
-    {
-        signal_hash: signalHash,
-        external_nullifier: externalNullifier,
-        identity_path_index: merkleeProof.indices,
-        path_elements: merkleeProof.pathElements,
-        identity_nullifier: identity.identityNullifier,
-        identity_trapdoor: identity.identityTrapdoor
+    for (let i=0; i<leafIndex;i++) {
+      const tmpIdentity = ZkIdentity.genIdentity();
+      const tmpIdentitySecret: bigint[] = ZkIdentity.genSecretFromIdentity(tmpIdentity);
+      const tmpCommitment: bigint = ZkIdentity.genIdentityCommitment(tmpIdentitySecret);
+      identityCommitments.push(tmpCommitment);
     }
-    , "./zkeyFiles/semaphore.wasm", "./zkeyFiles/semaphore_final.zkey");
 
-    const pubSignals = [tree.root, nullifierHash, signalHash, externalNullifier];
+    const identity: Identity = ZkIdentity.genIdentity();
+    const externalNullifier: string = genExternalNullifier("voting_1");
+    const signal = '0x111';
+    const identitySecret: bigint[] = ZkIdentity.genSecretFromIdentity(identity);
+    const identityCommitment: bigint = ZkIdentity.genIdentityCommitment(identitySecret);
+    const nullifierHash: bigint = Semaphore.genNullifierHash(externalNullifier, identity.identityNullifier, 20);
 
-    const vKey = JSON.parse(fs.readFileSync("./zkeyFiles/verification_key.json", 'utf-8'));
-    const res = await snarkjs.groth16.verify(vKey, pubSignals, proof);
+    const commitments: Array<bigint> = Object.assign([], identityCommitments);
+    commitments.push(identityCommitment);
 
-    if (res === true) {
-        console.log("Verification OK");
+    const merkleProof: MerkleProof = generateMerkleProof(20, BigInt(0), 5, commitments, identityCommitment);
+    const witness: IProof = Semaphore.genWitness(identity, merkleProof, externalNullifier, signal);
+
+    const publicSignals: Array<bigint | string> = [merkleProof.root, nullifierHash, genSignalHash(signal), externalNullifier];
+
+    const vkeyPath: string = path.join('./zkeyFiles', 'verification_key.json');
+    const vKey = JSON.parse(fs.readFileSync(vkeyPath, 'utf-8'));
+
+    const wasmFilePath: string = path.join('./zkeyFiles', 'semaphore.wasm');
+    const finalZkeyPath: string = path.join('./zkeyFiles', 'semaphore_final.zkey');
+
+    const fullProof: IProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath);
+    const res: boolean = await Semaphore.verifyProof(vKey, { proof: fullProof.proof, publicSignals });
+
+    if(res) {
+        console.log('VERIFICATION OK');
     } else {
-        console.log("Invalid proof");
+        console.log('VERIFICATION FAILED');
     }
 }
 
