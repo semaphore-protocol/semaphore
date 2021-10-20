@@ -53,8 +53,7 @@ describe("Semaphore", function () {
 
       for (let i=0; i<leafIndex;i++) {
         const tmpIdentity = ZkIdentity.genIdentity();
-        const tmpIdentitySecret = ZkIdentity.genSecretFromIdentity(tmpIdentity);
-        const tmpCommitment = ZkIdentity.genIdentityCommitment(tmpIdentitySecret);
+        const tmpCommitment = ZkIdentity.genIdentityCommitment(tmpIdentity);
         idCommitments.push(tmpCommitment);
       }
 
@@ -71,8 +70,7 @@ describe("Semaphore", function () {
       signal = Web3.utils.utf8ToHex(signal);
       const signalHash = genSignalHash(signal);
       const nullifiersHash = Semaphore.genNullifierHash(externalNullifier, identity.identityNullifier, 20);
-      const identitySecret = ZkIdentity.genSecretFromIdentity(identity);
-      const identityCommitment = ZkIdentity.genIdentityCommitment(identitySecret);
+      const identityCommitment = ZkIdentity.genIdentityCommitment(identity);
 
       await semaphore.insertIdentity(identityCommitment);
       idCommitments.push(identityCommitment);
