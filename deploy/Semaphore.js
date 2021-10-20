@@ -1,23 +1,12 @@
-const { poseidon_gencontract: poseidonGenContract } = require('circomlibjs');
 const { genExternalNullifier } = require('../utils');
 
 module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deploy } = deployments;
     const { deployer } = await getNamedAccounts();
-
-    const poseidonT3 = await deploy("PoseidonT3", {
-        from: deployer,
-        log: true,
-        abi: poseidonGenContract.generateABI(2),
-        bytecode: poseidonGenContract.createCode(2)
-    });
-
-    const poseidonT6 = await deploy("PoseidonT6", {
-        from: deployer,
-        log: true,
-        abi: poseidonGenContract.generateABI(5),
-        bytecode: poseidonGenContract.createCode(5)
-    });
+    // const poseidonT3 = await hre.ethers.getContractAt("PoseidonT3")
+    // const poseidonT6 = await hre.ethers.getContractAt("PoseidonT6")
+    const poseidonT3 = await deployments.get("PoseidonT3")
+    const poseidonT6 = await deployments.get("PoseidonT6")
 
     const externalNullifier = genExternalNullifier('test-voting');
     const semaphore = await deploy('Semaphore', {
@@ -37,3 +26,4 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     });
 };
 module.exports.tags = ['complete'];
+module.exports.dependencies = ['PoseidonT3', 'PoseidonT6'];
