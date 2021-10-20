@@ -7,7 +7,7 @@
     "compile": "npx hardhat compile",
     "develop": "npx hardhat node",
     "deploy": "npx hardhat deploy --tags complete",
-    "deployPoseidon": "npx hardhat deploy --tags poseidon"
+    "deployPoseidon": "npx hardhat deploy --tags Poseidon"
   },
   "repository": {
     "type": "git",
