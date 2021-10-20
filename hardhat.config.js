@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+require('hardhat-deploy');
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -23,5 +24,13 @@ module.exports = {
       chainId: 1337,
       allowUnlimitedContractSize: true,
     },
+  },
+  namedAccounts: {
+    deployer: 0,
+    tokenOwner: 1,
+  },
+  paths: {
+    deploy: 'deploy',
+    deployments: 'deployments',
   },
 };
