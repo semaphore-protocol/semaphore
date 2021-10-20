@@ -4,11 +4,12 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deploy } = deployments;
     const { deployer } = await getNamedAccounts();
 
-    await deploy("PoseidonT3", {
+    await deploy("PoseidonT6", {
         from: deployer,
         log: true,
         abi: poseidonGenContract.generateABI(5),
         bytecode: poseidonGenContract.createCode(5)
     });
 };
-module.exports.tags = ['poseidon-t6', 'poseidon'];
+
+module.exports.tags = ['PoseidonT6', 'Poseidon', 'complete'];

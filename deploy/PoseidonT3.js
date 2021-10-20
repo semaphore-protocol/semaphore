@@ -11,4 +11,4 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         bytecode: poseidonGenContract.createCode(2)
     });
 };
-module.exports.tags = ['poseidon-t3', 'poseidon'];
+module.exports.tags = ['PoseidonT3', 'Poseidon', 'complete'];
