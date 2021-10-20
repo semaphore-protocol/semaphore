@@ -27,7 +27,6 @@ module.exports = {
   },
   namedAccounts: {
     deployer: 0,
-    tokenOwner: 1,
   },
   paths: {
     deploy: 'deploy',
