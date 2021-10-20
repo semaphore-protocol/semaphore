@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/appliedzkp/semaphore.git#readme",
   "dependencies": {
-    "@libsem/identity": "^1.0.6",
-    "@libsem/protocols": "^1.0.7",
+    "@libsem/identity": "^1.0.8",
+    "@libsem/protocols": "^1.0.9",
     "circomlib": "^0.5.3",
     "web3": "^1.5.2"
   },
