@@ -3,13 +3,14 @@
   "version": "2.0.0",
   "description": "Solidity contracts, zk-SNARK circuits, and test scripts for the Semaphore zero-knowledge signalling gadget. This version uses the Poseidon hash and does not use EdDSA signatures.",
   "scripts": {
-    "compile:circuits": "scripts/build-circuits.sh <<< $'random text'",
     "compile:contracts": "npx hardhat compile",
     "develop": "npx hardhat node",
     "deploy": "npx hardhat deploy --tags complete",
     "deploy:poseidon": "npx hardhat deploy --tags Poseidon",
+    "test:integration": "npm run compile:circuits && npm run verifier:fix && npm run test",
     "test": "npx hardhat test",
-    "test:integration": "npm run compile:circuits && node integration-test semaphore-proof-test.js"
+    "compile:circuits": "scripts/build-circuits.sh <<< $'random text'",
+    "verifier:fix": "node scripts/bump-solidity"
   },
   "repository": {
     "type": "git",
