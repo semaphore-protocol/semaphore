@@ -3,11 +3,13 @@
   "version": "2.0.0",
   "description": "Solidity contracts, zk-SNARK circuits, and test scripts for the Semaphore zero-knowledge signalling gadget. This version uses the Poseidon hash and does not use EdDSA signatures.",
   "scripts": {
-    "test": "npx hardhat test",
-    "compile": "npx hardhat compile",
+    "compile:circuits": "scripts/build-circuits.sh <<< $'random text'",
+    "compile:contracts": "npx hardhat compile",
     "develop": "npx hardhat node",
     "deploy": "npx hardhat deploy --tags complete",
-    "deployPoseidon": "npx hardhat deploy --tags Poseidon"
+    "deploy:poseidon": "npx hardhat deploy --tags Poseidon",
+    "test": "npx hardhat test",
+    "test:integration": "npm run compile:circuits && node integration-test semaphore-proof-test.js"
   },
   "repository": {
     "type": "git",
@@ -21,21 +23,24 @@
   },
   "homepage": "https://github.com/appliedzkp/semaphore.git#readme",
   "dependencies": {
-    "@libsem/identity": "^1.0.8",
-    "@libsem/protocols": "^1.0.9",
     "circomlib": "^0.5.3",
     "hardhat-deploy": "^0.9.4",
     "hardhat-deploy-ethers": "^0.3.0-beta.11",
     "web3": "^1.5.2"
   },
   "devDependencies": {
+    "@libsem/identity": "^1.0.14",
+    "@libsem/protocols": "^1.0.14",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "chai": "^4.3.4",
+    "chai-ethers": "^0.0.1",
+    "circomlibjs": "^0.0.8",
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.4.6",
     "hardhat": "^2.6.1",
     "http-server": "^13.0.1",
+    "mocha": "^9.1.3",
     "snarkjs": "^0.4.7",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.2"
