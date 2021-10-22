@@ -1,8 +1,11 @@
-const { expect, before } = require("chai");
+const { expect } = require("chai");
 const {ethers } = require('hardhat');
 const { poseidon_gencontract: poseidonGenContract } = require("circomlibjs");
 const { Semaphore, generateMerkleProof, genExternalNullifier, genSignalHash } = require("@libsem/protocols");
 const { ZkIdentity } = require("@libsem/identity");
+
+const path = require("path");
+const fs = require("fs");
 
 const deployPoseidonTx = (x) => {
     return ethers.getContractFactory(
@@ -43,6 +46,7 @@ before("*", async () => {
       const tmpIdentity = new ZkIdentity();
       const tmpCommitment = tmpIdentity.genIdentityCommitment();
       identityCommitments.push(tmpCommitment)
+      await semaphore.insertIdentity(tmpCommitment);
     }
 })
 
@@ -54,28 +58,47 @@ describe("Semaphore contract", () => {
       await semaphore.insertIdentity(identityCommitment);
 
       const signal = "0x111";
-      const nullifierHash = Semaphore.genNullifierHash(externalNullifier, identity.getNullifier(), 20)
+      const nullifierHash = Semaphore.genNullifierHash(defaultExternalNullifier, identity.getNullifier(), 20)
 
       const commitments = Object.assign([], identityCommitments)
       commitments.push(identityCommitment)
 
       const merkleProof = generateMerkleProof(20, ZERO_VALUE, 5, commitments, identityCommitment)
-      const witness = Semaphore.genWitness(identity.getIdentity(), merkleProof, externalNullifier, signal)
+      const witness = Semaphore.genWitness(identity.getIdentity(), merkleProof, defaultExternalNullifier, signal)
 
-      const publicSignals = [
+      const wasmFilePath = path.join("./zkeyFiles", "semaphore.wasm")
+      const finalZkeyPath = path.join("./zkeyFiles", "semaphore_final.zkey")
+
+      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof);
+
+      const packedProof = await semaphore.packProof(
+        solidityProof.a, 
+        solidityProof.b, 
+        solidityProof.c,
+      );
+
+      const preBroadcastCheck = await semaphore.preBroadcastCheck(
+        ethers.utils.hexlify(ethers.utils.toUtf8Bytes(signal)),
+        packedProof,
         merkleProof.root,
         nullifierHash,
         genSignalHash(signal),
-        externalNullifier
-      ]
+        defaultExternalNullifier
+      )
 
-      const vkeyPath = path.join("./zkeyFiles", "semaphore", "verification_key.json")
-      const vKey = JSON.parse(fs.readFileSync(vkeyPath, "utf-8"))
+      expect(preBroadcastCheck).to.be.true;
 
-      const wasmFilePath = path.join("./zkeyFiles", "semaphore", "semaphore.wasm")
-      const finalZkeyPath = path.join("./zkeyFiles", "semaphore", "semaphore_final.zkey")
+      let res = null;
+      res = await semaphore.broadcastSignal(
+        ethers.utils.hexlify(ethers.utils.toUtf8Bytes(signal)),
+        packedProof,
+        merkleProof.root,
+        nullifierHash,
+        defaultExternalNullifier
+      )
 
-      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const res = await Semaphore.verifyProof(vKey, { proof: fullProof.proof, publicSignals })
+      expect(res).to.not.equal(null);
+
     })
 })
