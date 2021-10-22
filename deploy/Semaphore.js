@@ -3,8 +3,8 @@ const { genExternalNullifier } = require('../utils');
 module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deploy } = deployments;
     const { deployer } = await getNamedAccounts();
-    // const poseidonT3 = await hre.ethers.getContractAt("PoseidonT3")
-    // const poseidonT6 = await hre.ethers.getContractAt("PoseidonT6")
+    const depth = 20;
+
     const poseidonT3 = await deployments.get("PoseidonT3")
     const poseidonT6 = await deployments.get("PoseidonT6")
 
@@ -12,7 +12,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     const semaphore = await deploy('Semaphore', {
       from: deployer,
       log: true,
-      args: [20, externalNullifier],
+      args: [depth, externalNullifier],
       libraries: {
         PoseidonT3: poseidonT3.address,
         PoseidonT6: poseidonT6.address
