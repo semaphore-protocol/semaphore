@@ -1,11 +1,9 @@
 cd "$(dirname "$0")"
-mkdir -p ../build
-cd ../build
 
-cd "$(dirname "$0")"
+mkdir -p ../build
 mkdir -p ../zkeyFiles
 
-npx circom ../circuits/semaphore.circom --r1cs --wasm --sym
+cd ../build
 
 if [ -f ./powersOfTau28_hez_final_16.ptau ]; then
     echo "powersOfTau28_hez_final_16.ptau already exists. Skipping."
@@ -13,6 +11,8 @@ else
     echo 'Downloading powersOfTau28_hez_final_16.ptau'
     wget https://hermez.s3-eu-west-1.amazonaws.com/powersOfTau28_hez_final_16.ptau
 fi
+
+npx circom ../circuits/semaphore.circom --r1cs --wasm --sym
 
 npx snarkjs zkey new semaphore.r1cs powersOfTau28_hez_final_16.ptau semaphore_0000.zkey
 
