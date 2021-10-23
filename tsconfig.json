@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "strict": true,
+      "target": "ES5",
+      "module": "ES6",
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "preserveConstEnums": true,
+      "skipLibCheck": true,
+      "allowJs": true,
+      "noImplicitAny": false,
+    },
+    "include": ["integration-test"]
+}
