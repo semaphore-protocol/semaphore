@@ -9,3 +9,4 @@ artifacts
 
 #Contracts
 contracts/Verifier.sol
+deployments
