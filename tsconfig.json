@@ -7,8 +7,15 @@
       "esModuleInterop": true,
       "preserveConstEnums": true,
       "skipLibCheck": true,
+      "declaration": true,
+      "allowSyntheticDefaultImports": true,
+      "sourceMap": true,
+      "experimentalDecorators": true,
+      "alwaysStrict": true,
       "allowJs": true,
       "noImplicitAny": false,
+      "noUnusedLocals": false,
+      "noUnusedParameters": true
     },
     "include": ["integration-test"]
 }
