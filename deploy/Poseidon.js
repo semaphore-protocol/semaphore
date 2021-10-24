@@ -8,8 +8,10 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         return {
             from: deployer,
             log: true,
-            abi: poseidonGenContract.generateABI(x),
-            bytecode: poseidonGenContract.createCode(x)
+            contract: {
+                abi: poseidonGenContract.generateABI(x),
+                bytecode: poseidonGenContract.createCode(x)
+            }
         }
     }
 
