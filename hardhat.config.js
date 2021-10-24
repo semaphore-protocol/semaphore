@@ -42,5 +42,5 @@ module.exports = {
   paths: {
     deploy: 'deploy',
     deployments: 'deployments',
-  },
+  }
 };

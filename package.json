@@ -5,10 +5,10 @@
   "scripts": {
     "compile:contracts": "npx hardhat compile",
     "develop": "npx hardhat node",
-    "deploy": "npx hardhat deploy --tags complete",
-    "deploy:poseidon": "npx hardhat deploy --tags Poseidon",
+    "deploy:localhost": "npx hardhat deploy --tags complete",
+    "export:localhost": "mkdir -p exports && npx hardhat --network localhost export --export exports/localhost.json",
     "test:dapp": "jest",
-    "test:integration": "npm run compile:circuits && npm run verifier:fix && npm run test",
+    "test:fullProof": "npm run compile:circuits && npm run verifier:fix && npm run test",
     "test": "npx hardhat test",
     "compile:circuits": "scripts/build-circuits.sh <<< $'random text'",
     "verifier:fix": "node scripts/bump-solidity"
