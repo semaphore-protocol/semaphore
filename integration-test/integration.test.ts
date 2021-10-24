@@ -13,8 +13,6 @@ const wasmFilePath = path.join("./zkeyFiles", "semaphore.wasm")
 const finalZkeyPath = path.join("./zkeyFiles", "semaphore_final.zkey")
 let SemaphoreContract;
 
-// console.log(ZERO_VALUE.toString(16))
-
 beforeAll(async () => {
     const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
     const signer = new ethers.Wallet(pk, provider);
@@ -39,14 +37,8 @@ test('Should create semaphore full proof', async () => {
     const commitments = Object.assign([], identityCommitments);
     commitments.push(identityCommitment);
 
-    // console.log(commitments);
-
     const merkleProof = generateMerkleProof(20, ZERO_VALUE, 5, commitments, identityCommitment)
     const witness = Semaphore.genWitness(identity.getIdentity(), merkleProof, defaultExternalNullifier, signal)
-
-    // const semaphoreRoot = await SemaphoreContract.root();
-    // console.log('Root: ', BigInt(semaphoreRoot._hex));
-    // console.log('Local root: ', merkleProof.root);
 
     const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
     const solidityProof = Semaphore.packToSolidityProof(fullProof);
