@@ -1,3 +1,4 @@
+pragma circom 2.0.0;
 include "./semaphore-base.circom";
 
-component main = Semaphore(20);
+component main {public [signal_hash, external_nullifier]} = Semaphore(20);

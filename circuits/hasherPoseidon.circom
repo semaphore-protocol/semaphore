@@ -1,3 +1,5 @@
+pragma circom 2.0.0;
+
 template PoseidonHashT6() {
     var nInputs = 5;
     signal input inputs[nInputs];

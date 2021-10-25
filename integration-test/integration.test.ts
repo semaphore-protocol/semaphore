@@ -56,4 +56,4 @@ test('Should create semaphore full proof', async () => {
       nullifierHash,
       defaultExternalNullifier
     )
-}, 10000)
+}, 60000)
