@@ -31,8 +31,8 @@
     "web3": "^1.5.2"
   },
   "devDependencies": {
-    "@libsem/identity": "^1.0.14",
-    "@libsem/protocols": "^1.0.14",
+    "@libsem/identity": "^1.0.16",
+    "@libsem/protocols": "^1.0.15",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@types/jest": "^27.0.2",

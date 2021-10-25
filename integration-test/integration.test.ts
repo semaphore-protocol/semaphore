@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { ZkIdentity } from "@libsem/identity";
-import { Semaphore, generateMerkleProof, genExternalNullifier, genSignalHash } from "@libsem/protocols";
+import { Semaphore, generateMerkleProof, genExternalNullifier, FullProof, MerkleProof } from "@libsem/protocols";
 import * as path from "path";
 import * as fs from "fs";
 
@@ -26,7 +26,6 @@ test('Should create semaphore full proof', async () => {
     const identityCommitment = identity.genIdentityCommitment();
 
     const semaphoreRootBefore = await SemaphoreContract.root();
-    console.log('Root Before: ', BigInt(semaphoreRootBefore._hex));
 
     let tx = await SemaphoreContract.insertIdentity(identityCommitment);
     await tx.wait();
@@ -37,10 +36,10 @@ test('Should create semaphore full proof', async () => {
     const commitments = Object.assign([], identityCommitments);
     commitments.push(identityCommitment);
 
-    const merkleProof = generateMerkleProof(20, ZERO_VALUE, 5, commitments, identityCommitment)
+    const merkleProof: MerkleProof = generateMerkleProof(20, ZERO_VALUE, 5, commitments, identityCommitment)
     const witness = Semaphore.genWitness(identity.getIdentity(), merkleProof, defaultExternalNullifier, signal)
 
-    const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+    const fullProof: FullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
     const solidityProof = Semaphore.packToSolidityProof(fullProof);
 
     const packedProof = await SemaphoreContract.packProof(
