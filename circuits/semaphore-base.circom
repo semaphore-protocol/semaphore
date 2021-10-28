@@ -32,10 +32,9 @@ template CalculateNullifierHash() {
 
     signal output out;
 
-    component hasher = Poseidon(3);
+    component hasher = Poseidon(2);
     hasher.inputs[0] <== external_nullifier;
     hasher.inputs[1] <== identity_nullifier;
-    hasher.inputs[2] <== n_levels;
     out <== hasher.out;
 }
 
@@ -69,7 +68,6 @@ template Semaphore(n_levels) {
     component calculateNullifierHash = CalculateNullifierHash();
     calculateNullifierHash.external_nullifier <== external_nullifier;
     calculateNullifierHash.identity_nullifier <== identity_nullifier;
-    calculateNullifierHash.n_levels <== n_levels;
 
     var i;
     var j;
