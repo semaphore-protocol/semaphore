@@ -3,9 +3,8 @@ const {ethers } = require('hardhat');
 const { poseidon_gencontract: poseidonGenContract } = require("circomlibjs");
 const { Semaphore, generateMerkleProof, genExternalNullifier, genSignalHash } = require("@libsem/protocols");
 const { ZkIdentity } = require("@libsem/identity");
-
 const path = require("path");
-const fs = require("fs");
+const { genNullifierHash } = require("./helpers");
 
 const deployPoseidonTx = (x) => {
     return ethers.getContractFactory(
@@ -58,7 +57,7 @@ describe("Semaphore contract", () => {
       await semaphore.insertIdentity(identityCommitment);
 
       const signal = "0x111";
-      const nullifierHash = Semaphore.genNullifierHash(defaultExternalNullifier, identity.getNullifier(), 20)
+      const nullifierHash = genNullifierHash(defaultExternalNullifier, identity.getNullifier(), 20)
 
       const commitments = Object.assign([], identityCommitments)
       commitments.push(identityCommitment)
@@ -73,8 +72,8 @@ describe("Semaphore contract", () => {
       const solidityProof = Semaphore.packToSolidityProof(fullProof);
 
       const packedProof = await semaphore.packProof(
-        solidityProof.a, 
-        solidityProof.b, 
+        solidityProof.a,
+        solidityProof.b,
         solidityProof.c,
       );
 
@@ -89,8 +88,7 @@ describe("Semaphore contract", () => {
 
       expect(preBroadcastCheck).to.be.true;
 
-      let res = null;
-      res = await semaphore.broadcastSignal(
+      let res = await semaphore.broadcastSignal(
         ethers.utils.hexlify(ethers.utils.toUtf8Bytes(signal)),
         packedProof,
         merkleProof.root,
