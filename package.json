@@ -10,7 +10,8 @@
     "test:dapp": "jest",
     "test:fullProof": "npm run compile:circuits && npm run verifier:fix && npm run test",
     "test": "npx hardhat test",
-    "compile:circuits": "scripts/build-circuits.sh <<< $'random text'",
+    "compile:circuits": "scripts/build-circuits.sh",
+    "compile:circuits:docker": "export CIRCOM_DOCKER=yes && scripts/build-circuits.sh",
     "verifier:fix": "node scripts/bump-solidity"
   },
   "repository": {
