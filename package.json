@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@libsem/identity": "^1.0.17",
-    "@libsem/protocols": "^1.0.20",
+    "@libsem/protocols": "^1.0.23",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@types/jest": "^27.0.2",
