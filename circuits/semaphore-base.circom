@@ -28,7 +28,6 @@ template CalculateIdentityCommitment() {
 template CalculateNullifierHash() {
     signal input external_nullifier;
     signal input identity_nullifier;
-    signal input n_levels;
 
     signal output out;
 
