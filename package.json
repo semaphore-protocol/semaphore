@@ -1,50 +1,50 @@
 {
-  "name": "semaphore",
-  "version": "2.0.0",
-  "description": "Solidity contracts, zk-SNARK circuits, and test scripts for the Semaphore zero-knowledge signalling gadget. This version uses the Poseidon hash and does not use EdDSA signatures.",
-  "scripts": {
-    "compile:contracts": "npx hardhat compile",
-    "develop": "npx hardhat node",
-    "deploy:localhost": "npx hardhat deploy --tags complete",
-    "export:localhost": "mkdir -p exports && npx hardhat --network localhost export --export exports/localhost.json",
-    "test:dapp": "jest",
-    "test:fullProof": "npm run compile:circuits && npm run verifier:fix && npm run test",
-    "test": "npx hardhat test",
-    "compile:circuits": "scripts/build-circuits.sh <<< $'random text'",
-    "verifier:fix": "node scripts/bump-solidity"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/appliedzkp/semaphore.git.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/appliedzkp/semaphore.git/issues"
-  },
-  "homepage": "https://github.com/appliedzkp/semaphore.git#readme",
-  "dependencies": {
-    "circomlib": "^2.0.1",
-    "circomlibjs": "^0.0.8",
-    "hardhat-deploy": "^0.9.4",
-    "hardhat-deploy-ethers": "^0.3.0-beta.11",
-    "web3": "^1.5.2"
-  },
-  "devDependencies": {
-    "@libsem/identity": "^1.0.17",
-    "@libsem/protocols": "^1.0.23",
-    "@nomiclabs/hardhat-ethers": "^2.0.2",
-    "@nomiclabs/hardhat-waffle": "^2.0.1",
-    "@types/jest": "^27.0.2",
-    "chai": "^4.3.4",
-    "chai-ethers": "^0.0.1",
-    "ethereum-waffle": "^3.4.0",
-    "ethers": "^5.4.6",
-    "hardhat": "^2.6.1",
-    "http-server": "^13.0.1",
-    "jest": "^27.3.1",
-    "snarkjs": "^0.4.7",
-    "ts-jest": "^27.0.7"
-  }
+    "name": "@semaphore/contracts",
+    "version": "2.0.0",
+    "description": "A privacy gadget for creating anonymous proof of membership on Ethereum.",
+    "license": "ISC",
+    "homepage": "https://github.com/appliedzkp/semaphore.git#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/appliedzkp/semaphore.git.git"
+    },
+    "bugs": {
+        "url": "https://github.com/appliedzkp/semaphore.git/issues"
+    },
+    "keywords": [
+        "ethereum",
+        "solidity",
+        "zero-knowledge",
+        "zk-snarks",
+        "zero-knowledge-proofs",
+        "circom",
+        "proof-of-membership"
+    ],
+    "scripts": {
+        "start": "hardhat node",
+        "compile:contracts": "hardhat compile",
+        "compile:circuits": "scripts/build-circuits.sh",
+        "deploy:localhost": "hardhat deploy --tags complete",
+        "export:localhost": "mkdir -p exports && hardhat --network localhost export --export exports/localhost.json",
+        "test:dapp": "jest",
+        "test:fullProof": "yarn compile:circuits && yarn verifier:fix && yarn test",
+        "test": "hardhat test",
+        "verifier:fix": "node scripts/bump-solidity"
+    },
+    "devDependencies": {
+        "@nomiclabs/hardhat-ethers": "^2.0.4",
+        "@nomiclabs/hardhat-waffle": "^2.0.2",
+        "@types/jest": "^27.0.2",
+        "@zk-kit/identity": "^1.2.0",
+        "@zk-kit/protocols": "^1.2.2",
+        "chai": "^4.3.4",
+        "circomlibjs": "^0.0.8",
+        "ethereum-waffle": "^3.4.0",
+        "ethers": "^5.5.3",
+        "hardhat": "^2.8.3",
+        "hardhat-deploy": "^0.9.28",
+        "jest": "^27.3.1",
+        "snarkjs": "^0.4.12",
+        "ts-jest": "^27.0.7"
+    }
 }
