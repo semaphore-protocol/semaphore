@@ -1,21 +1,16 @@
 {
     "compilerOptions": {
-      "strict": true,
-      "target": "ES5",
-      "module": "ES6",
-      "moduleResolution": "node",
-      "esModuleInterop": true,
-      "preserveConstEnums": true,
-      "skipLibCheck": true,
-      "declaration": true,
-      "allowSyntheticDefaultImports": true,
-      "sourceMap": true,
-      "experimentalDecorators": true,
-      "alwaysStrict": true,
-      "allowJs": true,
-      "noImplicitAny": false,
-      "noUnusedLocals": false,
-      "noUnusedParameters": true
+        "moduleResolution": "Node",
+        "noImplicitAny": true,
+        "resolveJsonModule": true,
+        "target": "ES2018",
+        "module": "CommonJS",
+        "strict": true,
+        "esModuleInterop": true,
+        "outDir": "dist",
+        "typeRoots": ["node_modules/@types", "types"]
     },
-    "include": ["integration-test"]
+    "include": ["scripts", "tasks", "test", "typechain", "types"],
+    "files": ["./hardhat.config.ts"],
+    "exclude": ["artifacts", "node_modules"]
 }

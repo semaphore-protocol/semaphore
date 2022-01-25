@@ -35,9 +35,12 @@
         "@nomiclabs/hardhat-ethers": "^2.0.4",
         "@nomiclabs/hardhat-waffle": "^2.0.2",
         "@types/jest": "^27.0.2",
+        "@types/chai": "^4.3.0",
+        "@types/mocha": "^9.1.0",
+        "@types/node": "^17.0.12",
         "@zk-kit/identity": "^1.2.0",
         "@zk-kit/protocols": "^1.2.2",
-        "chai": "^4.3.4",
+        "chai": "^4.3.5",
         "circomlibjs": "^0.0.8",
         "ethereum-waffle": "^3.4.0",
         "ethers": "^5.5.3",
@@ -45,6 +48,8 @@
         "hardhat-deploy": "^0.9.28",
         "jest": "^27.3.1",
         "snarkjs": "^0.4.12",
-        "ts-jest": "^27.0.7"
+        "ts-jest": "^27.0.7",
+        "ts-node": "^10.4.0",
+        "typescript": "^4.5.5"
     }
 }
