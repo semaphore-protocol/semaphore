@@ -1,9 +1,11 @@
+import { config } from "./package.json"
+import { HardhatUserConfig } from "hardhat/config"
+
 import "@nomiclabs/hardhat-waffle"
 import "@nomiclabs/hardhat-ethers"
 import "hardhat-deploy"
-import { HardhatUserConfig } from "hardhat/config"
 
-const config: HardhatUserConfig = {
+const hardhatConfig: HardhatUserConfig = {
     solidity: {
         version: "0.8.4",
         settings: {
@@ -26,10 +28,7 @@ const config: HardhatUserConfig = {
     namedAccounts: {
         deployer: 0
     },
-    paths: {
-        deploy: "deploy",
-        deployments: "deployments"
-    }
+    paths: config.paths
 }
 
-export default config
+export default hardhatConfig
