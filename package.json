@@ -37,7 +37,7 @@
         "@types/mocha": "^9.1.0",
         "@types/node": "^17.0.12",
         "@zk-kit/identity": "^1.2.0",
-        "@zk-kit/protocols": "^1.2.3",
+        "@zk-kit/protocols": "^1.2.4",
         "chai": "^4.3.5",
         "circomlib": "^2.0.2",
         "circomlibjs": "^0.0.8",
