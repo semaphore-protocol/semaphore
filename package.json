@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "start": "hardhat node",
-    "compile:contracts": "hardhat compile",
+    "compile": "hardhat compile",
     "compile:circuits": "ts-node scripts/compile-circuits.ts",
     "deploy:localhost": "hardhat deploy --tags complete",
     "export:localhost": "mkdir -p exports && hardhat --network localhost export --export exports/localhost.json",
