@@ -2,12 +2,12 @@ import "@nomiclabs/hardhat-ethers"
 import "@nomiclabs/hardhat-waffle"
 import "@typechain/hardhat"
 import { config as dotenvConfig } from "dotenv"
-import "hardhat-deploy"
 import "hardhat-gas-reporter"
 import { HardhatUserConfig } from "hardhat/config"
 import { resolve } from "path"
 import "solidity-coverage"
 import { config } from "./package.json"
+import "./tasks/deploy-semaphore"
 
 dotenvConfig({ path: resolve(__dirname, "./.env") })
 
@@ -17,9 +17,7 @@ const hardhatConfig: HardhatUserConfig = {
     sources: config.paths.contracts,
     tests: config.paths.tests,
     cache: config.paths.cache,
-    artifacts: config.paths.build.contracts,
-    deploy: config.paths.deploy,
-    deployments: config.paths.deployments
+    artifacts: config.paths.build.contracts
   },
   networks: {
     hardhat: {
@@ -39,9 +37,6 @@ const hardhatConfig: HardhatUserConfig = {
   typechain: {
     outDir: config.paths.build.typechain,
     target: "ethers-v5"
-  },
-  namedAccounts: {
-    deployer: 0
   }
 }
 
