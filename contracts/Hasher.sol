@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.4;
 
 import {PoseidonT3, PoseidonT6} from "./Poseidon.sol";
 import { SnarkConstants } from "./SnarkConstants.sol";

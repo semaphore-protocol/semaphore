@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.4;
 
 library PoseidonT3 {
     function poseidon(uint256[2] memory input) public pure returns (uint256) {}

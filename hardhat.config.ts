@@ -6,15 +6,8 @@ import "@nomiclabs/hardhat-ethers"
 import "hardhat-deploy"
 
 const hardhatConfig: HardhatUserConfig = {
-    solidity: {
-        version: "0.8.4",
-        settings: {
-            optimizer: {
-                enabled: true,
-                runs: 200
-            }
-        }
-    },
+    solidity: config.solidity,
+    paths: config.paths,
     networks: {
         hardhat: {
             chainId: 1337,
@@ -27,8 +20,7 @@ const hardhatConfig: HardhatUserConfig = {
     },
     namedAccounts: {
         deployer: 0
-    },
-    paths: config.paths
+    }
 }
 
 export default hardhatConfig

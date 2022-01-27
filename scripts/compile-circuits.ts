@@ -20,6 +20,7 @@ async function exec(command: string) {
 
 async function main() {
     const buildPath = config.paths.build.snark
+    const solidityVersion = config.solidity.version
 
     if (!fs.existsSync(buildPath)) {
         fs.mkdirSync(buildPath, { recursive: true })
@@ -59,7 +60,7 @@ async function main() {
         { groth16: fs.readFileSync("./node_modules/snarkjs/templates/verifier_groth16.sol.ejs", "utf8") },
         logger
     )
-    verifierCode = verifierCode.replace(/pragma solidity \^\d+\.\d+\.\d+/, "pragma solidity ^0.8.0")
+    verifierCode = verifierCode.replace(/pragma solidity \^\d+\.\d+\.\d+/, `pragma solidity ^${solidityVersion}`)
 
     fs.writeFileSync(`${buildPath}/verification_key.json`, JSON.stringify(verificationKey), "utf-8")
     fs.writeFileSync(`${config.paths.contracts}/Verifier.sol`, verifierCode, "utf-8")

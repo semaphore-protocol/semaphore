@@ -26,8 +26,7 @@
         "compile:circuits": "ts-node scripts/compile-circuits.ts",
         "deploy:localhost": "hardhat deploy --tags complete",
         "export:localhost": "mkdir -p exports && hardhat --network localhost export --export exports/localhost.json",
-        "test": "hardhat test",
-        "test:fullProof": "yarn compile:circuits && yarn test"
+        "test": "hardhat test"
     },
     "devDependencies": {
         "@nomiclabs/hardhat-ethers": "^2.0.4",
@@ -52,6 +51,9 @@
         "typescript": "^4.5.5"
     },
     "config": {
+        "solidity": {
+            "version": "0.8.4"
+        },
         "paths": {
             "contracts": "./contracts",
             "circuit": "./circuit",
