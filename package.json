@@ -1,80 +1,83 @@
 {
-    "name": "@semaphore/contracts",
-    "version": "2.0.0",
-    "description": "A privacy gadget for creating anonymous proof of membership on Ethereum.",
-    "license": "GPL-3.0",
-    "homepage": "https://github.com/appliedzkp/semaphore.git#readme",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/appliedzkp/semaphore.git.git"
+  "name": "@semaphore/contracts",
+  "version": "2.0.0",
+  "description": "A privacy gadget for creating anonymous proof of membership on Ethereum.",
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/appliedzkp/semaphore.git#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appliedzkp/semaphore.git.git"
+  },
+  "bugs": {
+    "url": "https://github.com/appliedzkp/semaphore.git/issues"
+  },
+  "keywords": [
+    "ethereum",
+    "solidity",
+    "zero-knowledge",
+    "zk-snarks",
+    "zero-knowledge-proofs",
+    "circom",
+    "proof-of-membership"
+  ],
+  "scripts": {
+    "start": "hardhat node",
+    "compile:contracts": "hardhat compile",
+    "compile:circuits": "ts-node scripts/compile-circuits.ts",
+    "deploy:localhost": "hardhat deploy --tags complete",
+    "export:localhost": "mkdir -p exports && hardhat --network localhost export --export exports/localhost.json",
+    "test": "hardhat test",
+    "prettier": "prettier -c .",
+    "prettier:fix": "prettier -w .",
+    "commit": "cz",
+    "precommit": "lint-staged"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.1.0",
+    "@commitlint/config-conventional": "^16.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.0.4",
+    "@nomiclabs/hardhat-waffle": "^2.0.2",
+    "@types/chai": "^4.3.0",
+    "@types/download": "^8.0.1",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^17.0.12",
+    "@zk-kit/identity": "^1.2.0",
+    "@zk-kit/protocols": "^1.2.4",
+    "chai": "^4.3.5",
+    "circomlib": "^2.0.2",
+    "circomlibjs": "^0.0.8",
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0",
+    "download": "^8.0.0",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.5.3",
+    "hardhat": "^2.8.3",
+    "hardhat-deploy": "^0.9.28",
+    "js-logger": "^1.6.1",
+    "lint-staged": "^12.3.2",
+    "prettier": "^2.5.1",
+    "snarkjs": "^0.4.12",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.5"
+  },
+  "config": {
+    "solidity": {
+      "version": "0.8.4"
     },
-    "bugs": {
-        "url": "https://github.com/appliedzkp/semaphore.git/issues"
+    "paths": {
+      "contracts": "./contracts",
+      "circuit": "./circuit",
+      "tests": "./test",
+      "cache": "./cache",
+      "deploy": "./deploy",
+      "deployments": "./deployments",
+      "build": {
+        "snark": "./build/snark",
+        "contracts": "./build/contracts"
+      }
     },
-    "keywords": [
-        "ethereum",
-        "solidity",
-        "zero-knowledge",
-        "zk-snarks",
-        "zero-knowledge-proofs",
-        "circom",
-        "proof-of-membership"
-    ],
-    "scripts": {
-        "start": "hardhat node",
-        "compile:contracts": "hardhat compile",
-        "compile:circuits": "ts-node scripts/compile-circuits.ts",
-        "deploy:localhost": "hardhat deploy --tags complete",
-        "export:localhost": "mkdir -p exports && hardhat --network localhost export --export exports/localhost.json",
-        "test": "hardhat test",
-        "commit": "cz",
-        "precommit": "lint-staged"
-    },
-    "devDependencies": {
-        "@commitlint/cli": "^16.1.0",
-        "@commitlint/config-conventional": "^16.0.0",
-        "@nomiclabs/hardhat-ethers": "^2.0.4",
-        "@nomiclabs/hardhat-waffle": "^2.0.2",
-        "@types/chai": "^4.3.0",
-        "@types/download": "^8.0.1",
-        "@types/mocha": "^9.1.0",
-        "@types/node": "^17.0.12",
-        "@zk-kit/identity": "^1.2.0",
-        "@zk-kit/protocols": "^1.2.4",
-        "chai": "^4.3.5",
-        "circomlib": "^2.0.2",
-        "circomlibjs": "^0.0.8",
-        "commitizen": "^4.2.4",
-        "cz-conventional-changelog": "^3.3.0",
-        "download": "^8.0.0",
-        "ethereum-waffle": "^3.4.0",
-        "ethers": "^5.5.3",
-        "hardhat": "^2.8.3",
-        "hardhat-deploy": "^0.9.28",
-        "js-logger": "^1.6.1",
-        "lint-staged": "^12.3.2",
-        "snarkjs": "^0.4.12",
-        "ts-node": "^10.4.0",
-        "typescript": "^4.5.5"
-    },
-    "config": {
-        "solidity": {
-            "version": "0.8.4"
-        },
-        "paths": {
-            "contracts": "./contracts",
-            "circuit": "./circuit",
-            "tests": "./test",
-            "cache": "./cache",
-            "deploy": "./deploy",
-            "deployments": "./deployments",
-            "build": {
-                "snark": "./build/snark",
-                "contracts": "./build/contracts"
-            }
-        },
-        "commitizen": {
-            "path": "./node_modules/cz-conventional-changelog"
-        }
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
     }
+  }
 }
