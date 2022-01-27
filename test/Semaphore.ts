@@ -1,14 +1,9 @@
 import { ZkIdentity } from "@zk-kit/identity"
 import { generateMerkleProof, genExternalNullifier, genSignalHash, Semaphore } from "@zk-kit/protocols"
 import { expect } from "chai"
-import { poseidon_gencontract as poseidonGenContract } from "circomlibjs"
-import { ethers } from "hardhat"
+import { ethers, run } from "hardhat"
 import { join } from "path"
 import { Semaphore as SemaphoreContract } from "../build/typechain"
-
-function deployPoseidonTx(x: number) {
-  return ethers.getContractFactory(poseidonGenContract.generateABI(x), poseidonGenContract.createCode(x))
-}
 
 describe("Semaphore", () => {
   let contract: SemaphoreContract
@@ -22,24 +17,7 @@ describe("Semaphore", () => {
     defaultExternalNullifier = genExternalNullifier("voting_1")
     newExternalNullifier = genExternalNullifier("voting-2")
 
-    const PoseidonT3 = await deployPoseidonTx(2)
-    const poseidonT3 = await PoseidonT3.deploy()
-    await poseidonT3.deployed()
-
-    const PoseidonT6 = await deployPoseidonTx(5)
-    const poseidonT6 = await PoseidonT6.deploy()
-    await poseidonT6.deployed()
-
-    const Semaphore = await ethers.getContractFactory("Semaphore", {
-      libraries: {
-        PoseidonT3: poseidonT3.address,
-        PoseidonT6: poseidonT6.address
-      }
-    })
-
-    contract = await Semaphore.deploy(20, defaultExternalNullifier)
-
-    await contract.deployed()
+    contract = await run("deploy:semaphore", { logs: false, nullifier: "voting_1" })
 
     const leafIndex = 3
 

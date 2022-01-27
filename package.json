@@ -24,8 +24,7 @@
     "start": "hardhat node",
     "compile": "hardhat compile",
     "compile:circuits": "ts-node scripts/compile-circuits.ts",
-    "deploy:localhost": "hardhat deploy --tags complete",
-    "export:localhost": "mkdir -p exports && hardhat --network localhost export --export exports/localhost.json",
+    "deploy:semaphore": "hardhat deploy:semaphore",
     "test": "hardhat test",
     "test:report-gas": "REPORT_GAS=true hardhat test",
     "test:coverage": "hardhat coverage",
@@ -91,8 +90,6 @@
       "circuit": "./circuit",
       "tests": "./test",
       "cache": "./cache",
-      "deploy": "./deploy",
-      "deployments": "./deployments",
       "build": {
         "snark": "./build/snark",
         "contracts": "./build/contracts",
