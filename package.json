@@ -29,6 +29,7 @@
     "test": "hardhat test",
     "test:report-gas": "REPORT_GAS=true hardhat test",
     "test:coverage": "hardhat coverage",
+    "test:prod": "yarn lint && yarn test:coverage",
     "typechain": "hardhat typechain",
     "lint": "yarn lint:sol && yarn lint:ts",
     "lint:ts": "eslint . --ext .js,.jsx,.ts,.tsx",
