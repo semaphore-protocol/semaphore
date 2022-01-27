@@ -1,10 +1,10 @@
-import { config } from "./package.json"
-import { HardhatUserConfig } from "hardhat/config"
-
-import "@nomiclabs/hardhat-waffle"
 import "@nomiclabs/hardhat-ethers"
+import "@nomiclabs/hardhat-waffle"
 import "@typechain/hardhat"
 import "hardhat-deploy"
+import { HardhatUserConfig } from "hardhat/config"
+import "solidity-coverage"
+import { config } from "./package.json"
 
 const hardhatConfig: HardhatUserConfig = {
   solidity: config.solidity,
