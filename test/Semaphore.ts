@@ -4,13 +4,14 @@ import { expect } from "chai"
 import { poseidon_gencontract as poseidonGenContract } from "circomlibjs"
 import { ethers } from "hardhat"
 import { join } from "path"
+import { Semaphore as SemaphoreContract } from "../build/typechain"
 
 function deployPoseidonTx(x: number) {
   return ethers.getContractFactory(poseidonGenContract.generateABI(x), poseidonGenContract.createCode(x))
 }
 
 describe("Semaphore", () => {
-  let semaphore: any
+  let contract: SemaphoreContract
   let defaultExternalNullifier: any
   let newExternalNullifier: any
 
@@ -36,9 +37,9 @@ describe("Semaphore", () => {
       }
     })
 
-    semaphore = await Semaphore.deploy(20, defaultExternalNullifier)
+    contract = await Semaphore.deploy(20, defaultExternalNullifier)
 
-    await semaphore.deployed()
+    await contract.deployed()
 
     const leafIndex = 3
 
@@ -48,7 +49,7 @@ describe("Semaphore", () => {
 
       identityCommitments.push(tmpCommitment)
 
-      await semaphore.insertIdentity(tmpCommitment)
+      await contract.insertIdentity(tmpCommitment)
     }
   })
 
@@ -57,7 +58,7 @@ describe("Semaphore", () => {
       const identity = new ZkIdentity()
       const identityCommitment = identity.genIdentityCommitment()
 
-      await semaphore.insertIdentity(identityCommitment)
+      await contract.insertIdentity(identityCommitment)
 
       const signal = "0x111"
       const nullifierHash = Semaphore.genNullifierHash(defaultExternalNullifier, identity.getNullifier())
@@ -80,9 +81,9 @@ describe("Semaphore", () => {
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
       const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
-      const packedProof = await semaphore.packProof(solidityProof.a, solidityProof.b, solidityProof.c)
+      const packedProof = await contract.packProof(solidityProof.a, solidityProof.b, solidityProof.c)
 
-      const preBroadcastCheck = await semaphore.preBroadcastCheck(
+      const preBroadcastCheck = await contract.preBroadcastCheck(
         ethers.utils.hexlify(ethers.utils.toUtf8Bytes(signal)),
         packedProof,
         merkleProof.root,
@@ -93,7 +94,7 @@ describe("Semaphore", () => {
 
       expect(preBroadcastCheck).to.be.true
 
-      const response = await semaphore.broadcastSignal(
+      const response = await contract.broadcastSignal(
         ethers.utils.hexlify(ethers.utils.toUtf8Bytes(signal)),
         packedProof,
         merkleProof.root,
@@ -107,46 +108,46 @@ describe("Semaphore", () => {
 
   describe("ExternalNullifier", () => {
     it("Default nullifier should be active", async () => {
-      const isActive = await semaphore.isExternalNullifierActive(defaultExternalNullifier)
+      const isActive = await contract.isExternalNullifierActive(defaultExternalNullifier)
       expect(isActive).to.be.true
     })
     it("ExternalNullifier should be active after add", async () => {
-      await semaphore.addExternalNullifier(newExternalNullifier)
-      const isActive = await semaphore.isExternalNullifierActive(newExternalNullifier)
+      await contract.addExternalNullifier(newExternalNullifier)
+      const isActive = await contract.isExternalNullifierActive(newExternalNullifier)
       expect(isActive).to.be.true
     })
     it("ExternalNullifier should not be active after deactivation", async () => {
-      await semaphore.deactivateExternalNullifier(newExternalNullifier)
-      const isActive = await semaphore.isExternalNullifierActive(newExternalNullifier)
+      await contract.deactivateExternalNullifier(newExternalNullifier)
+      const isActive = await contract.isExternalNullifierActive(newExternalNullifier)
       expect(isActive).to.be.false
     })
     it("ExternalNullifier should be active after reactivation", async () => {
-      await semaphore.reactivateExternalNullifier(newExternalNullifier)
-      const isActive = await semaphore.isExternalNullifierActive(newExternalNullifier)
+      await contract.reactivateExternalNullifier(newExternalNullifier)
+      const isActive = await contract.isExternalNullifierActive(newExternalNullifier)
       expect(isActive).to.be.true
     })
     it("Non owner should not be able to add nullifier", async () => {
       const [, addr1] = await ethers.getSigners()
 
       const newNullifier = genExternalNullifier("voting-3")
-      await expect(semaphore.connect(addr1).addExternalNullifier(newNullifier)).to.be.revertedWith(
+      await expect(contract.connect(addr1).addExternalNullifier(newNullifier)).to.be.revertedWith(
         "Ownable: caller is not the owner"
       )
     })
     it("Non owner should be able to add nullifier after setPermissioning", async () => {
-      await semaphore.setPermissioning(true)
+      await contract.setPermissioning(true)
       const newNullifier = genExternalNullifier("voting-3")
-      await semaphore.addExternalNullifier(newNullifier)
-      const isActive = await semaphore.isExternalNullifierActive(newNullifier)
+      await contract.addExternalNullifier(newNullifier)
+      const isActive = await contract.isExternalNullifierActive(newNullifier)
       expect(isActive).to.be.true
     })
     it("Should fail to add already existing nullifier", async () => {
-      await expect(semaphore.addExternalNullifier(newExternalNullifier)).to.be.revertedWith(
+      await expect(contract.addExternalNullifier(newExternalNullifier)).to.be.revertedWith(
         "Semaphore: external nullifier already set"
       )
     })
     it("Should return newExternalNullifier as next nullifier", async () => {
-      const nextNullifier = await semaphore.getNextExternalNullifier(defaultExternalNullifier)
+      const nextNullifier = await contract.getNextExternalNullifier(defaultExternalNullifier)
       expect(nextNullifier).to.be.equal(newExternalNullifier)
     })
   })
