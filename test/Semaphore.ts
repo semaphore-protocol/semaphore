@@ -2,7 +2,6 @@ import { ZkIdentity } from "@zk-kit/identity"
 import { generateMerkleProof, genExternalNullifier, genSignalHash, Semaphore } from "@zk-kit/protocols"
 import { expect } from "chai"
 import { poseidon_gencontract as poseidonGenContract } from "circomlibjs"
-import { readFileSync } from "fs"
 import { ethers } from "hardhat"
 import { join } from "path"
 
@@ -127,7 +126,7 @@ describe("Semaphore", () => {
       expect(isActive).to.be.true
     })
     it("Non owner should not be able to add nullifier", async () => {
-      const [_, addr1] = await ethers.getSigners()
+      const [, addr1] = await ethers.getSigners()
 
       const newNullifier = genExternalNullifier("voting-3")
       await expect(semaphore.connect(addr1).addExternalNullifier(newNullifier)).to.be.revertedWith(
