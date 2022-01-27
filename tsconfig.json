@@ -10,7 +10,6 @@
     "outDir": "dist",
     "typeRoots": ["node_modules/@types", "types"]
   },
-  "include": ["scripts", "tasks", "test", "typechain", "types"],
-  "files": ["./hardhat.config.ts"],
-  "exclude": ["artifacts", "node_modules"]
+  "include": ["scripts/**/*", "tasks/**/*", "test/**/*", "typechain/**/*", "types/**/*"],
+  "files": ["hardhat.config.ts"]
 }
