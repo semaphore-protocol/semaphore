@@ -1,15 +1,16 @@
 import { exec as _exec } from "child_process"
 import download from "download"
-import { r1cs, zKey } from "snarkjs"
 import fs from "fs"
-import util from "util"
-import { config } from "../package.json"
 import logger from "js-logger"
+import rimraf from "rimraf"
+import { zKey } from "snarkjs"
+import { promisify } from "util"
+import { config } from "../package.json"
 
 logger.useDefaults()
 
 async function exec(command: string) {
-  const { stderr, stdout } = await util.promisify(_exec)(command)
+  const { stderr, stdout } = await promisify(_exec)(command)
 
   if (stderr) {
     throw new Error(stderr)
@@ -27,15 +28,12 @@ async function main() {
   }
 
   if (!fs.existsSync(`${buildPath}/powersOfTau28_hez_final_14.ptau`)) {
-    const url = "https://hermez.s3-eu-west-1.amazonaws.com"
-    const fileName = "powersOfTau28_hez_final_14.ptau"
+    const url = "https://hermez.s3-eu-west-1.amazonaws.com/powersOfTau28_hez_final_14.ptau"
 
-    await download(`${url}/${fileName}`, buildPath)
+    await download(url, buildPath)
   }
 
-  await exec(`circom ./circuits/semaphore.circom --r1cs --wasm --sym -o ${buildPath}`)
-
-  await r1cs.info(`${buildPath}/semaphore.r1cs`, logger)
+  await exec(`circom ./circuits/semaphore.circom --r1cs --wasm -o ${buildPath}`)
 
   await zKey.newZKey(
     `${buildPath}/semaphore.r1cs`,
@@ -53,8 +51,6 @@ async function main() {
     logger
   )
 
-  const verificationKey = await zKey.exportVerificationKey(`${buildPath}/semaphore_final.zkey`, logger)
-
   let verifierCode = await zKey.exportSolidityVerifier(
     `${buildPath}/semaphore_final.zkey`,
     { groth16: fs.readFileSync("./node_modules/snarkjs/templates/verifier_groth16.sol.ejs", "utf8") },
@@ -62,8 +58,16 @@ async function main() {
   )
   verifierCode = verifierCode.replace(/pragma solidity \^\d+\.\d+\.\d+/, `pragma solidity ^${solidityVersion}`)
 
-  fs.writeFileSync(`${buildPath}/verification_key.json`, JSON.stringify(verificationKey), "utf-8")
   fs.writeFileSync(`${config.paths.contracts}/Verifier.sol`, verifierCode, "utf-8")
+
+  // const verificationKey = await zKey.exportVerificationKey(`${buildPath}/semaphore_final.zkey`, logger)
+  // fs.writeFileSync(`${buildPath}/verification_key.json`, JSON.stringify(verificationKey), "utf-8")
+
+  fs.renameSync(`${buildPath}/semaphore_js/semaphore.wasm`, `${buildPath}/semaphore.wasm`)
+  rimraf.sync(`${buildPath}/semaphore_js`)
+  rimraf.sync(`${buildPath}/powersOfTau28_hez_final_14.ptau`)
+  rimraf.sync(`${buildPath}/semaphore_0000.zkey`)
+  rimraf.sync(`${buildPath}/semaphore.r1cs`)
 }
 
 main()

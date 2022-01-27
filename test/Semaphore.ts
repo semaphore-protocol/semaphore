@@ -75,7 +75,7 @@ describe("Semaphore", () => {
         signal
       )
 
-      const wasmFilePath = join("./build/snark/semaphore_js", "semaphore.wasm")
+      const wasmFilePath = join("./build/snark", "semaphore.wasm")
       const finalZkeyPath = join("./build/snark", "semaphore_final.zkey")
 
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
