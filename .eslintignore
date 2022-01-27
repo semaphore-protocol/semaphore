@@ -10,12 +10,10 @@ coverage
 docs
 
 # hardhat
-artifacts
 cache
 
 # types
 types
-typechain
 
 # openzeppelin
 .openzeppelin
