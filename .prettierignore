@@ -6,11 +6,15 @@ yarn.lock
 # testing
 coverage
 
+# docs
+docs
+
 # hardhat
 artifacts
 cache
 
-# typechain
+# types
+types
 typechain
 
 # openzeppelin
