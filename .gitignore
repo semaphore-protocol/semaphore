@@ -52,7 +52,8 @@ node_modules/
 .env.local
 
 # Production
-build
+build/contracts
+build/typechain
 dist
 
 # Hardhat
@@ -74,6 +75,3 @@ cache
 
 # Deployments
 deployments
-
-# Circom
-contracts/Verifier.sol
