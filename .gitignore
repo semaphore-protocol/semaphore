@@ -18,6 +18,7 @@ pids
 
 # Testing
 coverage
+coverage.json
 
 # Dependency directories
 node_modules/

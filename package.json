@@ -27,6 +27,7 @@
     "deploy:localhost": "hardhat deploy --tags complete",
     "export:localhost": "mkdir -p exports && hardhat --network localhost export --export exports/localhost.json",
     "test": "hardhat test",
+    "coverage": "hardhat coverage",
     "typechain": "hardhat typechain",
     "lint": "yarn lint:sol && yarn lint:ts",
     "lint:ts": "eslint . --ext .js,.jsx,.ts,.tsx",
@@ -70,6 +71,7 @@
     "snarkjs": "^0.4.12",
     "solhint": "^3.3.6",
     "solhint-plugin-prettier": "^0.0.5",
+    "solidity-coverage": "^0.7.18",
     "ts-node": "^10.4.0",
     "typechain": "^7.0.0",
     "typescript": "^4.5.5"
