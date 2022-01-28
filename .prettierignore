@@ -7,9 +7,6 @@ yarn.lock
 coverage
 coverage.json
 
-# docs
-docs
-
 # hardhat
 cache
 
