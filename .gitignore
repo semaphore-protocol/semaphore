@@ -62,6 +62,7 @@ cache
 
 # Docusaurus cache and generated files
 .docusaurus
+.cache-loader
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
