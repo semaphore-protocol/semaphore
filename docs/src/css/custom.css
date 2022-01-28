@@ -1,0 +1,367 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;1,400&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --ifm-color-primary: #3578e5;
+  --ifm-color-primary-dark: #1d68e1;
+  --ifm-color-primary-darker: #1b62d4;
+  --ifm-color-primary-darkest: #1751af;
+  --ifm-color-primary-light: #4e89e8;
+  --ifm-color-primary-lighter: #5a91ea;
+  --ifm-color-primary-lightest: #80aaef;
+
+  --collapse-button-bg-color-dark: #2e333a;
+
+  --ifm-code-font-size: 95%;
+
+  --ifm-h1-font-size: 1.75rem;
+  --ifm-h2-font-size: 1.5rem;
+  --ifm-h3-font-size: 1.25rem;
+  --ifm-h4-font-size: 1rem;
+  --ifm-h5-font-size: 0.875rem;
+  --ifm-h6-font-size: 0.85rem;
+
+  /* --ifm-table-border-color: var(--ifm-color-emphasis-100); */
+  /* --ifm-toc-border-color: none; */
+  --ifm-toc-border-width: 1px;
+
+  /* --ifm-menu-color: var(--ifm-color-emphasis-900); */
+  --ifm-menu-color-background-active: transparent;
+  --ifm-menu-color-background-hover: transparent;
+
+  --ifm-global-shadow-lw: 0 1px 10px 0 rgba(0, 0, 0, 0.1);
+  --ifm-global-shadow-md: 0 5px 40px rgba(0, 0, 0, 0.1);
+  --ifm-global-shadow-tl: 0 12px 28px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+
+  --ifm-global-spacing: 1.5rem;
+  /* --ifm-navbar-background-color: rgba(255, 0.2); */
+}
+
+html[data-theme="dark"] {
+  --ifm-color-primary: white;
+  --ifm-color-primary-dark: #5a91ea;
+  --ifm-navbar-background-color: #191b1f;
+  --ifm-global-shadow-md: 0 5px 4px rgba(255, 255, 255, 0.448);
+}
+
+html[data-theme="light"] {
+  --ifm-color-primary: black;
+}
+
+.html {
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif,
+    BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  font-size: 16px;
+  font-variant: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  font-feature-settings: "ss01" on, "ss02" on, "cv01" on, "cv03" on;
+  font-weight: 400;
+}
+
+.markdown a {
+  color: #3578e5;
+}
+
+p {
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+
+hr {
+  border-bottom-width: 0px;
+  border-top-width: 1px;
+  border-color: var(--ifm-color-emphasis-200);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  /* font-family: "Archivo", sans-serif; */
+  font-weight: 500;
+}
+
+h1 {
+  font-size: 32px !important;
+}
+h2 {
+  font-size: 24px !important;
+}
+h3 {
+  font-size: 20px !important;
+}
+h4 {
+  font-size: 20px !important;
+}
+h4 {
+  font-size: 16px !important;
+}
+
+.menu__link--sublist:after {
+  background: var(--ifm-menu-link-sublist-icon) 50% / 1.5rem 1.5rem;
+  /* color: var(  --ifm-color-primary); */
+}
+
+.navbar {
+  align-items: center;
+}
+
+html[data-theme="dark"] .navbar {
+  /* background-color: none; */
+  border-bottom: var(--ifm-toc-border-color) 1px solid;
+}
+
+html[data-theme="light"] .navbar {
+  /* background-color: none; */
+  border-bottom: var(--ifm-toc-border-color) 1px solid;
+}
+
+.container {
+  padding: 0px;
+  /* margin: 4rem auto 0px; */
+  max-width: 90% !important;
+}
+
+.container.padding-top--md {
+  padding-top: 2rem !important;
+}
+
+.react-toggle-track {
+  background-color: var(--ifm-color-emphasis-100) !important;
+}
+
+.react-toggle-thumb {
+  background-color: var(--ifm-color-emphasis-200) !important;
+}
+
+.react-toggle-thumb:hover {
+  box-shadow: none !important;
+}
+
+.navbar__title {
+  /* font-family: "Archivo", sans-serif; */
+  color: var(--ifm-color-primary);
+  font-weight: 500;
+}
+
+.navbar__link {
+  /* font-family: "Archivo", sans-serif; */
+  color: var(--ifm-color-primary);
+  font-weight: 400;
+}
+
+.navbar__logo {
+  height: 20px;
+  width: 20px;
+}
+
+.menu__link {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+html[data-theme="dark"] .navbar__logo {
+  filter: invert(100%) sepia(0%) saturate(7500%) hue-rotate(337deg) brightness(112%) contrast(104%);
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgb(72, 77, 91);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+  color: var(--ifm-color-secondary-darker);
+}
+
+.badge {
+  margin-bottom: 16px;
+}
+
+.badge--secondary {
+  --ifm-badge-background-color: var(--ifm-color-emphasis-0);
+  --ifm-badge-border-color: var(--ifm-badge-background-color);
+  color: var(--ifm-color-base);
+}
+
+html[data-theme="light"] .DocSearch {
+  /* --docsearch-primary-color: var(--ifm-color-primary); */
+  /* --docsearch-text-color: var(--ifm-font-color-base); */
+  --docsearch-muted-color: var(--ifm-color-emphasis-900);
+  --docsearch-container-background: rgba(94, 100, 112, 0.7);
+  /* Modal */
+  --docsearch-modal-background: var(--ifm-color-secondary-lighter);
+  /* Search box */
+  --docsearch-searchbox-background: var(--ifm-color-secondary);
+  --docsearch-searchbox-focus-background: var(--ifm-color-white);
+  /* Hit */
+  --docsearch-hit-color: var(--ifm-font-color-base);
+  --docsearch-hit-active-color: var(--ifm-color-emphasis-700);
+  --docsearch-hit-background: var(--ifm-color-white);
+  --docsearch-searchbox-background: rgba(0, 0, 0, 0.05);
+  --docsearch-highlight-color: var(--ifm-color-emphasis-100);
+
+  /* Footer */
+  --docsearch-footer-background: var(--ifm-color-white);
+  --docsearch-searchbox-shadow: none;
+}
+
+html[data-theme="dark"] .DocSearch {
+  /* --docsearch-text-color: var(--ifm-font-color-100); */
+  --docsearch-muted-color: var(--ifm-color-secondary-darkest);
+  --docsearch-container-background: rgba(47, 55, 69, 0.7);
+  /* Modal */
+  --docsearch-modal-background: var(--ifm-background-color);
+  /* Search box */
+  --docsearch-searchbox-background: var(--ifm-background-color);
+  --docsearch-searchbox-focus-background: var(--ifm-color-black);
+  /* Hit */
+  --docsearch-hit-color: var(--ifm-font-color-base);
+  --docsearch-hit-active-color: var(--ifm-color-emphasis-700);
+  --docsearch-hit-background: var(--ifm-color-emphasis-100);
+  --docsearch-searchbox-background: rgba(0, 0, 0, 0.2);
+  /* Footer */
+  --docsearch-footer-background: var(--ifm-background-surface-color);
+  --docsearch-key-gradient: linear-gradient(
+    -26.5deg,
+    var(--ifm-color-emphasis-200) 0%,
+    var(--ifm-color-emphasis-100) 100%
+  );
+
+  --docsearch-searchbox-shadow: inset 0 0 0 2px var(--ifm-color-emphasis-200);
+}
+
+html[data-theme="light"] .DocSearch-Hit {
+  background-color: transparent;
+}
+
+html[data-theme="light"] .DocSearch-Hit :focus {
+  background-color: var(--ifm-color-emphasis-100);
+}
+html[data-theme="light"] .DocSearch-Hit :hover {
+  background-color: var(--ifm-color-emphasis-100);
+}
+
+html[data-theme="light"] .DocSearch-Hit {
+  background-color: transparent;
+}
+
+html[data-theme="dark"] .DocSearch-Hit {
+  background-color: transparent;
+}
+
+html[data-theme="dark"] .DocSearch-Hit :focus {
+  background-color: var(--ifm-color-emphasis-100);
+}
+html[data-theme="dark"] .DocSearch-Hit :hover {
+  background-color: var(--ifm-color-emphasis-100);
+}
+html[data-theme="dark"] .DocSearch-Hit a :hover {
+  background-color: transparent;
+}
+
+html[data-theme="dark"] .DocSearch-Hit a {
+  background-color: var(--ifm-color-emphasis-0);
+}
+
+.react-toggle-thumb :hover {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+.react-toggle-thumb :focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+.react-toggle-thumb :active {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.menu {
+  /* background-color: var(--ifm-color-emphasis-0); */
+  padding: 1.5rem 1rem !important;
+}
+
+.dropdown__menu {
+  box-shadow: 0 5px 40px rgba(0, 0, 0, 0.1);
+}
+
+.menu__link:hover {
+  text-decoration: underline;
+}
+
+.menu__link--active {
+  font-weight: 600;
+}
+
+.table-of-contents {
+  opacity: 0.4;
+}
+
+.table-of-contents:hover {
+  opacity: 1;
+}
+
+.table-of-contents__link:hover {
+  text-decoration: underline;
+}
+
+.navbar__inner {
+  flex-wrap: unset;
+}
+
+.navbar__item {
+  display: none;
+}
+
+.navbar__item.dropdown {
+  display: inline-block;
+}
+
+.navbar__item.persistent {
+  display: inline-block;
+}
+
+.menu__list-item--collapsed .menu__link {
+  display: flex;
+}
+
+.menu__link.persistent {
+  display: flex;
+}
+
+@media (max-width: 960px) {
+  .menu {
+    /* background-color: var(--ifm-color-emphasis-0); */
+    padding: initial !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    padding: 1rem;
+  }
+
+  .container.padding-top--md {
+    padding-top: initial;
+  }
+
+  .navbar__item {
+    display: none !important;
+  }
+
+  .footer {
+    display: none;
+  }
+}
