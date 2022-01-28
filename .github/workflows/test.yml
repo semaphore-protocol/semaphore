@@ -20,7 +20,3 @@ jobs:
       - run: yarn --frozen-lockfile
       - run: yarn compile
       - run: yarn test:prod
-
-      - uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
