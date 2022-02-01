@@ -2,11 +2,11 @@
 pragma solidity ^0.8.4;
 
 import {Semaphore} from "./Semaphore.sol";
-import "./IncrementalMerkleTree.sol";
+import "@zk-kit/incremental-merkle-tree.sol/contracts/IncrementalBinaryTree.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SemaphoreGroups is Semaphore, Ownable {
-  using IncrementalMerkleTree for TreeData;
+  using IncrementalBinaryTree for IncrementalTreeData;
 
   /// @dev Emitted when a new group is created.
   /// @param id: Id of the group.
@@ -28,7 +28,7 @@ contract SemaphoreGroups is Semaphore, Ownable {
   bool public isBroadcastPermissioned = true;
 
   /// @dev Gets a group id and returns the group/tree data.
-  mapping(bytes32 => TreeData) private groups;
+  mapping(bytes32 => IncrementalTreeData) private groups;
 
   /// @dev Gets a root hash and returns the group id.
   mapping(uint256 => bytes32) private rootHistory;
