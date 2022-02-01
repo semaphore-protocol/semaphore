@@ -99,5 +99,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.4.2"
   }
 }
