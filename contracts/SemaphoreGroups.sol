@@ -2,11 +2,11 @@
 pragma solidity ^0.8.4;
 
 import {Semaphore} from "./Semaphore.sol";
-import "@zk-kit/incremental-merkle-tree.sol/contracts/IncrementalBinaryTree.sol";
+import "@zk-kit/incremental-merkle-tree.sol/contracts/IncrementalQuinTree.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SemaphoreGroups is Semaphore, Ownable {
-  using IncrementalBinaryTree for IncrementalTreeData;
+  using IncrementalQuinTree for IncrementalTreeData;
 
   /// @dev Emitted when a new group is created.
   /// @param id: Id of the group.
