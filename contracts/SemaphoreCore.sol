@@ -21,7 +21,7 @@ contract SemaphoreCore is ISemaphoreCore, Verifier {
   /// @param externalNullifier: External nullifier.
   /// @param proof: Zero-knowledge proof.
   modifier onlyValidProof(
-    bytes memory signal,
+    bytes calldata signal,
     uint256 root,
     uint256 nullifierHash,
     uint256 externalNullifier,
@@ -43,7 +43,7 @@ contract SemaphoreCore is ISemaphoreCore, Verifier {
   /// @param externalNullifier: External nullifier.
   /// @param proof: Zero-knowledge proof.
   function _isValidProof(
-    bytes memory signal,
+    bytes calldata signal,
     uint256 root,
     uint256 nullifierHash,
     uint256 externalNullifier,
