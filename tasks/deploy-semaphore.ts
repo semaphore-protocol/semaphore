@@ -15,7 +15,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
 
     await poseidonT6Lib.deployed()
 
-    logs && console.log(`PoseidonT3 library has been deployed to: ${poseidonT6Lib.address}`)
+    logs && console.log(`PoseidonT6 library has been deployed to: ${poseidonT6Lib.address}`)
 
     const IncrementalQuinTreeLibFactory = await ethers.getContractFactory("IncrementalQuinTree", {
       libraries: {
@@ -28,7 +28,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
 
     logs && console.log(`IncrementalQuinTree library has been deployed to: ${incrementalQuinTreeLib.address}`)
 
-    const ContractFactory = await ethers.getContractFactory("SemaphoreGroups", {
+    const ContractFactory = await ethers.getContractFactory("SemaphoreVoting", {
       libraries: {
         IncrementalQuinTree: incrementalQuinTreeLib.address
       }
@@ -38,7 +38,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
 
     await contract.deployed()
 
-    logs && console.log(`Semaphore contract has been deployed to: ${contract.address}`)
+    logs && console.log(`SemaphoreVoting contract has been deployed to: ${contract.address}`)
 
     return contract
   })
