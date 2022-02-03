@@ -21,77 +21,78 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   mapping(uint256 => uint256) internal rootHistory;
 
   /// @dev Creates a new group by initializing the associated tree.
-  /// @param _id: Id of the group.
-  /// @param _depth: Depth of the tree.
+  /// @param groupId: Id of the group.
+  /// @param depth: Depth of the tree.
+  /// @param zeroValue: Zero value of the tree.
   function _createGroup(
-    uint256 _id,
-    uint8 _depth,
-    uint256 _zeroValue
+    uint256 groupId,
+    uint8 depth,
+    uint256 zeroValue
   ) internal virtual {
-    require(getDepth(_id) == 0, "SemaphoreGroups: group already exists");
-    require(_zeroValue < SNARK_SCALAR_FIELD, "SemaphoreGroups: zero value must be < SNARK_SCALAR_FIELD");
+    require(getDepth(groupId) == 0, "SemaphoreGroups: group already exists");
+    require(zeroValue < SNARK_SCALAR_FIELD, "SemaphoreGroups: zero value must be < SNARK_SCALAR_FIELD");
 
-    groups[_id].init(_depth, _zeroValue % SNARK_SCALAR_FIELD);
+    groups[groupId].init(depth, zeroValue);
 
-    emit GroupAdded(_id, _depth);
+    emit GroupAdded(groupId, depth);
   }
 
   /// @dev Adds an identity commitment to an existing group.
-  /// @param _groupId: Id of the group.
-  /// @param _identityCommitment: New identity commitment.
-  function _addIdentityCommitment(uint256 _groupId, uint256 _identityCommitment) internal virtual {
-    require(getDepth(_groupId) != 0, "SemaphoreGroups: group does not exist");
+  /// @param groupId: Id of the group.
+  /// @param identityCommitment: New identity commitment.
+  function _addIdentityCommitment(uint256 groupId, uint256 identityCommitment) internal virtual {
+    require(getDepth(groupId) != 0, "SemaphoreGroups: group does not exist");
     require(
-      _identityCommitment < SNARK_SCALAR_FIELD,
+      identityCommitment < SNARK_SCALAR_FIELD,
       "SemaphoreGroups: identity commitment must be < SNARK_SCALAR_FIELD"
     );
 
-    groups[_groupId].insert(_identityCommitment);
+    groups[groupId].insert(identityCommitment);
 
-    uint256 root = getRoot(_groupId);
-    rootHistory[root] = _groupId;
+    uint256 root = getRoot(groupId);
+    rootHistory[root] = groupId;
 
-    emit IdentityCommitmentAdded(_groupId, _identityCommitment, root);
+    emit IdentityCommitmentAdded(groupId, identityCommitment, root);
   }
 
   /// @dev Deletes an identity commitment from an existing group. A proof of membership is
   /// needed to check if the node to be deleted is part of the tree.
-  /// @param _groupId: Id of the group.
-  /// @param _identityCommitment: Existing identity commitment to be deleted.
-  /// @param _proofSiblings: Array of the sibling nodes of the proof of membership.
-  /// @param _proofPathIndices: Path of the proof of membership.
+  /// @param groupId: Id of the group.
+  /// @param identityCommitment: Existing identity commitment to be deleted.
+  /// @param proofSiblings: Array of the sibling nodes of the proof of membership.
+  /// @param proofPathIndices: Path of the proof of membership.
   function _deleteIdentityCommitment(
-    uint256 _groupId,
-    uint256 _identityCommitment,
-    uint256[4][] calldata _proofSiblings,
-    uint8[] calldata _proofPathIndices
+    uint256 groupId,
+    uint256 identityCommitment,
+    uint256[4][] calldata proofSiblings,
+    uint8[] calldata proofPathIndices
   ) internal virtual {
-    require(getDepth(_groupId) != 0, "SemaphoreGroups: group does not exist");
+    require(getDepth(groupId) != 0, "SemaphoreGroups: group does not exist");
     require(
-      _identityCommitment < SNARK_SCALAR_FIELD,
+      identityCommitment < SNARK_SCALAR_FIELD,
       "SemaphoreGroups: identity commitment must be < SNARK_SCALAR_FIELD"
     );
 
-    groups[_groupId].remove(_identityCommitment, _proofSiblings, _proofPathIndices);
+    groups[groupId].remove(identityCommitment, proofSiblings, proofPathIndices);
 
-    uint256 root = getRoot(_groupId);
-    rootHistory[root] = _groupId;
+    uint256 root = getRoot(groupId);
+    rootHistory[root] = groupId;
 
-    emit IdentityCommitmentDeleted(_groupId, _identityCommitment, groups[_groupId].root);
+    emit IdentityCommitmentDeleted(groupId, identityCommitment, groups[groupId].root);
   }
 
   /// @dev See {ISemaphoreGroups-getRoot}.
-  function getRoot(uint256 _groupId) public view override returns (uint256) {
-    return groups[_groupId].root;
+  function getRoot(uint256 groupId) public view override returns (uint256) {
+    return groups[groupId].root;
   }
 
   /// @dev See {ISemaphoreGroups-getDepth}.
-  function getDepth(uint256 _groupId) public view override returns (uint256) {
-    return groups[_groupId].depth;
+  function getDepth(uint256 groupId) public view override returns (uint256) {
+    return groups[groupId].depth;
   }
 
   /// @dev See {ISemaphoreGroups-getSize}.
-  function getSize(uint256 _groupId) public view override returns (uint256) {
-    return groups[_groupId].numberOfLeaves;
+  function getSize(uint256 groupId) public view override returns (uint256) {
+    return groups[groupId].numberOfLeaves;
   }
 }

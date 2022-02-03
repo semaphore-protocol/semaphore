@@ -12,30 +12,30 @@ abstract contract SemaphoreNullifiers is ISemaphoreNullifiers {
   mapping(uint256 => bool) internal externalNullifiers;
 
   /// @dev Adds a new external nullifier.
-  /// @param _externalNullifier: External Semaphore nullifier.
-  function _addExternalNullifier(uint256 _externalNullifier) internal virtual {
-    require(externalNullifiers[_externalNullifier], "SemaphoreNullifiers: the external nullifier already exists");
+  /// @param externalNullifier: External Semaphore nullifier.
+  function _addExternalNullifier(uint256 externalNullifier) internal virtual {
+    require(externalNullifiers[externalNullifier], "SemaphoreNullifiers: the external nullifier already exists");
     require(
-      _externalNullifier < SNARK_SCALAR_FIELD,
+      externalNullifier < SNARK_SCALAR_FIELD,
       "SemaphoreNullifiers: external nullifier must be < SNARK_SCALAR_FIELD"
     );
 
-    externalNullifiers[_externalNullifier] = true;
+    externalNullifiers[externalNullifier] = true;
 
-    emit ExternalNullifierAdded(_externalNullifier);
+    emit ExternalNullifierAdded(externalNullifier);
   }
 
   /// @dev Removes an existing external nullifier.
-  /// @param _externalNullifier: External Semaphore nullifier.
-  function _removeExternalNullifier(uint256 _externalNullifier) internal virtual {
-    require(!externalNullifiers[_externalNullifier], "SemaphoreNullifiers: the external nullifier does not exists");
+  /// @param externalNullifier: External Semaphore nullifier.
+  function _removeExternalNullifier(uint256 externalNullifier) internal virtual {
+    require(!externalNullifiers[externalNullifier], "SemaphoreNullifiers: the external nullifier does not exists");
     require(
-      _externalNullifier < SNARK_SCALAR_FIELD,
+      externalNullifier < SNARK_SCALAR_FIELD,
       "SemaphoreNullifiers: external nullifier must be < SNARK_SCALAR_FIELD"
     );
 
-    externalNullifiers[_externalNullifier] = false;
+    externalNullifiers[externalNullifier] = false;
 
-    emit ExternalNullifierRemoved(_externalNullifier);
+    emit ExternalNullifierRemoved(externalNullifier);
   }
 }
