@@ -33,70 +33,70 @@ contract SemaphoreVoting is SemaphoreCore, SemaphoreGroups {
   /// @dev Gets a ballot id and returns the ballot data.
   mapping(uint256 => Ballot) private ballots;
 
-  modifier onlyCoordinator(uint256 _ballotId) {
-    require(ballots[_ballotId].coordinator == _msgSender(), "SemaphoreVoting: caller is not the ballot coordinator");
+  modifier onlyCoordinator(uint256 ballotId) {
+    require(ballots[ballotId].coordinator == _msgSender(), "SemaphoreVoting: caller is not the ballot coordinator");
     _;
   }
 
   /// @dev Creates ...
-  /// @param _ballotId: Id of the ballot.
+  /// @param ballotId: Id of the ballot.
   function createBallot(
-    uint256 _ballotId,
-    address _coordinator,
-    uint256 _startDate,
-    uint256 _endDate
+    uint256 ballotId,
+    address coordinator,
+    uint256 startDate,
+    uint256 endDate
   ) external {
-    _createGroup(_ballotId, 20, 0);
+    _createGroup(ballotId, 20, 0);
 
     Ballot memory ballot;
 
-    ballot.coordinator = _coordinator;
-    ballot.startDate = _startDate;
-    ballot.endDate = _endDate;
+    ballot.coordinator = coordinator;
+    ballot.startDate = startDate;
+    ballot.endDate = endDate;
 
-    ballots[_ballotId] = ballot;
+    ballots[ballotId] = ballot;
 
-    emit BallotCreated(_ballotId, _coordinator, _startDate, _endDate);
+    emit BallotCreated(ballotId, coordinator, startDate, endDate);
   }
 
   /// @dev Creates ...
-  /// @param _ballotId: Id of the ballot.
-  function addVoter(uint256 _ballotId, uint256 _identityCommitment) external onlyCoordinator(_ballotId) {
+  /// @param ballotId: Id of the ballot.
+  function addVoter(uint256 ballotId, uint256 identityCommitment) external onlyCoordinator(ballotId) {
     require(
-      block.timestamp < ballots[_ballotId].startDate,
+      block.timestamp < ballots[ballotId].startDate,
       "SemaphoreVoting: voters can be added before the start date"
     );
 
-    _addIdentityCommitment(_ballotId, _identityCommitment);
+    _addIdentityCommitment(ballotId, identityCommitment);
   }
 
-  function vote(
-    bytes memory _vote,
-    uint256 _root,
-    uint256 _nullifierHash,
-    uint256 _ballotId,
-    uint256[8] calldata _proof
-  ) public onlyCoordinator(_ballotId) {
-    Ballot memory ballot = ballots[_ballotId];
+  function castVote(
+    bytes memory vote,
+    uint256 root,
+    uint256 nullifierHash,
+    uint256 ballotId,
+    uint256[8] calldata proof
+  ) public onlyCoordinator(ballotId) {
+    Ballot memory ballot = ballots[ballotId];
 
     require(block.timestamp > ballot.startDate, "SemaphoreVoting: Invalid vote in advance");
     require(block.timestamp < ballot.endDate, "SemaphoreVoting: Invalid late vote");
 
-    require(_ballotId == rootHistory[_root], "SemaphoreVoting: the root does not match any ballot");
-    require(_isValidProof(_vote, _root, _nullifierHash, _ballotId, _proof), "SemaphoreVoting: the proof is not valid");
+    require(ballotId == rootHistory[root], "SemaphoreVoting: the root does not match any ballot");
+    require(_isValidProof(vote, root, nullifierHash, ballotId, proof), "SemaphoreVoting: the proof is not valid");
 
     // Prevent double-signaling (nullifierHash = hash(ballotId + identityNullifier)).
-    _saveNullifierHash(_nullifierHash);
+    _saveNullifierHash(nullifierHash);
 
-    emit VoteAdded(_ballotId, _vote);
+    emit VoteAdded(ballotId, vote);
   }
 
   /// @dev Publishes the key to decrypt the votes of a ballot.
-  /// @param _ballotId: ballot id.
-  /// @param _decryptionKey: ballot decryption key.
-  function publishDecryptionKey(uint256 _ballotId, uint256 _decryptionKey) external onlyCoordinator(_ballotId) {
-    require(block.timestamp > ballots[_ballotId].endDate, "decryption key can be published after the end date");
+  /// @param ballotId: ballot id.
+  /// @param decryptionKey: ballot decryption key.
+  function publishDecryptionKey(uint256 ballotId, uint256 decryptionKey) external onlyCoordinator(ballotId) {
+    require(block.timestamp > ballots[ballotId].endDate, "decryption key can be published after the end date");
 
-    emit DecryptionKeyPublished(_ballotId, _decryptionKey);
+    emit DecryptionKeyPublished(ballotId, decryptionKey);
   }
 }

@@ -15,20 +15,20 @@ contract SemaphoreCore is ISemaphoreCore, Verifier {
   mapping(uint256 => bool) internal nullifierHashes;
 
   /// @dev Checks if the proof is valid.
-  /// @param _signal: Semaphore signal.
-  /// @param _root: Root of the Merkle tree.
-  /// @param _nullifierHash: Nullifier hash.
-  /// @param _externalNullifier: External nullifier.
-  /// @param _proof: Zero-knowledge proof.
+  /// @param signal: Semaphore signal.
+  /// @param root: Root of the Merkle tree.
+  /// @param nullifierHash: Nullifier hash.
+  /// @param externalNullifier: External nullifier.
+  /// @param proof: Zero-knowledge proof.
   modifier onlyValidProof(
-    bytes memory _signal,
-    uint256 _root,
-    uint256 _nullifierHash,
-    uint256 _externalNullifier,
-    uint256[8] calldata _proof
+    bytes memory signal,
+    uint256 root,
+    uint256 nullifierHash,
+    uint256 externalNullifier,
+    uint256[8] calldata proof
   ) {
     require(
-      _isValidProof(_signal, _root, _nullifierHash, _externalNullifier, _proof),
+      _isValidProof(signal, root, nullifierHash, externalNullifier, proof),
       "SemaphoreCore: the proof is not valid"
     );
 
@@ -37,29 +37,29 @@ contract SemaphoreCore is ISemaphoreCore, Verifier {
 
   /// @dev Returns true if no nullifier already exists and if the zero-knowledge proof is valid.
   /// Otherwise it returns false.
-  /// @param _signal: Semaphore signal.
-  /// @param _root: Root of the Merkle tree.
-  /// @param _nullifierHash: Nullifier hash.
-  /// @param _externalNullifier: External nullifier.
-  /// @param _proof: Zero-knowledge proof.
+  /// @param signal: Semaphore signal.
+  /// @param root: Root of the Merkle tree.
+  /// @param nullifierHash: Nullifier hash.
+  /// @param externalNullifier: External nullifier.
+  /// @param proof: Zero-knowledge proof.
   function _isValidProof(
-    bytes memory _signal,
-    uint256 _root,
-    uint256 _nullifierHash,
-    uint256 _externalNullifier,
-    uint256[8] calldata _proof
+    bytes memory signal,
+    uint256 root,
+    uint256 nullifierHash,
+    uint256 externalNullifier,
+    uint256[8] calldata proof
   ) internal view returns (bool) {
-    require(nullifierHashes[_nullifierHash] == false, "SemaphoreCore: you cannot use the same nullifier twice");
+    require(nullifierHashes[nullifierHash] == false, "SemaphoreCore: you cannot use the same nullifier twice");
 
-    uint256 signalHash = _hashSignal(_signal);
+    uint256 signalHash = _hashSignal(signal);
 
-    uint256[4] memory publicSignals = [_root, _nullifierHash, signalHash, _externalNullifier];
+    uint256[4] memory publicSignals = [root, nullifierHash, signalHash, externalNullifier];
 
     return
       verifyProof(
-        [_proof[0], _proof[1]],
-        [[_proof[2], _proof[3]], [_proof[4], _proof[5]]],
-        [_proof[6], _proof[7]],
+        [proof[0], proof[1]],
+        [[proof[2], proof[3]], [proof[4], proof[5]]],
+        [proof[6], proof[7]],
         publicSignals
       );
   }
@@ -67,15 +67,15 @@ contract SemaphoreCore is ISemaphoreCore, Verifier {
   /// @dev Stores the nullifier hash to prevent double-signaling.
   /// Attention! Remember to call it when you verify a proof if you
   /// need to prevent double-signaling.
-  /// @param _nullifierHash: Semaphore nullifier hash.
-  function _saveNullifierHash(uint256 _nullifierHash) internal {
-    nullifierHashes[_nullifierHash] = true;
+  /// @param nullifierHash: Semaphore nullifier hash.
+  function _saveNullifierHash(uint256 nullifierHash) internal {
+    nullifierHashes[nullifierHash] = true;
   }
 
   /// @dev Creates a keccak256 hash of the signal.
-  /// @param _signal: Semaphore signal.
+  /// @param signal: Semaphore signal.
   /// @return Hash of the signal.
-  function _hashSignal(bytes memory _signal) private pure returns (uint256) {
-    return uint256(keccak256(_signal)) >> 8;
+  function _hashSignal(bytes memory signal) private pure returns (uint256) {
+    return uint256(keccak256(signal)) >> 8;
   }
 }
