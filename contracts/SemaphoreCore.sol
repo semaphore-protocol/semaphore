@@ -1,6 +1,7 @@
 //SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
 
+import "./interfaces/ISemaphoreCore.sol";
 import "./Verifier.sol";
 
 /// @title Semaphore core contract.
@@ -8,17 +9,12 @@ import "./Verifier.sol";
 /// @dev The following code verifies that the proof is correct and saves the hash of the
 /// nullifier to prevent double-signaling. External nullifier and Merkle trees (i.e. groups) must be
 /// managed externally.
-contract SemaphoreCore is Verifier {
-  /// @notice Emitted when a proof is verified correctly and a new nullifier hash is added.
-  /// @param nullifierHash: Hash of external and identity nullifiers.
-  event nullifierHashAdded(uint256 nullifierHash);
-
-  /// @notice Gets a nullifier hash and returns true or false.
-  /// @dev It is used to prevent double-signaling.
+contract SemaphoreCore is ISemaphoreCore, Verifier {
+  /// @dev Gets a nullifier hash and returns true or false.
+  /// It is used to prevent double-signaling.
   mapping(uint256 => bool) internal nullifierHashes;
 
-  /// @dev Checks if a nullifier already exists and if the zero-knowledge
-  /// Semaphore proof is valid.
+  /// @dev Checks if a nullifier already exists and if the zero-knowledge Semaphore proof is valid.
   /// @param _signal: Semaphore signal.
   /// @param _root: Root of the Merkle tree.
   /// @param _nullifierHash: Nullifier hash.
