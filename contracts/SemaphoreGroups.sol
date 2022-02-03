@@ -14,17 +14,17 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   using IncrementalQuinTree for IncrementalTreeData;
 
   /// @dev Gets a group id and returns the group/tree data.
-  mapping(bytes32 => IncrementalTreeData) internal groups;
+  mapping(uint256 => IncrementalTreeData) internal groups;
 
   /// @dev Gets a root hash and returns the group id.
   /// It can be used to check if the root a Semaphore proof exists.
-  mapping(uint256 => bytes32) internal rootHistory;
+  mapping(uint256 => uint256) internal rootHistory;
 
   /// @dev Creates a new group by initializing the associated tree.
   /// @param _id: Id of the group.
   /// @param _depth: Depth of the tree.
   function _createGroup(
-    bytes32 _id,
+    uint256 _id,
     uint8 _depth,
     uint256 _zeroValue
   ) internal virtual {
@@ -39,7 +39,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   /// @dev Adds an identity commitment to an existing group.
   /// @param _groupId: Id of the group.
   /// @param _identityCommitment: New identity commitment.
-  function _addIdentityCommitment(bytes32 _groupId, uint256 _identityCommitment) internal virtual {
+  function _addIdentityCommitment(uint256 _groupId, uint256 _identityCommitment) internal virtual {
     require(getDepth(_groupId) != 0, "SemaphoreGroups: group does not exist");
     require(
       _identityCommitment < SNARK_SCALAR_FIELD,
@@ -61,7 +61,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   /// @param _proofSiblings: Array of the sibling nodes of the proof of membership.
   /// @param _proofPathIndices: Path of the proof of membership.
   function _deleteIdentityCommitment(
-    bytes32 _groupId,
+    uint256 _groupId,
     uint256 _identityCommitment,
     uint256[4][] calldata _proofSiblings,
     uint8[] calldata _proofPathIndices
@@ -80,18 +80,18 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     emit IdentityCommitmentDeleted(_groupId, _identityCommitment, groups[_groupId].root);
   }
 
-  ///  @dev See {ISemaphoreGroups-getRoot}.
-  function getRoot(bytes32 _groupId) public view override returns (uint256) {
+  /// @dev See {ISemaphoreGroups-getRoot}.
+  function getRoot(uint256 _groupId) public view override returns (uint256) {
     return groups[_groupId].root;
   }
 
-  ///  @dev See {ISemaphoreGroups-getDepth}.
-  function getDepth(bytes32 _groupId) public view override returns (uint256) {
+  /// @dev See {ISemaphoreGroups-getDepth}.
+  function getDepth(uint256 _groupId) public view override returns (uint256) {
     return groups[_groupId].depth;
   }
 
-  ///  @dev See {ISemaphoreGroups-getSize}.
-  function getSize(bytes32 _groupId) public view override returns (uint256) {
+  /// @dev See {ISemaphoreGroups-getSize}.
+  function getSize(uint256 _groupId) public view override returns (uint256) {
     return groups[_groupId].numberOfLeaves;
   }
 }
