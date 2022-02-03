@@ -71,7 +71,7 @@ contract SemaphoreVoting is SemaphoreCore, SemaphoreGroups {
   }
 
   function castVote(
-    bytes memory vote,
+    bytes calldata vote,
     uint256 root,
     uint256 nullifierHash,
     uint256 ballotId,
