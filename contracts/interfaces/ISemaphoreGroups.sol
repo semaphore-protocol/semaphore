@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
 
-/// @title Semaphore groups interface.
-/// @dev Required interface of a SemaphoreGroups compliant contract.
+/// @title SemaphoreGroups interface.
+/// @dev Interface of a SemaphoreGroups contract.
 interface ISemaphoreGroups {
   /// @dev Emitted when a new group is created.
   /// @param id: Id of the group.

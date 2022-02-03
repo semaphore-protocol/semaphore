@@ -1,6 +1,7 @@
 //SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
 
+import {SNARK_SCALAR_FIELD} from "./SemaphoreConstants.sol";
 import "./interfaces/ISemaphoreGroups.sol";
 import "@zk-kit/incremental-merkle-tree.sol/contracts/IncrementalQuinTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
@@ -19,9 +20,6 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   /// It can be used to check if the root a Semaphore proof exists.
   mapping(uint256 => bytes32) internal rootHistory;
 
-  uint256 internal constant SNARK_SCALAR_FIELD =
-    21888242871839275222246405745257275088548364400416034343698204186575808495617;
-
   /// @dev Creates a new group by initializing the associated tree.
   /// @param _id: Id of the group.
   /// @param _depth: Depth of the tree.
@@ -31,6 +29,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     uint256 _zeroValue
   ) internal virtual {
     require(getDepth(_id) == 0, "SemaphoreGroups: group already exists");
+    require(_zeroValue < SNARK_SCALAR_FIELD, "SemaphoreGroups: zero value must be < SNARK_SCALAR_FIELD");
 
     groups[_id].init(_depth, _zeroValue % SNARK_SCALAR_FIELD);
 
@@ -42,6 +41,10 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   /// @param _identityCommitment: New identity commitment.
   function _addIdentityCommitment(bytes32 _groupId, uint256 _identityCommitment) internal virtual {
     require(getDepth(_groupId) != 0, "SemaphoreGroups: group does not exist");
+    require(
+      _identityCommitment < SNARK_SCALAR_FIELD,
+      "SemaphoreGroups: identity commitment must be < SNARK_SCALAR_FIELD"
+    );
 
     groups[_groupId].insert(_identityCommitment);
 
@@ -54,7 +57,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   /// @dev Deletes an identity commitment from an existing group. A proof of membership is
   /// needed to check if the node to be deleted is part of the tree.
   /// @param _groupId: Id of the group.
-  /// @param _identityCommitment: Identity commitment to be deleted.
+  /// @param _identityCommitment: Existing identity commitment to be deleted.
   /// @param _proofSiblings: Array of the sibling nodes of the proof of membership.
   /// @param _proofPathIndices: Path of the proof of membership.
   function _deleteIdentityCommitment(
@@ -64,6 +67,10 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     uint8[] calldata _proofPathIndices
   ) internal virtual {
     require(getDepth(_groupId) != 0, "SemaphoreGroups: group does not exist");
+    require(
+      _identityCommitment < SNARK_SCALAR_FIELD,
+      "SemaphoreGroups: identity commitment must be < SNARK_SCALAR_FIELD"
+    );
 
     groups[_groupId].remove(_identityCommitment, _proofSiblings, _proofPathIndices);
 
