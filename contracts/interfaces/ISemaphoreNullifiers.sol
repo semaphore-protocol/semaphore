@@ -2,7 +2,7 @@
 pragma solidity ^0.8.4;
 
 /// @title SemaphoreNullifiers interface.
-/// @dev Interface of a SemaphoreNullifiers contract.
+/// @dev Interface of SemaphoreNullifiers contract.
 interface ISemaphoreNullifiers {
   /// @dev Emitted when a external nullifier is added.
   /// @param externalNullifier: External Semaphore nullifier.
