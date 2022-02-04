@@ -7,7 +7,7 @@ import { HardhatUserConfig } from "hardhat/config"
 import { resolve } from "path"
 import "solidity-coverage"
 import { config } from "./package.json"
-import "./tasks/deploy-semaphore"
+import "./tasks/deploy-semaphore-voting"
 
 dotenvConfig({ path: resolve(__dirname, "./.env") })
 
