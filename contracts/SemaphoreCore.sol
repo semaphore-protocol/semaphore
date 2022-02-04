@@ -16,10 +16,10 @@ contract SemaphoreCore is ISemaphoreCore, Verifier {
 
   /// @dev Checks if the proof is valid.
   /// @param signal: Semaphore signal.
-  /// @param root: Root of the Merkle tree.
+  /// @param root: Merkle tree root.
   /// @param nullifierHash: Nullifier hash.
   /// @param externalNullifier: External nullifier.
-  /// @param proof: Zero-knowledge proof.
+  /// @param proof: Private zk-proof parameters.
   modifier onlyValidProof(
     bytes calldata signal,
     uint256 root,
