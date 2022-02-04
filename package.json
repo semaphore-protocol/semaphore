@@ -24,7 +24,7 @@
     "start": "hardhat node",
     "compile": "hardhat compile",
     "compile:circuits": "ts-node scripts/compile-circuits.ts",
-    "deploy:semaphore": "hardhat deploy:semaphore",
+    "deploy:semaphore-voting": "hardhat deploy:semaphore-voting",
     "test": "hardhat test",
     "test:report-gas": "REPORT_GAS=true hardhat test",
     "test:coverage": "hardhat coverage",
