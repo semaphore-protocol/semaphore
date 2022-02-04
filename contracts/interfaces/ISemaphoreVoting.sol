@@ -4,63 +4,70 @@ pragma solidity ^0.8.4;
 /// @title SemaphoreVoting interface.
 /// @dev Interface of SemaphoreVoting contract.
 interface ISemaphoreVoting {
-  // The ballot structure.
-  struct Ballot {
-    address coordinator; // Coordinator of the ballot.
-    uint256 startDate; // Voting start date (timestamp).
-    uint256 endDate; // Voting end date (timestamp).
+  enum PollState {
+    Created,
+    Ongoing,
+    Ended
   }
 
-  /// @dev Emitted when a new ballot is created.
-  /// @param ballotId: Id of the ballot.
-  /// @param coordinator: Coordinator of the ballot.
-  /// @param startDate: Voting start date.
-  /// @param endDate: Voting end date.
-  event BallotCreated(uint256 ballotId, address coordinator, uint256 startDate, uint256 endDate);
+  struct Poll {
+    address coordinator;
+    PollState state;
+  }
 
-  /// @dev Emitted when a user votes on a ballot.
-  /// @param ballotId: Id of the ballot.
-  /// @param vote: user vote (encrypted or not).
-  event VoteAdded(uint256 indexed ballotId, bytes vote);
+  /// @dev Emitted when a new poll is created.
+  /// @param pollId: Id of the poll.
+  /// @param coordinator: Coordinator of the poll.
+  event PollCreated(uint256 pollId, address indexed coordinator);
 
-  /// @dev Emitted when a decryption key is published.
-  /// @param ballotId: Id of the ballot.
-  /// @param decryptionKey: Key to decrypt ballot votes.
-  event DecryptionKeyPublished(uint256 indexed ballotId, uint256 decryptionKey);
+  /// @dev Emitted when a poll is started.
+  /// @param pollId: Id of the poll.
+  /// @param coordinator: Coordinator of the poll.
+  /// @param encryptionKey: Key to encrypt the poll votes.
+  event PollStarted(uint256 pollId, address indexed coordinator, uint256 encryptionKey);
 
-  /// @dev Casts an anonymous vote in a ballot.
-  /// @param vote: Encrypted or unencrypted vote.
+  /// @dev Emitted when a user votes on a poll.
+  /// @param pollId: Id of the poll.
+  /// @param vote: User encrypted vote.
+  event VoteAdded(uint256 indexed pollId, bytes vote);
+
+  /// @dev Emitted when a poll is ended.
+  /// @param pollId: Id of the poll.
+  /// @param coordinator: Coordinator of the poll.
+  /// @param decryptionKey: Key to decrypt the poll votes.
+  event PollEnded(uint256 pollId, address indexed coordinator, uint256 decryptionKey);
+
+  /// @dev Creates a poll and the associated Merkle tree/group.
+  /// @param pollId: Id of the poll.
+  /// @param coordinator: Coordinator of the poll.
+  function createPoll(uint256 pollId, address coordinator) external;
+
+  /// @dev Adds a voter in a poll.
+  /// @param pollId: Id of the poll.
+  /// @param identityCommitment: Identity commitment of the group member.
+  function addVoter(uint256 pollId, uint256 identityCommitment) external;
+
+  /// @dev Starts a pull and publishes the key to encrypt the votes.
+  /// @param pollId: Id of the poll.
+  /// @param decryptionKey: Key to decrypt poll votes.
+  function startPoll(uint256 pollId, uint256 decryptionKey) external;
+
+  /// @dev Casts an anonymous vote in a poll.
+  /// @param vote: Encrypted vote.
   /// @param root: Merkle tree root.
   /// @param nullifierHash: Nullifier hash.
-  /// @param ballotId: Id of the ballot.
+  /// @param pollId: Id of the poll.
   /// @param proof: Private zk-proof parameters.
   function castVote(
     bytes calldata vote,
     uint256 root,
     uint256 nullifierHash,
-    uint256 ballotId,
+    uint256 pollId,
     uint256[8] calldata proof
   ) external;
 
-  /// @dev Adds a voter in a ballot.
-  /// @param ballotId: Id of the ballot.
-  /// @param identityCommitment: Identity commitment of the group member.
-  function addVoter(uint256 ballotId, uint256 identityCommitment) external;
-
-  /// @dev Creates a ballot and the associated Merkle tree/group.
-  /// @param ballotId: Id of the ballot.
-  /// @param coordinator: Coordinator of the ballot.
-  /// @param startDate: Voting start date.
-  /// @param endDate: Voting end date.
-  function createBallot(
-    uint256 ballotId,
-    address coordinator,
-    uint256 startDate,
-    uint256 endDate
-  ) external;
-
-  /// @dev Publishes the key to decrypt the votes of a ballot.
-  /// @param ballotId: Id of the ballot.
-  /// @param decryptionKey: Key to decrypt ballot votes.
-  function publishDecryptionKey(uint256 ballotId, uint256 decryptionKey) external;
+  /// @dev Ends a pull and publishes the key to decrypt the votes.
+  /// @param pollId: Id of the poll.
+  /// @param decryptionKey: Key to decrypt poll votes.
+  function endPoll(uint256 pollId, uint256 decryptionKey) external;
 }
