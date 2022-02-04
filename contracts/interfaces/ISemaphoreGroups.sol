@@ -13,13 +13,13 @@ interface ISemaphoreGroups {
   /// @param groupId: Group id of the group.
   /// @param identityCommitment: New identity commitment.
   /// @param root: New root hash of the tree.
-  event IdentityCommitmentAdded(uint256 indexed groupId, uint256 identityCommitment, uint256 root);
+  event MemberAdded(uint256 indexed groupId, uint256 identityCommitment, uint256 root);
 
   /// @dev Emitted when a new identity commitment is deleted.
   /// @param groupId: Group id of the group.
   /// @param identityCommitment: New identity commitment.
   /// @param root: New root hash of the tree.
-  event IdentityCommitmentDeleted(uint256 indexed groupId, uint256 identityCommitment, uint256 root);
+  event MemberDeleted(uint256 indexed groupId, uint256 identityCommitment, uint256 root);
 
   /// @dev Returns the last root hash of a group.
   /// @param groupId: Id of the group.
