@@ -25,7 +25,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     uint256 startDate,
     uint256 endDate
   ) public override {
-    _createGroup(ballotId, 20, 0);
+    _createGroup(ballotId, 20);
 
     Ballot memory ballot;
 

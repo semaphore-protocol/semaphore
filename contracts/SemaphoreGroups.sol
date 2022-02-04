@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
 
-import {SNARK_SCALAR_FIELD} from "./SemaphoreConstants.sol";
+import {SNARK_SCALAR_FIELD, TREE_ZERO_VALUE} from "./SemaphoreConstants.sol";
 import "./interfaces/ISemaphoreGroups.sol";
 import "@zk-kit/incremental-merkle-tree.sol/contracts/IncrementalQuinTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
@@ -23,16 +23,10 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   /// @dev Creates a new group by initializing the associated tree.
   /// @param groupId: Id of the group.
   /// @param depth: Depth of the tree.
-  /// @param zeroValue: Zero value of the tree.
-  function _createGroup(
-    uint256 groupId,
-    uint8 depth,
-    uint256 zeroValue
-  ) internal virtual {
+  function _createGroup(uint256 groupId, uint8 depth) internal virtual {
     require(getDepth(groupId) == 0, "SemaphoreGroups: group already exists");
-    require(zeroValue < SNARK_SCALAR_FIELD, "SemaphoreGroups: zero value must be < SNARK_SCALAR_FIELD");
 
-    groups[groupId].init(depth, zeroValue);
+    groups[groupId].init(depth, TREE_ZERO_VALUE);
 
     emit GroupAdded(groupId, depth);
   }
@@ -82,17 +76,17 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   }
 
   /// @dev See {ISemaphoreGroups-getRoot}.
-  function getRoot(uint256 groupId) public view override virtual returns (uint256) {
+  function getRoot(uint256 groupId) public view virtual override returns (uint256) {
     return groups[groupId].root;
   }
 
   /// @dev See {ISemaphoreGroups-getDepth}.
-  function getDepth(uint256 groupId) public view override virtual returns (uint256) {
+  function getDepth(uint256 groupId) public view virtual override returns (uint256) {
     return groups[groupId].depth;
   }
 
   /// @dev See {ISemaphoreGroups-getSize}.
-  function getSize(uint256 groupId) public view override virtual returns (uint256) {
+  function getSize(uint256 groupId) public view virtual override returns (uint256) {
     return groups[groupId].numberOfLeaves;
   }
 }
