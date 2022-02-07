@@ -21,7 +21,7 @@ contract SemaphoreCore is ISemaphoreCore, Verifier {
   /// @param externalNullifier: External nullifier.
   /// @param proof: Private zk-proof parameters.
   modifier onlyValidProof(
-    bytes calldata signal,
+    string calldata signal,
     uint256 root,
     uint256 nullifierHash,
     uint256 externalNullifier,
@@ -43,13 +43,13 @@ contract SemaphoreCore is ISemaphoreCore, Verifier {
   /// @param externalNullifier: External nullifier.
   /// @param proof: Zero-knowledge proof.
   function _isValidProof(
-    bytes calldata signal,
+    string calldata signal,
     uint256 root,
     uint256 nullifierHash,
     uint256 externalNullifier,
     uint256[8] calldata proof
   ) internal view returns (bool) {
-    require(nullifierHashes[nullifierHash] == false, "SemaphoreCore: you cannot use the same nullifier twice");
+    require(!nullifierHashes[nullifierHash], "SemaphoreCore: you cannot use the same nullifier twice");
 
     uint256 signalHash = _hashSignal(signal);
 
@@ -75,7 +75,7 @@ contract SemaphoreCore is ISemaphoreCore, Verifier {
   /// @dev Creates a keccak256 hash of the signal.
   /// @param signal: Semaphore signal.
   /// @return Hash of the signal.
-  function _hashSignal(bytes memory signal) private pure returns (uint256) {
-    return uint256(keccak256(signal)) >> 8;
+  function _hashSignal(string calldata signal) private pure returns (uint256) {
+    return uint256(keccak256(abi.encodePacked(signal))) >> 8;
   }
 }

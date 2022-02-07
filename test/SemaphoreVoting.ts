@@ -3,7 +3,6 @@ import { generateMerkleProof, Semaphore } from "@zk-kit/protocols"
 import { expect } from "chai"
 import { Signer } from "ethers"
 import { ethers, run } from "hardhat"
-import path from "path"
 import { SemaphoreVoting } from "../build/typechain"
 import { TreeZeroNode } from "./utils"
 
@@ -95,13 +94,13 @@ describe("SemaphoreVoting", () => {
   })
 
   describe("# castVote", () => {
-    const wasmFilePath = path.join("./build/snark", "semaphore.wasm")
-    const finalZkeyPath = path.join("./build/snark", "semaphore_final.zkey")
+    const wasmFilePath = "./build/snark/semaphore.wasm"
+    const finalZkeyPath = "./build/snark/semaphore_final.zkey"
 
     const identity = new ZkIdentity(Strategy.MESSAGE, "test")
     const identityCommitment = identity.genIdentityCommitment()
     const merkleProof = generateMerkleProof(20, TreeZeroNode, 5, [identityCommitment, BigInt(1)], identityCommitment)
-    const vote = ethers.utils.hexlify(ethers.utils.toUtf8Bytes("0x111"))
+    const vote = "1"
 
     before(async () => {
       await contract.connect(accounts[1]).addVoter(pollIds[1], BigInt(1))
@@ -119,15 +118,8 @@ describe("SemaphoreVoting", () => {
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
       const solidityProof = await Semaphore.packToSolidityProof(fullProof)
-      const proof = [...solidityProof.a, ...solidityProof.b[0], ...solidityProof.b[1], ...solidityProof.c]
 
-      const transaction = contract.castVote(
-        ethers.utils.hexlify(ethers.utils.toUtf8Bytes(vote)),
-        merkleProof.root,
-        nullifierHash,
-        pollIds[0],
-        proof
-      )
+      const transaction = contract.castVote(vote, nullifierHash, pollIds[0], solidityProof)
 
       await expect(transaction).to.be.revertedWith("SemaphoreVoting: caller is not the poll coordinator")
     })
@@ -143,21 +135,10 @@ describe("SemaphoreVoting", () => {
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
       const solidityProof = await Semaphore.packToSolidityProof(fullProof)
-      // TODO: create @zk-kit/protocols function.
-      const proof = [...solidityProof.a, ...solidityProof.b[0], ...solidityProof.b[1], ...solidityProof.c]
 
-      const transaction = contract.connect(accounts[1]).castVote(
-        // TODO: make easier this conversion.
-        ethers.utils.hexlify(ethers.utils.toUtf8Bytes(vote)),
-        merkleProof.root,
-        nullifierHash,
-        pollIds[1],
-        proof
-      )
+      const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[1], solidityProof)
 
-      await expect(transaction)
-        .to.emit(contract, "VoteAdded")
-        .withArgs(pollIds[1], ethers.utils.hexlify(ethers.utils.toUtf8Bytes(vote)))
+      await expect(transaction).to.emit(contract, "VoteAdded").withArgs(pollIds[1], vote)
     })
   })
 })
