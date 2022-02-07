@@ -42,14 +42,14 @@ In sum, Semaphore provides the ability to:
 
 2. Broadcast a signal:
 
-    - Anonymously prove that their identity is in the set of registered
-      identities, and at the same time:
+   - Anonymously prove that their identity is in the set of registered
+     identities, and at the same time:
 
-    - Publicly store an arbitrary string in the contract, if and only if that
-      string is unique to the user and the contract’s current external
-      nullifier, which is a unique value akin to a topic. This means that
-      double-signalling the same message under the same external nullifier is
-      not possible.
+   - Publicly store an arbitrary string in the contract, if and only if that
+     string is unique to the user and the contract’s current external
+     nullifier, which is a unique value akin to a topic. This means that
+     double-signalling the same message under the same external nullifier is
+     not possible.
 
 ### External nullifiers
 

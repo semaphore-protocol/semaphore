@@ -15,8 +15,7 @@ sidebar_position: 5
 
 The depth of the identity tree determines how many identity commitments may be
 added to this contract: `2 ^ _treeLevels`. Once the tree is full, further
-insertions will fail with the revert reason `IncrementalMerkleTree: tree is
-full`.
+insertions will fail with the revert reason `IncrementalMerkleTree: tree is full`.
 
 The first external nullifier will be added as an external nullifier to the
 contract, and this external nullifier will be active once the deployment

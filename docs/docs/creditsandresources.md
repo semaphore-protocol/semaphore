@@ -4,19 +4,19 @@ sidebar_position: 9
 
 # Credits
 
--   Barry WhiteHat
--   Chih Cheng Liang
--   Kobi Gurkan
--   Koh Wei Jie
--   Harry Roberts
+- Barry WhiteHat
+- Chih Cheng Liang
+- Kobi Gurkan
+- Koh Wei Jie
+- Harry Roberts
 
 Many thanks to:
 
--   ABDK Consulting
--   Jordi Baylina / iden3
--   POA Network
--   PepperSec
--   Ethereum Foundation
+- ABDK Consulting
+- Jordi Baylina / iden3
+- POA Network
+- PepperSec
+- Ethereum Foundation
 
 # Resources
 

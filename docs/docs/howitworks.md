@@ -38,16 +38,16 @@ broadcastSignal(
 )
 ```
 
--   `_signal`: the signal to broadcast.
--   `_proof`: a zk-SNARK proof (see below).
--   `_root`: The root of the identity tree, where the user's identity commitment
-    is the last-inserted leaf.
--   `_nullifiersHash`: A uniquely derived hash of the external nullifier, user's
-    identity nullifier, and the Merkle path index to their identity commitment.
-    It ensures that a user cannot broadcast a signal with the same external
-    nullifier more than once.
--   `_externalNullifier`: The external nullifier at which the signal is
-    broadcast.
+- `_signal`: the signal to broadcast.
+- `_proof`: a zk-SNARK proof (see below).
+- `_root`: The root of the identity tree, where the user's identity commitment
+  is the last-inserted leaf.
+- `_nullifiersHash`: A uniquely derived hash of the external nullifier, user's
+  identity nullifier, and the Merkle path index to their identity commitment.
+  It ensures that a user cannot broadcast a signal with the same external
+  nullifier more than once.
+- `_externalNullifier`: The external nullifier at which the signal is
+  broadcast.
 
 To zk-SNARK proof must satisfy the constraints created by Semaphore's zk-SNARK
 circuit as described below:
@@ -62,17 +62,17 @@ circuit helps to prove the following:
 
 **Private inputs:**
 
--   `identity_pk`: the user's EdDSA public key
--   `identity_nullifier`: a random 32-byte value which the user should save
--   `identity_trapdoor`: a random 32-byte value which the user should save
--   `identity_path_elements`: the values along the Merkle path to the
-    user's identity commitment
--   `identity_path_index[n_levels]`: the direction (left/right) per tree level
-    corresponding to the Merkle path to the user's identity commitment
+- `identity_pk`: the user's EdDSA public key
+- `identity_nullifier`: a random 32-byte value which the user should save
+- `identity_trapdoor`: a random 32-byte value which the user should save
+- `identity_path_elements`: the values along the Merkle path to the
+  user's identity commitment
+- `identity_path_index[n_levels]`: the direction (left/right) per tree level
+  corresponding to the Merkle path to the user's identity commitment
 
 **Public inputs:**
 
--   `root`: The Merkle root of the identity tree
+- `root`: The Merkle root of the identity tree
 
 **Procedure:**
 
@@ -84,14 +84,14 @@ the Merkle root and the identity commitment.
 
 **Private inputs:**
 
--   `identity_nullifier`: as above
--   `identity_path_index`: as above
+- `identity_nullifier`: as above
+- `identity_path_index`: as above
 
 **Public inputs:**
 
--   `external_nullifier`: the 29-byte external nullifier - see above
--   `nullifiers_hash`: the hash of the identity nullifier, external nullifier,
-    and Merkle path index (`identity_path_index`)
+- `external_nullifier`: the 29-byte external nullifier - see above
+- `nullifiers_hash`: the hash of the identity nullifier, external nullifier,
+  and Merkle path index (`identity_path_index`)
 
 **Procedure:**
 
@@ -104,14 +104,14 @@ hash. This way, double-signalling is impossible.
 
 **Private inputs:**
 
--   `identity_pk`: as above
--   `auth_sig_r`: the `r` value of the signature of the signal
--   `auth_sig_s`: the `s` value of the signature of the signal
+- `identity_pk`: as above
+- `auth_sig_r`: the `r` value of the signature of the signal
+- `auth_sig_s`: the `s` value of the signature of the signal
 
 **Public inputs:**
 
--   `signal_hash`: the hash of the signal
--   `external_nullifier`: the 29-byte external nullifier - see above
+- `signal_hash`: the hash of the signal
+- `external_nullifier`: the 29-byte external nullifier - see above
 
 **Procedure:**
 
