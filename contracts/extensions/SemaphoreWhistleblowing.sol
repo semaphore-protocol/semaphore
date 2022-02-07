@@ -34,6 +34,16 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     _addMember(entityId, identityCommitment);
   }
 
+  /// @dev See {ISemaphoreWhistleblowing-removeWhistleblower}.
+  function removeWhistleblower(
+    uint256 entityId,
+    uint256 identityCommitment,
+    uint256[4][] calldata proofSiblings,
+    uint8[] calldata proofPathIndices
+  ) public override onlyEditor(entityId) {
+    _removeMember(entityId, identityCommitment, proofSiblings, proofPathIndices);
+  }
+
   /// @dev See {ISemaphoreWhistleblowing-publishLeak}.
   function publishLeak(
     string calldata leak,
