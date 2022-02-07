@@ -2,7 +2,7 @@
 pragma solidity ^0.8.4;
 
 import {SNARK_SCALAR_FIELD, TREE_ZERO_VALUE} from "./SemaphoreConstants.sol";
-import "./interfaces/ISemaphoreGroups.sol";
+import "../interfaces/ISemaphoreGroups.sol";
 import "@zk-kit/incremental-merkle-tree.sol/contracts/IncrementalQuinTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 
