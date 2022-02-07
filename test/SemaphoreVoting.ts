@@ -1,10 +1,10 @@
 import { Strategy, ZkIdentity } from "@zk-kit/identity"
-import { generateMerkleProof, Semaphore } from "@zk-kit/protocols"
+import { Semaphore } from "@zk-kit/protocols"
 import { expect } from "chai"
 import { Signer } from "ethers"
 import { ethers, run } from "hardhat"
 import { SemaphoreVoting } from "../build/typechain"
-import { TreeZeroNode } from "./utils"
+import { createMerkleProof } from "./utils"
 
 describe("SemaphoreVoting", () => {
   let contract: SemaphoreVoting
@@ -99,7 +99,7 @@ describe("SemaphoreVoting", () => {
 
     const identity = new ZkIdentity(Strategy.MESSAGE, "test")
     const identityCommitment = identity.genIdentityCommitment()
-    const merkleProof = generateMerkleProof(20, TreeZeroNode, 5, [identityCommitment, BigInt(1)], identityCommitment)
+    const merkleProof = createMerkleProof([identityCommitment, BigInt(1)], identityCommitment)
     const vote = "1"
 
     before(async () => {
