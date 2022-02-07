@@ -58,7 +58,10 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
     require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
 
-    require(_isValidProof(vote, groups[pollId].root, nullifierHash, pollId, proof), "SemaphoreVoting: the proof is not valid");
+    require(
+      _isValidProof(vote, groups[pollId].root, nullifierHash, pollId, proof),
+      "SemaphoreVoting: the proof is not valid"
+    );
 
     // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).
     _saveNullifierHash(nullifierHash);
