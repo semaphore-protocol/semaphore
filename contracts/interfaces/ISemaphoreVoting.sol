@@ -29,7 +29,7 @@ interface ISemaphoreVoting {
   /// @dev Emitted when a user votes on a poll.
   /// @param pollId: Id of the poll.
   /// @param vote: User encrypted vote.
-  event VoteAdded(uint256 indexed pollId, bytes vote);
+  event VoteAdded(uint256 indexed pollId, string vote);
 
   /// @dev Emitted when a poll is ended.
   /// @param pollId: Id of the poll.
@@ -42,7 +42,7 @@ interface ISemaphoreVoting {
   /// @param coordinator: Coordinator of the poll.
   function createPoll(uint256 pollId, address coordinator) external;
 
-  /// @dev Adds a voter in a poll.
+  /// @dev Adds a voter to a poll.
   /// @param pollId: Id of the poll.
   /// @param identityCommitment: Identity commitment of the group member.
   function addVoter(uint256 pollId, uint256 identityCommitment) external;
@@ -58,7 +58,7 @@ interface ISemaphoreVoting {
   /// @param pollId: Id of the poll.
   /// @param proof: Private zk-proof parameters.
   function castVote(
-    bytes calldata vote,
+    string calldata vote,
     uint256 nullifierHash,
     uint256 pollId,
     uint256[8] calldata proof
