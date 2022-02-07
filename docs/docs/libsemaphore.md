@@ -33,7 +33,7 @@ An EdDSA public key. Encapsulates an array of `SnarkBigInt`s.
 
 **`SnarkProvingKey`**
 
-A proving key, which when used with a secret *witness*, generates a zk-SNARK
+A proving key, which when used with a secret _witness_, generates a zk-SNARK
 proof about said witness. Encapsulates a `Buffer`.
 
 **`SnarkVerifyingKey`**
@@ -49,7 +49,6 @@ The secret inputs to a zk-SNARK. Encapsulates an array of `SnarkBigInt`s.
 
 The public inputs to a zk-SNARK. Encapsulates an array of `SnarkBigInt`s.
 
-
 ### Interfaces
 
 **`EddsaKeyPair`**
@@ -58,8 +57,8 @@ Encapsulates an `EddsaPublicKey` and an `EddsaPrivateKey`.
 
 ```ts
 interface EddsaKeyPair {
-    pubKey: EddsaPublicKey,
-    privKey: EddsaPrivateKey,
+  pubKey: EddsaPublicKey
+  privKey: EddsaPrivateKey
 }
 ```
 
@@ -70,9 +69,9 @@ is crucial to creating `SnarkProof`s to broadcast signals.
 
 ```ts
 interface Identity {
-    keypair: EddsaKeyPair,
-    identityNullifier: SnarkBigInt,
-    identityTrapdoor: SnarkBigInt,
+  keypair: EddsaKeyPair
+  identityNullifier: SnarkBigInt
+  identityTrapdoor: SnarkBigInt
 }
 ```
 
@@ -83,9 +82,9 @@ parameter. See `genBroadcastSignalParams()`.
 
 ```ts
 interface SnarkProof {
-    pi_a: SnarkBigInt[]
-    pi_b: SnarkBigInt[][]
-    pi_c: SnarkBigInt[]
+  pi_a: SnarkBigInt[]
+  pi_b: SnarkBigInt[][]
+  pi_c: SnarkBigInt[]
 }
 ```
 
@@ -222,7 +221,7 @@ To be specific, it returns an object as such:
 ```ts
 {
     a: [ proof.pi_a[0].toString(), proof.pi_a[1].toString() ],
-    b: [ 
+    b: [
          [ proof.pi_b[0][1].toString(), proof.pi_b[0][0].toString() ],
          [ proof.pi_b[1][1].toString(), proof.pi_b[1][0].toString() ],
     ],
@@ -233,7 +232,7 @@ To be specific, it returns an object as such:
 
 **`stringifyBigInts = (obj: any) => object`**
 
-Encapsulates `snarkjs.stringifyBigInts()`. Makes it easy to convert `SnarkProof`s to JSON. 
+Encapsulates `snarkjs.stringifyBigInts()`. Makes it easy to convert `SnarkProof`s to JSON.
 
 **`unstringifyBigInts = (obj: any) => object`**
 

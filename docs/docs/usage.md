@@ -20,7 +20,7 @@ Untrusted versions of these files, however, may be obtained via the
 Next, to have full flexibility over Semaphore's mechanisms, write a Client
 contract and set the owner of the Semaphore contract as the address of the
 Client contract. You may also write a Client contract which deploys a Semaphore
-contract in its constructor, or on the fly. 
+contract in its constructor, or on the fly.
 
 With the Client contract as the owner of the Semaphore contract, the Client
 contract may call owner-only Semaphore functions such as
@@ -85,7 +85,7 @@ const leaves = <list of leaves>
 Next, load the circuit from disk (or from a remote source):
 
 ```ts
-const circuitPath = path.join(__dirname, '/path/to/circuit.json')
+const circuitPath = path.join(__dirname, "/path/to/circuit.json")
 const cirDef = JSON.parse(fs.readFileSync(circuitPath).toString())
 const circuit = genCircuit(cirDef)
 ```
@@ -113,7 +113,7 @@ const result = await genWitness(
 Load the proving key from disk (or from a remote source):
 
 ```ts
-const provingKeyPath = path.join(__dirname, '/path/to/proving_key.bin')
+const provingKeyPath = path.join(__dirname, "/path/to/proving_key.bin")
 const provingKey: SnarkProvingKey = fs.readFileSync(provingKeyPath)
 ```
 
@@ -134,11 +134,11 @@ Finally, invoke `broadcastSignal()` with the parameters:
 
 ```ts
 const tx = await semaphoreClientContract.broadcastSignal(
-    ethers.utils.toUtf8Bytes(signal),
-    params.proof,
-    params.root,
-    params.nullifiersHash,
-    external_nullifier,
-    { gasLimit: 500000 },
+  ethers.utils.toUtf8Bytes(signal),
+  params.proof,
+  params.root,
+  params.nullifiersHash,
+  external_nullifier,
+  { gasLimit: 500000 }
 )
 ```
