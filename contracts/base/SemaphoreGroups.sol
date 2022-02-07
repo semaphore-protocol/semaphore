@@ -49,13 +49,13 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     emit MemberAdded(groupId, identityCommitment, root);
   }
 
-  /// @dev Deletes an identity commitment from an existing group. A proof of membership is
+  /// @dev Removes an identity commitment from an existing group. A proof of membership is
   /// needed to check if the node to be deleted is part of the tree.
   /// @param groupId: Id of the group.
   /// @param identityCommitment: Existing identity commitment to be deleted.
   /// @param proofSiblings: Array of the sibling nodes of the proof of membership.
   /// @param proofPathIndices: Path of the proof of membership.
-  function _deleteMember(
+  function _removeMember(
     uint256 groupId,
     uint256 identityCommitment,
     uint256[4][] calldata proofSiblings,
@@ -72,7 +72,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     uint256 root = getRoot(groupId);
     rootHistory[root] = groupId;
 
-    emit MemberDeleted(groupId, identityCommitment, groups[groupId].root);
+    emit MemberRemoved(groupId, identityCommitment, groups[groupId].root);
   }
 
   /// @dev See {ISemaphoreGroups-getRoot}.
