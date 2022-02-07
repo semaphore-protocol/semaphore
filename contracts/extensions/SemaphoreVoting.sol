@@ -50,7 +50,6 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
   /// @dev See {ISemaphoreVoting-castVote}.
   function castVote(
     bytes calldata vote,
-    uint256 root,
     uint256 nullifierHash,
     uint256 pollId,
     uint256[8] calldata proof
@@ -59,8 +58,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
     require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
 
-    require(pollId == rootHistory[root], "SemaphoreVoting: the root does not match any poll");
-    require(_isValidProof(vote, root, nullifierHash, pollId, proof), "SemaphoreVoting: the proof is not valid");
+    require(_isValidProof(vote, groups[pollId].root, nullifierHash, pollId, proof), "SemaphoreVoting: the proof is not valid");
 
     // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).
     _saveNullifierHash(nullifierHash);

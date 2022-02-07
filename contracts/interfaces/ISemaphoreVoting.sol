@@ -54,13 +54,11 @@ interface ISemaphoreVoting {
 
   /// @dev Casts an anonymous vote in a poll.
   /// @param vote: Encrypted vote.
-  /// @param root: Merkle tree root.
   /// @param nullifierHash: Nullifier hash.
   /// @param pollId: Id of the poll.
   /// @param proof: Private zk-proof parameters.
   function castVote(
     bytes calldata vote,
-    uint256 root,
     uint256 nullifierHash,
     uint256 pollId,
     uint256[8] calldata proof
