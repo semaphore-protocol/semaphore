@@ -1,9 +1,9 @@
 //SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
 
-import "./interfaces/ISemaphoreVoting.sol";
-import "./SemaphoreCore.sol";
-import "./SemaphoreGroups.sol";
+import "../interfaces/ISemaphoreVoting.sol";
+import "../base/SemaphoreCore.sol";
+import "../base/SemaphoreGroups.sol";
 
 /// @title Semaphore voting contract.
 /// @dev The following code allows you to create polls, add voters and allow them to vote anonymously.

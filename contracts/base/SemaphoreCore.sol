@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
 
-import "./interfaces/ISemaphoreCore.sol";
+import "../interfaces/ISemaphoreCore.sol";
 import "./Verifier.sol";
 
 /// @title Semaphore core contract.
