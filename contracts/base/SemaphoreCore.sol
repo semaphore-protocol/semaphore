@@ -14,27 +14,6 @@ contract SemaphoreCore is ISemaphoreCore, Verifier {
   /// It is used to prevent double-signaling.
   mapping(uint256 => bool) internal nullifierHashes;
 
-  /// @dev Checks if the proof is valid.
-  /// @param signal: Semaphore signal.
-  /// @param root: Merkle tree root.
-  /// @param nullifierHash: Nullifier hash.
-  /// @param externalNullifier: External nullifier.
-  /// @param proof: Private zk-proof parameters.
-  modifier onlyValidProof(
-    string calldata signal,
-    uint256 root,
-    uint256 nullifierHash,
-    uint256 externalNullifier,
-    uint256[8] calldata proof
-  ) {
-    require(
-      _isValidProof(signal, root, nullifierHash, externalNullifier, proof),
-      "SemaphoreCore: the proof is not valid"
-    );
-
-    _;
-  }
-
   /// @dev Returns true if no nullifier already exists and if the zero-knowledge proof is valid.
   /// Otherwise it returns false.
   /// @param signal: Semaphore signal.
