@@ -13,6 +13,7 @@ describe("SemaphoreVoting", () => {
 
   const pollIds = [BigInt(1), BigInt(2), BigInt(3)]
   const encryptionKey = BigInt(0)
+  const decryptionKey = BigInt(0)
 
   before(async () => {
     contract = await run("deploy:semaphore-voting", { logs: false })
@@ -91,6 +92,12 @@ describe("SemaphoreVoting", () => {
           "19485212735701584721896513601896171581188179675618364853461101336195752294134"
         )
     })
+
+    it("Should return the correct number of poll voters", async () => {
+      const size = await contract.getSize(pollIds[1])
+
+      expect(size).to.be.eq(1)
+    })
   })
 
   describe("# castVote", () => {
@@ -105,6 +112,7 @@ describe("SemaphoreVoting", () => {
     before(async () => {
       await contract.connect(accounts[1]).addVoter(pollIds[1], BigInt(1))
       await contract.connect(accounts[1]).startPoll(pollIds[1], encryptionKey)
+      await contract.createPoll(pollIds[2], coordinator)
     })
 
     it("Should not cast a vote if the caller is not the coordinator", async () => {
@@ -124,6 +132,40 @@ describe("SemaphoreVoting", () => {
       await expect(transaction).to.be.revertedWith("SemaphoreVoting: caller is not the poll coordinator")
     })
 
+    it("Should not cast a vote if the poll is not ongoing", async () => {
+      const nullifierHash = Semaphore.genNullifierHash(pollIds[2], identity.getNullifier())
+      const witness = Semaphore.genWitness(
+        identity.getTrapdoor(),
+        identity.getNullifier(),
+        merkleProof,
+        pollIds[2],
+        vote
+      )
+      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+      const solidityProof = await Semaphore.packToSolidityProof(fullProof)
+
+      const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[2], solidityProof)
+
+      await expect(transaction).to.be.revertedWith("SemaphoreVoting: vote can only be cast in an ongoing poll")
+    })
+
+    it("Should not cast a vote if the proof is not valid", async () => {
+      const nullifierHash = Semaphore.genNullifierHash(pollIds[1], identity.getNullifier())
+      const witness = Semaphore.genWitness(
+        identity.getTrapdoor(),
+        identity.getNullifier(),
+        merkleProof,
+        pollIds[2],
+        vote
+      )
+      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+      const solidityProof = await Semaphore.packToSolidityProof(fullProof)
+
+      const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[1], solidityProof)
+
+      await expect(transaction).to.be.revertedWith("SemaphoreVoting: the proof is not valid")
+    })
+
     it("Should cast a vote", async () => {
       const nullifierHash = Semaphore.genNullifierHash(pollIds[1], identity.getNullifier())
       const witness = Semaphore.genWitness(
@@ -139,6 +181,43 @@ describe("SemaphoreVoting", () => {
       const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[1], solidityProof)
 
       await expect(transaction).to.emit(contract, "VoteAdded").withArgs(pollIds[1], vote)
+    })
+
+    it("Should not cast a vote twice", async () => {
+      const nullifierHash = Semaphore.genNullifierHash(pollIds[1], identity.getNullifier())
+      const witness = Semaphore.genWitness(
+        identity.getTrapdoor(),
+        identity.getNullifier(),
+        merkleProof,
+        pollIds[1],
+        vote
+      )
+      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+      const solidityProof = await Semaphore.packToSolidityProof(fullProof)
+
+      const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[1], solidityProof)
+
+      await expect(transaction).to.be.revertedWith("SemaphoreCore: you cannot use the same nullifier twice")
+    })
+  })
+
+  describe("# endPoll", () => {
+    it("Should not end the poll if the caller is not the coordinator", async () => {
+      const transaction = contract.endPoll(pollIds[1], decryptionKey)
+
+      await expect(transaction).to.be.revertedWith("SemaphoreVoting: caller is not the poll coordinator")
+    })
+
+    it("Should end the poll", async () => {
+      const transaction = contract.connect(accounts[1]).endPoll(pollIds[1], encryptionKey)
+
+      await expect(transaction).to.emit(contract, "PollEnded").withArgs(pollIds[1], coordinator, decryptionKey)
+    })
+
+    it("Should not end a poll if it has already been ended", async () => {
+      const transaction = contract.connect(accounts[1]).endPoll(pollIds[1], encryptionKey)
+
+      await expect(transaction).to.be.revertedWith("SemaphoreVoting: poll is not ongoing")
     })
   })
 })

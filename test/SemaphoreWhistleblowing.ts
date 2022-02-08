@@ -57,6 +57,12 @@ describe("SemaphoreWhistleblowing", () => {
           "19485212735701584721896513601896171581188179675618364853461101336195752294134"
         )
     })
+
+    it("Should return the correct number of whistleblowers of an entity", async () => {
+      const size = await contract.getSize(entityIds[0])
+
+      expect(size).to.be.eq(1)
+    })
   })
 
   describe("# removeWhistleblower", () => {
@@ -121,7 +127,24 @@ describe("SemaphoreWhistleblowing", () => {
       await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: caller is not the editor")
     })
 
-    it("Should cast a vote", async () => {
+    it("Should not publish a leak if the proof is not valid", async () => {
+      const nullifierHash = Semaphore.genNullifierHash(entityIds[1], identity.getNullifier())
+      const witness = Semaphore.genWitness(
+        identity.getTrapdoor(),
+        identity.getNullifier(),
+        merkleProof,
+        entityIds[0],
+        leak
+      )
+      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+      const solidityProof = await Semaphore.packToSolidityProof(fullProof)
+
+      const transaction = contract.connect(accounts[1]).publishLeak(leak, nullifierHash, entityIds[1], solidityProof)
+
+      await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: the proof is not valid")
+    })
+
+    it("Should publish a leak", async () => {
       const nullifierHash = Semaphore.genNullifierHash(entityIds[1], identity.getNullifier())
       const witness = Semaphore.genWitness(
         identity.getTrapdoor(),
