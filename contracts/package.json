@@ -1,0 +1,38 @@
+{
+  "name": "@semaphore/contracts",
+  "version": "2.0.0",
+  "description": "A privacy gadget for creating anonymous proof of membership on Ethereum.",
+  "license": "GPL-3.0",
+  "files": [
+    "**/*.sol"
+  ],
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "hardhat",
+    "smart-contracts",
+    "semaphore",
+    "identity",
+    "solidity",
+    "zero-knowledge",
+    "zk-snarks",
+    "zero-knowledge-proofs",
+    "circom",
+    "proof-of-membership"
+  ],
+  "homepage": "https://github.com/appliedzkp/semaphore.git#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appliedzkp/semaphore.git.git"
+  },
+  "bugs": {
+    "url": "https://github.com/appliedzkp/semaphore.git/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.4.2",
+    "@zk-kit/incremental-merkle-tree.sol": "^0.3.0"
+  }
+}

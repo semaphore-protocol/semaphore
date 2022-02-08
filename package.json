@@ -1,5 +1,5 @@
 {
-  "name": "@semaphore/contracts",
+  "name": "semaphore",
   "version": "2.0.0",
   "description": "A privacy gadget for creating anonymous proof of membership on Ethereum.",
   "license": "GPL-3.0",
@@ -11,15 +11,7 @@
   "bugs": {
     "url": "https://github.com/appliedzkp/semaphore.git/issues"
   },
-  "keywords": [
-    "ethereum",
-    "solidity",
-    "zero-knowledge",
-    "zk-snarks",
-    "zero-knowledge-proofs",
-    "circom",
-    "proof-of-membership"
-  ],
+  "private": true,
   "scripts": {
     "start": "hardhat node",
     "compile": "hardhat compile",
