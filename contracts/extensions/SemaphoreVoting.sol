@@ -71,10 +71,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
   /// @dev See {ISemaphoreVoting-publishDecryptionKey}.
   function endPoll(uint256 pollId, uint256 decryptionKey) public override onlyCoordinator(pollId) {
-    require(
-      polls[pollId].state == PollState.Ongoing,
-      "SemaphoreVoting: poll is not ongoing"
-    );
+    require(polls[pollId].state == PollState.Ongoing, "SemaphoreVoting: poll is not ongoing");
 
     polls[pollId].state = PollState.Ended;
 
