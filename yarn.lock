@@ -1300,10 +1300,10 @@
   resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
   integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
 
-"@zk-kit/identity@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@zk-kit/identity/-/identity-1.3.0.tgz#7260dd58ace1f62601fb83ed93b4e952b0723ec6"
-  integrity sha512-AetaH/7navDzrd9K1eWxDWUdlLz8AyXDL0xx8bBg6wBrwYJN5EIOy59YXCkFFUxYzVeUUC17y43Bl6atGkM8eQ==
+"@zk-kit/identity@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@zk-kit/identity/-/identity-1.3.1.tgz#e91af4d2ff30e803706564ddedbe211827280a4e"
+  integrity sha512-ZeKzjoBiBlB8iedvhiqcUFM7D6R/sgFMteYqc1+NA7tqR347bwjCOz4nH1lBJJsVpsdIWNQpVCnE/2r21EClBg==
   dependencies:
     "@ethersproject/random" "^5.5.1"
     bigint-conversion "^2.1.12"
@@ -1316,20 +1316,20 @@
   resolved "https://registry.yarnpkg.com/@zk-kit/incremental-merkle-tree.sol/-/incremental-merkle-tree.sol-0.3.0.tgz#0b9877b4aa30d00487eb01fcb9f832fdb562eae7"
   integrity sha512-amRcQL49FmFI1N4PeZIue0VoJFfju/RCSWM2pUoRDOdFYoYB4cafBQXU4yjnb5VtNhkg4NwDJ42KCIrUNTQofQ==
 
-"@zk-kit/incremental-merkle-tree@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@zk-kit/incremental-merkle-tree/-/incremental-merkle-tree-0.4.1.tgz#6e1645ae0abfd0747fb310e2518909523b90135a"
-  integrity sha512-PNNTnIN10a+5hZC2j0KcOi6Mx+Of7k+2nQZsMPeBH04ToMgA6qOjZjKJfYAUg2RX8hmfjeCrOLdh8QScpe3rTA==
+"@zk-kit/incremental-merkle-tree@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@zk-kit/incremental-merkle-tree/-/incremental-merkle-tree-0.4.2.tgz#a2ad2f9dd2bde8f33d0c30164798ef09d5ed2248"
+  integrity sha512-9wB7RzsuH+PErr3gqBIpy339+JRsTcwgFPnGx6XxkAKatDlxlGFcwJV/vFo0rnhDZhQ7GZviScO51pxusurZyQ==
 
-"@zk-kit/protocols@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@zk-kit/protocols/-/protocols-1.4.0.tgz#b17570a7180cdd0758d27b72d878894539df5a76"
-  integrity sha512-DYH0nFNk9MWq+pq9xODEOFTExrZp8SxDeS+vZIfwbVs3YeomXfEX9FNYm45aaQnEnwI1eBoOQhQa83VqWBKX8Q==
+"@zk-kit/protocols@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@zk-kit/protocols/-/protocols-1.4.2.tgz#b2a418c27768c903c7133bd4438a4ba03ecf4680"
+  integrity sha512-WRVfyA7A/Vh84DvUrs+zZmY9j0JPnUGy6T+H/Ejzvd4HX/wCWbhW6J6FEF0hngIkRONPZ/mLHS4EVaBIwL++iw==
   dependencies:
     "@ethersproject/bytes" "^5.5.0"
     "@ethersproject/solidity" "^5.5.0"
     "@ethersproject/strings" "^5.5.0"
-    "@zk-kit/incremental-merkle-tree" "^0.4.1"
+    "@zk-kit/incremental-merkle-tree" "^0.4.2"
     circomlibjs "0.0.8"
     ffjavascript "0.2.38"
     snarkjs "^0.4.12"
