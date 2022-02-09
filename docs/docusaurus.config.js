@@ -18,7 +18,8 @@ module.exports = {
           path: "docs",
           routeBasePath: "docs/",
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/appliedzkp/semaphore/edit/main/"
+          editUrl: "https://github.com/appliedzkp/semaphore/edit/main/",
+          includeCurrentVersion: false
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -40,16 +41,17 @@ module.exports = {
       },
       items: [
         {
-          label: "Docs",
-          to: "/docs/introduction",
+          type: "docsVersionDropdown",
           position: "left",
+          dropdownActiveClassDisabled: true,
+          docsPluginId: "default",
           className: "persistent"
         },
         {
-          label: "Spec",
-          to: "https://semaphore.appliedzkp.org/spec.pdf",
+          label: "Whitepaper",
+          to: "https://semaphore.appliedzkp.org/whitepaper-v1.pdf",
           position: "right",
-          className: "persistent"
+          className: "V1_active"
         },
         {
           label: "GitHub",

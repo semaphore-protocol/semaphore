@@ -139,57 +139,45 @@ const StyledGithubIcon = styled.div`
   }
 `
 
-function Header() {
-  const { isDarkTheme } = useColorMode()
-
-  return (
-    <DocsHeader>
-      <div
-        style={{
-          padding: "4rem 0  ",
-          textAlign: "center",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center"
-        }}
-      >
-        <img src={isDarkTheme ? "./img/logo-dark.svg" : "./img/logo.svg"} />
-
-        <h1 style={{ margin: "20px" }}> Semaphore</h1>
-
-        <p
-          style={{
-            maxWidth: "700px",
-            fontSize: "20px"
-          }}
-        >
-          A privacy gadget for creating anonymous proof of membership on Ethereum.
-        </p>
-
-        <ButtonGroup>
-          <Link style={{ textDecoration: "none" }} href="/docs/introduction">
-            <Button>Get Started</Button>
-          </Link>
-          <Link style={{ textDecoration: "none" }} href="/docs/usage">
-            <Button>Usage</Button>
-          </Link>
-          <Link style={{ textDecoration: "none" }} href="/docs/contributing">
-            <Button>Contribute</Button>
-          </Link>
-        </ButtonGroup>
-      </div>
-    </DocsHeader>
-  )
-}
-
 export default function Home() {
   return (
     <Layout title={`Semaphore Docs`} description="Technical Documentation For The Semaphore Protocol.">
       <Container>
-        <Header />
+        <DocsHeader>
+          <div
+            style={{
+              padding: "4rem 0  ",
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
+            }}
+          >
+            <h1 style={{ margin: "20px", fontSize: "36px" }}> Semaphore</h1>
 
+            <p
+              style={{
+                maxWidth: "700px",
+                fontSize: "20px"
+              }}
+            >
+              A privacy gadget for creating anonymous proof of membership on Ethereum.
+            </p>
+
+            <ButtonGroup>
+              <Link style={{ textDecoration: "none" }} href="/docs/introduction">
+                <Button>Get Started</Button>
+              </Link>
+              <Link style={{ textDecoration: "none" }} href="/docs/usage">
+                <Button>Usage</Button>
+              </Link>
+              <Link style={{ textDecoration: "none" }} href="/docs/contributing">
+                <Button>Contribute</Button>
+              </Link>
+            </ButtonGroup>
+          </div>
+        </DocsHeader>
         <hr />
-
         <TwoRow
           style={{
             gap: "56px",

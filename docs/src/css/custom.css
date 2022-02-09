@@ -93,7 +93,7 @@ h5 {
 }
 
 h1 {
-  font-size: 32px !important;
+  font-size: 32px;
 }
 h2 {
   font-size: 24px !important;
@@ -334,11 +334,32 @@ html[data-theme="dark"] .DocSearch-Hit a {
   display: inline-block;
 }
 
+.navbar__item.V2_active.V2 {
+  display: inline-block;
+}
+
+.navbar__item.V1_active.V1 {
+  display: inline-block;
+}
+
+.menu__link.V2_active,
+.V1_active {
+  display: none;
+}
+
 .menu__list-item--collapsed .menu__link {
   display: flex;
 }
 
 .menu__link.persistent {
+  display: flex;
+}
+
+.menu__link.V2_active.V2 {
+  display: flex;
+}
+
+.menu__link.V1_active.V1 {
   display: flex;
 }
 
