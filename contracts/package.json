@@ -1,5 +1,5 @@
 {
-  "name": "@semaphore/contracts",
+  "name": "@appliedzkp/semaphore-contracts",
   "version": "0.1.0",
   "description": "A privacy gadget for creating anonymous proof of membership on Ethereum.",
   "license": "GPL-3.0",
