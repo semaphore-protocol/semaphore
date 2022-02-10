@@ -60,8 +60,8 @@ async function main() {
 
   fs.writeFileSync(`${config.paths.contracts}/base/Verifier.sol`, verifierCode, "utf-8")
 
-  // const verificationKey = await zKey.exportVerificationKey(`${buildPath}/semaphore_final.zkey`, logger)
-  // fs.writeFileSync(`${buildPath}/verification_key.json`, JSON.stringify(verificationKey), "utf-8")
+  const verificationKey = await zKey.exportVerificationKey(`${buildPath}/semaphore_final.zkey`, logger)
+  fs.writeFileSync(`${buildPath}/verification_key.json`, JSON.stringify(verificationKey), "utf-8")
 
   fs.renameSync(`${buildPath}/semaphore_js/semaphore.wasm`, `${buildPath}/semaphore.wasm`)
   rimraf.sync(`${buildPath}/semaphore_js`)
