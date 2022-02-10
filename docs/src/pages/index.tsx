@@ -166,13 +166,13 @@ export default function Home() {
 
             <ButtonGroup>
               <Link style={{ textDecoration: "none" }} href="/docs/introduction">
-                <Button>Get Started</Button>
+                <Button>Introduction</Button>
               </Link>
-              <Link style={{ textDecoration: "none" }} href="/docs/usage">
-                <Button>Usage</Button>
+              <Link style={{ textDecoration: "none" }} href="/docs/quick-setup">
+                <Button>Quick setup</Button>
               </Link>
-              <Link style={{ textDecoration: "none" }} href="/docs/contributing">
-                <Button>Contribute</Button>
+              <Link style={{ textDecoration: "none" }} href="/docs/credits">
+                <Button>Credits</Button>
               </Link>
             </ButtonGroup>
           </div>

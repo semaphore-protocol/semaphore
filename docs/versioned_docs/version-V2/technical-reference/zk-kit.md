@@ -1,8 +1,8 @@
 ---
-sidebar_position: 6
+sidebar_position: 3
 ---
 
-# libsemaphore
+# ZK-kit libraries
 
 [`libsemaphore`](https://www.npmjs.com/package/libsemaphore) is a helper
 library for Semaphore written in Typescript. Any dApp written in Javascript or
