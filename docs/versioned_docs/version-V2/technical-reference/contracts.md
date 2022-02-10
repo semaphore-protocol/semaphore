@@ -67,9 +67,6 @@ To convert `identity` to a string and back, so that you can store it in a
 database or somewhere safe, use `serialiseIdentity()` and
 `unSerialiseIdentity()`.
 
-See the [Usage section on inserting
-identities](./usage#insert-identities) for more information.
-
 ## Broadcast signals
 
 **Contract ABI**:
@@ -100,6 +97,3 @@ broadcastSignal(
 Use `libsemaphore`'s `genWitness()`, `genProof()`, `genPublicSignals()` and
 finally `genBroadcastSignalParams()` to generate the parameters to the
 contract's `broadcastSignal()` function.
-
-See the [Usage section on broadcasting
-signals](./usage#broadcast-signals) for more information.
