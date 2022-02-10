@@ -1321,10 +1321,10 @@
   resolved "https://registry.yarnpkg.com/@zk-kit/incremental-merkle-tree/-/incremental-merkle-tree-0.4.2.tgz#a2ad2f9dd2bde8f33d0c30164798ef09d5ed2248"
   integrity sha512-9wB7RzsuH+PErr3gqBIpy339+JRsTcwgFPnGx6XxkAKatDlxlGFcwJV/vFo0rnhDZhQ7GZviScO51pxusurZyQ==
 
-"@zk-kit/protocols@^1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@zk-kit/protocols/-/protocols-1.4.2.tgz#b2a418c27768c903c7133bd4438a4ba03ecf4680"
-  integrity sha512-WRVfyA7A/Vh84DvUrs+zZmY9j0JPnUGy6T+H/Ejzvd4HX/wCWbhW6J6FEF0hngIkRONPZ/mLHS4EVaBIwL++iw==
+"@zk-kit/protocols@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@zk-kit/protocols/-/protocols-1.5.0.tgz#82f1608f3d1f6dd213d8f9cc92efbffa94877de4"
+  integrity sha512-LJsmS9E2HhYJKoZHa1TkjvWxojwoF7ep1SghHGRTM8nQmD4Wrk5EXZoORy5IIJt8kvYB8aUTU+2PwpzMdPYasg==
   dependencies:
     "@ethersproject/bytes" "^5.5.0"
     "@ethersproject/solidity" "^5.5.0"
@@ -1332,7 +1332,7 @@
     "@zk-kit/incremental-merkle-tree" "^0.4.2"
     circomlibjs "0.0.8"
     ffjavascript "0.2.38"
-    snarkjs "^0.4.12"
+    snarkjs "^0.4.13"
 
 JSONStream@^1.0.4:
   version "1.3.5"
@@ -9694,10 +9694,10 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-snarkjs@^0.4.12:
-  version "0.4.12"
-  resolved "https://registry.yarnpkg.com/snarkjs/-/snarkjs-0.4.12.tgz#0344cb6d107b92be3ec29fa321e83232058d9209"
-  integrity sha512-3WBzv9p0QlwtrM7Zgq3oW5L/4Q5bZEZpGN6IS522jUffKXF2temXzVvn7lukOIr/acaVKyj/DkYdt2JIas2B5A==
+snarkjs@^0.4.13:
+  version "0.4.13"
+  resolved "https://registry.yarnpkg.com/snarkjs/-/snarkjs-0.4.13.tgz#acf5baa70413fe3c2b1de2082eee59f2759472a7"
+  integrity sha512-+GlCPLveNrFZob1PejLzRYsvyMLpTArkS/ncqodNJfWwrcfg60HRngvMZBvTP2Toa5LD1hS61c3ajbNIcPj5EQ==
   dependencies:
     "@iden3/binfileutils" "0.0.10"
     blake2b-wasm "^2.4.0"
