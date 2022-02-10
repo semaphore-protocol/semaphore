@@ -1,8 +1,8 @@
 ---
-sidebar_position: 4
+sidebar_position: 2
 ---
 
-# Usage
+# Quick setup
 
 The Semaphore contract forms a base layer for other contracts to create
 applications that rely on anonymous signaling.

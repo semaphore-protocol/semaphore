@@ -4,6 +4,10 @@ title: What Is Semaphore?
 sidebar_position: 1
 ---
 
+:::caution
+Semaphore's V2 documentation is under development.
+:::
+
 ## Overview
 
 [Semaphore](https://github.com/appliedzkp/semaphore) is a zero-knowledge gadget
