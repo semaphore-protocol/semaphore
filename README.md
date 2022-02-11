@@ -57,13 +57,13 @@ The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.pn
 You can install our Semaphore packages with `npm`:
 
 ```bash
-npm i @zk-kit/identity @zk-kit/protocols @semaphore/contracts --save
+npm i @zk-kit/identity @zk-kit/protocols @appliedzkp/semaphore-contracts --save
 ```
 
 or `yarn`:
 
 ```bash
-yarn add @zk-kit/identity @zk-kit/protocols @semaphore/contracts
+yarn add @zk-kit/identity @zk-kit/protocols @appliedzkp/semaphore-contracts
 ```
 
 ## 📜 Usage
