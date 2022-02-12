@@ -4,141 +4,224 @@ sidebar_position: 2
 
 # Quick setup
 
-The Semaphore contract forms a base layer for other contracts to create
-applications that rely on anonymous signaling.
+The following setup will allow you to create a simple Hardhat project with Semaphore (contract and tests). If you need a more complete demo try [semaphore-boilerplate](https://github.com/cedoor/semaphore-boilerplate/). It can be a good starting point to create your DApp.
 
-First, you should ensure that the proving key, verification key, and circuit
-file, which are static, be easily available to your users. These may be hosted
-in a CDN or bundled with your application code.
+:::info
+Visit the [semaphore-quick-setup](https://github.com/cedoor/semaphore-quick-setup) repository to get a full view of the code used below.
+:::
 
-The Semaphore team has not performed a trusted setup yet, so trustworthy
-versions of these files are not available yet.
+## Create a Node.js project
 
-Untrusted versions of these files, however, may be obtained via the
-`circuits/scripts/download_snarks.sh` script.
+1. Download and install [Node.js/NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) and [Yarn](https://yarnpkg.com/getting-started/install).
+2. Create your project:
 
-Next, to have full flexibility over Semaphore's mechanisms, write a Client
-contract and set the owner of the Semaphore contract as the address of the
-Client contract. You may also write a Client contract which deploys a Semaphore
-contract in its constructor, or on the fly.
-
-With the Client contract as the owner of the Semaphore contract, the Client
-contract may call owner-only Semaphore functions such as
-`addExternalNullifier()`.
-
-## Add, deactivate, or reactivate external nullifiiers
-
-These functions add, deactivate, and reactivate an external nullifier respectively.
-As each identity can only signal once to an external nullifier, and as a signal
-can only be successfully broadcasted to an active external nullifier, these
-functions enable use cases where it is necessary to have multiple external
-nullifiers or to activate and/or deactivate them.
-
-Refer to the [high-level explanation of
-Semaphore](https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b)
-for more details.
-
-## Set broadcast permissioning
-
-Note that `Semaphore.broadcastSignal()` is permissioned by default, so if you
-wish for anyone to be able to broadcast a signal, the owner of the Semaphore
-contract (either a Client contract or externally owned account) must first
-invoke `setPermissioning(false)`.
-
-See [SemaphoreClient.sol](https://github.com/appliedzkp/semaphore/blob/master/contracts/sol/SemaphoreClient.sol) for an example.
-
-## Insert identities
-
-To generate an identity commitment, use the `libsemaphore` functions
-`genIdentity()` and `genIdentityCommitment()` Typescript (or Javascript)
-functions:
-
-```ts
-const identity: Identity = genIdentity()
-const identityCommitment = genIdentityCommitment(identity)
+```bash
+$ mkdir semaphore-example
+$ cd semaphore-example
+$ yarn init
 ```
 
-Be sure to store `identity` somewhere safe. The `serialiseIdentity()` function
-can help with this:
+## Install Hardhat and the Semaphore packages
 
-`const serialisedId: string = serialiseIdentity(identity: Identity)`
+1. Install [Hardhat](https://hardhat.org/getting-started/) and create a basic sample project:
 
-It converts an `Identity` into a JSON string which looks like this:
-
-```text
-["e82cc2b8654705e427df423c6300307a873a2e637028fab3163cf95b18bb172e","a02e517dfb3a4184adaa951d02bfe0fe092d1ee34438721d798db75b8db083","15c6540bf7bddb0616984fccda7e954a0fb5ea4679ac686509dc4bd7ba9c3b"]
+```bash
+$ yarn add hardhat --dev
+$ yarn hardhat # Create a basic sample project and confirm the other requests.
 ```
 
-To convert this string back into an `Identity`, use `unSerialiseIdentity()`.
+:::tip
+Feel free to create more complex sample projects if you are an advanced Hardhat user.
+:::
 
-`const id: Identity = unSerialiseIdentity(serialisedId)`
+2. Install the [Semaphore contracts](/technical-reference/contracts) and its [ZK-kit libraries](technical-reference/zk-kit):
 
-## Broadcast signals
-
-First obtain the leaves of the identity tree (in sequence, up to the user's
-identity commitment, or more).
-
-```ts
-const leaves = <list of leaves>
+```bash
+$ yarn add @appliedzkp/semaphore-contracts
+$ yarn add @zk-kit/identity @zk-kit/protocols --dev
 ```
 
-Next, load the circuit from disk (or from a remote source):
+## Create your contract
 
-```ts
-const circuitPath = path.join(__dirname, "/path/to/circuit.json")
-const cirDef = JSON.parse(fs.readFileSync(circuitPath).toString())
-const circuit = genCircuit(cirDef)
+Rename `Greeter.sol` to `Greeters.sol` and insert the following code:
+
+```solidity title="./semaphore-example/contracts/Greeters.sol"
+//SPDX-License-Identifier: Unlicense
+pragma solidity ^0.8.0;
+
+import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
+
+/// @title Greeters contract.
+/// @dev The following code is just a example to show how Semaphore con be used.
+contract Greeters is SemaphoreCore {
+  // A new greeting is published every time a user's proof is validated.
+  event NewGreeting(string greeting);
+
+  // Greeters are identified by a Merkle root.
+  // The offchain Merkle tree contains the greeters' identity commitments.
+  uint256 public greeters;
+
+  constructor(uint256 _greeters) {
+    greeters = _greeters;
+  }
+
+  // Only users who create valid proofs can greet.
+  // The external nullifier is in this example the root of the Merkle tree.
+  function greet(
+    string calldata _greeting,
+    uint256 _nullifierHash,
+    uint256[8] calldata _proof
+  ) external {
+    require(_isValidProof(_greeting, greeters, _nullifierHash, greeters, _proof), "Greeters: the proof is not valid");
+
+    // Prevent double-greeting (nullifierHash = hash(root + identityNullifier)).
+    // Every user can greet once.
+    _saveNullifierHash(_nullifierHash);
+
+    emit NewGreeting(_greeting);
+  }
+}
+
 ```
 
-Next, use `libsemaphore`'s `genWitness()` helper function as such:
+## Create some identity commitments
 
-```
-const result = await genWitness(
-    signal,
-    circuit,
-    identity,
-    leaves,
-    num_levels,
-    external_nullifier,
-)
-```
+Identity commitments are used as the leaves of the Merkle trees used in the protocol and represent the identity of the users. Create a `static` folder and add the following file:
 
-- `signal`: a string which is the signal to broadcast.
-- `circuit`: the output of `genCircuit()` (see above).
-- `identity`: the user's identity as an `Identity` object.
-- `leaves` the list of leaves in the tree (see above).
-- `num_levels`: the depth of the Merkle tree.
-- `external_nullifier`: the external nullifier at which to broadcast.
-
-Load the proving key from disk (or from a remote source):
-
-```ts
-const provingKeyPath = path.join(__dirname, "/path/to/proving_key.bin")
-const provingKey: SnarkProvingKey = fs.readFileSync(provingKeyPath)
+```json title="./static/identityCommitments.json"
+[
+  "9426253249246138013650573474062059446203468399013007463704855436559640562175",
+  "6200634377081441056179822649025268043304989981899916286941956069781421654881",
+  "19706772421195815860043593475869058320994241404138740034486179990871964981523"
+]
 ```
 
-Generate the proof (this takes about 30-45 seconds on a modern laptop):
+:::info
+The previous identity commitments have been generated using `@zk-kit/identity` (with a message strategy) and Metamask for signing the messages with the first 3 Ethereum accounts of the [Hardhat dev wallet](https://hardhat.org/hardhat-network/reference/#accounts).
+:::
 
-```ts
-const proof = await genProof(result.witness, provingKey)
+## Create a [Hardhat task](https://hardhat.org/guides/create-task.html#creating-a-task) to deploy your contract
+
+1. Install `@zk-kit/incremental-merkle-tree` and `circomlibjs@0.0.8` to create offchain Merkle trees.
+
+```bash
+$ yarn add @zk-kit/incremental-merkle-tree circomlibjs@0.0.8 --dev
 ```
 
-Generate the `broadcastSignal()` parameters:
+2. Create a `tasks` folder and add the following file:
 
-```ts
-const publicSignals = genPublicSignals(result.witness, circuit)
-const params = genBroadcastSignalParams(result, proof, publicSignals)
+```javascript title="./tasks/deploy.js"
+const { IncrementalMerkleTree } = require("@zk-kit/incremental-merkle-tree")
+const { poseidon } = require("circomlibjs")
+const identityCommitments = require("../static/identityCommitments.json")
+const { task, types } = require("hardhat/config")
+
+task("deploy", "Deploy a Greeters contract")
+  .addOptionalParam("logs", "Print the logs", true, types.boolean)
+  .setAction(async ({ logs }, { ethers }) => {
+    const ContractFactory = await ethers.getContractFactory("Greeters")
+    const tree = new IncrementalMerkleTree(poseidon, 20, BigInt(0), 5)
+
+    for (const identityCommitment of identityCommitments) {
+      tree.insert(identityCommitment) // Insert the Merkle tree leaves.
+    }
+
+    const contract = await ContractFactory.deploy(tree.root)
+
+    await contract.deployed()
+
+    logs && console.log(`Greeters contract has been deployed to: ${contract.address}`)
+
+    return contract
+  })
 ```
 
-Finally, invoke `broadcastSignal()` with the parameters:
+3. Import your new Hardhat task in the `hardhat.config.js` file:
 
-```ts
-const tx = await semaphoreClientContract.broadcastSignal(
-  ethers.utils.toUtf8Bytes(signal),
-  params.proof,
-  params.root,
-  params.nullifiersHash,
-  external_nullifier,
-  { gasLimit: 500000 }
-)
+```javascript title="./hardhat.config.js"
+require("@nomiclabs/hardhat-waffle")
+require("./tasks/deploy")
+
+module.exports = {
+    solidity: "0.8.4"
+}
+```
+
+## Create your tests
+
+1. Creating proofs requires some static files, in the future these files will be hosted on a server and made public. For now you can use the ones used in [our repository](https://github.com/appliedzkp/semaphore/tree/main/build/snark) for testing. Copy these files in the `static` folder.
+
+
+2. Update the Hardhat test file:
+
+```javascript title="./test/sample-test.js"
+const { Strategy, ZkIdentity } = require("@zk-kit/identity")
+const { generateMerkleProof, Semaphore } = require("@zk-kit/protocols")
+const identityCommitments = require("../static/identityCommitments.json")
+const { expect } = require("chai")
+const { run, ethers } = require("hardhat")
+
+describe("Greeters", function () {
+    let contract
+    let signers
+
+    before(async () => {
+        contract = await run("deploy", { logs: false })
+
+        signers = await ethers.getSigners()
+    })
+
+    describe("# greet", () => {
+        const wasmFilePath = "./static/semaphore.wasm"
+        const finalZkeyPath = "./static/semaphore_final.zkey"
+
+        it("Should greet", async () => {
+            const message = await signers[0].signMessage("Sign this message to create your identity!")
+
+            const identity = new ZkIdentity(Strategy.MESSAGE, message)
+            const identityCommitment = identity.genIdentityCommitment()
+
+            const greeting = "Hello world"
+
+            const merkleProof = generateMerkleProof(
+                20,
+                BigInt(0),
+                5,
+                identityCommitments.map(BigInt),
+                identityCommitment
+            )
+            const witness = Semaphore.genWitness(
+                identity.getTrapdoor(),
+                identity.getNullifier(),
+                merkleProof,
+                merkleProof.root,
+                greeting
+            )
+
+            const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+            const solidityProof = Semaphore.packToSolidityProof(fullProof)
+
+            const nullifierHash = Semaphore.genNullifierHash(merkleProof.root, identity.getNullifier())
+
+            const transaction = contract.greet(greeting, nullifierHash, solidityProof)
+
+            await expect(transaction).to.emit(contract, "NewGreeting").withArgs(greeting)
+        })
+    })
+})
+```
+
+3. Test your contract:
+
+```bash
+$ yarn hardhat test
+```
+
+## Deploy your contract in a local network
+
+You can also deploy your contract in a local Hardhat network and use it in your DApp:
+
+```bash
+$ yarn hardhat node
+$ yarn hardhat deploy --network localhost
 ```
