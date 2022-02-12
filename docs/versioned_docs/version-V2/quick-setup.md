@@ -34,7 +34,7 @@ $ yarn hardhat # Create a basic sample project and confirm the other requests.
 Feel free to create more complex sample projects if you are an advanced Hardhat user.
 :::
 
-2. Install the [Semaphore contracts](/technical-reference/contracts) and its [ZK-kit libraries](technical-reference/zk-kit):
+2. Install the [Semaphore contracts](technical-reference/contracts) and its [ZK-kit libraries](technical-reference/zk-kit):
 
 ```bash
 $ yarn add @appliedzkp/semaphore-contracts
