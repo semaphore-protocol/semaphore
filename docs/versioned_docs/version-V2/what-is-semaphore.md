@@ -39,7 +39,7 @@ In sum, Semaphore provides the ability to:
 
 ## About the code
 
-The core of the protocol is in the [circuit logic](https://github.com/appliedzkp/semaphore/tree/main/circuits/scheme.png), however
+The core of the protocol is in the [circuit logic](https://github.com/appliedzkp/semaphore/tree/main/circuits/scheme.png). However
 Semaphore also provides [Solidity contracts](https://github.com/appliedzkp/semaphore/tree/main/contracts)
 and [JavaScript libraries](https://github.com/appliedzkp/zk-kit) (i.e. `@zk-kit/identity` and `@zk-kit/protocols`) to make
 the steps for offchain proof creation and onchain verification simpler.
