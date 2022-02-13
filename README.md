@@ -50,33 +50,6 @@
 | Semaphore is a zero-knowledge gadget which allows Ethereum users to prove their membership of a set without revealing their original identity. At the same time, it allows users to signal their endorsement of an arbitrary string. It is designed to be a simple and generic privacy layer for Ethereum DApps. Use cases include private voting, whistleblowing, mixers, and anonymous authentication. |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.png), however Semaphore provides [Solidity contracts](/contracts) and [JavaScript libraries](https://github.com/appliedzkp/zk-kit) to make the steps for offchain proof creation and onchain verification simple.
+The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/contracts) and [JavaScript libraries](https://github.com/appliedzkp/zk-kit) (i.e. `@zk-kit/identity` and `@zk-kit/protocols`) to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit https://semaphore.appliedzkp.org.
 
-## 🛠 Install
-
-You can install our Semaphore packages with `npm`:
-
-```bash
-npm i @zk-kit/identity @zk-kit/protocols @appliedzkp/semaphore-contracts --save
-```
-
-or `yarn`:
-
-```bash
-yarn add @zk-kit/identity @zk-kit/protocols @appliedzkp/semaphore-contracts
-```
-
-## 📜 Usage
-
-### Contracts
-
-When using Semaphore contracts keep in mind that there are two types of contracts:
-
-* **Base contracts**: they allow you to use the main fatures of the protocol (i.e. verify a proof or manage Merkle trees/groups).
-* **Extension contracts**: they contain application logic and could be used for specific use-cases (e.g. anonymous voting).
-
-Our current available extension contracts can be a good example of how base contracts can be used.
-
-### ZK-kit libraries
-
-When using Semaphore each user will need to create their own identity, which will then be added to a group. [`@zk-kit/identity`](https://github.com/appliedzkp/zk-kit/tree/main/packages/identity) allows users to create and manage their identities, while [`@zk-kit/protocols`](https://github.com/appliedzkp/zk-kit/tree/main/packages/protocols) allows users to create Semaphore proofs to prove their group membership and signal their endorsement of an arbitrary string anonymously.
+⚠️ Semaphore V2 has not yet been audited. Please do not use it in production.
