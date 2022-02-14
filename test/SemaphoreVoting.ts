@@ -106,7 +106,7 @@ describe("SemaphoreVoting", () => {
 
     const identity = new ZkIdentity(Strategy.MESSAGE, "test")
     const identityCommitment = identity.genIdentityCommitment()
-    const merkleProof = createMerkleProof([identityCommitment, BigInt(1)], 0)
+    const merkleProof = createMerkleProof([identityCommitment, BigInt(1)], identityCommitment)
     const vote = "1"
 
     before(async () => {

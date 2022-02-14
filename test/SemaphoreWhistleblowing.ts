@@ -69,7 +69,7 @@ describe("SemaphoreWhistleblowing", () => {
     it("Should not remove a whistleblower if the caller is not the editor", async () => {
       const identity = new ZkIdentity()
       const identityCommitment = identity.genIdentityCommitment()
-      const { siblings, pathIndices } = createMerkleProof([identityCommitment], 0)
+      const { siblings, pathIndices } = createMerkleProof([identityCommitment], identityCommitment)
 
       const transaction = contract.removeWhistleblower(entityIds[0], identityCommitment, siblings, pathIndices)
 
@@ -79,7 +79,7 @@ describe("SemaphoreWhistleblowing", () => {
     it("Should romove a whistleblower from an existing entity", async () => {
       const identity = new ZkIdentity(Strategy.MESSAGE, "test")
       const identityCommitment = identity.genIdentityCommitment()
-      const { siblings, pathIndices } = createMerkleProof([identityCommitment], 0)
+      const { siblings, pathIndices } = createMerkleProof([identityCommitment], identityCommitment)
 
       const transaction = contract
         .connect(accounts[1])
@@ -101,7 +101,7 @@ describe("SemaphoreWhistleblowing", () => {
 
     const identity = new ZkIdentity(Strategy.MESSAGE, "test")
     const identityCommitment = identity.genIdentityCommitment()
-    const merkleProof = createMerkleProof([identityCommitment, BigInt(1)], 0)
+    const merkleProof = createMerkleProof([identityCommitment, BigInt(1)], identityCommitment)
     const leak = "leak"
 
     before(async () => {
