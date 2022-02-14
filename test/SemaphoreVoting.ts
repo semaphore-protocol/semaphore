@@ -4,7 +4,7 @@ import { expect } from "chai"
 import { Signer } from "ethers"
 import { ethers, run } from "hardhat"
 import { SemaphoreVoting } from "../build/typechain"
-import { createMerkleProof } from "./utils"
+import { createMerkleProof, genWitness } from "./utils"
 
 describe("SemaphoreVoting", () => {
   let contract: SemaphoreVoting
@@ -89,7 +89,7 @@ describe("SemaphoreVoting", () => {
         .withArgs(
           pollIds[1],
           identityCommitment,
-          "19485212735701584721896513601896171581188179675618364853461101336195752294134"
+          "21535114724992190095497080437889044838904308549109546660414808669273607403748"
         )
     })
 
@@ -117,13 +117,7 @@ describe("SemaphoreVoting", () => {
 
     it("Should not cast a vote if the caller is not the coordinator", async () => {
       const nullifierHash = Semaphore.genNullifierHash(pollIds[0], identity.getNullifier())
-      const witness = Semaphore.genWitness(
-        identity.getTrapdoor(),
-        identity.getNullifier(),
-        merkleProof,
-        pollIds[0],
-        vote
-      )
+      const witness = genWitness(identity.getTrapdoor(), identity.getNullifier(), merkleProof, pollIds[0], vote)
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
       const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
@@ -134,13 +128,7 @@ describe("SemaphoreVoting", () => {
 
     it("Should not cast a vote if the poll is not ongoing", async () => {
       const nullifierHash = Semaphore.genNullifierHash(pollIds[2], identity.getNullifier())
-      const witness = Semaphore.genWitness(
-        identity.getTrapdoor(),
-        identity.getNullifier(),
-        merkleProof,
-        pollIds[2],
-        vote
-      )
+      const witness = genWitness(identity.getTrapdoor(), identity.getNullifier(), merkleProof, pollIds[2], vote)
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
       const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
@@ -151,13 +139,7 @@ describe("SemaphoreVoting", () => {
 
     it("Should not cast a vote if the proof is not valid", async () => {
       const nullifierHash = Semaphore.genNullifierHash(pollIds[1], identity.getNullifier())
-      const witness = Semaphore.genWitness(
-        identity.getTrapdoor(),
-        identity.getNullifier(),
-        merkleProof,
-        pollIds[2],
-        vote
-      )
+      const witness = genWitness(identity.getTrapdoor(), identity.getNullifier(), merkleProof, pollIds[2], vote)
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
       const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
@@ -168,13 +150,7 @@ describe("SemaphoreVoting", () => {
 
     it("Should cast a vote", async () => {
       const nullifierHash = Semaphore.genNullifierHash(pollIds[1], identity.getNullifier())
-      const witness = Semaphore.genWitness(
-        identity.getTrapdoor(),
-        identity.getNullifier(),
-        merkleProof,
-        pollIds[1],
-        vote
-      )
+      const witness = genWitness(identity.getTrapdoor(), identity.getNullifier(), merkleProof, pollIds[1], vote)
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
       const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
@@ -185,13 +161,7 @@ describe("SemaphoreVoting", () => {
 
     it("Should not cast a vote twice", async () => {
       const nullifierHash = Semaphore.genNullifierHash(pollIds[1], identity.getNullifier())
-      const witness = Semaphore.genWitness(
-        identity.getTrapdoor(),
-        identity.getNullifier(),
-        merkleProof,
-        pollIds[1],
-        vote
-      )
+      const witness = genWitness(identity.getTrapdoor(), identity.getNullifier(), merkleProof, pollIds[1], vote)
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
       const solidityProof = Semaphore.packToSolidityProof(fullProof)
 

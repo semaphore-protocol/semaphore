@@ -38,7 +38,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
   function removeWhistleblower(
     uint256 entityId,
     uint256 identityCommitment,
-    uint256[4][] calldata proofSiblings,
+    uint256[] calldata proofSiblings,
     uint8[] calldata proofPathIndices
   ) public override onlyEditor(entityId) {
     _removeMember(entityId, identityCommitment, proofSiblings, proofPathIndices);
