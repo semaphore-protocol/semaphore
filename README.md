@@ -48,8 +48,8 @@
 </div>
 
 | Semaphore is a zero-knowledge gadget which allows Ethereum users to prove their membership of a set without revealing their original identity. At the same time, it allows users to signal their endorsement of an arbitrary string. It is designed to be a simple and generic privacy layer for Ethereum DApps. Use cases include private voting, whistleblowing, mixers, and anonymous authentication. |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/contracts) and [JavaScript libraries](https://github.com/appliedzkp/zk-kit) (i.e. `@zk-kit/identity` and `@zk-kit/protocols`) to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit https://semaphore.appliedzkp.org.
 
-⚠️ Semaphore V2 has not yet been audited. Please do not use it in production.
+⚠️ Semaphore V2 has not yet been audited. Please do not use it in production. You can find Semaphore V1 on [`version/1.0.0`](https://github.com/appliedzkp/semaphore/tree/version/1.0.0).
