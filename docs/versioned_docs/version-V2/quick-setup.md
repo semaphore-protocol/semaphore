@@ -180,7 +180,7 @@ describe("Greeters", function () {
       const identity = new ZkIdentity(Strategy.MESSAGE, message)
       const greeting = "Hello world"
 
-      const merkleProof = generateMerkleProof(20, BigInt(0), 5, identityCommitments.map(BigInt), 0)
+      const merkleProof = generateMerkleProof(20, BigInt(0), 5, identityCommitments, 0)
       const witness = Semaphore.genWitness(
         identity.getTrapdoor(),
         identity.getNullifier(),
