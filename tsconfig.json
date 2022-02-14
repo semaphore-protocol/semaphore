@@ -1,22 +1,15 @@
 {
-    "compilerOptions": {
-        "experimentalDecorators": true,
-        "alwaysStrict": true,
-        "allowJs": true,
-        "noImplicitAny": false,
-        "forceConsistentCasingInFileNames": true,
-        "noUnusedLocals": false,
-        "noUnusedParameters": true,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "sourceMap": true,
-        "strict": true,
-        "outDir": "./build"
-    },
-    "exclude": [
-        "node_modules/**"
-    ],
-    "include": [
-        "./ts"
-    ]
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "noImplicitAny": true,
+    "resolveJsonModule": true,
+    "target": "ES2018",
+    "module": "CommonJS",
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "typeRoots": ["node_modules/@types", "types"]
+  },
+  "include": ["scripts/**/*", "tasks/**/*", "test/**/*", "build/typechain/**/*", "types/**/*"],
+  "files": ["hardhat.config.ts"]
 }
