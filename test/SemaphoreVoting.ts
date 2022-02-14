@@ -106,7 +106,7 @@ describe("SemaphoreVoting", () => {
 
     const identity = new ZkIdentity(Strategy.MESSAGE, "test")
     const identityCommitment = identity.genIdentityCommitment()
-    const merkleProof = createMerkleProof([identityCommitment, BigInt(1)], identityCommitment)
+    const merkleProof = createMerkleProof([identityCommitment, BigInt(1)], 0)
     const vote = "1"
 
     before(async () => {
@@ -125,7 +125,7 @@ describe("SemaphoreVoting", () => {
         vote
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = await Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
       const transaction = contract.castVote(vote, nullifierHash, pollIds[0], solidityProof)
 
@@ -142,7 +142,7 @@ describe("SemaphoreVoting", () => {
         vote
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = await Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
       const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[2], solidityProof)
 
@@ -159,7 +159,7 @@ describe("SemaphoreVoting", () => {
         vote
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = await Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
       const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[1], solidityProof)
 
@@ -176,7 +176,7 @@ describe("SemaphoreVoting", () => {
         vote
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = await Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
       const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[1], solidityProof)
 
@@ -193,7 +193,7 @@ describe("SemaphoreVoting", () => {
         vote
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = await Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
       const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[1], solidityProof)
 
