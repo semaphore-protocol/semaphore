@@ -120,7 +120,7 @@ task("deploy", "Deploy a Greeters contract")
   .addOptionalParam("logs", "Print the logs", true, types.boolean)
   .setAction(async ({ logs }, { ethers }) => {
     const ContractFactory = await ethers.getContractFactory("Greeters")
-    const tree = new IncrementalMerkleTree(poseidon, 20, BigInt(0), 5)
+    const tree = new IncrementalMerkleTree(poseidon, 20, BigInt(0), 2)
 
     for (const identityCommitment of identityCommitments) {
       tree.insert(identityCommitment) // Insert the Merkle tree leaves.
@@ -181,7 +181,7 @@ describe("Greeters", function () {
       const identityCommitment = identity.genIdentityCommitment()
       const greeting = "Hello world"
 
-      const merkleProof = generateMerkleProof(20, BigInt(0), 5, identityCommitments, identityCommitment)
+      const merkleProof = generateMerkleProof(20, BigInt(0), 2, identityCommitments, identityCommitment)
       const witness = Semaphore.genWitness(
         identity.getTrapdoor(),
         identity.getNullifier(),
