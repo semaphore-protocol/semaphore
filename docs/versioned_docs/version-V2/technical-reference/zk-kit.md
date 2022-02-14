@@ -14,12 +14,18 @@ If you need to see the interface of these libraries go to http://zkkit.appliedzk
 
 ## @zk-kit/identity
 
-The Semaphore identity consists primarily of two values: `trapdoor` and `nullifier`. The Poseidon hash of these two values is the `secret`, whose hash in turn is the `identity commitment`, which is used as the leaf of the Merkle tree later.
+The Semaphore identity consists primarily of two values: `trapdoor` and `nullifier`. The Poseidon hash of these two values is the `secret`, whose hash in turn is the `identity commitment`, which is used as leaf of the Merkle tree later.
 
 This library therefore contains a `ZKIdentity` class that can generate these values with 3 different [strategies](http://zkkit.appliedzkp.org/identity/enums/Strategy.html):
 
 - `Strategy.RANDOM`: this is the default option and it generates the values randomly,
-- `Strategy.MESSAGE`: it allows values to be generated deterministically from a message using sha256,
+- `Strategy.MESSAGE`: it allows values to be generated deterministically from a message using SHA-256,
 - `Strategy.SERIALIZE`: it allows you to retrieve values from a previously serialized identity.
 
 ## @zk-kit/protocols
+
+The Semaphore proof contains public and private parameters. This library contains some utility functions to simplify the generation of these parameters. It allows, in particular, to generate a Merkle proof, the nullifier hash, the witness and a Solidity-compatible zero-knowledge proof.
+
+Semaphore protocol functions are located in the `Semaphore` class as static methods.
+
+If you need to use a library to manage offchain Merkle trees you can also use [`@zk-kit/incremental-merkle-tree`](https://github.com/appliedzkp/zk-kit/tree/main/packages/incremental-merkle-tree).
