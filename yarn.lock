@@ -1321,10 +1321,10 @@
   resolved "https://registry.yarnpkg.com/@zk-kit/incremental-merkle-tree/-/incremental-merkle-tree-0.4.2.tgz#a2ad2f9dd2bde8f33d0c30164798ef09d5ed2248"
   integrity sha512-9wB7RzsuH+PErr3gqBIpy339+JRsTcwgFPnGx6XxkAKatDlxlGFcwJV/vFo0rnhDZhQ7GZviScO51pxusurZyQ==
 
-"@zk-kit/protocols@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@zk-kit/protocols/-/protocols-1.6.0.tgz#86fc5e6128895f89c4ecffbb4bb2e84aee6e7f82"
-  integrity sha512-DCWTnrmjvYPYzeM/6ve+RXeRP+CoRnMVwKkAQuNXgsXgUvuX3jIQdyGc2F2Qget2nWSFQmrjhljldeV4gbrtNA==
+"@zk-kit/protocols@^1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@zk-kit/protocols/-/protocols-1.7.1.tgz#a6a5c2fb40a4ccff84eeec4e470bad03a98f8416"
+  integrity sha512-no3p9LdXn0CMGYbDSpup9LhYxrrufD8NAtHJ1hGpSwGE0THtQJXZSnVyPIc+fJ/lDrqHxzg1dtD486I5zdD30A==
   dependencies:
     "@ethersproject/bytes" "^5.5.0"
     "@ethersproject/solidity" "^5.5.0"
