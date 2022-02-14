@@ -1,7 +1,0 @@
----
-env: 'local-dev'
-
-chain:
-  url: "http://localhost:8545"
-  chainId: 1234
-  mnemonic: "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat"
