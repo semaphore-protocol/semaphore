@@ -3,7 +3,7 @@ pragma solidity ^0.8.4;
 
 import {SNARK_SCALAR_FIELD, TREE_ZERO_VALUE} from "./SemaphoreConstants.sol";
 import "../interfaces/ISemaphoreGroups.sol";
-import "@zk-kit/incremental-merkle-tree.sol/contracts/IncrementalQuinTree.sol";
+import "@zk-kit/incremental-merkle-tree.sol/contracts/IncrementalBinaryTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 
 /// @title Semaphore groups contract.
@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/utils/Context.sol";
 /// You can use getters to obtain informations about groups, whereas the `rootHistory`
 /// mapping can be used to check if a Semaphore proof root exists onchain.
 abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
-  using IncrementalQuinTree for IncrementalTreeData;
+  using IncrementalBinaryTree for IncrementalTreeData;
 
   /// @dev Gets a group id and returns the group/tree data.
   mapping(uint256 => IncrementalTreeData) internal groups;
@@ -54,7 +54,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   function _removeMember(
     uint256 groupId,
     uint256 identityCommitment,
-    uint256[4][] calldata proofSiblings,
+    uint256[] calldata proofSiblings,
     uint8[] calldata proofPathIndices
   ) internal virtual {
     require(getDepth(groupId) != 0, "SemaphoreGroups: group does not exist");

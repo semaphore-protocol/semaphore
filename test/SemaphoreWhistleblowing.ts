@@ -4,7 +4,7 @@ import { expect } from "chai"
 import { Signer } from "ethers"
 import { ethers, run } from "hardhat"
 import { SemaphoreWhistleblowing } from "../build/typechain"
-import { createMerkleProof } from "./utils"
+import { createMerkleProof, genWitness } from "./utils"
 
 describe("SemaphoreWhistleblowing", () => {
   let contract: SemaphoreWhistleblowing
@@ -112,13 +112,7 @@ describe("SemaphoreWhistleblowing", () => {
 
     it("Should not publish a leak if the caller is not the editor", async () => {
       const nullifierHash = Semaphore.genNullifierHash(entityIds[0], identity.getNullifier())
-      const witness = Semaphore.genWitness(
-        identity.getTrapdoor(),
-        identity.getNullifier(),
-        merkleProof,
-        entityIds[0],
-        leak
-      )
+      const witness = genWitness(identity.getTrapdoor(), identity.getNullifier(), merkleProof, entityIds[0], leak)
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
       const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
@@ -129,13 +123,7 @@ describe("SemaphoreWhistleblowing", () => {
 
     it("Should not publish a leak if the proof is not valid", async () => {
       const nullifierHash = Semaphore.genNullifierHash(entityIds[1], identity.getNullifier())
-      const witness = Semaphore.genWitness(
-        identity.getTrapdoor(),
-        identity.getNullifier(),
-        merkleProof,
-        entityIds[0],
-        leak
-      )
+      const witness = genWitness(identity.getTrapdoor(), identity.getNullifier(), merkleProof, entityIds[0], leak)
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
       const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
@@ -146,13 +134,7 @@ describe("SemaphoreWhistleblowing", () => {
 
     it("Should publish a leak", async () => {
       const nullifierHash = Semaphore.genNullifierHash(entityIds[1], identity.getNullifier())
-      const witness = Semaphore.genWitness(
-        identity.getTrapdoor(),
-        identity.getNullifier(),
-        merkleProof,
-        entityIds[1],
-        leak
-      )
+      const witness = genWitness(identity.getTrapdoor(), identity.getNullifier(), merkleProof, entityIds[1], leak)
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
       const solidityProof = Semaphore.packToSolidityProof(fullProof)
 

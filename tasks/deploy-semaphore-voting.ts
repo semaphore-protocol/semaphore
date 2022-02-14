@@ -5,32 +5,32 @@ import { task, types } from "hardhat/config"
 task("deploy:semaphore-voting", "Deploy a SemaphoreVoting contract")
   .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
   .setAction(async ({ logs }, { ethers }): Promise<Contract> => {
-    const poseidonT6ABI = poseidonContract.generateABI(5)
-    const poseidonT6Bytecode = poseidonContract.createCode(5)
+    const poseidonABI = poseidonContract.generateABI(2)
+    const poseidonBytecode = poseidonContract.createCode(2)
 
     const [signer] = await ethers.getSigners()
 
-    const PoseidonLibT6Factory = new ethers.ContractFactory(poseidonT6ABI, poseidonT6Bytecode, signer)
-    const poseidonT6Lib = await PoseidonLibT6Factory.deploy()
+    const PoseidonLibFactory = new ethers.ContractFactory(poseidonABI, poseidonBytecode, signer)
+    const poseidonLib = await PoseidonLibFactory.deploy()
 
-    await poseidonT6Lib.deployed()
+    await poseidonLib.deployed()
 
-    logs && console.log(`PoseidonT6 library has been deployed to: ${poseidonT6Lib.address}`)
+    logs && console.log(`Poseidon library has been deployed to: ${poseidonLib.address}`)
 
-    const IncrementalQuinTreeLibFactory = await ethers.getContractFactory("IncrementalQuinTree", {
+    const IncrementalBinaryTreeLibFactory = await ethers.getContractFactory("IncrementalBinaryTree", {
       libraries: {
-        PoseidonT6: poseidonT6Lib.address
+        PoseidonT3: poseidonLib.address
       }
     })
-    const incrementalQuinTreeLib = await IncrementalQuinTreeLibFactory.deploy()
+    const incrementalBinaryTreeLib = await IncrementalBinaryTreeLibFactory.deploy()
 
-    await incrementalQuinTreeLib.deployed()
+    await incrementalBinaryTreeLib.deployed()
 
-    logs && console.log(`IncrementalQuinTree library has been deployed to: ${incrementalQuinTreeLib.address}`)
+    logs && console.log(`IncrementalBinaryTree library has been deployed to: ${incrementalBinaryTreeLib.address}`)
 
     const ContractFactory = await ethers.getContractFactory("SemaphoreVoting", {
       libraries: {
-        IncrementalQuinTree: incrementalQuinTreeLib.address
+        IncrementalBinaryTree: incrementalBinaryTreeLib.address
       }
     })
 
