@@ -5,27 +5,5 @@ export const SnarkScalarField = BigInt("2188824287183927522224640574525727508854
 export const TreeZeroNode = BigInt(ethers.utils.solidityKeccak256(["string"], ["Semaphore"])) % SnarkScalarField
 
 export function createMerkleProof(leaves: bigint[], leaf: bigint) {
-  const merkleProof = generateMerkleProof(20, TreeZeroNode, 2, leaves, leaf)
-
-  merkleProof.siblings = merkleProof.siblings.map((s) => s[0])
-
-  return merkleProof
-}
-
-export function genWitness(
-  identityTrapdoor: bigint,
-  identityNullifier: bigint,
-  merkleProof: MerkleProof,
-  externalNullifier: bigint,
-  signal: string,
-  shouldHash = true
-): any {
-  return {
-    identityNullifier: identityNullifier,
-    identityTrapdoor: identityTrapdoor,
-    treePathIndices: merkleProof.pathIndices,
-    treeSiblings: merkleProof.siblings,
-    externalNullifier: externalNullifier,
-    signalHash: shouldHash ? genSignalHash(signal) : signal
-  }
+  return generateMerkleProof(20, TreeZeroNode, 2, leaves, leaf)
 }
