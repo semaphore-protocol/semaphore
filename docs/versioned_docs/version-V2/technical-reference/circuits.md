@@ -16,10 +16,10 @@ sidebar_position: 1
 
 **Private inputs:**
 
-- `identity_nullifier`: a random 32-byte value which the user should save,
-- `identity_trapdoor`: a random 32-byte value which the user should save,
-- `identity_path_elements`: the values along the Merkle path to the user's identity commitment,
-- `identity_path_index[n_levels]`: the direction (left/right) per tree level corresponding to the Merkle path to the user's identity commitment.
+- `identityNullifier`: a random 32-byte value which the user should save,
+- `identityTrapdoor`: a random 32-byte value which the user should save,
+- `treeSiblings[nLevels]`: the values along the Merkle path to the user's identity commitment,
+- `treePathIndices[nLevels]`: the direction (0/1) per tree level corresponding to the Merkle path to the user's identity commitment.
 
 **Public outputs:**
 
@@ -27,7 +27,7 @@ sidebar_position: 1
 
 **Procedure:**
 
-The circuit hashes the public key, identity nullifier, and identity trapdoor to
+The circuit hashes the hash of the identity nullifier and the identity trapdoor to
 generate an **identity commitment**. It then verifies the Merkle proof against
 the Merkle root and the identity commitment.
 
@@ -35,33 +35,28 @@ the Merkle root and the identity commitment.
 
 **Private inputs:**
 
-- `identity_nullifier`: a random 32-byte value which the user should save,
-- `identity_trapdoor`: a random 32-byte value which the user should save,
+- `identityNullifier`: a random 32-byte value which the user should save,
+- `identityTrapdoor`: a random 32-byte value which the user should save,
 
 **Public inputs:**
 
-- `external_nullifier`: the 29-byte external nullifier - see above
+- `externalNullifier`: the 32-byte external nullifier.
 
 **Public outputs:**
 
-- `nullifiers_hash`: the hash of the identity nullifier, external nullifier,
-  and Merkle path index (`identity_path_index`)
+- `nullifierHash`: the hash of the identity nullifier and the external nullifier.
 
 **Procedure:**
 
-The circuit hashes the given identity nullifier, external nullifier, and Merkle
-path index, and checks that it matches the given nullifiers hash. Additionally,
-the smart contract ensures that it has not previously seen this nullifiers
-hash. This way, double-signalling is impossible.
+The circuit hashes the identity nullifier and the external nullifier. The it checks that it matches the given nullifiers hash. Additionally,
+the smart contract ensures that it has not previously seen this nullifiers hash. This way, double-signalling is impossible.
 
 ## 3. Signal
 
 **Public inputs:**
 
-- `signal_hash`: ...
+- `signalHash`: the hash of the user's signal.
 
 **Procedure:**
 
-The circuit hashes the signal hash and the external nullifier, and verifies
-this output against the given public key and signature. This ensures the
-authenticity of the signal and prevents front-running attacks.
+The circuit performs a dummy square to prevent tampering.
