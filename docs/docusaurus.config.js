@@ -101,8 +101,8 @@ module.exports = {
               href: "https://github.com/appliedzkp/zk-kit"
             },
             {
-              label: "InterRep",
-              href: "https://github.com/interrep"
+              label: "Interep",
+              href: "https://github.com/interep-project"
             }
           ]
         }

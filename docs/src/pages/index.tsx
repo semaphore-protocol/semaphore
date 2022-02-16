@@ -1,4 +1,3 @@
-import { useColorMode } from "@docusaurus/theme-common"
 import Link from "@docusaurus/Link"
 import styled from "@emotion/styled"
 import Layout from "@theme/Layout"
@@ -30,9 +29,9 @@ export const pseProjects = [
     to: "https://github.com/appliedzkp/zk-kit"
   },
   {
-    title: "InterRep",
+    title: "Interep",
     text: "A system that allows DApps or services to verify users' reputation without exposing their identities.",
-    to: "https://github.com/InterRep/"
+    to: "https://github.com/interep-project"
   }
 ]
 
