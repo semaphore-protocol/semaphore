@@ -4,7 +4,8 @@ import { task, types } from "hardhat/config"
 
 task("deploy:semaphore-voting", "Deploy a SemaphoreVoting contract")
   .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
-  .setAction(async ({ logs }, { ethers }): Promise<Contract> => {
+  .addParam<boolean>("verifier", "Verifier contract address", undefined, types.string)
+  .setAction(async ({ logs, verifier }, { ethers }): Promise<Contract> => {
     const poseidonABI = poseidonContract.generateABI(2)
     const poseidonBytecode = poseidonContract.createCode(2)
 
@@ -34,7 +35,7 @@ task("deploy:semaphore-voting", "Deploy a SemaphoreVoting contract")
       }
     })
 
-    const contract = await ContractFactory.deploy()
+    const contract = await ContractFactory.deploy([20], [verifier])
 
     await contract.deployed()
 

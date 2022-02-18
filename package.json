@@ -16,6 +16,7 @@
     "start": "hardhat node",
     "compile": "hardhat compile",
     "compile:circuits": "ts-node scripts/compile-circuits.ts",
+    "deploy:verifier": "hardhat deploy:verifier",
     "deploy:semaphore-voting": "hardhat deploy:semaphore-voting",
     "deploy:semaphore-whistleblowing": "hardhat deploy:semaphore-whistleblowing",
     "test": "hardhat test",
