@@ -2,14 +2,14 @@
 pragma solidity ^0.8.4;
 
 import "../interfaces/ISemaphoreCore.sol";
-import "./Verifier.sol";
+import "../interfaces/IVerifier.sol";
 
 /// @title Semaphore core contract.
 /// @notice Minimal code to allow users to signal their endorsement of an arbitrary string.
 /// @dev The following code verifies that the proof is correct and saves the hash of the
 /// nullifier to prevent double-signaling. External nullifier and Merkle trees (i.e. groups) must be
 /// managed externally.
-contract SemaphoreCore is ISemaphoreCore, Verifier {
+contract SemaphoreCore is ISemaphoreCore {
   /// @dev Gets a nullifier hash and returns true or false.
   /// It is used to prevent double-signaling.
   mapping(uint256 => bool) internal nullifierHashes;
@@ -21,12 +21,14 @@ contract SemaphoreCore is ISemaphoreCore, Verifier {
   /// @param nullifierHash: Nullifier hash.
   /// @param externalNullifier: External nullifier.
   /// @param proof: Zero-knowledge proof.
+  /// @param verifier: Verifier address.
   function _isValidProof(
     string calldata signal,
     uint256 root,
     uint256 nullifierHash,
     uint256 externalNullifier,
-    uint256[8] calldata proof
+    uint256[8] calldata proof,
+    IVerifier verifier
   ) internal view returns (bool) {
     require(!nullifierHashes[nullifierHash], "SemaphoreCore: you cannot use the same nullifier twice");
 
@@ -35,7 +37,7 @@ contract SemaphoreCore is ISemaphoreCore, Verifier {
     uint256[4] memory publicSignals = [root, nullifierHash, signalHash, externalNullifier];
 
     return
-      verifyProof(
+      verifier.verifyProof(
         [proof[0], proof[1]],
         [[proof[2], proof[3]], [proof[4], proof[5]]],
         [proof[6], proof[7]],

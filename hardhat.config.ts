@@ -9,6 +9,7 @@ import "solidity-coverage"
 import { config } from "./package.json"
 import "./tasks/deploy-semaphore-voting"
 import "./tasks/deploy-semaphore-whistleblowing"
+import "./tasks/deploy-verifier"
 
 dotenvConfig({ path: resolve(__dirname, "./.env") })
 

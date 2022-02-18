@@ -11,23 +11,31 @@ describe("SemaphoreWhistleblowing", () => {
   let accounts: Signer[]
   let editor: string
 
+  const depth = 20
   const entityIds = [BigInt(1), BigInt(2)]
 
   before(async () => {
-    contract = await run("deploy:semaphore-whistleblowing", { logs: false })
+    const { address: verifierAddress } = await run("deploy:verifier", { logs: false })
+    contract = await run("deploy:semaphore-whistleblowing", { logs: false, verifier: verifierAddress })
     accounts = await ethers.getSigners()
     editor = await accounts[1].getAddress()
   })
 
   describe("# createEntity", () => {
+    it("Should not create an entity with a wrong depth", async () => {
+      const transaction = contract.createEntity(entityIds[0], editor, 10)
+
+      await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: depth value is not supported")
+    })
+
     it("Should create an entity", async () => {
-      const transaction = contract.createEntity(entityIds[0], editor)
+      const transaction = contract.createEntity(entityIds[0], editor, depth)
 
       await expect(transaction).to.emit(contract, "EntityCreated").withArgs(entityIds[0], editor)
     })
 
     it("Should not create a entity if it already exists", async () => {
-      const transaction = contract.createEntity(entityIds[0], editor)
+      const transaction = contract.createEntity(entityIds[0], editor, depth)
 
       await expect(transaction).to.be.revertedWith("SemaphoreGroups: group already exists")
     })
@@ -105,7 +113,7 @@ describe("SemaphoreWhistleblowing", () => {
     const leak = "leak"
 
     before(async () => {
-      await contract.createEntity(entityIds[1], editor)
+      await contract.createEntity(entityIds[1], editor, depth)
       await contract.connect(accounts[1]).addWhistleblower(entityIds[1], identityCommitment)
       await contract.connect(accounts[1]).addWhistleblower(entityIds[1], BigInt(1))
     })
