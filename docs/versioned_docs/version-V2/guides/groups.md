@@ -6,6 +6,6 @@ sidebar_position: 1
 
 Describe how to use Semaphore groups:
 
-* Create groups
-* Add identities
-* Remove identities
+- Create groups
+- Add identities
+- Remove identities

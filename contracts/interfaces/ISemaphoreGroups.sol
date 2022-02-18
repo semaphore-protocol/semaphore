@@ -29,7 +29,7 @@ interface ISemaphoreGroups {
   /// @dev Returns the depth of the tree of a group.
   /// @param groupId: Id of the group.
   /// @return Depth of the group tree.
-  function getDepth(uint256 groupId) external view returns (uint256);
+  function getDepth(uint256 groupId) external view returns (uint8);
 
   /// @dev Returns the number of members of a group.
   /// @param groupId: Id of the group.

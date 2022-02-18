@@ -11,25 +11,33 @@ describe("SemaphoreVoting", () => {
   let accounts: Signer[]
   let coordinator: string
 
+  const depth = 20
   const pollIds = [BigInt(1), BigInt(2), BigInt(3)]
   const encryptionKey = BigInt(0)
   const decryptionKey = BigInt(0)
 
   before(async () => {
-    contract = await run("deploy:semaphore-voting", { logs: false })
+    const { address: verifierAddress } = await run("deploy:verifier", { logs: false })
+    contract = await run("deploy:semaphore-voting", { logs: false, verifier: verifierAddress })
     accounts = await ethers.getSigners()
     coordinator = await accounts[1].getAddress()
   })
 
   describe("# createPoll", () => {
+    it("Should not create a poll with a wrong depth", async () => {
+      const transaction = contract.createPoll(pollIds[0], coordinator, 10)
+
+      await expect(transaction).to.be.revertedWith("SemaphoreVoting: depth value is not supported")
+    })
+
     it("Should create a poll", async () => {
-      const transaction = contract.createPoll(pollIds[0], coordinator)
+      const transaction = contract.createPoll(pollIds[0], coordinator, depth)
 
       await expect(transaction).to.emit(contract, "PollCreated").withArgs(pollIds[0], coordinator)
     })
 
     it("Should not create a poll if it already exists", async () => {
-      const transaction = contract.createPoll(pollIds[0], coordinator)
+      const transaction = contract.createPoll(pollIds[0], coordinator, depth)
 
       await expect(transaction).to.be.revertedWith("SemaphoreGroups: group already exists")
     })
@@ -57,7 +65,7 @@ describe("SemaphoreVoting", () => {
 
   describe("# addVoter", () => {
     before(async () => {
-      await contract.createPoll(pollIds[1], coordinator)
+      await contract.createPoll(pollIds[1], coordinator, depth)
     })
 
     it("Should not add a voter if the caller is not the coordinator", async () => {
@@ -112,7 +120,7 @@ describe("SemaphoreVoting", () => {
     before(async () => {
       await contract.connect(accounts[1]).addVoter(pollIds[1], BigInt(1))
       await contract.connect(accounts[1]).startPoll(pollIds[1], encryptionKey)
-      await contract.createPoll(pollIds[2], coordinator)
+      await contract.createPoll(pollIds[2], coordinator, depth)
     })
 
     it("Should not cast a vote if the caller is not the coordinator", async () => {

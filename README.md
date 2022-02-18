@@ -53,3 +53,11 @@
 The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/contracts) and [JavaScript libraries](https://github.com/appliedzkp/zk-kit) (i.e. `@zk-kit/identity` and `@zk-kit/protocols`) to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit https://semaphore.appliedzkp.org.
 
 ⚠️ Semaphore V2 has not yet been audited. Please do not use it in production. You can find Semaphore V1 on [`version/1.0.0`](https://github.com/appliedzkp/semaphore/tree/version/1.0.0).
+
+## Deployed verifiers
+
+The following is a list of our deployed onchain verifiers. Each `Verifier.sol` contract can be used with a binary tree of a certain depth. If depth = 20 the tree can have maximum 2^20 leaves (a group of 1048576 members).
+
+|  Depth | Kovan                                                                                          | Arbitrum One |
+| ------ | ---------------------------------------------------------------------------------------------- | ------------ |
+|   20   | [0x066c...9c4C](https://kovan.etherscan.io/address/0x066cC22f8CA2A8D90D7Ff77D8a10A27e629c9c4C) |              |
