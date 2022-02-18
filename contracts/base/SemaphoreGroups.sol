@@ -73,7 +73,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   }
 
   /// @dev See {ISemaphoreGroups-getDepth}.
-  function getDepth(uint256 groupId) public view virtual override returns (uint256) {
+  function getDepth(uint256 groupId) public view virtual override returns (uint8) {
     return groups[groupId].depth;
   }
 
