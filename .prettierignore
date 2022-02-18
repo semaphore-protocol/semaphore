@@ -19,6 +19,9 @@ types
 # circuits
 circuits
 
+# docusaurus
+.docusaurus
+
 # production
 dist
 build
