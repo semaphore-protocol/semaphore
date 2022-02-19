@@ -49,6 +49,7 @@ Rename `Greeter.sol` to `Greeters.sol` and insert the following code:
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
+import "@appliedzkp/semaphore-contracts/interfaces/IVerifier.sol";
 import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
 
 /// @title Greeters contract.
@@ -61,8 +62,12 @@ contract Greeters is SemaphoreCore {
   // The offchain Merkle tree contains the greeters' identity commitments.
   uint256 public greeters;
 
-  constructor(uint256 _greeters) {
+  // The external verifier used to verify Semaphore proofs.
+  IVerifier public verifier;
+
+  constructor(uint256 _greeters, address _verifier) {
     greeters = _greeters;
+    verifier = IVerifier(_verifier);
   }
 
   // Only users who create valid proofs can greet.
@@ -72,7 +77,10 @@ contract Greeters is SemaphoreCore {
     uint256 _nullifierHash,
     uint256[8] calldata _proof
   ) external {
-    require(_isValidProof(_greeting, greeters, _nullifierHash, greeters, _proof), "Greeters: the proof is not valid");
+    require(
+      _isValidProof(_greeting, greeters, _nullifierHash, greeters, _proof, verifier),
+      "Greeters: the proof is not valid"
+    );
 
     // Prevent double-greeting (nullifierHash = hash(root + identityNullifier)).
     // Every user can greet once.
@@ -108,7 +116,13 @@ The previous identity commitments have been generated using `@zk-kit/identity` (
 $ yarn add @zk-kit/incremental-merkle-tree circomlibjs@0.0.8 --dev
 ```
 
-2. Create a `tasks` folder and add the following file:
+2. Install `hardhat-dependency-compiler` to deploy a local verifier.
+
+```bash
+$ yarn add hardhat-dependency-compiler --dev
+```
+
+3. Create a `tasks` folder and add the following file:
 
 ```javascript title="./tasks/deploy.js"
 const { IncrementalMerkleTree } = require("@zk-kit/incremental-merkle-tree")
@@ -119,31 +133,44 @@ const { task, types } = require("hardhat/config")
 task("deploy", "Deploy a Greeters contract")
   .addOptionalParam("logs", "Print the logs", true, types.boolean)
   .setAction(async ({ logs }, { ethers }) => {
-    const ContractFactory = await ethers.getContractFactory("Greeters")
+    const VerifierContract = await ethers.getContractFactory("Verifier")
+    const verifier = await VerifierContract.deploy()
+
+    await verifier.deployed()
+
+    logs && console.log(`Verifier contract has been deployed to: ${verifier.address}`)
+
+    const GreetersContract = await ethers.getContractFactory("Greeters")
+
     const tree = new IncrementalMerkleTree(poseidon, 20, BigInt(0), 2)
 
     for (const identityCommitment of identityCommitments) {
-      tree.insert(identityCommitment) // Insert the Merkle tree leaves.
+      tree.insert(identityCommitment)
     }
 
-    const contract = await ContractFactory.deploy(tree.root)
+    const greeters = await GreetersContract.deploy(tree.root, verifier.address)
 
-    await contract.deployed()
+    await greeters.deployed()
 
-    logs && console.log(`Greeters contract has been deployed to: ${contract.address}`)
+    logs && console.log(`Greeters contract has been deployed to: ${greeters.address}`)
 
-    return contract
+    return greeters
   })
 ```
 
-3. Import your new Hardhat task in the `hardhat.config.js` file:
+4. Set up your `hardhat.config.js` file:
 
 ```javascript title="./hardhat.config.js"
 require("@nomiclabs/hardhat-waffle")
-require("./tasks/deploy")
+require("hardhat-dependency-compiler")
+require("./tasks/deploy") // Your deploy task.
 
 module.exports = {
-  solidity: "0.8.4"
+    solidity: "0.8.4",
+    dependencyCompiler: {
+        // It allows Hardhat to compile the external Verifier.sol contract.
+        paths: ["@appliedzkp/semaphore-contracts/base/Verifier.sol"]
+    }
 }
 ```
 
@@ -203,9 +230,10 @@ describe("Greeters", function () {
 })
 ```
 
-3. Test your contract:
+3. Compile and test your contract:
 
 ```bash
+$ yarn hardhat compile
 $ yarn hardhat test
 ```
 
@@ -215,5 +243,5 @@ You can also deploy your contract in a local Hardhat network and use it in your 
 
 ```bash
 $ yarn hardhat node
-$ yarn hardhat deploy --network localhost
+$ yarn hardhat deploy --network localhost # In another tab.
 ```
