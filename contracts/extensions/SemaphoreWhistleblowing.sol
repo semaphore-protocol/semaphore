@@ -48,7 +48,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
   ) public override {
     require(address(verifiers[depth]) != address(0), "SemaphoreWhistleblowing: depth value is not supported");
 
-    _createGroup(entityId, depth);
+    _createGroup(entityId, depth, 0);
 
     entities[editor] = entityId;
 
