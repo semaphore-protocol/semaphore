@@ -62,7 +62,7 @@ describe("SemaphoreWhistleblowing", () => {
         .withArgs(
           entityIds[0],
           identityCommitment,
-          "21535114724992190095497080437889044838904308549109546660414808669273607403748"
+          "14787813191318312920980352979830075893203307366494541177071234930769373297362"
         )
     })
 
@@ -84,7 +84,7 @@ describe("SemaphoreWhistleblowing", () => {
       await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: caller is not the editor")
     })
 
-    it("Should romove a whistleblower from an existing entity", async () => {
+    it("Should remove a whistleblower from an existing entity", async () => {
       const identity = new ZkIdentity(Strategy.MESSAGE, "test")
       const identityCommitment = identity.genIdentityCommitment()
       const { siblings, pathIndices } = createMerkleProof([identityCommitment], identityCommitment)
@@ -98,7 +98,7 @@ describe("SemaphoreWhistleblowing", () => {
         .withArgs(
           entityIds[0],
           identityCommitment,
-          "11785348627339250291169543927799678775640354218526699257718426075004026330510"
+          "15019797232609675441998260052101280400536945603062888308240081994073687793470"
         )
     })
   })

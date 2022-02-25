@@ -7,7 +7,8 @@ interface ISemaphoreGroups {
   /// @dev Emitted when a new group is created.
   /// @param groupId: Id of the group.
   /// @param depth: Depth of the tree.
-  event GroupAdded(uint256 indexed groupId, uint8 depth);
+  /// @param zeroValue: Zero value of the tree.
+  event GroupCreated(uint256 indexed groupId, uint8 depth, uint256 zeroValue);
 
   /// @dev Emitted when a new identity commitment is added.
   /// @param groupId: Group id of the group.
