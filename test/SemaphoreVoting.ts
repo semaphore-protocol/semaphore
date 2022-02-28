@@ -133,7 +133,7 @@ describe("SemaphoreVoting", () => {
         vote
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
 
       const transaction = contract.castVote(vote, nullifierHash, pollIds[0], solidityProof)
 
@@ -150,7 +150,7 @@ describe("SemaphoreVoting", () => {
         vote
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
 
       const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[2], solidityProof)
 
@@ -167,7 +167,7 @@ describe("SemaphoreVoting", () => {
         vote
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
 
       const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[1], solidityProof)
 
@@ -184,7 +184,7 @@ describe("SemaphoreVoting", () => {
         vote
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
 
       const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[1], solidityProof)
 
@@ -201,7 +201,7 @@ describe("SemaphoreVoting", () => {
         vote
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
 
       const transaction = contract.connect(accounts[1]).castVote(vote, nullifierHash, pollIds[1], solidityProof)
 
