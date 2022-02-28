@@ -218,7 +218,7 @@ describe("Greeters", function () {
       )
 
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
 
       const nullifierHash = Semaphore.genNullifierHash(merkleProof.root, identity.getNullifier())
 
