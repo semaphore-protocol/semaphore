@@ -128,7 +128,7 @@ describe("SemaphoreWhistleblowing", () => {
         leak
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
 
       const transaction = contract.publishLeak(leak, nullifierHash, entityIds[0], solidityProof)
 
@@ -145,7 +145,7 @@ describe("SemaphoreWhistleblowing", () => {
         leak
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
 
       const transaction = contract.connect(accounts[1]).publishLeak(leak, nullifierHash, entityIds[1], solidityProof)
 
@@ -162,7 +162,7 @@ describe("SemaphoreWhistleblowing", () => {
         leak
       )
       const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = Semaphore.packToSolidityProof(fullProof)
+      const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
 
       const transaction = contract.connect(accounts[1]).publishLeak(leak, nullifierHash, entityIds[1], solidityProof)
 
