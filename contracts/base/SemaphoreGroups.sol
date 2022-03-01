@@ -23,7 +23,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   /// @dev Creates a new group by initializing the associated tree.
   /// @param groupId: Id of the group.
   /// @param depth: Depth of the tree.
-  /// @param depth: Zero value of the tree.
+  /// @param zeroValue: Zero value of the tree.
   function _createGroup(
     uint256 groupId,
     uint8 depth,
@@ -82,8 +82,8 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     return groups[groupId].depth;
   }
 
-  /// @dev See {ISemaphoreGroups-getSize}.
-  function getSize(uint256 groupId) public view virtual override returns (uint256) {
+  /// @dev See {ISemaphoreGroups-getNumberOfLeaves}.
+  function getNumberOfLeaves(uint256 groupId) public view virtual override returns (uint256) {
     return groups[groupId].numberOfLeaves;
   }
 }
