@@ -67,7 +67,7 @@ describe("SemaphoreWhistleblowing", () => {
     })
 
     it("Should return the correct number of whistleblowers of an entity", async () => {
-      const size = await contract.getSize(entityIds[0])
+      const size = await contract.getNumberOfLeaves(entityIds[0])
 
       expect(size).to.be.eq(1)
     })

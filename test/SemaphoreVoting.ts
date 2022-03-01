@@ -102,7 +102,7 @@ describe("SemaphoreVoting", () => {
     })
 
     it("Should return the correct number of poll voters", async () => {
-      const size = await contract.getSize(pollIds[1])
+      const size = await contract.getNumberOfLeaves(pollIds[1])
 
       expect(size).to.be.eq(1)
     })

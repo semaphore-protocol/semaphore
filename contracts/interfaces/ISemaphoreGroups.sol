@@ -32,8 +32,8 @@ interface ISemaphoreGroups {
   /// @return Depth of the group tree.
   function getDepth(uint256 groupId) external view returns (uint8);
 
-  /// @dev Returns the number of members of a group.
+  /// @dev Returns the number of tree leaves of a group.
   /// @param groupId: Id of the group.
-  /// @return Size of the group.
-  function getSize(uint256 groupId) external view returns (uint256);
+  /// @return Number of tree leaves.
+  function getNumberOfLeaves(uint256 groupId) external view returns (uint256);
 }
