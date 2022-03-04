@@ -23,7 +23,7 @@ contract SemaphoreCore is ISemaphoreCore {
   /// @param proof: Zero-knowledge proof.
   /// @param verifier: Verifier address.
   function _isValidProof(
-    string calldata signal,
+    bytes32 signal,
     uint256 root,
     uint256 nullifierHash,
     uint256 externalNullifier,
@@ -34,14 +34,12 @@ contract SemaphoreCore is ISemaphoreCore {
 
     uint256 signalHash = _hashSignal(signal);
 
-    uint256[4] memory publicSignals = [root, nullifierHash, signalHash, externalNullifier];
-
     return
       verifier.verifyProof(
         [proof[0], proof[1]],
         [[proof[2], proof[3]], [proof[4], proof[5]]],
         [proof[6], proof[7]],
-        publicSignals
+        [root, nullifierHash, signalHash, externalNullifier]
       );
   }
 
@@ -56,7 +54,7 @@ contract SemaphoreCore is ISemaphoreCore {
   /// @dev Creates a keccak256 hash of the signal.
   /// @param signal: Semaphore signal.
   /// @return Hash of the signal.
-  function _hashSignal(string calldata signal) private pure returns (uint256) {
+  function _hashSignal(bytes32 signal) private pure returns (uint256) {
     return uint256(keccak256(abi.encodePacked(signal))) >> 8;
   }
 }

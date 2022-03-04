@@ -75,7 +75,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
   /// @dev See {ISemaphoreVoting-castVote}.
   function castVote(
-    string calldata vote,
+    bytes32 vote,
     uint256 nullifierHash,
     uint256 pollId,
     uint256[8] calldata proof
