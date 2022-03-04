@@ -56,7 +56,7 @@ import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
 /// @dev The following code is just a example to show how Semaphore con be used.
 contract Greeters is SemaphoreCore {
   // A new greeting is published every time a user's proof is validated.
-  event NewGreeting(string greeting);
+  event NewGreeting(bytes32 greeting);
 
   // Greeters are identified by a Merkle root.
   // The offchain Merkle tree contains the greeters' identity commitments.
@@ -73,7 +73,7 @@ contract Greeters is SemaphoreCore {
   // Only users who create valid proofs can greet.
   // The external nullifier is in this example the root of the Merkle tree.
   function greet(
-    string calldata _greeting,
+    bytes32 _greeting,
     uint256 _nullifierHash,
     uint256[8] calldata _proof
   ) external {
@@ -207,6 +207,7 @@ describe("Greeters", function () {
       const identity = new ZkIdentity(Strategy.MESSAGE, message)
       const identityCommitment = identity.genIdentityCommitment()
       const greeting = "Hello world"
+      const bytes32Greeting = ethers.utils.formatBytes32String(greeting)
 
       const merkleProof = generateMerkleProof(20, BigInt(0), 2, identityCommitments, identityCommitment)
       const witness = Semaphore.genWitness(
@@ -222,9 +223,9 @@ describe("Greeters", function () {
 
       const nullifierHash = Semaphore.genNullifierHash(merkleProof.root, identity.getNullifier())
 
-      const transaction = contract.greet(greeting, nullifierHash, solidityProof)
+      const transaction = contract.greet(bytes32Greeting, nullifierHash, solidityProof)
 
-      await expect(transaction).to.emit(contract, "NewGreeting").withArgs(greeting)
+      await expect(transaction).to.emit(contract, "NewGreeting").withArgs(bytes32Greeting)
     })
   })
 })
