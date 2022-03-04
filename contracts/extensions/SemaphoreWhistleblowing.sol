@@ -72,7 +72,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
 
   /// @dev See {ISemaphoreWhistleblowing-publishLeak}.
   function publishLeak(
-    string calldata leak,
+    bytes32 leak,
     uint256 nullifierHash,
     uint256 entityId,
     uint256[8] calldata proof
