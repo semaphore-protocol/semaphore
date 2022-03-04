@@ -1,7 +1,7 @@
 import { Strategy, ZkIdentity } from "@zk-kit/identity"
-import { Semaphore } from "@zk-kit/protocols"
+import { Semaphore, SemaphorePublicSignals, SemaphoreSolidityProof } from "@zk-kit/protocols"
 import { expect } from "chai"
-import { Signer } from "ethers"
+import { Signer, utils } from "ethers"
 import { ethers, run } from "hardhat"
 import { SemaphoreWhistleblowing } from "../build/typechain"
 import { createMerkleProof } from "./utils"
@@ -111,62 +111,52 @@ describe("SemaphoreWhistleblowing", () => {
     const identityCommitment = identity.genIdentityCommitment()
     const merkleProof = createMerkleProof([identityCommitment, BigInt(1)], identityCommitment)
     const leak = "leak"
+    const bytes32Leak = utils.formatBytes32String(leak)
+
+    const witness = Semaphore.genWitness(
+      identity.getTrapdoor(),
+      identity.getNullifier(),
+      merkleProof,
+      entityIds[1],
+      leak
+    )
+
+    let solidityProof: SemaphoreSolidityProof
+    let publicSignals: SemaphorePublicSignals
 
     before(async () => {
       await contract.createEntity(entityIds[1], editor, depth)
       await contract.connect(accounts[1]).addWhistleblower(entityIds[1], identityCommitment)
       await contract.connect(accounts[1]).addWhistleblower(entityIds[1], BigInt(1))
+
+      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+
+      publicSignals = fullProof.publicSignals
+      solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
     })
 
     it("Should not publish a leak if the caller is not the editor", async () => {
-      const nullifierHash = Semaphore.genNullifierHash(entityIds[0], identity.getNullifier())
-      const witness = Semaphore.genWitness(
-        identity.getTrapdoor(),
-        identity.getNullifier(),
-        merkleProof,
-        entityIds[0],
-        leak
-      )
-      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
-
-      const transaction = contract.publishLeak(leak, nullifierHash, entityIds[0], solidityProof)
+      const transaction = contract.publishLeak(bytes32Leak, publicSignals.nullifierHash, entityIds[0], solidityProof)
 
       await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: caller is not the editor")
     })
 
     it("Should not publish a leak if the proof is not valid", async () => {
-      const nullifierHash = Semaphore.genNullifierHash(entityIds[1], identity.getNullifier())
-      const witness = Semaphore.genWitness(
-        identity.getTrapdoor(),
-        identity.getNullifier(),
-        merkleProof,
-        entityIds[0],
-        leak
-      )
-      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
+      const nullifierHash = Semaphore.genNullifierHash(entityIds[0], identity.getNullifier())
 
-      const transaction = contract.connect(accounts[1]).publishLeak(leak, nullifierHash, entityIds[1], solidityProof)
+      const transaction = contract
+        .connect(accounts[1])
+        .publishLeak(bytes32Leak, nullifierHash, entityIds[1], solidityProof)
 
       await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: the proof is not valid")
     })
 
     it("Should publish a leak", async () => {
-      const nullifierHash = Semaphore.genNullifierHash(entityIds[1], identity.getNullifier())
-      const witness = Semaphore.genWitness(
-        identity.getTrapdoor(),
-        identity.getNullifier(),
-        merkleProof,
-        entityIds[1],
-        leak
-      )
-      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-      const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
+      const transaction = contract
+        .connect(accounts[1])
+        .publishLeak(bytes32Leak, publicSignals.nullifierHash, entityIds[1], solidityProof)
 
-      const transaction = contract.connect(accounts[1]).publishLeak(leak, nullifierHash, entityIds[1], solidityProof)
-
-      await expect(transaction).to.emit(contract, "LeakPublished").withArgs(entityIds[1], leak)
+      await expect(transaction).to.emit(contract, "LeakPublished").withArgs(entityIds[1], bytes32Leak)
     })
   })
 })
