@@ -28,6 +28,16 @@ describe("SemaphoreWhistleblowing", () => {
       await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: depth value is not supported")
     })
 
+    it("Should not create an entity greater than the snark scalar field", async () => {
+      const transaction = contract.createEntity(
+        BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
+        editor,
+        depth
+      )
+
+      await expect(transaction).to.be.revertedWith("SemaphoreGroups: group id must be < SNARK_SCALAR_FIELD")
+    })
+
     it("Should create an entity", async () => {
       const transaction = contract.createEntity(entityIds[0], editor, depth)
 
