@@ -29,6 +29,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     uint8 depth,
     uint256 zeroValue
   ) internal virtual {
+    require(groupId < SNARK_SCALAR_FIELD, "SemaphoreGroups: group id must be < SNARK_SCALAR_FIELD");
     require(getDepth(groupId) == 0, "SemaphoreGroups: group already exists");
 
     groups[groupId].init(depth, zeroValue);

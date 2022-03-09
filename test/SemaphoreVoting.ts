@@ -30,6 +30,16 @@ describe("SemaphoreVoting", () => {
       await expect(transaction).to.be.revertedWith("SemaphoreVoting: depth value is not supported")
     })
 
+    it("Should not create a poll greater than the snark scalar field", async () => {
+      const transaction = contract.createPoll(
+        BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
+        coordinator,
+        depth
+      )
+
+      await expect(transaction).to.be.revertedWith("SemaphoreGroups: group id must be < SNARK_SCALAR_FIELD")
+    })
+
     it("Should create a poll", async () => {
       const transaction = contract.createPoll(pollIds[0], coordinator, depth)
 
