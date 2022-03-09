@@ -54,8 +54,8 @@ interface ISemaphoreVoting {
 
   /// @dev Starts a pull and publishes the key to encrypt the votes.
   /// @param pollId: Id of the poll.
-  /// @param decryptionKey: Key to decrypt poll votes.
-  function startPoll(uint256 pollId, uint256 decryptionKey) external;
+  /// @param encryptionKey: Key to encrypt poll votes.
+  function startPoll(uint256 pollId, uint256 encryptionKey) external;
 
   /// @dev Casts an anonymous vote in a poll.
   /// @param vote: Encrypted vote.
