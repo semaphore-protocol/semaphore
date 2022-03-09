@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.4.2",
-    "@zk-kit/incremental-merkle-tree.sol": "^0.3.0"
+    "@zk-kit/incremental-merkle-tree.sol": "^0.3.1"
   }
 }
