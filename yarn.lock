@@ -1311,10 +1311,10 @@
     ffjavascript "0.2.38"
     js-sha256 "^0.9.0"
 
-"@zk-kit/incremental-merkle-tree.sol@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@zk-kit/incremental-merkle-tree.sol/-/incremental-merkle-tree.sol-0.3.0.tgz#0b9877b4aa30d00487eb01fcb9f832fdb562eae7"
-  integrity sha512-amRcQL49FmFI1N4PeZIue0VoJFfju/RCSWM2pUoRDOdFYoYB4cafBQXU4yjnb5VtNhkg4NwDJ42KCIrUNTQofQ==
+"@zk-kit/incremental-merkle-tree.sol@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@zk-kit/incremental-merkle-tree.sol/-/incremental-merkle-tree.sol-0.3.1.tgz#904fa76028803f6340e23bd0929d94398659a070"
+  integrity sha512-85rZpeSJGeR0yEiIbJwWrZgA68ovc62XiOHcMvAZmJtISsYMVHqzN6w4ax9Ke6bE70sj5V0OSPZ89vgJZ0zxgg==
 
 "@zk-kit/incremental-merkle-tree@^0.4.3":
   version "0.4.3"
