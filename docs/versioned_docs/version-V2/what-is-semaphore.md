@@ -33,7 +33,7 @@ features in order to provide user-friendly privacy.
 
 In sum, Semaphore provides the ability to:
 
-1. generate offchain identities and add them to a Merke tree (offchain or onchain);
+1. generate offchain identities and add them to a Merkle tree (offchain or onchain);
 2. anonymously broadcast a signal onchain, if and only if the identity of the owner belongs to a
    valid Merkle tree and if the nullifier has not already been used.
 
