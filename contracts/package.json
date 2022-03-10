@@ -1,6 +1,6 @@
 {
   "name": "@appliedzkp/semaphore-contracts",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "A privacy gadget for creating anonymous proof of membership on Ethereum.",
   "license": "GPL-3.0",
   "files": [
