@@ -35,8 +35,7 @@ the Merkle root and the identity commitment.
 
 **Private inputs:**
 
-- `identityNullifier`: a random 32-byte value which the user should save,
-- `identityTrapdoor`: a random 32-byte value which the user should save,
+- `identityNullifier`: a random 32-byte value which the user should save.
 
 **Public inputs:**
 
