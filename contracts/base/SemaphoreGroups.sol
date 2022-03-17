@@ -8,17 +8,12 @@ import "@openzeppelin/contracts/utils/Context.sol";
 
 /// @title Semaphore groups contract.
 /// @dev The following code allows you to create groups, add and remove members.
-/// You can use getters to obtain informations about groups, whereas the `rootHistory`
-/// mapping can be used to check if a Semaphore proof root exists onchain.
+/// You can use getters to obtain informations about groups (root, depth, number of leaves).
 abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
   using IncrementalBinaryTree for IncrementalTreeData;
 
   /// @dev Gets a group id and returns the group/tree data.
   mapping(uint256 => IncrementalTreeData) internal groups;
-
-  /// @dev Gets a root hash and returns the group id.
-  /// It can be used to check if the root a Semaphore proof exists.
-  mapping(uint256 => uint256) internal rootHistory;
 
   /// @dev Creates a new group by initializing the associated tree.
   /// @param groupId: Id of the group.
@@ -46,7 +41,6 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     groups[groupId].insert(identityCommitment);
 
     uint256 root = getRoot(groupId);
-    rootHistory[root] = groupId;
 
     emit MemberAdded(groupId, identityCommitment, root);
   }
@@ -68,9 +62,8 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     groups[groupId].remove(identityCommitment, proofSiblings, proofPathIndices);
 
     uint256 root = getRoot(groupId);
-    rootHistory[root] = groupId;
 
-    emit MemberRemoved(groupId, identityCommitment, groups[groupId].root);
+    emit MemberRemoved(groupId, identityCommitment, root);
   }
 
   /// @dev See {ISemaphoreGroups-getRoot}.
