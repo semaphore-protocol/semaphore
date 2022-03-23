@@ -221,11 +221,12 @@ contract Verifier {
     
     // Compute the linear combination vk_x of inputs times IC
     if (input.length + 1 != vk.IC.length) revert Pairing.InvalidProof();
+    // By EIP196 the scalar_mul verifies its input is in the correct range.
     Pairing.G1Point memory vk_x = vk.IC[0];
-    for (uint256 i = 0; i < input.length; i++) {
-      // By EIP196 the scalar_mul verifies it's input is in the correct range.
-      vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[i + 1], input[i]));
-    }
+    vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[1], input[0]));
+    vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[2], input[1]));
+    vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[3], input[2]));
+    vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[4], input[3]));
  
     // Check pairing
     Pairing.G1Point[] memory p1 = new Pairing.G1Point[](4);
