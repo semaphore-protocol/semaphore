@@ -275,7 +275,7 @@ contract Verifier {
     );
   }
 
-  function verify(uint256[] memory input, Proof memory proof) internal view returns (uint256) {
+  function verify(uint256[] memory input, Proof memory proof) internal view returns (bool) {
     uint256 snark_scalar_field = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
     VerifyingKey memory vk = verifyingKey();
     require(input.length + 1 == vk.IC.length, "verifier-bad-input");
@@ -286,10 +286,8 @@ contract Verifier {
       vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[i + 1], input[i]));
     }
     vk_x = Pairing.addition(vk_x, vk.IC[0]);
-    if (
-      !Pairing.pairingProd4(Pairing.negate(proof.A), proof.B, vk.alfa1, vk.beta2, vk_x, vk.gamma2, proof.C, vk.delta2)
-    ) return 1;
-    return 0;
+    bool pairingCheck = Pairing.pairingProd4(Pairing.negate(proof.A), proof.B, vk.alfa1, vk.beta2, vk_x, vk.gamma2, proof.C, vk.delta2);
+    return pairingCheck;
   }
 
   /// @return r  bool true if proof is valid
@@ -307,10 +305,6 @@ contract Verifier {
     for (uint256 i = 0; i < input.length; i++) {
       inputValues[i] = input[i];
     }
-    if (verify(inputValues, proof) == 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return verify(inputValues, proof);
   }
 }
