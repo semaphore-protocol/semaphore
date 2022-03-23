@@ -163,7 +163,7 @@ describe("SemaphoreVoting", () => {
 
       const transaction = contract.connect(accounts[1]).castVote(bytes32Vote, nullifierHash, pollIds[1], solidityProof)
 
-      await expect(transaction).to.be.revertedWith("SemaphoreVoting: the proof is not valid")
+      await expect(transaction).to.be.revertedWith("InvalidProof()")
     })
 
     it("Should cast a vote", async () => {

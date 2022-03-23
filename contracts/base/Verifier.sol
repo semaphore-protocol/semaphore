@@ -11,7 +11,8 @@
 //
 // 2021 Remco Bloemen
 //       cleaned up code
-//       always revert with InvalidProof on invalid proof
+//       added InvalidProve() error
+//       always revert with InvalidProof() on invalid proof
 //      
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
