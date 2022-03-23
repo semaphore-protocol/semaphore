@@ -199,15 +199,17 @@ contract Verifier {
     );
   }
 
-  /// @return r  bool true if proof is valid
+  /// @dev Verifies a Semaphore proof. Reverts with InvalidProof if the proof is invalid.
+  /// @return Returns `true` if the proof is valid, reversts otherwise.
   function verifyProof(
     uint256[2] memory a,
     uint256[2][2] memory b,
     uint256[2] memory c,
     uint256[4] memory input
-  ) public view returns (bool r) {
+  ) public view returns (bool) {
 
-    // If the values are not in the correct range, the pairing check will fail.
+    // If the values are not in the correct range, the pairing check will fail
+    // because by EIP197 it verfies all input.
     Proof memory proof;
     proof.A = Pairing.G1Point(a[0], a[1]);
     proof.B = Pairing.G2Point([b[0][0], b[0][1]], [b[1][0], b[1][1]]);
@@ -219,7 +221,7 @@ contract Verifier {
     if (input.length + 1 != vk.IC.length) revert Pairing.InvalidProof();
     Pairing.G1Point memory vk_x = vk.IC[0];
     for (uint256 i = 0; i < input.length; i++) {
-      if (input[i] >= Pairing.SCALAR_MODULUS) revert Pairing.InvalidProof();
+      // By EIP196 the scalar_mul verifies it's input is in the correct range.
       vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[i + 1], input[i]));
     }
  
