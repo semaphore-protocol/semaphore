@@ -262,7 +262,7 @@ contract Verifier {
     );
   }
 
-  function verify(uint256[] memory input, Proof memory proof) internal view returns (bool) {
+  function verify(uint256[4] memory input, Proof memory proof) internal view returns (bool) {
     uint256 snark_scalar_field = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
     VerifyingKey memory vk = verifyingKey();
     require(input.length + 1 == vk.IC.length, "verifier-bad-input");
@@ -288,10 +288,6 @@ contract Verifier {
     proof.A = Pairing.G1Point(a[0], a[1]);
     proof.B = Pairing.G2Point([b[0][0], b[0][1]], [b[1][0], b[1][1]]);
     proof.C = Pairing.G1Point(c[0], c[1]);
-    uint256[] memory inputValues = new uint256[](input.length);
-    for (uint256 i = 0; i < input.length; i++) {
-      inputValues[i] = input[i];
-    }
-    return verify(inputValues, proof);
+    return verify(input, proof);
   }
 }
