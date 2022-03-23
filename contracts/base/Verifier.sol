@@ -17,6 +17,8 @@ pragma solidity ^0.8.4;
 
 library Pairing {
 
+  error InvalidProof();
+
   // The prime q in the base field F_q for G1
   uint256 constant BASE_MODULUS = 21888242871839275222246405745257275088696311157297823662689037894645226208583;
 
@@ -27,7 +29,7 @@ library Pairing {
     uint256 X;
     uint256 Y;
   }
-  
+
   // Encoding of field elements is: X[0] * z + X[1]
   struct G2Point {
     uint256[2] X;
@@ -72,7 +74,7 @@ library Pairing {
     assembly {
       success := staticcall(sub(gas(), 2000), 6, input, 0xc0, r, 0x60)
     }
-    require(success, "pairing-add-failed");
+    if (!success) revert InvalidProof();
   }
 
   /// @return r the product of a point on G1 and a scalar, i.e.
@@ -87,14 +89,13 @@ library Pairing {
     assembly {
       success := staticcall(sub(gas(), 2000), 7, input, 0x80, r, 0x60)
     }
-    require(success, "pairing-mul-failed");
+    if (!success) revert InvalidProof();
   }
 
-  /// @return the result of computing the pairing check
+  /// Asserts the pairing check
   /// e(p1[0], p2[0]) *  .... * e(p1[n], p2[n]) == 1
-  /// For example pairing([P1(), P1().negate()], [P2(), P2()]) should
-  /// return true.
-  function pairing(G1Point[] memory p1, G2Point[] memory p2) internal view returns (bool) {
+  /// For example pairing([P1(), P1().negate()], [P2(), P2()]) should succeed
+  function pairingCheck(G1Point[] memory p1, G2Point[] memory p2) internal view {
     require(p1.length == p2.length, "pairing-lengths-failed");
     uint256 elements = p1.length;
     uint256 inputSize = elements * 6;
@@ -113,8 +114,7 @@ library Pairing {
     assembly {
       success := staticcall(sub(gas(), 2000), 8, add(input, 0x20), mul(inputSize, 0x20), out, 0x20)
     }
-    require(success, "pairing-opcode-failed");
-    return out[0] != 0;
+    if (!success || out[0] != 1) revert InvalidProof();
   }
 
   /// Convenience method for a pairing check for two pairs.
@@ -123,14 +123,14 @@ library Pairing {
     G2Point memory a2,
     G1Point memory b1,
     G2Point memory b2
-  ) internal view returns (bool) {
+  ) internal view {
     G1Point[] memory p1 = new G1Point[](2);
     G2Point[] memory p2 = new G2Point[](2);
     p1[0] = a1;
     p1[1] = b1;
     p2[0] = a2;
     p2[1] = b2;
-    return pairing(p1, p2);
+    pairingCheck(p1, p2);
   }
 
   /// Convenience method for a pairing check for three pairs.
@@ -141,7 +141,7 @@ library Pairing {
     G2Point memory b2,
     G1Point memory c1,
     G2Point memory c2
-  ) internal view returns (bool) {
+  ) internal view  {
     G1Point[] memory p1 = new G1Point[](3);
     G2Point[] memory p2 = new G2Point[](3);
     p1[0] = a1;
@@ -150,7 +150,7 @@ library Pairing {
     p2[0] = a2;
     p2[1] = b2;
     p2[2] = c2;
-    return pairing(p1, p2);
+    pairingCheck(p1, p2);
   }
 
   /// Convenience method for a pairing check for four pairs.
@@ -163,7 +163,7 @@ library Pairing {
     G2Point memory c2,
     G1Point memory d1,
     G2Point memory d2
-  ) internal view returns (bool) {
+  ) internal view {
     G1Point[] memory p1 = new G1Point[](4);
     G2Point[] memory p2 = new G2Point[](4);
     p1[0] = a1;
@@ -174,13 +174,12 @@ library Pairing {
     p2[1] = b2;
     p2[2] = c2;
     p2[3] = d2;
-    return pairing(p1, p2);
+    pairingCheck(p1, p2);
   }
 }
 
 contract Verifier {
   using Pairing for *;
-
 
   struct VerifyingKey {
     Pairing.G1Point alfa1;
@@ -267,21 +266,26 @@ contract Verifier {
     uint256[2] memory c,
     uint256[4] memory input
   ) public view returns (bool r) {
+
+    // If the values are not in the correct range, the 
     Proof memory proof;
     proof.A = Pairing.G1Point(a[0], a[1]);
     proof.B = Pairing.G2Point([b[0][0], b[0][1]], [b[1][0], b[1][1]]);
     proof.C = Pairing.G1Point(c[0], c[1]);
 
     VerifyingKey memory vk = verifyingKey();
-    require(input.length + 1 == vk.IC.length, "verifier-bad-input");
+    if (input.length + 1 != vk.IC.length) revert Pairing.InvalidProof();
+    
     // Compute the linear combination vk_x
     Pairing.G1Point memory vk_x = Pairing.G1Point(0, 0);
     for (uint256 i = 0; i < input.length; i++) {
-      require(input[i] < Pairing.SCALAR_MODULUS, "verifier-gte-snark-scalar-field");
+      if (input[i] >= Pairing.SCALAR_MODULUS) revert Pairing.InvalidProof();
       vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[i + 1], input[i]));
     }
     vk_x = Pairing.addition(vk_x, vk.IC[0]);
-    bool pairingCheck = Pairing.pairingProd4(Pairing.negate(proof.A), proof.B, vk.alfa1, vk.beta2, vk_x, vk.gamma2, proof.C, vk.delta2);
-    return pairingCheck;
+ 
+    Pairing.pairingProd4(Pairing.negate(proof.A), proof.B, vk.alfa1, vk.beta2, vk_x, vk.gamma2, proof.C, vk.delta2);
+
+    return true; // TODO: For backwards compatibility.
   }
 }
