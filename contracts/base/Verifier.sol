@@ -262,7 +262,18 @@ contract Verifier {
     );
   }
 
-  function verify(uint256[4] memory input, Proof memory proof) internal view returns (bool) {
+  /// @return r  bool true if proof is valid
+  function verifyProof(
+    uint256[2] memory a,
+    uint256[2][2] memory b,
+    uint256[2] memory c,
+    uint256[4] memory input
+  ) public view returns (bool r) {
+    Proof memory proof;
+    proof.A = Pairing.G1Point(a[0], a[1]);
+    proof.B = Pairing.G2Point([b[0][0], b[0][1]], [b[1][0], b[1][1]]);
+    proof.C = Pairing.G1Point(c[0], c[1]);
+
     uint256 snark_scalar_field = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
     VerifyingKey memory vk = verifyingKey();
     require(input.length + 1 == vk.IC.length, "verifier-bad-input");
@@ -275,19 +286,5 @@ contract Verifier {
     vk_x = Pairing.addition(vk_x, vk.IC[0]);
     bool pairingCheck = Pairing.pairingProd4(Pairing.negate(proof.A), proof.B, vk.alfa1, vk.beta2, vk_x, vk.gamma2, proof.C, vk.delta2);
     return pairingCheck;
-  }
-
-  /// @return r  bool true if proof is valid
-  function verifyProof(
-    uint256[2] memory a,
-    uint256[2][2] memory b,
-    uint256[2] memory c,
-    uint256[4] memory input
-  ) public view returns (bool r) {
-    Proof memory proof;
-    proof.A = Pairing.G1Point(a[0], a[1]);
-    proof.B = Pairing.G2Point([b[0][0], b[0][1]], [b[1][0], b[1][1]]);
-    proof.C = Pairing.G1Point(c[0], c[1]);
-    return verify(input, proof);
   }
 }
