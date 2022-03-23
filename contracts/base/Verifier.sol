@@ -217,12 +217,11 @@ contract Verifier {
     
     // Compute the linear combination vk_x of inputs times IC
     if (input.length + 1 != vk.IC.length) revert Pairing.InvalidProof();
-    Pairing.G1Point memory vk_x = Pairing.G1Point(0, 0);
+    Pairing.G1Point memory vk_x = vk.IC[0];
     for (uint256 i = 0; i < input.length; i++) {
       if (input[i] >= Pairing.SCALAR_MODULUS) revert Pairing.InvalidProof();
       vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[i + 1], input[i]));
     }
-    vk_x = Pairing.addition(vk_x, vk.IC[0]);
  
     // Check pairing
     Pairing.G1Point[] memory p1 = new Pairing.G1Point[](4);
