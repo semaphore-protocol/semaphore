@@ -16,6 +16,13 @@
 pragma solidity ^0.8.4;
 
 library Pairing {
+
+  // The prime q in the base field F_q for G1
+  uint256 constant BASE_MODULUS = 21888242871839275222246405745257275088696311157297823662689037894645226208583;
+
+  // The prime moludus of the scalar field of G1.
+  uint256 constant SCALAR_MODULUS = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
+
   struct G1Point {
     uint256 X;
     uint256 Y;
@@ -59,10 +66,8 @@ library Pairing {
 
   /// @return r the negation of p, i.e. p.addition(p.negate()) should be zero.
   function negate(G1Point memory p) internal pure returns (G1Point memory r) {
-    // The prime q in the base field F_q for G1
-    uint256 q = 21888242871839275222246405745257275088696311157297823662689037894645226208583;
     if (p.X == 0 && p.Y == 0) return G1Point(0, 0);
-    return G1Point(p.X, q - (p.Y % q));
+    return G1Point(p.X, BASE_MODULUS - (p.Y % BASE_MODULUS));
   }
 
   /// @return r the sum of two points of G1
@@ -185,6 +190,8 @@ library Pairing {
 
 contract Verifier {
   using Pairing for *;
+
+
   struct VerifyingKey {
     Pairing.G1Point alfa1;
     Pairing.G2Point beta2;
@@ -192,6 +199,7 @@ contract Verifier {
     Pairing.G2Point delta2;
     Pairing.G1Point[] IC;
   }
+
   struct Proof {
     Pairing.G1Point A;
     Pairing.G2Point B;
@@ -274,13 +282,12 @@ contract Verifier {
     proof.B = Pairing.G2Point([b[0][0], b[0][1]], [b[1][0], b[1][1]]);
     proof.C = Pairing.G1Point(c[0], c[1]);
 
-    uint256 snark_scalar_field = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
     VerifyingKey memory vk = verifyingKey();
     require(input.length + 1 == vk.IC.length, "verifier-bad-input");
     // Compute the linear combination vk_x
     Pairing.G1Point memory vk_x = Pairing.G1Point(0, 0);
     for (uint256 i = 0; i < input.length; i++) {
-      require(input[i] < snark_scalar_field, "verifier-gte-snark-scalar-field");
+      require(input[i] < Pairing.SCALAR_MODULUS, "verifier-gte-snark-scalar-field");
       vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[i + 1], input[i]));
     }
     vk_x = Pairing.addition(vk_x, vk.IC[0]);
