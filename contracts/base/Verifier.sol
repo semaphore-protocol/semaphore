@@ -116,30 +116,6 @@ library Pairing {
     }
     if (!success || out[0] != 1) revert InvalidProof();
   }
-
-  /// Convenience method for a pairing check for four pairs.
-  function pairingProd4(
-    G1Point memory a1,
-    G2Point memory a2,
-    G1Point memory b1,
-    G2Point memory b2,
-    G1Point memory c1,
-    G2Point memory c2,
-    G1Point memory d1,
-    G2Point memory d2
-  ) internal view {
-    G1Point[] memory p1 = new G1Point[](4);
-    G2Point[] memory p2 = new G2Point[](4);
-    p1[0] = a1;
-    p1[1] = b1;
-    p1[2] = c1;
-    p1[3] = d1;
-    p2[0] = a2;
-    p2[1] = b2;
-    p2[2] = c2;
-    p2[3] = d2;
-    pairingCheck(p1, p2);
-  }
 }
 
 contract Verifier {
@@ -231,16 +207,16 @@ contract Verifier {
     uint256[4] memory input
   ) public view returns (bool r) {
 
-    // If the values are not in the correct range, the 
+    // If the values are not in the correct range, the pairing check will fail.
     Proof memory proof;
     proof.A = Pairing.G1Point(a[0], a[1]);
     proof.B = Pairing.G2Point([b[0][0], b[0][1]], [b[1][0], b[1][1]]);
     proof.C = Pairing.G1Point(c[0], c[1]);
 
     VerifyingKey memory vk = verifyingKey();
-    if (input.length + 1 != vk.IC.length) revert Pairing.InvalidProof();
     
-    // Compute the linear combination vk_x
+    // Compute the linear combination vk_x of inputs times IC
+    if (input.length + 1 != vk.IC.length) revert Pairing.InvalidProof();
     Pairing.G1Point memory vk_x = Pairing.G1Point(0, 0);
     for (uint256 i = 0; i < input.length; i++) {
       if (input[i] >= Pairing.SCALAR_MODULUS) revert Pairing.InvalidProof();
@@ -248,7 +224,14 @@ contract Verifier {
     }
     vk_x = Pairing.addition(vk_x, vk.IC[0]);
  
-    Pairing.pairingProd4(Pairing.negate(proof.A), proof.B, vk.alfa1, vk.beta2, vk_x, vk.gamma2, proof.C, vk.delta2);
+    // Check pairing
+    Pairing.G1Point[] memory p1 = new Pairing.G1Point[](4);
+    Pairing.G2Point[] memory p2 = new Pairing.G2Point[](4);
+    p1[0] = Pairing.negate(proof.A);  p2[0] = proof.B;
+    p1[1] = vk.alfa1;                 p2[1] = vk.beta2;
+    p1[2] = vk_x;                     p2[2] = vk.gamma2;
+    p1[3] = proof.C;                  p2[3] = vk.delta2;
+    Pairing.pairingCheck(p1, p2);
 
     return true; // TODO: For backwards compatibility.
   }
