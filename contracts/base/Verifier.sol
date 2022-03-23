@@ -9,7 +9,9 @@
 //      fixed linter warnings
 //      added requiere error messages
 //
-//
+// 2021 Remco Bloemen
+//       cleaned up code
+//      
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
 
@@ -74,11 +76,6 @@ library Pairing {
     // solium-disable-next-line security/no-inline-assembly
     assembly {
       success := staticcall(sub(gas(), 2000), 6, input, 0xc0, r, 0x60)
-      // Use "invalid" to make gas estimation work
-      switch success
-      case 0 {
-        invalid()
-      }
     }
     require(success, "pairing-add-failed");
   }
@@ -94,11 +91,6 @@ library Pairing {
     // solium-disable-next-line security/no-inline-assembly
     assembly {
       success := staticcall(sub(gas(), 2000), 7, input, 0x80, r, 0x60)
-      // Use "invalid" to make gas estimation work
-      switch success
-      case 0 {
-        invalid()
-      }
     }
     require(success, "pairing-mul-failed");
   }
@@ -125,11 +117,6 @@ library Pairing {
     // solium-disable-next-line security/no-inline-assembly
     assembly {
       success := staticcall(sub(gas(), 2000), 8, add(input, 0x20), mul(inputSize, 0x20), out, 0x20)
-      // Use "invalid" to make gas estimation work
-      switch success
-      case 0 {
-        invalid()
-      }
     }
     require(success, "pairing-opcode-failed");
     return out[0] != 0;
