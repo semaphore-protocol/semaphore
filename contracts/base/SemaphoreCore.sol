@@ -15,7 +15,7 @@ contract SemaphoreCore is ISemaphoreCore {
   mapping(uint256 => bool) internal nullifierHashes;
 
   /// @dev Returns true if no nullifier already exists and if the zero-knowledge proof is valid.
-  /// Otherwise it returns false.
+  /// Otherwise it reverts.
   /// @param signal: Semaphore signal.
   /// @param root: Root of the Merkle tree.
   /// @param nullifierHash: Nullifier hash.
@@ -34,13 +34,14 @@ contract SemaphoreCore is ISemaphoreCore {
 
     uint256 signalHash = _hashSignal(signal);
 
-    return
-      verifier.verifyProof(
-        [proof[0], proof[1]],
-        [[proof[2], proof[3]], [proof[4], proof[5]]],
-        [proof[6], proof[7]],
-        [root, nullifierHash, signalHash, externalNullifier]
-      );
+    verifier.verifyProof(
+      [proof[0], proof[1]],
+      [[proof[2], proof[3]], [proof[4], proof[5]]],
+      [proof[6], proof[7]],
+      [root, nullifierHash, signalHash, externalNullifier]
+    );
+
+    return true; // TODO: This is redundant
   }
 
   /// @dev Stores the nullifier hash to prevent double-signaling.
