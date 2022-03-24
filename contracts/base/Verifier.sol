@@ -61,11 +61,16 @@ library Pairing {
   /// @return r the negation of p, i.e. p.addition(p.negate()) should be zero.
   function negate(G1Point memory p) internal pure returns (G1Point memory r) {
     if (p.X == 0 && p.Y == 0) return G1Point(0, 0);
-    return G1Point(p.X, BASE_MODULUS - (p.Y % BASE_MODULUS));
+    // Validate input or revert
+    if (p.X >= BASE_MODULUS || p.Y >= BASE_MODULUS) revert InvalidProof();
+    // We know p.Y > 0 and p.Y < BASE_MODULUS.
+    return G1Point(p.X, BASE_MODULUS - p.Y);
   }
 
   /// @return r the sum of two points of G1
   function addition(G1Point memory p1, G1Point memory p2) internal view returns (G1Point memory r) {
+    // By EIP-196 all input is validated to be less than the BASE_MODULUS and form points
+    // on the curve.
     uint256[4] memory input;
     input[0] = p1.X;
     input[1] = p1.Y;
@@ -82,6 +87,9 @@ library Pairing {
   /// @return r the product of a point on G1 and a scalar, i.e.
   /// p == p.scalar_mul(1) and p.addition(p) == p.scalar_mul(2) for all points p.
   function scalar_mul(G1Point memory p, uint256 s) internal view returns (G1Point memory r) {
+    // By EIP-196 the values p.X and p.Y are verified to less than the BASE_MODULUS and 
+    // form a valid point on the curve. But the scalar is not verified, so we do that explicitelly.
+    if (s >= SCALAR_MODULUS) revert InvalidProof();
     uint256[3] memory input;
     input[0] = p.X;
     input[1] = p.Y;
@@ -98,7 +106,9 @@ library Pairing {
   /// e(p1[0], p2[0]) *  .... * e(p1[n], p2[n]) == 1
   /// For example pairing([P1(), P1().negate()], [P2(), P2()]) should succeed
   function pairingCheck(G1Point[] memory p1, G2Point[] memory p2) internal view {
-    require(p1.length == p2.length, "pairing-lengths-failed");
+    // By EIP-197 all input is verified to be less than the BASE_MODULUS and form elements in their
+    // respective groups of the right order.
+    if (p1.length != p2.length) revert InvalidProof();
     uint256 elements = p1.length;
     uint256 inputSize = elements * 6;
     uint256[] memory input = new uint256[](inputSize);
@@ -208,10 +218,8 @@ contract Verifier {
     uint256[2][2] memory b,
     uint256[2] memory c,
     uint256[4] memory input
-  ) public view returns (bool) {
-
-    // If the values are not in the correct range, the pairing check will fail
-    // because by EIP197 it verfies all input.
+  ) public view {
+    // If the values are not in the correct range, the Pairing contract will revert.
     Proof memory proof;
     proof.A = Pairing.G1Point(a[0], a[1]);
     proof.B = Pairing.G2Point([b[0][0], b[0][1]], [b[1][0], b[1][1]]);
@@ -221,7 +229,6 @@ contract Verifier {
     
     // Compute the linear combination vk_x of inputs times IC
     if (input.length + 1 != vk.IC.length) revert Pairing.InvalidProof();
-    // By EIP196 the scalar_mul verifies its input is in the correct range.
     Pairing.G1Point memory vk_x = vk.IC[0];
     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[1], input[0]));
     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[2], input[1]));
