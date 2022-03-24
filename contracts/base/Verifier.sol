@@ -13,6 +13,7 @@
 //       cleaned up code
 //       added InvalidProve() error
 //       always revert with InvalidProof() on invalid proof
+//       make Pairing strict
 //      
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
@@ -212,7 +213,6 @@ contract Verifier {
   }
 
   /// @dev Verifies a Semaphore proof. Reverts with InvalidProof if the proof is invalid.
-  /// @return Returns `true` if the proof is valid, reversts otherwise.
   function verifyProof(
     uint256[2] memory a,
     uint256[2][2] memory b,
@@ -243,7 +243,5 @@ contract Verifier {
     p1[2] = vk_x;                     p2[2] = vk.gamma2;
     p1[3] = proof.C;                  p2[3] = vk.delta2;
     Pairing.pairingCheck(p1, p2);
-
-    return true; // TODO: For backwards compatibility.
   }
 }
