@@ -2,7 +2,7 @@
   "name": "semaphore",
   "version": "2.0.0",
   "description": "A privacy gadget for creating anonymous proof of membership on Ethereum.",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "homepage": "https://github.com/appliedzkp/semaphore.git#readme",
   "repository": {
     "type": "git",
