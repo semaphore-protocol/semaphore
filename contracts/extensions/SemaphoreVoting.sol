@@ -88,11 +88,8 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     uint256 root = getRoot(pollId);
     IVerifier verifier = verifiers[depth];
 
-    require(
-      _isValidProof(vote, root, nullifierHash, pollId, proof, verifier),
-      "SemaphoreVoting: the proof is not valid"
-    );
-
+    _verifyProof(vote, root, nullifierHash, pollId, proof, verifier);
+    
     // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).
     _saveNullifierHash(nullifierHash);
 
