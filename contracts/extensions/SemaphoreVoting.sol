@@ -89,7 +89,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     IVerifier verifier = verifiers[depth];
 
     _verifyProof(vote, root, nullifierHash, pollId, proof, verifier);
-    
+
     // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).
     _saveNullifierHash(nullifierHash);
 

@@ -14,7 +14,7 @@ contract SemaphoreCore is ISemaphoreCore {
   /// It is used to prevent double-signaling.
   mapping(uint256 => bool) internal nullifierHashes;
 
-  /// @dev Asserts that no nullifier already exists and that the zero-knowledge proof is valid.
+  /// @dev Asserts that no nullifier already exists and if the zero-knowledge proof is valid.
   /// Otherwise it reverts.
   /// @param signal: Semaphore signal.
   /// @param root: Root of the Merkle tree.

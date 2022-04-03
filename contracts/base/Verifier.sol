@@ -14,12 +14,11 @@
 //       added InvalidProve() error
 //       always revert with InvalidProof() on invalid proof
 //       make Pairing strict
-//      
+//
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
 
 library Pairing {
-
   error InvalidProof();
 
   // The prime q in the base field F_q for G1
@@ -88,7 +87,7 @@ library Pairing {
   /// @return r the product of a point on G1 and a scalar, i.e.
   /// p == p.scalar_mul(1) and p.addition(p) == p.scalar_mul(2) for all points p.
   function scalar_mul(G1Point memory p, uint256 s) internal view returns (G1Point memory r) {
-    // By EIP-196 the values p.X and p.Y are verified to less than the BASE_MODULUS and 
+    // By EIP-196 the values p.X and p.Y are verified to less than the BASE_MODULUS and
     // form a valid point on the curve. But the scalar is not verified, so we do that explicitelly.
     if (s >= SCALAR_MODULUS) revert InvalidProof();
     uint256[3] memory input;
@@ -226,7 +225,7 @@ contract Verifier {
     proof.C = Pairing.G1Point(c[0], c[1]);
 
     VerifyingKey memory vk = verifyingKey();
-    
+
     // Compute the linear combination vk_x of inputs times IC
     if (input.length + 1 != vk.IC.length) revert Pairing.InvalidProof();
     Pairing.G1Point memory vk_x = vk.IC[0];
@@ -234,14 +233,18 @@ contract Verifier {
     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[2], input[1]));
     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[3], input[2]));
     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[4], input[3]));
- 
+
     // Check pairing
     Pairing.G1Point[] memory p1 = new Pairing.G1Point[](4);
     Pairing.G2Point[] memory p2 = new Pairing.G2Point[](4);
-    p1[0] = Pairing.negate(proof.A);  p2[0] = proof.B;
-    p1[1] = vk.alfa1;                 p2[1] = vk.beta2;
-    p1[2] = vk_x;                     p2[2] = vk.gamma2;
-    p1[3] = proof.C;                  p2[3] = vk.delta2;
+    p1[0] = Pairing.negate(proof.A);
+    p2[0] = proof.B;
+    p1[1] = vk.alfa1;
+    p2[1] = vk.beta2;
+    p1[2] = vk_x;
+    p2[2] = vk.gamma2;
+    p1[3] = proof.C;
+    p2[3] = vk.delta2;
     Pairing.pairingCheck(p1, p2);
   }
 }
