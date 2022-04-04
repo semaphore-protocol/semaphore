@@ -158,7 +158,7 @@ describe("SemaphoreWhistleblowing", () => {
         .connect(accounts[1])
         .publishLeak(bytes32Leak, nullifierHash, entityIds[1], solidityProof)
 
-      await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: the proof is not valid")
+      await expect(transaction).to.be.revertedWith("InvalidProof()")
     })
 
     it("Should publish a leak", async () => {

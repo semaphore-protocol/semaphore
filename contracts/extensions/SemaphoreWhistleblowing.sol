@@ -81,10 +81,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     uint256 root = getRoot(entityId);
     IVerifier verifier = verifiers[depth];
 
-    require(
-      _isValidProof(leak, root, nullifierHash, entityId, proof, verifier),
-      "SemaphoreWhistleblowing: the proof is not valid"
-    );
+    _verifyProof(leak, root, nullifierHash, entityId, proof, verifier);
 
     emit LeakPublished(entityId, leak);
   }
