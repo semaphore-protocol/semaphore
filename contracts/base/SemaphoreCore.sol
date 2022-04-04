@@ -14,33 +14,32 @@ contract SemaphoreCore is ISemaphoreCore {
   /// It is used to prevent double-signaling.
   mapping(uint256 => bool) internal nullifierHashes;
 
-  /// @dev Returns true if no nullifier already exists and if the zero-knowledge proof is valid.
-  /// Otherwise it returns false.
+  /// @dev Asserts that no nullifier already exists and if the zero-knowledge proof is valid.
+  /// Otherwise it reverts.
   /// @param signal: Semaphore signal.
   /// @param root: Root of the Merkle tree.
   /// @param nullifierHash: Nullifier hash.
   /// @param externalNullifier: External nullifier.
   /// @param proof: Zero-knowledge proof.
   /// @param verifier: Verifier address.
-  function _isValidProof(
+  function _verifyProof(
     bytes32 signal,
     uint256 root,
     uint256 nullifierHash,
     uint256 externalNullifier,
     uint256[8] calldata proof,
     IVerifier verifier
-  ) internal view returns (bool) {
+  ) internal view {
     require(!nullifierHashes[nullifierHash], "SemaphoreCore: you cannot use the same nullifier twice");
 
     uint256 signalHash = _hashSignal(signal);
 
-    return
-      verifier.verifyProof(
-        [proof[0], proof[1]],
-        [[proof[2], proof[3]], [proof[4], proof[5]]],
-        [proof[6], proof[7]],
-        [root, nullifierHash, signalHash, externalNullifier]
-      );
+    verifier.verifyProof(
+      [proof[0], proof[1]],
+      [[proof[2], proof[3]], [proof[4], proof[5]]],
+      [proof[6], proof[7]],
+      [root, nullifierHash, signalHash, externalNullifier]
+    );
   }
 
   /// @dev Stores the nullifier hash to prevent double-signaling.
