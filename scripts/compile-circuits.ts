@@ -21,6 +21,7 @@ async function exec(command: string) {
 
 async function main() {
   const buildPath = config.paths.build.snark
+  const templatesPath = config.paths["snarkjs-templates"]
   const solidityVersion = config.solidity.version
 
   if (!fs.existsSync(buildPath)) {
@@ -53,7 +54,7 @@ async function main() {
 
   let verifierCode = await zKey.exportSolidityVerifier(
     `${buildPath}/semaphore_final.zkey`,
-    { groth16: fs.readFileSync("./node_modules/snarkjs/templates/verifier_groth16.sol.ejs", "utf8") },
+    { groth16: fs.readFileSync(`${templatesPath}/verifier_groth16.sol.ejs`, "utf8") },
     logger
   )
   verifierCode = verifierCode.replace(/pragma solidity \^\d+\.\d+\.\d+/, `pragma solidity ^${solidityVersion}`)
