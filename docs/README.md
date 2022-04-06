@@ -18,8 +18,8 @@ This directory contains the Semaphore documentation published at [semaphore.appl
 
 ## Build and run Semaphore docs
 
-Semaphore documentation is written in Markdown syntax.
-[semaphore.appliedzkp.org/docs](https://semaphore.appliedzkp.org/docs) uses the [Docusaurus](https://docusaurus.io/) site generator and JavaScript tooling to run, build, and deploy the web pages.
+Semaphore documentation uses Markdown syntax.
+[semaphore.appliedzkp.org/docs](https://semaphore.appliedzkp.org/docs) uses the [Docusaurus](https://docusaurus.io/) site generator and JavaScript tooling to build and deploy styles, scripts, and HTML.
 
 - [Install and run for development](#install-and-run-for-development)
 - [Use deployment commands](#use-deployment-commands)
