@@ -12,28 +12,69 @@
     <img alt="Repository top language" src="https://img.shields.io/github/languages/top/akinovak/semaphore-spec?style=flat-square">
 </p>
 
-Our [documentation website](https://akinovak.github.io/semaphore-spec) was generated with [Docusaurus](https://docusaurus.io/). Please, check https://docusaurus.io/docs for more information.
-
 ---
 
-## 🛠 Install
+This directory contains the Semaphore documentation published at [semaphore.appliedzkp.org/docs](https://semaphore.appliedzkp.org/docs).
 
-Clone this repository and install the dependencies:
+## Build and run Semaphore docs
 
-```bash
-$ git clone https://github.com/akinovak/semaphore-spec.git semaphore-spec
-$ cd semaphore-spec && yarn
+Semaphore documentation uses Markdown syntax.
+[semaphore.appliedzkp.org/docs](https://semaphore.appliedzkp.org/docs) uses the [Docusaurus](https://docusaurus.io/) site generator and JavaScript tooling to build and deploy styles, scripts, and HTML.
+
+- [Install and run for development](#install-and-run-for-development)
+- [Use deployment commands](#use-deployment-commands)
+
+## Install and run for development
+
+Install dependencies, build the documentation, and run the site on your local machine.
+
+### Install Node.js and a package manager
+
+If you haven't already, download and install [Node.js](https://nodejs.org/en/).
+
+You can use `npm` (included with Node.js) or `yarn` to install Docusaurus and other Node.js packages.
+To install `yarn`, run the following in your terminal:
+
+```sh
+$ npm i --global yarn
 ```
 
-## 📜 Usage
+### 🛠 Get the code
 
-### Local Development
+Clone the Semaphore repository and then change to the `docs` directory:
+
+```sh
+$ git clone https://github.com/appliedzkp/semaphore.git && cd semaphore/docs
+```
+
+### Install dependencies
+
+To install dependencies, run `yarn`:
+
+```sh
+$ yarn
+```
+
+### Start the site
+
+To generate the HTML and start the site, run `yarn start`:
+
+```sh
+$ yarn start
+```
+
+Visit the Semaphore docs site in your browser at [http://localhost:3000](http://localhost:3000).
+
+## 📜 Use deployment commands
+
+### Develop
 
 ```
 $ yarn start
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+Th `start` command starts a local development server (default port is `:3000`) and launches the site in your browser.
+As you edit, the server reloads most changes and automatically refreshes the site in your browser.
 
 ### Build
 
@@ -41,14 +82,12 @@ This command starts a local development server and opens up a browser window. Mo
 $ yarn build
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+The `build` command generates static content into the `build` directory that can be served by any static content hosting service.
 
-### Deployment
+### Deploy
 
 ```
 $ GIT_USER=<Your GitHub username> USE_SSH=true yarn deploy
 ```
 
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
-
-**Notice**: You can find all the markdown documentation files in the `docs` folder.
+If you use GitHub pages for hosting, this command lets you build the website and push to the `gh-pages` branch.
