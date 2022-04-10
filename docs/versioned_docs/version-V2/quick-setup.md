@@ -4,46 +4,53 @@ sidebar_position: 2
 
 # Quick setup
 
-The following setup will allow you to create a simple Hardhat project with Semaphore (contract and tests). If you need a more complete demo try [semaphore-boilerplate](https://github.com/cedoor/semaphore-boilerplate/). It can be a good starting point to create your DApp.
+Create a Hardhat project that uses Semaphore and ZK-Kit.
+To checkout the code used in this guide, visit the [semaphore-quick-setup](https://github.com/cedoor/semaphore-quick-setup) repository.
 
-:::info
-Visit the [semaphore-quick-setup](https://github.com/cedoor/semaphore-quick-setup) repository to get a full view of the code used below.
-:::
+## Hardhat
+
+[Hardhat](https://hardhat.org/) is a development environment to compile, deploy, test, and debug Ethereum software.
+It helps developers manage and automate tasks for building smart contracts and dApps.
+Hardhat includes the Hardhat Network, a local Ethereum network for development.
+
+To get started with Semaphore and Hardhat, follow the steps below.
 
 ## Create a Node.js project
 
-1. Download and install [Node.js/NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) and [Yarn](https://yarnpkg.com/getting-started/install).
-2. Create your project:
+1. Download and install the latest [Node.js LTS version](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) and [Yarn](https://yarnpkg.com/getting-started/install).
+2. Create a directory for the project and change to the new directory.
 
-```bash
-$ mkdir semaphore-example
-$ cd semaphore-example
-$ yarn init
+```sh
+mkdir semaphore-example
+cd semaphore-example
+```
+3. Run `yarn init` to initialize the Node.Js project.
+
+```sh
+yarn init
 ```
 
 ## Install Hardhat and the Semaphore packages
 
 1. Install [Hardhat](https://hardhat.org/getting-started/) and create a basic sample project:
 
-```bash
-$ yarn add hardhat --dev
-$ yarn hardhat # Create a basic sample project and confirm the other requests.
+```sh
+yarn add hardhat --dev
+yarn hardhat
+# At the prompt, select "Create a basic sample project"
+# and then enter through the prompts.
 ```
-
-:::tip
-Feel free to create more complex sample projects if you are an advanced Hardhat user.
-:::
 
 2. Install the [Semaphore contracts](technical-reference/contracts) and its [ZK-kit libraries](technical-reference/zk-kit):
 
-```bash
-$ yarn add @appliedzkp/semaphore-contracts
-$ yarn add @zk-kit/identity @zk-kit/protocols --dev
+```sh
+yarn add @appliedzkp/semaphore-contracts
+yarn add @zk-kit/identity @zk-kit/protocols --dev
 ```
 
-## Create your contract
+## Create the Semaphore contract
 
-Rename `Greeter.sol` to `Greeters.sol` and insert the following code:
+In `./contracts`, rename `Greeter.sol` to `Greeters.sol` and paste the following code:
 
 ```solidity title="./semaphore-example/contracts/Greeters.sol"
 //SPDX-License-Identifier: Unlicense
@@ -53,7 +60,7 @@ import "@appliedzkp/semaphore-contracts/interfaces/IVerifier.sol";
 import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
 
 /// @title Greeters contract.
-/// @dev The following code is just a example to show how Semaphore con be used.
+/// @dev The following code is one example of how to use Semaphore.
 contract Greeters is SemaphoreCore {
   // A new greeting is published every time a user's proof is validated.
   event NewGreeting(bytes32 greeting);
@@ -71,7 +78,7 @@ contract Greeters is SemaphoreCore {
   }
 
   // Only users who create valid proofs can greet.
-  // The external nullifier is in this example the root of the Merkle tree.
+  // In this example, the external nullifier is the root of the Merkle tree.
   function greet(
     bytes32 _greeting,
     uint256 _nullifierHash,
@@ -79,7 +86,8 @@ contract Greeters is SemaphoreCore {
   ) external {
     _verifyProof(_greeting, greeters, _nullifierHash, greeters, _proof, verifier);
 
-    // Prevent double-greeting (nullifierHash = hash(root + identityNullifier)).
+    // Prevent a double greeting
+    (nullifierHash = hash(root + identityNullifier)).
     // Every user can greet once.
     _saveNullifierHash(_nullifierHash);
 
@@ -243,3 +251,6 @@ You can also deploy your contract in a local Hardhat network and use it in your 
 $ yarn hardhat node
 $ yarn hardhat deploy --network localhost # In another tab.
 ```
+
+For a more complete demo, see [semaphore-boilerplate](https://github.com/cedoor/semaphore-boilerplate/).
+It can be a good starting point to create your DApp.
