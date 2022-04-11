@@ -77,10 +77,7 @@ contract Greeters is SemaphoreCore {
     uint256 _nullifierHash,
     uint256[8] calldata _proof
   ) external {
-    require(
-      _isValidProof(_greeting, greeters, _nullifierHash, greeters, _proof, verifier),
-      "Greeters: the proof is not valid"
-    );
+    _verifyProof(_greeting, greeters, _nullifierHash, greeters, _proof, verifier);
 
     // Prevent double-greeting (nullifierHash = hash(root + identityNullifier)).
     // Every user can greet once.
