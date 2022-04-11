@@ -60,4 +60,4 @@ The following is a list of our deployed onchain verifiers. Each `Verifier.sol` c
 
 | Depth | Kovan                                                                                          | Arbitrum One |
 | ----- | ---------------------------------------------------------------------------------------------- | ------------ |
-| 20    | [0x066c...9c4C](https://kovan.etherscan.io/address/0x066cC22f8CA2A8D90D7Ff77D8a10A27e629c9c4C) |              |
+| 20    | [0xed75...0E18](https://kovan.etherscan.io/address/0xed7582b4da6ADaFA0579cF7Ff7DF0812633b0E18) |              |
