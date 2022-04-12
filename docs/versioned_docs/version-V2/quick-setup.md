@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Quick start
+# Quick setup
 
 Learn how to create and test an Ethereum smart contract that uses zero-knowledge proofs to verify membership.
 
@@ -46,7 +46,7 @@ yarn hardhat
 [`@appliedzkp/semaphore-contracts`](https://github.com/appliedzkp/semaphore/tree/main/contracts) provides a _base contract_ that verifies Semaphore proofs.
 [`@zk-kit`](https://github.com/appliedzkp/zk-kit) provides JavaScript libraries that help developers build zero-knowledge applications.
 
-Use `yarn` to install the _Semaphore contracts_ and _ZK-kit libraries_:
+Use `yarn` to install the `@appliedzkp/semaphore-contracts` and `@zk-kit` packages:
 
 ```sh
 yarn add @appliedzkp/semaphore-contracts
