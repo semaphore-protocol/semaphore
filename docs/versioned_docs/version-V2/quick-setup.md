@@ -32,7 +32,7 @@ yarn init
 
 ## Install Hardhat and the Semaphore packages
 
-1. Install [Hardhat](https://hardhat.org/getting-started/) and create a basic sample project:
+1. Use `yarn` to install [Hardhat](https://hardhat.org/getting-started/) and create a _basic sample project_:
 
 ```sh
 yarn add hardhat --dev
@@ -41,7 +41,7 @@ yarn hardhat
 # and then enter through the prompts.
 ```
 
-2. Install the [Semaphore contracts](technical-reference/contracts) and its [ZK-kit libraries](technical-reference/zk-kit):
+2. Use `yarn` to install the _Semaphore contracts_ and _ZK-kit libraries_:
 
 ```sh
 yarn add @appliedzkp/semaphore-contracts
@@ -49,6 +49,8 @@ yarn add @zk-kit/identity @zk-kit/protocols --dev
 ```
 
 ## Create the Semaphore contract
+
+`@appliedzkp/semaphore-contracts` provides a _base contract_ that verifies Semaphore proofs. In this step, you create your own contract that imports and extends the Semaphore base contract.
 
 In `./contracts`, rename `Greeter.sol` to `Greeters.sol` and paste the following code:
 
@@ -97,9 +99,13 @@ contract Greeters is SemaphoreCore {
 
 ```
 
+For more detail about _Semaphore base contracts_, see [Contracts](https://semaphore.appliedzkp.org/docs/technical-reference/contracts). 
+
 ## Create some identity commitments
 
-Identity commitments are used as the leaves of the Merkle trees used in the protocol and represent the identity of the users. Create a `static` folder and add the following file:
+Identity commitments are used as the leaves of the Merkle trees in the protocol and represent the identity of the users.
+
+Create a `./static` folder and add the following file:
 
 ```json title="./static/identityCommitments.json"
 [
