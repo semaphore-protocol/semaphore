@@ -33,7 +33,7 @@ To checkout the code used in this guide, visit the [semaphore-quick-setup](https
 It helps developers manage and automate tasks for building smart contracts and dApps.
 Hardhat includes the Hardhat Network, a local Ethereum network for development.
 
-Use `yarn` to install [Hardhat](https://hardhat.org/getting-started/) and create a _basic sample project_:
+Run the following `yarn` commands to install [Hardhat](https://hardhat.org/getting-started/) and create a _basic sample project_:
 
 ```sh
 yarn add hardhat --dev
@@ -41,70 +41,71 @@ yarn hardhat
 # At the prompt, select "Create a basic sample project"
 # and then enter through the prompts.
 ```
-## Install Semaphore contracts and Zk-kit
+## Install Semaphore contracts and ZK-kit
 
 [`@appliedzkp/semaphore-contracts`](https://github.com/appliedzkp/semaphore/tree/main/contracts) provides a _base contract_ that verifies Semaphore proofs.
 [`@zk-kit`](https://github.com/appliedzkp/zk-kit) provides JavaScript libraries that help developers build zero-knowledge applications.
 
-Use `yarn` to install the `@appliedzkp/semaphore-contracts` and `@zk-kit` packages:
+Run the following `yarn` commands to install the `@appliedzkp/semaphore-contracts` and `@zk-kit` packages:
 
 ```sh
 yarn add @appliedzkp/semaphore-contracts
 yarn add @zk-kit/identity @zk-kit/protocols --dev
 ```
+
 For more detail about _Semaphore base contracts_, see [Contracts](https://semaphore.appliedzkp.org/docs/technical-reference/contracts).
 
 ## Create the Semaphore contract
 
- In this step, you create a `Greeters` contract that imports and extends the Semaphore base contract.
+In this step, you create a `Greeters` contract that imports and extends the Semaphore base contract.
 
 1. In `./contracts`, rename `Greeter.sol` to `Greeters.sol`.
 2. Replace the contents of `Greeters.sol` with the following code:
 
-```solidity title="./semaphore-example/contracts/Greeters.sol"
-//SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+  ```solidity title="./semaphore-example/contracts/Greeters.sol"
+  //SPDX-License-Identifier: Unlicense
+  pragma solidity ^0.8.0;
 
-import "@appliedzkp/semaphore-contracts/interfaces/IVerifier.sol";
-import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
+  import "@appliedzkp/semaphore-contracts/interfaces/IVerifier.sol";
+  import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
 
-/// @title Greeters contract.
-/// @dev The following code is one example of how to use Semaphore.
-contract Greeters is SemaphoreCore {
-  // A new greeting is published every time a user's proof is validated.
-  event NewGreeting(bytes32 greeting);
+  /// @title Greeters contract.
+  /// @dev The following code is one example of how to use Semaphore.
+  contract Greeters is SemaphoreCore {
+    // A new greeting is published every time a user's proof is validated.
+    event NewGreeting(bytes32 greeting);
 
-  // Greeters are identified by a Merkle root.
-  // The offchain Merkle tree contains the greeters' identity commitments.
-  uint256 public greeters;
+    // Greeters are identified by a Merkle root.
+    // The offchain Merkle tree contains the greeters' identity commitments.
+    uint256 public greeters;
 
-  // The external verifier used to verify Semaphore proofs.
-  IVerifier public verifier;
+    // The external verifier used to verify Semaphore proofs.
+    IVerifier public verifier;
 
-  constructor(uint256 _greeters, address _verifier) {
-    greeters = _greeters;
-    verifier = IVerifier(_verifier);
+    constructor(uint256 _greeters, address _verifier) {
+      greeters = _greeters;
+      verifier = IVerifier(_verifier);
+    }
+
+    // Only users who create valid proofs can greet.
+    // In this example, the external nullifier is the root of the Merkle tree.
+    function greet(
+      bytes32 _greeting,
+      uint256 _nullifierHash,
+      uint256[8] calldata _proof
+    ) external {
+      _verifyProof(_greeting, greeters, _nullifierHash, greeters, _proof, verifier);
+
+      // Prevent a double greeting
+      (nullifierHash = hash(root + identityNullifier)).
+      // Every user can greet once.
+      _saveNullifierHash(_nullifierHash);
+
+      emit NewGreeting(_greeting);
+    }
   }
 
-  // Only users who create valid proofs can greet.
-  // In this example, the external nullifier is the root of the Merkle tree.
-  function greet(
-    bytes32 _greeting,
-    uint256 _nullifierHash,
-    uint256[8] calldata _proof
-  ) external {
-    _verifyProof(_greeting, greeters, _nullifierHash, greeters, _proof, verifier);
-
-    // Prevent a double greeting
-    (nullifierHash = hash(root + identityNullifier)).
-    // Every user can greet once.
-    _saveNullifierHash(_nullifierHash);
-
-    emit NewGreeting(_greeting);
-  }
-}
-
-```
+  ```
 
 ## Create some identity commitments
 
