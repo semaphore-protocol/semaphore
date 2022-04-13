@@ -63,7 +63,7 @@ In this step, you create a `Greeters` contract that imports and extends the Sema
 2. Replace the contents of `Greeters.sol` with the following code:
 
   ```solidity title="./semaphore-example/contracts/Greeters.sol"
-  //SPDX-License-Identifier: Unlicense
+  //SPDX-License-Identifier: MIT
   pragma solidity ^0.8.0;
 
   import "@appliedzkp/semaphore-contracts/interfaces/IVerifier.sol";
