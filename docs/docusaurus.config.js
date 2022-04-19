@@ -37,7 +37,7 @@ module.exports = {
       title: "Semaphore",
       logo: {
         alt: "Semaphore Icon",
-        src: "img/logo.svg"
+        src: "img/semaphore-icon.svg"
       },
       items: [
         {

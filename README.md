@@ -1,6 +1,6 @@
 <p align="center">
     <h1 align="center">
-      <img width="40" src="https://github.com/appliedzkp/semaphore/blob/main/docs/static/img/semaphore.png">  
+      <img width="40" src="https://github.com/appliedzkp/semaphore/blob/main/docs/static/img/semaphore-icon.svg">  
       Semaphore
     </h1>
     <p align="center">A privacy gadget for creating anonymous proof of membership on Ethereum.</p>
