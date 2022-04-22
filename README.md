@@ -58,6 +58,6 @@ The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.pn
 
 The following is a list of our deployed onchain verifiers. Each `Verifier.sol` contract can be used with a binary tree of a certain depth. If depth = 20 the tree can have maximum 2^20 leaves (a group of 1048576 members).
 
-| Depth | Kovan                                                                                          | Arbitrum One |
-| ----- | ---------------------------------------------------------------------------------------------- | ------------ |
-| 20    | [0xed75...0E18](https://kovan.etherscan.io/address/0xed7582b4da6ADaFA0579cF7Ff7DF0812633b0E18) |              |
+| Depth | Kovan                                                                                          | Goerli                                                      | Arbitrum One |
+| ----- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------ |
+| 20    | [0xed75...0E18](https://kovan.etherscan.io/address/0xed7582b4da6ADaFA0579cF7Ff7DF0812633b0E18) | [0xEFD8...aCe5](0xEFD83f827FA5B0496359D817c6CD8a5AA5D2aCe5) |              |
