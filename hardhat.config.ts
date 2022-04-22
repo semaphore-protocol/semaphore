@@ -20,6 +20,11 @@ function getNetworks(): NetworksUserConfig | undefined {
     const accounts = [`0x${process.env.BACKEND_PRIVATE_KEY}`]
 
     return {
+      goerli: {
+        url: `https://goerli.infura.io/v3/${infuraApiKey}`,
+        chainId: 5,
+        accounts
+      },
       kovan: {
         url: `https://kovan.infura.io/v3/${infuraApiKey}`,
         chainId: 42,
