@@ -12,6 +12,7 @@ To checkout the code used in this guide, visit the [semaphore-quick-setup](https
 
 1. Download and install the latest [Node.js LTS version](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) (Hardhat may not work with Node.js _Current_ version).
 
+<<<<<<< HEAD
 2. Download and install the [Yarn](https://yarnpkg.com/getting-started/install) package manager.
 
 3. Create a directory for the project and change to the new directory.
@@ -51,13 +52,26 @@ Run the following `yarn` commands to install the `@appliedzkp/semaphore-contract
 ```sh
 yarn add @appliedzkp/semaphore-contracts
 yarn add @zk-kit/identity @zk-kit/protocols --dev
+=======
+```bash
+mkdir semaphore-example
+cd semaphore-example
+yarn init
+>>>>>>> 39250c7 (docs: remove unnecessary $ terminal prompts.)
 ```
 
 For more detail about _Semaphore base contracts_, see [Contracts](https://semaphore.appliedzkp.org/docs/technical-reference/contracts).
 
 ## Create the Semaphore contract
 
+<<<<<<< HEAD
 In this step, you create a `Greeters` contract that imports and extends the Semaphore base contract.
+=======
+```bash
+yarn add hardhat --dev
+yarn hardhat # Create a basic sample project and confirm the other requests.
+```
+>>>>>>> 39250c7 (docs: remove unnecessary $ terminal prompts.)
 
 1. In `./contracts`, rename `Greeter.sol` to `Greeters.sol`.
 2. Replace the contents of `Greeters.sol` with the following code:
@@ -66,8 +80,15 @@ In this step, you create a `Greeters` contract that imports and extends the Sema
   //SPDX-License-Identifier: MIT
   pragma solidity ^0.8.0;
 
+<<<<<<< HEAD
   import "@appliedzkp/semaphore-contracts/interfaces/IVerifier.sol";
   import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
+=======
+```bash
+yarn add @appliedzkp/semaphore-contracts
+yarn add @zk-kit/identity @zk-kit/protocols --dev
+```
+>>>>>>> 39250c7 (docs: remove unnecessary $ terminal prompts.)
 
   /// @title Greeters contract.
   /// @dev The following code is one example of how to use Semaphore.
@@ -130,13 +151,13 @@ The previous identity commitments have been generated using `@zk-kit/identity` (
 1. Install `@zk-kit/incremental-merkle-tree` and `circomlibjs@0.0.8` to create offchain Merkle trees.
 
 ```bash
-$ yarn add @zk-kit/incremental-merkle-tree circomlibjs@0.0.8 --dev
+yarn add @zk-kit/incremental-merkle-tree circomlibjs@0.0.8 --dev
 ```
 
 2. Install `hardhat-dependency-compiler` to deploy a local verifier.
 
 ```bash
-$ yarn add hardhat-dependency-compiler --dev
+yarn add hardhat-dependency-compiler --dev
 ```
 
 3. Create a `tasks` folder and add the following file:
@@ -251,8 +272,8 @@ describe("Greeters", function () {
 3. Compile and test your contract:
 
 ```bash
-$ yarn hardhat compile
-$ yarn hardhat test
+yarn hardhat compile
+yarn hardhat test
 ```
 
 ## Deploy your contract in a local network
@@ -260,8 +281,8 @@ $ yarn hardhat test
 You can also deploy your contract in a local Hardhat network and use it in your DApp:
 
 ```bash
-$ yarn hardhat node
-$ yarn hardhat deploy --network localhost # In another tab.
+yarn hardhat node
+yarn hardhat deploy --network localhost # In another tab.
 ```
 
 For a more complete demo, see [semaphore-boilerplate](https://github.com/cedoor/semaphore-boilerplate/).
