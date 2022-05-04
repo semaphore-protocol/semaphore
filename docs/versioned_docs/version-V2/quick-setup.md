@@ -306,10 +306,10 @@ and [Chai assertions](https://www.chaijs.com/).
 
 4. Run the following `yarn` commands to compile and test your contract:
 
-  ```bash
-  yarn hardhat compile
-  yarn hardhat test
-  ```
+    ```bash
+    yarn hardhat compile
+    yarn hardhat test
+    ```
 
 ## Deploy your contract to a local network
 
