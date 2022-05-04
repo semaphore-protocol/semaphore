@@ -54,10 +54,20 @@ The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.pn
 
 ⚠️ Semaphore V2 has not yet been audited. Please do not use it in production. You can find Semaphore V1 on [`version/1.0.0`](https://github.com/appliedzkp/semaphore/tree/version/1.0.0).
 
-## Deployed verifiers
+## Deployed contracts
 
-The following is a list of our deployed onchain verifiers. Each `Verifier.sol` contract can be used with a binary tree of a certain depth. If depth = 20 the tree can have maximum 2^20 leaves (a group of 1048576 members).
+### Verifiers
 
-| Depth | Kovan                                                                                          | Goerli                                                      | Arbitrum One |
-| ----- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------ |
+Each `Verifier.sol` contract can be used with a binary tree of a certain depth. If depth = 20 the tree can have maximum 2^20 leaves (a group of 1048576 members).
+
+| Depth | Kovan                                                                                          | Goerli                                                                                          | Arbitrum One |
+| ----- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------ |
 | 20    | [0xed75...0E18](https://kovan.etherscan.io/address/0xed7582b4da6ADaFA0579cF7Ff7DF0812633b0E18) | [0xEFD8...aCe5](https://goerli.etherscan.io/address/0xEFD83f827FA5B0496359D817c6CD8a5AA5D2aCe5) |              |
+
+### Semaphore
+
+Semaphore also provides a [`Semaphore.sol`](https://github.com/appliedzkp/semaphore/blob/main/contracts/Semaphore.sol) contract where you can create groups and zero-knowledge proof.
+
+| Kovan                                                                                          | Goerli                                                                                          | Arbitrum One |
+| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------ |
+| [0x1972...8793](https://kovan.etherscan.io/address/0x19722446e775d86f2585954961E23771d8758793) | [0x4400...dE0b](https://goerli.etherscan.io/address/0x44007fbC9d349966a6d0dfC2098b3db516a7dE0b) |              |

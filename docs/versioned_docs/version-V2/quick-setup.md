@@ -29,10 +29,10 @@ To check out the code used in this guide, visit the
 
 3. Create a directory for the project and change to the new directory.
 
-     ```sh
-     mkdir semaphore-example
-     cd semaphore-example
-     ```
+   ```sh
+   mkdir semaphore-example
+   cd semaphore-example
+   ```
 
 4. In your terminal, run `yarn init` to initialize the Node.js project.
 
@@ -89,49 +89,49 @@ Create a `Greeters` contract that imports and extends the Semaphore base contrac
 1. In `./contracts`, rename `Greeter.sol` to `Greeters.sol`.
 2. Replace the contents of `Greeters.sol` with the following:
 
-    ```solidity title="./semaphore-example/contracts/Greeters.sol"
-    //SPDX-License-Identifier: MIT
-    pragma solidity ^0.8.0;
+   ```solidity title="./semaphore-example/contracts/Greeters.sol"
+   //SPDX-License-Identifier: MIT
+   pragma solidity ^0.8.0;
 
-    import "@appliedzkp/semaphore-contracts/interfaces/IVerifier.sol";
-    import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
+   import "@appliedzkp/semaphore-contracts/interfaces/IVerifier.sol";
+   import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
 
-    /// @title Greeters contract.
-    /// @dev The following code is just a example to show how Semaphore con be used.
-    contract Greeters is SemaphoreCore {
-        // A new greeting is published every time a user's proof is validated.
-        event NewGreeting(bytes32 greeting);
+   /// @title Greeters contract.
+   /// @dev The following code is just a example to show how Semaphore con be used.
+   contract Greeters is SemaphoreCore {
+     // A new greeting is published every time a user's proof is validated.
+     event NewGreeting(bytes32 greeting);
 
-        // Greeters are identified by a Merkle root.
-        // The offchain Merkle tree contains the greeters' identity commitments.
-        uint256 public greeters;
+     // Greeters are identified by a Merkle root.
+     // The offchain Merkle tree contains the greeters' identity commitments.
+     uint256 public greeters;
 
-        // The external verifier used to verify Semaphore proofs.
-        IVerifier public verifier;
+     // The external verifier used to verify Semaphore proofs.
+     IVerifier public verifier;
 
-        constructor(uint256 _greeters, address _verifier) {
-            greeters = _greeters;
-            verifier = IVerifier(_verifier);
-        }
+     constructor(uint256 _greeters, address _verifier) {
+       greeters = _greeters;
+       verifier = IVerifier(_verifier);
+     }
 
-        // Only users who create valid proofs can greet.
-        // The external nullifier is in this example the root of the Merkle tree.
-        function greet(
-            bytes32 _greeting,
-            uint256 _nullifierHash,
-            uint256[8] calldata _proof
-        ) external {
-            _verifyProof(_greeting, greeters, _nullifierHash, greeters, _proof, verifier);
+     // Only users who create valid proofs can greet.
+     // The external nullifier is in this example the root of the Merkle tree.
+     function greet(
+       bytes32 _greeting,
+       uint256 _nullifierHash,
+       uint256[8] calldata _proof
+     ) external {
+       _verifyProof(_greeting, greeters, _nullifierHash, greeters, _proof, verifier);
 
-            // Prevent double-greeting (nullifierHash = hash(root + identityNullifier)).
-            // Every user can greet once.
-            _saveNullifierHash(_nullifierHash);
+       // Prevent double-greeting (nullifierHash = hash(root + identityNullifier)).
+       // Every user can greet once.
+       _saveNullifierHash(_nullifierHash);
 
-            emit NewGreeting(_greeting);
-        }
-    }
+       emit NewGreeting(_greeting);
+     }
+   }
 
-    ```
+   ```
 
 ## Create Semaphore IDs
 
@@ -150,7 +150,7 @@ contains the following array of IDs:
 ```
 
 :::info
-To generate the IDs for this example, we used  `@zk-kit/identity`
+To generate the IDs for this example, we used `@zk-kit/identity`
 (with a [message strategy](https://github.com/appliedzkp/zk-kit/tree/main/packages/identity#creating-an-identity-with-a-message-strategy)) to create messages.
 Then, in Metamask, we signed the messages with the first 3 Ethereum accounts
 of the [Hardhat dev wallet](https://hardhat.org/hardhat-network/reference/#accounts).
@@ -190,48 +190,48 @@ To create a task that deploys the `Greeters` contract, do the following.
    const { task, types } = require("hardhat/config")
 
    task("deploy", "Deploy a Greeters contract")
-    .addOptionalParam("logs", "Print the logs", true, types.boolean)
-    .setAction(async ({ logs }, { ethers }) => {
-      const VerifierContract = await ethers.getContractFactory("Verifier")
-      const verifier = await VerifierContract.deploy()
+     .addOptionalParam("logs", "Print the logs", true, types.boolean)
+     .setAction(async ({ logs }, { ethers }) => {
+       const VerifierContract = await ethers.getContractFactory("Verifier")
+       const verifier = await VerifierContract.deploy()
 
-      await verifier.deployed()
+       await verifier.deployed()
 
-      logs && console.log(`Verifier contract has been deployed to: ${verifier.address}`)
+       logs && console.log(`Verifier contract has been deployed to: ${verifier.address}`)
 
-      const GreetersContract = await ethers.getContractFactory("Greeters")
+       const GreetersContract = await ethers.getContractFactory("Greeters")
 
-      const tree = new IncrementalMerkleTree(poseidon, 20, BigInt(0), 2)
+       const tree = new IncrementalMerkleTree(poseidon, 20, BigInt(0), 2)
 
-      for (const identityCommitment of identityCommitments) {
-        tree.insert(identityCommitment)
-      }
+       for (const identityCommitment of identityCommitments) {
+         tree.insert(identityCommitment)
+       }
 
-      const greeters = await GreetersContract.deploy(tree.root, verifier.address)
+       const greeters = await GreetersContract.deploy(tree.root, verifier.address)
 
-      await greeters.deployed()
+       await greeters.deployed()
 
-      logs && console.log(`Greeters contract has been deployed to: ${greeters.address}`)
+       logs && console.log(`Greeters contract has been deployed to: ${greeters.address}`)
 
-      return greeters
-    })
+       return greeters
+     })
    ```
 
 4. In your `hardhat.config.js` file, add the following:
 
-    ```javascript title="./hardhat.config.js"
-    require("@nomiclabs/hardhat-waffle")
-    require("hardhat-dependency-compiler")
-    require("./tasks/deploy") // Your deploy task.
+   ```javascript title="./hardhat.config.js"
+   require("@nomiclabs/hardhat-waffle")
+   require("hardhat-dependency-compiler")
+   require("./tasks/deploy") // Your deploy task.
 
-    module.exports = {
-      solidity: "0.8.4",
-      dependencyCompiler: {
-        // It allows Hardhat to compile the external Verifier.sol contract.
-        paths: ["@appliedzkp/semaphore-contracts/base/Verifier.sol"]
-      }
-    }
-    ```
+   module.exports = {
+     solidity: "0.8.4",
+     dependencyCompiler: {
+       // It allows Hardhat to compile the external Verifier.sol contract.
+       paths: ["@appliedzkp/semaphore-contracts/base/Verifier.sol"]
+     }
+   }
+   ```
 
 ## Test your smart contract
 
@@ -261,55 +261,55 @@ and [Chai assertions](https://www.chaijs.com/).
    const { run, ethers } = require("hardhat")
 
    describe("Greeters", function () {
-      let contract
-      let signers
+     let contract
+     let signers
 
-      before(async () => {
-          contract = await run("deploy", { logs: false })
+     before(async () => {
+       contract = await run("deploy", { logs: false })
 
-          signers = await ethers.getSigners()
-      })
+       signers = await ethers.getSigners()
+     })
 
-      describe("# greet", () => {
-          const wasmFilePath = "./static/semaphore.wasm"
-          const finalZkeyPath = "./static/semaphore_final.zkey"
+     describe("# greet", () => {
+       const wasmFilePath = "./static/semaphore.wasm"
+       const finalZkeyPath = "./static/semaphore_final.zkey"
 
-          it("Should greet", async () => {
-              const message = await signers[0].signMessage("Sign this message to create your identity!")
+       it("Should greet", async () => {
+         const message = await signers[0].signMessage("Sign this message to create your identity!")
 
-              const identity = new ZkIdentity(Strategy.MESSAGE, message)
-              const identityCommitment = identity.genIdentityCommitment()
-              const greeting = "Hello world"
-              const bytes32Greeting = ethers.utils.formatBytes32String(greeting)
+         const identity = new ZkIdentity(Strategy.MESSAGE, message)
+         const identityCommitment = identity.genIdentityCommitment()
+         const greeting = "Hello world"
+         const bytes32Greeting = ethers.utils.formatBytes32String(greeting)
 
-              const merkleProof = generateMerkleProof(20, BigInt(0), identityCommitments, identityCommitment)
-              const witness = Semaphore.genWitness(
-                  identity.getTrapdoor(),
-                  identity.getNullifier(),
-                  merkleProof,
-                  merkleProof.root,
-                  greeting
-              )
+         const merkleProof = generateMerkleProof(20, BigInt(0), identityCommitments, identityCommitment)
+         const witness = Semaphore.genWitness(
+           identity.getTrapdoor(),
+           identity.getNullifier(),
+           merkleProof,
+           merkleProof.root,
+           greeting
+         )
 
-              const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-              const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
+         const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+         const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
 
-              const nullifierHash = Semaphore.genNullifierHash(merkleProof.root, identity.getNullifier())
+         const nullifierHash = Semaphore.genNullifierHash(merkleProof.root, identity.getNullifier())
 
-              const transaction = contract.greet(bytes32Greeting, nullifierHash, solidityProof)
+         const transaction = contract.greet(bytes32Greeting, nullifierHash, solidityProof)
 
-              await expect(transaction).to.emit(contract, "NewGreeting").withArgs(bytes32Greeting)
-          })
-      })
+         await expect(transaction).to.emit(contract, "NewGreeting").withArgs(bytes32Greeting)
+       })
+     })
    })
    ```
 
 4. Run the following `yarn` commands to compile and test your contract:
 
-    ```bash
-    yarn hardhat compile
-    yarn hardhat test
-    ```
+   ```bash
+   yarn hardhat compile
+   yarn hardhat test
+   ```
 
 ## Deploy your contract to a local network
 
