@@ -219,19 +219,19 @@ To create a task that deploys the `Greeters` contract, do the following.
 
 4. In your `hardhat.config.js` file, add the following:
 
-  ```javascript title="./hardhat.config.js"
-  require("@nomiclabs/hardhat-waffle")
-  require("hardhat-dependency-compiler")
-  require("./tasks/deploy") // Your deploy task.
+    ```javascript title="./hardhat.config.js"
+    require("@nomiclabs/hardhat-waffle")
+    require("hardhat-dependency-compiler")
+    require("./tasks/deploy") // Your deploy task.
 
-  module.exports = {
-    solidity: "0.8.4",
-    dependencyCompiler: {
-      // It allows Hardhat to compile the external Verifier.sol contract.
-      paths: ["@appliedzkp/semaphore-contracts/base/Verifier.sol"]
+    module.exports = {
+      solidity: "0.8.4",
+      dependencyCompiler: {
+        // It allows Hardhat to compile the external Verifier.sol contract.
+        paths: ["@appliedzkp/semaphore-contracts/base/Verifier.sol"]
+      }
     }
-  }
-  ```
+    ```
 
 ## Test your smart contract
 
