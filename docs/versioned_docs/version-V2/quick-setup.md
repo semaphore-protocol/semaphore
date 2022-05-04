@@ -178,7 +178,7 @@ To create a task that deploys the `Greeters` contract, do the following.
    yarn add hardhat-dependency-compiler --dev
    ```
 
-   [`hardhat-dependency-compiler`]((https://github.com/ItsNickBarry/hardhat-dependency-compiler))
+   [`hardhat-dependency-compiler`](https://github.com/ItsNickBarry/hardhat-dependency-compiler)
    compiles Solidity contracts and dependencies.
 
 3. Create a `tasks` folder and add a `./tasks/deploy.js` file that contains the following:
