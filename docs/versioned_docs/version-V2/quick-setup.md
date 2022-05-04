@@ -4,63 +4,87 @@ sidebar_position: 2
 
 # Quick setup
 
-Setup a new Hardhat project with Semaphore.
-Learn how to create and test an Ethereum smart contract that uses zero-knowledge proofs to verify membership.
+Set up a new Hardhat project with Semaphore.
+Learn how to create and test an Ethereum smart contract that uses zero-knowledge
+proofs to verify membership.
 
-To checkout the code used in this guide, visit the [semaphore-quick-setup](https://github.com/cedoor/semaphore-quick-setup) repository.
+To check out the code used in this guide, visit the
+[semaphore-quick-setup](https://github.com/cedoor/semaphore-quick-setup) repository.
+
+1. [Create a Node.js project](#create-a-nodejs-project)
+2. [Install Hardhat](#install-hardhat)
+3. [Install Semaphore contracts and ZK-kit](#install-semaphore-contracts-and-zk-kit)
+4. [Create the Semaphore contract](#create-the-semaphore-contract)
+5. [Create Semaphore IDs](#create-semaphore-ids)
+6. [Create a Hardhat task that deploys your contract](#create-a-hardhat-task-that-deploys-your-contract)
+7. [Deploy your contract to a local network](#deploy-your-contract-to-a-local-network)
 
 ## Create a Node.js project
 
 1. Follow the [Node.js _LTS version_](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
    instructions to install `node` (Hardhat may not work with Node.js _Current_).
 
-2. Follow the [Yarn](https://yarnpkg.com/getting-started/install) instructions to download and install the `yarn` package manager.
+2. Follow the [Yarn](https://yarnpkg.com/getting-started/install) instructions
+   to download and install the `yarn` package manager.
 
 3. Create a directory for the project and change to the new directory.
 
-  ```sh
-  mkdir semaphore-example
-  cd semaphore-example
-  ```
+     ```sh
+     mkdir semaphore-example
+     cd semaphore-example
+     ```
 
-4. Run `yarn init` to initialize the Node.js project.
-
-  ```sh
-  yarn init
-  ```
+4. In your terminal, run `yarn init` to initialize the Node.js project.
 
 ## Install Hardhat
 
-[Hardhat](https://hardhat.org/) is a development environment you can use to compile, deploy, test, and debug Ethereum software.
-It helps developers manage and automate tasks for building smart contracts and dApps.
+[Hardhat](https://hardhat.org/) is a development environment you can use to
+compile, deploy, test, and debug Ethereum software.
 Hardhat includes the Hardhat Network, a local Ethereum network for development.
 
-Run the following `yarn` commands to install [Hardhat](https://hardhat.org/getting-started/) and create a _basic sample project_:
+1. Use `yarn` to install [Hardhat](https://hardhat.org/getting-started/):
 
-```sh
-yarn add hardhat --dev
-yarn hardhat
-# At the prompt, select "Create a basic sample project"
-# and then enter through the prompts.
-```
+   ```sh
+   yarn add hardhat --dev
+   ```
+
+2. Use `yarn` to run `hardhat` and create a _basic sample project_:
+
+   ```sh
+   yarn hardhat
+   # At the prompt, select "Create a basic sample project"
+   # and then enter through the prompts.
+   ```
 
 ## Install Semaphore contracts and ZK-kit
 
-[`@appliedzkp/semaphore-contracts`](https://github.com/appliedzkp/semaphore/tree/main/contracts) provides a _base contract_ that verifies Semaphore proofs.
-[`@zk-kit`](https://github.com/appliedzkp/zk-kit) provides JavaScript libraries that help developers build zero-knowledge applications.
+`@appliedzkp/semaphore-contracts` provides a _base contract_ that verifies
+Semaphore proofs.
+`@appliedzkp/@zk-kit` provides JavaScript libraries that help developers
+build zero-knowledge applications.
 
-Run the following `yarn` commands to install the `@appliedzkp/semaphore-contracts` and `@zk-kit` packages:
+To install these dependencies for your project, do the following:
 
-```sh
-yarn add @appliedzkp/semaphore-contracts
-yarn add @zk-kit/identity @zk-kit/protocols --dev
-```
+1. Use `yarn` to install `@appliedzkp/semaphore-contracts`:
 
-For more detail about _Semaphore base contracts_, see [Contracts](https://semaphore.appliedzkp.org/docs/technical-reference/contracts).
+   ```sh
+   yarn add @appliedzkp/semaphore-contracts
+   ```
+
+   For more detail about _Semaphore base contracts_, see [Contracts](https://semaphore.appliedzkp.org/docs/technical-reference/contracts).
+   To view the source, see [Contracts in the Semaphore repository](https://github.com/appliedzkp/semaphore/tree/main/contracts).
+
+2. Use `yarn` to install `@appliedzkp/@zk-kit`:
+
+   ```sh
+   yarn add @zk-kit/identity @zk-kit/protocols --dev
+   ```
+
+   For more information about `@appliedzkp/@zk-kit`, see the [ZK-kit repository](https://github.com/appliedzkp/zk-kit).
 
 ## Create the Semaphore contract
 
-Create a `Greeters` contract that imports and extends the Semaphore base contract.
+Create a `Greeters` contract that imports and extends the Semaphore base contract:
 
 1. In `./contracts`, rename `Greeter.sol` to `Greeters.sol`.
 2. Replace the contents of `Greeters.sol` with the following:
@@ -111,9 +135,11 @@ Create a `Greeters` contract that imports and extends the Semaphore base contrac
 
 ## Create Semaphore IDs
 
-Semaphore _identity commitments_ (Semaphore IDs) represent user identities and are the leaves of the Merkle trees in the protocol.
+Semaphore _identity commitments_ (Semaphore IDs) represent user identities and
+are the leaves of the Merkle trees in the protocol.
 
-For this example, create a `./static` folder and add a `identityCommitments.json` file that contains the following array of test IDs:
+Create a `./static` folder and add a `./static/identityCommitments.json` file that
+contains the following array of IDs:
 
 ```json title="./static/identityCommitments.json"
 [
@@ -124,32 +150,46 @@ For this example, create a `./static` folder and add a `identityCommitments.json
 ```
 
 :::info
-To generate these identity commitments, we used `@zk-kit/identity` (with a message strategy) and then signed the messages in Metamask with the first 3 Ethereum accounts of the [Hardhat dev wallet](https://hardhat.org/hardhat-network/reference/#accounts).
+To generate the IDs for this example, we used  `@zk-kit/identity`
+(with a [message strategy](https://github.com/appliedzkp/zk-kit/tree/main/packages/identity#creating-an-identity-with-a-message-strategy)) to create messages.
+Then, in Metamask, we signed the messages with the first 3 Ethereum accounts
+of the [Hardhat dev wallet](https://hardhat.org/hardhat-network/reference/#accounts).
 :::
 
-## Create a [Hardhat task](https://hardhat.org/guides/create-task.html#creating-a-task) to deploy your contract
+## Create a Hardhat task that deploys your contract
 
-1. Install `@zk-kit/incremental-merkle-tree` and `circomlibjs@0.0.8` to create offchain Merkle trees.
+Hardhat lets you write [tasks](https://hardhat.org/guides/create-task.html#creating-a-task)
+that automate building and deploying smart contracts and dApps.
+To create a task that deploys the `Greeters` contract, do the following.
 
-  ```bash
-  yarn add @zk-kit/incremental-merkle-tree circomlibjs@0.0.8 --dev
-  ```
+1. Use `yarn` to install `@zk-kit/incremental-merkle-tree` and `circomlibjs@0.0.8`:
 
-2. Install `hardhat-dependency-compiler` to deploy a local verifier.
+   ```bash
+   yarn add @zk-kit/incremental-merkle-tree circomlibjs@0.0.8 --dev
+   ```
 
-  ```bash
-  yarn add hardhat-dependency-compiler --dev
-  ```
+   `@zk-kit/incremental-merkle-tree` and `circomlibjs@0.0.8` let you create
+   off-chain Merkle trees. For more information, see the
+   [ZK-kit repository](https://github.com/appliedzkp/zk-kit/tree/main/packages/incremental-merkle-tree)
+
+2. Use `yarn` to install `hardhat-dependency-compiler`:
+
+   ```bash
+   yarn add hardhat-dependency-compiler --dev
+   ```
+
+   [`hardhat-dependency-compiler`]((https://github.com/ItsNickBarry/hardhat-dependency-compiler))
+   compiles Solidity contracts and dependencies.
 
 3. Create a `tasks` folder and add a `./tasks/deploy.js` file that contains the following:
 
-  ```javascript title="./tasks/deploy.js"
-  const { IncrementalMerkleTree } = require("@zk-kit/incremental-merkle-tree")
-  const { poseidon } = require("circomlibjs")
-  const identityCommitments = require("../static/identityCommitments.json")
-  const { task, types } = require("hardhat/config")
+   ```javascript title="./tasks/deploy.js"
+   const { IncrementalMerkleTree } = require("@zk-kit/incremental-merkle-tree")
+   const { poseidon } = require("circomlibjs")
+   const identityCommitments = require("../static/identityCommitments.json")
+   const { task, types } = require("hardhat/config")
 
-  task("deploy", "Deploy a Greeters contract")
+   task("deploy", "Deploy a Greeters contract")
     .addOptionalParam("logs", "Print the logs", true, types.boolean)
     .setAction(async ({ logs }, { ethers }) => {
       const VerifierContract = await ethers.getContractFactory("Verifier")
@@ -175,19 +215,9 @@ To generate these identity commitments, we used `@zk-kit/identity` (with a messa
 
       return greeters
     })
-  ```
+   ```
 
-4. Use `yarn` to install the `hardhat-waffle` plugin and dependencies for smart contract tests.
-   [`hardhat-waffle`](https://hardhat.org/plugins/nomiclabs-hardhat-waffle.html)
-   lets you write tests with the [Waffle](https://getwaffle.io/) test framework
-   and [Chai assertions](https://www.chaijs.com/).
-
-  ```bash
-  yarn add -D @nomiclabs/hardhat-waffle 'ethereum-waffle@^3.0.0' \
-              @nomiclabs/hardhat-ethers 'ethers@^5.0.0' chai
-  ```
-
-4. Set up your `hardhat.config.js` file:
+4. In your `hardhat.config.js` file, add the following:
 
   ```javascript title="./hardhat.config.js"
   require("@nomiclabs/hardhat-waffle")
@@ -203,20 +233,34 @@ To generate these identity commitments, we used `@zk-kit/identity` (with a messa
   }
   ```
 
-## Create your tests
+## Test your smart contract
 
-1. To create Zk proofs, you need the SNARK static files. Download the Semaphore [snark build files](https://github.com/appliedzkp/semaphore/tree/main/build/snark) and copy them to the `static` folder.
+[`hardhat-waffle`](https://hardhat.org/plugins/nomiclabs-hardhat-waffle.html)
+lets you write tests with the [Waffle](https://getwaffle.io/) test framework
+and [Chai assertions](https://www.chaijs.com/).
 
-2. Replace the contents of `./test/sample-test.js` with the following test module:
+1. Use `yarn` to install the `hardhat-waffle` plugin and dependencies for smart
+   contract tests:
 
-  ```javascript title="./test/sample-test.js"
-  const { Strategy, ZkIdentity } = require("@zk-kit/identity")
-  const { generateMerkleProof, Semaphore } = require("@zk-kit/protocols")
-  const identityCommitments = require("../static/identityCommitments.json")
-  const { expect } = require("chai")
-  const { run, ethers } = require("hardhat")
+   ```bash
+   yarn add -D @nomiclabs/hardhat-waffle 'ethereum-waffle@^3.0.0' \
+      @nomiclabs/hardhat-ethers 'ethers@^5.0.0' chai
+   ```
 
-  describe("Greeters", function () {
+2. Download the Semaphore [snark build files](https://github.com/appliedzkp/semaphore/tree/main/build/snark)
+   and copy them to the `./static` folder. Your application or test passes these
+   static files to Semaphore to create zero-knowledge proofs.
+
+3. Replace the contents of `./test/sample-test.js` with the following test:
+
+   ```javascript title="./test/sample-test.js"
+   const { Strategy, ZkIdentity } = require("@zk-kit/identity")
+   const { generateMerkleProof, Semaphore } = require("@zk-kit/protocols")
+   const identityCommitments = require("../static/identityCommitments.json")
+   const { expect } = require("chai")
+   const { run, ethers } = require("hardhat")
+
+   describe("Greeters", function () {
       let contract
       let signers
 
@@ -257,24 +301,24 @@ To generate these identity commitments, we used `@zk-kit/identity` (with a messa
               await expect(transaction).to.emit(contract, "NewGreeting").withArgs(bytes32Greeting)
           })
       })
-  })
-  ```
+   })
+   ```
 
-3. Run the following `yarn` commands to compile and test your contract:
+4. Run the following `yarn` commands to compile and test your contract:
 
   ```bash
   yarn hardhat compile
   yarn hardhat test
   ```
 
-## Deploy your contract in a local network
+## Deploy your contract to a local network
 
-To deploy your contract in a local Hardhat network (and use it in your DApp), run the following `yarn` commands:
+To deploy your contract in a local Hardhat network (and use it in your dApp), run the following `yarn` commands:
 
 ```bash
 yarn hardhat node
 yarn hardhat deploy --network localhost # In another tab.
 ```
 
-For a more complete demo, see [semaphore-boilerplate](https://github.com/cedoor/semaphore-boilerplate/).
-It can be a good starting point to create your DApp.
+For a more complete demo that provides a starting point for your dApp,
+see [semaphore-boilerplate](https://github.com/cedoor/semaphore-boilerplate/).
