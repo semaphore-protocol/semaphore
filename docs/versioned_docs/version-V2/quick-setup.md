@@ -248,7 +248,7 @@ and [Chai assertions](https://www.chaijs.com/).
    ```
 
 2. Download the Semaphore [snark build files](https://github.com/appliedzkp/semaphore/tree/main/build/snark)
-   and copy them to the `./static` folder. Your application or test passes these
+   and copy them to the `./static` folder. Your application and tests must pass these
    static files to Semaphore to create zero-knowledge proofs.
 
 3. Replace the contents of `./test/sample-test.js` with the following test:
