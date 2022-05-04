@@ -66,7 +66,7 @@ Each `Verifier.sol` contract can be used with a binary tree of a certain depth. 
 
 ### Semaphore
 
-Semaphore also provides a [`Semaphore.sol`](https://github.com/appliedzkp/semaphore/blob/main/contracts/Semaphore.sol) contract where you can create groups and zero-knowledge proof.
+Semaphore also provides a [`Semaphore.sol`](https://github.com/appliedzkp/semaphore/blob/main/contracts/Semaphore.sol) contract where you can create groups and verify zero-knowledge proof.
 
 | Kovan                                                                                          | Goerli                                                                                          | Arbitrum One |
 | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------ |
