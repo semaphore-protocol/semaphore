@@ -1,6 +1,6 @@
 <p align="center">
     <h1 align="center">
-      <img width="40" src="https://github.com/appliedzkp/semaphore/blob/main/docs/static/img/semaphore-icon.svg">  
+      <img width="40" src="https://github.com/semaphore-protocol/docs/blob/main/static/img/semaphore-icon.svg">  
       Semaphore
     </h1>
     <p align="center">A privacy gadget for creating anonymous proof of membership on Ethereum.</p>
@@ -9,9 +9,6 @@
 <p align="center">
     <a href="https://github.com/appliedzkp/semaphore/blob/main/LICENSE">
         <img alt="Github license" src="https://img.shields.io/github/license/appliedzkp/semaphore.svg?style=flat-square">
-    </a>
-    <a href="https://github.com/appliedzkp/semaphore/actions?query=workflow%3Adocs">
-        <img alt="GitHub Workflow docs" src="https://img.shields.io/github/workflow/status/appliedzkp/semaphore/docs?label=docs&style=flat-square&logo=github">
     </a>
     <a href="https://github.com/appliedzkp/semaphore/actions?query=workflow%3Atest">
         <img alt="GitHub Workflow test" src="https://img.shields.io/github/workflow/status/appliedzkp/semaphore/test?label=test&style=flat-square&logo=github">
