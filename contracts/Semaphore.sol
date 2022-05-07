@@ -40,9 +40,10 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
   function createGroup(
     uint256 groupId,
     uint8 depth,
+    uint256 zeroValue,
     address admin
   ) external override onlySupportedDepth(depth) {
-    _createGroup(groupId, depth, 0);
+    _createGroup(groupId, depth, zeroValue);
 
     groupAdmins[groupId] = admin;
 
