@@ -85,6 +85,7 @@
       "circuit": "./circuit",
       "tests": "./test",
       "cache": "./cache",
+      "snarkjs-templates": "./snarkjs-templates",
       "build": {
         "snark": "./build/snark",
         "contracts": "./build/contracts",
