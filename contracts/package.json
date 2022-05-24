@@ -20,13 +20,13 @@
     "circom",
     "proof-of-membership"
   ],
-  "homepage": "https://github.com/appliedzkp/semaphore.git#readme",
+  "homepage": "https://github.com/semaphore-protocol/semaphore.git#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/appliedzkp/semaphore.git.git"
+    "url": "git+https://github.com/semaphore-protocol/semaphore.git.git"
   },
   "bugs": {
-    "url": "https://github.com/appliedzkp/semaphore.git/issues"
+    "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
   },
   "publishConfig": {
     "access": "public"
