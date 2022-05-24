@@ -1,20 +1,22 @@
 <p align="center">
     <h1 align="center">
-      <img width="40" src="https://github.com/semaphore-protocol/docs/blob/main/static/img/semaphore-icon.svg">  
+      <img width="40" src="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">  
       Semaphore
     </h1>
-    <p align="center">A privacy gadget for creating anonymous proof of membership on Ethereum.</p>
 </p>
 
 <p align="center">
-    <a href="https://github.com/appliedzkp/semaphore/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/appliedzkp/semaphore.svg?style=flat-square">
+    <a href="https://github.com/semaphore-protocol" target="_blank">
+        <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
-    <a href="https://github.com/appliedzkp/semaphore/actions?query=workflow%3Atest">
-        <img alt="GitHub Workflow test" src="https://img.shields.io/github/workflow/status/appliedzkp/semaphore/test?label=test&style=flat-square&logo=github">
+    <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
     </a>
-    <a href="https://coveralls.io/github/appliedzkp/semaphore">
-        <img alt="Coveralls" src="https://img.shields.io/coveralls/github/appliedzkp/semaphore?style=flat-square&logo=coveralls">
+    <a href="https://github.com/semaphore-protocol/semaphore/actions?query=workflow%3Atest">
+        <img alt="GitHub Workflow test" src="https://img.shields.io/github/workflow/status/semaphore-protocol/semaphore/test?label=test&style=flat-square&logo=github">
+    </a>
+    <a href="https://coveralls.io/github/semaphore-protocol/semaphore">
+        <img alt="Coveralls" src="https://img.shields.io/coveralls/github/semaphore-protocol/semaphore?style=flat-square&logo=coveralls">
     </a>
     <a href="https://eslint.org/">
         <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint">
@@ -22,6 +24,7 @@
     <a href="https://prettier.io/">
         <img alt="Code style prettier" src="https://img.shields.io/badge/code%20style-prettier-f8bc45?style=flat-square&logo=prettier">
     </a>
+    <img alt="Repository top language" src="https://img.shields.io/github/languages/top/semaphore-protocol/website?style=flat-square">
 </p>
 
 <div align="center">
@@ -34,7 +37,7 @@
             🤝 Code of conduct
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/appliedzkp/zk-kit/issues/new/choose">
+        <a href="https://github.com/privacy-scaling-explorations/zk-kit/issues/new/choose">
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
@@ -47,9 +50,9 @@
 | Semaphore is a zero-knowledge gadget which allows Ethereum users to prove their membership of a set without revealing their original identity. At the same time, it allows users to signal their endorsement of an arbitrary string. It is designed to be a simple and generic privacy layer for Ethereum DApps. Use cases include private voting, whistleblowing, mixers, and anonymous authentication. |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/contracts) and [JavaScript libraries](https://github.com/appliedzkp/zk-kit) (i.e. `@zk-kit/identity` and `@zk-kit/protocols`) to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit https://semaphore.appliedzkp.org.
+The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/contracts) and [JavaScript libraries](https://github.com/privacy-scaling-explorations/zk-kit) (i.e. `@zk-kit/identity` and `@zk-kit/protocols`) to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit https://semaphore.appliedzkp.org.
 
-⚠️ Semaphore V2 has not yet been audited. Please do not use it in production. You can find Semaphore V1 on [`version/1.0.0`](https://github.com/appliedzkp/semaphore/tree/version/1.0.0).
+⚠️ Semaphore V2 has not yet been audited. Please do not use it in production. You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-protocol/semaphore/tree/version/1.0.0).
 
 ## Deployed contracts
 
@@ -63,7 +66,7 @@ Each `Verifier.sol` contract can be used with a binary tree of a certain depth. 
 
 ### Semaphore
 
-Semaphore also provides a [`Semaphore.sol`](https://github.com/appliedzkp/semaphore/blob/main/contracts/Semaphore.sol) contract where you can create groups and verify zero-knowledge proof.
+Semaphore also provides a [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/contracts/Semaphore.sol) contract where you can create groups and verify zero-knowledge proof.
 
 | Kovan                                                                                          | Goerli                                                                                          | Arbitrum One |
 | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------ |
