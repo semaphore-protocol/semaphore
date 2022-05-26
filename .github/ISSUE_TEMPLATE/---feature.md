@@ -1,8 +1,8 @@
 ---
-name: Feature request
-about: Suggest an idea for one of the existing packages
+name: "\U0001F680 Feature"
+about: Suggest an idea for Semaphore
 title: ''
-labels: ''
+labels: 'feature :rocket:'
 assignees: ''
 
 ---

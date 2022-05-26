@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: ":rocket: Feature"
 about: Suggest an idea for one of the existing packages
 title: ''
 labels: ''
