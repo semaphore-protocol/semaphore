@@ -8,9 +8,13 @@ All members of our community are expected to follow our [Code of Conduct](/CODE_
 
 We're really glad you're reading this, because we need volunteer developers to help this project come to fruition. 👏
 
+## Issues
+
+The best way to contribute to our projects is by opening a [new issue](https://github.com/semaphore-protocol/semaphore/issues/new/choose) or tackling one of the issues listed [here](https://github.com/semaphore-protocol/semaphore/contribute). 
+
 ## Pull Requests
 
-The best way to contribute to our projects is with pull requests. Here's a quick guide:
+Pull requests are great if you want to add a feature or fix a bug. Here's a quick guide:
 
 1. Fork the repo.
 
