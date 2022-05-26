@@ -1,43 +1,16 @@
 <!-- Please refer to our contributing documentation for any questions on submitting a pull request -->
+<!--- Provide a general summary of your changes in the Title above -->
 
-## Pull request checklist
+## Description
 
-Please check if your PR fulfills the following requirements:
+<!--- Describe your changes in detail -->
 
-- [ ] Tests for the changes have been added (for bug fixes / features)
-- [ ] Docs have been reviewed and added / updated if needed (for bug fixes / features)
-- [ ] Build (`yarn compile`) was run locally and any changes were pushed
-- [ ] Lint (`yarn lint`) has passed locally and any fixes were made for failures
+## Related Issue
 
-## Pull request type
-
-<!-- Please do not submit updates to dependencies unless it fixes an issue. -->
-
-<!-- Please try to limit your pull request to one type, submit multiple pull requests if needed. -->
-
-Please check the type of change your PR introduces:
-
-- [ ] Bugfix
-- [ ] Feature
-- [ ] Code style update (formatting, renaming)
-- [ ] Refactoring (no functional changes, no api changes)
-- [ ] Build related changes
-- [ ] Documentation content changes
-- [ ] Other (please describe):
-
-## What is the current behavior?
-
-<!-- Please describe the current behavior that you are modifying, or link to a relevant issue. -->
-
-Issue Number: N/A
-
-## What is the new behavior?
-
-<!-- Please describe the behavior or changes that are being added by this PR. -->
-
--
--
--
+<!--- This project accepts pull requests related to open issues -->
+<!--- If suggesting a new feature or change, please discuss it in an issue first -->
+<!--- If fixing a bug, there should be an issue describing it with steps to reproduce -->
+<!--- Please link to the issue here: -->
 
 ## Does this introduce a breaking change?
 
