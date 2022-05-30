@@ -87,7 +87,7 @@
       "cache": "./cache",
       "snarkjs-templates": "./snarkjs-templates",
       "build": {
-        "snark": "./build/snark",
+        "zk-files": "./build/zk-files",
         "contracts": "./build/contracts",
         "typechain": "./build/typechain"
       }
