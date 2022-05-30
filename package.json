@@ -15,7 +15,8 @@
   "scripts": {
     "start": "hardhat node",
     "compile": "hardhat compile",
-    "compile:circuits": "ts-node scripts/compile-circuits.ts",
+    "download:zk-files": "ts-node scripts/download-zk-files.ts",
+    "generate:verifiers": "ts-node scripts/generate-verifiers.ts",
     "deploy:verifier": "hardhat deploy:verifier",
     "deploy:semaphore": "hardhat deploy:semaphore",
     "deploy:semaphore-voting": "hardhat deploy:semaphore-voting",
