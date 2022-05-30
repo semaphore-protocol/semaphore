@@ -5,6 +5,7 @@ import { Signer, utils } from "ethers"
 import { ethers, run } from "hardhat"
 import { SemaphoreVoting } from "../build/typechain"
 import { createMerkleProof } from "./utils"
+import { config } from "../package.json"
 
 describe("SemaphoreVoting", () => {
   let contract: SemaphoreVoting
@@ -16,8 +17,11 @@ describe("SemaphoreVoting", () => {
   const encryptionKey = BigInt(0)
   const decryptionKey = BigInt(0)
 
+  const wasmFilePath = `${config.paths.build["zk-files"]}/${depth}/semaphore.wasm`
+  const zkeyFilePath = `${config.paths.build["zk-files"]}/${depth}/semaphore.zkey`
+
   before(async () => {
-    const { address: verifierAddress } = await run("deploy:verifier", { logs: false })
+    const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth })
     contract = await run("deploy:semaphore-voting", { logs: false, verifier: verifierAddress })
     accounts = await ethers.getSigners()
     coordinator = await accounts[1].getAddress()
@@ -119,9 +123,6 @@ describe("SemaphoreVoting", () => {
   })
 
   describe("# castVote", () => {
-    const wasmFilePath = "./build/snark/semaphore.wasm"
-    const finalZkeyPath = "./build/snark/semaphore_final.zkey"
-
     const identity = new ZkIdentity(Strategy.MESSAGE, "test")
     const identityCommitment = identity.genIdentityCommitment()
     const merkleProof = createMerkleProof([identityCommitment, BigInt(1)], identityCommitment)
@@ -138,7 +139,7 @@ describe("SemaphoreVoting", () => {
       await contract.connect(accounts[1]).startPoll(pollIds[1], encryptionKey)
       await contract.createPoll(pollIds[2], coordinator, depth)
 
-      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+      const fullProof = await Semaphore.genProof(witness, wasmFilePath, zkeyFilePath)
 
       publicSignals = fullProof.publicSignals
       solidityProof = Semaphore.packToSolidityProof(fullProof.proof)

@@ -5,6 +5,7 @@ import { Signer, utils } from "ethers"
 import { ethers, run } from "hardhat"
 import { SemaphoreWhistleblowing } from "../build/typechain"
 import { createMerkleProof } from "./utils"
+import { config } from "../package.json"
 
 describe("SemaphoreWhistleblowing", () => {
   let contract: SemaphoreWhistleblowing
@@ -14,8 +15,11 @@ describe("SemaphoreWhistleblowing", () => {
   const depth = 20
   const entityIds = [BigInt(1), BigInt(2)]
 
+  const wasmFilePath = `${config.paths.build["zk-files"]}/${depth}/semaphore.wasm`
+  const zkeyFilePath = `${config.paths.build["zk-files"]}/${depth}/semaphore.zkey`
+
   before(async () => {
-    const { address: verifierAddress } = await run("deploy:verifier", { logs: false })
+    const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth })
     contract = await run("deploy:semaphore-whistleblowing", { logs: false, verifier: verifierAddress })
     accounts = await ethers.getSigners()
     editor = await accounts[1].getAddress()
@@ -114,9 +118,6 @@ describe("SemaphoreWhistleblowing", () => {
   })
 
   describe("# publishLeak", () => {
-    const wasmFilePath = "./build/snark/semaphore.wasm"
-    const finalZkeyPath = "./build/snark/semaphore_final.zkey"
-
     const identity = new ZkIdentity(Strategy.MESSAGE, "test")
     const identityCommitment = identity.genIdentityCommitment()
     const merkleProof = createMerkleProof([identityCommitment, BigInt(1)], identityCommitment)
@@ -139,7 +140,7 @@ describe("SemaphoreWhistleblowing", () => {
       await contract.connect(accounts[1]).addWhistleblower(entityIds[1], identityCommitment)
       await contract.connect(accounts[1]).addWhistleblower(entityIds[1], BigInt(1))
 
-      const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+      const fullProof = await Semaphore.genProof(witness, wasmFilePath, zkeyFilePath)
 
       publicSignals = fullProof.publicSignals
       solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
