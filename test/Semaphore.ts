@@ -7,6 +7,7 @@ import { run } from "hardhat"
 import { resolve } from "path"
 import { Semaphore as SemaphoreContract } from "../build/typechain/Semaphore"
 import { createIdentityCommitments, createTree } from "./utils"
+import { config } from "../package.json"
 
 dotenvConfig({ path: resolve(__dirname, "../.env") })
 
@@ -19,11 +20,11 @@ describe("Semaphore", () => {
   const groupId = 1
   const members = createIdentityCommitments(3)
 
-  const wasmFilePath = "./build/snark/semaphore.wasm"
-  const finalZkeyPath = "./build/snark/semaphore_final.zkey"
+  const wasmFilePath = `${config.paths.build["zk-files"]}/${depth}/semaphore.wasm`
+  const zkeyFilePath = `${config.paths.build["zk-files"]}/${depth}/semaphore.zkey`
 
   before(async () => {
-    const { address: verifierAddress } = await run("deploy:verifier", { logs: false })
+    const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth })
     contract = await run("deploy:semaphore", {
       logs: false,
       verifiers: [{ merkleTreeDepth: depth, contractAddress: verifierAddress }]
@@ -134,7 +135,7 @@ describe("Semaphore", () => {
       await contract.addMember(groupId, members[1])
       await contract.addMember(groupId, members[2])
 
-      fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+      fullProof = await Semaphore.genProof(witness, wasmFilePath, zkeyFilePath)
       solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
     })
 
