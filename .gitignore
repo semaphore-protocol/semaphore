@@ -52,8 +52,7 @@ node_modules/
 .env.local
 
 # Production
-build/contracts
-build/typechain
+build
 dist
 
 # Hardhat
