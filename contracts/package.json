@@ -1,7 +1,7 @@
 {
     "name": "@semaphore-protocol/contracts",
     "version": "0.2.0",
-    "description": "A privacy gadget for creating anonymous proof of membership on Ethereum.",
+    "description": "Semaphore contracts to manage groups and broadcast anonymous signals.",
     "license": "MIT",
     "files": [
         "**/*.sol"
