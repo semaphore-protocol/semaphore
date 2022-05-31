@@ -54,7 +54,7 @@ The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.pn
 
 ⚠️ Semaphore V2 has not yet been audited. Please do not use it in production. You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-protocol/semaphore/tree/version/1.0.0).
 
-___
+---
 
 ## Install
 
