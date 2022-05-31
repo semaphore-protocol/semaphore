@@ -1,25 +1,25 @@
 name: coverage
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 jobs:
-  coveralls:
-    runs-on: ubuntu-latest
+    coveralls:
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 16.x
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 16.x
 
-      - run: yarn --frozen-lockfile
-      - run: yarn compile
-      - run: yarn test:coverage
+            - run: yarn --frozen-lockfile
+            - run: yarn compile
+            - run: yarn test:coverage
 
-      - uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+            - uses: coverallsapp/github-action@master
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}

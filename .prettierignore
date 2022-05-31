@@ -19,6 +19,9 @@ types
 # circuits
 circuits
 
+# contracts
+contracts/verifiers
+
 # docusaurus
 .docusaurus
 

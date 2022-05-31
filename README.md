@@ -50,24 +50,107 @@
 | Semaphore is a zero-knowledge gadget which allows Ethereum users to prove their membership of a set without revealing their original identity. At the same time, it allows users to signal their endorsement of an arbitrary string. It is designed to be a simple and generic privacy layer for Ethereum DApps. Use cases include private voting, whistleblowing, mixers, and anonymous authentication. |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/contracts) and [JavaScript libraries](https://github.com/privacy-scaling-explorations/zk-kit) (i.e. `@zk-kit/identity` and `@zk-kit/protocols`) to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit https://semaphore.appliedzkp.org.
+The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/contracts) (NPM: `@semaphore-protocol/contracts`) and [JavaScript libraries](https://github.com/privacy-scaling-explorations/zk-kit) (NPM: `@zk-kit/identity`, `@zk-kit/protocols`) to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit https://semaphore.appliedzkp.org.
 
 ⚠️ Semaphore V2 has not yet been audited. Please do not use it in production. You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-protocol/semaphore/tree/version/1.0.0).
 
-## Deployed contracts
+---
 
-### Verifiers
+## Install
 
-Each `Verifier.sol` contract can be used with a binary tree of a certain depth. If depth = 20 the tree can have maximum 2^20 leaves (a group of 1048576 members).
+Clone this repository and install the dependencies:
 
-| Depth | Kovan                                                                                          | Goerli                                                                                          | Arbitrum One |
-| ----- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------ |
-| 20    | [0xed75...0E18](https://kovan.etherscan.io/address/0xed7582b4da6ADaFA0579cF7Ff7DF0812633b0E18) | [0xEFD8...aCe5](https://goerli.etherscan.io/address/0xEFD83f827FA5B0496359D817c6CD8a5AA5D2aCe5) |              |
+```bash
+git clone https://github.com/semaphore-protocol/semaphore.git
+cd semaphore
+yarn # or `npm i`
+```
 
-### Semaphore
+## Usage
 
-Semaphore also provides a [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/contracts/Semaphore.sol) contract where you can create groups and verify zero-knowledge proof.
+Copy the `.env.example` file and rename it `.env`.
 
-| Kovan                                                                                          | Goerli                                                                                          | Arbitrum One |
-| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------ |
-| [0x1972...8793](https://kovan.etherscan.io/address/0x19722446e775d86f2585954961E23771d8758793) | [0x4400...dE0b](https://goerli.etherscan.io/address/0x44007fbC9d349966a6d0dfC2098b3db516a7dE0b) |              |
+### ZK files
+
+Download the Semaphore zero-knowledge files needed to generate proofs:
+
+```bash
+yarn download:zk-files
+```
+
+### Compile
+
+Compile the smart contracts with Hardhat:
+
+```bash
+yarn compile
+```
+
+### Lint
+
+Lint the Solidity or the TypeScript code:
+
+```bash
+yarn lint:sol
+yarn lint:ts
+# or yarn lint to lint both.
+```
+
+And check if the code is well formatted:
+
+```bash
+yarn prettier
+```
+
+### Test
+
+Run the Mocha tests:
+
+```bash
+yarn test
+```
+
+### Coverage
+
+Generate the code coverage report:
+
+```bash
+yarn test:coverage
+```
+
+### Report Gas
+
+See the gas usage per unit test and average gas per method call:
+
+```bash
+yarn test:report-gas
+```
+
+### Deploy
+
+Deploy a verifier contract with depth = 20:
+
+```bash
+yarn deploy:verifier --depth 20
+```
+
+Deploy the `Semaphore.sol` contract with one verifier:
+
+```bash
+yarn deploy:semaphore --verifiers '[{"merkleTreeDepth": 20, "contractAddress": "0x06bcD633988c1CE7Bd134DbE2C12119b6f3E4bD1"}]'
+```
+
+Deploy all verifiers and Semaphore contract:
+
+```bash
+yarn deploy:all
+```
+
+If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, goerli, kovan, arbitrum). Or you can specify it as option:
+
+```bash
+yarn deploy:all --network kovan
+yarn deploy:all --network localhost
+```
+
+If you want to deploy the contracts on Goerli, Kovan or Arbitrum remember to provide a valid private key and an Infura API in your `.env` file.
