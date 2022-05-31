@@ -17,6 +17,7 @@ jobs:
                   node-version: 16.x
 
             - run: yarn --frozen-lockfile
+            - run: yarn download:zk-files
             - run: yarn compile
             - run: yarn test:coverage
 
