@@ -1,22 +1,23 @@
 name: test
 
 on:
-  pull_request:
-  push:
-    branches:
-      - main
+    pull_request:
+    push:
+        branches:
+            - main
 
 jobs:
-  test_all:
-    runs-on: ubuntu-latest
+    test_all:
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 16.x
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 16.x
 
-      - run: yarn --frozen-lockfile
-      - run: yarn compile
-      - run: yarn test:prod
+            - run: yarn --frozen-lockfile
+            - run: yarn download:zk-files
+            - run: yarn compile
+            - run: yarn test:prod

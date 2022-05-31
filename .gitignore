@@ -54,6 +54,8 @@ node_modules/
 # Production
 build
 dist
+deployed-contracts/undefined.json
+deployed-contracts/localhost.json
 
 # Hardhat
 artifacts
