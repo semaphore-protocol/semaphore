@@ -12,11 +12,11 @@ describe("SemaphoreWhistleblowing", () => {
     let accounts: Signer[]
     let editor: string
 
-    const depth = 20
+    const depth = Number(process.env.TREE_DEPTH)
     const entityIds = [BigInt(1), BigInt(2)]
 
-    const wasmFilePath = `${config.paths.build["zk-files"]}/${depth}/semaphore.wasm`
-    const zkeyFilePath = `${config.paths.build["zk-files"]}/${depth}/semaphore.zkey`
+    const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
+    const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
 
     before(async () => {
         const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth })

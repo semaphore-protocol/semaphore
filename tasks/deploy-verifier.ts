@@ -2,7 +2,7 @@ import { Contract } from "ethers"
 import { task, types } from "hardhat/config"
 
 task("deploy:verifier", "Deploy a Verifier contract")
-    .addOptionalParam<number>("depth", "Tree depth", 20, types.int)
+    .addOptionalParam<number>("depth", "Tree depth", Number(process.env.TREE_DEPTH) || 20, types.int)
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
     .setAction(async ({ depth, logs }, { ethers }): Promise<Contract> => {
         const ContractFactory = await ethers.getContractFactory(`Verifier${depth}`)
