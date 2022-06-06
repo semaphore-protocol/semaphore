@@ -6,6 +6,9 @@ on:
         branches:
             - main
 
+env:
+  TREE_DEPTH: 20
+
 jobs:
     test_all:
         runs-on: ubuntu-latest
