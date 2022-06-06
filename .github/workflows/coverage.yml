@@ -6,7 +6,7 @@ on:
             - main
 
 env:
-  TREE_DEPTH: 20
+    TREE_DEPTH: 20
 
 jobs:
     coveralls:
