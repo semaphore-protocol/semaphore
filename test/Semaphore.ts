@@ -1,27 +1,23 @@
 import { Strategy, ZkIdentity } from "@zk-kit/identity"
 import { generateMerkleProof, Semaphore, SemaphoreFullProof, SemaphoreSolidityProof } from "@zk-kit/protocols"
 import { expect } from "chai"
-import { config as dotenvConfig } from "dotenv"
 import { constants, Signer, utils } from "ethers"
 import { run } from "hardhat"
-import { resolve } from "path"
 import { Semaphore as SemaphoreContract } from "../build/typechain/Semaphore"
 import { createIdentityCommitments, createTree } from "./utils"
 import { config } from "../package.json"
-
-dotenvConfig({ path: resolve(__dirname, "../.env") })
 
 describe("Semaphore", () => {
     let contract: SemaphoreContract
     let signers: Signer[]
     let accounts: string[]
 
-    const depth = 20
+    const depth = Number(process.env.TREE_DEPTH)
     const groupId = 1
     const members = createIdentityCommitments(3)
 
-    const wasmFilePath = `${config.paths.build["zk-files"]}/${depth}/semaphore.wasm`
-    const zkeyFilePath = `${config.paths.build["zk-files"]}/${depth}/semaphore.zkey`
+    const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
+    const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
 
     before(async () => {
         const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth })

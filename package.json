@@ -15,8 +15,7 @@
     "scripts": {
         "start": "hardhat node",
         "compile": "hardhat compile",
-        "download:zk-files": "ts-node scripts/download-zk-files.ts",
-        "generate:verifiers": "ts-node scripts/generate-verifiers.ts",
+        "download:snark-artifacts": "hardhat run scripts/download-snark-artifacts.ts",
         "deploy:all": "hardhat run scripts/deploy-all.ts",
         "deploy:verifier": "hardhat deploy:verifier",
         "deploy:semaphore": "hardhat deploy:semaphore",
@@ -28,10 +27,10 @@
         "test:prod": "yarn lint && yarn test",
         "typechain": "hardhat typechain",
         "lint": "yarn lint:sol && yarn lint:ts",
-        "lint:ts": "eslint . --ext .js,.jsx,.ts,.tsx",
+        "lint:ts": "eslint . --ext .js,.ts",
         "lint:sol": "solhint 'contracts/**/*.sol'",
         "prettier": "prettier -c .",
-        "prettier:fix": "prettier -w .",
+        "prettier:write": "prettier -w .",
         "commit": "cz",
         "precommit": "lint-staged"
     },
@@ -89,7 +88,7 @@
             "cache": "./cache",
             "snarkjs-templates": "./snarkjs-templates",
             "build": {
-                "zk-files": "./build/zk-files",
+                "snark-artifacts": "./build/snark-artifacts",
                 "contracts": "./build/contracts",
                 "typechain": "./build/typechain"
             }
