@@ -1,11 +1,18 @@
-import { Strategy, ZkIdentity } from "@zk-kit/identity"
-import { generateMerkleProof, Semaphore, SemaphoreFullProof, SemaphoreSolidityProof } from "@zk-kit/protocols"
+import { Identity } from "@semaphore-protocol/identity"
+import {
+    createMerkleProof,
+    createMerkleTree,
+    FullProof,
+    generateProof,
+    packToSolidityProof,
+    SolidityProof
+} from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { constants, Signer, utils } from "ethers"
 import { run } from "hardhat"
 import { Semaphore as SemaphoreContract } from "../build/typechain/Semaphore"
-import { createIdentityCommitments, createTree } from "./utils"
 import { config } from "../package.json"
+import { createIdentityCommitments } from "./utils"
 
 describe("Semaphore", () => {
     let contract: SemaphoreContract
@@ -92,7 +99,7 @@ describe("Semaphore", () => {
 
         it("Should remove a member from an existing group", async () => {
             const groupId = 100
-            const tree = createTree(depth, 3)
+            const tree = createMerkleTree(depth, BigInt(0), [BigInt(1), BigInt(2), BigInt(3)])
 
             tree.delete(0)
 
@@ -117,26 +124,22 @@ describe("Semaphore", () => {
     describe("# verifyProof", () => {
         const signal = "Hello world"
         const bytes32Signal = utils.formatBytes32String(signal)
-        const identity = new ZkIdentity(Strategy.MESSAGE, "0")
-        const identityCommitment = identity.genIdentityCommitment()
-        const merkleProof = generateMerkleProof(depth, BigInt(0), members, identityCommitment)
-        const witness = Semaphore.genWitness(
-            identity.getTrapdoor(),
-            identity.getNullifier(),
-            merkleProof,
-            merkleProof.root,
-            signal
-        )
+        const identity = new Identity("0")
+        const identityCommitment = identity.generateCommitment()
+        const merkleProof = createMerkleProof(depth, BigInt(0), members, identityCommitment)
 
-        let fullProof: SemaphoreFullProof
-        let solidityProof: SemaphoreSolidityProof
+        let fullProof: FullProof
+        let solidityProof: SolidityProof
 
         before(async () => {
             await contract.addMember(groupId, members[1])
             await contract.addMember(groupId, members[2])
 
-            fullProof = await Semaphore.genProof(witness, wasmFilePath, zkeyFilePath)
-            solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
+            fullProof = await generateProof(identity, merkleProof, merkleProof.root, signal, {
+                wasmFilePath,
+                zkeyFilePath
+            })
+            solidityProof = packToSolidityProof(fullProof.proof)
         })
 
         it("Should not verify a proof if the group does not exist", async () => {

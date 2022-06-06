@@ -1,10 +1,16 @@
-import { Strategy, ZkIdentity } from "@zk-kit/identity"
-import { Semaphore, SemaphorePublicSignals, SemaphoreSolidityProof } from "@zk-kit/protocols"
+import { Identity } from "@semaphore-protocol/identity"
+import {
+    createMerkleProof,
+    generateNullifierHash,
+    generateProof,
+    packToSolidityProof,
+    PublicSignals,
+    SolidityProof
+} from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { Signer, utils } from "ethers"
 import { ethers, run } from "hardhat"
 import { SemaphoreVoting } from "../build/typechain"
-import { createMerkleProof } from "./utils"
 import { config } from "../package.json"
 
 describe("SemaphoreVoting", () => {
@@ -83,8 +89,8 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not add a voter if the caller is not the coordinator", async () => {
-            const identity = new ZkIdentity()
-            const identityCommitment = identity.genIdentityCommitment()
+            const identity = new Identity()
+            const identityCommitment = identity.generateCommitment()
 
             const transaction = contract.addVoter(pollIds[0], identityCommitment)
 
@@ -92,8 +98,8 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not add a voter if the poll has already been started", async () => {
-            const identity = new ZkIdentity()
-            const identityCommitment = identity.genIdentityCommitment()
+            const identity = new Identity()
+            const identityCommitment = identity.generateCommitment()
 
             const transaction = contract.connect(accounts[1]).addVoter(pollIds[0], identityCommitment)
 
@@ -101,8 +107,8 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should add a voter to an existing poll", async () => {
-            const identity = new ZkIdentity(Strategy.MESSAGE, "test")
-            const identityCommitment = identity.genIdentityCommitment()
+            const identity = new Identity("test")
+            const identityCommitment = identity.generateCommitment()
 
             const transaction = contract.connect(accounts[1]).addVoter(pollIds[1], identityCommitment)
 
@@ -123,32 +129,27 @@ describe("SemaphoreVoting", () => {
     })
 
     describe("# castVote", () => {
-        const identity = new ZkIdentity(Strategy.MESSAGE, "test")
-        const identityCommitment = identity.genIdentityCommitment()
-        const merkleProof = createMerkleProof([identityCommitment, BigInt(1)], identityCommitment)
+        const identity = new Identity("test")
+        const identityCommitment = identity.generateCommitment()
+        const merkleProof = createMerkleProof(depth, BigInt(0), [identityCommitment, BigInt(1)], identityCommitment)
         const vote = "1"
         const bytes32Vote = utils.formatBytes32String(vote)
 
-        const witness = Semaphore.genWitness(
-            identity.getTrapdoor(),
-            identity.getNullifier(),
-            merkleProof,
-            pollIds[1],
-            vote
-        )
-
-        let solidityProof: SemaphoreSolidityProof
-        let publicSignals: SemaphorePublicSignals
+        let solidityProof: SolidityProof
+        let publicSignals: PublicSignals
 
         before(async () => {
             await contract.connect(accounts[1]).addVoter(pollIds[1], BigInt(1))
             await contract.connect(accounts[1]).startPoll(pollIds[1], encryptionKey)
             await contract.createPoll(pollIds[2], coordinator, depth)
 
-            const fullProof = await Semaphore.genProof(witness, wasmFilePath, zkeyFilePath)
+            const fullProof = await generateProof(identity, merkleProof, pollIds[1], vote, {
+                wasmFilePath,
+                zkeyFilePath
+            })
 
             publicSignals = fullProof.publicSignals
-            solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
+            solidityProof = packToSolidityProof(fullProof.proof)
         })
 
         it("Should not cast a vote if the caller is not the coordinator", async () => {
@@ -166,7 +167,7 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not cast a vote if the proof is not valid", async () => {
-            const nullifierHash = Semaphore.genNullifierHash(pollIds[0], identity.getNullifier())
+            const nullifierHash = generateNullifierHash(pollIds[0], identity.getNullifier())
 
             const transaction = contract
                 .connect(accounts[1])
