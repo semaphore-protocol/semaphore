@@ -34,7 +34,7 @@ jobs:
                       ${{ runner.os }}-yarn-
 
             - name: Install dependencies
-              run: yarn
+              run: YARN_CHECKSUM_BEHAVIOR=reset yarn
 
             - name: Download Snark artifacts
               run: yarn download:snark-artifacts
