@@ -50,25 +50,65 @@
 | Semaphore is a protocol, designed to be a simple and generic privacy layer for Ethereum DApps. Using zero knowledge, Ethereum users can prove their membership of a group and send signals such as votes or endorsements without revealing their original identity. |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/contracts) (NPM: `@semaphore-protocol/contracts`) and [JavaScript libraries](https://github.com/semaphore-protocol/semaphore.js) to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit https://semaphore.appliedzkp.org.
+The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/contracts) (NPM: `@semaphore-protocol/contracts`) and [JavaScript libraries](https://github.com/semaphore-protocol/semaphore.js) to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit [semaphore.appliedzkp.org](https://semaphore.appliedzkp.org).
 
 You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-protocol/semaphore/tree/version/1.0.0).
 
 ---
 
-## Install
+## 🛠 Install
 
-Clone this repository and install the dependencies:
+Clone this repository:
 
 ```bash
 git clone https://github.com/semaphore-protocol/semaphore.git
-cd semaphore
-yarn # or `npm i`
 ```
 
-## Usage
+and install the dependencies:
 
-Copy the `.env.example` file and rename it `.env`.
+```bash
+cd semaphore && yarn
+```
+
+## 📜 Usage
+
+Copy the `.env.example` file as `.env`:
+
+```bash
+cp .env.example .env
+```
+
+and add your environment variables.
+
+### Code quality and formatting
+
+Run [ESLint](https://eslint.org/) to analyze the code and catch bugs:
+
+```bash
+yarn lint
+```
+
+Run [Prettier](https://prettier.io/) to check formatting rules:
+
+```bash
+yarn prettier
+```
+
+or to automatically format the code:
+
+```bash
+yarn prettier:write
+```
+
+### Conventional commits
+
+Semaphore uses [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/). A [command line utility](https://github.com/commitizen/cz-cli) to commit using the correct syntax can be used by running:
+
+```bash
+yarn commit
+```
+
+It will also automatically check that the modified files comply with ESLint and Prettier rules.
 
 ### Snark artifacts
 
@@ -78,55 +118,35 @@ Download the Semaphore snark artifacts needed to generate and verify proofs:
 yarn download:snark-artifacts
 ```
 
-### Compile
+### Compile contracts
 
-Compile the smart contracts with Hardhat:
+Compile the smart contracts with [Hardhat](https://hardhat.org/):
 
 ```bash
 yarn compile
 ```
 
-### Lint
+### Testing
 
-Lint the Solidity or the TypeScript code:
-
-```bash
-yarn lint:sol
-yarn lint:ts
-# or yarn lint to lint both.
-```
-
-And check if the code is well formatted:
-
-```bash
-yarn prettier
-```
-
-### Test
-
-Run the Mocha tests:
+Run [Mocha](https://mochajs.org/) to test the contracts:
 
 ```bash
 yarn test
 ```
 
-### Coverage
-
-Generate the code coverage report:
+You can also generate a test coverage report:
 
 ```bash
 yarn test:coverage
 ```
 
-### Report Gas
-
-See the gas usage per unit test and average gas per method call:
+or a test gas report:
 
 ```bash
 yarn test:report-gas
 ```
 
-### Deploy
+### Deploy contracts
 
 Deploy a verifier contract with depth = 20:
 
@@ -153,4 +173,4 @@ yarn deploy:all --network kovan
 yarn deploy:all --network localhost
 ```
 
-If you want to deploy the contracts on Goerli, Kovan or Arbitrum remember to provide a valid private key and an Infura API in your `.env` file.
+If you want to deploy contracts on Goerli, Kovan or Arbitrum, remember to provide a valid private key and an Infura API in your `.env` file.
