@@ -2,22 +2,17 @@
 node_modules
 package-lock.json
 yarn.lock
+.yarn
 
 # testing
 coverage
 coverage.json
-
-# docs
-docs
 
 # hardhat
 cache
 
 # types
 types
-
-# openzeppelin
-.openzeppelin
 
 # circuits
 circuits

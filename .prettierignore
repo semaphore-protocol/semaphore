@@ -2,6 +2,7 @@
 node_modules
 package-lock.json
 yarn.lock
+.yarn
 
 # testing
 coverage
@@ -13,17 +14,11 @@ cache
 # types
 types
 
-# openzeppelin
-.openzeppelin
-
 # circuits
 circuits
 
 # contracts
 contracts/verifiers
-
-# docusaurus
-.docusaurus
 
 # production
 dist
