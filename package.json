@@ -24,7 +24,6 @@
         "test": "hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
-        "test:prod": "yarn lint && yarn test",
         "typechain": "hardhat typechain",
         "lint": "yarn lint:sol && yarn lint:ts",
         "lint:ts": "eslint . --ext .js,.ts",
@@ -34,6 +33,7 @@
         "commit": "cz",
         "precommit": "lint-staged"
     },
+    "packageManager": "yarn@3.2.1",
     "devDependencies": {
         "@commitlint/cli": "^16.1.0",
         "@commitlint/config-conventional": "^16.0.0",
