@@ -10,7 +10,7 @@ import {
 import { expect } from "chai"
 import { constants, Signer, utils } from "ethers"
 import { run } from "hardhat"
-import { Semaphore as SemaphoreContract } from "../build/typechain/Semaphore"
+import { Semaphore as SemaphoreContract } from "../build/typechain"
 import { config } from "../package.json"
 import { createIdentityCommitments } from "./utils"
 
