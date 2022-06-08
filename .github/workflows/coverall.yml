@@ -34,13 +34,13 @@ jobs:
                       ${{ runner.os }}-yarn-
 
             - name: Install dependencies
-              run: YARN_CHECKSUM_BEHAVIOR=reset yarn
+              run: YARN_CHECKSUM_BEHAVIOR=ignore yarn
 
             - name: Download Snark artifacts
               run: yarn download:snark-artifacts
 
             - name: Compile contracts
-              run: yarn contracts
+              run: yarn compile
 
             - name: Test contracts with coverage
               run: yarn test:coverage
