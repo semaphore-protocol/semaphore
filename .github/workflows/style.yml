@@ -1,15 +1,13 @@
-name: coverall
+name: style
 
 on:
+    pull_request:
     push:
         branches:
             - main
 
-env:
-    TREE_DEPTH: 20
-
 jobs:
-    coverall:
+    style:
         runs-on: ubuntu-latest
 
         steps:
@@ -37,15 +35,11 @@ jobs:
             - name: Install dependencies
               run: yarn
 
-            - name: Download Snark artifacts
-              run: yarn download:snark-artifacts
+            - name: Run Prettier
+              run: yarn prettier
+
+            - name: Run Eslint
+              run: yarn lint
 
             - name: Compile contracts
-              run: yarn contracts
-
-            - name: Test contracts with coverage
-              run: yarn test:coverage
-
-            - uses: coverallsapp/github-action@master
-              with:
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
+              run: yarn compile
