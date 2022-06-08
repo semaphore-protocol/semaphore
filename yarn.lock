@@ -6004,7 +6004,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethereum-waffle@npm:^3.4.0":
+"ethereum-waffle@npm:^3.4.4":
   version: 3.4.4
   resolution: "ethereum-waffle@npm:3.4.4"
   dependencies:
@@ -12834,7 +12834,7 @@ __metadata:
     download: ^8.0.0
     eslint: ^8.7.0
     eslint-config-prettier: ^8.3.0
-    ethereum-waffle: ^3.4.0
+    ethereum-waffle: ^3.4.4
     ethers: ^5.6.8
     hardhat: ^2.9.7
     hardhat-gas-reporter: ^1.0.8
