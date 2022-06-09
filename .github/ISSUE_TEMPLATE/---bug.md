@@ -1,9 +1,10 @@
 ---
 name: "\U0001F41E Bug"
 about: Create a report to help us improve
-title: ""
+title: ''
 labels: "bug \U0001F41B"
-assignees: ""
+assignees: ''
+
 ---
 
 **Describe the bug**
