@@ -24,6 +24,9 @@ contracts/verifiers
 dist
 build
 
+# github
+.github/ISSUE_TEMPLATE
+
 # misc
 .DS_Store
 *.pem
