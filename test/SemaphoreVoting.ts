@@ -1,6 +1,6 @@
 import { Identity } from "@semaphore-protocol/identity"
+import { Group } from "@semaphore-protocol/group"
 import {
-    createMerkleProof,
     generateNullifierHash,
     generateProof,
     packToSolidityProof,
@@ -18,7 +18,7 @@ describe("SemaphoreVoting", () => {
     let accounts: Signer[]
     let coordinator: string
 
-    const depth = Number(process.env.TREE_DEPTH)
+    const treeDepth = Number(process.env.TREE_DEPTH)
     const pollIds = [BigInt(1), BigInt(2), BigInt(3)]
     const encryptionKey = BigInt(0)
     const decryptionKey = BigInt(0)
@@ -27,7 +27,7 @@ describe("SemaphoreVoting", () => {
     const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
 
     before(async () => {
-        const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth })
+        const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth: treeDepth })
         contract = await run("deploy:semaphore-voting", { logs: false, verifier: verifierAddress })
         accounts = await ethers.getSigners()
         coordinator = await accounts[1].getAddress()
@@ -44,20 +44,20 @@ describe("SemaphoreVoting", () => {
             const transaction = contract.createPoll(
                 BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
                 coordinator,
-                depth
+                treeDepth
             )
 
             await expect(transaction).to.be.revertedWith("SemaphoreGroups: group id must be < SNARK_SCALAR_FIELD")
         })
 
         it("Should create a poll", async () => {
-            const transaction = contract.createPoll(pollIds[0], coordinator, depth)
+            const transaction = contract.createPoll(pollIds[0], coordinator, treeDepth)
 
             await expect(transaction).to.emit(contract, "PollCreated").withArgs(pollIds[0], coordinator)
         })
 
         it("Should not create a poll if it already exists", async () => {
-            const transaction = contract.createPoll(pollIds[0], coordinator, depth)
+            const transaction = contract.createPoll(pollIds[0], coordinator, treeDepth)
 
             await expect(transaction).to.be.revertedWith("SemaphoreGroups: group already exists")
         })
@@ -85,7 +85,7 @@ describe("SemaphoreVoting", () => {
 
     describe("# addVoter", () => {
         before(async () => {
-            await contract.createPoll(pollIds[1], coordinator, depth)
+            await contract.createPoll(pollIds[1], coordinator, treeDepth)
         })
 
         it("Should not add a voter if the caller is not the coordinator", async () => {
@@ -131,9 +131,12 @@ describe("SemaphoreVoting", () => {
     describe("# castVote", () => {
         const identity = new Identity("test")
         const identityCommitment = identity.generateCommitment()
-        const merkleProof = createMerkleProof(depth, BigInt(0), [identityCommitment, BigInt(1)], identityCommitment)
         const vote = "1"
         const bytes32Vote = utils.formatBytes32String(vote)
+
+        const group = new Group(treeDepth)
+
+        group.addMembers([identityCommitment, BigInt(1)])
 
         let solidityProof: SolidityProof
         let publicSignals: PublicSignals
@@ -141,9 +144,9 @@ describe("SemaphoreVoting", () => {
         before(async () => {
             await contract.connect(accounts[1]).addVoter(pollIds[1], BigInt(1))
             await contract.connect(accounts[1]).startPoll(pollIds[1], encryptionKey)
-            await contract.createPoll(pollIds[2], coordinator, depth)
+            await contract.createPoll(pollIds[2], coordinator, treeDepth)
 
-            const fullProof = await generateProof(identity, merkleProof, pollIds[1], vote, {
+            const fullProof = await generateProof(identity, group, pollIds[1], vote, {
                 wasmFilePath,
                 zkeyFilePath
             })
