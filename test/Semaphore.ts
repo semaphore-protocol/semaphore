@@ -1,12 +1,6 @@
+import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import {
-    createMerkleProof,
-    createMerkleTree,
-    FullProof,
-    generateProof,
-    packToSolidityProof,
-    SolidityProof
-} from "@semaphore-protocol/proof"
+import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { constants, Signer, utils } from "ethers"
 import { run } from "hardhat"
@@ -19,7 +13,7 @@ describe("Semaphore", () => {
     let signers: Signer[]
     let accounts: string[]
 
-    const depth = Number(process.env.TREE_DEPTH)
+    const treeDepth = Number(process.env.TREE_DEPTH)
     const groupId = 1
     const members = createIdentityCommitments(3)
 
@@ -27,10 +21,10 @@ describe("Semaphore", () => {
     const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
 
     before(async () => {
-        const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth })
+        const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth: treeDepth })
         contract = await run("deploy:semaphore", {
             logs: false,
-            verifiers: [{ merkleTreeDepth: depth, contractAddress: verifierAddress }]
+            verifiers: [{ merkleTreeDepth: treeDepth, contractAddress: verifierAddress }]
         })
 
         signers = await run("accounts", { logs: false })
@@ -45,9 +39,9 @@ describe("Semaphore", () => {
         })
 
         it("Should create a group", async () => {
-            const transaction = contract.connect(signers[1]).createGroup(groupId, depth, 0, accounts[1])
+            const transaction = contract.connect(signers[1]).createGroup(groupId, treeDepth, 0, accounts[1])
 
-            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, depth, 0)
+            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth, 0)
             await expect(transaction)
                 .to.emit(contract, "GroupAdminUpdated")
                 .withArgs(groupId, constants.AddressZero, accounts[1])
@@ -99,23 +93,20 @@ describe("Semaphore", () => {
 
         it("Should remove a member from an existing group", async () => {
             const groupId = 100
-            const tree = createMerkleTree(depth, BigInt(0), [BigInt(1), BigInt(2), BigInt(3)])
+            const group = new Group(treeDepth)
 
-            tree.delete(0)
+            group.addMembers([BigInt(1), BigInt(2), BigInt(3)])
 
-            await contract.createGroup(groupId, depth, 0, accounts[0])
+            group.removeMember(0)
+
+            await contract.createGroup(groupId, treeDepth, 0, accounts[0])
             await contract.addMember(groupId, BigInt(1))
             await contract.addMember(groupId, BigInt(2))
             await contract.addMember(groupId, BigInt(3))
 
-            const { siblings, pathIndices, root } = tree.createProof(0)
+            const { siblings, pathIndices, root } = group.generateProofOfMembership(0)
 
-            const transaction = contract.removeMember(
-                groupId,
-                BigInt(1),
-                siblings.map((s) => s[0]),
-                pathIndices
-            )
+            const transaction = contract.removeMember(groupId, BigInt(1), siblings, pathIndices)
 
             await expect(transaction).to.emit(contract, "MemberRemoved").withArgs(groupId, BigInt(1), root)
         })
@@ -125,8 +116,10 @@ describe("Semaphore", () => {
         const signal = "Hello world"
         const bytes32Signal = utils.formatBytes32String(signal)
         const identity = new Identity("0")
-        const identityCommitment = identity.generateCommitment()
-        const merkleProof = createMerkleProof(depth, BigInt(0), members, identityCommitment)
+
+        const group = new Group(treeDepth)
+
+        group.addMembers(members)
 
         let fullProof: FullProof
         let solidityProof: SolidityProof
@@ -135,7 +128,7 @@ describe("Semaphore", () => {
             await contract.addMember(groupId, members[1])
             await contract.addMember(groupId, members[2])
 
-            fullProof = await generateProof(identity, merkleProof, merkleProof.root, signal, {
+            fullProof = await generateProof(identity, group, group.root, signal, {
                 wasmFilePath,
                 zkeyFilePath
             })

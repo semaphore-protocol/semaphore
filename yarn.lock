@@ -1149,30 +1149,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semaphore-protocol/identity@npm:0.2.1":
-  version: 0.2.1
-  resolution: "@semaphore-protocol/identity@npm:0.2.1"
+"@semaphore-protocol/group@npm:0.1.2":
+  version: 0.1.2
+  resolution: "@semaphore-protocol/group@npm:0.1.2"
   dependencies:
-    "@ethersproject/bignumber": ^5.5.0
-    "@ethersproject/random": ^5.5.1
+    "@zk-kit/incremental-merkle-tree": 0.4.3
     circomlibjs: 0.0.8
-    crypto-js: ^4.1.1
-  checksum: 6acf10dbd86bdce77aede2317f9bbe0390fd4da8ff7fc633b33a2f42ae709dbf01a3c99e54b352161a7ca3bfe64ee4663befa87023970a523ec2c4e64b733682
+  checksum: 989e80fb11139f6991ce62757ee2bc37c73c3bc2a5b0955457f4e2db1fd655ea14ac46e6c486592efea029b74b392dc1734fcefb733b9538f5cdf59a0b24618f
   languageName: node
   linkType: hard
 
-"@semaphore-protocol/proof@npm:0.2.1":
-  version: 0.2.1
-  resolution: "@semaphore-protocol/proof@npm:0.2.1"
+"@semaphore-protocol/identity@npm:0.2.2":
+  version: 0.2.2
+  resolution: "@semaphore-protocol/identity@npm:0.2.2"
+  dependencies:
+    "@ethersproject/bignumber": ^5.5.0
+    "@ethersproject/random": ^5.5.1
+    "@ethersproject/sha2": ^5.6.1
+    "@ethersproject/strings": ^5.6.1
+    circomlibjs: 0.0.8
+  checksum: 9a819ca63ed59097a9581592b24ed7ea0aac11837f119fa69bf0b23d8c08cc1ae7e0e56ba0622e871d36f7d95a882c14cf2186bb6237791400cb1569c6ff0a62
+  languageName: node
+  linkType: hard
+
+"@semaphore-protocol/proof@npm:0.3.3":
+  version: 0.3.3
+  resolution: "@semaphore-protocol/proof@npm:0.3.3"
   dependencies:
     "@ethersproject/bytes": ^5.5.0
     "@ethersproject/solidity": ^5.5.0
     "@ethersproject/strings": ^5.5.0
-    "@semaphore-protocol/identity": 0.2.1
-    "@zk-kit/incremental-merkle-tree": ^0.4.3
+    "@semaphore-protocol/group": 0.1.2
+    "@semaphore-protocol/identity": 0.2.2
     circomlibjs: 0.0.8
     snarkjs: ^0.4.13
-  checksum: ed1eb2560f164cbe9f6613081d9979a6dc7d59a9dbcfaa4c34e3b9ff98b28acd16112ba122491f16b4f7d3c00b7898af38e0c538117639ade73c138f6a040eb3
+  checksum: f2b3830e46a73d3977affb8bf467f9d2fc58c97399ab5063b1221fce63e71ae7048336fcc8435be5ff7d5fac821b42cecfc3c191b238831504a6a984ebe6872a
   languageName: node
   linkType: hard
 
@@ -1853,7 +1864,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/incremental-merkle-tree@npm:^0.4.3":
+"@zk-kit/incremental-merkle-tree@npm:0.4.3":
   version: 0.4.3
   resolution: "@zk-kit/incremental-merkle-tree@npm:0.4.3"
   checksum: 582ef97bd2b1b9638ce7c8a941200a5cf0ab86975f767de233905e8af0ff72d31b44f2497595f0ff585e45c7491481cf4e027ee6486a136cd64498d4b16b3e29
@@ -4648,13 +4659,6 @@ __metadata:
     randombytes: ^2.0.0
     randomfill: ^1.0.3
   checksum: c1609af82605474262f3eaa07daa0b2140026bd264ab316d4bf1170272570dbe02f0c49e29407fe0d3634f96c507c27a19a6765fb856fed854a625f9d15618e2
-  languageName: node
-  linkType: hard
-
-"crypto-js@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "crypto-js@npm:4.1.1"
-  checksum: b3747c12ee3a7632fab3b3e171ea50f78b182545f0714f6d3e7e2858385f0f4101a15f2517e033802ce9d12ba50a391575ff4638c9de3dd9b2c4bc47768d5425
   languageName: node
   linkType: hard
 
@@ -12812,8 +12816,9 @@ __metadata:
     "@nomiclabs/hardhat-ethers": ^2.0.6
     "@nomiclabs/hardhat-waffle": ^2.0.3
     "@openzeppelin/contracts": ^4.4.2
-    "@semaphore-protocol/identity": 0.2.1
-    "@semaphore-protocol/proof": 0.2.1
+    "@semaphore-protocol/group": 0.1.2
+    "@semaphore-protocol/identity": 0.2.2
+    "@semaphore-protocol/proof": 0.3.3
     "@typechain/ethers-v5": ^10.0.0
     "@typechain/hardhat": ^6.0.0
     "@types/chai": ^4.3.0
@@ -12823,7 +12828,6 @@ __metadata:
     "@types/rimraf": ^3.0.2
     "@typescript-eslint/eslint-plugin": ^5.10.1
     "@typescript-eslint/parser": ^5.10.1
-    "@zk-kit/incremental-merkle-tree": ^0.4.3
     "@zk-kit/incremental-merkle-tree.sol": ^0.3.1
     chai: ^4.3.5
     circomlib: ^2.0.2

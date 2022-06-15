@@ -1,6 +1,6 @@
+import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import {
-    createMerkleProof,
     generateNullifierHash,
     generateProof,
     packToSolidityProof,
@@ -18,14 +18,14 @@ describe("SemaphoreWhistleblowing", () => {
     let accounts: Signer[]
     let editor: string
 
-    const depth = Number(process.env.TREE_DEPTH)
+    const treeDepth = Number(process.env.TREE_DEPTH)
     const entityIds = [BigInt(1), BigInt(2)]
 
     const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
     const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
 
     before(async () => {
-        const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth })
+        const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth: treeDepth })
         contract = await run("deploy:semaphore-whistleblowing", { logs: false, verifier: verifierAddress })
         accounts = await ethers.getSigners()
         editor = await accounts[1].getAddress()
@@ -42,20 +42,20 @@ describe("SemaphoreWhistleblowing", () => {
             const transaction = contract.createEntity(
                 BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
                 editor,
-                depth
+                treeDepth
             )
 
             await expect(transaction).to.be.revertedWith("SemaphoreGroups: group id must be < SNARK_SCALAR_FIELD")
         })
 
         it("Should create an entity", async () => {
-            const transaction = contract.createEntity(entityIds[0], editor, depth)
+            const transaction = contract.createEntity(entityIds[0], editor, treeDepth)
 
             await expect(transaction).to.emit(contract, "EntityCreated").withArgs(entityIds[0], editor)
         })
 
         it("Should not create a entity if it already exists", async () => {
-            const transaction = contract.createEntity(entityIds[0], editor, depth)
+            const transaction = contract.createEntity(entityIds[0], editor, treeDepth)
 
             await expect(transaction).to.be.revertedWith("SemaphoreGroups: group already exists")
         })
@@ -97,12 +97,11 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should not remove a whistleblower if the caller is not the editor", async () => {
             const identity = new Identity()
             const identityCommitment = identity.generateCommitment()
-            const { siblings, pathIndices } = createMerkleProof(
-                depth,
-                BigInt(0),
-                [identityCommitment],
-                identityCommitment
-            )
+            const group = new Group(treeDepth)
+
+            group.addMember(identityCommitment)
+
+            const { siblings, pathIndices } = group.generateProofOfMembership(0)
 
             const transaction = contract.removeWhistleblower(entityIds[0], identityCommitment, siblings, pathIndices)
 
@@ -112,12 +111,11 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should remove a whistleblower from an existing entity", async () => {
             const identity = new Identity("test")
             const identityCommitment = identity.generateCommitment()
-            const { siblings, pathIndices } = createMerkleProof(
-                depth,
-                BigInt(0),
-                [identityCommitment],
-                identityCommitment
-            )
+            const group = new Group(treeDepth)
+
+            group.addMember(identityCommitment)
+
+            const { siblings, pathIndices } = group.generateProofOfMembership(0)
 
             const transaction = contract
                 .connect(accounts[1])
@@ -136,19 +134,22 @@ describe("SemaphoreWhistleblowing", () => {
     describe("# publishLeak", () => {
         const identity = new Identity("test")
         const identityCommitment = identity.generateCommitment()
-        const merkleProof = createMerkleProof(depth, BigInt(0), [identityCommitment, BigInt(1)], identityCommitment)
         const leak = "leak"
         const bytes32Leak = utils.formatBytes32String(leak)
+
+        const group = new Group(treeDepth)
+
+        group.addMembers([identityCommitment, BigInt(1)])
 
         let solidityProof: SolidityProof
         let publicSignals: PublicSignals
 
         before(async () => {
-            await contract.createEntity(entityIds[1], editor, depth)
+            await contract.createEntity(entityIds[1], editor, treeDepth)
             await contract.connect(accounts[1]).addWhistleblower(entityIds[1], identityCommitment)
             await contract.connect(accounts[1]).addWhistleblower(entityIds[1], BigInt(1))
 
-            const fullProof = await generateProof(identity, merkleProof, entityIds[1], leak, {
+            const fullProof = await generateProof(identity, group, entityIds[1], leak, {
                 wasmFilePath,
                 zkeyFilePath
             })
