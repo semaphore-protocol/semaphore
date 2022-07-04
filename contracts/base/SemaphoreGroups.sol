@@ -3,7 +3,7 @@ pragma solidity ^0.8.4;
 
 import {SNARK_SCALAR_FIELD} from "./SemaphoreConstants.sol";
 import "../interfaces/ISemaphoreGroups.sol";
-import "@zk-kit/incremental-merkle-tree.sol/contracts/IncrementalBinaryTree.sol";
+import "@zk-kit/incremental-merkle-tree.sol/IncrementalBinaryTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 
 /// @title Semaphore groups contract.
