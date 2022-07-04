@@ -1857,10 +1857,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/incremental-merkle-tree.sol@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "@zk-kit/incremental-merkle-tree.sol@npm:0.3.1"
-  checksum: 3d880d06ee1af67c656aaaa0d2d62d29a409470da2b05302dda06f60a5943efcc1352d40029bc11c1f23209e3e90434e84328413a2c130622227d3db34109b85
+"@zk-kit/incremental-merkle-tree.sol@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@zk-kit/incremental-merkle-tree.sol@npm:1.0.0"
+  checksum: 015262199f58446d8f9e7906cc36b92a8bd5d3db5cc052169bc28b3c94505328e725a978cc066b6e79f0ea7c5e5d1a81e7801134cb2ad23b14f61c2b94c09b28
   languageName: node
   linkType: hard
 
@@ -12828,7 +12828,7 @@ __metadata:
     "@types/rimraf": ^3.0.2
     "@typescript-eslint/eslint-plugin": ^5.10.1
     "@typescript-eslint/parser": ^5.10.1
-    "@zk-kit/incremental-merkle-tree.sol": ^0.3.1
+    "@zk-kit/incremental-merkle-tree.sol": ^1.0.0
     chai: ^4.3.5
     circomlib: ^2.0.2
     circomlibjs: ^0.0.8
