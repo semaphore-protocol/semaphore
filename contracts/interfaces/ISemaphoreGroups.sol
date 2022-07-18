@@ -32,6 +32,12 @@ interface ISemaphoreGroups {
     /// @return Depth of the group tree.
     function getDepth(uint256 groupId) external view returns (uint8);
 
+    /// @dev Returns the max edges of the linkable tree of a group.
+    /// @param groupId: Id of the group.
+    /// @return Maximum # of edges this group supports
+    function getMaxEdges(uint256 groupId) external view returns (uint8);
+
+
     /// @dev Returns the number of tree leaves of a group.
     /// @param groupId: Id of the group.
     /// @return Number of tree leaves.

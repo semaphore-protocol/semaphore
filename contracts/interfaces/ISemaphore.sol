@@ -26,12 +26,14 @@ interface ISemaphore {
     /// @param signal: Semaphore signal.
     /// @param nullifierHash: Nullifier hash.
     /// @param externalNullifier: External nullifier.
+    /// @param roots: The roots being proven against
     /// @param proof: Zero-knowledge proof.
     function verifyProof(
         uint256 groupId,
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
+        bytes calldata roots,
         uint256[8] calldata proof
     ) external;
 
@@ -40,11 +42,13 @@ interface ISemaphore {
     /// @param depth: Depth of the tree.
     /// @param zeroValue: Zero value of the tree.
     /// @param admin: Admin of the group.
+    /// @param maxEdges: The maximum # of edges supported by this group
     function createGroup(
         uint256 groupId,
         uint8 depth,
         uint256 zeroValue,
-        address admin
+        address admin,
+        uint8 maxEdges
     ) external;
 
     /// @dev Updates the group admin.

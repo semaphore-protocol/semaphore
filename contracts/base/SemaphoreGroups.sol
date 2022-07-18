@@ -3,17 +3,17 @@ pragma solidity ^0.8.4;
 
 import {SNARK_SCALAR_FIELD} from "./SemaphoreConstants.sol";
 import "../interfaces/ISemaphoreGroups.sol";
-import "@zk-kit/incremental-merkle-tree.sol/IncrementalBinaryTree.sol";
+import "./LinkableIncrementalBinaryTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 
 /// @title Semaphore groups contract.
 /// @dev The following code allows you to create groups, add and remove members.
 /// You can use getters to obtain informations about groups (root, depth, number of leaves).
 abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
-    using IncrementalBinaryTree for IncrementalTreeData;
+    using LinkableIncrementalBinaryTree for LinkableIncrementalTreeData;
 
     /// @dev Gets a group id and returns the group/tree data.
-    mapping(uint256 => IncrementalTreeData) internal groups;
+    mapping(uint256 => LinkableIncrementalTreeData) internal groups;
 
     /// @dev Creates a new group by initializing the associated tree.
     /// @param groupId: Id of the group.
@@ -68,12 +68,17 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
 
     /// @dev See {ISemaphoreGroups-getRoot}.
     function getRoot(uint256 groupId) public view virtual override returns (uint256) {
-        return groups[groupId].root;
+        return uint256(groups[groupId].getLastRoot());
     }
 
     /// @dev See {ISemaphoreGroups-getDepth}.
     function getDepth(uint256 groupId) public view virtual override returns (uint8) {
         return groups[groupId].depth;
+    }
+
+    /// @dev See {ISemaphoreGroups-getMaxEdges}.
+    function getMaxEdges(uint256 groupId) public view virtual override returns (uint8) {
+        return groups[groupId].maxEdges;
     }
 
     /// @dev See {ISemaphoreGroups-getNumberOfLeaves}.

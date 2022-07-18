@@ -75,13 +75,14 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         bytes32 leak,
         uint256 nullifierHash,
         uint256 entityId,
+        bytes calldata roots,
         uint256[8] calldata proof
     ) public override onlyEditor(entityId) {
         uint8 depth = getDepth(entityId);
-        uint256 root = getRoot(entityId);
+        uint8 maxEdges = getMaxEdges(entityId);
         IVerifier verifier = verifiers[depth];
 
-        _verifyProof(leak, root, nullifierHash, entityId, proof, verifier);
+        _verifyProof(leak, nullifierHash, entityId, roots, proof, verifier, maxEdges);
 
         emit LeakPublished(entityId, leak);
     }

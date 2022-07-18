@@ -33,13 +33,13 @@ describe("Semaphore", () => {
 
     describe("# createGroup", () => {
         it("Should not create a group if the tree depth is not supported", async () => {
-            const transaction = contract.createGroup(groupId, 10, 0, accounts[0])
+            const transaction = contract.createGroup(groupId, 10, 0, accounts[0], 0)
 
             await expect(transaction).to.be.revertedWith("Semaphore: tree depth is not supported")
         })
 
         it("Should create a group", async () => {
-            const transaction = contract.connect(signers[1]).createGroup(groupId, treeDepth, 0, accounts[1])
+            const transaction = contract.connect(signers[1]).createGroup(groupId, treeDepth, 0, accounts[1], 0)
 
             await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth, 0)
             await expect(transaction)
@@ -99,7 +99,7 @@ describe("Semaphore", () => {
 
             group.removeMember(0)
 
-            await contract.createGroup(groupId, treeDepth, 0, accounts[0])
+            await contract.createGroup(groupId, treeDepth, 0, accounts[0], 0)
             await contract.addMember(groupId, BigInt(1))
             await contract.addMember(groupId, BigInt(2))
             await contract.addMember(groupId, BigInt(3))
@@ -136,17 +136,27 @@ describe("Semaphore", () => {
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
-            const transaction = contract.verifyProof(10, bytes32Signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
+            const roots = await contract.getRoot(groupId);
+            const transaction = contract.verifyProof(
+                10,
+                bytes32Signal,
+                0,
+                0,
+                roots.toHexString(),
+                [0, 0, 0, 0, 0, 0, 0, 0],
+            )
 
             await expect(transaction).to.be.revertedWith("Semaphore: group does not exist")
         })
 
         it("Should throw an exception if the proof is not valid", async () => {
+            const roots = await contract.getRoot(groupId);
             const transaction = contract.verifyProof(
                 groupId,
                 bytes32Signal,
                 fullProof.publicSignals.nullifierHash,
                 0,
+                roots.toHexString(),
                 solidityProof
             )
 
@@ -154,11 +164,13 @@ describe("Semaphore", () => {
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
+            const roots = await contract.getRoot(groupId);
             const transaction = contract.verifyProof(
                 groupId,
                 bytes32Signal,
                 fullProof.publicSignals.nullifierHash,
-                fullProof.publicSignals.merkleRoot,
+                fullProof.publicSignals.externalNullifier,
+                roots.toHexString(),
                 solidityProof
             )
 

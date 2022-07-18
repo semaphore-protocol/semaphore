@@ -156,41 +156,75 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not cast a vote if the caller is not the coordinator", async () => {
-            const transaction = contract.castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[0], solidityProof)
+            const roots = await contract.getRoot(pollIds[0]);
+            const transaction = contract.castVote(
+                bytes32Vote,
+                publicSignals.nullifierHash,
+                pollIds[0],
+                roots.toHexString(),
+                solidityProof
+            )
 
             await expect(transaction).to.be.revertedWith("SemaphoreVoting: caller is not the poll coordinator")
         })
 
         it("Should not cast a vote if the poll is not ongoing", async () => {
+            const roots = await contract.getRoot(pollIds[2]);
             const transaction = contract
                 .connect(accounts[1])
-                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[2], solidityProof)
+                .castVote(
+                    bytes32Vote,
+                    publicSignals.nullifierHash,
+                    pollIds[2],
+                    roots.toHexString(),
+                    solidityProof
+                )
 
             await expect(transaction).to.be.revertedWith("SemaphoreVoting: vote can only be cast in an ongoing poll")
         })
 
         it("Should not cast a vote if the proof is not valid", async () => {
             const nullifierHash = generateNullifierHash(pollIds[0], identity.getNullifier())
-
+            const roots = await contract.getRoot(pollIds[1]);
             const transaction = contract
                 .connect(accounts[1])
-                .castVote(bytes32Vote, nullifierHash, pollIds[1], solidityProof)
+                .castVote(
+                    bytes32Vote,
+                    nullifierHash,
+                    pollIds[1],
+                    roots.toHexString(),
+                    solidityProof
+                )
 
             await expect(transaction).to.be.revertedWith("InvalidProof()")
         })
 
         it("Should cast a vote", async () => {
+            const roots = await contract.getRoot(pollIds[1]);
             const transaction = contract
                 .connect(accounts[1])
-                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[1], solidityProof)
+                .castVote(
+                    bytes32Vote,
+                    publicSignals.nullifierHash,
+                    pollIds[1],
+                    roots.toHexString(),
+                    solidityProof
+                )
 
             await expect(transaction).to.emit(contract, "VoteAdded").withArgs(pollIds[1], bytes32Vote)
         })
 
         it("Should not cast a vote twice", async () => {
+            const roots = await contract.getRoot(pollIds[1]);
             const transaction = contract
                 .connect(accounts[1])
-                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[1], solidityProof)
+                .castVote(
+                    bytes32Vote,
+                    publicSignals.nullifierHash,
+                    pollIds[1],
+                    roots.toHexString(),
+                    solidityProof
+                )
 
             await expect(transaction).to.be.revertedWith("SemaphoreCore: you cannot use the same nullifier twice")
         })

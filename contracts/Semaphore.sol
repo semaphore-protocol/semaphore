@@ -14,6 +14,9 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a group id and returns the group admin address.
     mapping(uint256 => address) public groupAdmins;
 
+    /// @dev Gets a group id and returns the max edges for this group
+    mapping(uint256 => uint8) public groupMaxEdges;
+
     /// @dev Checks if the group admin is the transaction sender.
     /// @param groupId: Id of the group.
     modifier onlyGroupAdmin(uint256 groupId) {
@@ -41,10 +44,11 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint256 groupId,
         uint8 depth,
         uint256 zeroValue,
-        address admin
+        address admin,
+        uint8 maxEdges
     ) external override onlySupportedDepth(depth) {
         _createGroup(groupId, depth, zeroValue);
-
+        groupMaxEdges[groupId] = maxEdges;
         groupAdmins[groupId] = admin;
 
         emit GroupAdminUpdated(groupId, address(0), admin);
@@ -78,16 +82,18 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
+        bytes calldata roots,
         uint256[8] calldata proof
     ) external override {
         uint256 root = getRoot(groupId);
         uint8 depth = getDepth(groupId);
+        uint8 maxEdges = getMaxEdges(groupId);
 
         require(depth != 0, "Semaphore: group does not exist");
 
         IVerifier verifier = verifiers[depth];
 
-        _verifyProof(signal, root, nullifierHash, externalNullifier, proof, verifier);
+        _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges);
 
         _saveNullifierHash(nullifierHash);
 

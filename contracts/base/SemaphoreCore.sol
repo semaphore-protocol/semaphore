@@ -3,6 +3,7 @@ pragma solidity ^0.8.4;
 
 import "../interfaces/ISemaphoreCore.sol";
 import "../interfaces/IVerifier.sol";
+import "./SemaphoreInputEncoder.sol";
 
 /// @title Semaphore core contract.
 /// @notice Minimal code to allow users to signal their endorsement of an arbitrary string.
@@ -10,6 +11,7 @@ import "../interfaces/IVerifier.sol";
 /// nullifier to prevent double-signaling. External nullifier and Merkle trees (i.e. groups) must be
 /// managed externally.
 contract SemaphoreCore is ISemaphoreCore {
+    using SemaphoreInputEncoder for SemaphoreInputEncoder.Proof;
     /// @dev Gets a nullifier hash and returns true or false.
     /// It is used to prevent double-signaling.
     mapping(uint256 => bool) internal nullifierHashes;
@@ -17,28 +19,40 @@ contract SemaphoreCore is ISemaphoreCore {
     /// @dev Asserts that no nullifier already exists and if the zero-knowledge proof is valid.
     /// Otherwise it reverts.
     /// @param signal: Semaphore signal.
-    /// @param root: Root of the Merkle tree.
+    /// @param roots: Roots of the Merkle tree and its neighboring anchor merkle trees.
     /// @param nullifierHash: Nullifier hash.
     /// @param externalNullifier: External nullifier.
     /// @param proof: Zero-knowledge proof.
     /// @param verifier: Verifier address.
     function _verifyProof(
         bytes32 signal,
-        uint256 root,
         uint256 nullifierHash,
         uint256 externalNullifier,
+        bytes calldata roots,
         uint256[8] calldata proof,
-        IVerifier verifier
+        IVerifier verifier,
+        uint8 maxEdges
     ) internal view {
         require(!nullifierHashes[nullifierHash], "SemaphoreCore: you cannot use the same nullifier twice");
 
         uint256 signalHash = _hashSignal(signal);
 
+        SemaphoreInputEncoder.Proof memory p = SemaphoreInputEncoder.Proof({
+            proof: proof,
+            roots: roots,
+            nullifierHash: nullifierHash,
+            signalHash: signalHash,
+            externalNullifier: externalNullifier
+        });
+
+        (bytes memory inputs,) = p._encodeInputs(maxEdges);
+
         verifier.verifyProof(
             [proof[0], proof[1]],
             [[proof[2], proof[3]], [proof[4], proof[5]]],
             [proof[6], proof[7]],
-            [root, nullifierHash, signalHash, externalNullifier]
+            inputs,
+            maxEdges
         );
     }
 

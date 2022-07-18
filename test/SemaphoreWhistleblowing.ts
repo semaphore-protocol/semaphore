@@ -159,10 +159,12 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should not publish a leak if the caller is not the editor", async () => {
+            const roots = await contract.getRoot(entityIds[0]);
             const transaction = contract.publishLeak(
                 bytes32Leak,
                 publicSignals.nullifierHash,
                 entityIds[0],
+                roots.toHexString(),
                 solidityProof
             )
 
@@ -171,18 +173,31 @@ describe("SemaphoreWhistleblowing", () => {
 
         it("Should not publish a leak if the proof is not valid", async () => {
             const nullifierHash = generateNullifierHash(entityIds[0], identity.getNullifier())
-
+            const roots = await contract.getRoot(entityIds[1]);
             const transaction = contract
                 .connect(accounts[1])
-                .publishLeak(bytes32Leak, nullifierHash, entityIds[1], solidityProof)
+                .publishLeak(
+                    bytes32Leak,
+                    nullifierHash,
+                    entityIds[1],
+                    roots.toHexString(),
+                    solidityProof
+                )
 
             await expect(transaction).to.be.revertedWith("InvalidProof()")
         })
 
         it("Should publish a leak", async () => {
+            const roots = await contract.getRoot(entityIds[1]);
             const transaction = contract
                 .connect(accounts[1])
-                .publishLeak(bytes32Leak, publicSignals.nullifierHash, entityIds[1], solidityProof)
+                .publishLeak(
+                    bytes32Leak,
+                    publicSignals.nullifierHash,
+                    entityIds[1],
+                    roots.toHexString(),
+                    solidityProof
+                )
 
             await expect(transaction).to.emit(contract, "LeakPublished").withArgs(entityIds[1], bytes32Leak)
         })

@@ -50,6 +50,7 @@ interface ISemaphoreWhistleblowing {
         bytes32 leak,
         uint256 nullifierHash,
         uint256 entityId,
+        bytes calldata roots,
         uint256[8] calldata proof
     ) external;
 }

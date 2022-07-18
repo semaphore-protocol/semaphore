@@ -78,6 +78,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         bytes32 vote,
         uint256 nullifierHash,
         uint256 pollId,
+        bytes calldata roots,
         uint256[8] calldata proof
     ) public override onlyCoordinator(pollId) {
         Poll memory poll = polls[pollId];
@@ -85,10 +86,10 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
 
         uint8 depth = getDepth(pollId);
-        uint256 root = getRoot(pollId);
+        uint8 maxEdges = getMaxEdges(pollId);
         IVerifier verifier = verifiers[depth];
 
-        _verifyProof(vote, root, nullifierHash, pollId, proof, verifier);
+        _verifyProof(vote, nullifierHash, pollId, roots, proof, verifier, maxEdges);
 
         // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).
         _saveNullifierHash(nullifierHash);
