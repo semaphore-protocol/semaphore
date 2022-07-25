@@ -24,8 +24,13 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         uint8 depth,
         uint256 zeroValue
     ) internal virtual {
-        require(groupId < SNARK_SCALAR_FIELD, "SemaphoreGroups: group id must be < SNARK_SCALAR_FIELD");
-        require(getDepth(groupId) == 0, "SemaphoreGroups: group already exists");
+        if (groupId >= SNARK_SCALAR_FIELD) {
+            revert Semaphore__GroupIdIsNotLessThanSnarkScalarField();
+        }
+
+        if (getDepth(groupId) != 0) {
+            revert Semaphore__GroupAlreadyExists();
+        }
 
         groups[groupId].init(depth, zeroValue);
 
@@ -36,7 +41,9 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     /// @param groupId: Id of the group.
     /// @param identityCommitment: New identity commitment.
     function _addMember(uint256 groupId, uint256 identityCommitment) internal virtual {
-        require(getDepth(groupId) != 0, "SemaphoreGroups: group does not exist");
+        if (getDepth(groupId) == 0) {
+            revert Semaphore__GroupDoesNotExist();
+        }
 
         groups[groupId].insert(identityCommitment);
 
@@ -57,7 +64,9 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
     ) internal virtual {
-        require(getDepth(groupId) != 0, "SemaphoreGroups: group does not exist");
+        if (getDepth(groupId) == 0) {
+            revert Semaphore__GroupDoesNotExist();
+        }
 
         groups[groupId].remove(identityCommitment, proofSiblings, proofPathIndices);
 

@@ -30,7 +30,9 @@ contract SemaphoreCore is ISemaphoreCore {
         uint256[8] calldata proof,
         IVerifier verifier
     ) internal view {
-        require(!nullifierHashes[nullifierHash], "SemaphoreCore: you cannot use the same nullifier twice");
+        if (nullifierHashes[nullifierHash]) {
+            revert Semaphore__YouAreUsingTheSameNillifierTwice();
+        }
 
         uint256 signalHash = _hashSignal(signal);
 
