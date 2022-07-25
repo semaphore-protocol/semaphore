@@ -4,6 +4,9 @@ pragma solidity ^0.8.4;
 /// @title Semaphore interface.
 /// @dev Interface of a Semaphore contract.
 interface ISemaphore {
+    error Semaphore__CallerIsNotTheGroupAdmin();
+    error Semaphore__TreeDepthIsNotSupported();
+
     struct Verifier {
         address contractAddress;
         uint8 merkleTreeDepth;

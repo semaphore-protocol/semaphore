@@ -35,7 +35,7 @@ describe("Semaphore", () => {
         it("Should not create a group if the tree depth is not supported", async () => {
             const transaction = contract.createGroup(groupId, 10, 0, accounts[0])
 
-            await expect(transaction).to.be.revertedWith("Semaphore: tree depth is not supported")
+            await expect(transaction).to.be.revertedWith("Semaphore__TreeDepthIsNotSupported()")
         })
 
         it("Should create a group", async () => {
@@ -52,7 +52,7 @@ describe("Semaphore", () => {
         it("Should not update a group admin if the caller is not the group admin", async () => {
             const transaction = contract.updateGroupAdmin(groupId, accounts[0])
 
-            await expect(transaction).to.be.revertedWith("Semaphore: caller is not the group admin")
+            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
         })
 
         it("Should update the group admin", async () => {
@@ -68,7 +68,7 @@ describe("Semaphore", () => {
 
             const transaction = contract.connect(signers[1]).addMember(groupId, member)
 
-            await expect(transaction).to.be.revertedWith("Semaphore: caller is not the group admin")
+            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
         })
 
         it("Should add a new member in an existing group", async () => {
@@ -88,7 +88,7 @@ describe("Semaphore", () => {
         it("Should not remove a member if the caller is not the group admin", async () => {
             const transaction = contract.connect(signers[1]).removeMember(groupId, members[0], [0, 1], [0, 1])
 
-            await expect(transaction).to.be.revertedWith("Semaphore: caller is not the group admin")
+            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
         })
 
         it("Should remove a member from an existing group", async () => {
@@ -138,7 +138,7 @@ describe("Semaphore", () => {
         it("Should not verify a proof if the group does not exist", async () => {
             const transaction = contract.verifyProof(10, bytes32Signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
 
-            await expect(transaction).to.be.revertedWith("Semaphore: group does not exist")
+            await expect(transaction).to.be.revertedWith("Semaphore__GroupDoesNotExist()")
         })
 
         it("Should throw an exception if the proof is not valid", async () => {

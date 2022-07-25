@@ -45,7 +45,7 @@ describe("SemaphoreWhistleblowing", () => {
                 treeDepth
             )
 
-            await expect(transaction).to.be.revertedWith("SemaphoreGroups: group id must be < SNARK_SCALAR_FIELD")
+            await expect(transaction).to.be.revertedWith("Semaphore__GroupIdIsNotLessThanSnarkScalarField()")
         })
 
         it("Should create an entity", async () => {
@@ -57,7 +57,7 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should not create a entity if it already exists", async () => {
             const transaction = contract.createEntity(entityIds[0], editor, treeDepth)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreGroups: group already exists")
+            await expect(transaction).to.be.revertedWith("Semaphore__GroupAlreadyExists()")
         })
     })
 
