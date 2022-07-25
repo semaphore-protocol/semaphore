@@ -6,6 +6,10 @@ import "./interfaces/IVerifier.sol";
 import "./base/SemaphoreCore.sol";
 import "./base/SemaphoreGroups.sol";
 
+error Semaphore__CallerIsNotTheGroupAdmin();
+error Semaphore__TreeDepthIsNotSupported();
+error Semaphore__GroupDoesNotExist();
+
 /// @title Semaphore
 contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a tree depth and returns its verifier address.
@@ -17,14 +21,18 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev Checks if the group admin is the transaction sender.
     /// @param groupId: Id of the group.
     modifier onlyGroupAdmin(uint256 groupId) {
-        require(groupAdmins[groupId] == _msgSender(), "Semaphore: caller is not the group admin");
+        if (groupAdmins[groupId] != _msgSender()) {
+            revert Semaphore__CallerIsNotTheGroupAdmin();
+        }
         _;
     }
 
     /// @dev Checks if there is a verifier for the given tree depth.
     /// @param depth: Depth of the tree.
     modifier onlySupportedDepth(uint8 depth) {
-        require(address(verifiers[depth]) != address(0), "Semaphore: tree depth is not supported");
+        if (address(verifiers[depth]) == address(0)) {
+            revert Semaphore__TreeDepthIsNotSupported();
+        }
         _;
     }
 
@@ -32,7 +40,9 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
     constructor(Verifier[] memory _verifiers) {
         for (uint8 i = 0; i < _verifiers.length; i++) {
-            verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(_verifiers[i].contractAddress);
+            verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(
+                _verifiers[i].contractAddress
+            );
         }
     }
 
@@ -51,14 +61,22 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphore-updateGroupAdmin}.
-    function updateGroupAdmin(uint256 groupId, address newAdmin) external override onlyGroupAdmin(groupId) {
+    function updateGroupAdmin(uint256 groupId, address newAdmin)
+        external
+        override
+        onlyGroupAdmin(groupId)
+    {
         groupAdmins[groupId] = newAdmin;
 
         emit GroupAdminUpdated(groupId, _msgSender(), newAdmin);
     }
 
     /// @dev See {ISemaphore-addMember}.
-    function addMember(uint256 groupId, uint256 identityCommitment) external override onlyGroupAdmin(groupId) {
+    function addMember(uint256 groupId, uint256 identityCommitment)
+        external
+        override
+        onlyGroupAdmin(groupId)
+    {
         _addMember(groupId, identityCommitment);
     }
 
@@ -69,7 +87,12 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
     ) external override onlyGroupAdmin(groupId) {
-        _removeMember(groupId, identityCommitment, proofSiblings, proofPathIndices);
+        _removeMember(
+            groupId,
+            identityCommitment,
+            proofSiblings,
+            proofPathIndices
+        );
     }
 
     /// @dev See {ISemaphore-verifyProof}.
@@ -83,11 +106,20 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint256 root = getRoot(groupId);
         uint8 depth = getDepth(groupId);
 
-        require(depth != 0, "Semaphore: group does not exist");
+        if (depth == 0) {
+            revert Semaphore__GroupDoesNotExist();
+        }
 
         IVerifier verifier = verifiers[depth];
 
-        _verifyProof(signal, root, nullifierHash, externalNullifier, proof, verifier);
+        _verifyProof(
+            signal,
+            root,
+            nullifierHash,
+            externalNullifier,
+            proof,
+            verifier
+        );
 
         _saveNullifierHash(nullifierHash);
 
