@@ -47,7 +47,7 @@ describe("SemaphoreVoting", () => {
                 treeDepth
             )
 
-            await expect(transaction).to.be.revertedWith("SemaphoreGroups: group id must be < SNARK_SCALAR_FIELD")
+            await expect(transaction).to.be.revertedWith("Semaphore__GroupIdIsNotLessThanSnarkScalarField()")
         })
 
         it("Should create a poll", async () => {
@@ -59,7 +59,7 @@ describe("SemaphoreVoting", () => {
         it("Should not create a poll if it already exists", async () => {
             const transaction = contract.createPoll(pollIds[0], coordinator, treeDepth)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreGroups: group already exists")
+            await expect(transaction).to.be.revertedWith("Semaphore__GroupAlreadyExists()")
         })
     })
 
@@ -226,7 +226,7 @@ describe("SemaphoreVoting", () => {
                     solidityProof
                 )
 
-            await expect(transaction).to.be.revertedWith("SemaphoreCore: you cannot use the same nullifier twice")
+            await expect(transaction).to.be.revertedWith("Semaphore__YouAreUsingTheSameNillifierTwice()")
         })
     })
 

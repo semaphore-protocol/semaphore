@@ -20,14 +20,18 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev Checks if the group admin is the transaction sender.
     /// @param groupId: Id of the group.
     modifier onlyGroupAdmin(uint256 groupId) {
-        require(groupAdmins[groupId] == _msgSender(), "Semaphore: caller is not the group admin");
+        if (groupAdmins[groupId] != _msgSender()) {
+            revert Semaphore__CallerIsNotTheGroupAdmin();
+        }
         _;
     }
 
     /// @dev Checks if there is a verifier for the given tree depth.
     /// @param depth: Depth of the tree.
     modifier onlySupportedDepth(uint8 depth) {
-        require(address(verifiers[depth]) != address(0), "Semaphore: tree depth is not supported");
+        if (address(verifiers[depth]) == address(0)) {
+            revert Semaphore__TreeDepthIsNotSupported();
+        }
         _;
     }
 
@@ -89,7 +93,9 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint8 depth = getDepth(groupId);
         uint8 maxEdges = getMaxEdges(groupId);
 
-        require(depth != 0, "Semaphore: group does not exist");
+        if (depth == 0) {
+            revert Semaphore__GroupDoesNotExist();
+        }
 
         IVerifier verifier = verifiers[depth];
 
