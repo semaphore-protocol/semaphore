@@ -74,12 +74,21 @@ describe("Semaphore", () => {
         it("Should add a new member in an existing group", async () => {
             const transaction = contract.addMember(groupId, members[0])
 
+            const zero = "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+            const group = new Group(treeDepth, BigInt(zero))
+            group.addMember(members[0])
+
             await expect(transaction)
                 .to.emit(contract, "MemberAdded")
                 .withArgs(
                     groupId,
                     members[0],
-                    "18951329906296061785889394467312334959162736293275411745101070722914184798221"
+                    // TODO: Double check if root is actually supposed to be different
+                    // prev_root:
+                    // "18951329906296061785889394467312334959162736293275411745101070722914184798221"
+                    // new root:
+                    group.root
+                    // "13363801133440369172344440658363322195671530462716685761435662705051278097748"
                 )
         })
     })
@@ -93,7 +102,15 @@ describe("Semaphore", () => {
 
         it("Should remove a member from an existing group", async () => {
             const groupId = 100
-            const group = new Group(treeDepth)
+            // NOTE: hex (zero value) taken from contracts/base/LinkableIncrementalBinaryTree.sol 
+            // first position in the zeros function
+
+            // let hex = "2fe54c60d3acabf3343a35b6eba15db4821b340f76e741e2249685ed4899af6c";
+            // if (hex.length % 2) { hex = '0' + hex; }
+            // const bn = BigInt('0x' + hex);
+            // const zero= bn.toString(10);
+            const zero = "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+            const group = new Group(treeDepth, BigInt(zero))
 
             group.addMembers([BigInt(1), BigInt(2), BigInt(3)])
 

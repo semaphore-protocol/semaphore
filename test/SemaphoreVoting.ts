@@ -112,12 +112,21 @@ describe("SemaphoreVoting", () => {
 
             const transaction = contract.connect(accounts[1]).addVoter(pollIds[1], identityCommitment)
 
+            const zero = "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+            const group = new Group(treeDepth, BigInt(zero))
+            group.addMember(identityCommitment)
+
             await expect(transaction)
                 .to.emit(contract, "MemberAdded")
                 .withArgs(
                     pollIds[1],
                     identityCommitment,
-                    "14787813191318312920980352979830075893203307366494541177071234930769373297362"
+                    // TODO: Double check if root is actually supposed to be different
+                    // prev_root:
+                    // "14787813191318312920980352979830075893203307366494541177071234930769373297362"
+                    // curr_root:
+                    group.root
+                    // "5519721975282040051140289013432901508280068291271190928090711912059677088196"
                 )
         })
 

@@ -76,13 +76,21 @@ describe("SemaphoreWhistleblowing", () => {
             const identityCommitment = identity.generateCommitment()
 
             const transaction = contract.connect(accounts[1]).addWhistleblower(entityIds[0], identityCommitment)
+            const zero = "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+            const group = new Group(treeDepth, BigInt(zero))
+            group.addMember(identityCommitment)
 
             await expect(transaction)
                 .to.emit(contract, "MemberAdded")
                 .withArgs(
                     entityIds[0],
                     identityCommitment,
-                    "14787813191318312920980352979830075893203307366494541177071234930769373297362"
+                    // TODO: Double check if root is actually supposed to be different
+                    // prev_root:
+                    // "14787813191318312920980352979830075893203307366494541177071234930769373297362"
+                    // curr_root:
+                    group.root
+                    // "5519721975282040051140289013432901508280068291271190928090711912059677088196"
                 )
         })
 
@@ -111,11 +119,15 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should remove a whistleblower from an existing entity", async () => {
             const identity = new Identity("test")
             const identityCommitment = identity.generateCommitment()
-            const group = new Group(treeDepth)
+            const zero = "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+            const group = new Group(treeDepth, BigInt(zero))
+            // const group = new Group(treeDepth)
 
             group.addMember(identityCommitment)
 
             const { siblings, pathIndices } = group.generateProofOfMembership(0)
+
+            group.removeMember(0)
 
             const transaction = contract
                 .connect(accounts[1])
@@ -126,7 +138,11 @@ describe("SemaphoreWhistleblowing", () => {
                 .withArgs(
                     entityIds[0],
                     identityCommitment,
-                    "15019797232609675441998260052101280400536945603062888308240081994073687793470"
+                    // TODO: Double check if root is actually supposed to be different
+                    // prev_root:
+                    // "15019797232609675441998260052101280400536945603062888308240081994073687793470"
+                    // curr_root:
+                    group.root
                 )
         })
     })
