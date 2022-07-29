@@ -12,7 +12,6 @@ template ManyMerkleProof(levels, length) {
     signal input pathElements[levels];
     signal input pathIndices[levels];
     signal input roots[length];
-    signal input isEnabled;
     signal output root;
 
     component switcher[levels];

@@ -86,8 +86,6 @@ template Semaphore(nLevels, length) {
         inclusionProof.roots[i] <== roots[i];
     }
 
-    // TODO: check if this is right
-    inclusionProof.isEnabled <== 1;
     for (var i = 0; i < nLevels; i++) {
         inclusionProof.pathElements[i] <== treeSiblings[i];
         inclusionProof.pathIndices[i] <== treePathIndices[i];
