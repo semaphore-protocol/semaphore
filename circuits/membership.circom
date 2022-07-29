@@ -11,20 +11,18 @@ include "../node_modules/circomlib/circuits/comparators.circom";
 // element, it must hold that the difference is 0. Therefore, the product of 0 and
 // anything else should be 0. The prove can't lie by adding a zero into the diffs set
 // because we constrain those to match all elements in the set respectively.
-template ForceSetMembershipIfEnabled(length) {
+template SetMembership(length) {
   signal input element;
   signal input set[length];
-  signal input enabled;
-
+  
   signal diffs[length];
   signal product[length + 1];
-  
   product[0] <== element;
-  
-  for (var i = 0; i < length; i++) { 
+
+  for (var i = 0; i < length; i++) {
     diffs[i] <== set[i] - element;
     product[i + 1] <== product[i] * diffs[i];
   }
 
-  product[length]*enabled === 0;
+  product[length] === 0;
 }

@@ -3,7 +3,7 @@ pragma circom 2.0.0;
 include "../node_modules/circomlib/circuits/bitify.circom";
 include "../node_modules/circomlib/circuits/poseidon.circom";
 include "../node_modules/circomlib/circuits/switcher.circom";
-include "./membership_if_enabled.circom";
+include "./membership.circom";
 
 // Verifies that merkle proof is correct for given merkle root and a leaf
 // pathIndices bits is an array of 0/1 selectors telling whether given pathElement is on the left or right side of merkle path
@@ -34,8 +34,7 @@ template ManyMerkleProof(levels, length) {
 
     // verify that the resultant hash (computed merkle root)
     // is in the set of roots
-    component set = ForceSetMembershipIfEnabled(length);
-    set.enabled <== isEnabled;
+    component set = SetMembership(length);
     for (var i = 0; i < length; i++) {
         set.set[i] <== roots[i];
     }
