@@ -1,7 +1,7 @@
 pragma circom 2.0.0;
 
 include "../node_modules/circomlib/circuits/poseidon.circom";
-include "./tree.circom";
+include "./manyMerkleProof.circom";
 
 template CalculateSecret() {
     signal input identityNullifier;
@@ -44,7 +44,7 @@ template CalculateNullifierHash() {
 }
 
 // nLevels must be < 32.
-template Semaphore(nLevels) {
+template Semaphore(nLevels, length) {
     signal input identityNullifier;
     signal input identityTrapdoor;
     signal input treePathIndices[nLevels];
@@ -52,6 +52,10 @@ template Semaphore(nLevels) {
 
     signal input signalHash;
     signal input externalNullifier;
+
+    // roots for interoperability, one-of-many merkle membership proof
+    signal input chainID;
+    signal input roots[length];
 
     signal output root;
     signal output nullifierHash;
@@ -70,16 +74,37 @@ template Semaphore(nLevels) {
     calculateNullifierHash.externalNullifier <== externalNullifier;
     calculateNullifierHash.identityNullifier <== identityNullifier;
 
-    component inclusionProof = MerkleTreeInclusionProof(nLevels);
-    inclusionProof.leaf <== calculateIdentityCommitment.out;
+//
 
-    for (var i = 0; i < nLevels; i++) {
-        inclusionProof.siblings[i] <== treeSiblings[i];
-        inclusionProof.pathIndices[i] <== treePathIndices[i];
+    component inclusionProof = ManyMerkleProof(nLevels, length);
+    inclusionProof.leaf <== calculateIdentityCommitment.out;
+    // transformed value into list of values due to semaphore usage
+    /* inclusionProof.pathIndices <== inPathIndices[tx]; */
+
+    // add the roots and diffs signals to the bridge circuit
+    for (var i = 0; i < length; i++) {
+        inclusionProof.roots[i] <== roots[i];
     }
 
+    // TODO: check if this is right
+    inclusionProof.isEnabled <== 1;
+    for (var i = 0; i < nLevels; i++) {
+        inclusionProof.pathElements[i] <== treeSiblings[i];
+        inclusionProof.pathIndices[i] <== treePathIndices[i];
+    }
     root <== inclusionProof.root;
 
+    //
+    /* component inclusionProof = MerkleTreeInclusionProof(nLevels); */
+    /* inclusionProof.leaf <== calculateIdentityCommitment.out; */
+    /**/
+    /* for (var i = 0; i < nLevels; i++) { */
+    /*     inclusionProof.siblings[i] <== treeSiblings[i]; */
+    /*     inclusionProof.pathIndices[i] <== treePathIndices[i]; */
+    /* } */
+    /**/
+    /* root <== inclusionProof.root; */
+    //
     // Dummy square to prevent tampering signalHash.
     signal signalHashSquared;
     signalHashSquared <== signalHash * signalHash;
@@ -87,4 +112,4 @@ template Semaphore(nLevels) {
     nullifierHash <== calculateNullifierHash.out;
 }
 
-component main {public [signalHash, externalNullifier]} = Semaphore(20);
+component main {public [signalHash, externalNullifier]} = Semaphore(20, 1);
