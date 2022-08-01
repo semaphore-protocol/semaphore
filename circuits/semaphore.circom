@@ -6,13 +6,15 @@ include "./manyMerkleProof.circom";
 template CalculateSecret() {
     signal input identityNullifier;
     signal input identityTrapdoor;
+    signal input chainID;
 
     signal output out;
 
-    component poseidon = Poseidon(2);
+    component poseidon = Poseidon(3);
 
     poseidon.inputs[0] <== identityNullifier;
     poseidon.inputs[1] <== identityTrapdoor;
+    poseidon.inputs[2] <== chainID;
 
     out <== poseidon.out;
 }
@@ -54,8 +56,8 @@ template Semaphore(nLevels, length) {
     signal input externalNullifier;
 
     // roots for interoperability, one-of-many merkle membership proof
-    signal input chainID;
     signal input roots[length];
+    signal input chainID;
 
     signal output root;
     signal output nullifierHash;
@@ -63,6 +65,7 @@ template Semaphore(nLevels, length) {
     component calculateSecret = CalculateSecret();
     calculateSecret.identityNullifier <== identityNullifier;
     calculateSecret.identityTrapdoor <== identityTrapdoor;
+    calculateSecret.chainID <== chainID;
 
     signal secret;
     secret <== calculateSecret.out;
@@ -110,4 +113,4 @@ template Semaphore(nLevels, length) {
     nullifierHash <== calculateNullifierHash.out;
 }
 
-component main {public [signalHash, externalNullifier]} = Semaphore(20, 1);
+component main {public [signalHash, externalNullifier, roots, chainID]} = Semaphore(20, 2);
