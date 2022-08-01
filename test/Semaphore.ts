@@ -1,5 +1,5 @@
 import { Group } from "@semaphore-protocol/group"
-import { Identity } from "@semaphore-protocol/identity"
+import Identity from "./identity"
 import { FullProof, generateSignalHash, packToSolidityProof, SolidityProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { groth16 } from "snarkjs"
@@ -36,7 +36,6 @@ async function generateProof(
 ): Promise<FullProof> {
     const commitment = identity.generateCommitment()
     const index = group.indexOf(commitment)
-    const chainID = 1337;
 
     if (index === -1) {
         throw new Error("The identity is not part of the group")
@@ -52,7 +51,7 @@ async function generateProof(
             treePathIndices: merkleProof.pathIndices,
             treeSiblings: merkleProof.siblings,
             roots: [merkleProof.root, 0],
-            chainID: chainID,
+            chainID: identity.chainID,
             externalNullifier,
             signalHash: generateSignalHash(signal)
         },
@@ -79,7 +78,8 @@ describe("Semaphore", () => {
     const treeDepth = Number(process.env.TREE_DEPTH)
     const groupId = 1
     const maxEdges = 1;
-    const members = createIdentityCommitments(3)
+    const chainID = 1337;
+    const members = createIdentityCommitments(chainID, 3)
 
     // const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
     // const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
@@ -198,7 +198,8 @@ describe("Semaphore", () => {
     describe("# verifyProof", () => {
         const signal = "Hello world"
         const bytes32Signal = utils.formatBytes32String(signal)
-        const identity = new Identity("0")
+        const identity = new Identity(BigInt(chainID), "0")
+        const groupId2 = groupId + 1
 
         const group = new Group(treeDepth)
 
@@ -209,13 +210,12 @@ describe("Semaphore", () => {
 
         before(async () => {
             // const transaction = await contract.getMaxEdges(groupId)
-            // const groupId2 = groupId + 1
-            const transaction = await contract.createGroup(groupId, treeDepth, 0, accounts[0], maxEdges)
+            const transaction = await contract.createGroup(groupId2, treeDepth, 0, accounts[0], maxEdges)
             // console.log(transaction)
-            const edges = await contract.getMaxEdges(groupId)
+            const edges = await contract.getMaxEdges(groupId2)
             // console.log("edges: ", edges)
-            await contract.addMember(groupId, members[1])
-            await contract.addMember(groupId, members[2])
+            await contract.addMember(groupId2, members[1])
+            await contract.addMember(groupId2, members[2])
 
             fullProof = await generateProof(identity, group, group.root, signal, {
                 wasmFilePath,
@@ -225,8 +225,7 @@ describe("Semaphore", () => {
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
-            const groupId = groupId + 1
-            const roots = await contract.getRoot(groupId);
+            const roots = await contract.getRoot(groupId2);
             // console.log("roots: ,", roots);
             const transaction = contract.verifyProof(
                 10,
@@ -244,12 +243,11 @@ describe("Semaphore", () => {
         })
 
         it("Should throw an exception if the proof is not valid", async () => {
-            const groupId = groupId + 1
-            const root = await contract.getRoot(groupId);
+            const root = await contract.getRoot(groupId2);
             const roots = [root.toHexString(), BigNumber.from(0).toHexString()] 
             // console.log("roots: ,", roots);
             const transaction = contract.verifyProof(
-                groupId,
+                groupId2,
                 bytes32Signal,
                 fullProof.publicSignals.nullifierHash,
                 0,
@@ -264,10 +262,9 @@ describe("Semaphore", () => {
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
-            // const groupId2 = groupId + 1
-            const roots = await contract.getRoot(groupId);
+            const roots = await contract.getRoot(groupId2);
             const transaction = contract.verifyProof(
-                groupId,
+                groupId2,
                 bytes32Signal,
                 fullProof.publicSignals.nullifierHash,
                 fullProof.publicSignals.externalNullifier,
@@ -277,7 +274,7 @@ describe("Semaphore", () => {
             // const receipt = await transaction;
             // console.log("receipt: ,", receipt);
 
-            await expect(transaction).to.emit(contract, "ProofVerified").withArgs(groupId, bytes32Signal)
+            await expect(transaction).to.emit(contract, "ProofVerified").withArgs(groupId2, bytes32Signal)
         })
     })
 })

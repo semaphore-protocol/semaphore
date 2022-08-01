@@ -11,6 +11,9 @@
     "bugs": {
         "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
     },
+    "workspaces": [
+        "packages/*"
+    ],
     "private": true,
     "scripts": {
         "start": "hardhat node",
@@ -84,6 +87,7 @@
         "paths": {
             "contracts": "./contracts",
             "circuit": "./circuit",
+            "@identity": "./packages/identity/*",
             "tests": "./test",
             "cache": "./cache",
             "snarkjs-templates": "./snarkjs-templates",
