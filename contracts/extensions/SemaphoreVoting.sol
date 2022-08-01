@@ -9,7 +9,7 @@ import "../base/SemaphoreGroups.sol";
 /// @dev The following code allows you to create polls, add voters and allow them to vote anonymously.
 contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a tree depth and returns its verifier address.
-    mapping(uint8 => IVerifier) internal verifiers;
+    mapping(uint8 => SemaphoreVerifier) internal verifiers;
 
     /// @dev Gets a poll id and returns the poll data.
     mapping(uint256 => Poll) internal polls;
@@ -27,7 +27,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         );
 
         for (uint8 i = 0; i < depths.length; i++) {
-            verifiers[depths[i]] = IVerifier(verifierAddresses[i]);
+            verifiers[depths[i]] = SemaphoreVerifier(verifierAddresses[i]);
         }
     }
 
@@ -88,7 +88,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
         uint8 depth = getDepth(pollId);
         uint8 maxEdges = getMaxEdges(pollId);
-        IVerifier verifier = verifiers[depth];
+        SemaphoreVerifier verifier = verifiers[depth];
 
         _verifyProof(vote, nullifierHash, pollId, roots, proof, verifier, maxEdges);
 

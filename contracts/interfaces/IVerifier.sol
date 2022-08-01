@@ -8,6 +8,7 @@ interface IVerifier {
         uint256[2] memory a,
         uint256[2][2] memory b,
         uint256[2] memory c,
-        bytes memory input
-    ) external view;
+        bytes memory input,
+        uint8 maxEdges
+    ) external view returns (bool r);
 }

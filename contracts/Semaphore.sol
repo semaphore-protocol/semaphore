@@ -2,14 +2,15 @@
 pragma solidity ^0.8.4;
 
 import "./interfaces/ISemaphore.sol";
-import "./interfaces/IVerifier.sol";
+// import "./interfaces/IVerifier.sol";
+import "./verifiers/SemaphoreVerifier.sol";
 import "./base/SemaphoreCore.sol";
 import "./base/SemaphoreGroups.sol";
 
 /// @title Semaphore
 contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a tree depth and returns its verifier address.
-    mapping(uint8 => IVerifier) public verifiers;
+    mapping(uint8 => SemaphoreVerifier) public verifiers;
 
     /// @dev Gets a group id and returns the group admin address.
     mapping(uint256 => address) public groupAdmins;
@@ -39,7 +40,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
     constructor(Verifier[] memory _verifiers) {
         for (uint8 i = 0; i < _verifiers.length; i++) {
-            verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(_verifiers[i].contractAddress);
+            verifiers[_verifiers[i].merkleTreeDepth] = SemaphoreVerifier(_verifiers[i].contractAddress);
         }
     }
 
@@ -97,7 +98,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
             revert Semaphore__GroupDoesNotExist();
         }
 
-        IVerifier verifier = verifiers[depth];
+        SemaphoreVerifier verifier = verifiers[depth];
 
         // _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, 1);
         _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges);

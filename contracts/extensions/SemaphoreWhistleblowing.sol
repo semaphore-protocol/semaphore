@@ -11,7 +11,7 @@ import "../base/SemaphoreGroups.sol";
 /// Leaks can be IPFS hashes, permanent links or other kinds of reference.
 contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a tree depth and returns its verifier address.
-    mapping(uint8 => IVerifier) internal verifiers;
+    mapping(uint8 => SemaphoreVerifier) internal verifiers;
 
     /// @dev Gets an editor address and return their entity.
     mapping(address => uint256) private entities;
@@ -29,7 +29,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         );
 
         for (uint8 i = 0; i < depths.length; i++) {
-            verifiers[depths[i]] = IVerifier(verifierAddresses[i]);
+            verifiers[depths[i]] = SemaphoreVerifier(verifierAddresses[i]);
         }
     }
 
@@ -81,7 +81,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     ) public override onlyEditor(entityId) {
         uint8 depth = getDepth(entityId);
         uint8 maxEdges = getMaxEdges(entityId);
-        IVerifier verifier = verifiers[depth];
+        SemaphoreVerifier verifier = verifiers[depth];
 
         _verifyProof(leak, nullifierHash, entityId, roots, proof, verifier, maxEdges);
 
