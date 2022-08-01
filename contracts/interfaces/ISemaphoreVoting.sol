@@ -44,7 +44,8 @@ interface ISemaphoreVoting {
     function createPoll(
         uint256 pollId,
         address coordinator,
-        uint8 depth
+        uint8 depth,
+        uint8 maxEdges
     ) external;
 
     /// @dev Adds a voter to a poll.

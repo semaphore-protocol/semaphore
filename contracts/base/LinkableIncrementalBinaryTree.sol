@@ -61,13 +61,15 @@ library LinkableIncrementalBinaryTree {
     function init(
         LinkableIncrementalTreeData storage self,
         uint8 depth,
-        uint256 zero
+        uint256 zero,
+        uint8 maxEdges
     ) public {
         require(zero < SNARK_SCALAR_FIELD, "LinkableIncrementalBinaryTree: leaf must be < SNARK_SCALAR_FIELD");
         require(depth > 0 && depth <= MAX_DEPTH, "LinkableIncrementalBinaryTree: tree depth must be between 1 and 32");
 
         self.depth = depth;
         self.roots[0] = zeros(depth);
+        self.maxEdges = maxEdges;
     }
 
     /// @dev Inserts a leaf in the tree.

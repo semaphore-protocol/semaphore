@@ -51,7 +51,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         address admin,
         uint8 maxEdges
     ) external override onlySupportedDepth(depth) {
-        _createGroup(groupId, depth, zeroValue);
+        _createGroup(groupId, depth, zeroValue, maxEdges);
         groupMaxEdges[groupId] = maxEdges;
         groupAdmins[groupId] = admin;
 
@@ -99,6 +99,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
         IVerifier verifier = verifiers[depth];
 
+        // _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, 1);
         _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges);
 
         _saveNullifierHash(nullifierHash);

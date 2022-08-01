@@ -22,7 +22,8 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     function _createGroup(
         uint256 groupId,
         uint8 depth,
-        uint256 zeroValue
+        uint256 zeroValue,
+        uint8 maxEdges
     ) internal virtual {
         if (groupId >= SNARK_SCALAR_FIELD) {
             revert Semaphore__GroupIdIsNotLessThanSnarkScalarField();
@@ -32,7 +33,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
             revert Semaphore__GroupAlreadyExists();
         }
 
-        groups[groupId].init(depth, zeroValue);
+        groups[groupId].init(depth, zeroValue, maxEdges);
 
         emit GroupCreated(groupId, depth, zeroValue);
     }

@@ -21,7 +21,8 @@ interface ISemaphoreWhistleblowing {
     function createEntity(
         uint256 entityId,
         address editor,
-        uint8 depth
+        uint8 depth,
+        uint8 maxEdges
     ) external;
 
     /// @dev Adds a whistleblower to an entity.

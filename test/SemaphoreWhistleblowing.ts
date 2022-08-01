@@ -20,6 +20,7 @@ describe("SemaphoreWhistleblowing", () => {
 
     const treeDepth = Number(process.env.TREE_DEPTH)
     const entityIds = [BigInt(1), BigInt(2)]
+    const maxEdges = 1;
 
     const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
     const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
@@ -33,7 +34,7 @@ describe("SemaphoreWhistleblowing", () => {
 
     describe("# createEntity", () => {
         it("Should not create an entity with a wrong depth", async () => {
-            const transaction = contract.createEntity(entityIds[0], editor, 10)
+            const transaction = contract.createEntity(entityIds[0], editor, 10, maxEdges)
 
             await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: depth value is not supported")
         })
@@ -42,20 +43,21 @@ describe("SemaphoreWhistleblowing", () => {
             const transaction = contract.createEntity(
                 BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
                 editor,
-                treeDepth
+                treeDepth,
+                maxEdges
             )
 
             await expect(transaction).to.be.revertedWith("Semaphore__GroupIdIsNotLessThanSnarkScalarField()")
         })
 
         it("Should create an entity", async () => {
-            const transaction = contract.createEntity(entityIds[0], editor, treeDepth)
+            const transaction = contract.createEntity(entityIds[0], editor, treeDepth, maxEdges)
 
             await expect(transaction).to.emit(contract, "EntityCreated").withArgs(entityIds[0], editor)
         })
 
         it("Should not create a entity if it already exists", async () => {
-            const transaction = contract.createEntity(entityIds[0], editor, treeDepth)
+            const transaction = contract.createEntity(entityIds[0], editor, treeDepth, maxEdges)
 
             await expect(transaction).to.be.revertedWith("Semaphore__GroupAlreadyExists()")
         })
@@ -161,7 +163,7 @@ describe("SemaphoreWhistleblowing", () => {
         let publicSignals: PublicSignals
 
         before(async () => {
-            await contract.createEntity(entityIds[1], editor, treeDepth)
+            await contract.createEntity(entityIds[1], editor, treeDepth, maxEdges)
             await contract.connect(accounts[1]).addWhistleblower(entityIds[1], identityCommitment)
             await contract.connect(accounts[1]).addWhistleblower(entityIds[1], BigInt(1))
 
