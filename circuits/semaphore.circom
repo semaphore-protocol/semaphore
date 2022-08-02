@@ -112,5 +112,3 @@ template Semaphore(nLevels, length) {
 
     nullifierHash <== calculateNullifierHash.out;
 }
-
-component main {public [signalHash, externalNullifier, roots, chainID]} = Semaphore(20, 2);
