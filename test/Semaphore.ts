@@ -77,20 +77,49 @@ describe("Semaphore", () => {
 
     const treeDepth = Number(process.env.TREE_DEPTH)
     const groupId = 1
-    const maxEdges = 1;
+    const maxEdges = 2;
     const chainID = 1337;
     const members = createIdentityCommitments(chainID, 3)
 
     // const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
     // const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
-    const wasmFilePath = `./build/circuit_artifacts/semaphore_js/semaphore.wasm`
-    const zkeyFilePath = `./build/circuit_artifacts/artifacts/circuit_final.zkey`
+    const wasmFilePath = `./artifacts/circuits/20/2/semaphore_20_2_js/semaphore_20_2.wasm`
+    const zkeyFilePath = `./artifacts/circuits/20/2/circuit_final.zkey`
 
+    type VerifierContractInfo = { 
+        name: string;
+        address: string;
+        depth: string;
+        maxEdges: string
+    }
     before(async () => {
-        const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth: treeDepth })
+
+        const { address: v2_address } = await run("deploy:verifier", { logs: true, depth: treeDepth, maxEdges: 2 })
+        const VerifierV2: VerifierContractInfo = {
+            name: `Verifier${treeDepth}_${2}`,
+            address: v2_address,
+            depth: `${treeDepth}`,
+            maxEdges: `2`
+        }
+
+        const { address: v7_address } = await run("deploy:verifier", { logs: true, depth: treeDepth, maxEdges: 7 })
+        const VerifierV7: VerifierContractInfo = {
+            name: `Verifier${treeDepth}_${7}`,
+            address: v7_address,
+            depth: `${treeDepth}`,
+            maxEdges: `7`
+        }
+
+        const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([["v2", VerifierV2], ["v7", VerifierV7]]);
+
+        const verifierSelector = await run("deploy:verifier-selector", {
+            logs: true,
+            verifiers: deployedVerifiers
+        })
+
         contract = await run("deploy:semaphore", {
-            logs: false,
-            verifiers: [{ merkleTreeDepth: treeDepth, contractAddress: verifierAddress }]
+            logs: true,
+            verifiers: [{ merkleTreeDepth: treeDepth, contractAddress: verifierSelector.address }]
         })
 
         signers = await run("accounts", { logs: false })

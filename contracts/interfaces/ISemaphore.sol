@@ -9,6 +9,12 @@ interface ISemaphore {
 
     struct Verifier {
         address contractAddress;
+        uint8 maxEdges;
+    }
+
+    struct Verifiers {
+        Verifier v2;
+        Verifier v7;
         uint8 merkleTreeDepth;
     }
 
