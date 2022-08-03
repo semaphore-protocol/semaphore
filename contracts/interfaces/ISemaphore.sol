@@ -9,14 +9,14 @@ interface ISemaphore {
 
     struct Verifier {
         address contractAddress;
-        uint8 maxEdges;
-    }
-
-    struct Verifiers {
-        Verifier v2;
-        Verifier v7;
         uint8 merkleTreeDepth;
     }
+
+    // struct Verifiers {
+    //     Verifier v2;
+    //     Verifier v7;
+    //     uint8 merkleTreeDepth;
+    // }
 
     /// @dev Emitted when an admin is assigned to a group.
     /// @param groupId: Id of the group.

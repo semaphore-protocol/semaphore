@@ -8,45 +8,23 @@ pragma solidity ^0.8.0;
 import "../interfaces/ISemaphoreVerifier.sol";
 import "../interfaces/IVerifier.sol";
 
-contract SemaphoreVerifier is IVerifier {
+contract SemaphoreVerifier is ISemaphoreVerifier {
 	ISemaphoreVerifier2_2 public v2_2;
 	// ISemaphoreVerifier2_16 public v2_16;
 
 	ISemaphoreVerifier8_2 public v8_2;
 	// ISemaphoreVerifier8_16 public v8_16;
-	
 
 	constructor(
-		ISemaphoreVerifier2_2 _verifier_2_2,
+		address _verifier2_2,
 		// ISemaphoreVerifier2_16 _verifier_2_16,
-		ISemaphoreVerifier8_2 _verifier_8_2
+		address _verifier8_2
 		// ISemaphoreVerifier8_16 _verifier_8_16
 	) {
-		v2_2 = _verifier_2_2;
+		v2_2 = ISemaphoreVerifier2_2(_verifier2_2);
 		// v2_16 = _verifier_2_16;
-		v8_2 = _verifier_8_2;
+		v8_2 = ISemaphoreVerifier8_2(_verifier8_2);
 		// v8_16 = _verifier_8_16;
-	}
-
-	function verifyPr(
-		uint[2] memory a,
-		uint[2][2] memory b,
-		uint[2] memory c,
-		bytes memory input,
-		uint8 maxEdges
-	) external view returns (bool r) {
-        return true;
-		if (maxEdges == 1) {
-            uint256[7] memory _inputs = abi.decode(input, (uint256[7]));
-            return v2_2.verifyProof(a, b, c, _inputs);
-            // TODO: Fix the rest of the function with correct number of arguments to verifiers.
-		} else if (maxEdges == 7) {
-            uint256[15] memory _inputs = abi.decode(input, (uint256[15]));
-            return v8_2.verifyProof(a, b, c, _inputs);
-
-		} else {
-			return false;
-		}
 	}
 
 	function verifyProof(
