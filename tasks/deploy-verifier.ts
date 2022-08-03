@@ -23,13 +23,16 @@ task("deploy:verifier-selector", "Deploy a Verifier contract")
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
     .setAction(async ({ verifiers, logs }, { ethers }): Promise<Contract> => {
 
-        const v2 = verifiers.v2.address;
-        const v7 = verifiers.v7.address;
+        const v2 = verifiers.get("v2").address;
+        const v7 = verifiers.get("v7").address;
 
+        logs && console.log("v2 address: ", v2)
+        logs && console.log("v7 address: ", v7)
         const ContractFactory = await ethers.getContractFactory(`SemaphoreVerifier`)
 
         const semaphoreVerifier = await ContractFactory.deploy(v2, v7)
 
+        // console.log("verifier: ", semaphoreVerifier)
         await semaphoreVerifier.deployed()
 
         logs && console.log(`SemaphoreVerifier has been deployed to: ${semaphoreVerifier.address}`)
