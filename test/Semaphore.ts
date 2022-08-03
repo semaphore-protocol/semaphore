@@ -77,7 +77,7 @@ describe("Semaphore", () => {
 
     const treeDepth = Number(process.env.TREE_DEPTH)
     const groupId = 1
-    const maxEdges = 2;
+    const maxEdges = 1;
     const chainID = 1337;
     const members = createIdentityCommitments(chainID, 3)
 
@@ -94,7 +94,7 @@ describe("Semaphore", () => {
     }
     before(async () => {
 
-        const { address: v2_address } = await run("deploy:verifier", { logs: true, depth: treeDepth, maxEdges: 2 })
+        const { address: v2_address } = await run("deploy:verifier", { logs: false, depth: treeDepth, maxEdges: 2 })
         const VerifierV2: VerifierContractInfo = {
             name: `Verifier${treeDepth}_${2}`,
             address: v2_address,
@@ -102,7 +102,7 @@ describe("Semaphore", () => {
             maxEdges: `2`
         }
 
-        const { address: v7_address } = await run("deploy:verifier", { logs: true, depth: treeDepth, maxEdges: 7 })
+        const { address: v7_address } = await run("deploy:verifier", { logs: false, depth: treeDepth, maxEdges: 7 })
         const VerifierV7: VerifierContractInfo = {
             name: `Verifier${treeDepth}_${7}`,
             address: v7_address,
@@ -113,12 +113,12 @@ describe("Semaphore", () => {
         const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([["v2", VerifierV2], ["v7", VerifierV7]]);
 
         const verifierSelector = await run("deploy:verifier-selector", {
-            logs: true,
+            logs: false,
             verifiers: deployedVerifiers
         })
 
         contract = await run("deploy:semaphore", {
-            logs: true,
+            logs: false,
             verifiers: [{ merkleTreeDepth: treeDepth, contractAddress: verifierSelector.address }]
         })
 
