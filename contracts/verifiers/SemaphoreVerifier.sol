@@ -34,7 +34,6 @@ contract SemaphoreVerifier {
 		bytes memory input,
 		uint8 maxEdges
 	) external view returns (bool r) {
-        return true;
 		if (maxEdges == 1) {
             uint256[7] memory _inputs = abi.decode(input, (uint256[7]));
             return v2_2.verifyProof(a, b, c, _inputs);
