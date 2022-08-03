@@ -8,7 +8,7 @@ pragma solidity ^0.8.0;
 import "../interfaces/ISemaphoreVerifier.sol";
 import "../interfaces/IVerifier.sol";
 
-contract SemaphoreVerifier is ISemaphoreVerifier {
+contract SemaphoreVerifier {
 	ISemaphoreVerifier2_2 public v2_2;
 	// ISemaphoreVerifier2_16 public v2_16;
 
@@ -33,7 +33,7 @@ contract SemaphoreVerifier is ISemaphoreVerifier {
 		uint[2] memory c,
 		bytes memory input,
 		uint8 maxEdges
-	) override external view returns (bool r) {
+	) external view returns (bool r) {
         return true;
 		if (maxEdges == 1) {
             uint256[7] memory _inputs = abi.decode(input, (uint256[7]));
