@@ -20,11 +20,10 @@ const toFixedHex = (number: BigNumberish, length=32): string =>
   ).padStart(length * 2, '0')
 
 function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
-    const rootsBytes = '0x';
+    let rootsBytes = '0x';
     for (let i = 0; i < rootArray.length; i++) {
+        rootsBytes += toFixedHex(rootArray[i], 32).substr(2);
     }
-    //     rootsBytes += toFixedHex(rootArray[i], 32).substr(2);
-    // }
     return rootsBytes; // root byte string (32 * array.length bytes)
     }
 
@@ -84,8 +83,8 @@ describe("Semaphore", () => {
 
     // const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
     // const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
-    const wasmFilePath = `./artifacts/circuits/20/2/semaphore_20_2_js/semaphore_20_2.wasm`
-    const zkeyFilePath = `./artifacts/circuits/20/2/circuit_final.zkey`
+    const wasmFilePath = `./fixtures/20/2/semaphore_20_2.wasm`
+    const zkeyFilePath = `./fixtures/20/2/circuit_final.zkey`
 
     type VerifierContractInfo = { 
         name: string;
