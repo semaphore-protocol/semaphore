@@ -12,7 +12,7 @@ import { SnarkArtifacts } from "@semaphore-protocol/proof"
 import { BigNumber, BigNumberish } from "ethers";
 
 /** BigNumber to hex string of specified length */
-const toFixedHex = (number: BigNumberish, length = 32): string =>
+const toFixedHex = (number: BigNumberish, length=32): string =>
   '0x' +
   (number instanceof Buffer
     ? number.toString('hex')
@@ -20,10 +20,11 @@ const toFixedHex = (number: BigNumberish, length = 32): string =>
   ).padStart(length * 2, '0')
 
 function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
-    let rootsBytes = '0x';
+    const rootsBytes = '0x';
     for (let i = 0; i < rootArray.length; i++) {
-        rootsBytes += toFixedHex(rootArray[i], 32).substr(2);
     }
+    //     rootsBytes += toFixedHex(rootArray[i], 32).substr(2);
+    // }
     return rootsBytes; // root byte string (32 * array.length bytes)
     }
 
@@ -75,7 +76,7 @@ describe("Semaphore", () => {
     let signers: Signer[]
     let accounts: string[]
 
-    const treeDepth = Number(process.env.TREE_DEPTH)
+    const treeDepth = Number(process.env.TREE_DEPTH) | 20;
     const groupId = 1
     const maxEdges = 1;
     const chainID = 1337;
@@ -273,7 +274,7 @@ describe("Semaphore", () => {
 
         it("Should throw an exception if the proof is not valid", async () => {
             const root = await contract.getRoot(groupId2);
-            const roots = [root.toHexString(), BigNumber.from(0).toHexString()] 
+            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
             // console.log("roots: ,", roots);
             const transaction = contract.verifyProof(
                 groupId2,
