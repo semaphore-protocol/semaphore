@@ -1,0 +1,46 @@
+{
+    "name": "@semaphore-protocol/proof",
+    "version": "2.2.0",
+    "description": "A library to generate and verify Semaphore proofs.",
+    "license": "MIT",
+    "main": "dist/index.node.js",
+    "exports": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.node.js"
+    },
+    "types": "dist/types/index.d.ts",
+    "files": [
+        "dist/",
+        "src/",
+        "LICENSE",
+        "README.md"
+    ],
+    "repository": "https://github.com/semaphore-protocol/semaphore.js",
+    "homepage": "https://github.com/semaphore-protocol/semaphore.js/tree/main/packages/proof",
+    "scripts": {
+        "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
+        "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
+        "prepublishOnly": "yarn build",
+        "docs": "typedoc src/index.ts --out ../../docs/proof"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "download": "^8.0.0",
+        "ffjavascript": "^0.2.54",
+        "rollup-plugin-cleanup": "^3.2.1",
+        "rollup-plugin-typescript2": "^0.31.2",
+        "typedoc": "^0.22.11"
+    },
+    "dependencies": {
+        "@ethersproject/bytes": "^5.5.0",
+        "@ethersproject/solidity": "^5.5.0",
+        "@ethersproject/strings": "^5.5.0",
+        "@semaphore-protocol/group": "2.0.0",
+        "@semaphore-protocol/identity": "2.0.0",
+        "@zk-kit/incremental-merkle-tree": "0.4.3",
+        "circomlibjs": "0.0.8",
+        "snarkjs": "^0.4.13"
+    }
+}
