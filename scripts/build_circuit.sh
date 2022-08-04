@@ -1,7 +1,8 @@
 #!/bin/bash
-mkdir -p artifacts/circuits/;
 
 outdir=artifacts/circuits
+
+mkdir -p $outdir;
 # pathToCircuitDir=artifacts/circuits
 # pathToCircuitDir=./build/circuit_artifacts/artifacts
 
@@ -12,7 +13,7 @@ compile () {
     echo "Compiling circuit: circuits/$circuit.circom"
     ~/.cargo/bin/circom --r1cs --wasm --sym \
         -o "./$outdir/$depth/$maxEdges/" \
-        "circuts/$circuit.circom"
+        "circuits/$circuit.circom"
     echo -e "Done!\n"
 }
 
@@ -53,17 +54,17 @@ move_verifiers_and_metadata () {
 }
 
 # compile $outdir $circuit_name $depth $maxEdges
-# compile "$outdir" semaphore_20_2 20 2
+compile "$outdir" semaphore_20_2 20 2
 # compile "$outdir" semaphore_20_7 20 7
 # compile "$outdir" semaphore_19_2 19 2
 # compile "$outdir" semaphore_19_7 19 7
 #
-# generate_phase_2 ./artifacts/circuits/20/2 semaphore_20_2
+generate_phase_2 ./artifacts/circuits/20/2 semaphore_20_2
 # generate_phase_2 ./artifacts/circuits/20/7 semaphore_20_7
 # generate_phase_2 ./artifacts/circuits/19/2 semaphore_19_2
 # generate_phase_2 ./artifacts/circuits/19/7 semaphore_19_7
 #
-move_verifiers_and_metadata ./artifacts/circuits/20/2 20 2
-move_verifiers_and_metadata ./artifacts/circuits/20/7 20 7
-move_verifiers_and_metadata ./artifacts/circuits/19/2 19 2
-move_verifiers_and_metadata ./artifacts/circuits/19/7 19 7
+# move_verifiers_and_metadata ./artifacts/circuits/20/2 20 2
+# move_verifiers_and_metadata ./artifacts/circuits/20/7 20 7
+# move_verifiers_and_metadata ./artifacts/circuits/19/2 19 2
+# move_verifiers_and_metadata ./artifacts/circuits/19/7 19 7
