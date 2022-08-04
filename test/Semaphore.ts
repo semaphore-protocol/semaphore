@@ -1,74 +1,16 @@
-import { Group } from "@semaphore-protocol/group"
-import Identity from "./identity"
-import { FullProof, generateSignalHash, packToSolidityProof, SolidityProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { groth16 } from "snarkjs"
 import { constants, Signer, utils } from "ethers"
 import { run } from "hardhat"
 import { Semaphore as SemaphoreContract } from "../build/typechain"
 import { config } from "../package.json"
-import { createIdentityCommitments } from "./utils"
-import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { BigNumber, BigNumberish } from "ethers";
-
+// import { SnarkArtifacts } from "@semaphore-protocol/proof"
+import { BigNumber } from "ethers";
+import { Group } from "@semaphore-protocol/group"
+import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "../packages/proof/src/"
+import { Identity } from "../packages/identity/src/index"
+import { toFixedHex, createRootsBytes, createIdentityCommitments } from "./utils"
 /** BigNumber to hex string of specified length */
-const toFixedHex = (number: BigNumberish, length=32): string =>
-  '0x' +
-  (number instanceof Buffer
-    ? number.toString('hex')
-    : BigNumber.from(number).toHexString().slice(2)
-  ).padStart(length * 2, '0')
-
-function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
-    let rootsBytes = '0x';
-    for (let i = 0; i < rootArray.length; i++) {
-        rootsBytes += toFixedHex(rootArray[i], 32).substr(2);
-    }
-    return rootsBytes; // root byte string (32 * array.length bytes)
-    }
-
-async function generateProof(
-    identity: Identity,
-    group: Group,
-    externalNullifier: BigNumberish,
-    signal: string,
-    snarkArtifacts: SnarkArtifacts
-): Promise<FullProof> {
-    const commitment = identity.generateCommitment()
-    const index = group.indexOf(commitment)
-
-    if (index === -1) {
-        throw new Error("The identity is not part of the group")
-    }
-
-    const merkleProof = group.generateProofOfMembership(index)
-    // console.log("path INDICES: ", merkleProof.pathIndices)
-
-    const { proof, publicSignals } = await groth16.fullProve(
-        {
-            identityTrapdoor: identity.getTrapdoor(),
-            identityNullifier: identity.getNullifier(),
-            treePathIndices: merkleProof.pathIndices,
-            treeSiblings: merkleProof.siblings,
-            roots: [merkleProof.root, 0],
-            chainID: identity.chainID,
-            externalNullifier,
-            signalHash: generateSignalHash(signal)
-        },
-        snarkArtifacts.wasmFilePath,
-        snarkArtifacts.zkeyFilePath
-    )
-
-    return {
-        proof,
-        publicSignals: {
-            merkleRoot: publicSignals[0],
-            nullifierHash: publicSignals[1],
-            signalHash: publicSignals[2],
-            externalNullifier: publicSignals[3]
-        }
-    }
-}
 
 describe("Semaphore", () => {
     let contract: SemaphoreContract
@@ -283,15 +225,17 @@ describe("Semaphore", () => {
                 createRootsBytes(roots),
                 solidityProof
             )
-            console.log("transaction: ", await transaction);
-            // const receipt = await transaction;
-            // console.log("receipt: ,", receipt);
+            // console.log("transaction: ", await transaction);
+            const tx = await transaction;
+            const receipt = await tx.wait();
+            console.log("receipt: ,", receipt);
 
             await expect(transaction).to.be.revertedWith("InvalidProof()")
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
             const roots = await contract.getRoot(groupId2);
+            console.log("nullifier: ", fullProof.publicSignals.nullifierHash)
             const transaction = contract.verifyProof(
                 groupId2,
                 bytes32Signal,

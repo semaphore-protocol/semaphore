@@ -1,8 +1,24 @@
 import Identity from "./identity"
-import { BigNumber } from "@ethersproject/bignumber"
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber"
 import { randomBytes } from "@ethersproject/random"
 import { sha256 as _sha256 } from "@ethersproject/sha2"
 import { toUtf8Bytes } from "@ethersproject/strings"
+
+export function toFixedHex(number: BigNumberish, length=32): string {
+  return '0x' +
+  (number instanceof Buffer
+    ? number.toString('hex')
+    : BigNumber.from(number).toHexString().slice(2)
+  ).padStart(length * 2, '0')
+}
+
+export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
+    let rootsBytes = '0x';
+    for (let i = 0; i < rootArray.length; i++) {
+        rootsBytes += toFixedHex(rootArray[i], 32).substr(2);
+    }
+    return rootsBytes; // root byte string (32 * array.length bytes)
+}
 
 export function createIdentityCommitments(chainId: number, n: number): bigint[] {
     const identityCommitments: bigint[] = []
