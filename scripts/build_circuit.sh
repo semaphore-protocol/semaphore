@@ -41,7 +41,6 @@ move_verifiers_and_metadata () {
     # cp "$indir/circuit_final.zkey" "protocol-solidity-fixtures/fixtures/$anchorType/$depth/circuit_final.zkey"
 
     mkdir -p "$fixturesDir"/"$depth"/"$maxEdges"
-    mkdir -p "contracts/verifiers/$depth"
     # mkdir -p contracts/verifiers/depth20
     cp "$indir/verifier.sol" contracts/verifiers/Verifier"$depth"\_"$maxEdges".sol
     cp "$indir/circuit_final.zkey" "$fixturesDir"/"$depth"/"$maxEdges"/circuit_final.zkey
@@ -49,22 +48,22 @@ move_verifiers_and_metadata () {
     cp "$indir"/semaphore_"$depth"_"$maxEdges".sym "$fixturesDir"/"$depth"/"$maxEdges"/semaphore_"$depth"_"$maxEdges".sym
     cp "$indir"/semaphore_"$depth"_"$maxEdges"_js/semaphore_"$depth"_"$maxEdges".wasm "$fixturesDir"/"$depth"/"$maxEdges"/semaphore_"$depth"_"$maxEdges".wasm
     cp "$indir"/semaphore_"$depth"_"$maxEdges"_js/witness_calculator.js "$fixturesDir"/"$depth"/"$maxEdges"/witness_calculator.js
-    # sed -i 's/pragma solidity ^0.8.0;'/'pragma solidity ^0.8.0;'/ contracts/verifiers/$anchorType/"Verifier$size\_$nIns.sol"
-    # sed -i "s/contract Verifier {"/"contract Verifier$size\_$nIns {"/ contracts/verifiers/$anchorType/"Verifier$size\_$nIns.sol"
+    sed -i 's/pragma solidity ^0.6.11/pragma solidity ^0.8.4/' contracts/verifiers/Verifier"$depth"\_"$maxEdges".sol
+    sed -i "s/contract Verifier {/contract Verifier$depth\_$maxEdges {/" contracts/verifiers/Verifier"$depth"_"$maxEdges".sol
 }
 
 # compile $outdir $circuit_name $depth $maxEdges
 compile "$outdir" semaphore_20_2 20 2
-# compile "$outdir" semaphore_20_7 20 7
-# compile "$outdir" semaphore_19_2 19 2
-# compile "$outdir" semaphore_19_7 19 7
+compile "$outdir" semaphore_20_7 20 7
+compile "$outdir" semaphore_19_2 19 2
+compile "$outdir" semaphore_19_7 19 7
 #
 generate_phase_2 ./artifacts/circuits/20/2 semaphore_20_2
-# generate_phase_2 ./artifacts/circuits/20/7 semaphore_20_7
-# generate_phase_2 ./artifacts/circuits/19/2 semaphore_19_2
-# generate_phase_2 ./artifacts/circuits/19/7 semaphore_19_7
+generate_phase_2 ./artifacts/circuits/20/7 semaphore_20_7
+generate_phase_2 ./artifacts/circuits/19/2 semaphore_19_2
+generate_phase_2 ./artifacts/circuits/19/7 semaphore_19_7
 #
-# move_verifiers_and_metadata ./artifacts/circuits/20/2 20 2
-# move_verifiers_and_metadata ./artifacts/circuits/20/7 20 7
-# move_verifiers_and_metadata ./artifacts/circuits/19/2 19 2
-# move_verifiers_and_metadata ./artifacts/circuits/19/7 19 7
+move_verifiers_and_metadata ./artifacts/circuits/20/2 20 2
+move_verifiers_and_metadata ./artifacts/circuits/20/7 20 7
+move_verifiers_and_metadata ./artifacts/circuits/19/2 19 2
+move_verifiers_and_metadata ./artifacts/circuits/19/7 19 7
