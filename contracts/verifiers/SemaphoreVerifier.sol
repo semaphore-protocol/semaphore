@@ -38,9 +38,17 @@ contract SemaphoreVerifier {
         console.log("inside verifier-selector with %d", maxEdges);
 		if (maxEdges == 1) {
             uint256[7] memory _inputs = abi.decode(input, (uint256[7]));
-            console.log("inputs decoded, nullifier: %d", _inputs[0]);
-            return v2_2.verifyProof(a, b, c, _inputs);
+            console.log("calculatedRoot: ", _inputs[0]);
+            console.log("nullifierHash: ", _inputs[1]);
+            console.log("signalHash: ", _inputs[2]);
+            console.log("externalNullifier: ", _inputs[3]);
+            console.log("roots[0]: ", _inputs[4]);
+            console.log("roots[1]: ", _inputs[5]);
+            console.log("chainId: ", _inputs[6]);
+            r =  v2_2.verifyProof(a, b, c, _inputs);
             // TODO: Fix the rest of the function with correct number of arguments to verifiers.
+            console.log("SemaphoreVerifier: verification status -> ", r);
+            return r;
 		} else if (maxEdges == 7) {
             uint256[15] memory _inputs = abi.decode(input, (uint256[15]));
             return v8_2.verifyProof(a, b, c, _inputs);

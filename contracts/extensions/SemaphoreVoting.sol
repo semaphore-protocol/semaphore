@@ -86,11 +86,12 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
         require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
 
+        uint root = getRoot(pollId);
         uint8 depth = getDepth(pollId);
         uint8 maxEdges = getMaxEdges(pollId);
         SemaphoreVerifier verifier = verifiers[depth];
 
-        _verifyProof(vote, nullifierHash, pollId, roots, proof, verifier, maxEdges);
+        _verifyProof(vote, nullifierHash, pollId, roots, proof, verifier, maxEdges, root);
 
         // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).
         _saveNullifierHash(nullifierHash);

@@ -5,6 +5,7 @@ import "../interfaces/ISemaphoreCore.sol";
 // import "../interfaces/IVerifier.sol";
 import "../verifiers/SemaphoreVerifier.sol";
 import "./SemaphoreInputEncoder.sol";
+import "hardhat/console.sol";
 
 /// @title Semaphore core contract.
 /// @notice Minimal code to allow users to signal their endorsement of an arbitrary string.
@@ -32,7 +33,8 @@ contract SemaphoreCore is ISemaphoreCore {
         bytes calldata roots,
         uint256[8] calldata proof,
         SemaphoreVerifier verifier,
-        uint8 maxEdges
+        uint8 maxEdges,
+        uint root
     ) internal view {
         if (nullifierHashes[nullifierHash]) {
             revert Semaphore__YouAreUsingTheSameNillifierTwice();
@@ -42,11 +44,18 @@ contract SemaphoreCore is ISemaphoreCore {
 
         SemaphoreInputEncoder.Proof memory p = SemaphoreInputEncoder.Proof({
             proof: proof,
-            roots: roots,
+            calculatedRoot: root,
             nullifierHash: nullifierHash,
             signalHash: signalHash,
-            externalNullifier: externalNullifier
+            externalNullifier: externalNullifier,
+            roots: roots
         });
+
+        // console.log("proof: ", p.proof);
+        // console.log("calculatedRoot: ", p.calculatedRoot);
+        // console.log("nullifierHash: ", p.nullifierHash);
+        // console.log("signalHash: ", p.signalHash);
+        // console.log("externalNullifier: ", p.externalNullifier);
 
         (bytes memory inputs,) = p._encodeInputs(maxEdges);
         bool success = verifier.verifyProof(
@@ -56,7 +65,10 @@ contract SemaphoreCore is ISemaphoreCore {
             inputs,
             maxEdges
         );
-        require(success, "InvalidProof()");
+        // console.log("success: ", success);
+        if (!success) {
+            revert("InvalidProof()");
+        }
     }
 
     /// @dev Stores the nullifier hash to prevent double-signaling.

@@ -90,6 +90,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         bytes calldata roots,
         uint256[8] calldata proof
     ) external override {
+        // TODO: check here if roots match?
         uint256 root = getRoot(groupId);
         uint8 depth = getDepth(groupId);
         uint8 maxEdges = getMaxEdges(groupId);
@@ -101,7 +102,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         SemaphoreVerifier verifier = verifiers[depth];
 
         // _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, 1);
-        _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges);
+        _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges, root);
 
         _saveNullifierHash(nullifierHash);
 

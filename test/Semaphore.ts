@@ -20,7 +20,7 @@ describe("Semaphore", () => {
     const treeDepth = Number(process.env.TREE_DEPTH) | 20;
     const groupId = 1
     const maxEdges = 1;
-    const chainID = 1337;
+    const chainID = 1099511629113;
     const members = createIdentityCommitments(chainID, 3)
 
     // const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
@@ -193,6 +193,7 @@ describe("Semaphore", () => {
                 wasmFilePath,
                 zkeyFilePath
             })
+            console.log("Proof publicSignals: ", fullProof.publicSignals) 
             solidityProof = packToSolidityProof(fullProof.proof)
         })
 
@@ -234,14 +235,16 @@ describe("Semaphore", () => {
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
-            const roots = await contract.getRoot(groupId2);
-            console.log("nullifier: ", fullProof.publicSignals.nullifierHash)
+            const root = await contract.getRoot(groupId2);
+            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
+            console.log("contract_root: ", root);
+            console.log("group_root: ", group.root);
             const transaction = contract.verifyProof(
                 groupId2,
                 bytes32Signal,
                 fullProof.publicSignals.nullifierHash,
                 fullProof.publicSignals.externalNullifier,
-                roots.toHexString(),
+                createRootsBytes(roots),
                 solidityProof
             )
             // const receipt = await transaction;
