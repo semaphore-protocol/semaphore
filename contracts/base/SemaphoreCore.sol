@@ -49,14 +49,14 @@ contract SemaphoreCore is ISemaphoreCore {
         });
 
         (bytes memory inputs,) = p._encodeInputs(maxEdges);
-
-        verifier.verifyProof(
+        bool success = verifier.verifyProof(
             [proof[0], proof[1]],
             [[proof[2], proof[3]], [proof[4], proof[5]]],
             [proof[6], proof[7]],
             inputs,
             maxEdges
         );
+        require(success, "InvalidProof()");
     }
 
     /// @dev Stores the nullifier hash to prevent double-signaling.

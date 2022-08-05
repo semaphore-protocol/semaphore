@@ -167,12 +167,14 @@ describe("Semaphore", () => {
     })
 
     describe("# verifyProof", () => {
+        // const zero = "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+        const zero = "0"
         const signal = "Hello world"
         const bytes32Signal = utils.formatBytes32String(signal)
         const identity = new Identity(BigInt(chainID), "0")
         const groupId2 = groupId + 1
 
-        const group = new Group(treeDepth)
+        const group = new Group(treeDepth, BigInt(zero))
 
         group.addMembers(members)
 
@@ -181,13 +183,12 @@ describe("Semaphore", () => {
 
         before(async () => {
             // const transaction = await contract.getMaxEdges(groupId)
-            const transaction = await contract.createGroup(groupId2, treeDepth, 0, accounts[0], maxEdges)
+            const transaction = await contract.createGroup(groupId2, treeDepth, zero, accounts[0], maxEdges)
             // console.log(transaction)
-            const edges = await contract.getMaxEdges(groupId2)
-            // console.log("edges: ", edges)
             await contract.addMember(groupId2, members[1])
             await contract.addMember(groupId2, members[2])
 
+            console.log("group root: ", group.root) 
             fullProof = await generateProof(identity, group, group.root, signal, {
                 wasmFilePath,
                 zkeyFilePath
@@ -226,9 +227,8 @@ describe("Semaphore", () => {
                 solidityProof
             )
             // console.log("transaction: ", await transaction);
-            const tx = await transaction;
-            const receipt = await tx.wait();
-            console.log("receipt: ,", receipt);
+            // const receipt = await transaction;
+            // console.log("receipt: ,", receipt);
 
             await expect(transaction).to.be.revertedWith("InvalidProof()")
         })
