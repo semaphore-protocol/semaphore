@@ -21,12 +21,10 @@ describe("Semaphore", () => {
     const groupId = 1
     const maxEdges = 1;
     const chainID = 1099511629113;
-    // let identities: Identity[];
-    // let members: bigint[];
-    let res = createIdentities(chainID, 3)
-    console.log(res)
-    const members = res.members
-    const identities = res.identities
+    const {identities, members} = createIdentities(chainID, 3)
+    // console.log(res)
+    // const members = res.members
+    // const identities = res.identities
 
     // const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
     // const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
@@ -179,10 +177,23 @@ describe("Semaphore", () => {
         // const identity = new Identity(BigInt(chainID), zero)
         const groupId2 = 1337
 
-        const group = new Group(treeDepth, BigInt(zero))
+        let group = new Group(treeDepth, BigInt(zero))
+        console.log("default group.root: ", group.root)
+
+        // group.addMembers(members)
+        group.addMembers([members[0]])
+        group.addMembers([members[1]])
+        group.addMembers([members[2]])
+        console.log("0 new group.root: ", group.root)
+
+        group = new Group(treeDepth, BigInt(zero))
         console.log("default group.root: ", group.root)
 
         group.addMembers(members)
+        console.log("1 new group.root: ", group.root)
+        // group.addMembers([members[0]])
+        // group.addMembers([members[1]])
+        // group.addMembers([members[2]])
 
         let fullProof: FullProof
         let solidityProof: SolidityProof
@@ -245,12 +256,12 @@ describe("Semaphore", () => {
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
-            const root = await contract.getRoot(groupId);
+            const root = await contract.getRoot(groupId2);
             const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
             console.log("contract_root: ", root);
             console.log("group_root: ", group.root);
             const transaction = contract.verifyProof(
-                groupId,
+                groupId2,
                 bytes32Signal,
                 fullProof.publicSignals.nullifierHash,
                 fullProof.publicSignals.externalNullifier,
