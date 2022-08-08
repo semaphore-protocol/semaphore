@@ -13,6 +13,7 @@ interface ISemaphoreVoting {
     struct Poll {
         address coordinator;
         PollState state;
+        uint8 maxEdges;
     }
 
     /// @dev Emitted when a new poll is created.
@@ -69,9 +70,7 @@ interface ISemaphoreVoting {
         uint256 nullifierHash,
         uint256 pollId,
         bytes calldata roots,
-        uint256[8] calldata proof,
-        uint8 maxEdges,
-        uint root
+        uint256[8] calldata proof
     ) external;
 
     /// @dev Ends a pull and publishes the key to decrypt the votes.

@@ -68,12 +68,12 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should not create an entity greater than the snark scalar field", async () => {
-            const transaction = contract.createEntity(BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"), treeDepth, zero, editor, maxEdges)
-            // const transaction = contract.createEntity(
-            //     BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
-            //     editor,
-            //     treeDepth
-            // )
+            const transaction = contract.createEntity(
+                BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
+                treeDepth, 
+                zero, 
+                editor, 
+                maxEdges)
 
             await expect(transaction).to.be.revertedWith("Semaphore__GroupIdIsNotLessThanSnarkScalarField()")
         })
@@ -81,7 +81,7 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should create an entity", async () => {
             const transaction = contract.createEntity(entityIds[0], treeDepth, zero, editor, maxEdges)
 
-            await expect(transaction).to.emit(contract, "EntityCreated").withArgs(entityIds[0], editor)
+            await expect(transaction).to.emit(contract, "EntityCreated").withArgs([entityIds[0], maxEdges], editor)
         })
 
         it("Should not create a entity if it already exists", async () => {
@@ -196,9 +196,7 @@ describe("SemaphoreWhistleblowing", () => {
                 publicSignals.nullifierHash,
                 entityIds[0],
                 createRootsBytes(roots),
-                solidityProof,
-                maxEdges,
-                root
+                solidityProof
             )
 
             await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: caller is not the editor")
@@ -211,7 +209,7 @@ describe("SemaphoreWhistleblowing", () => {
 
             const transaction = contract
                 .connect(accounts[1])
-                .publishLeak(bytes32Leak, nullifierHash, entityIds[1], createRootsBytes(roots), solidityProof, maxEdges, root)
+                .publishLeak(bytes32Leak, nullifierHash, entityIds[1], createRootsBytes(roots), solidityProof)
 
             await expect(transaction).to.be.revertedWith("InvalidProof()")
         })
@@ -221,7 +219,7 @@ describe("SemaphoreWhistleblowing", () => {
             const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
             const transaction = contract
                 .connect(accounts[1])
-                .publishLeak(bytes32Leak, publicSignals.nullifierHash, entityIds[1], createRootsBytes(roots), solidityProof, maxEdges, root)
+                .publishLeak(bytes32Leak, publicSignals.nullifierHash, entityIds[1], createRootsBytes(roots), solidityProof)
 
             await expect(transaction).to.emit(contract, "LeakPublished").withArgs(entityIds[1], bytes32Leak)
         })

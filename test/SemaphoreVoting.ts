@@ -188,7 +188,7 @@ describe("SemaphoreVoting", () => {
         it("Should not cast a vote if the caller is not the coordinator", async () => {
             const root = await contract.getRoot(pollIds[0]);
             const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
-            const transaction = contract.castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[0], createRootsBytes(roots), solidityProof, maxEdges, root)
+            const transaction = contract.castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[0], createRootsBytes(roots), solidityProof)
 
             await expect(transaction).to.be.revertedWith("SemaphoreVoting: caller is not the poll coordinator")
         })
@@ -198,7 +198,7 @@ describe("SemaphoreVoting", () => {
             const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
             const transaction = contract
                 .connect(accounts[1])
-                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[2], createRootsBytes(roots), solidityProof, maxEdges, root)
+                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[2], createRootsBytes(roots), solidityProof)
 
             await expect(transaction).to.be.revertedWith("SemaphoreVoting: vote can only be cast in an ongoing poll")
         })
@@ -210,7 +210,7 @@ describe("SemaphoreVoting", () => {
 
             const transaction = contract
                 .connect(accounts[1])
-                .castVote(bytes32Vote, nullifierHash, pollIds[1], createRootsBytes(roots), solidityProof, maxEdges, root)
+                .castVote(bytes32Vote, nullifierHash, pollIds[1], createRootsBytes(roots), solidityProof)
 
             await expect(transaction).to.be.revertedWith("InvalidProof()")
         })
@@ -220,7 +220,7 @@ describe("SemaphoreVoting", () => {
             const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
             const transaction = contract
                 .connect(accounts[1])
-                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[1], createRootsBytes(roots), solidityProof, maxEdges, root)
+                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[1], createRootsBytes(roots), solidityProof)
 
             await expect(transaction).to.emit(contract, "VoteAdded").withArgs(pollIds[1], bytes32Vote)
         })
@@ -231,7 +231,7 @@ describe("SemaphoreVoting", () => {
 
             const transaction = contract
                 .connect(accounts[1])
-                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[1], createRootsBytes(roots), solidityProof, maxEdges, root)
+                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[1], createRootsBytes(roots), solidityProof)
 
             await expect(transaction).to.be.revertedWith("Semaphore__YouAreUsingTheSameNillifierTwice()")
         })

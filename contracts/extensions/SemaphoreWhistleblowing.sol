@@ -14,7 +14,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     mapping(uint8 => SemaphoreVerifier) internal verifiers;
 
     /// @dev Gets an editor address and return their entity.
-    mapping(address => uint256) private entities;
+    mapping(address => Entity) private entities;
 
     /// @dev Since there can be multiple verifier contracts (each associated with a certain tree depth),
     /// it is necessary to pass the addresses of the previously deployed contracts with the associated
@@ -36,7 +36,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     /// @dev Checks if the editor is the transaction sender.
     /// @param entityId: Id of the entity.
     modifier onlyEditor(uint256 entityId) {
-        require(entityId == entities[_msgSender()], "SemaphoreWhistleblowing: caller is not the editor");
+        require(entityId == entities[_msgSender()].id, "SemaphoreWhistleblowing: caller is not the editor");
         _;
     }
 
@@ -51,10 +51,14 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         require(address(verifiers[depth]) != address(0), "SemaphoreWhistleblowing: depth value is not supported");
 
         _createGroup(entityId, depth, zeroValue, maxEdges);
+        Entity memory entity;
 
-        entities[editor] = entityId;
+        entity.id = entityId;
+        entity.maxEdges = maxEdges;
 
-        emit EntityCreated(entityId, editor);
+        entities[editor] = entity;
+
+        emit EntityCreated(entity, editor);
     }
 
     /// @dev See {ISemaphoreWhistleblowing-addWhistleblower}.
@@ -78,9 +82,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         uint256 nullifierHash,
         uint256 entityId,
         bytes calldata roots,
-        uint256[8] calldata proof,
-        uint8 maxEdges,
-        uint root
+        uint256[8] calldata proof
     ) public override onlyEditor(entityId) {
         uint root = getRoot(entityId);
         uint8 depth = getDepth(entityId);

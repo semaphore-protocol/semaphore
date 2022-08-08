@@ -53,6 +53,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         Poll memory poll;
 
         poll.coordinator = coordinator;
+        poll.maxEdges = maxEdges;
 
         polls[pollId] = poll;
 
@@ -81,16 +82,15 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         uint256 nullifierHash,
         uint256 pollId,
         bytes calldata roots,
-        uint256[8] calldata proof,
-        uint8 maxEdges,
-        uint root
+        uint256[8] calldata proof
     ) public override onlyCoordinator(pollId) {
         Poll memory poll = polls[pollId];
 
         require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
 
         uint8 depth = getDepth(pollId);
-        uint256 contract_root = getRoot(pollId);
+        uint256 root = getRoot(pollId);
+        uint8 maxEdges = getMaxEdges(pollId);
         SemaphoreVerifier verifier = verifiers[depth];
 
         // require(contract_root == root, "merkle root supplied does not match current contract root");
