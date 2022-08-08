@@ -20,6 +20,7 @@ describe("Semaphore", () => {
     const circuitLength = 2;
     const maxEdges = 1;
     const chainID = 1099511629113;
+    const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
     const {identities, members} = createIdentities(chainID, 3)
 
     const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/semaphore_20_2.wasm`
@@ -102,8 +103,7 @@ describe("Semaphore", () => {
         it("Should add a new member in an existing group", async () => {
             const transaction = contract.addMember(groupId, members[0])
 
-            const zero = "21663839004416932945382355908790599225266501822907911457504978515578255421292"
-            const group = new Group(treeDepth, BigInt(zero))
+            const group = new Group(treeDepth, BigInt(zeroValue))
             group.addMember(members[0])
 
             await expect(transaction)
@@ -137,8 +137,7 @@ describe("Semaphore", () => {
             // if (hex.length % 2) { hex = '0' + hex; }
             // const bn = BigInt('0x' + hex);
             // const zero= bn.toString(10);
-            const zero = "21663839004416932945382355908790599225266501822907911457504978515578255421292"
-            const group = new Group(treeDepth, BigInt(zero))
+            const group = new Group(treeDepth, BigInt(zeroValue))
 
             group.addMembers([BigInt(1), BigInt(2), BigInt(3)])
 
@@ -158,44 +157,42 @@ describe("Semaphore", () => {
     })
 
     describe("# verifyProof", () => {
-        const zero = "21663839004416932945382355908790599225266501822907911457504978515578255421292"
-        // const zero = "0"
         const signal = "Hello world"
         const bytes32Signal = utils.formatBytes32String(signal)
-        // const identity = new Identity(BigInt(chainID), zero)
         const groupId2 = 1337
 
-        const group = new Group(treeDepth, BigInt(zero))
+        const group = new Group(treeDepth, BigInt(zeroValue))
 
         group.addMembers(members)
 
         let fullProof: FullProof
         let solidityProof: SolidityProof
+        let roots: string[]
 
         before(async () => {
-            // const transaction = await contract.getMaxEdges(groupId)
-            await contract.createGroup(groupId2, treeDepth, zero, accounts[0], maxEdges)
+            await contract.createGroup(groupId2, treeDepth, zeroValue, accounts[0], maxEdges)
 
-            const root = await contract.getRoot(groupId2);
             await contract.addMember(groupId2, members[0])
             await contract.addMember(groupId2, members[1])
             await contract.addMember(groupId2, members[2])
+            const root = await contract.getRoot(groupId2);
+            roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
 
             fullProof = await generateProof(identities[0], group, group.root, signal, {
                 wasmFilePath,
                 zkeyFilePath
             })
             solidityProof = packToSolidityProof(fullProof.proof)
+
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
-            const roots = await contract.getRoot(groupId2);
             const transaction = contract.verifyProof(
                 10,
                 bytes32Signal,
                 0,
                 0,
-                roots.toHexString(),
+                createRootsBytes(roots),
                 [0, 0, 0, 0, 0, 0, 0, 0],
             )
 
@@ -203,8 +200,6 @@ describe("Semaphore", () => {
         })
 
         it("Should throw an exception if the proof is not valid", async () => {
-            const root = await contract.getRoot(groupId2);
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
             const transaction = contract.verifyProof(
                 groupId2,
                 bytes32Signal,
@@ -217,8 +212,6 @@ describe("Semaphore", () => {
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
-            const root = await contract.getRoot(groupId2);
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
             const transaction = contract.verifyProof(
                 groupId2,
                 bytes32Signal,
