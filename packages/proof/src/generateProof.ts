@@ -42,14 +42,14 @@ export default async function generateProof(
     return {
         proof,
         publicSignals: {
-            signalHash: publicSignals[0],
-            externalNullifier: publicSignals[1],
+            calculatedRoot: publicSignals[0],
+            nullifierHash: publicSignals[1],
+            signalHash: publicSignals[2],
+            externalNullifier: publicSignals[3],
             // TODO: Fix roots
-            roots: publicSignals[2],
+            roots: [publicSignals[4], publicSignals[5]],
 
-            chainID: publicSignals[3],
-            calculatedRoot: publicSignals[4],
-            nullifierHash: publicSignals[5]
+            chainID: publicSignals[6]
         }
     }
 }

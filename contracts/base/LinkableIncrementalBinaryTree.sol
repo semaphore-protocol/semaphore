@@ -68,7 +68,7 @@ library LinkableIncrementalBinaryTree {
         require(depth > 0 && depth <= MAX_DEPTH, "LinkableIncrementalBinaryTree: tree depth must be between 1 and 32");
 
         self.depth = depth;
-        self.roots[0] = zeros(depth);
+        self.roots[0] = zeros(depth-1);
         self.maxEdges = maxEdges;
     }
 

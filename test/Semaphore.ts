@@ -167,14 +167,15 @@ describe("Semaphore", () => {
     })
 
     describe("# verifyProof", () => {
-        // const zero = "21663839004416932945382355908790599225266501822907911457504978515578255421292"
-        const zero = "0"
+        const zero = "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+        // const zero = "0"
         const signal = "Hello world"
         const bytes32Signal = utils.formatBytes32String(signal)
-        const identity = new Identity(BigInt(chainID), "0")
-        const groupId2 = groupId + 1
+        const identity = new Identity(BigInt(chainID), zero)
+        const groupId2 = 1337
 
         const group = new Group(treeDepth, BigInt(zero))
+        console.log("default group.root: ", group.root)
 
         group.addMembers(members)
 
@@ -184,7 +185,11 @@ describe("Semaphore", () => {
         before(async () => {
             // const transaction = await contract.getMaxEdges(groupId)
             const transaction = await contract.createGroup(groupId2, treeDepth, zero, accounts[0], maxEdges)
+
+            const root = await contract.getRoot(groupId2);
+            console.log("default contract.root: ", root)
             // console.log(transaction)
+            await contract.addMember(groupId2, members[0])
             await contract.addMember(groupId2, members[1])
             await contract.addMember(groupId2, members[2])
 
