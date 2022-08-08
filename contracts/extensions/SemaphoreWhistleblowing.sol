@@ -43,13 +43,14 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     /// @dev See {ISemaphoreWhistleblowing-createEntity}.
     function createEntity(
         uint256 entityId,
-        address editor,
         uint8 depth,
+        uint256 zeroValue,
+        address editor,
         uint8 maxEdges
     ) public override {
         require(address(verifiers[depth]) != address(0), "SemaphoreWhistleblowing: depth value is not supported");
 
-        _createGroup(entityId, depth, 0, maxEdges);
+        _createGroup(entityId, depth, zeroValue, maxEdges);
 
         entities[editor] = entityId;
 
@@ -77,7 +78,9 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         uint256 nullifierHash,
         uint256 entityId,
         bytes calldata roots,
-        uint256[8] calldata proof
+        uint256[8] calldata proof,
+        uint8 maxEdges,
+        uint root
     ) public override onlyEditor(entityId) {
         uint root = getRoot(entityId);
         uint8 depth = getDepth(entityId);
