@@ -7,12 +7,12 @@ mkdir -p $outdir;
 # pathToCircuitDir=./build/circuit_artifacts/artifacts
 
 compile () {
-    local outdir="$1" circuit="$2" depth="$3" maxEdges="$4"
+    local outdir="$1" circuit="$2" depth="$3" length="$4"
     # mkdir -p "build/$outdir"
-    mkdir -p "$outdir/$depth/$maxEdges"
+    mkdir -p "$outdir/$depth/$length"
     echo "Compiling circuit: circuits/$circuit.circom"
     ~/.cargo/bin/circom --r1cs --wasm --sym \
-        -o "./$outdir/$depth/$maxEdges/" \
+        -o "./$outdir/$depth/$length/" \
         "circuits/$circuit.circom"
     echo -e "Done!\n"
 }
@@ -37,22 +37,22 @@ generate_phase_2 () {
 }
 
 move_verifiers_and_metadata () {
-    local indir="$1" depth="$2" maxEdges="$3" fixturesDir="fixtures"
+    local indir="$1" depth="$2" length="$3" fixturesDir="fixtures"
     # cp "$indir/circuit_final.zkey" "protocol-solidity-fixtures/fixtures/$anchorType/$depth/circuit_final.zkey"
 
-    mkdir -p "$fixturesDir"/"$depth"/"$maxEdges"
+    mkdir -p "$fixturesDir"/"$depth"/"$length"
     # mkdir -p contracts/verifiers/depth20
-    cp "$indir/verifier.sol" contracts/verifiers/Verifier"$depth"\_"$maxEdges".sol
-    cp "$indir/circuit_final.zkey" "$fixturesDir"/"$depth"/"$maxEdges"/circuit_final.zkey
-    cp "$indir"/semaphore_"$depth"_"$maxEdges".r1cs "$fixturesDir"/"$depth"/"$maxEdges"/semaphore_"$depth"_"$maxEdges".r1cs
-    cp "$indir"/semaphore_"$depth"_"$maxEdges".sym "$fixturesDir"/"$depth"/"$maxEdges"/semaphore_"$depth"_"$maxEdges".sym
-    cp "$indir"/semaphore_"$depth"_"$maxEdges"_js/semaphore_"$depth"_"$maxEdges".wasm "$fixturesDir"/"$depth"/"$maxEdges"/semaphore_"$depth"_"$maxEdges".wasm
-    cp "$indir"/semaphore_"$depth"_"$maxEdges"_js/witness_calculator.js "$fixturesDir"/"$depth"/"$maxEdges"/witness_calculator.js
-    sed -i 's/pragma solidity ^0.6.11/pragma solidity ^0.8.4/' contracts/verifiers/Verifier"$depth"\_"$maxEdges".sol
-    sed -i "s/contract Verifier {/contract Verifier$depth\_$maxEdges {/" contracts/verifiers/Verifier"$depth"_"$maxEdges".sol
+    cp "$indir/verifier.sol" contracts/verifiers/Verifier"$depth"\_"$length".sol
+    cp "$indir/circuit_final.zkey" "$fixturesDir"/"$depth"/"$length"/circuit_final.zkey
+    cp "$indir"/semaphore_"$depth"_"$length".r1cs "$fixturesDir"/"$depth"/"$length"/semaphore_"$depth"_"$length".r1cs
+    cp "$indir"/semaphore_"$depth"_"$length".sym "$fixturesDir"/"$depth"/"$length"/semaphore_"$depth"_"$length".sym
+    cp "$indir"/semaphore_"$depth"_"$length"_js/semaphore_"$depth"_"$length".wasm "$fixturesDir"/"$depth"/"$length"/semaphore_"$depth"_"$length".wasm
+    cp "$indir"/semaphore_"$depth"_"$length"_js/witness_calculator.js "$fixturesDir"/"$depth"/"$length"/witness_calculator.js
+    sed -i 's/pragma solidity ^0.6.11/pragma solidity ^0.8.4/' contracts/verifiers/Verifier"$depth"\_"$length".sol
+    sed -i "s/contract Verifier {/contract Verifier$depth\_$length {/" contracts/verifiers/Verifier"$depth"_"$length".sol
 }
 
-# compile $outdir $circuit_name $depth $maxEdges
+# compile $outdir $circuit_name $depth $length
 compile "$outdir" semaphore_20_2 20 2
 compile "$outdir" semaphore_20_7 20 7
 compile "$outdir" semaphore_19_2 19 2

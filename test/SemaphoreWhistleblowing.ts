@@ -15,7 +15,7 @@ import {
     SolidityProof
 } from "../packages/proof/src"
 
-import { toFixedHex, createRootsBytes, createIdentities } from "./utils"
+import { toFixedHex, VerifierContractInfo, createRootsBytes, createIdentities } from "./utils"
 
 describe("SemaphoreWhistleblowing", () => {
     let contract: SemaphoreWhistleblowing
@@ -31,12 +31,6 @@ describe("SemaphoreWhistleblowing", () => {
     const wasmFilePath = `${config.paths.build["snark-artifacts"]}/20/2/semaphore_20_2.wasm`
     const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/20/2/circuit_final.zkey`
 
-    type VerifierContractInfo = { 
-        name: string;
-        address: string;
-        depth: string;
-        maxEdges: string
-    }
 
     before(async () => {
         const { address: v2_address } = await run("deploy:verifier", { logs: false, depth: treeDepth, maxEdges: 2 })
@@ -44,7 +38,7 @@ describe("SemaphoreWhistleblowing", () => {
             name: `Verifier${treeDepth}_${2}`,
             address: v2_address,
             depth: `${treeDepth}`,
-            maxEdges: `2`
+            circuitLength: `2`
         }
 
         const { address: v7_address } = await run("deploy:verifier", { logs: false, depth: treeDepth, maxEdges: 7 })
@@ -52,7 +46,7 @@ describe("SemaphoreWhistleblowing", () => {
             name: `Verifier${treeDepth}_${7}`,
             address: v7_address,
             depth: `${treeDepth}`,
-            maxEdges: `7`
+            circuitLength: `7`
         }
 
         const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([["v2", VerifierV2], ["v7", VerifierV7]]);

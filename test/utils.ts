@@ -4,6 +4,12 @@ import { randomBytes } from "@ethersproject/random"
 import { sha256 as _sha256 } from "@ethersproject/sha2"
 import { toUtf8Bytes } from "@ethersproject/strings"
 
+export type VerifierContractInfo = { 
+    name: string;
+    address: string;
+    depth: string;
+    circuitLength: string
+}
 export function toFixedHex(number: BigNumberish, length=32): string {
   return '0x' +
   (number instanceof Buffer

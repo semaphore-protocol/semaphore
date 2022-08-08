@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.5;
 pragma experimental ABIEncoderV2;
-import "hardhat/console.sol";
 
 /**
     @title SemaphoreInputEncoder library for encoding inputs for Semaphore Anchor proofs
@@ -80,7 +79,6 @@ library SemaphoreInputEncoder {
             inputs[4] = uint256(roots[0]);
             inputs[5] = uint256(roots[1]);
             inputs[6] = uint256(_chainId);
-            console.log("chainID: ", _chainId);
             encodedInput = abi.encodePacked(inputs);
         } else if (_maxEdges == 7) {
             uint256[12] memory inputs;

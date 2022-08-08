@@ -7,7 +7,6 @@ pragma solidity ^0.8.0;
 
 import "../interfaces/ISemaphoreVerifier.sol";
 import "../interfaces/IVerifier.sol";
-import "hardhat/console.sol";
 
 contract SemaphoreVerifier {
 	ISemaphoreVerifier2_2 public v2_2;
@@ -35,19 +34,10 @@ contract SemaphoreVerifier {
 		bytes memory input,
 		uint8 maxEdges
 	) external view returns (bool r) {
-        console.log("inside verifier-selector with %d", maxEdges);
 		if (maxEdges == 1) {
             uint256[7] memory _inputs = abi.decode(input, (uint256[7]));
-            console.log("calculatedRoot: ", _inputs[0]);
-            console.log("nullifierHash: ", _inputs[1]);
-            console.log("signalHash: ", _inputs[2]);
-            console.log("externalNullifier: ", _inputs[3]);
-            console.log("roots[0]: ", _inputs[4]);
-            console.log("roots[1]: ", _inputs[5]);
-            console.log("chainId: ", _inputs[6]);
             r =  v2_2.verifyProof(a, b, c, _inputs);
             // TODO: Fix the rest of the function with correct number of arguments to verifiers.
-            console.log("SemaphoreVerifier: verification status -> ", r);
             return r;
 		} else if (maxEdges == 7) {
             uint256[15] memory _inputs = abi.decode(input, (uint256[15]));

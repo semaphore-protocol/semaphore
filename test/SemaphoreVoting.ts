@@ -13,7 +13,7 @@ import {
     PublicSignals,
     SolidityProof
 } from "../packages/proof/src"
-import { toFixedHex, createRootsBytes, createIdentities } from "./utils"
+import { VerifierContractInfo, toFixedHex, createRootsBytes } from "./utils"
 
 describe("SemaphoreVoting", () => {
     let contract: SemaphoreVoting
@@ -27,18 +27,10 @@ describe("SemaphoreVoting", () => {
     const encryptionKey = BigInt(0)
     const decryptionKey = BigInt(0)
     const maxEdges = 1;
+    const circuitLength = 2;
 
-    // const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
-    // const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
-    const wasmFilePath = `./fixtures/20/2/semaphore_20_2.wasm`
-    const zkeyFilePath = `./fixtures/20/2/circuit_final.zkey`
-
-    type VerifierContractInfo = { 
-        name: string;
-        address: string;
-        depth: string;
-        maxEdges: string
-    }
+    const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/${circuitLength}/semaphore_${treeDepth}_${circuitLength}.wasm`
+    const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/${circuitLength}/circuit_final.zkey`
 
     before(async () => {
         const { address: v2_address } = await run("deploy:verifier", { logs: false, depth: treeDepth, maxEdges: 2 })
@@ -46,7 +38,7 @@ describe("SemaphoreVoting", () => {
             name: `Verifier${treeDepth}_${2}`,
             address: v2_address,
             depth: `${treeDepth}`,
-            maxEdges: `2`
+            circuitLength: `2`
         }
 
         const { address: v7_address } = await run("deploy:verifier", { logs: false, depth: treeDepth, maxEdges: 7 })
@@ -54,7 +46,7 @@ describe("SemaphoreVoting", () => {
             name: `Verifier${treeDepth}_${7}`,
             address: v7_address,
             depth: `${treeDepth}`,
-            maxEdges: `7`
+            circuitLength: `7`
         }
 
         const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([["v2", VerifierV2], ["v7", VerifierV7]]);
@@ -63,7 +55,7 @@ describe("SemaphoreVoting", () => {
             logs: false,
             verifiers: deployedVerifiers
         })
-        contract = await run("deploy:semaphore-voting", { logs: true, verifier: verifierSelector.address })
+        contract = await run("deploy:semaphore-voting", { logs: false, verifier: verifierSelector.address })
         accounts = await ethers.getSigners()
         coordinator = await accounts[1].getAddress()
     })
