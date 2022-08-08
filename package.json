@@ -92,7 +92,7 @@
             "cache": "./cache",
             "snarkjs-templates": "./snarkjs-templates",
             "build": {
-                "snark-artifacts": "./build/snark-artifacts",
+                "snark-artifacts": "./fixtures",
                 "contracts": "./build/contracts",
                 "typechain": "./build/typechain"
             }

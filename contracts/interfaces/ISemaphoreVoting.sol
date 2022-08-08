@@ -43,8 +43,9 @@ interface ISemaphoreVoting {
     /// @param depth: Depth of the tree.
     function createPoll(
         uint256 pollId,
-        address coordinator,
         uint8 depth,
+        uint256 zeroValue,
+        address coordinator,
         uint8 maxEdges
     ) external;
 
@@ -68,7 +69,9 @@ interface ISemaphoreVoting {
         uint256 nullifierHash,
         uint256 pollId,
         bytes calldata roots,
-        uint256[8] calldata proof
+        uint256[8] calldata proof,
+        uint8 maxEdges,
+        uint root
     ) external;
 
     /// @dev Ends a pull and publishes the key to decrypt the votes.

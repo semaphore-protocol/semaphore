@@ -41,13 +41,14 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     /// @dev See {ISemaphoreVoting-createPoll}.
     function createPoll(
         uint256 pollId,
-        address coordinator,
         uint8 depth,
+        uint256 zeroValue,
+        address coordinator,
         uint8 maxEdges
     ) public override {
         require(address(verifiers[depth]) != address(0), "SemaphoreVoting: depth value is not supported");
 
-        _createGroup(pollId, depth, 0, maxEdges);
+        _createGroup(pollId, depth, zeroValue, maxEdges);
 
         Poll memory poll;
 
@@ -80,17 +81,20 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         uint256 nullifierHash,
         uint256 pollId,
         bytes calldata roots,
-        uint256[8] calldata proof
+        uint256[8] calldata proof,
+        uint8 maxEdges,
+        uint root
     ) public override onlyCoordinator(pollId) {
         Poll memory poll = polls[pollId];
 
         require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
 
-        uint root = getRoot(pollId);
         uint8 depth = getDepth(pollId);
-        uint8 maxEdges = getMaxEdges(pollId);
+        uint256 contract_root = getRoot(pollId);
         SemaphoreVerifier verifier = verifiers[depth];
 
+        // require(contract_root == root, "merkle root supplied does not match current contract root");
+        // _verifyProof(vote, root, nullifierHash, pollId, proof, verifier);
         _verifyProof(vote, nullifierHash, pollId, roots, proof, verifier, maxEdges, root);
 
         // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).

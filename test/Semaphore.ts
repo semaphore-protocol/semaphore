@@ -1,5 +1,4 @@
 import { expect } from "chai"
-import { groth16 } from "snarkjs"
 import { constants, Signer, utils } from "ethers"
 import { run } from "hardhat"
 import { Semaphore as SemaphoreContract } from "../build/typechain"
@@ -8,8 +7,7 @@ import { config } from "../package.json"
 import { BigNumber } from "ethers";
 import { Group } from "@semaphore-protocol/group"
 import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "../packages/proof/src/"
-import { Identity } from "../packages/identity/src/index"
-import { toFixedHex, createRootsBytes, createIdentityCommitments, createIdentities } from "./utils"
+import { toFixedHex, createRootsBytes, createIdentities } from "./utils"
 /** BigNumber to hex string of specified length */
 
 describe("Semaphore", () => {
