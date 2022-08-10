@@ -4,28 +4,30 @@ import { randomBytes } from "@ethersproject/random"
 import { sha256 as _sha256 } from "@ethersproject/sha2"
 import { toUtf8Bytes } from "@ethersproject/strings"
 
-export type VerifierContractInfo = { 
-    name: string;
-    address: string;
-    depth: string;
+export type VerifierContractInfo = {
+    name: string
+    address: string
+    depth: string
     circuitLength: string
 }
-export function toFixedHex(number: BigNumberish, length=32): string {
-  return '0x' +
-  (number instanceof Buffer
-    ? number.toString('hex')
-    : BigNumber.from(number).toHexString().slice(2)
-  ).padStart(length * 2, '0')
+export function toFixedHex(number: BigNumberish, length = 32): string {
+    return (
+        "0x" +
+        (number instanceof Buffer ? number.toString("hex") : BigNumber.from(number).toHexString().slice(2)).padStart(
+            length * 2,
+            "0"
+        )
+    )
 }
 
 export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
-    let rootsBytes = '0x';
+    let rootsBytes = "0x"
     for (let i = 0; i < rootArray.length; i++) {
-        rootsBytes += toFixedHex(rootArray[i], 32).substr(2);
+        rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
     }
-    return rootsBytes; // root byte string (32 * array.length bytes)
+    return rootsBytes // root byte string (32 * array.length bytes)
 }
-export function createIdentities(chainId: number, n: number): { identities: Identity[], members: bigint[] } {
+export function createIdentities(chainId: number, n: number): { identities: Identity[]; members: bigint[] } {
     const identityCommitments: bigint[] = []
     const identities: Identity[] = []
 

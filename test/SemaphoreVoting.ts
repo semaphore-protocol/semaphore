@@ -21,13 +21,13 @@ describe("SemaphoreVoting", () => {
     let coordinator: string
 
     const zero = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
-    const chainID = BigInt(1099511629113);
+    const chainID = BigInt(1099511629113)
     const treeDepth = Number(process.env.TREE_DEPTH)
     const pollIds = [BigInt(1), BigInt(2), BigInt(3)]
     const encryptionKey = BigInt(0)
     const decryptionKey = BigInt(0)
-    const maxEdges = 1;
-    const circuitLength = 2;
+    const maxEdges = 1
+    const circuitLength = 2
 
     const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/${circuitLength}/semaphore_${treeDepth}_${circuitLength}.wasm`
     const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/${circuitLength}/circuit_final.zkey`
@@ -49,7 +49,10 @@ describe("SemaphoreVoting", () => {
             circuitLength: `7`
         }
 
-        const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([["v2", VerifierV2], ["v7", VerifierV7]]);
+        const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([
+            ["v2", VerifierV2],
+            ["v7", VerifierV7]
+        ])
 
         const verifierSelector = await run("deploy:verifier-selector", {
             logs: false,
@@ -141,14 +144,12 @@ describe("SemaphoreVoting", () => {
 
             const transaction = contract.connect(accounts[1]).addVoter(pollIds[1], identityCommitment)
 
-            await expect(transaction)
-                .to.emit(contract, "MemberAdded")
-                .withArgs(
-                    pollIds[1],
-                    identityCommitment,
-                    // "14787813191318312920980352979830075893203307366494541177071234930769373297362"
-                    "7943806797233700547041913393384710769504872928213070894800658208056456315893"
-                )
+            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(
+                pollIds[1],
+                identityCommitment,
+                // "14787813191318312920980352979830075893203307366494541177071234930769373297362"
+                "7943806797233700547041913393384710769504872928213070894800658208056456315893"
+            )
         })
 
         it("Should return the correct number of poll voters", async () => {
@@ -186,16 +187,22 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not cast a vote if the caller is not the coordinator", async () => {
-            const root = await contract.getRoot(pollIds[0]);
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
-            const transaction = contract.castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[0], createRootsBytes(roots), solidityProof)
+            const root = await contract.getRoot(pollIds[0])
+            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
+            const transaction = contract.castVote(
+                bytes32Vote,
+                publicSignals.nullifierHash,
+                pollIds[0],
+                createRootsBytes(roots),
+                solidityProof
+            )
 
             await expect(transaction).to.be.revertedWith("SemaphoreVoting: caller is not the poll coordinator")
         })
 
         it("Should not cast a vote if the poll is not ongoing", async () => {
-            const root = await contract.getRoot(pollIds[2]);
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
+            const root = await contract.getRoot(pollIds[2])
+            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const transaction = contract
                 .connect(accounts[1])
                 .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[2], createRootsBytes(roots), solidityProof)
@@ -204,8 +211,8 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not cast a vote if the proof is not valid", async () => {
-            const root = await contract.getRoot(pollIds[0]);
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
+            const root = await contract.getRoot(pollIds[0])
+            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const nullifierHash = generateNullifierHash(pollIds[0], identity.getNullifier(), chainID)
 
             const transaction = contract
@@ -216,8 +223,8 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should cast a vote", async () => {
-            const root = await contract.getRoot(pollIds[1]);
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
+            const root = await contract.getRoot(pollIds[1])
+            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const transaction = contract
                 .connect(accounts[1])
                 .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[1], createRootsBytes(roots), solidityProof)
@@ -226,8 +233,8 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not cast a vote twice", async () => {
-            const root = await contract.getRoot(pollIds[0]);
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
+            const root = await contract.getRoot(pollIds[0])
+            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
 
             const transaction = contract
                 .connect(accounts[1])

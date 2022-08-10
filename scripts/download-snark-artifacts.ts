@@ -3,14 +3,14 @@ import fs from "fs"
 import { config } from "../package.json"
 
 async function main() {
-    let treeDepth: number;
-    let circuitLength: number;
-    if(process.env.TREE_DEPTH) {
+    let treeDepth: number
+    let circuitLength: number
+    if (process.env.TREE_DEPTH) {
         treeDepth = Number(process.env.TREE_DEPTH)
     } else {
         treeDepth = 20
     }
-    if(process.env.CIRCUIT_LENGTH) {
+    if (process.env.CIRCUIT_LENGTH) {
         circuitLength = Number(process.env.CIRCUIT_LENGTH)
     } else {
         circuitLength = 2

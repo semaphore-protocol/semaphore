@@ -14,12 +14,12 @@ pragma solidity ^0.8.0;
 	- Y is the # of inputs to the join/split transaction (i.e. 2)
  */
 interface ISemaphoreVerifier2_2 {
-	function verifyProof(
-		uint[2] memory a,
-		uint[2][2] memory b,
-		uint[2] memory c,
-		uint256[7] memory input
-	) external view returns (bool r);
+    function verifyProof(
+        uint256[2] memory a,
+        uint256[2][2] memory b,
+        uint256[2] memory c,
+        uint256[7] memory input
+    ) external view returns (bool r);
 }
 
 /**
@@ -49,13 +49,13 @@ interface ISemaphoreVerifier2_2 {
 	- Y is the # of inputs to the join/split transaction (i.e. 2)
  */
 interface ISemaphoreVerifier8_2 {
-	function verifyProof(
-		uint[2] memory a,
-		uint[2][2] memory b,
-		uint[2] memory c,
+    function verifyProof(
+        uint256[2] memory a,
+        uint256[2][2] memory b,
+        uint256[2] memory c,
         // TODO Change this to correct value
-		uint256[15] memory input
-	) external view returns (bool r);
+        uint256[15] memory input
+    ) external view returns (bool r);
 }
 
 /**
@@ -75,4 +75,3 @@ interface ISemaphoreVerifier8_2 {
 // 		uint256[29] memory input
 // 	) external view returns (bool r);
 // }
-

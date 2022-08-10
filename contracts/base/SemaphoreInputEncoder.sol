@@ -29,9 +29,11 @@ library SemaphoreInputEncoder {
     /**
         @notice Gets the chain id using the chain id opcode
     */
-    function getChainId() public view returns (uint) {
-        uint chainId;
-        assembly { chainId := chainid() }
+    function getChainId() public view returns (uint256) {
+        uint256 chainId;
+        assembly {
+            chainId := chainid()
+        }
         return chainId;
     }
 
@@ -57,10 +59,7 @@ library SemaphoreInputEncoder {
         @param _maxEdges The maximum # of edges supported by the underlying Semaphore Anchor
         @return (bytes, bytes) The public inputs and roots array separated
     */
-    function _encodeInputs(
-        Proof memory _args,
-        uint8 _maxEdges
-    ) public view returns (bytes memory, bytes32[] memory) {
+    function _encodeInputs(Proof memory _args, uint8 _maxEdges) public view returns (bytes memory, bytes32[] memory) {
         uint256 _chainId = getChainIdType();
         bytes32[] memory result = new bytes32[](_maxEdges + 1);
         bytes memory encodedInput;
@@ -106,8 +105,7 @@ library SemaphoreInputEncoder {
             inputs[10] = uint256(roots[7]);
             inputs[11] = uint256(_chainId);
             encodedInput = abi.encodePacked(inputs);
-        }
-        else {
+        } else {
             require(false, "Invalid edges");
         }
 

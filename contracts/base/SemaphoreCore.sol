@@ -32,7 +32,7 @@ contract SemaphoreCore is ISemaphoreCore {
         uint256[8] calldata proof,
         SemaphoreVerifier verifier,
         uint8 maxEdges,
-        uint root
+        uint256 root
     ) internal view {
         if (nullifierHashes[nullifierHash]) {
             revert Semaphore__YouAreUsingTheSameNillifierTwice();
@@ -49,7 +49,7 @@ contract SemaphoreCore is ISemaphoreCore {
             roots: roots
         });
 
-        (bytes memory inputs,) = p._encodeInputs(maxEdges);
+        (bytes memory inputs, ) = p._encodeInputs(maxEdges);
         bool success = verifier.verifyProof(
             [proof[0], proof[1]],
             [[proof[2], proof[3]], [proof[4], proof[5]]],

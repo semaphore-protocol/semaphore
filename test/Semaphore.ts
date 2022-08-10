@@ -4,7 +4,7 @@ import { run } from "hardhat"
 import { Semaphore as SemaphoreContract } from "../build/typechain"
 import { config } from "../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { BigNumber } from "ethers";
+import { BigNumber } from "ethers"
 import { Group } from "@semaphore-protocol/group"
 import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "../packages/proof/src/"
 import { toFixedHex, VerifierContractInfo, createRootsBytes, createIdentities } from "./utils"
@@ -15,20 +15,23 @@ describe("Semaphore", () => {
     let signers: Signer[]
     let accounts: string[]
 
-    const treeDepth = Number(process.env.TREE_DEPTH) | 20;
-    const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2;
+    const treeDepth = Number(process.env.TREE_DEPTH) | 20
+    const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
     const groupId = 1
-    const maxEdges = 1;
-    const chainID = 1099511629113;
+    const maxEdges = 1
+    const chainID = 1099511629113
     const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
-    const {identities, members} = createIdentities(chainID, 3)
+    const { identities, members } = createIdentities(chainID, 3)
 
     const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/semaphore_20_2.wasm`
     const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/circuit_final.zkey`
 
     before(async () => {
-
-        const { address: v2_address } = await run("deploy:verifier", { logs: false, depth: treeDepth, circuitLength: circuitLength})
+        const { address: v2_address } = await run("deploy:verifier", {
+            logs: false,
+            depth: treeDepth,
+            circuitLength: circuitLength
+        })
         const VerifierV2: VerifierContractInfo = {
             name: `Verifier${treeDepth}_${circuitLength}`,
             address: v2_address,
@@ -44,7 +47,10 @@ describe("Semaphore", () => {
             circuitLength: `7`
         }
 
-        const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([["v2", VerifierV2], ["v7", VerifierV7]]);
+        const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([
+            ["v2", VerifierV2],
+            ["v7", VerifierV7]
+        ])
 
         const verifierSelector = await run("deploy:verifier-selector", {
             logs: false,
@@ -106,18 +112,16 @@ describe("Semaphore", () => {
             const group = new Group(treeDepth, BigInt(zeroValue))
             group.addMember(members[0])
 
-            await expect(transaction)
-                .to.emit(contract, "MemberAdded")
-                .withArgs(
-                    groupId,
-                    members[0],
-                    // TODO: Double check if root is actually supposed to be different
-                    // prev_root:
-                    // "18951329906296061785889394467312334959162736293275411745101070722914184798221"
-                    // new root:
-                    group.root
-                    // "13363801133440369172344440658363322195671530462716685761435662705051278097748"
-                )
+            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(
+                groupId,
+                members[0],
+                // TODO: Double check if root is actually supposed to be different
+                // prev_root:
+                // "18951329906296061785889394467312334959162736293275411745101070722914184798221"
+                // new root:
+                group.root
+                // "13363801133440369172344440658363322195671530462716685761435662705051278097748"
+            )
         })
     })
 
@@ -130,7 +134,7 @@ describe("Semaphore", () => {
 
         it("Should remove a member from an existing group", async () => {
             const groupId = 100
-            // NOTE: hex (zero value) taken from contracts/base/LinkableIncrementalBinaryTree.sol 
+            // NOTE: hex (zero value) taken from contracts/base/LinkableIncrementalBinaryTree.sol
             // first position in the zeros function
 
             // let hex = "2fe54c60d3acabf3343a35b6eba15db4821b340f76e741e2249685ed4899af6c";
@@ -175,15 +179,14 @@ describe("Semaphore", () => {
             await contract.addMember(groupId2, members[0])
             await contract.addMember(groupId2, members[1])
             await contract.addMember(groupId2, members[2])
-            const root = await contract.getRoot(groupId2);
-            roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
+            const root = await contract.getRoot(groupId2)
+            roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
 
             fullProof = await generateProof(identities[0], group, group.root, signal, {
                 wasmFilePath,
                 zkeyFilePath
             })
             solidityProof = packToSolidityProof(fullProof.proof)
-
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
@@ -193,7 +196,7 @@ describe("Semaphore", () => {
                 0,
                 0,
                 createRootsBytes(roots),
-                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0]
             )
 
             await expect(transaction).to.be.revertedWith("Semaphore__GroupDoesNotExist()")

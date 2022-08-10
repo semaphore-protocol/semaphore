@@ -5,11 +5,15 @@ import { VerifierContractInfo } from "../test/utils"
 async function main() {
     console.log("Init deploy")
     const deployedContracts: { name: string; address: string }[] = []
-    const treeDepth = Number(process.env.TREE_DEPTH) | 20;
-    const circuitLength = 2;
+    const treeDepth = Number(process.env.TREE_DEPTH) | 20
+    const circuitLength = 2
 
     // Deploy verifiers.
-    const { address: v2_address } = await run("deploy:verifier", { logs: false, depth: treeDepth, circuitLength: circuitLength})
+    const { address: v2_address } = await run("deploy:verifier", {
+        logs: false,
+        depth: treeDepth,
+        circuitLength: circuitLength
+    })
     const VerifierV2: VerifierContractInfo = {
         name: `Verifier${treeDepth}_${circuitLength}`,
         address: v2_address,
@@ -27,7 +31,10 @@ async function main() {
     }
     console.log("VerifierV7 deployed to ", v7_address)
 
-    const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([["v2", VerifierV2], ["v7", VerifierV7]]);
+    const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([
+        ["v2", VerifierV2],
+        ["v7", VerifierV7]
+    ])
 
     const verifierSelector = await run("deploy:verifier-selector", {
         logs: false,
@@ -40,7 +47,6 @@ async function main() {
         verifiers: [{ merkleTreeDepth: treeDepth, contractAddress: verifierSelector.address }]
     })
     console.log("Semaphore deployed to ", contract.address)
-
 
     deployedContracts.push({
         name: `Semaphore`,

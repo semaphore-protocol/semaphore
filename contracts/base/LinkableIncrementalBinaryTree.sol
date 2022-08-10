@@ -27,17 +27,14 @@ struct LinkableIncrementalTreeData {
     uint256 numberOfLeaves; // Number of leaves of the tree.
     // The nodes of the subtrees used in the last addition of a leaf (level -> [left node, right node]).
     mapping(uint256 => uint256[2]) lastSubtrees; // Caching these values is essential to efficient appends.
-
-	// Maps sourceChainID to the index in the edge list
-	mapping(uint256 => uint256) edgeIndex;
-	mapping(uint256 => bool) edgeExistsForChain;
-	Edge[] edgeList;
-
-	// Map to store chainID => (rootIndex => root) to track neighbor histories
-	mapping(uint256 => mapping(uint32 => bytes32)) neighborRoots;
-	// Map to store the current historical root index for a chainID
-	mapping(uint256 => uint32) currentNeighborRootIndex;
-
+    // Maps sourceChainID to the index in the edge list
+    mapping(uint256 => uint256) edgeIndex;
+    mapping(uint256 => bool) edgeExistsForChain;
+    Edge[] edgeList;
+    // Map to store chainID => (rootIndex => root) to track neighbor histories
+    mapping(uint256 => mapping(uint32 => bytes32)) neighborRoots;
+    // Map to store the current historical root index for a chainID
+    mapping(uint256 => uint32) currentNeighborRootIndex;
 }
 
 /// @title Linkable Incremental binary Merkle tree.
@@ -51,8 +48,8 @@ library LinkableIncrementalBinaryTree {
         21888242871839275222246405745257275088548364400416034343698204186575808495617;
 
     // Edge linking events
-	event EdgeAddition(uint256 chainID, uint256 latestLeafIndex, bytes32 merkleRoot);
-	event EdgeUpdate(uint256 chainID, uint256 latestLeafIndex, bytes32 merkleRoot);
+    event EdgeAddition(uint256 chainID, uint256 latestLeafIndex, bytes32 merkleRoot);
+    event EdgeUpdate(uint256 chainID, uint256 latestLeafIndex, bytes32 merkleRoot);
 
     /// @dev Initializes a tree.
     /// @param self: Tree data.
@@ -68,7 +65,7 @@ library LinkableIncrementalBinaryTree {
         require(depth > 0 && depth <= MAX_DEPTH, "LinkableIncrementalBinaryTree: tree depth must be between 1 and 32");
 
         self.depth = depth;
-        self.roots[0] = zeros(depth-1);
+        self.roots[0] = zeros(depth - 1);
         self.maxEdges = maxEdges;
     }
 
@@ -183,14 +180,14 @@ library LinkableIncrementalBinaryTree {
         uint32 i = _currentRootIndex;
         do {
             if (_root == self.roots[i]) {
-            return true;
+                return true;
             }
             if (i == 0) {
-            i = ROOT_HISTORY_SIZE;
+                i = ROOT_HISTORY_SIZE;
             }
             i--;
         } while (i != _currentRootIndex);
-        
+
         return false;
     }
 
@@ -237,163 +234,164 @@ library LinkableIncrementalBinaryTree {
         else revert("Index out of bounds");
     }
 
-/**
+    /**
 		@notice Add an edge to the tree or update an existing edge.
 		@param _sourceChainID The chainID of the edge's LinkableTree
 		@param _root The merkle root of the edge's merkle tree
 		@param _leafIndex The latest leaf insertion index of the edge's merkle tree
 	 */
-	function updateEdge(
+    function updateEdge(
         LinkableIncrementalTreeData storage self,
-		uint256 _sourceChainID,
-		bytes32 _root,
-		uint256 _leafIndex,
-		bytes32 _target
-	) internal {
-		if (self.edgeExistsForChain[_sourceChainID]) {
-			// Update Edge
-			require(
-                self.edgeExistsForChain[_sourceChainID],
-                "Chain must be integrated from the bridge before updates"
-            );
-			require(
+        uint256 _sourceChainID,
+        bytes32 _root,
+        uint256 _leafIndex,
+        bytes32 _target
+    ) internal {
+        if (self.edgeExistsForChain[_sourceChainID]) {
+            // Update Edge
+            require(self.edgeExistsForChain[_sourceChainID], "Chain must be integrated from the bridge before updates");
+            require(
                 self.edgeList[self.edgeIndex[_sourceChainID]].latestLeafIndex < _leafIndex,
                 "New leaf index must be greater"
             );
-			require(
+            require(
                 _leafIndex < self.edgeList[self.edgeIndex[_sourceChainID]].latestLeafIndex + (65_536),
                 "New leaf index must within 2^16 updates"
             );
-			uint index = self.edgeIndex[_sourceChainID];
-			// update the edge in the edge list
-			self.edgeList[index] = Edge({
-				chainID: _sourceChainID,
-				root: _root,
-				latestLeafIndex: _leafIndex,
-				target: _target
-			});
-				// add to root histories
-			uint32 neighborRootIndex = (self.currentNeighborRootIndex[_sourceChainID] + 1) % ROOT_HISTORY_SIZE;
-			self.currentNeighborRootIndex[_sourceChainID] = neighborRootIndex;
-			self.neighborRoots[_sourceChainID][neighborRootIndex] = _root;
-			emit EdgeUpdate(_sourceChainID, _leafIndex, _root);
-		} else {
-			//Add Edge
-			require(self.edgeList.length < self.maxEdges, "This Anchor is at capacity");
-			self.edgeExistsForChain[_sourceChainID] = true;
-			uint index = self.edgeList.length;
-			Edge memory edge = Edge({
-				chainID: _sourceChainID,
-				root: _root,
-				latestLeafIndex: _leafIndex,
-				target: _target
-			});
-			self.edgeList.push(edge);
-			self.edgeIndex[_sourceChainID] = index;
-			// add to root histories
-			uint32 neighborRootIndex = 0;
-			self.neighborRoots[_sourceChainID][neighborRootIndex] = _root;
-			emit EdgeAddition(_sourceChainID, _leafIndex, _root);
-		}
-	}
+            uint256 index = self.edgeIndex[_sourceChainID];
+            // update the edge in the edge list
+            self.edgeList[index] = Edge({
+                chainID: _sourceChainID,
+                root: _root,
+                latestLeafIndex: _leafIndex,
+                target: _target
+            });
+            // add to root histories
+            uint32 neighborRootIndex = (self.currentNeighborRootIndex[_sourceChainID] + 1) % ROOT_HISTORY_SIZE;
+            self.currentNeighborRootIndex[_sourceChainID] = neighborRootIndex;
+            self.neighborRoots[_sourceChainID][neighborRootIndex] = _root;
+            emit EdgeUpdate(_sourceChainID, _leafIndex, _root);
+        } else {
+            //Add Edge
+            require(self.edgeList.length < self.maxEdges, "This Anchor is at capacity");
+            self.edgeExistsForChain[_sourceChainID] = true;
+            uint256 index = self.edgeList.length;
+            Edge memory edge = Edge({
+                chainID: _sourceChainID,
+                root: _root,
+                latestLeafIndex: _leafIndex,
+                target: _target
+            });
+            self.edgeList.push(edge);
+            self.edgeIndex[_sourceChainID] = index;
+            // add to root histories
+            uint32 neighborRootIndex = 0;
+            self.neighborRoots[_sourceChainID][neighborRootIndex] = _root;
+            emit EdgeAddition(_sourceChainID, _leafIndex, _root);
+        }
+    }
 
-	/**
+    /**
 		@notice Get the latest state of all neighbor edges
 		@return Edge[] An array of all neighboring and potentially empty edges
 		*/
-	function getLatestNeighborEdges(LinkableIncrementalTreeData storage self) public view returns (Edge[] memory) {
-		Edge[] memory edges = new Edge[](self.maxEdges);
-		for (uint256 i = 0; i < self.maxEdges; i++) {
-			if (self.edgeList.length >= i + 1) {
-				edges[i] = self.edgeList[i];
-			} else {
-				edges[i] = Edge({
-					// merkle tree height for zeros
-					root: zeros(self.depth),
-					chainID: 0,
-					latestLeafIndex: 0,
-					target: 0x0
-				});
-			}
-		}
+    function getLatestNeighborEdges(LinkableIncrementalTreeData storage self) public view returns (Edge[] memory) {
+        Edge[] memory edges = new Edge[](self.maxEdges);
+        for (uint256 i = 0; i < self.maxEdges; i++) {
+            if (self.edgeList.length >= i + 1) {
+                edges[i] = self.edgeList[i];
+            } else {
+                edges[i] = Edge({
+                    root: zeros(self.depth), // merkle tree height for zeros,
+                    chainID: 0,
+                    latestLeafIndex: 0,
+                    target: 0x0
+                });
+            }
+        }
 
-		return edges;
-	}
+        return edges;
+    }
 
-	/**
+    /**
 		@notice Get the latest merkle roots of all neighbor edges
 		@return bytes32[] An array of merkle roots
 	 */
-	function getLatestNeighborRoots(LinkableIncrementalTreeData storage self) public view returns (bytes32[] memory) {
-		bytes32[] memory roots = new bytes32[](self.maxEdges);
-		for (uint256 i = 0; i < self.maxEdges; i++) {
-			if (self.edgeList.length >= i + 1) {
-				roots[i] = self.edgeList[i].root;
-			} else {
-				// merkle tree height for zeros
-				roots[i] = zeros(self.depth);
-			}
-		}
+    function getLatestNeighborRoots(LinkableIncrementalTreeData storage self) public view returns (bytes32[] memory) {
+        bytes32[] memory roots = new bytes32[](self.maxEdges);
+        for (uint256 i = 0; i < self.maxEdges; i++) {
+            if (self.edgeList.length >= i + 1) {
+                roots[i] = self.edgeList[i].root;
+            } else {
+                // merkle tree height for zeros
+                roots[i] = zeros(self.depth);
+            }
+        }
 
-		return roots;
-	}
+        return roots;
+    }
 
-	/**
+    /**
 		@notice Checks to see whether a `_root` is known for a neighboring `neighborChainID`
 		@param _neighborChainID The chainID of the neighbor's edge
 		@param _root The root to check
 	 */
-	function isKnownNeighborRoot(
+    function isKnownNeighborRoot(
         LinkableIncrementalTreeData storage self,
         uint256 _neighborChainID,
         bytes32 _root
     ) public view returns (bool) {
-		if (_root == 0) {
-			return false;
-		}
-		uint32 _currentRootIndex = self.currentNeighborRootIndex[_neighborChainID];
-		uint32 i = _currentRootIndex;
-		do {
-			if (_root == self.neighborRoots[_neighborChainID][i]) {
-				return true;
-			}
-			if (i == 0) {
-				i = ROOT_HISTORY_SIZE;
-			}
-			i--;
-		} while (i != _currentRootIndex);
-		return false;
-	}
+        if (_root == 0) {
+            return false;
+        }
+        uint32 _currentRootIndex = self.currentNeighborRootIndex[_neighborChainID];
+        uint32 i = _currentRootIndex;
+        do {
+            if (_root == self.neighborRoots[_neighborChainID][i]) {
+                return true;
+            }
+            if (i == 0) {
+                i = ROOT_HISTORY_SIZE;
+            }
+            i--;
+        } while (i != _currentRootIndex);
+        return false;
+    }
 
-	/**
+    /**
 		@notice Checks validity of an array of merkle roots in the history.
 		The first root should always be the root of `this` underlying merkle
 		tree and the remaining roots are of the neighboring roots in `edges.
 		@param _roots An array of bytes32 merkle roots to be checked against the history.
 	 */
-	function isValidRoots(LinkableIncrementalTreeData storage self, bytes32[] memory _roots) public view returns (bool) {
-		require(isKnownRoot(self, _roots[0]), "Cannot find your merkle root");
-		require(_roots.length == self.maxEdges + 1, "Incorrect root array length");
-		for (uint i = 0; i < self.edgeList.length; i++) {
-			Edge memory _edge = self.edgeList[i];
-			require(isKnownNeighborRoot(self, _edge.chainID, _roots[i+1]), "Neighbor root not found");
-		}
-		return true;
-	}
+    function isValidRoots(LinkableIncrementalTreeData storage self, bytes32[] memory _roots)
+        public
+        view
+        returns (bool)
+    {
+        require(isKnownRoot(self, _roots[0]), "Cannot find your merkle root");
+        require(_roots.length == self.maxEdges + 1, "Incorrect root array length");
+        for (uint256 i = 0; i < self.edgeList.length; i++) {
+            Edge memory _edge = self.edgeList[i];
+            require(isKnownNeighborRoot(self, _edge.chainID, _roots[i + 1]), "Neighbor root not found");
+        }
+        return true;
+    }
 
-	/**
+    /**
 		@notice Decodes a byte string of roots into its parts.
 		@return bytes32[] An array of bytes32 merkle roots
 	 */
-	function decodeRoots(
-        LinkableIncrementalTreeData storage self,
-        bytes calldata roots
-    ) internal view returns (bytes32[] memory) {
-		bytes32[] memory decodedRoots = new bytes32[](self.maxEdges + 1);
-		for (uint i = 0; i <= self.maxEdges; i++) {
-			decodedRoots[i] = bytes32(roots[32*i : 32*(i+1)]);
-		}
+    function decodeRoots(LinkableIncrementalTreeData storage self, bytes calldata roots)
+        internal
+        view
+        returns (bytes32[] memory)
+    {
+        bytes32[] memory decodedRoots = new bytes32[](self.maxEdges + 1);
+        for (uint256 i = 0; i <= self.maxEdges; i++) {
+            decodedRoots[i] = bytes32(roots[32 * i:32 * (i + 1)]);
+        }
 
-		return decodedRoots;
-	}
+        return decodedRoots;
+    }
 }

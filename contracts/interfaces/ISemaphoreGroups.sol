@@ -41,7 +41,6 @@ interface ISemaphoreGroups {
     /// @return Maximum # of edges this group supports
     function getMaxEdges(uint256 groupId) external view returns (uint8);
 
-
     /// @dev Returns the number of tree leaves of a group.
     /// @param groupId: Id of the group.
     /// @return Number of tree leaves.

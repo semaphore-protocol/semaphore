@@ -23,14 +23,13 @@ describe("SemaphoreWhistleblowing", () => {
     let editor: string
 
     const zero = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
-    const chainID = BigInt(1099511629113);
+    const chainID = BigInt(1099511629113)
     const treeDepth = Number(process.env.TREE_DEPTH)
     const entityIds = [BigInt(1), BigInt(2)]
-    const maxEdges = 1;
+    const maxEdges = 1
 
     const wasmFilePath = `${config.paths.build["snark-artifacts"]}/20/2/semaphore_20_2.wasm`
     const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/20/2/circuit_final.zkey`
-
 
     before(async () => {
         const { address: v2_address } = await run("deploy:verifier", { logs: false, depth: treeDepth, maxEdges: 2 })
@@ -49,7 +48,10 @@ describe("SemaphoreWhistleblowing", () => {
             circuitLength: `7`
         }
 
-        const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([["v2", VerifierV2], ["v7", VerifierV7]]);
+        const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([
+            ["v2", VerifierV2],
+            ["v7", VerifierV7]
+        ])
 
         const verifierSelector = await run("deploy:verifier-selector", {
             logs: false,
@@ -70,10 +72,11 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should not create an entity greater than the snark scalar field", async () => {
             const transaction = contract.createEntity(
                 BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
-                treeDepth, 
-                zero, 
-                editor, 
-                maxEdges)
+                treeDepth,
+                zero,
+                editor,
+                maxEdges
+            )
 
             await expect(transaction).to.be.revertedWith("Semaphore__GroupIdIsNotLessThanSnarkScalarField()")
         })
@@ -189,8 +192,8 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should not publish a leak if the caller is not the editor", async () => {
-            const root = await contract.getRoot(entityIds[0]);
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
+            const root = await contract.getRoot(entityIds[0])
+            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const transaction = contract.publishLeak(
                 bytes32Leak,
                 publicSignals.nullifierHash,
@@ -203,8 +206,8 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should not publish a leak if the proof is not valid", async () => {
-            const root = await contract.getRoot(entityIds[0]);
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
+            const root = await contract.getRoot(entityIds[0])
+            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const nullifierHash = generateNullifierHash(entityIds[0], identity.getNullifier(), chainID)
 
             const transaction = contract
@@ -215,11 +218,17 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should publish a leak", async () => {
-            const root = await contract.getRoot(entityIds[1]);
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)] 
+            const root = await contract.getRoot(entityIds[1])
+            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const transaction = contract
                 .connect(accounts[1])
-                .publishLeak(bytes32Leak, publicSignals.nullifierHash, entityIds[1], createRootsBytes(roots), solidityProof)
+                .publishLeak(
+                    bytes32Leak,
+                    publicSignals.nullifierHash,
+                    entityIds[1],
+                    createRootsBytes(roots),
+                    solidityProof
+                )
 
             await expect(transaction).to.emit(contract, "LeakPublished").withArgs(entityIds[1], bytes32Leak)
         })
