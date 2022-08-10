@@ -520,6 +520,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ethersproject/abi@npm:^5.6.4":
+  version: 5.6.4
+  resolution: "@ethersproject/abi@npm:5.6.4"
+  dependencies:
+    "@ethersproject/address": ^5.6.1
+    "@ethersproject/bignumber": ^5.6.2
+    "@ethersproject/bytes": ^5.6.1
+    "@ethersproject/constants": ^5.6.1
+    "@ethersproject/hash": ^5.6.1
+    "@ethersproject/keccak256": ^5.6.1
+    "@ethersproject/logger": ^5.6.0
+    "@ethersproject/properties": ^5.6.0
+    "@ethersproject/strings": ^5.6.1
+  checksum: b5e70fa13a29e1143131a0ed25053a3d355c07353e13d436f42add33f40753b5541a088cf31a1ccca6448bb1d773a41ece0bf8367490d3f2ad394a4c26f4876f
+  languageName: node
+  linkType: hard
+
 "@ethersproject/abstract-provider@npm:5.6.1, @ethersproject/abstract-provider@npm:^5.6.1":
   version: 5.6.1
   resolution: "@ethersproject/abstract-provider@npm:5.6.1"
@@ -729,7 +746,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:5.6.8":
+"@ethersproject/providers@npm:5.6.8, @ethersproject/providers@npm:^5.6.8":
   version: 5.6.8
   resolution: "@ethersproject/providers@npm:5.6.8"
   dependencies:
@@ -1159,6 +1176,62 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@semaphore-anchor/group@0.0.1, @semaphore-anchor/group@workspace:packages/group":
+  version: 0.0.0-use.local
+  resolution: "@semaphore-anchor/group@workspace:packages/group"
+  dependencies:
+    "@zk-kit/incremental-merkle-tree": 0.4.3
+    circomlibjs: 0.0.8
+    ethers: ^5.6.8
+    rollup: ^2.77.2
+    rollup-plugin-cleanup: ^3.2.1
+    rollup-plugin-typescript2: ^0.31.2
+    typechain: ^8.0.0
+    typedoc: ^0.22.11
+    typescript: ^4.7.4
+  languageName: unknown
+  linkType: soft
+
+"@semaphore-anchor/identity@0.0.1, @semaphore-anchor/identity@workspace:packages/identity":
+  version: 0.0.0-use.local
+  resolution: "@semaphore-anchor/identity@workspace:packages/identity"
+  dependencies:
+    "@ethersproject/bignumber": ^5.5.0
+    "@ethersproject/random": ^5.5.1
+    "@ethersproject/sha2": ^5.6.1
+    "@ethersproject/strings": ^5.6.1
+    circomlibjs: 0.0.8
+    ethers: ^5.6.8
+    rollup: ^2.77.2
+    rollup-plugin-cleanup: ^3.2.1
+    rollup-plugin-typescript2: ^0.31.2
+    typedoc: ^0.22.11
+    typescript: ^4.7.4
+  languageName: unknown
+  linkType: soft
+
+"@semaphore-anchor/proof@workspace:packages/proof":
+  version: 0.0.0-use.local
+  resolution: "@semaphore-anchor/proof@workspace:packages/proof"
+  dependencies:
+    "@ethersproject/bytes": ^5.5.0
+    "@ethersproject/solidity": ^5.5.0
+    "@ethersproject/strings": ^5.5.0
+    "@semaphore-anchor/group": 0.0.1
+    "@semaphore-anchor/identity": 0.0.1
+    "@zk-kit/incremental-merkle-tree": 0.4.3
+    circomlibjs: 0.0.8
+    download: ^8.0.0
+    ffjavascript: ^0.2.54
+    rollup: ^2.77.2
+    rollup-plugin-cleanup: ^3.2.1
+    rollup-plugin-typescript2: ^0.31.2
+    snarkjs: ^0.4.13
+    typedoc: ^0.22.11
+    typescript: ^4.7.4
+  languageName: unknown
+  linkType: soft
+
 "@semaphore-protocol/group@npm:0.1.2":
   version: 0.1.2
   resolution: "@semaphore-protocol/group@npm:0.1.2"
@@ -1181,23 +1254,6 @@ __metadata:
   checksum: 9a819ca63ed59097a9581592b24ed7ea0aac11837f119fa69bf0b23d8c08cc1ae7e0e56ba0622e871d36f7d95a882c14cf2186bb6237791400cb1569c6ff0a62
   languageName: node
   linkType: hard
-
-"@semaphore-protocol/identity@workspace:packages/identity":
-  version: 0.0.0-use.local
-  resolution: "@semaphore-protocol/identity@workspace:packages/identity"
-  dependencies:
-    "@ethersproject/bignumber": ^5.5.0
-    "@ethersproject/random": ^5.5.1
-    "@ethersproject/sha2": ^5.6.1
-    "@ethersproject/strings": ^5.6.1
-    circomlibjs: 0.0.8
-    rimraf: ^3.0.2
-    rollup: ^2.77.2
-    rollup-plugin-cleanup: ^3.2.1
-    rollup-plugin-typescript2: ^0.31.2
-    typedoc: ^0.22.11
-  languageName: unknown
-  linkType: soft
 
 "@semaphore-protocol/proof@npm:0.3.3":
   version: 0.3.3
@@ -6717,7 +6773,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ffjavascript@npm:^0.2.38, ffjavascript@npm:^0.2.48":
+"ffjavascript@npm:^0.2.38, ffjavascript@npm:^0.2.48, ffjavascript@npm:^0.2.54":
   version: 0.2.55
   resolution: "ffjavascript@npm:0.2.55"
   dependencies:
@@ -13043,19 +13099,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semaphore-async-await@npm:^1.5.1":
-  version: 1.5.1
-  resolution: "semaphore-async-await@npm:1.5.1"
-  checksum: 2dedf7c59ba5f2da860fed95a81017189de6257cbe06c9de0ff2e610a3ae427e9bde1ab7685a62b03ebc28982dee437110492215d75fd6dc8257ce7a38e66b74
-  languageName: node
-  linkType: hard
-
-"semaphore@>=1.0.1, semaphore@workspace:.":
+"semaphore-anchor@workspace:.":
   version: 0.0.0-use.local
-  resolution: "semaphore@workspace:."
+  resolution: "semaphore-anchor@workspace:."
   dependencies:
     "@commitlint/cli": ^16.1.0
     "@commitlint/config-conventional": ^16.0.0
+    "@ethersproject/abi": ^5.6.4
+    "@ethersproject/bytes": ^5.6.1
+    "@ethersproject/providers": ^5.6.8
     "@nomiclabs/hardhat-ethers": ^2.0.6
     "@nomiclabs/hardhat-waffle": ^2.0.3
     "@openzeppelin/contracts": ^4.4.2
@@ -13090,6 +13142,9 @@ __metadata:
     prettier: ^2.5.1
     prettier-plugin-solidity: ^1.0.0-beta.19
     rimraf: ^3.0.2
+    rollup: ^2.77.2
+    rollup-plugin-cleanup: ^3.2.1
+    rollup-plugin-typescript2: ^0.31.2
     snarkjs: ^0.4.13
     solhint: ^3.3.6
     solhint-plugin-prettier: ^0.0.5
@@ -13100,7 +13155,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"semaphore@npm:^1.0.3, semaphore@npm:^1.1.0":
+"semaphore-async-await@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "semaphore-async-await@npm:1.5.1"
+  checksum: 2dedf7c59ba5f2da860fed95a81017189de6257cbe06c9de0ff2e610a3ae427e9bde1ab7685a62b03ebc28982dee437110492215d75fd6dc8257ce7a38e66b74
+  languageName: node
+  linkType: hard
+
+"semaphore@npm:>=1.0.1, semaphore@npm:^1.0.3, semaphore@npm:^1.1.0":
   version: 1.1.0
   resolution: "semaphore@npm:1.1.0"
   checksum: d2445d232ad9959048d4748ef54eb01bc7b60436be2b42fb7de20c4cffacf70eafeeecd3772c1baf408cfdce3805fa6618a4389590335671f18cde54ef3cfae4
@@ -14884,6 +14946,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^4.7.4":
+  version: 4.7.4
+  resolution: "typescript@npm:4.7.4"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 5750181b1cd7e6482c4195825547e70f944114fb47e58e4aa7553e62f11b3f3173766aef9c281783edfd881f7b8299cf35e3ca8caebe73d8464528c907a164df
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>":
   version: 4.7.3
   resolution: "typescript@patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"
@@ -14891,6 +14963,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 137d18a77f52254a284960b16ab53d0619f57b69b5d585804b8413f798a1175ce3e774fb95e6a101868577aafe357d8fcfc9171f0dc9fc0c210e9ae59d107cc0
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>":
+  version: 4.7.4
+  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=7ad353"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 9096d8f6c16cb80ef3bf96fcbbd055bf1c4a43bd14f3b7be45a9fbe7ada46ec977f604d5feed3263b4f2aa7d4c7477ce5f9cd87de0d6feedec69a983f3a4f93e
   languageName: node
   linkType: hard
 
