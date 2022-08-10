@@ -75,7 +75,7 @@ library LinkableIncrementalBinaryTree {
     /// @dev Inserts a leaf in the tree.
     /// @param self: Tree data.
     /// @param leaf: Leaf to be inserted.
-    function insert(LinkableIncrementalTreeData storage self, uint256 leaf) public {
+    function insert(LinkableIncrementalTreeData storage self, uint256 leaf) internal {
         require(leaf < SNARK_SCALAR_FIELD, "LinkableIncrementalBinaryTree: leaf must be < SNARK_SCALAR_FIELD");
         require(self.numberOfLeaves < 2**self.depth, "LinkableIncrementalBinaryTree: tree is full");
 
@@ -109,7 +109,7 @@ library LinkableIncrementalBinaryTree {
         uint256 leaf,
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
-    ) public {
+    ) internal {
         require(
             verify(self, leaf, proofSiblings, proofPathIndices),
             "LinkableIncrementalBinaryTree: leaf is not part of the tree"

@@ -16,8 +16,8 @@ describe("Semaphore", () => {
     let accounts: string[]
 
     const treeDepth = Number(process.env.TREE_DEPTH) | 20;
+    const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2;
     const groupId = 1
-    const circuitLength = 2;
     const maxEdges = 1;
     const chainID = 1099511629113;
     const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")

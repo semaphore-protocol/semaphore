@@ -18,11 +18,7 @@ task("deploy:semaphore-whistleblowing", "Deploy a SemaphoreWhistleblowing contra
 
         logs && console.log(`Poseidon library has been deployed to: ${poseidonLib.address}`)
 
-        const LinkableIncrementalBinaryTreeLibFactory = await ethers.getContractFactory("LinkableIncrementalBinaryTree", {
-            libraries: {
-                PoseidonT3: poseidonLib.address
-            }
-        })
+        const LinkableIncrementalBinaryTreeLibFactory = await ethers.getContractFactory("LinkableIncrementalBinaryTree", {})
         const linkableIncrementalBinaryTreeLib = await LinkableIncrementalBinaryTreeLibFactory.deploy()
 
         await linkableIncrementalBinaryTreeLib.deployed()
@@ -39,7 +35,8 @@ task("deploy:semaphore-whistleblowing", "Deploy a SemaphoreWhistleblowing contra
         const ContractFactory = await ethers.getContractFactory("SemaphoreWhistleblowing", {
             libraries: {
                 SemaphoreInputEncoder: semaphoreInputEncoderLib.address,
-                LinkableIncrementalBinaryTree: linkableIncrementalBinaryTreeLib.address
+                LinkableIncrementalBinaryTree: linkableIncrementalBinaryTreeLib.address,
+                PoseidonT3: poseidonLib.address
             }
         })
 

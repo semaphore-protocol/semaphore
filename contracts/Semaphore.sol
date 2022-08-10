@@ -2,10 +2,10 @@
 pragma solidity ^0.8.4;
 
 import "./interfaces/ISemaphore.sol";
-// import "./interfaces/IVerifier.sol";
 import "./verifiers/SemaphoreVerifier.sol";
 import "./base/SemaphoreCore.sol";
 import "./base/SemaphoreGroups.sol";
+import {PoseidonT3} from "@zk-kit/incremental-merkle-tree.sol/Hashes.sol";
 
 /// @title Semaphore
 contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
@@ -101,7 +101,6 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
         SemaphoreVerifier verifier = verifiers[depth];
 
-        // _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, 1);
         _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges, root);
 
         _saveNullifierHash(nullifierHash);

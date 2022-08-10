@@ -2,7 +2,6 @@
 pragma solidity ^0.8.4;
 
 import "../interfaces/ISemaphoreCore.sol";
-// import "../interfaces/IVerifier.sol";
 import "../verifiers/SemaphoreVerifier.sol";
 import "./SemaphoreInputEncoder.sol";
 
