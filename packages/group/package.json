@@ -1,8 +1,9 @@
 {
-    "name": "@semaphore-protocol/group",
-    "version": "2.0.0",
-    "description": "A library to create and manage Semaphore groups.",
-    "license": "MIT",
+    "name": "@semaphore-anchor/group",
+    "version": "0.0.1",
+    "license": "GPL-3.0-or-later",
+    "author": "Webb Developers <drew@webb.tools>",
+    "description": "A library to create and manage Semaphore-anchor groups.",
     "main": "dist/index.node.js",
     "exports": {
         "import": "./dist/index.mjs",
@@ -27,12 +28,16 @@
         "access": "public"
     },
     "devDependencies": {
+        "ethers": "^5.6.8",
         "rollup-plugin-cleanup": "^3.2.1",
         "rollup-plugin-typescript2": "^0.31.2",
-        "typedoc": "^0.22.11"
+        "typechain": "^8.0.0",
+        "typedoc": "^0.22.11",
+        "typescript": "^4.7.4"
     },
     "dependencies": {
         "@zk-kit/incremental-merkle-tree": "0.4.3",
-        "circomlibjs": "0.0.8"
+        "circomlibjs": "0.0.8",
+        "rollup": "^2.77.2"
     }
 }

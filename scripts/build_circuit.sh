@@ -44,6 +44,7 @@ move_verifiers_and_metadata () {
     # mkdir -p contracts/verifiers/depth20
     cp "$indir/verifier.sol" contracts/verifiers/Verifier"$depth"\_"$length".sol
     cp "$indir/circuit_final.zkey" "$fixturesDir"/"$depth"/"$length"/circuit_final.zkey
+    cp "$indir/verification_key.json" "$fixturesDir"/"$depth"/"$length"/verification_key.json
     cp "$indir"/semaphore_"$depth"_"$length".r1cs "$fixturesDir"/"$depth"/"$length"/semaphore_"$depth"_"$length".r1cs
     cp "$indir"/semaphore_"$depth"_"$length".sym "$fixturesDir"/"$depth"/"$length"/semaphore_"$depth"_"$length".sym
     cp "$indir"/semaphore_"$depth"_"$length"_js/semaphore_"$depth"_"$length".wasm "$fixturesDir"/"$depth"/"$length"/semaphore_"$depth"_"$length".wasm
@@ -62,7 +63,7 @@ generate_phase_2 ./artifacts/circuits/20/2 semaphore_20_2
 generate_phase_2 ./artifacts/circuits/20/7 semaphore_20_7
 generate_phase_2 ./artifacts/circuits/19/2 semaphore_19_2
 generate_phase_2 ./artifacts/circuits/19/7 semaphore_19_7
-#
+
 move_verifiers_and_metadata ./artifacts/circuits/20/2 20 2
 move_verifiers_and_metadata ./artifacts/circuits/20/7 20 7
 move_verifiers_and_metadata ./artifacts/circuits/19/2 19 2

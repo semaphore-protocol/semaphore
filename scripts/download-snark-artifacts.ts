@@ -26,6 +26,7 @@ async function main() {
         // await download(`https://semaphore-fixtures.s3.amazonaws.com/20/2/semaphore_20_2.wasm`)
         await download(`${url}/semaphore_${treeDepth}_${circuitLength}.wasm`, snarkArtifactsPath)
         await download(`${url}/circuit_final.zkey`, snarkArtifactsPath)
+        await download(`${url}/verification_key.json`, snarkArtifactsPath)
     }
 }
 
