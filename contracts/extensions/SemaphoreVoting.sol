@@ -9,7 +9,7 @@ import "../base/SemaphoreGroups.sol";
 /// @dev The following code allows you to create polls, add voters and allow them to vote anonymously.
 contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a tree depth and returns its verifier address.
-    mapping(uint8 => IVerifier) internal verifiers;
+    mapping(uint8 => SemaphoreVerifier) internal verifiers;
 
     /// @dev Gets a poll id and returns the poll data.
     mapping(uint256 => Poll) internal polls;
@@ -27,7 +27,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         );
 
         for (uint8 i = 0; i < depths.length; i++) {
-            verifiers[depths[i]] = IVerifier(verifierAddresses[i]);
+            verifiers[depths[i]] = SemaphoreVerifier(verifierAddresses[i]);
         }
     }
 
@@ -41,16 +41,19 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     /// @dev See {ISemaphoreVoting-createPoll}.
     function createPoll(
         uint256 pollId,
+        uint8 depth,
+        uint256 zeroValue,
         address coordinator,
-        uint8 depth
+        uint8 maxEdges
     ) public override {
         require(address(verifiers[depth]) != address(0), "SemaphoreVoting: depth value is not supported");
 
-        _createGroup(pollId, depth, 0);
+        _createGroup(pollId, depth, zeroValue, maxEdges);
 
         Poll memory poll;
 
         poll.coordinator = coordinator;
+        poll.maxEdges = maxEdges;
 
         polls[pollId] = poll;
 
@@ -78,6 +81,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         bytes32 vote,
         uint256 nullifierHash,
         uint256 pollId,
+        bytes calldata roots,
         uint256[8] calldata proof
     ) public override onlyCoordinator(pollId) {
         Poll memory poll = polls[pollId];
@@ -86,9 +90,12 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
         uint8 depth = getDepth(pollId);
         uint256 root = getRoot(pollId);
-        IVerifier verifier = verifiers[depth];
+        uint8 maxEdges = getMaxEdges(pollId);
+        SemaphoreVerifier verifier = verifiers[depth];
 
-        _verifyProof(vote, root, nullifierHash, pollId, proof, verifier);
+        // require(contract_root == root, "merkle root supplied does not match current contract root");
+        // _verifyProof(vote, root, nullifierHash, pollId, proof, verifier);
+        _verifyProof(vote, nullifierHash, pollId, roots, proof, verifier, maxEdges, root);
 
         // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).
         _saveNullifierHash(nullifierHash);

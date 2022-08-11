@@ -13,6 +13,7 @@ interface ISemaphoreVoting {
     struct Poll {
         address coordinator;
         PollState state;
+        uint8 maxEdges;
     }
 
     /// @dev Emitted when a new poll is created.
@@ -43,8 +44,10 @@ interface ISemaphoreVoting {
     /// @param depth: Depth of the tree.
     function createPoll(
         uint256 pollId,
+        uint8 depth,
+        uint256 zeroValue,
         address coordinator,
-        uint8 depth
+        uint8 maxEdges
     ) external;
 
     /// @dev Adds a voter to a poll.
@@ -66,6 +69,7 @@ interface ISemaphoreVoting {
         bytes32 vote,
         uint256 nullifierHash,
         uint256 pollId,
+        bytes calldata roots,
         uint256[8] calldata proof
     ) external;
 

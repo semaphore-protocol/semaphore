@@ -5,14 +5,19 @@ pragma solidity ^0.8.4;
 /// @dev Interface of SemaphoreWhistleblowing contract.
 interface ISemaphoreWhistleblowing {
     /// @dev Emitted when a new entity is created.
-    /// @param entityId: Id of the entity.
+    /// @param entity: entity.
     /// @param editor: Editor of the entity.
-    event EntityCreated(uint256 entityId, address indexed editor);
+    event EntityCreated(Entity entity, address indexed editor);
 
     /// @dev Emitted when a whistleblower publish a new leak.
     /// @param entityId: Id of the entity.
     /// @param leak: News leak.
     event LeakPublished(uint256 indexed entityId, bytes32 leak);
+
+    struct Entity {
+        uint256 id;
+        uint8 maxEdges;
+    }
 
     /// @dev Creates an entity and the associated Merkle tree/group.
     /// @param entityId: Id of the entity.
@@ -20,8 +25,10 @@ interface ISemaphoreWhistleblowing {
     /// @param depth: Depth of the tree.
     function createEntity(
         uint256 entityId,
+        uint8 depth,
+        uint256 zeroValue,
         address editor,
-        uint8 depth
+        uint8 maxEdges
     ) external;
 
     /// @dev Adds a whistleblower to an entity.
@@ -50,6 +57,7 @@ interface ISemaphoreWhistleblowing {
         bytes32 leak,
         uint256 nullifierHash,
         uint256 entityId,
+        bytes calldata roots,
         uint256[8] calldata proof
     ) external;
 }

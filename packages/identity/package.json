@@ -1,0 +1,45 @@
+{
+    "name": "@semaphore-anchor/identity",
+    "version": "0.0.1",
+    "description": "A library to create Semaphore-anchor identities.",
+    "license": "GPL-3.0-or-later",
+    "author": "Webb Developers <drew@webb.tools>",
+    "main": "dist/index.node.js",
+    "exports": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.node.js"
+    },
+    "types": "dist/types/index.d.ts",
+    "files": [
+        "dist/",
+        "src/",
+        "LICENSE",
+        "README.md"
+    ],
+    "repository": "https://github.com/webb-tools/semaphore-anchor.git",
+    "homepage": "https://github.com/webb-tools/semaphore-anchor.git/tree/main/packages/proof",
+    "scripts": {
+        "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
+        "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
+        "prepublishOnly": "yarn build",
+        "docs": "typedoc src/index.ts --out ../../docs/identity"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "ethers": "^5.6.8",
+        "rollup-plugin-cleanup": "^3.2.1",
+        "rollup-plugin-typescript2": "^0.31.2",
+        "typedoc": "^0.22.11"
+    },
+    "dependencies": {
+        "@ethersproject/bignumber": "^5.5.0",
+        "@ethersproject/random": "^5.5.1",
+        "@ethersproject/sha2": "^5.6.1",
+        "@ethersproject/strings": "^5.6.1",
+        "circomlibjs": "0.0.8",
+        "rollup": "^2.77.2",
+        "typescript": "^4.7.4"
+    }
+}

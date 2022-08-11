@@ -11,10 +11,10 @@ import "../base/SemaphoreGroups.sol";
 /// Leaks can be IPFS hashes, permanent links or other kinds of reference.
 contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a tree depth and returns its verifier address.
-    mapping(uint8 => IVerifier) internal verifiers;
+    mapping(uint8 => SemaphoreVerifier) internal verifiers;
 
     /// @dev Gets an editor address and return their entity.
-    mapping(address => uint256) private entities;
+    mapping(address => Entity) private entities;
 
     /// @dev Since there can be multiple verifier contracts (each associated with a certain tree depth),
     /// it is necessary to pass the addresses of the previously deployed contracts with the associated
@@ -29,30 +29,36 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         );
 
         for (uint8 i = 0; i < depths.length; i++) {
-            verifiers[depths[i]] = IVerifier(verifierAddresses[i]);
+            verifiers[depths[i]] = SemaphoreVerifier(verifierAddresses[i]);
         }
     }
 
     /// @dev Checks if the editor is the transaction sender.
     /// @param entityId: Id of the entity.
     modifier onlyEditor(uint256 entityId) {
-        require(entityId == entities[_msgSender()], "SemaphoreWhistleblowing: caller is not the editor");
+        require(entityId == entities[_msgSender()].id, "SemaphoreWhistleblowing: caller is not the editor");
         _;
     }
 
     /// @dev See {ISemaphoreWhistleblowing-createEntity}.
     function createEntity(
         uint256 entityId,
+        uint8 depth,
+        uint256 zeroValue,
         address editor,
-        uint8 depth
+        uint8 maxEdges
     ) public override {
         require(address(verifiers[depth]) != address(0), "SemaphoreWhistleblowing: depth value is not supported");
 
-        _createGroup(entityId, depth, 0);
+        _createGroup(entityId, depth, zeroValue, maxEdges);
+        Entity memory entity;
 
-        entities[editor] = entityId;
+        entity.id = entityId;
+        entity.maxEdges = maxEdges;
 
-        emit EntityCreated(entityId, editor);
+        entities[editor] = entity;
+
+        emit EntityCreated(entity, editor);
     }
 
     /// @dev See {ISemaphoreWhistleblowing-addWhistleblower}.
@@ -75,13 +81,15 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         bytes32 leak,
         uint256 nullifierHash,
         uint256 entityId,
+        bytes calldata roots,
         uint256[8] calldata proof
     ) public override onlyEditor(entityId) {
-        uint8 depth = getDepth(entityId);
         uint256 root = getRoot(entityId);
-        IVerifier verifier = verifiers[depth];
+        uint8 depth = getDepth(entityId);
+        uint8 maxEdges = getMaxEdges(entityId);
+        SemaphoreVerifier verifier = verifiers[depth];
 
-        _verifyProof(leak, root, nullifierHash, entityId, proof, verifier);
+        _verifyProof(leak, nullifierHash, entityId, roots, proof, verifier, maxEdges, root);
 
         emit LeakPublished(entityId, leak);
     }

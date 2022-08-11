@@ -18,20 +18,31 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
 
         logs && console.log(`Poseidon library has been deployed to: ${poseidonLib.address}`)
 
-        const IncrementalBinaryTreeLibFactory = await ethers.getContractFactory("IncrementalBinaryTree", {
-            libraries: {
-                PoseidonT3: poseidonLib.address
-            }
-        })
-        const incrementalBinaryTreeLib = await IncrementalBinaryTreeLibFactory.deploy()
+        const LinkableIncrementalBinaryTreeLibFactory = await ethers.getContractFactory(
+            "LinkableIncrementalBinaryTree",
+            {}
+        )
+        const linkableIncrementalBinaryTreeLib = await LinkableIncrementalBinaryTreeLibFactory.deploy()
 
-        await incrementalBinaryTreeLib.deployed()
+        await linkableIncrementalBinaryTreeLib.deployed()
 
-        logs && console.log(`IncrementalBinaryTree library has been deployed to: ${incrementalBinaryTreeLib.address}`)
+        logs &&
+            console.log(
+                `LinkableIncrementalBinaryTree library has been deployed to: ${linkableIncrementalBinaryTreeLib.address}`
+            )
+
+        const SemaphoreInputEncoderLibFactory = await ethers.getContractFactory("SemaphoreInputEncoder")
+        const semaphoreInputEncoderLib = await SemaphoreInputEncoderLibFactory.deploy()
+
+        await semaphoreInputEncoderLib.deployed()
+
+        logs && console.log(`SemaphoreInputEncoder library has been deployed to: ${semaphoreInputEncoderLib.address}`)
 
         const ContractFactory = await ethers.getContractFactory("Semaphore", {
             libraries: {
-                IncrementalBinaryTree: incrementalBinaryTreeLib.address
+                SemaphoreInputEncoder: semaphoreInputEncoderLib.address,
+                LinkableIncrementalBinaryTree: linkableIncrementalBinaryTreeLib.address,
+                PoseidonT3: poseidonLib.address
             }
         })
 
