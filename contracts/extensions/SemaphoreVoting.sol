@@ -26,7 +26,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
             "SemaphoreVoting: parameters lists does not have the same length"
         );
 
-        for (uint8 i = 0; i < depths.length; i++) {
+        for (uint8 i = 0; i < depths.length; ++i) {
             verifiers[depths[i]] = IVerifier(verifierAddresses[i]);
         }
     }
@@ -34,7 +34,10 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     /// @dev Checks if the poll coordinator is the transaction sender.
     /// @param pollId: Id of the poll.
     modifier onlyCoordinator(uint256 pollId) {
-        require(polls[pollId].coordinator == _msgSender(), "SemaphoreVoting: caller is not the poll coordinator");
+        require(
+            polls[pollId].coordinator == _msgSender(),
+            "SemaphoreVoting: caller is not the poll coordinator"
+        );
         _;
     }
 
@@ -44,7 +47,10 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         address coordinator,
         uint8 depth
     ) public override {
-        require(address(verifiers[depth]) != address(0), "SemaphoreVoting: depth value is not supported");
+        require(
+            address(verifiers[depth]) != address(0),
+            "SemaphoreVoting: depth value is not supported"
+        );
 
         _createGroup(pollId, depth, 0);
 
@@ -58,15 +64,29 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreVoting-addVoter}.
-    function addVoter(uint256 pollId, uint256 identityCommitment) public override onlyCoordinator(pollId) {
-        require(polls[pollId].state == PollState.Created, "SemaphoreVoting: voters can only be added before voting");
+    function addVoter(uint256 pollId, uint256 identityCommitment)
+        public
+        override
+        onlyCoordinator(pollId)
+    {
+        require(
+            polls[pollId].state == PollState.Created,
+            "SemaphoreVoting: voters can only be added before voting"
+        );
 
         _addMember(pollId, identityCommitment);
     }
 
     /// @dev See {ISemaphoreVoting-addVoter}.
-    function startPoll(uint256 pollId, uint256 encryptionKey) public override onlyCoordinator(pollId) {
-        require(polls[pollId].state == PollState.Created, "SemaphoreVoting: poll has already been started");
+    function startPoll(uint256 pollId, uint256 encryptionKey)
+        public
+        override
+        onlyCoordinator(pollId)
+    {
+        require(
+            polls[pollId].state == PollState.Created,
+            "SemaphoreVoting: poll has already been started"
+        );
 
         polls[pollId].state = PollState.Ongoing;
 
@@ -82,7 +102,10 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     ) public override onlyCoordinator(pollId) {
         Poll memory poll = polls[pollId];
 
-        require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
+        require(
+            poll.state == PollState.Ongoing,
+            "SemaphoreVoting: vote can only be cast in an ongoing poll"
+        );
 
         uint8 depth = getDepth(pollId);
         uint256 root = getRoot(pollId);
@@ -97,8 +120,15 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreVoting-publishDecryptionKey}.
-    function endPoll(uint256 pollId, uint256 decryptionKey) public override onlyCoordinator(pollId) {
-        require(polls[pollId].state == PollState.Ongoing, "SemaphoreVoting: poll is not ongoing");
+    function endPoll(uint256 pollId, uint256 decryptionKey)
+        public
+        override
+        onlyCoordinator(pollId)
+    {
+        require(
+            polls[pollId].state == PollState.Ongoing,
+            "SemaphoreVoting: poll is not ongoing"
+        );
 
         polls[pollId].state = PollState.Ended;
 
