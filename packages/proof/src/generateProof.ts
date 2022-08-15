@@ -1,4 +1,6 @@
-import { Group } from "@semaphore-protocol/group"
+// import { Group } from "@semaphore/group"
+import Group from "../../group/src/group"
+// import { Group } from "@semaphore-protocol/group"
 // import type { Identity } from "@semaphore-protocol/identity"
 import Identity from "../../identity/src/identity"
 import { MerkleProof } from "@zk-kit/incremental-merkle-tree"

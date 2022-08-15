@@ -19,14 +19,14 @@ describe("Semaphore", () => {
 
     const treeDepth = Number(process.env.TREE_DEPTH) | 20
     const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
-    const groupId = 2
+    const groupId = 21
     const maxEdges = 1
     const chainIDA = 1338
     const chainIDB = 1339
     let providerA = new providers.JsonRpcProvider("http://127.0.0.1:8545");
     let providerB = new providers.JsonRpcProvider("http://127.0.0.1:8546");
-    const idsA = createIdentities(chainIDA, 3)
-    const idsB = createIdentities(chainIDB, 3)
+    const idsA = createIdentities(chainIDA, 5)
+    const idsB = createIdentities(chainIDB, 5)
     const membersA = idsA.members
     const identitiesA = idsA.identities
     const membersB = idsB.members
@@ -65,110 +65,87 @@ describe("Semaphore", () => {
         expect(rootB).to.equal("8055374341341620501424923482910636721817757020788836089492629714380498049891")
     })
 
-    describe("# createGroup", () => {
-        // it("Should create one group in each chain", async () => {
-        //     const transactionA = contractA.connect(signersA[1]).createGroup(groupId, treeDepth, 0, accounts[1], maxEdges)
-        //     await expect(transactionA).to.emit(contractA, "GroupCreated").withArgs(groupId, treeDepth, 0)
-        //     await expect(transactionA)
-        //         .to.emit(contractA, "GroupAdminUpdated")
-        //         .withArgs(groupId, constants.AddressZero, accounts[1])
-        //     const rootA = await contractA.getRoot(groupId)
-        //     expect(rootA).to.equal("8055374341341620501424923482910636721817757020788836089492629714380498049891")
-        //
-        //     const transactionB = contractB.connect(signersB[1]).createGroup(groupId, treeDepth, 0, accounts[1], maxEdges)
-        //     await expect(transactionB).to.emit(contractB, "GroupCreated").withArgs(groupId, treeDepth, 0)
-        //     await expect(transactionB)
-        //         .to.emit(contractB, "GroupAdminUpdated")
-        //         .withArgs(groupId, constants.AddressZero, accounts[1])
-        //     const rootB = await contractB.getRoot(groupId)
-        //     expect(rootB).to.equal("8055374341341620501424923482910636721817757020788836089492629714380498049891")
-        // })
+    describe("# CrossChainVerify", () => {
+        const signal = "Hello world"
+        const bytes32Signal = utils.formatBytes32String(signal)
+        const groupId2 = 1337
 
+        let fullProof_chainA: FullProof
+        let solidityProof_chainA: SolidityProof
+        let roots_chainA: string[]
+
+        before(async () => {
+            const tx1a = contractA.connect(signersA[1]).addMember(groupId, membersA[0])
+            const groupA = new Group(treeDepth, BigInt(zeroValue))
+            groupA.addMember(membersA[0])
+
+            await expect(tx1a).to.emit(contractA, "MemberAdded").withArgs(
+                groupId,
+                membersA[0],
+                groupA.root
+            )
+            groupA.addMember(membersA[1])
+            const tx2a = contractA.connect(signersA[1]).addMember(groupId, membersA[1])
+            await expect(tx2a).to.emit(contractA, "MemberAdded").withArgs(
+                groupId,
+                membersA[1],
+                groupA.root
+            )
+            //
+            groupA.addMember(membersA[2])
+            const tx3a = contractA.connect(signersA[1]).addMember(groupId, membersA[2])
+            await expect(tx3a).to.emit(contractA, "MemberAdded").withArgs(
+                groupId,
+                membersA[2],
+                groupA.root
+            )
+
+            const tx1b = contractB.connect(signersB[1]).addMember(groupId, membersB[0])
+            const groupB = new Group(treeDepth, BigInt(zeroValue))
+            groupB.addMember(membersB[0])
+
+            await expect(tx1b).to.emit(contractB, "MemberAdded").withArgs(
+                groupId,
+                membersB[0],
+                groupB.root
+            )
+            groupB.addMember(membersB[1])
+            const tx2b = contractB.connect(signersB[1]).addMember(groupId, membersB[1])
+            await expect(tx2b).to.emit(contractB, "MemberAdded").withArgs(
+                groupId,
+                membersB[1],
+                groupB.root
+            )
+            //
+            groupB.addMember(membersB[2])
+            const tx3b = contractB.connect(signersB[1]).addMember(groupId, membersB[2])
+            await expect(tx3b).to.emit(contractB, "MemberAdded").withArgs(
+                groupId,
+                membersB[2],
+                groupB.root
+            )
+            const rootA = await contractA.getRoot(groupId)
+            const rootB = await contractB.getRoot(groupId)
+            roots_chainA = [rootA.toHexString(), rootB.toHexString()]
+
+            fullProof_chainA = await generateProof(identitiesA[0], groupA, groupA.root, signal, {
+                wasmFilePath,
+                zkeyFilePath
+            })
+            solidityProof_chainA = packToSolidityProof(fullProof_chainA.proof)
+        })
+
+        it("Should not verify if updateEdges has not been called", async () => {
+            const transaction = contractB.verifyProof(
+                groupId2,
+                bytes32Signal,
+                fullProof_chainA.publicSignals.nullifierHash,
+                fullProof_chainA.publicSignals.externalNullifier,
+                createRootsBytes(roots_chainA),
+                solidityProof_chainA
+            )
+            await expect(transaction).to.be.revertedWith("InvalidProof()")
+
+        })
     })
-    it("Should add a new member in an existing group", async () => {
-        // const groupId2 = groupId * 500
-        // const transactionA = contractA.connect(signersA[1]).createGroup(groupId, treeDepth, 0, accounts[1], maxEdges)
-        // await expect(transactionA).to.emit(contractA, "GroupCreated").withArgs(groupId, treeDepth, 0)
-        // await expect(transactionA)
-        //     .to.emit(contractA, "GroupAdminUpdated")
-        //     .withArgs(groupId, constants.AddressZero, accounts[1])
-        // const rootA = await contractA.getRoot(groupId)
-        // expect(rootA).to.equal("8055374341341620501424923482910636721817757020788836089492629714380498049891")
-
-        const transactionA = contractA.connect(signersA[1]).addMember(groupId, membersA[0])
-
-        const groupA = new Group(treeDepth, BigInt(zeroValue))
-        groupA.addMember(membersA[0])
-            
-        const receipt_txA = await transactionA
-        console.log(receipt_txA)
-        const receiptA = await receipt_txA.wait()
-        console.log(receiptA)
-
-        await expect(transactionA).to.emit(contractA, "MemberAdded").withArgs(
-            groupId,
-            membersA[0],
-            groupA.root
-        )
-
-        const transactionB = contractB.connect(signersB[1]).addMember(groupId, membersB[0])
-
-        const groupB = new Group(treeDepth, BigInt(zeroValue))
-        groupB.addMember(membersB[0])
-
-        const receipt_txB = await transactionB
-        console.log(receipt_txB)
-        const receiptB = await receipt_txB.wait()
-        console.log(receiptB)
-
-        await expect(transactionB).to.emit(contractB, "MemberAdded").withArgs(
-            groupId,
-            membersB[0],
-            groupB.root
-        )
-    })
-
-    it("Should add multiple members", async () => {
-        // const groupId2 = groupId * 500
-        // const transactionA = contractA.connect(signersA[1]).createGroup(groupId, treeDepth, 0, accounts[1], maxEdges)
-        // await expect(transactionA).to.emit(contractA, "GroupCreated").withArgs(groupId, treeDepth, 0)
-        // await expect(transactionA)
-        //     .to.emit(contractA, "GroupAdminUpdated")
-        //     .withArgs(groupId, constants.AddressZero, accounts[1])
-        // const rootA = await contractA.getRoot(groupId)
-        // expect(rootA).to.equal("8055374341341620501424923482910636721817757020788836089492629714380498049891")
-
-        const transactionA = contractA.connect(signersA[1]).addMember(groupId, membersA[0])
-
-        const groupA = new Group(treeDepth, BigInt(zeroValue))
-        groupA.addMember(membersA[0])
-            
-        const receipt_txA = await transactionA
-        console.log(receipt_txA)
-        const receiptA = await receipt_txA.wait()
-        console.log(receiptA)
-
-        await expect(transactionA).to.emit(contractA, "MemberAdded").withArgs(
-            groupId,
-            membersA[0],
-            groupA.root
-        )
-
-        const transactionB = contractB.connect(signersB[1]).addMember(groupId, membersB[0])
-
-        const groupB = new Group(treeDepth, BigInt(zeroValue))
-        groupB.addMember(membersB[0])
-
-        const receipt_txB = await transactionB
-        console.log(receipt_txB)
-        const receiptB = await receipt_txB.wait()
-        console.log(receiptB)
-
-        await expect(transactionB).to.emit(contractB, "MemberAdded").withArgs(
-            groupId,
-            membersB[0],
-            groupB.root
-        )
-    })
-
 })
