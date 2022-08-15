@@ -82,4 +82,19 @@ interface ISemaphore {
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
     ) external;
+
+    /**
+		@notice Add an edge to the tree or update an existing edge.
+		@param groupId The groupID of the LinkableTree
+		@param sourceChainID The chainID of the edge's LinkableTree
+		@param root The merkle root of the edge's merkle tree
+		@param leafIndex The latest leaf insertion index of the edge's merkle tree
+	 */
+    function updateEdge(
+        uint256 groupId,
+        uint256 sourceChainID,
+        bytes32 root,
+        uint256 leafIndex,
+        bytes32 target
+    ) external;
 }

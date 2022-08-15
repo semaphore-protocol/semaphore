@@ -66,6 +66,22 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         emit GroupAdminUpdated(groupId, _msgSender(), newAdmin);
     }
 
+    /**
+		@notice Add an edge to the tree or update an existing edge.
+		@param groupId The groupID of the LinkableTree
+		@param sourceChainID The chainID of the edge's LinkableTree
+		@param root The merkle root of the edge's merkle tree
+		@param leafIndex The latest leaf insertion index of the edge's merkle tree
+	 */
+    function updateEdge(
+        uint256 groupId,
+        uint256 sourceChainID,
+        bytes32 root,
+        uint256 leafIndex,
+        bytes32 target
+    ) external override onlyGroupAdmin(groupId) {
+        _updateEdge(groupId, sourceChainID, root, leafIndex, target);
+    }
     /// @dev See {ISemaphore-addMember}.
     function addMember(uint256 groupId, uint256 identityCommitment) external override onlyGroupAdmin(groupId) {
         _addMember(groupId, identityCommitment);
