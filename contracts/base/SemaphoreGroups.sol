@@ -91,6 +91,17 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     ) internal {
         groups[_groupId].updateEdge(_sourceChainID, _root, _leafIndex, _target);
     }
+
+    function _verifyRoots(uint256 groupId, bytes32[] memory roots) internal {
+        if (!groups[groupId].isValidRoots(roots)) {
+            revert Semaphore__InvalidCurrentChainRoot();
+        }
+    }
+        // TODO: Add if conditions correctly for diff maxEdges
+    //     if (getMaxEdges(groupId) == 1) {
+    // 
+    //     }
+
     /// @dev See {ISemaphoreGroups-getRoot}.
     function getRoot(uint256 groupId) public view virtual override returns (uint256) {
         return uint256(groups[groupId].getLastRoot());

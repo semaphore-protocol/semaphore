@@ -19,7 +19,7 @@ describe("Semaphore", () => {
 
     const treeDepth = Number(process.env.TREE_DEPTH) | 20
     const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
-    const groupId = 21
+    const groupId = 1
     const maxEdges = 1
     const chainIDA = 1338
     const chainIDB = 1339
@@ -68,7 +68,6 @@ describe("Semaphore", () => {
     describe("# CrossChainVerify", () => {
         const signal = "Hello world"
         const bytes32Signal = utils.formatBytes32String(signal)
-        const groupId2 = 1337
 
         let fullProof_chainA: FullProof
         let solidityProof_chainA: SolidityProof
@@ -137,7 +136,32 @@ describe("Semaphore", () => {
 
         it("Should not verify if updateEdges has not been called", async () => {
             const transaction = contractB.verifyProof(
-                groupId2,
+                groupId,
+                bytes32Signal,
+                fullProof_chainA.publicSignals.nullifierHash,
+                fullProof_chainA.publicSignals.externalNullifier,
+                createRootsBytes(roots_chainA),
+                solidityProof_chainA
+            )
+            await expect(transaction).to.be.revertedWith("Semaphore__InvalidCurrentChainRoot()")
+        })
+
+        it("Should verify", async () => {
+            const tx_update = contractB.updateEdge(
+                groupId,
+                chainIDA,
+                roots_chainA[0],
+                2,
+                toFixedHex(BigInt(0), 32)
+            )
+            console.log(tx_update)
+            const receipt_tx_update = await tx_update;
+            console.log(receipt_tx_update)
+            const receipt_update = await receipt_tx_update.wait();
+            console.log(receipt_update)
+
+            const transaction = contractB.verifyProof(
+                groupId,
                 bytes32Signal,
                 fullProof_chainA.publicSignals.nullifierHash,
                 fullProof_chainA.publicSignals.externalNullifier,
@@ -145,7 +169,6 @@ describe("Semaphore", () => {
                 solidityProof_chainA
             )
             await expect(transaction).to.be.revertedWith("InvalidProof()")
-
         })
     })
 })

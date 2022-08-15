@@ -103,6 +103,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
+        // TODO: Create standard encoding for which order each root is supposed to be at.
         bytes calldata roots,
         uint256[8] calldata proof
     ) external override {
@@ -110,10 +111,19 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint256 root = getRoot(groupId);
         uint8 depth = getDepth(groupId);
         uint8 maxEdges = getMaxEdges(groupId);
+        bytes32[] memory roots_decoded;
 
         if (depth == 0) {
             revert Semaphore__GroupDoesNotExist();
         }
+
+        roots_decoded = abi.decode(roots, (bytes32[]));
+         // TODO: add all if conditions correctly
+        // if (maxEdges == 1) {
+        //      roots = abi.decode(roots_bytes, (bytes32[2]));
+        // } 
+
+        _verifyRoots(groupId, roots_decoded);
 
         SemaphoreVerifier verifier = verifiers[depth];
 

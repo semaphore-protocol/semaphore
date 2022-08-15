@@ -7,6 +7,8 @@ interface ISemaphoreGroups {
     error Semaphore__GroupDoesNotExist();
     error Semaphore__GroupAlreadyExists();
     error Semaphore__GroupIdIsNotLessThanSnarkScalarField();
+    error Semaphore__InvalidCurrentChainRoot();
+    error Semaphore__InvalidEdgeChainRoot();
 
     /// @dev Emitted when a new group is created.
     /// @param groupId: Id of the group.
