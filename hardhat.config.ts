@@ -19,7 +19,6 @@ dotenvConfig({ path: resolve(__dirname, "./.env") })
 function getNetworks(): NetworksUserConfig | undefined {
     if (process.env.INFURA_API_KEY && process.env.BACKEND_PRIVATE_KEY) {
         const infuraApiKey = process.env.INFURA_API_KEY
-        const accounts = [`0x${process.env.BACKEND_PRIVATE_KEY}`]
 
         return {
             goerli: {
@@ -41,6 +40,7 @@ function getNetworks(): NetworksUserConfig | undefined {
     }
 }
 
+const accounts = [`0x${process.env.BACKEND_PRIVATE_KEY}`]
 const hardhatConfig: HardhatUserConfig = {
     solidity: config.solidity,
     paths: {
@@ -53,6 +53,16 @@ const hardhatConfig: HardhatUserConfig = {
         hardhat: {
             chainId: 1337,
             allowUnlimitedContractSize: true
+        },
+        chainA: {
+            url: `http://localhost:8545`,
+            chainId: 1338,
+            accounts
+        },
+        chainB: {
+            url: `http://localhost:8546`,
+            chainId: 1339,
+            accounts
         },
         ...getNetworks()
     },
