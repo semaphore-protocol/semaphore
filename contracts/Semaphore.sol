@@ -36,9 +36,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
     constructor(Verifier[] memory _verifiers) {
         for (uint8 i = 0; i < _verifiers.length; ++i) {
-            verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(
-                _verifiers[i].contractAddress
-            );
+            verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(_verifiers[i].contractAddress);
         }
     }
 
@@ -57,22 +55,14 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphore-updateGroupAdmin}.
-    function updateGroupAdmin(uint256 groupId, address newAdmin)
-        external
-        override
-        onlyGroupAdmin(groupId)
-    {
+    function updateGroupAdmin(uint256 groupId, address newAdmin) external override onlyGroupAdmin(groupId) {
         groupAdmins[groupId] = newAdmin;
 
         emit GroupAdminUpdated(groupId, _msgSender(), newAdmin);
     }
 
     /// @dev See {ISemaphore-addMember}.
-    function addMember(uint256 groupId, uint256 identityCommitment)
-        external
-        override
-        onlyGroupAdmin(groupId)
-    {
+    function addMember(uint256 groupId, uint256 identityCommitment) external override onlyGroupAdmin(groupId) {
         _addMember(groupId, identityCommitment);
     }
 
@@ -83,12 +73,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
     ) external override onlyGroupAdmin(groupId) {
-        _removeMember(
-            groupId,
-            identityCommitment,
-            proofSiblings,
-            proofPathIndices
-        );
+        _removeMember(groupId, identityCommitment, proofSiblings, proofPathIndices);
     }
 
     /// @dev See {ISemaphore-verifyProof}.
@@ -108,14 +93,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
         IVerifier verifier = verifiers[depth];
 
-        _verifyProof(
-            signal,
-            root,
-            nullifierHash,
-            externalNullifier,
-            proof,
-            verifier
-        );
+        _verifyProof(signal, root, nullifierHash, externalNullifier, proof, verifier);
 
         _saveNullifierHash(nullifierHash);
 
