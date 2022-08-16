@@ -9,11 +9,7 @@ import "../base/SemaphoreGroups.sol";
 /// @dev The following code allows you to create entities for whistleblowers (e.g. non-profit
 /// organization, newspaper) and to allow them to publish news leaks anonymously.
 /// Leaks can be IPFS hashes, permanent links or other kinds of reference.
-contract SemaphoreWhistleblowing is
-    ISemaphoreWhistleblowing,
-    SemaphoreCore,
-    SemaphoreGroups
-{
+contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a tree depth and returns its verifier address.
     mapping(uint8 => IVerifier) internal verifiers;
 
@@ -40,10 +36,7 @@ contract SemaphoreWhistleblowing is
     /// @dev Checks if the editor is the transaction sender.
     /// @param entityId: Id of the entity.
     modifier onlyEditor(uint256 entityId) {
-        require(
-            entityId == entities[_msgSender()],
-            "SemaphoreWhistleblowing: caller is not the editor"
-        );
+        require(entityId == entities[_msgSender()], "SemaphoreWhistleblowing: caller is not the editor");
         _;
     }
 
@@ -53,10 +46,7 @@ contract SemaphoreWhistleblowing is
         address editor,
         uint8 depth
     ) public override {
-        require(
-            address(verifiers[depth]) != address(0),
-            "SemaphoreWhistleblowing: depth value is not supported"
-        );
+        require(address(verifiers[depth]) != address(0), "SemaphoreWhistleblowing: depth value is not supported");
 
         _createGroup(entityId, depth, 0);
 
@@ -66,11 +56,7 @@ contract SemaphoreWhistleblowing is
     }
 
     /// @dev See {ISemaphoreWhistleblowing-addWhistleblower}.
-    function addWhistleblower(uint256 entityId, uint256 identityCommitment)
-        public
-        override
-        onlyEditor(entityId)
-    {
+    function addWhistleblower(uint256 entityId, uint256 identityCommitment) public override onlyEditor(entityId) {
         _addMember(entityId, identityCommitment);
     }
 
@@ -81,12 +67,7 @@ contract SemaphoreWhistleblowing is
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
     ) public override onlyEditor(entityId) {
-        _removeMember(
-            entityId,
-            identityCommitment,
-            proofSiblings,
-            proofPathIndices
-        );
+        _removeMember(entityId, identityCommitment, proofSiblings, proofPathIndices);
     }
 
     /// @dev See {ISemaphoreWhistleblowing-publishLeak}.
