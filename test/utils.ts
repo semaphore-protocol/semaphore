@@ -3,6 +3,7 @@ import { BigNumber, BigNumberish } from "@ethersproject/bignumber"
 import { randomBytes } from "@ethersproject/random"
 import { sha256 as _sha256 } from "@ethersproject/sha2"
 import { toUtf8Bytes } from "@ethersproject/strings"
+import Web3 from "web3"
 
 export type VerifierContractInfo = {
     name: string
@@ -21,12 +22,21 @@ export function toFixedHex(number: BigNumberish, length = 32): string {
 }
 
 export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
-    let rootsBytes = "0x"
-    for (let i = 0; i < rootArray.length; i++) {
-        rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
-    }
-    return rootsBytes // root byte string (32 * array.length bytes)
+    const web3 = new Web3();
+    return web3.eth.abi.encodeParameters(
+        ['bytes32[]'],
+        [rootArray]
+    ).toString();
 }
+
+// export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
+//     let rootsBytes = "0x"
+//     for (let i = 0; i < rootArray.length; i++) {
+//         rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
+//     }
+//     return rootsBytes // root byte string (32 * array.length bytes)
+// }
+
 export function createIdentities(chainId: number, n: number): { identities: Identity[]; members: bigint[] } {
     const identityCommitments: bigint[] = []
     const identities: Identity[] = []

@@ -21,7 +21,7 @@ describe("Semaphore", () => {
 
     const treeDepth = Number(process.env.TREE_DEPTH) | 20
     const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
-    const groupId = 1
+    const groupId = 5
     const maxEdges = 1
     const chainIDA = 1338
     const chainIDB = 1339
@@ -69,12 +69,19 @@ describe("Semaphore", () => {
         const tx1a = contractA.connect(signersA[1]).addMember(groupId, membersA[0])
         groupA = new Group(treeDepth, BigInt(zeroValue))
         groupA.addMember(membersA[0])
-
         await expect(tx1a).to.emit(contractA, "MemberAdded").withArgs(
             groupId,
             membersA[0],
             groupA.root
         )
+
+        const tx1a_update_b = contractB.connect(signersB[1]).updateEdge(groupId, chainIDA, toFixedHex(groupA.root.toString()), 0, toFixedHex(0, 32))
+        //
+        console.log(tx1a_update_b)
+        const receipt_tx_update_b = await tx1a_update_b
+        console.log(receipt_tx_update_b)
+
+
         groupA.addMember(membersA[1])
         const tx2a = contractA.connect(signersA[1]).addMember(groupId, membersA[1])
         await expect(tx2a).to.emit(contractA, "MemberAdded").withArgs(
@@ -100,6 +107,11 @@ describe("Semaphore", () => {
             membersB[0],
             groupB.root
         )
+        const tx1b_update_a = contractA.connect(signersA[1]).updateEdge(groupId, chainIDB, toFixedHex(groupB.root.toString()), 0, toFixedHex(0, 32))
+        console.log(tx1b_update_a)
+        const receipt_tx_update_a = await tx1b_update_a
+        console.log(receipt_tx_update_a)
+
         groupB.addMember(membersB[1])
         const tx2b = contractB.connect(signersB[1]).addMember(groupId, membersB[1])
         await expect(tx2b).to.emit(contractB, "MemberAdded").withArgs(
@@ -144,14 +156,11 @@ describe("Semaphore", () => {
         it("Should not verify if updateEdges has not been called", async () => {
             console.log("message: ", createRootsBytes(roots_chainA))
             console.log("message: ", createRootsBytes(roots_chainA).length)
-            const transaction = contractB.connect(signersB[1]).verifyRoots(
+            const transaction = contractA.connect(signersA[1]).verifyRoots(
                 groupId,
                 createRootsBytes(roots_chainA),
             )
-            console.log(transaction)
-            const receipt_tx = await transaction;
-            console.log(receipt_tx)
-            await expect(transaction).to.be.revertedWith("Semaphore__InvalidCurrentChainRoot()")
+            await expect(transaction).to.be.revertedWith("Neighbor root not found")
         })
     })
 
@@ -164,55 +173,6 @@ describe("Semaphore", () => {
         let roots_chainA: string[]
 
         before(async () => {
-            const tx1a = contractA.connect(signersA[1]).addMember(groupId, membersA[0])
-            const groupA = new Group(treeDepth, BigInt(zeroValue))
-            groupA.addMember(membersA[0])
-
-            await expect(tx1a).to.emit(contractA, "MemberAdded").withArgs(
-                groupId,
-                membersA[0],
-                groupA.root
-            )
-            groupA.addMember(membersA[1])
-            const tx2a = contractA.connect(signersA[1]).addMember(groupId, membersA[1])
-            await expect(tx2a).to.emit(contractA, "MemberAdded").withArgs(
-                groupId,
-                membersA[1],
-                groupA.root
-            )
-            //
-            groupA.addMember(membersA[2])
-            const tx3a = contractA.connect(signersA[1]).addMember(groupId, membersA[2])
-            await expect(tx3a).to.emit(contractA, "MemberAdded").withArgs(
-                groupId,
-                membersA[2],
-                groupA.root
-            )
-
-            const tx1b = contractB.connect(signersB[1]).addMember(groupId, membersB[0])
-            const groupB = new Group(treeDepth, BigInt(zeroValue))
-            groupB.addMember(membersB[0])
-
-            await expect(tx1b).to.emit(contractB, "MemberAdded").withArgs(
-                groupId,
-                membersB[0],
-                groupB.root
-            )
-            groupB.addMember(membersB[1])
-            const tx2b = contractB.connect(signersB[1]).addMember(groupId, membersB[1])
-            await expect(tx2b).to.emit(contractB, "MemberAdded").withArgs(
-                groupId,
-                membersB[1],
-                groupB.root
-            )
-            //
-            groupB.addMember(membersB[2])
-            const tx3b = contractB.connect(signersB[1]).addMember(groupId, membersB[2])
-            await expect(tx3b).to.emit(contractB, "MemberAdded").withArgs(
-                groupId,
-                membersB[2],
-                groupB.root
-            )
             const rootA = await contractA.getRoot(groupId)
             const rootB = await contractB.getRoot(groupId)
             roots_chainA = [rootA.toHexString(), rootB.toHexString()]
