@@ -21,7 +21,7 @@ describe("Semaphore", () => {
 
     const treeDepth = Number(process.env.TREE_DEPTH) | 20
     const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
-    const groupId = 5
+    const groupId = 16
     const maxEdges = 1
     const chainIDA = 1338
     const chainIDB = 1339
@@ -77,9 +77,9 @@ describe("Semaphore", () => {
 
         const tx1a_update_b = contractB.connect(signersB[1]).updateEdge(groupId, chainIDA, toFixedHex(groupA.root.toString()), 0, toFixedHex(0, 32))
         //
-        console.log(tx1a_update_b)
+        // console.log(tx1a_update_b)
         const receipt_tx_update_b = await tx1a_update_b
-        console.log(receipt_tx_update_b)
+        // console.log(receipt_tx_update_b)
 
 
         groupA.addMember(membersA[1])
@@ -108,9 +108,9 @@ describe("Semaphore", () => {
             groupB.root
         )
         const tx1b_update_a = contractA.connect(signersA[1]).updateEdge(groupId, chainIDB, toFixedHex(groupB.root.toString()), 0, toFixedHex(0, 32))
-        console.log(tx1b_update_a)
+        // console.log(tx1b_update_a)
         const receipt_tx_update_a = await tx1b_update_a
-        console.log(receipt_tx_update_a)
+        // console.log(receipt_tx_update_a)
 
         groupB.addMember(membersB[1])
         const tx2b = contractB.connect(signersB[1]).addMember(groupId, membersB[1])
@@ -177,7 +177,7 @@ describe("Semaphore", () => {
             const rootB = await contractB.getRoot(groupId)
             roots_chainA = [rootA.toHexString(), rootB.toHexString()]
 
-            fullProof_chainA = await generateProof(identitiesA[0], groupA, groupA.root, signal, {
+            fullProof_chainA = await generateProof(identitiesA[2], groupA, groupA.root, signal, {
                 wasmFilePath,
                 zkeyFilePath
             })
@@ -190,25 +190,30 @@ describe("Semaphore", () => {
                 bytes32Signal,
                 fullProof_chainA.publicSignals.nullifierHash,
                 fullProof_chainA.publicSignals.externalNullifier,
-                createRootsBytes(roots_chainA),
+                createRootsBytes(roots_chainA.reverse()),
                 solidityProof_chainA
             )
+            // console.log(transaction)
+            // const receipt_tx = await transaction
+            // console.log(receipt_tx)
+            // const receipt = await receipt_tx.wait()
+            // console.log(receipt)
             await expect(transaction).to.be.revertedWith("Semaphore__InvalidCurrentChainRoot()")
         })
 
         it("Should verify", async () => {
-            const tx_update = contractB.updateEdge(
+            const tx_update = contractB.connect(signersB[1]).updateEdge(
                 groupId,
                 chainIDA,
                 roots_chainA[0],
                 2,
                 toFixedHex(BigInt(0), 32)
             )
-            console.log(tx_update)
+            // console.log(tx_update)
             const receipt_tx_update = await tx_update;
-            console.log(receipt_tx_update)
+            // console.log(receipt_tx_update)
             const receipt_update = await receipt_tx_update.wait();
-            console.log(receipt_update)
+            // console.log(receipt_update)
 
             const transaction = contractB.verifyProof(
                 groupId,
@@ -218,6 +223,7 @@ describe("Semaphore", () => {
                 createRootsBytes(roots_chainA),
                 solidityProof_chainA
             )
+            console.log(transaction)
             await expect(transaction).to.be.revertedWith("InvalidProof()")
         })
     })
