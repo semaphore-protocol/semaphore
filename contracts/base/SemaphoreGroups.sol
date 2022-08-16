@@ -5,6 +5,7 @@ import {SNARK_SCALAR_FIELD} from "./SemaphoreConstants.sol";
 import "../interfaces/ISemaphoreGroups.sol";
 import "./LinkableIncrementalBinaryTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
+// import "hardhat/console.sol";
 
 /// @title Semaphore groups contract.
 /// @dev The following code allows you to create groups, add and remove members.
@@ -92,10 +93,17 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         groups[_groupId].updateEdge(_sourceChainID, _root, _leafIndex, _target);
     }
 
-    function _verifyRoots(uint256 groupId, bytes32[] memory roots) internal {
-        if (!groups[groupId].isValidRoots(roots)) {
-            revert Semaphore__InvalidCurrentChainRoot();
-        }
+    // // Function exposed for testing purposes
+    function verifyRoots(uint256 groupId, bytes calldata roots) public override view returns (bool) {
+        // console.log("input roots[0]: ", roots[0]);
+        // console.log("input roots[0]: ", roots[1]);
+        bytes32[] memory roots_decoded = abi.decode(roots, (bytes32[]));
+        bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(groups[groupId], roots_decoded);
+        // console.log("is_valid: ", valid_roots);
+        return valid_roots;
+        // if (!valid_roots) {
+        //     revert Semaphore__InvalidCurrentChainRoot();
+        // }
     }
         // TODO: Add if conditions correctly for diff maxEdges
     //     if (getMaxEdges(groupId) == 1) {

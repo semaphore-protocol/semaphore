@@ -97,6 +97,14 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         _removeMember(groupId, identityCommitment, proofSiblings, proofPathIndices);
     }
 
+    // Function exposed for testing purposes
+    function decodeRoots(
+        bytes calldata roots
+    ) external override view returns (bytes32[] memory roots_decoded) {
+        roots_decoded = abi.decode(roots, (bytes32[]));
+        return roots_decoded;
+    }
+
     /// @dev See {ISemaphore-verifyProof}.
     function verifyProof(
         uint256 groupId,
@@ -123,7 +131,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         //      roots = abi.decode(roots_bytes, (bytes32[2]));
         // } 
 
-        _verifyRoots(groupId, roots_decoded);
+        verifyRoots(groupId, roots);
 
         SemaphoreVerifier verifier = verifiers[depth];
 

@@ -16,6 +16,8 @@ describe("Semaphore", () => {
     let signersA: Signer[]
     let signersB: Signer[]
     let accounts: string[]
+    let groupA: Group
+    let groupB: Group
 
     const treeDepth = Number(process.env.TREE_DEPTH) | 20
     const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
@@ -63,6 +65,94 @@ describe("Semaphore", () => {
             .withArgs(groupId, constants.AddressZero, accounts[1])
         const rootB = await contractB.getRoot(groupId)
         expect(rootB).to.equal("8055374341341620501424923482910636721817757020788836089492629714380498049891")
+
+        const tx1a = contractA.connect(signersA[1]).addMember(groupId, membersA[0])
+        groupA = new Group(treeDepth, BigInt(zeroValue))
+        groupA.addMember(membersA[0])
+
+        await expect(tx1a).to.emit(contractA, "MemberAdded").withArgs(
+            groupId,
+            membersA[0],
+            groupA.root
+        )
+        groupA.addMember(membersA[1])
+        const tx2a = contractA.connect(signersA[1]).addMember(groupId, membersA[1])
+        await expect(tx2a).to.emit(contractA, "MemberAdded").withArgs(
+            groupId,
+            membersA[1],
+            groupA.root
+        )
+        //
+        groupA.addMember(membersA[2])
+        const tx3a = contractA.connect(signersA[1]).addMember(groupId, membersA[2])
+        await expect(tx3a).to.emit(contractA, "MemberAdded").withArgs(
+            groupId,
+            membersA[2],
+            groupA.root
+        )
+
+        const tx1b = contractB.connect(signersB[1]).addMember(groupId, membersB[0])
+        groupB = new Group(treeDepth, BigInt(zeroValue))
+        groupB.addMember(membersB[0])
+
+        await expect(tx1b).to.emit(contractB, "MemberAdded").withArgs(
+            groupId,
+            membersB[0],
+            groupB.root
+        )
+        groupB.addMember(membersB[1])
+        const tx2b = contractB.connect(signersB[1]).addMember(groupId, membersB[1])
+        await expect(tx2b).to.emit(contractB, "MemberAdded").withArgs(
+            groupId,
+            membersB[1],
+            groupB.root
+        )
+        //
+        groupB.addMember(membersB[2])
+        const tx3b = contractB.connect(signersB[1]).addMember(groupId, membersB[2])
+        await expect(tx3b).to.emit(contractB, "MemberAdded").withArgs(
+            groupId,
+            membersB[2],
+            groupB.root
+        )
+    })
+    describe("# CrossChainVerifyRoots", () => {
+        let roots_chainA: string[]
+        let rootA: BigNumber
+        let rootB: BigNumber
+        // const groupId2 = groupId * 100000
+
+        before(async () => {
+            rootA = await contractA.getRoot(groupId)
+            rootB = await contractB.getRoot(groupId)
+            roots_chainA = [rootA.toHexString(), rootB.toHexString()]
+        })
+        it("Should decode roots correctly", async () => {
+            console.log("message: ", createRootsBytes(roots_chainA))
+            console.log("message: ", createRootsBytes(roots_chainA).length)
+            const transaction = contractA.connect(signersA[1]).decodeRoots(
+                createRootsBytes(roots_chainA)
+            )
+            // console.log(transaction)
+            const roots_decoded = await transaction;
+            console.log(roots_chainA)
+            console.log(roots_decoded)
+            expect(roots_decoded[0]).to.be.equal(roots_chainA[0])
+            expect(roots_decoded[1]).to.be.equal(roots_chainA[1])
+            expect(roots_decoded.length).to.be.equal(roots_chainA.length)
+        })
+        it("Should not verify if updateEdges has not been called", async () => {
+            console.log("message: ", createRootsBytes(roots_chainA))
+            console.log("message: ", createRootsBytes(roots_chainA).length)
+            const transaction = contractB.connect(signersB[1]).verifyRoots(
+                groupId,
+                createRootsBytes(roots_chainA),
+            )
+            console.log(transaction)
+            const receipt_tx = await transaction;
+            console.log(receipt_tx)
+            await expect(transaction).to.be.revertedWith("Semaphore__InvalidCurrentChainRoot()")
+        })
     })
 
     describe("# CrossChainVerify", () => {

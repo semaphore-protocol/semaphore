@@ -28,6 +28,16 @@ interface ISemaphoreGroups {
     /// @param root: New root hash of the tree.
     event MemberRemoved(uint256 indexed groupId, uint256 identityCommitment, uint256 root);
 
+    function verifyRoots(uint256 groupId, bytes calldata roots) external view returns (bool);
+
+    // function _updateEdge(
+    //     uint256 groupId,
+    //     uint256 sourceChainID,
+    //     bytes32 root,
+    //     uint256 leafIndex,
+    //     bytes32 target
+    // ) external;
+
     /// @dev Returns the last root hash of a group.
     /// @param groupId: Id of the group.
     /// @return Root hash of the group.

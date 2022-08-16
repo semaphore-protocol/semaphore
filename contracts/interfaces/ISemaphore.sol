@@ -46,6 +46,14 @@ interface ISemaphore {
         uint256[8] calldata proof
     ) external;
 
+    function decodeRoots(
+        bytes calldata roots
+    ) external view returns (bytes32[] memory roots_decoded);
+
+    // function verifyRoots(
+    //     uint256 groupId,
+    //     bytes calldata roots
+    // ) external view returns (bool is_valid);
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.
