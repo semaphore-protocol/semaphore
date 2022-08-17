@@ -18,10 +18,20 @@ describe("Semaphore", () => {
     let accounts: string[]
     let groupA: Group
     let groupB: Group
+    let root1A: BigNumber
+    let root1B: BigNumber
+    let root2A: BigNumber
+    let root2B: BigNumber
+    let root3A: BigNumber
+    let root3B: BigNumber
+    let root4A: BigNumber
+    let root4B: BigNumber
+    let allRootsA: string[] 
+    let allRootsB: string[] 
 
     const treeDepth = Number(process.env.TREE_DEPTH) | 20
     const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
-    const groupId = 16
+    const groupId = 1
     const maxEdges = 1
     const chainIDA = 1338
     const chainIDB = 1339
@@ -33,10 +43,8 @@ describe("Semaphore", () => {
     const identitiesA = idsA.identities
     const membersB = idsB.members
     const identitiesB = idsB.identities
-    // const zeroValue = BigInt("0x2fe54c60d3acabf3343a35b6eba15db4821b340f76e741e2249685ed4899af6c")
     const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
     const contractAddr = "0xE800b887db490d9523212813a7907AFDB7493E45"
-    // const { identities, members } = createIdentities(chainID, 3)
 
     const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/semaphore_20_2.wasm`
     const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/circuit_final.zkey`
@@ -48,15 +56,15 @@ describe("Semaphore", () => {
         contractA = await hreEthers.getContractAt("Semaphore", contractAddr, signersA[0])
         contractB = await hreEthers.getContractAt("Semaphore", contractAddr, signersB[0])
         accounts = await Promise.all(signersA.map((signer: Signer) => signer.getAddress()))
-        // console.log(contractA)
-        // console.log(contractB)
+        groupA = new Group(treeDepth, BigInt(zeroValue))
         const transactionA = contractA.connect(signersA[1]).createGroup(groupId, treeDepth, 0, accounts[1], maxEdges)
         await expect(transactionA).to.emit(contractA, "GroupCreated").withArgs(groupId, treeDepth, 0)
         await expect(transactionA)
             .to.emit(contractA, "GroupAdminUpdated")
             .withArgs(groupId, constants.AddressZero, accounts[1])
+
         const rootA = await contractA.getRoot(groupId)
-        expect(rootA).to.equal("8055374341341620501424923482910636721817757020788836089492629714380498049891")
+        expect(rootA).to.equal(groupA.root)
 
         const transactionB = contractB.connect(signersB[1]).createGroup(groupId, treeDepth, 0, accounts[1], maxEdges)
         await expect(transactionB).to.emit(contractB, "GroupCreated").withArgs(groupId, treeDepth, 0)
@@ -64,23 +72,18 @@ describe("Semaphore", () => {
             .to.emit(contractB, "GroupAdminUpdated")
             .withArgs(groupId, constants.AddressZero, accounts[1])
         const rootB = await contractB.getRoot(groupId)
-        expect(rootB).to.equal("8055374341341620501424923482910636721817757020788836089492629714380498049891")
+
+        groupB = new Group(treeDepth, BigInt(zeroValue))
+        expect(rootB).to.equal(groupB.root)
 
         const tx1a = contractA.connect(signersA[1]).addMember(groupId, membersA[0])
-        groupA = new Group(treeDepth, BigInt(zeroValue))
         groupA.addMember(membersA[0])
         await expect(tx1a).to.emit(contractA, "MemberAdded").withArgs(
             groupId,
             membersA[0],
             groupA.root
         )
-
-        const tx1a_update_b = contractB.connect(signersB[1]).updateEdge(groupId, chainIDA, toFixedHex(groupA.root.toString()), 0, toFixedHex(0, 32))
-        //
-        // console.log(tx1a_update_b)
-        const receipt_tx_update_b = await tx1a_update_b
-        // console.log(receipt_tx_update_b)
-
+        root1A = BigNumber.from(groupA.root.toString())
 
         groupA.addMember(membersA[1])
         const tx2a = contractA.connect(signersA[1]).addMember(groupId, membersA[1])
@@ -89,6 +92,7 @@ describe("Semaphore", () => {
             membersA[1],
             groupA.root
         )
+        root2A = BigNumber.from(groupA.root.toString())
         //
         groupA.addMember(membersA[2])
         const tx3a = contractA.connect(signersA[1]).addMember(groupId, membersA[2])
@@ -97,9 +101,19 @@ describe("Semaphore", () => {
             membersA[2],
             groupA.root
         )
+        root3A = BigNumber.from(groupA.root.toString())
+
+        groupA.addMember(membersA[3])
+        const tx4a = contractA.connect(signersA[1]).addMember(groupId, membersA[3])
+        await expect(tx4a).to.emit(contractA, "MemberAdded").withArgs(
+            groupId,
+            membersA[3],
+            groupA.root
+        )
+
+        root4A = BigNumber.from(groupA.root.toString())
 
         const tx1b = contractB.connect(signersB[1]).addMember(groupId, membersB[0])
-        groupB = new Group(treeDepth, BigInt(zeroValue))
         groupB.addMember(membersB[0])
 
         await expect(tx1b).to.emit(contractB, "MemberAdded").withArgs(
@@ -107,10 +121,7 @@ describe("Semaphore", () => {
             membersB[0],
             groupB.root
         )
-        const tx1b_update_a = contractA.connect(signersA[1]).updateEdge(groupId, chainIDB, toFixedHex(groupB.root.toString()), 0, toFixedHex(0, 32))
-        // console.log(tx1b_update_a)
-        const receipt_tx_update_a = await tx1b_update_a
-        // console.log(receipt_tx_update_a)
+        root1B = BigNumber.from(groupB.root.toString())
 
         groupB.addMember(membersB[1])
         const tx2b = contractB.connect(signersB[1]).addMember(groupId, membersB[1])
@@ -119,6 +130,7 @@ describe("Semaphore", () => {
             membersB[1],
             groupB.root
         )
+        root2B = BigNumber.from(groupB.root.toString())
         //
         groupB.addMember(membersB[2])
         const tx3b = contractB.connect(signersB[1]).addMember(groupId, membersB[2])
@@ -127,9 +139,23 @@ describe("Semaphore", () => {
             membersB[2],
             groupB.root
         )
+        root3B = BigNumber.from(groupB.root.toString())
+
+
+        groupB.addMember(membersB[3])
+        const tx4b = contractB.connect(signersB[1]).addMember(groupId, membersB[3])
+        await expect(tx4b).to.emit(contractB, "MemberAdded").withArgs(
+            groupId,
+            membersB[3],
+            groupB.root
+        )
+        root4B = BigNumber.from(groupB.root.toString())
+
+        allRootsA = [root1A.toHexString(), root2A.toHexString(), root3A.toHexString(), root4A.toHexString()]
+        allRootsB = [root1B.toHexString(), root2B.toHexString(), root3B.toHexString(), root4B.toHexString()]
     })
     describe("# CrossChainVerifyRoots", () => {
-        let roots_chainA: string[]
+        let roots: string[]
         let rootA: BigNumber
         let rootB: BigNumber
         // const groupId2 = groupId * 100000
@@ -137,30 +163,78 @@ describe("Semaphore", () => {
         before(async () => {
             rootA = await contractA.getRoot(groupId)
             rootB = await contractB.getRoot(groupId)
-            roots_chainA = [rootA.toHexString(), rootB.toHexString()]
+            roots = [rootA.toHexString(), rootB.toHexString()]
         })
         it("Should decode roots correctly", async () => {
-            console.log("message: ", createRootsBytes(roots_chainA))
-            console.log("message: ", createRootsBytes(roots_chainA).length)
-            const transaction = contractA.connect(signersA[1]).decodeRoots(
-                createRootsBytes(roots_chainA)
+            const roots_decoded = await contractA.connect(signersA[1]).decodeRoots(
+                createRootsBytes(roots)
             )
-            // console.log(transaction)
-            const roots_decoded = await transaction;
-            console.log(roots_chainA)
-            console.log(roots_decoded)
-            expect(roots_decoded[0]).to.be.equal(roots_chainA[0])
-            expect(roots_decoded[1]).to.be.equal(roots_chainA[1])
-            expect(roots_decoded.length).to.be.equal(roots_chainA.length)
+            expect(roots_decoded[0]).to.be.equal(roots[0])
+            expect(roots_decoded[1]).to.be.equal(roots[1])
+            expect(roots_decoded.length).to.be.equal(roots.length)
         })
-        it("Should not verify if updateEdges has not been called", async () => {
-            console.log("message: ", createRootsBytes(roots_chainA))
-            console.log("message: ", createRootsBytes(roots_chainA).length)
+        it("Should not verify if updateEdge has not been called", async () => {
             const transaction = contractA.connect(signersA[1]).verifyRoots(
                 groupId,
-                createRootsBytes(roots_chainA),
+                createRootsBytes(roots),
             )
-            await expect(transaction).to.be.revertedWith("Neighbor root not found")
+            await expect(transaction).to.be.revertedWith("Not initialized edges must be set to default root")
+        })
+
+        it("Should verify external root after updateEdge", async () => {
+            const tx_update = await contractB.connect(signersB[1]).updateEdge(
+                groupId,
+                chainIDA,
+                allRootsA[0],
+                0,
+                toFixedHex(BigInt(0), 32)
+            )
+            expect(tx_update).to.equal(true)
+            const roots = [allRootsB[0], allRootsA[0]]
+
+            const is_valid = await contractB.connect(signersB[1]).verifyRoots(
+                groupId,
+                createRootsBytes(roots),
+            )
+            expect(is_valid).to.equal(true)
+        })
+
+        it("Should not verify invalid order of roots", async () => {
+            const roots = [allRootsA[0], allRootsB[0]]
+            const transaction = contractB.connect(signersB[1]).verifyRoots(
+                groupId,
+                createRootsBytes(roots),
+            )
+            await expect(transaction).to.be.revertedWith("Cannot find your merkle root")
+        })
+        it("Should not verify out of date edges", async () => {
+            const rootA = await contractA.getRoot(groupId)
+            const rootB = await contractB.getRoot(groupId)
+            roots = [rootB.toHexString(), rootA.toHexString()]
+
+            const transaction = contractB.connect(signersB[1]).verifyRoots(
+                groupId,
+                createRootsBytes(roots),
+            )
+            await expect(transaction).to.be.revertedWith("Neighbour root not found")
+        })
+        it("Should verify not sequential updates", async () => {
+            const tx_update = await contractB.connect(signersB[1]).updateEdge(
+                groupId,
+                chainIDA,
+                allRootsA[2],
+                2,
+                toFixedHex(BigInt(0), 32)
+            )
+
+            expect(tx_update).to.equal(true)
+            const roots = [allRootsB[3], allRootsA[2]]
+
+            const is_valid = await contractB.connect(signersB[1]).verifyRoots(
+                groupId,
+                createRootsBytes(roots),
+            )
+            expect(is_valid).to.equal(true)
         })
     })
 
@@ -170,14 +244,12 @@ describe("Semaphore", () => {
 
         let fullProof_chainA: FullProof
         let solidityProof_chainA: SolidityProof
-        let roots_chainA: string[]
+        let roots: string[]
 
         before(async () => {
-            const rootA = await contractA.getRoot(groupId)
-            const rootB = await contractB.getRoot(groupId)
-            roots_chainA = [rootA.toHexString(), rootB.toHexString()]
+            roots = [allRootsB[0], allRootsA[0]]
 
-            fullProof_chainA = await generateProof(identitiesA[2], groupA, groupA.root, signal, {
+            fullProof_chainA = await generateProof(identitiesA[0], groupA, allRootsB[0], allRootsA[0], signal, {
                 wasmFilePath,
                 zkeyFilePath
             })
@@ -185,46 +257,63 @@ describe("Semaphore", () => {
         })
 
         it("Should not verify if updateEdges has not been called", async () => {
-            const transaction = contractB.verifyProof(
+            console.log(roots)
+            const transaction = contractB.connect(signersB[1]).verifyProof(
                 groupId,
                 bytes32Signal,
                 fullProof_chainA.publicSignals.nullifierHash,
                 fullProof_chainA.publicSignals.externalNullifier,
-                createRootsBytes(roots_chainA.reverse()),
-                solidityProof_chainA
-            )
-            // console.log(transaction)
-            // const receipt_tx = await transaction
-            // console.log(receipt_tx)
-            // const receipt = await receipt_tx.wait()
-            // console.log(receipt)
-            await expect(transaction).to.be.revertedWith("Semaphore__InvalidCurrentChainRoot()")
-        })
-
-        it("Should verify", async () => {
-            const tx_update = contractB.connect(signersB[1]).updateEdge(
-                groupId,
-                chainIDA,
-                roots_chainA[0],
-                2,
-                toFixedHex(BigInt(0), 32)
-            )
-            // console.log(tx_update)
-            const receipt_tx_update = await tx_update;
-            // console.log(receipt_tx_update)
-            const receipt_update = await receipt_tx_update.wait();
-            // console.log(receipt_update)
-
-            const transaction = contractB.verifyProof(
-                groupId,
-                bytes32Signal,
-                fullProof_chainA.publicSignals.nullifierHash,
-                fullProof_chainA.publicSignals.externalNullifier,
-                createRootsBytes(roots_chainA),
+                createRootsBytes(roots),
                 solidityProof_chainA
             )
             console.log(transaction)
-            await expect(transaction).to.be.revertedWith("InvalidProof()")
+            const receipt_tx = await transaction
+            console.log(receipt_tx)
+            const receipt = await receipt_tx.wait()
+            console.log(receipt)
+            await expect(transaction).to.be.revertedWith("Not initialized edges must be set to default root")
         })
+        // it("Should not verify if roots are reversed", async () => {
+        //     const transaction = contractB.verifyProof(
+        //         groupId,
+        //         bytes32Signal,
+        //         fullProof_chainA.publicSignals.nullifierHash,
+        //         fullProof_chainA.publicSignals.externalNullifier,
+        //         createRootsBytes(roots.reverse()),
+        //         solidityProof_chainA
+        //     )
+        //     console.log(transaction)
+        //     const receipt_tx = await transaction
+        //     console.log(receipt_tx)
+        //     const receipt = await receipt_tx.wait()
+        //     console.log(receipt)
+        //     await expect(transaction).to.be.revertedWith("Not initialized edges must be set to default root")
+        // })
+        //
+        // it("Should verify", async () => {
+        //     const tx_update = contractB.connect(signersB[1]).updateEdge(
+        //         groupId,
+        //         chainIDA,
+        //         roots[0],
+        //         2,
+        //         toFixedHex(BigInt(0), 32)
+        //     )
+        //     // console.log(tx_update)
+        //     const receipt_tx_update = await tx_update;
+        //     console.log(receipt_tx_update)
+        //     const receipt_update = await receipt_tx_update.wait();
+        //     console.log(receipt_update)
+        //
+        //     const transaction = contractB.verifyProof(
+        //         groupId,
+        //         bytes32Signal,
+        //         fullProof_chainA.publicSignals.nullifierHash,
+        //         fullProof_chainA.publicSignals.externalNullifier,
+        //         createRootsBytes(roots),
+        //         solidityProof_chainA
+        //     )
+        //     console.log(transaction)
+        //     await expect(transaction).to.emit(contractB, "ProofVerified()").withArgs(groupId, bytes32Signal)
+        // })
     })
 })
