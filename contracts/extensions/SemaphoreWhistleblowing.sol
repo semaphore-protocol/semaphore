@@ -28,9 +28,9 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
             "SemaphoreWhistleblowing: parameters lists does not have the same length"
         );
 
-        for (uint8 i = 0; i < depths.length;) {
+        for (uint8 i = 0; i < depths.length; ) {
             verifiers[depths[i]] = IVerifier(verifierAddresses[i]);
-            unchecked{
+            unchecked {
                 ++i;
             }
         }
