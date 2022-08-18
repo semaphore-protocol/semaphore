@@ -26,8 +26,11 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
             "SemaphoreVoting: parameters lists does not have the same length"
         );
 
-        for (uint8 i = 0; i < depths.length; ++i) {
+        for (uint8 i = 0; i < depths.length;) {
             verifiers[depths[i]] = IVerifier(verifierAddresses[i]);
+            unchecked{
+                ++i; 
+            }
         }
     }
 
