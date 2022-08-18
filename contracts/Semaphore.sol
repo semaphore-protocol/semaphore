@@ -37,7 +37,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     constructor(Verifier[] memory _verifiers) {
         for (uint8 i = 0; i < _verifiers.length; ) {
             verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(_verifiers[i].contractAddress);
-            unchecked{
+            unchecked {
                 ++i;
             }
         }
