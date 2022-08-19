@@ -65,7 +65,7 @@ library LinkableIncrementalBinaryTree {
         require(depth > 0 && depth <= MAX_DEPTH, "LinkableIncrementalBinaryTree: tree depth must be between 1 and 32");
 
         self.depth = depth;
-        self.roots[0] = zeros(depth - 1);
+        self.roots[0] = zeros(depth);
         self.maxEdges = maxEdges;
     }
 
@@ -370,12 +370,18 @@ library LinkableIncrementalBinaryTree {
         returns (bool)
     {
         require(isKnownRoot(self, _roots[0]), "Cannot find your merkle root");
-        require(_roots.length == self.maxEdges + 1, "Incorrect root array length");
-        for (uint256 i = 0; i < self.edgeList.length; i++) {
-            Edge memory _edge = self.edgeList[i];
-            require(isKnownNeighborRoot(self, _edge.chainID, _roots[i + 1]), "Neighbor root not found");
-        }
-        return true;
+		require(_roots.length == self.maxEdges + 1, "Incorrect root array length");
+		uint rootIndex = 1;
+		for (uint i = 0; i < self.edgeList.length; i++) {
+			Edge memory _edge = self.edgeList[i];
+			require(isKnownNeighborRoot(self, _edge.chainID, _roots[i+1]), "Neighbor root not found");
+			rootIndex++;
+		}
+		while (rootIndex != self.maxEdges + 1) {
+			require(_roots[rootIndex] == 0, "non-existent edge is not set to 0");
+			rootIndex++;
+		}
+		return true;
     }
 
     /**
