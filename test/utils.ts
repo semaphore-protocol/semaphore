@@ -21,7 +21,7 @@ export function toFixedHex(number: BigNumberish, length = 32): string {
     )
 }
 
-export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
+export function createRootsBytesWeb3(rootArray: string[] | BigNumberish[]): string {
     const web3 = new Web3();
     return web3.eth.abi.encodeParameters(
         ['bytes32[]'],
@@ -29,13 +29,13 @@ export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
     ).toString();
 }
 
-// export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
-//     let rootsBytes = "0x"
-//     for (let i = 0; i < rootArray.length; i++) {
-//         rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
-//     }
-//     return rootsBytes // root byte string (32 * array.length bytes)
-// }
+export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
+    let rootsBytes = "0x"
+    for (let i = 0; i < rootArray.length; i++) {
+        rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
+    }
+    return rootsBytes // root byte string (32 * array.length bytes)
+}
 
 export function createIdentities(chainId: number, n: number): { identities: Identity[]; members: bigint[] } {
     const identityCommitments: bigint[] = []

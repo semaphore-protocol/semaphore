@@ -363,9 +363,10 @@ library LinkableIncrementalBinaryTree {
 		The first root should always be the root of `this` underlying merkle
 		tree and the remaining roots are of the neighboring roots in `edges.
 		@param _roots An array of bytes32 merkle roots to be checked against the history.
-	 */
+	*/
+
 	function isValidRoots(LinkableIncrementalTreeData storage self, bytes32[] memory _roots) public view returns (bool) {
-		require(isKnownRoot(self, _roots[0]), "Cannot find your merkle root");
+        require(isKnownRoot(self, _roots[0]), "Cannot find your merkle root");
 		require(_roots.length == self.maxEdges + 1, "Incorrect root array length");
 		uint rootIndex = 1;
 		for (uint i = 0; i < self.edgeList.length; i++) {
@@ -374,12 +375,11 @@ library LinkableIncrementalBinaryTree {
 			rootIndex++;
 		}
 		while (rootIndex != self.maxEdges + 1) {
-			require(_roots[rootIndex] == zeros(self.depth), "Not initialized edges must be set to default root");
+			require(_roots[rootIndex] == 0, "Not initialized edges must be set to 0");
 			rootIndex++;
 		}
 		return true;
 	}
-
     /**
 		@notice Decodes a byte string of roots into its parts.
 		@return bytes32[] An array of bytes32 merkle roots
@@ -391,7 +391,7 @@ library LinkableIncrementalBinaryTree {
     {
         bytes32[] memory decodedRoots = new bytes32[](self.maxEdges + 1);
         for (uint256 i = 0; i <= self.maxEdges; i++) {
-            decodedRoots[i] = bytes32(roots[32 * i:32 * (i + 1)]);
+            decodedRoots[i] = bytes32(roots[(32 * i):(32 * (i + 1))]);
         }
 
         return decodedRoots;

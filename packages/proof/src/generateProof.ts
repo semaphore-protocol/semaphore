@@ -1,17 +1,42 @@
-// import { Group } from "@semaphore/group"
-import Group from "../../group/src/group"
-// import { Group } from "@semaphore-protocol/group"
+import { Group } from "@semaphore-anchor/group/src"
 // import type { Identity } from "@semaphore-protocol/identity"
-import Identity from "../../identity/src/identity"
+import { BigNumber } from "@ethersproject/bignumber"
 import { MerkleProof } from "@zk-kit/incremental-merkle-tree"
 import { groth16 } from "snarkjs"
 import generateSignalHash from "./generateSignalHash"
 import { BigNumberish, FullProof, SnarkArtifacts } from "./types"
 
+import { Identity } from "@semaphore-anchor/identity/src"
+
+export type VerifierContractInfo = {
+    name: string
+    address: string
+    depth: string
+    circuitLength: string
+}
+export function toFixedHex(numb: any, length = 32): string {
+    return (
+        "0x" +
+        (numb instanceof Buffer ? numb.toString("hex") : BigNumber.from(numb).toHexString().slice(2)).padStart(
+            length * 2,
+            "0"
+        )
+    )
+}
+
+
+export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
+    let rootsBytes = "0x"
+    for (let i = 0; i < rootArray.length; i++) {
+        rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
+    }
+    return rootsBytes // root byte string (32 * array.length bytes)
+}
 // async function generateProof(
 export default async function generateProof(
     identity: Identity,
     group: Group,
+    roots: BigNumberish[],
     externalNullifier: BigNumberish,
     signal: string,
     snarkArtifacts: SnarkArtifacts
@@ -31,7 +56,7 @@ export default async function generateProof(
             identityNullifier: identity.getNullifier(),
             treePathIndices: merkleProof.pathIndices,
             treeSiblings: merkleProof.siblings,
-            roots: [merkleProof.root, 0],
+            roots: roots,
             chainID: identity.getChainID(),
             externalNullifier,
             signalHash: generateSignalHash(signal)

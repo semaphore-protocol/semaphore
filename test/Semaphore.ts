@@ -4,7 +4,7 @@ import { run } from "hardhat"
 import { Semaphore as SemaphoreContract } from "../build/typechain"
 import { config } from "../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Group } from "@semaphore-protocol/group"
+import { Group } from "../packages/group/src"
 import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "../packages/proof/src/"
 import { toFixedHex, VerifierContractInfo, createRootsBytes, createIdentities } from "./utils"
 /** BigNumber to hex string of specified length */
@@ -181,11 +181,13 @@ describe("Semaphore", () => {
             const root = await contract.getRoot(groupId2)
             roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
 
-            fullProof = await generateProof(identities[0], group, group.root, signal, {
+            fullProof = await generateProof(identities[0], group, roots, BigInt(Date.now()), signal, {
                 wasmFilePath,
                 zkeyFilePath
             })
+            console.log("fullProof: ", fullProof)
             solidityProof = packToSolidityProof(fullProof.proof)
+            console.log("calldata: ", solidityProof)
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
@@ -210,7 +212,7 @@ describe("Semaphore", () => {
                 createRootsBytes(roots),
                 solidityProof
             )
-            await expect(transaction).to.be.revertedWith("InvalidProof()")
+            await expect(transaction).to.be.revertedWith("invalidProof")
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
@@ -219,7 +221,7 @@ describe("Semaphore", () => {
                 bytes32Signal,
                 fullProof.publicSignals.nullifierHash,
                 fullProof.publicSignals.externalNullifier,
-                createRootsBytes(roots),
+                createRootsBytes(fullProof.publicSignals.roots),
                 solidityProof
             )
 

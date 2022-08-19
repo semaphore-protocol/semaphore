@@ -34,9 +34,7 @@ contract SemaphoreCore is ISemaphoreCore {
         uint8 maxEdges,
         uint256 root
     ) internal view {
-        if (nullifierHashes[nullifierHash]) {
-            revert Semaphore__YouAreUsingTheSameNillifierTwice();
-        }
+        require(nullifierHashes[nullifierHash] == false, "You are using same nullifier twice");
 
         uint256 signalHash = _hashSignal(signal);
 
@@ -57,10 +55,7 @@ contract SemaphoreCore is ISemaphoreCore {
             inputs,
             maxEdges
         );
-
-        if (!success) {
-            revert("InvalidProof()");
-        }
+        require(success, "invalidProof");
     }
 
     /// @dev Stores the nullifier hash to prevent double-signaling.
