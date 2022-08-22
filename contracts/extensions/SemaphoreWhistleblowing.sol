@@ -76,23 +76,26 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         _removeMember(entityId, identityCommitment, proofSiblings, proofPathIndices);
     }
 
-// @dev See {ISemaphoreWhistleblowing-publishLeak}.
-//     function publishLeak(
-//         bytes32 leak,
-//         uint256 nullifierHash,
-//         uint256 entityId,
-//         bytes calldata roots,
-//         uint256 root,
-//         uint256 typedChainId,
-//         uint256[8] calldata proof
-//     ) public override onlyEditor(entityId) {
-//         // uint256 root = getRoot(entityId);
-//         uint8 depth = getDepth(entityId);
-//         uint8 maxEdges = getMaxEdges(entityId);
-//         SemaphoreVerifier verifier = verifiers[depth];
-//
-//         _verifyProof(leak, nullifierHash, entityId, roots, proof, verifier, maxEdges, typedChainId, root);
-//
-//         emit LeakPublished(entityId, leak);
-//     }
+    /// @dev See {ISemaphoreWhistleblowing-publishLeak}.
+    function publishLeak(
+        bytes32 leak,
+        uint256 nullifierHash,
+        uint256 entityId,
+        bytes calldata roots,
+        uint256 root,
+        uint256 typedChainId,
+        uint256[8] calldata proof
+    ) public override onlyEditor(entityId) {
+        SemaphoreVerifier verifier;
+        uint8 maxEdges = getMaxEdges(entityId);
+        {
+            uint8 depth = getDepth(entityId);
+            verifier = verifiers[depth];
+        }
+        verifyRoots(entityId, roots, maxEdges);
+
+        _verifyProof(leak, nullifierHash, entityId, roots, proof, verifier, maxEdges, typedChainId, root);
+
+        emit LeakPublished(entityId, leak);
+    }
 }

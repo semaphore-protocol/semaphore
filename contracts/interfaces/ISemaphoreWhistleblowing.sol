@@ -48,18 +48,18 @@ interface ISemaphoreWhistleblowing {
         uint8[] calldata proofPathIndices
     ) external;
 
-//     /// @dev Allows whistleblowers to publish leaks anonymously.
-//     /// @param leak: News leak.
-//     /// @param nullifierHash: Nullifier hash.
-//     /// @param entityId: Id of the entity.
-//     /// @param proof: Private zk-proof parameters.
-//     function publishLeak(
-//         bytes32 leak,
-//         uint256 nullifierHash,
-//         uint256 entityId,
-//         bytes calldata roots,
-//         uint256 root,
-//         uint256 typedChainId,
-//         uint256[8] calldata proof
-//     ) external;
+    /// @dev Allows whistleblowers to publish leaks anonymously.
+    /// @param leak: News leak.
+    /// @param nullifierHash: Nullifier hash.
+    /// @param entityId: Id of the entity.
+    /// @param proof: Private zk-proof parameters.
+    function publishLeak(
+        bytes32 leak,
+        uint256 nullifierHash,
+        uint256 entityId,
+        bytes calldata roots,
+        uint256 root,
+        uint256 typedChainId,
+        uint256[8] calldata proof
+    ) external;
 }

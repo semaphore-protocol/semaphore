@@ -71,7 +71,7 @@ export default async function generateProof(
             nullifierHash: publicSignals[1],
             signalHash: publicSignals[2],
             externalNullifier: publicSignals[3],
-            // TODO: Fix roots
+            // TODO: generalize roots for diff maxEdges
             roots: [publicSignals[4], publicSignals[5]],
 
             chainID: publicSignals[6]

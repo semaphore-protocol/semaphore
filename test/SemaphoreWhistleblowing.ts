@@ -4,7 +4,7 @@ import { ethers, run } from "hardhat"
 import { SemaphoreWhistleblowing } from "../build/typechain"
 import { config } from "../package.json"
 
-import { Group } from "@semaphore-protocol/group"
+import { Group } from "../packages/group/src"
 import { Identity } from "../packages/identity/src"
 
 import {
@@ -19,7 +19,8 @@ import { toFixedHex, VerifierContractInfo, createRootsBytes, createIdentities } 
 
 describe("SemaphoreWhistleblowing", () => {
     let contract: SemaphoreWhistleblowing
-    let accounts: Signer[]
+    let signers: Signer[]
+    let accounts: string[]
     let editor: string
 
     const zero = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
@@ -58,8 +59,9 @@ describe("SemaphoreWhistleblowing", () => {
             verifiers: deployedVerifiers
         })
         contract = await run("deploy:semaphore-whistleblowing", { logs: false, verifier: verifierSelector.address })
-        accounts = await ethers.getSigners()
-        editor = await accounts[1].getAddress()
+        signers = await run("accounts", { logs: false })
+        accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
+        editor = await signers[1].getAddress()
     })
 
     describe("# createEntity", () => {
@@ -108,7 +110,7 @@ describe("SemaphoreWhistleblowing", () => {
             const identity = new Identity(chainID, "test")
             const identityCommitment = identity.generateCommitment()
 
-            const transaction = contract.connect(accounts[1]).addWhistleblower(entityIds[0], identityCommitment)
+            const transaction = contract.connect(signers[1]).addWhistleblower(entityIds[0], identityCommitment)
 
             await expect(transaction)
                 .to.emit(contract, "MemberAdded")
@@ -151,7 +153,7 @@ describe("SemaphoreWhistleblowing", () => {
             const { siblings, pathIndices } = group.generateProofOfMembership(0)
 
             const transaction = contract
-                .connect(accounts[1])
+                .connect(signers[1])
                 .removeWhistleblower(entityIds[0], identityCommitment, siblings, pathIndices)
 
             await expect(transaction)
@@ -172,17 +174,22 @@ describe("SemaphoreWhistleblowing", () => {
 
         const group = new Group(treeDepth, zero)
 
-        group.addMembers([identityCommitment, BigInt(1)])
+        group.addMember(identityCommitment)
+        group.addMember(BigInt(1))
 
         let solidityProof: SolidityProof
         let publicSignals: PublicSignals
+        let roots: string[]
 
         before(async () => {
             await contract.createEntity(entityIds[1], treeDepth, zero, editor, maxEdges)
-            await contract.connect(accounts[1]).addWhistleblower(entityIds[1], identityCommitment)
-            await contract.connect(accounts[1]).addWhistleblower(entityIds[1], BigInt(1))
+            await contract.connect(signers[1]).addWhistleblower(entityIds[1], identityCommitment)
+            await contract.connect(signers[1]).addWhistleblower(entityIds[1], BigInt(1))
+            const root = await contract.getRoot(entityIds[1])
 
-            const fullProof = await generateProof(identity, group, entityIds[1], leak, {
+            roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
+
+            const fullProof = await generateProof(identity, group, roots, entityIds[1], leak, {
                 wasmFilePath,
                 zkeyFilePath
             })
@@ -192,13 +199,13 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should not publish a leak if the caller is not the editor", async () => {
-            const root = await contract.getRoot(entityIds[0])
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const transaction = contract.publishLeak(
                 bytes32Leak,
                 publicSignals.nullifierHash,
                 entityIds[0],
-                createRootsBytes(roots),
+                createRootsBytes(publicSignals.roots),
+                publicSignals.calculatedRoot,
+                publicSignals.chainID,
                 solidityProof
             )
 
@@ -211,22 +218,32 @@ describe("SemaphoreWhistleblowing", () => {
             const nullifierHash = generateNullifierHash(entityIds[0], identity.getNullifier(), chainID)
 
             const transaction = contract
-                .connect(accounts[1])
-                .publishLeak(bytes32Leak, nullifierHash, entityIds[1], createRootsBytes(roots), solidityProof)
+                .connect(signers[1])
+                .publishLeak(
+                    bytes32Leak, 
+                    nullifierHash, 
+                    entityIds[1], 
+                    createRootsBytes(publicSignals.roots),
+                    publicSignals.calculatedRoot,
+                    publicSignals.chainID,
+                    solidityProof
+                )
 
-            await expect(transaction).to.be.revertedWith("InvalidProof()")
+            await expect(transaction).to.be.revertedWith("invalidProof")
         })
 
         it("Should publish a leak", async () => {
             const root = await contract.getRoot(entityIds[1])
             const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const transaction = contract
-                .connect(accounts[1])
+                .connect(signers[1])
                 .publishLeak(
                     bytes32Leak,
                     publicSignals.nullifierHash,
                     entityIds[1],
-                    createRootsBytes(roots),
+                    createRootsBytes(publicSignals.roots),
+                    publicSignals.calculatedRoot,
+                    publicSignals.chainID,
                     solidityProof
                 )
 
