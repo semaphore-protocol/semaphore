@@ -12,6 +12,15 @@ async function main() {
             name: `Verifier${treeDepth}`,
             address
         })
+
+        if (
+            hardhatArguments.network &&
+            hardhatArguments.network !== "hardhat" &&
+            hardhatArguments.network !== "localhost"
+        ) {
+            // Verify verifier.
+            await run("verify:verify", { address })
+        }
     }
 
     // Deploy Semaphore.
@@ -19,15 +28,29 @@ async function main() {
         verifiers: deployedContracts.map((c) => ({ merkleTreeDepth: c.name.substring(8), contractAddress: c.address }))
     })
 
-    deployedContracts.push({
-        name: `Semaphore`,
-        address
-    })
+    if (
+        hardhatArguments.network &&
+        hardhatArguments.network !== "hardhat" &&
+        hardhatArguments.network !== "localhost"
+    ) {
+        // Verify Semaphore.
+        await run("verify:verify", {
+            address,
+            constructorArguments: [
+                deployedContracts.map((c) => ({ merkleTreeDepth: c.name.substring(8), contractAddress: c.address }))
+            ]
+        })
 
-    fs.writeFileSync(
-        `./deployed-contracts/${hardhatArguments.network}.json`,
-        JSON.stringify(deployedContracts, null, 4)
-    )
+        deployedContracts.push({
+            name: `Semaphore`,
+            address
+        })
+
+        fs.writeFileSync(
+            `./deployed-contracts/${hardhatArguments.network}.json`,
+            JSON.stringify(deployedContracts, null, 4)
+        )
+    }
 }
 
 main()
