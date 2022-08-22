@@ -23,6 +23,7 @@ library SemaphoreInputEncoder {
         uint256 nullifierHash;
         uint256 signalHash;
         uint256 externalNullifier;
+        uint256 typedChainId;
         bytes roots;
     }
 
@@ -60,7 +61,7 @@ library SemaphoreInputEncoder {
         @return (bytes, bytes) The public inputs and roots array separated
     */
     function _encodeInputs(Proof memory _args, uint8 _maxEdges) public view returns (bytes memory, bytes32[] memory) {
-        uint256 _chainId = getChainIdType();
+        // uint256 _chainId = getChainIdType();
         bytes32[] memory result = new bytes32[](_maxEdges + 1);
         bytes memory encodedInput;
 
@@ -77,7 +78,7 @@ library SemaphoreInputEncoder {
             inputs[3] = _args.externalNullifier;
             inputs[4] = uint256(roots[0]);
             inputs[5] = uint256(roots[1]);
-            inputs[6] = uint256(_chainId);
+            inputs[6] = uint256(_args.typedChainId);
             encodedInput = abi.encodePacked(inputs);
         } else if (_maxEdges == 7) {
             uint256[12] memory inputs;
@@ -103,7 +104,7 @@ library SemaphoreInputEncoder {
             inputs[8] = uint256(roots[5]);
             inputs[9] = uint256(roots[6]);
             inputs[10] = uint256(roots[7]);
-            inputs[11] = uint256(_chainId);
+            inputs[11] = uint256(_args.typedChainId);
             encodedInput = abi.encodePacked(inputs);
         } else {
             require(false, "Invalid edges");

@@ -138,29 +138,31 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint256 externalNullifier,
         // TODO: Create standard encoding for which order each root is supposed to be at.
         bytes calldata roots,
+        uint256 root,
+        uint256 typedChainId,
         uint256[8] calldata proof
     ) external override {
         // TODO: check here if roots match?
-        uint256 root = getRoot(groupId);
+        // uint256 root = getRoot(groupId);
         uint8 depth = getDepth(groupId);
         uint8 maxEdges = getMaxEdges(groupId);
-        bytes32[] memory roots_decoded;
+        // bytes32[] memory roots_decoded;
 
         if (depth == 0) {
             revert Semaphore__GroupDoesNotExist();
         }
 
-        roots_decoded = abi.decode(roots, (bytes32[]));
+        // roots_decoded = abi.decode(roots, (bytes32[]));
          // TODO: add all if conditions correctly
         // if (maxEdges == 1) {
         //      roots = abi.decode(roots_bytes, (bytes32[2]));
         // } 
 
-        verifyRoots(groupId, roots);
+        // verifyRoots(groupId, roots);
 
         SemaphoreVerifier verifier = verifiers[depth];
 
-        _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges, root);
+        _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges, typedChainId, root);
 
         _saveNullifierHash(nullifierHash);
 

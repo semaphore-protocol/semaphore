@@ -76,32 +76,36 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         emit PollStarted(pollId, _msgSender(), encryptionKey);
     }
 
-    /// @dev See {ISemaphoreVoting-castVote}.
-    function castVote(
-        bytes32 vote,
-        uint256 nullifierHash,
-        uint256 pollId,
-        bytes calldata roots,
-        uint256[8] calldata proof
-    ) public override onlyCoordinator(pollId) {
-        Poll memory poll = polls[pollId];
-
-        require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
-
-        uint8 depth = getDepth(pollId);
-        uint256 root = getRoot(pollId);
-        uint8 maxEdges = getMaxEdges(pollId);
-        SemaphoreVerifier verifier = verifiers[depth];
-
-        // require(contract_root == root, "merkle root supplied does not match current contract root");
-        // _verifyProof(vote, root, nullifierHash, pollId, proof, verifier);
-        _verifyProof(vote, nullifierHash, pollId, roots, proof, verifier, maxEdges, root);
-
-        // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).
-        _saveNullifierHash(nullifierHash);
-
-        emit VoteAdded(pollId, vote);
-    }
+    // /// @dev See {ISemaphoreVoting-castVote}.
+    // function castVote(
+    //     bytes32 vote,
+    //     uint256 nullifierHash,
+    //     uint256 pollId,
+    //     bytes calldata roots,
+    //     uint256 root,
+    //     uint256 typedChainId,
+    //     uint256[8] calldata proof
+    // ) public override onlyCoordinator(pollId) {
+    //     {
+    //         Poll memory poll = polls[pollId];
+    //
+    //         require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
+    //
+    //         uint8 depth = getDepth(pollId);
+    //         // uint256 root = getRoot(pollId);
+    //         uint8 maxEdges = getMaxEdges(pollId);
+    //         SemaphoreVerifier verifier = verifiers[depth];
+    //
+    //         // require(contract_root == root, "merkle root supplied does not match current contract root");
+    //         // _verifyProof(vote, root, nullifierHash, pollId, proof, verifier);
+    //         _verifyProof(vote, nullifierHash, pollId, roots, proof, verifier, maxEdges, typedChainId, root);
+    //     }
+    //
+    //     // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).
+    //     _saveNullifierHash(nullifierHash);
+    //
+    //     emit VoteAdded(pollId, vote);
+    // }
 
     /// @dev See {ISemaphoreVoting-publishDecryptionKey}.
     function endPoll(uint256 pollId, uint256 decryptionKey) public override onlyCoordinator(pollId) {

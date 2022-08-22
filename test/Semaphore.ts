@@ -5,7 +5,7 @@ import { Semaphore as SemaphoreContract } from "../build/typechain"
 import { config } from "../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
 import { Group } from "../packages/group/src"
-import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "../packages/proof/src/"
+import { FullProof, generateProof, packToSolidityProof, SolidityProof, BigNumberish } from "../packages/proof/src/"
 import { toFixedHex, VerifierContractInfo, createRootsBytes, createIdentities } from "./utils"
 /** BigNumber to hex string of specified length */
 
@@ -170,6 +170,7 @@ describe("Semaphore", () => {
 
         let fullProof: FullProof
         let solidityProof: SolidityProof
+        // let roots: string[]
         let roots: string[]
 
         before(async () => {
@@ -178,8 +179,10 @@ describe("Semaphore", () => {
             await contract.addMember(groupId2, members[0])
             await contract.addMember(groupId2, members[1])
             await contract.addMember(groupId2, members[2])
-            const root = await contract.getRoot(groupId2)
-            roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
+            // const root = await contract.getRoot(groupId2)
+            roots = [BigNumber.from(group.root).toHexString(), toFixedHex(0)].reverse()
+            console.log("ROOTS: ", roots)
+            console.log("createRootsBytes(ROOTS): ", createRootsBytes(roots))
 
             fullProof = await generateProof(identities[0], group, roots, BigInt(Date.now()), signal, {
                 wasmFilePath,
@@ -197,6 +200,8 @@ describe("Semaphore", () => {
                 0,
                 0,
                 createRootsBytes(roots),
+                fullProof.publicSignals.calculatedRoot,
+                fullProof.publicSignals.chainID,
                 [0, 0, 0, 0, 0, 0, 0, 0]
             )
 
@@ -210,6 +215,8 @@ describe("Semaphore", () => {
                 fullProof.publicSignals.nullifierHash,
                 0,
                 createRootsBytes(roots),
+                fullProof.publicSignals.calculatedRoot,
+                fullProof.publicSignals.chainID,
                 solidityProof
             )
             await expect(transaction).to.be.revertedWith("invalidProof")
@@ -222,6 +229,8 @@ describe("Semaphore", () => {
                 fullProof.publicSignals.nullifierHash,
                 fullProof.publicSignals.externalNullifier,
                 createRootsBytes(fullProof.publicSignals.roots),
+                fullProof.publicSignals.calculatedRoot,
+                fullProof.publicSignals.chainID,
                 solidityProof
             )
 
