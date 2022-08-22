@@ -12,7 +12,7 @@ interface ISemaphoreGroups {
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.
     /// @param zeroValue: Zero value of the tree.
-    event GroupCreated(uint256 indexed groupId, uint8 depth, uint256 zeroValue);
+    event GroupCreated(uint256 indexed groupId, uint256 depth, uint256 zeroValue);
 
     /// @dev Emitted when a new identity commitment is added.
     /// @param groupId: Group id of the group.
@@ -34,7 +34,7 @@ interface ISemaphoreGroups {
     /// @dev Returns the depth of the tree of a group.
     /// @param groupId: Id of the group.
     /// @return Depth of the group tree.
-    function getDepth(uint256 groupId) external view returns (uint8);
+    function getDepth(uint256 groupId) external view returns (uint256);
 
     /// @dev Returns the number of tree leaves of a group.
     /// @param groupId: Id of the group.

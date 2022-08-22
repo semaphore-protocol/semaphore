@@ -9,7 +9,7 @@ import "./base/SemaphoreGroups.sol";
 /// @title Semaphore
 contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a tree depth and returns its verifier address.
-    mapping(uint8 => IVerifier) public verifiers;
+    mapping(uint256 => IVerifier) public verifiers;
 
     /// @dev Gets a group id and returns the group admin address.
     mapping(uint256 => address) public groupAdmins;
@@ -25,7 +25,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
     /// @dev Checks if there is a verifier for the given tree depth.
     /// @param depth: Depth of the tree.
-    modifier onlySupportedDepth(uint8 depth) {
+    modifier onlySupportedDepth(uint256 depth) {
         if (address(verifiers[depth]) == address(0)) {
             revert Semaphore__TreeDepthIsNotSupported();
         }
@@ -46,7 +46,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev See {ISemaphore-createGroup}.
     function createGroup(
         uint256 groupId,
-        uint8 depth,
+        uint256 depth,
         uint256 zeroValue,
         address admin
     ) external override onlySupportedDepth(depth) {
@@ -88,7 +88,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint256[8] calldata proof
     ) external override {
         uint256 root = getRoot(groupId);
-        uint8 depth = getDepth(groupId);
+        uint256 depth = getDepth(groupId);
 
         if (depth == 0) {
             revert Semaphore__GroupDoesNotExist();

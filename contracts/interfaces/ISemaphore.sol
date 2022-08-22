@@ -9,7 +9,7 @@ interface ISemaphore {
 
     struct Verifier {
         address contractAddress;
-        uint8 merkleTreeDepth;
+        uint256 merkleTreeDepth;
     }
 
     /// @dev Emitted when an admin is assigned to a group.
@@ -45,7 +45,7 @@ interface ISemaphore {
     /// @param admin: Admin of the group.
     function createGroup(
         uint256 groupId,
-        uint8 depth,
+        uint256 depth,
         uint256 zeroValue,
         address admin
     ) external;

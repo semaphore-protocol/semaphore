@@ -9,7 +9,7 @@ import "../base/SemaphoreGroups.sol";
 /// @dev The following code allows you to create polls, add voters and allow them to vote anonymously.
 contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a tree depth and returns its verifier address.
-    mapping(uint8 => IVerifier) internal verifiers;
+    mapping(uint256 => IVerifier) internal verifiers;
 
     /// @dev Gets a poll id and returns the poll data.
     mapping(uint256 => Poll) internal polls;
@@ -20,7 +20,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     /// used to verify that the proof is correct.
     /// @param depths: Three depths used in verifiers.
     /// @param verifierAddresses: Verifier addresses.
-    constructor(uint8[] memory depths, address[] memory verifierAddresses) {
+    constructor(uint256[] memory depths, address[] memory verifierAddresses) {
         require(
             depths.length == verifierAddresses.length,
             "SemaphoreVoting: parameters lists does not have the same length"
@@ -45,7 +45,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     function createPoll(
         uint256 pollId,
         address coordinator,
-        uint8 depth
+        uint256 depth
     ) public override {
         require(address(verifiers[depth]) != address(0), "SemaphoreVoting: depth value is not supported");
 
@@ -87,7 +87,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
         require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
 
-        uint8 depth = getDepth(pollId);
+        uint256 depth = getDepth(pollId);
         uint256 root = getRoot(pollId);
         IVerifier verifier = verifiers[depth];
 
