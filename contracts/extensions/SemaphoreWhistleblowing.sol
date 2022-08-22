@@ -11,7 +11,7 @@ import "../base/SemaphoreGroups.sol";
 /// Leaks can be IPFS hashes, permanent links or other kinds of reference.
 contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a tree depth and returns its verifier address.
-    mapping(uint8 => IVerifier) internal verifiers;
+    mapping(uint256 => IVerifier) internal verifiers;
 
     /// @dev Gets an editor address and return their entity.
     mapping(address => uint256) private entities;
@@ -22,7 +22,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     /// used to verify that the proof is correct.
     /// @param depths: Three depths used in verifiers.
     /// @param verifierAddresses: Verifier addresses.
-    constructor(uint8[] memory depths, address[] memory verifierAddresses) {
+    constructor(uint256[] memory depths, address[] memory verifierAddresses) {
         require(
             depths.length == verifierAddresses.length,
             "SemaphoreWhistleblowing: parameters lists does not have the same length"
@@ -47,7 +47,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     function createEntity(
         uint256 entityId,
         address editor,
-        uint8 depth
+        uint256 depth
     ) public override {
         require(address(verifiers[depth]) != address(0), "SemaphoreWhistleblowing: depth value is not supported");
 
@@ -80,7 +80,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         uint256 entityId,
         uint256[8] calldata proof
     ) public override onlyEditor(entityId) {
-        uint8 depth = getDepth(entityId);
+        uint256 depth = getDepth(entityId);
         uint256 root = getRoot(entityId);
         IVerifier verifier = verifiers[depth];
 

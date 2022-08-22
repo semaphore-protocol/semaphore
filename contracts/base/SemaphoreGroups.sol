@@ -21,7 +21,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     /// @param zeroValue: Zero value of the tree.
     function _createGroup(
         uint256 groupId,
-        uint8 depth,
+        uint256 depth,
         uint256 zeroValue
     ) internal virtual {
         if (groupId >= SNARK_SCALAR_FIELD) {
@@ -81,7 +81,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreGroups-getDepth}.
-    function getDepth(uint256 groupId) public view virtual override returns (uint8) {
+    function getDepth(uint256 groupId) public view virtual override returns (uint256) {
         return groups[groupId].depth;
     }
 
