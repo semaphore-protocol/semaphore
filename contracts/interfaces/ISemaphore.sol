@@ -12,12 +12,6 @@ interface ISemaphore {
         uint8 merkleTreeDepth;
     }
 
-    // struct Verifiers {
-    //     Verifier v2;
-    //     Verifier v7;
-    //     uint8 merkleTreeDepth;
-    // }
-
     /// @dev Emitted when an admin is assigned to a group.
     /// @param groupId: Id of the group.
     /// @param oldAdmin: Old admin of the group.
@@ -53,10 +47,6 @@ interface ISemaphore {
         bytes calldata roots
     ) external view returns (bytes32[] memory roots_decoded);
 
-    // function verifyRoots(
-    //     uint256 groupId,
-    //     bytes calldata roots
-    // ) external view returns (bool is_valid);
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.

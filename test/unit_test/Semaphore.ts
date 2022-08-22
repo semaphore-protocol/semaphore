@@ -1,13 +1,12 @@
 import { expect } from "chai"
 import { constants, Signer, utils, BigNumber } from "ethers"
 import { run } from "hardhat"
-import { Semaphore as SemaphoreContract } from "../build/typechain"
-import { config } from "../package.json"
+import { Semaphore as SemaphoreContract } from "../../build/typechain"
+import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Group } from "../packages/group/src"
-import { FullProof, generateProof, packToSolidityProof, SolidityProof, BigNumberish } from "../packages/proof/src/"
-import { toFixedHex, VerifierContractInfo, createRootsBytes, createIdentities } from "./utils"
-/** BigNumber to hex string of specified length */
+import { Group } from "../../packages/group/src"
+import { FullProof, generateProof, packToSolidityProof, SolidityProof, BigNumberish } from "../../packages/proof/src/"
+import { toFixedHex, VerifierContractInfo, createRootsBytes, createIdentities } from "../utils"
 
 describe("Semaphore", () => {
     let contract: SemaphoreContract
@@ -114,12 +113,7 @@ describe("Semaphore", () => {
             await expect(transaction).to.emit(contract, "MemberAdded").withArgs(
                 groupId,
                 members[0],
-                // TODO: Double check if root is actually supposed to be different
-                // prev_root:
-                // "18951329906296061785889394467312334959162736293275411745101070722914184798221"
-                // new root:
                 group.root
-                // "13363801133440369172344440658363322195671530462716685761435662705051278097748"
             )
         })
     })
@@ -133,13 +127,6 @@ describe("Semaphore", () => {
 
         it("Should remove a member from an existing group", async () => {
             const groupId = 100
-            // NOTE: hex (zero value) taken from contracts/base/LinkableIncrementalBinaryTree.sol
-            // first position in the zeros function
-
-            // let hex = "2fe54c60d3acabf3343a35b6eba15db4821b340f76e741e2249685ed4899af6c";
-            // if (hex.length % 2) { hex = '0' + hex; }
-            // const bn = BigInt('0x' + hex);
-            // const zero= bn.toString(10);
             const group = new Group(treeDepth, BigInt(zeroValue))
 
             group.addMembers([BigInt(1), BigInt(2), BigInt(3)])
@@ -169,11 +156,8 @@ describe("Semaphore", () => {
         group.addMember(members[1])
         group.addMember(members[2])
 
-        // group.addMembers(members.slice(0, 2))
-
         let fullProof: FullProof
         let solidityProof: SolidityProof
-        // let roots: string[]
         let roots: string[]
 
         before(async () => {
@@ -182,18 +166,14 @@ describe("Semaphore", () => {
             await contract.addMember(groupId2, members[0])
             await contract.addMember(groupId2, members[1])
             await contract.addMember(groupId2, members[2])
-            // const root = await contract.getRoot(groupId2)
+
             roots = [BigNumber.from(group.root).toHexString(), toFixedHex(0)]
-            console.log("ROOTS: ", roots)
-            console.log("createRootsBytes(ROOTS): ", createRootsBytes(roots))
 
             fullProof = await generateProof(identities[0], group, roots, BigInt(Date.now()), signal, {
                 wasmFilePath,
                 zkeyFilePath
             })
-            console.log("fullProof: ", fullProof)
             solidityProof = packToSolidityProof(fullProof.proof)
-            console.log("calldata: ", solidityProof)
         })
 
         it("Should not verify a proof if the group does not exist", async () => {

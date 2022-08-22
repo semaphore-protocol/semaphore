@@ -88,6 +88,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     ) public override onlyEditor(entityId) {
         SemaphoreVerifier verifier;
         uint8 maxEdges = getMaxEdges(entityId);
+        // TODO: Stack too deep error. Can we improve it?
         {
             uint8 depth = getDepth(entityId);
             verifier = verifiers[depth];

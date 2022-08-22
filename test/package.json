@@ -1,0 +1,24 @@
+{
+    "name": "@semaphore-anchor/tests",
+    "version": "0.0.1",
+    "description": "Semaphore contracts to manage groups and broadcast anonymous signals.",
+    "license": "MIT",
+    "files": [
+        "**/*.ts"
+    ],
+    "homepage": "https://github.com/semaphore-protocol/semaphore.git#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/semaphore-protocol/semaphore.git.git"
+    },
+    "bugs": {
+        "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@openzeppelin/contracts": "^4.4.2",
+        "@zk-kit/incremental-merkle-tree.sol": "^1.0.0"
+    }
+}

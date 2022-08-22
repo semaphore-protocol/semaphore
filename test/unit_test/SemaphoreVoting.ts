@@ -1,19 +1,19 @@
 import { expect } from "chai"
 import { ethers, run } from "hardhat"
-import { SemaphoreVoting } from "../build/typechain"
+import { SemaphoreVoting } from "../../build/typechain"
 import { BigNumber, Signer, utils } from "ethers"
-import { config } from "../package.json"
+import { config } from "../../package.json"
 
-import { Identity } from "../packages/identity/src"
-import { Group } from "../packages/group/src"
+import { Identity } from "../../packages/identity/src"
+import { Group } from "../../packages/group/src"
 import {
     generateNullifierHash,
     generateProof,
     packToSolidityProof,
     PublicSignals,
     SolidityProof
-} from "../packages/proof/src"
-import { VerifierContractInfo, toFixedHex, createRootsBytes } from "./utils"
+} from "../../packages/proof/src"
+import { VerifierContractInfo, toFixedHex, createRootsBytes } from "../utils"
 
 describe("SemaphoreVoting", () => {
     let contract: SemaphoreVoting
@@ -207,8 +207,6 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not cast a vote if the poll is not ongoing", async () => {
-            const root = await contract.getRoot(pollIds[2])
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const transaction = contract
                 .connect(signers[1])
                 .castVote(

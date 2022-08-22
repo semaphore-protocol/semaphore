@@ -93,7 +93,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         groups[_groupId].updateEdge(_sourceChainID, _root, _leafIndex, _target);
     }
 
-    // TODO: Generalize this over maxEdges?
+    // TODO: Generalize this over maxEdges
     // // Function exposed for testing purposes
     function verifyRoots(uint256 groupId, bytes calldata roots,  uint8 maxEdges) public override view returns (bool) {
         bytes32[2] memory roots_decoded = abi.decode(roots, (bytes32[2]));
@@ -105,10 +105,6 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(groups[groupId], roots_encoded);
         return valid_roots;
     }
-        // TODO: Add if conditions correctly for diff maxEdges
-    //     if (getMaxEdges(groupId) == 1) {
-    // 
-    //     }
 
     /// @dev See {ISemaphoreGroups-getRoot}.
     function getRoot(uint256 groupId) public view virtual override returns (uint256) {

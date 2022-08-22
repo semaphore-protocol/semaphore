@@ -1,11 +1,11 @@
 import { expect } from "chai"
 import { Signer, utils, BigNumber } from "ethers"
 import { ethers, run } from "hardhat"
-import { SemaphoreWhistleblowing } from "../build/typechain"
-import { config } from "../package.json"
+import { SemaphoreWhistleblowing } from "../../build/typechain"
+import { config } from "../../package.json"
 
-import { Group } from "../packages/group/src"
-import { Identity } from "../packages/identity/src"
+import { Group } from "../../packages/group/src"
+import { Identity } from "../../packages/identity/src"
 
 import {
     generateNullifierHash,
@@ -13,9 +13,9 @@ import {
     packToSolidityProof,
     PublicSignals,
     SolidityProof
-} from "../packages/proof/src"
+} from "../../packages/proof/src"
 
-import { toFixedHex, VerifierContractInfo, createRootsBytes, createIdentities } from "./utils"
+import { toFixedHex, VerifierContractInfo, createRootsBytes, createIdentities } from "../utils"
 
 describe("SemaphoreWhistleblowing", () => {
     let contract: SemaphoreWhistleblowing
@@ -213,8 +213,6 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should not publish a leak if the proof is not valid", async () => {
-            const root = await contract.getRoot(entityIds[0])
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const nullifierHash = generateNullifierHash(entityIds[0], identity.getNullifier(), chainID)
 
             const transaction = contract
@@ -233,8 +231,6 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should publish a leak", async () => {
-            const root = await contract.getRoot(entityIds[1])
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const transaction = contract
                 .connect(signers[1])
                 .publishLeak(
