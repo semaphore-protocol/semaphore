@@ -1,15 +1,14 @@
 import { expect } from "chai"
 import { constants, Signer, utils, BigNumber, providers, Wallet } from "ethers"
-import { ethers as hreEthers, run } from "hardhat"
+import { ethers as hreEthers } from "hardhat"
 import { Semaphore as SemaphoreContract } from "../build/typechain"
 import { config } from "../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
 import { Identity } from "../packages/identity/src"
 import { Group } from "../packages/group/src"
-import { verifyProof, FullProof, generateProof, packToSolidityProof, SolidityProof } from "../packages/proof/src/"
-import { toFixedHex, VerifierContractInfo,createRootsBytes, createRootsBytesWeb3, createIdentities } from "./utils"
+import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "../packages/proof/src/"
+import { toFixedHex, createRootsBytes, createIdentities } from "./utils"
 import { private_keys as ganacheAccounts } from "../accounts.json";
-/** BigNumber to hex string of specified length */
 
 describe("CrossChain", () => {
     let contractA: SemaphoreContract
@@ -28,7 +27,7 @@ describe("CrossChain", () => {
     let allRootsB: string[]
 
     const treeDepth = Number(process.env.TREE_DEPTH) | 20
-    const groupId = 1
+    const groupId = 9
     const maxEdges = 1
     const providerA = new providers.JsonRpcProvider("http://127.0.0.1:8545");
     const providerB = new providers.JsonRpcProvider("http://127.0.0.1:8546");
@@ -136,7 +135,6 @@ describe("CrossChain", () => {
         let roots_zero: string[]
         let rootA: BigNumber
         let rootB: BigNumber
-        // const groupId2 = groupId * 100000
 
         before(async () => {
             rootA = await contractA.getRoot(groupId)
@@ -147,7 +145,8 @@ describe("CrossChain", () => {
         it("Should not verify if updateEdge has not been called", async () => {
             const transaction = contractA.connect(signersA[1]).verifyRoots(
                 groupId,
-                createRootsBytesWeb3(roots),
+                createRootsBytes(roots),
+                maxEdges
             )
             await expect(transaction).to.be.revertedWith("Not initialized edges must be set to 0")
         })
@@ -164,7 +163,8 @@ describe("CrossChain", () => {
 
             const is_valid = await contractB.connect(signersB[1]).verifyRoots(
                 groupId,
-                createRootsBytesWeb3(roots),
+                createRootsBytes(roots),
+                maxEdges
             )
             expect(is_valid).to.equal(true)
         })
@@ -173,7 +173,8 @@ describe("CrossChain", () => {
             const roots = [allRootsA[0], allRootsB[0]]
             const transaction = contractB.connect(signersB[1]).verifyRoots(
                 groupId,
-                createRootsBytesWeb3(roots),
+                createRootsBytes(roots),
+                maxEdges
             )
             await expect(transaction).to.be.revertedWith("Cannot find your merkle root")
         })
@@ -184,7 +185,8 @@ describe("CrossChain", () => {
 
             const transaction = contractB.connect(signersB[1]).verifyRoots(
                 groupId,
-                createRootsBytesWeb3(roots),
+                createRootsBytes(roots),
+                maxEdges
             )
             await expect(transaction).to.be.revertedWith("Neighbour root not found")
         })
@@ -201,7 +203,8 @@ describe("CrossChain", () => {
 
             const is_valid = await contractB.connect(signersB[1]).verifyRoots(
                 groupId,
-                createRootsBytesWeb3(roots),
+                createRootsBytes(roots),
+                maxEdges
             )
             expect(is_valid).to.equal(true)
         })
@@ -227,21 +230,15 @@ describe("CrossChain", () => {
                 wasmFilePath,
                 zkeyFilePath
             })
-            console.log("ROOTS: ", chainA_not_updated_roots)
-            console.log("fullProof: ", fullProof_local_chainA)
             solidityProof_local_chainA = packToSolidityProof(fullProof_local_chainA.proof)
 
-            chainB_not_updated_roots = [rootB.toHexString(), toFixedHex(BigNumber.from(10).toHexString(), 32)]
+            chainB_not_updated_roots = [rootB.toHexString(), allRootsA[0]]
             fullProof_local_chainB = await generateProof(identitiesB[2], groupB, chainB_not_updated_roots, BigInt(Date.now()*100), signal, {
                 wasmFilePath,
                 zkeyFilePath
             })
 
-            // console.log("fullProof: ", fullProof_local_chainA)
             solidityProof_local_chainB = packToSolidityProof(fullProof_local_chainB.proof)
-            // console.log("calldata: ", solidityProof_local_chainB)
-            chainB_not_updated_roots = [rootB.toHexString(), toFixedHex(BigNumber.from(0), 32)]
-
         })
 
         it("Should verify local proof chainA", async () => {
@@ -255,13 +252,7 @@ describe("CrossChain", () => {
                 fullProof_local_chainA.publicSignals.chainID,
                 solidityProof_local_chainA
             )
-            // console.log(transaction)
-            // const receipt_tx = await transaction
-            // console.log(receipt_tx)
-            // const receipt = await receipt_tx.wait()
-            // console.log(receipt)
             await expect(transaction).to.emit(contractA, "ProofVerified").withArgs(groupId, bytes32Signal)
-            // await expect(transaction).to.be.revertedWith("Not initialized edges must be set to 0")
         })
 
         it("Should verify local proof chainB", async () => {
@@ -278,50 +269,7 @@ describe("CrossChain", () => {
             await expect(transaction).to.emit(contractB, "ProofVerified").withArgs(groupId, bytes32Signal)
         })
 
-        // it("Should verify if edges are updated", async () => {
-        //     const rootA = await contractA.getRoot(groupId)
-        //     const rootB = await contractB.getRoot(groupId)
-        //
-        //     const chainB_roots = [rootB.toHexString(), rootA.toHexString()]
-        //     const fullProof = await generateProof(identitiesA[2], groupA, chainB_roots.reverse(), BigInt(Date.now()*2), signal, {
-        //         wasmFilePath,
-        //         zkeyFilePath
-        //     })
-        //     // console.log("fullProof: ", fullProof)
-        //     const solidityProof = packToSolidityProof(fullProof.proof)
-        //     // console.log("calldata: ", solidityProof)
-        //
-        //     const tx_update = contractB.connect(signersB[1]).updateEdge(
-        //         groupId,
-        //         chainIDA,
-        //         rootA.toHexString(),
-        //         2,
-        //         toFixedHex(BigInt(0), 32)
-        //     )
-        //     // console.log(tx_update)
-        //     const receipt_tx_update = await tx_update;
-        //     // console.log(receipt_tx_update)
-        //     const receipt_update = await receipt_tx_update.wait();
-        //     // console.log(receipt_update)
-        //     //
-        //     const transaction = contractA.connect(signersA[1]).verifyProof(
-        //         groupId,
-        //         bytes32Signal,
-        //         fullProof.publicSignals.nullifierHash,
-        //         fullProof.publicSignals.externalNullifier,
-        //         createRootsBytes(fullProof.publicSignals.roots),
-        //         solidityProof
-        //     )
-        //     // console.log(transaction)
-        //     const receipt_tx = await transaction
-        //     // console.log(receipt_tx)
-        //     const receipt = await receipt_tx.wait()
-        //     // console.log(receipt)
-        //     await expect(transaction).to.emit(contractA, "ProofVerified").withArgs(groupId, bytes32Signal)
-        // })
-
         it("Should verify if edges are updated2", async () => {
-
             groupA.addMember(membersA[3])
             const tx4a = contractA.connect(signersA[1]).addMember(groupId, membersA[3])
             await expect(tx4a).to.emit(contractA, "MemberAdded").withArgs(
@@ -345,12 +293,6 @@ describe("CrossChain", () => {
                 3,
                 toFixedHex(BigInt(0), 32)
             )
-            console.log(tx_update)
-            const receipt_tx_update = await tx_update;
-            // console.log(receipt_tx_update)
-            const receipt_update = await receipt_tx_update.wait();
-            console.log(receipt_update)
-
             const rootA = await contractA.getRoot(groupId)
             const rootB = await contractB.getRoot(groupId)
 
@@ -359,11 +301,8 @@ describe("CrossChain", () => {
                 wasmFilePath,
                 zkeyFilePath
             })
-            // console.log("fullProof: ", fullProof)
             const solidityProof = packToSolidityProof(fullProof.proof)
-            // console.log("calldata: ", solidityProof)
 
-            //
             const transaction = contractB.connect(signersB[1]).verifyProof(
                 groupId,
                 bytes32Signal,
@@ -374,37 +313,7 @@ describe("CrossChain", () => {
                 fullProof.publicSignals.chainID,
                 solidityProof
             )
-            // console.log(transaction)
-            const receipt_tx = await transaction
-            // console.log(receipt_tx)
-            const receipt = await receipt_tx.wait()
-            // console.log(receipt)
             await expect(transaction).to.emit(contractB, "ProofVerified").withArgs(groupId, bytes32Signal)
         })
-        // it("Should verify", async () => {
-        //     const tx_update = contractB.connect(signersB[1]).updateEdge(
-        //         groupId,
-        //         chainIDA,
-        //         roots[0],
-        //         2,
-        //         toFixedHex(BigInt(0), 32)
-        //     )
-        //     // console.log(tx_update)
-        //     const receipt_tx_update = await tx_update;
-        //     console.log(receipt_tx_update)
-        //     const receipt_update = await receipt_tx_update.wait();
-        //     console.log(receipt_update)
-        //
-        //     const transaction = contractB.verifyProof(
-        //         groupId,
-        //         bytes32Signal,
-        //         fullProof_chainA.publicSignals.nullifierHash,
-        //         fullProof_chainA.publicSignals.externalNullifier,
-        //         createRootsBytes(roots),
-        //         solidityProof_chainA
-        //     )
-        //     console.log(transaction)
-        //     await expect(transaction).to.emit(contractB, "ProofVerified()").withArgs(groupId, bytes32Signal)
-        // })
     })
 })

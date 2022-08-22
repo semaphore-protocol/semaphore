@@ -158,7 +158,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         //      roots = abi.decode(roots_bytes, (bytes32[2]));
         // } 
 
-        // verifyRoots(groupId, roots);
+        verifyRoots(groupId, roots, maxEdges);
 
         SemaphoreVerifier verifier = verifiers[depth];
 

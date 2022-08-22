@@ -165,8 +165,11 @@ describe("Semaphore", () => {
         const groupId2 = 1337
 
         const group = new Group(treeDepth, BigInt(zeroValue))
+        group.addMember(members[0])
+        group.addMember(members[1])
+        group.addMember(members[2])
 
-        group.addMembers(members)
+        // group.addMembers(members.slice(0, 2))
 
         let fullProof: FullProof
         let solidityProof: SolidityProof
@@ -180,7 +183,7 @@ describe("Semaphore", () => {
             await contract.addMember(groupId2, members[1])
             await contract.addMember(groupId2, members[2])
             // const root = await contract.getRoot(groupId2)
-            roots = [BigNumber.from(group.root).toHexString(), toFixedHex(0)].reverse()
+            roots = [BigNumber.from(group.root).toHexString(), toFixedHex(0)]
             console.log("ROOTS: ", roots)
             console.log("createRootsBytes(ROOTS): ", createRootsBytes(roots))
 

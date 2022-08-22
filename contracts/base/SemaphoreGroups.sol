@@ -93,17 +93,17 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         groups[_groupId].updateEdge(_sourceChainID, _root, _leafIndex, _target);
     }
 
+    // TODO: Generalize this over maxEdges?
     // // Function exposed for testing purposes
-    function verifyRoots(uint256 groupId, bytes calldata roots) public override view returns (bool) {
-        // console.log("input roots[0]: ", roots[0]);
-        // console.log("input roots[0]: ", roots[1]);
-        bytes32[] memory roots_decoded = abi.decode(roots, (bytes32[]));
-        bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(groups[groupId], roots_decoded);
-        // console.log("is_valid: ", valid_roots);
+    function verifyRoots(uint256 groupId, bytes calldata roots,  uint8 maxEdges) public override view returns (bool) {
+        bytes32[2] memory roots_decoded = abi.decode(roots, (bytes32[2]));
+
+        bytes32[] memory roots_encoded = new bytes32[](roots_decoded.length);
+        for (uint i = 0; i < roots_decoded.length; i++) {
+            roots_encoded[i] = roots_decoded[i];
+        }
+        bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(groups[groupId], roots_encoded);
         return valid_roots;
-        // if (!valid_roots) {
-        //     revert Semaphore__InvalidCurrentChainRoot();
-        // }
     }
         // TODO: Add if conditions correctly for diff maxEdges
     //     if (getMaxEdges(groupId) == 1) {

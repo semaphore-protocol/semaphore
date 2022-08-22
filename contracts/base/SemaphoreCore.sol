@@ -35,7 +35,7 @@ contract SemaphoreCore is ISemaphoreCore {
         uint256 typedChainId,
         uint256 root
     ) internal view {
-        // require(nullifierHashes[nullifierHash] == false, "You are using same nullifier twice");
+        require(nullifierHashes[nullifierHash] == false, "You are using same nullifier twice");
 
         uint256 signalHash = _hashSignal(signal);
 
