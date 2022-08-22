@@ -12,11 +12,22 @@ async function main() {
             name: `Verifier${treeDepth}`,
             address
         })
+
+        // Verify verifier.
+        await run("verify:verify", { address })
     }
 
     // Deploy Semaphore.
     const { address } = await run("deploy:semaphore", {
         verifiers: deployedContracts.map((c) => ({ merkleTreeDepth: c.name.substring(8), contractAddress: c.address }))
+    })
+
+    // Verify Semaphore.
+    await run("verify:verify", {
+        address,
+        constructorArguments: [
+            deployedContracts.map((c) => ({ merkleTreeDepth: c.name.substring(8), contractAddress: c.address }))
+        ]
     })
 
     deployedContracts.push({
