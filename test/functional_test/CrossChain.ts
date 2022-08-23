@@ -249,7 +249,6 @@ describe("CrossChain", () => {
                 fullProof_local_chainA.publicSignals.externalNullifier,
                 createRootsBytes(fullProof_local_chainA.publicSignals.roots),
                 fullProof_local_chainA.publicSignals.calculatedRoot,
-                fullProof_local_chainA.publicSignals.chainID,
                 solidityProof_local_chainA
             )
             await expect(transaction).to.emit(contractA, "ProofVerified").withArgs(groupId, bytes32Signal)
@@ -263,7 +262,6 @@ describe("CrossChain", () => {
                 fullProof_local_chainB.publicSignals.externalNullifier,
                 createRootsBytes(fullProof_local_chainB.publicSignals.roots),
                 fullProof_local_chainB.publicSignals.calculatedRoot,
-                fullProof_local_chainB.publicSignals.chainID,
                 solidityProof_local_chainB
             )
             await expect(transaction).to.emit(contractB, "ProofVerified").withArgs(groupId, bytes32Signal)
@@ -310,7 +308,6 @@ describe("CrossChain", () => {
                 fullProof.publicSignals.externalNullifier,
                 createRootsBytes(fullProof.publicSignals.roots),
                 fullProof.publicSignals.calculatedRoot,
-                fullProof.publicSignals.chainID,
                 solidityProof
             )
             await expect(transaction).to.emit(contractB, "ProofVerified").withArgs(groupId, bytes32Signal)

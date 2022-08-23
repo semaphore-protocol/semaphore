@@ -83,7 +83,6 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         uint256 entityId,
         bytes calldata roots,
         uint256 root,
-        uint256 typedChainId,
         uint256[8] calldata proof
     ) public override onlyEditor(entityId) {
         SemaphoreVerifier verifier;
@@ -95,7 +94,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         }
         verifyRoots(entityId, roots, maxEdges);
 
-        _verifyProof(leak, nullifierHash, entityId, roots, proof, verifier, maxEdges, typedChainId, root);
+        _verifyProof(leak, nullifierHash, entityId, roots, proof, verifier, maxEdges, root);
 
         emit LeakPublished(entityId, leak);
     }

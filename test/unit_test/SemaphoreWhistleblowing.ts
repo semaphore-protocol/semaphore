@@ -209,7 +209,6 @@ describe("SemaphoreWhistleblowing", () => {
                 entityIds[0],
                 createRootsBytes(publicSignals.roots),
                 publicSignals.calculatedRoot,
-                publicSignals.chainID,
                 solidityProof
             )
 
@@ -227,7 +226,6 @@ describe("SemaphoreWhistleblowing", () => {
                     entityIds[1], 
                     createRootsBytes(publicSignals.roots),
                     publicSignals.calculatedRoot,
-                    publicSignals.chainID,
                     solidityProof
                 )
 
@@ -243,7 +241,6 @@ describe("SemaphoreWhistleblowing", () => {
                     entityIds[1],
                     createRootsBytes(publicSignals.roots),
                     publicSignals.calculatedRoot,
-                    publicSignals.chainID,
                     solidityProof
                 )
 

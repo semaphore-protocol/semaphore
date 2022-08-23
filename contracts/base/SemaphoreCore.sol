@@ -32,7 +32,6 @@ contract SemaphoreCore is ISemaphoreCore {
         uint256[8] calldata proof,
         SemaphoreVerifier verifier,
         uint8 maxEdges,
-        uint256 typedChainId,
         uint256 root
     ) internal view {
         require(nullifierHashes[nullifierHash] == false, "You are using same nullifier twice");
@@ -45,7 +44,6 @@ contract SemaphoreCore is ISemaphoreCore {
             nullifierHash: nullifierHash,
             signalHash: signalHash,
             externalNullifier: externalNullifier,
-            typedChainId: typedChainId,
             roots: roots
         });
 

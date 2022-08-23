@@ -71,7 +71,6 @@ interface ISemaphoreVoting {
         uint256 pollId,
         bytes calldata roots,
         uint256 root,
-        uint256 typedChainId,
         uint256[8] calldata proof
     ) external;
 

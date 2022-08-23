@@ -203,7 +203,6 @@ describe("SemaphoreVoting", () => {
                 pollIds[0],
                 createRootsBytes(publicSignals.roots),
                 publicSignals.calculatedRoot,
-                publicSignals.chainID,
                 solidityProof
             )
 
@@ -219,7 +218,6 @@ describe("SemaphoreVoting", () => {
                     pollIds[2], 
                     createRootsBytes(publicSignals.roots),
                     publicSignals.calculatedRoot,
-                    publicSignals.chainID,
                     solidityProof
                 )
 
@@ -237,7 +235,6 @@ describe("SemaphoreVoting", () => {
                     pollIds[1],  
                     createRootsBytes(publicSignals.roots),
                     publicSignals.calculatedRoot,
-                    publicSignals.chainID,
                     solidityProof
                 )
 
@@ -253,7 +250,6 @@ describe("SemaphoreVoting", () => {
                     pollIds[1], 
                     createRootsBytes(publicSignals.roots),
                     publicSignals.calculatedRoot,
-                    publicSignals.chainID,
                     solidityProof
                 )
 
@@ -269,7 +265,6 @@ describe("SemaphoreVoting", () => {
                     pollIds[1], 
                     createRootsBytes(publicSignals.roots),
                     publicSignals.calculatedRoot,
-                    publicSignals.chainID,
                     solidityProof
                 )
 

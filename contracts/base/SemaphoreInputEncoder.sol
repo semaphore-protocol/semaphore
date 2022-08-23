@@ -23,7 +23,6 @@ library SemaphoreInputEncoder {
         uint256 nullifierHash;
         uint256 signalHash;
         uint256 externalNullifier;
-        uint256 typedChainId;
         bytes roots;
     }
 

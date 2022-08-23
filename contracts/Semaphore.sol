@@ -139,7 +139,6 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         // TODO: Create standard encoding for which order each root is supposed to be at.
         bytes calldata roots,
         uint256 root,
-        uint256 typedChainId,
         uint256[8] calldata proof
     ) external override {
         uint8 depth = getDepth(groupId);
@@ -153,7 +152,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
         SemaphoreVerifier verifier = verifiers[depth];
 
-        _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges, typedChainId, root);
+        _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges, root);
 
         _saveNullifierHash(nullifierHash);
 

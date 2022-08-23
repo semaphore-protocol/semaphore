@@ -39,7 +39,6 @@ interface ISemaphore {
         // TODO: Create standard encoding for which order each root is supposed to be at.
         bytes calldata roots,
         uint256 root,
-        uint256 typedChainId,
         uint256[8] calldata proof
     ) external;
 

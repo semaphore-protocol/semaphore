@@ -59,7 +59,6 @@ interface ISemaphoreWhistleblowing {
         uint256 entityId,
         bytes calldata roots,
         uint256 root,
-        uint256 typedChainId,
         uint256[8] calldata proof
     ) external;
 }

@@ -184,7 +184,6 @@ describe("Semaphore", () => {
                 0,
                 createRootsBytes(roots),
                 fullProof.publicSignals.calculatedRoot,
-                fullProof.publicSignals.chainID,
                 [0, 0, 0, 0, 0, 0, 0, 0]
             )
 
@@ -199,7 +198,6 @@ describe("Semaphore", () => {
                 0,
                 createRootsBytes(roots),
                 fullProof.publicSignals.calculatedRoot,
-                fullProof.publicSignals.chainID,
                 solidityProof
             )
             await expect(transaction).to.be.revertedWith("invalidProof")
@@ -213,7 +211,6 @@ describe("Semaphore", () => {
                 fullProof.publicSignals.externalNullifier,
                 createRootsBytes(fullProof.publicSignals.roots),
                 fullProof.publicSignals.calculatedRoot,
-                fullProof.publicSignals.chainID,
                 solidityProof
             )
 
