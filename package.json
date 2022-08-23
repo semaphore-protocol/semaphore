@@ -28,7 +28,7 @@
         "test": "hardhat test ./test/unit_test/*",
         "test:cross-chain": "hardhat test ./test/functional_test/CrossChain.ts",
         "test:report-gas": "REPORT_GAS=true hardhat test",
-        "test:coverage": "hardhat coverage",
+        "test:coverage": "hardhat coverage test/unit_test/*",
         "typechain": "hardhat typechain",
         "lint": "yarn lint:sol && yarn lint:ts",
         "lint:ts": "eslint . --ext .js,.ts",
