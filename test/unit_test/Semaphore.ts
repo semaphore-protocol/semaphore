@@ -17,9 +17,9 @@ describe("Semaphore", () => {
     const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
     const groupId = 1
     const maxEdges = 1
-    const chainID = 1099511629113
+    const chainID = BigInt(1099511629113)
     const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
-    const { identities, members } = createIdentities(chainID, 3)
+    const { identities, members } = createIdentities(Number(chainID), 3)
 
     const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/semaphore_20_2.wasm`
     const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/circuit_final.zkey`
@@ -169,7 +169,7 @@ describe("Semaphore", () => {
 
             roots = [BigNumber.from(group.root).toHexString(), toFixedHex(0)]
 
-            fullProof = await generateProof(identities[0], group, roots, BigInt(Date.now()), signal, {
+            fullProof = await generateProof(identities[0], group, roots, BigInt(Date.now()), signal, chainID, {
                 wasmFilePath,
                 zkeyFilePath
             })

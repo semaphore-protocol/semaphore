@@ -1,14 +1,14 @@
 import { expect } from "chai"
 import { constants, Signer, utils, BigNumber, providers, Wallet } from "ethers"
 import { ethers as hreEthers } from "hardhat"
-import { Semaphore as SemaphoreContract } from "../build/typechain"
-import { config } from "../package.json"
+import { Semaphore as SemaphoreContract } from "../../build/typechain"
+import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Identity } from "../packages/identity/src"
-import { Group } from "../packages/group/src"
-import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "../packages/proof/src/"
-import { toFixedHex, createRootsBytes, createIdentities } from "./utils"
-import { private_keys as ganacheAccounts } from "../accounts.json";
+import { Identity } from "../../packages/identity/src"
+import { Group } from "../../packages/group/src"
+import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "../../packages/proof/src/"
+import { toFixedHex, createRootsBytes, createIdentities } from "../utils"
+import { private_keys as ganacheAccounts } from "../../accounts.json";
 
 describe("CrossChain", () => {
     let contractA: SemaphoreContract
@@ -27,7 +27,7 @@ describe("CrossChain", () => {
     let allRootsB: string[]
 
     const treeDepth = Number(process.env.TREE_DEPTH) | 20
-    const groupId = 9
+    const groupId = 1
     const maxEdges = 1
     const providerA = new providers.JsonRpcProvider("http://127.0.0.1:8545");
     const providerB = new providers.JsonRpcProvider("http://127.0.0.1:8546");
@@ -226,14 +226,14 @@ describe("CrossChain", () => {
             const rootA = await contractA.getRoot(groupId)
             const rootB = await contractB.getRoot(groupId)
             chainA_not_updated_roots = [rootA.toHexString(), toFixedHex(BigNumber.from(0), 32)]
-            fullProof_local_chainA = await generateProof(identitiesA[0], groupA, chainA_not_updated_roots, BigInt(Date.now()*100), signal, {
+            fullProof_local_chainA = await generateProof(identitiesA[0], groupA, chainA_not_updated_roots, BigInt(Date.now()*100), signal, BigInt(chainIDA), {
                 wasmFilePath,
                 zkeyFilePath
             })
             solidityProof_local_chainA = packToSolidityProof(fullProof_local_chainA.proof)
 
             chainB_not_updated_roots = [rootB.toHexString(), allRootsA[0]]
-            fullProof_local_chainB = await generateProof(identitiesB[2], groupB, chainB_not_updated_roots, BigInt(Date.now()*100), signal, {
+            fullProof_local_chainB = await generateProof(identitiesB[2], groupB, chainB_not_updated_roots, BigInt(Date.now()*100), signal, BigInt(chainIDB), {
                 wasmFilePath,
                 zkeyFilePath
             })
@@ -297,7 +297,7 @@ describe("CrossChain", () => {
             const rootB = await contractB.getRoot(groupId)
 
             const chainB_roots = [rootB.toHexString(), rootA.toHexString()]
-            const fullProof = await generateProof(identitiesA[0], groupA, chainB_roots, BigInt(Date.now()*3), signal, {
+            const fullProof = await generateProof(identitiesA[0], groupA, chainB_roots, BigInt(Date.now()*3), signal, BigInt(chainIDB), {
                 wasmFilePath,
                 zkeyFilePath
             })

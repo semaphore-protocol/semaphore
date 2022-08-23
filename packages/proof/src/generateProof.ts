@@ -39,6 +39,7 @@ export default async function generateProof(
     roots: BigNumberish[],
     externalNullifier: BigNumberish,
     signal: string,
+    chainID: BigNumberish,
     snarkArtifacts: SnarkArtifacts
 ): Promise<FullProof> {
     const commitment = identity.generateCommitment()
@@ -57,7 +58,7 @@ export default async function generateProof(
             treePathIndices: merkleProof.pathIndices,
             treeSiblings: merkleProof.siblings,
             roots: roots,
-            chainID: identity.getChainID(),
+            chainID: chainID,
             externalNullifier,
             signalHash: generateSignalHash(signal)
         },

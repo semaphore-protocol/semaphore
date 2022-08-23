@@ -42,7 +42,7 @@ export function createIdentities(chainId: number, n: number): { identities: Iden
     const identities: Identity[] = []
 
     for (let i = 0; i < n; i++) {
-        const identity = new Identity(BigInt(chainId), i.toString())
+        const identity = new Identity(BigInt(chainId))
         const identityCommitment = identity.generateCommitment()
 
         identities.push(identity)

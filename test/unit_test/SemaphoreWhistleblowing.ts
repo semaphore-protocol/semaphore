@@ -23,7 +23,7 @@ describe("SemaphoreWhistleblowing", () => {
     let accounts: string[]
     let editor: string
 
-    const zero = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
+    const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
     const chainID = BigInt(1099511629113)
     const treeDepth = Number(process.env.TREE_DEPTH)
     const entityIds = [BigInt(1), BigInt(2)]
@@ -66,7 +66,7 @@ describe("SemaphoreWhistleblowing", () => {
 
     describe("# createEntity", () => {
         it("Should not create an entity with a wrong depth", async () => {
-            const transaction = contract.createEntity(entityIds[0], 10, zero, editor, maxEdges)
+            const transaction = contract.createEntity(entityIds[0], 10, zeroValue, editor, maxEdges)
 
             await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: depth value is not supported")
         })
@@ -75,7 +75,7 @@ describe("SemaphoreWhistleblowing", () => {
             const transaction = contract.createEntity(
                 BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
                 treeDepth,
-                zero,
+                zeroValue,
                 editor,
                 maxEdges
             )
@@ -84,13 +84,13 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should create an entity", async () => {
-            const transaction = contract.createEntity(entityIds[0], treeDepth, zero, editor, maxEdges)
+            const transaction = contract.createEntity(entityIds[0], treeDepth, zeroValue, editor, maxEdges)
 
             await expect(transaction).to.emit(contract, "EntityCreated").withArgs([entityIds[0], maxEdges], editor)
         })
 
         it("Should not create a entity if it already exists", async () => {
-            const transaction = contract.createEntity(entityIds[0], treeDepth, zero, editor, maxEdges)
+            const transaction = contract.createEntity(entityIds[0], treeDepth, zeroValue, editor, maxEdges)
 
             await expect(transaction).to.be.revertedWith("Semaphore__GroupAlreadyExists()")
         })
@@ -110,6 +110,9 @@ describe("SemaphoreWhistleblowing", () => {
             const identity = new Identity(chainID, "test")
             const identityCommitment = identity.generateCommitment()
 
+            const group = new Group(treeDepth, zeroValue)
+            group.addMember(identityCommitment)
+
             const transaction = contract.connect(signers[1]).addWhistleblower(entityIds[0], identityCommitment)
 
             await expect(transaction)
@@ -117,7 +120,8 @@ describe("SemaphoreWhistleblowing", () => {
                 .withArgs(
                     entityIds[0],
                     identityCommitment,
-                    "7943806797233700547041913393384710769504872928213070894800658208056456315893"
+                    group.root
+                    // "7943806797233700547041913393384710769504872928213070894800658208056456315893"
                 )
         })
 
@@ -132,7 +136,7 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should not remove a whistleblower if the caller is not the editor", async () => {
             const identity = new Identity(chainID)
             const identityCommitment = identity.generateCommitment()
-            const group = new Group(treeDepth, zero)
+            const group = new Group(treeDepth, zeroValue)
 
             group.addMember(identityCommitment)
 
@@ -146,7 +150,7 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should remove a whistleblower from an existing entity", async () => {
             const identity = new Identity(chainID, "test")
             const identityCommitment = identity.generateCommitment()
-            const group = new Group(treeDepth, zero)
+            const group = new Group(treeDepth, zeroValue)
 
             group.addMember(identityCommitment)
 
@@ -172,7 +176,7 @@ describe("SemaphoreWhistleblowing", () => {
         const leak = "leak"
         const bytes32Leak = utils.formatBytes32String(leak)
 
-        const group = new Group(treeDepth, zero)
+        const group = new Group(treeDepth, zeroValue)
 
         group.addMember(identityCommitment)
         group.addMember(BigInt(1))
@@ -182,14 +186,14 @@ describe("SemaphoreWhistleblowing", () => {
         let roots: string[]
 
         before(async () => {
-            await contract.createEntity(entityIds[1], treeDepth, zero, editor, maxEdges)
+            await contract.createEntity(entityIds[1], treeDepth, zeroValue, editor, maxEdges)
             await contract.connect(signers[1]).addWhistleblower(entityIds[1], identityCommitment)
             await contract.connect(signers[1]).addWhistleblower(entityIds[1], BigInt(1))
             const root = await contract.getRoot(entityIds[1])
 
             roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
 
-            const fullProof = await generateProof(identity, group, roots, entityIds[1], leak, {
+            const fullProof = await generateProof(identity, group, roots, entityIds[1], leak, chainID, {
                 wasmFilePath,
                 zkeyFilePath
             })

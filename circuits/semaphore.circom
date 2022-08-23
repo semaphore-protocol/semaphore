@@ -6,15 +6,13 @@ include "./manyMerkleProof.circom";
 template CalculateSecret() {
     signal input identityNullifier;
     signal input identityTrapdoor;
-    signal input chainID;
 
     signal output out;
 
-    component poseidon = Poseidon(3);
+    component poseidon = Poseidon(2);
 
     poseidon.inputs[0] <== identityNullifier;
     poseidon.inputs[1] <== identityTrapdoor;
-    poseidon.inputs[2] <== chainID;
 
     out <== poseidon.out;
 }
@@ -65,7 +63,6 @@ template Semaphore(nLevels, length) {
     component calculateSecret = CalculateSecret();
     calculateSecret.identityNullifier <== identityNullifier;
     calculateSecret.identityTrapdoor <== identityTrapdoor;
-    calculateSecret.chainID <== chainID;
 
     signal secret;
     secret <== calculateSecret.out;
@@ -95,20 +92,13 @@ template Semaphore(nLevels, length) {
     }
     root <== inclusionProof.root;
 
-    //
-    /* component inclusionProof = MerkleTreeInclusionProof(nLevels); */
-    /* inclusionProof.leaf <== calculateIdentityCommitment.out; */
-    /**/
-    /* for (var i = 0; i < nLevels; i++) { */
-    /*     inclusionProof.siblings[i] <== treeSiblings[i]; */
-    /*     inclusionProof.pathIndices[i] <== treePathIndices[i]; */
-    /* } */
-    /**/
-    /* root <== inclusionProof.root; */
-    //
     // Dummy square to prevent tampering signalHash.
     signal signalHashSquared;
     signalHashSquared <== signalHash * signalHash;
+
+    // Dummy square to prevent tampering chainID.
+    signal chainIDSquared;
+    chainIDSquared <== chainID * chainID;
 
     nullifierHash <== calculateNullifierHash.out;
 }

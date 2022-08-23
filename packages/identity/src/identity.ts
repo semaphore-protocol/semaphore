@@ -68,7 +68,7 @@ export default class Identity {
      * @returns identity commitment
      */
     public generateCommitment(): bigint {
-        return poseidon([poseidon([this._nullifier, this._trapdoor, this._chainID])])
+        return poseidon([poseidon([this._nullifier, this._trapdoor])])
     }
 
     /**
@@ -77,6 +77,6 @@ export default class Identity {
      * @returns The string representation of the identity.
      */
     public toString(): string {
-        return JSON.stringify([this._trapdoor.toString(16), this._nullifier.toString(16), this._chainID.toString(16)])
+        return JSON.stringify([this._trapdoor.toString(16), this._nullifier.toString(16)])
     }
 }
