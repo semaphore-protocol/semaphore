@@ -250,6 +250,7 @@ library LinkableIncrementalBinaryTree {
         if (self.edgeExistsForChain[_sourceChainID]) {
             // Update Edge
             require(self.edgeExistsForChain[_sourceChainID], "Chain must be integrated from the bridge before updates");
+            // TODO: change this to allow for removal correctly
             require(
                 self.edgeList[self.edgeIndex[_sourceChainID]].latestLeafIndex < _leafIndex,
                 "New leaf index must be greater"
