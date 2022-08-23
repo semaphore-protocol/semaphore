@@ -68,14 +68,13 @@ export default async function generateProof(
     return {
         proof,
         publicSignals: {
-            calculatedRoot: publicSignals[0],
-            nullifierHash: publicSignals[1],
-            signalHash: publicSignals[2],
-            externalNullifier: publicSignals[3],
+            nullifierHash: publicSignals[0],
+            signalHash: publicSignals[1],
+            externalNullifier: publicSignals[2],
             // TODO: generalize roots for diff maxEdges
-            roots: [publicSignals[4], publicSignals[5]],
+            roots: [publicSignals[3], publicSignals[4]],
 
-            chainID: publicSignals[6]
+            chainID: publicSignals[5]
         }
     }
 }

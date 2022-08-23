@@ -35,7 +35,7 @@ contract SemaphoreVerifier {
 		uint8 maxEdges
 	) external view returns (bool r) {
 		if (maxEdges == 1) {
-            uint256[7] memory _inputs = abi.decode(input, (uint256[7]));
+            uint256[6] memory _inputs = abi.decode(input, (uint256[6]));
             r =  v2_2.verifyProof(a, b, c, _inputs);
             // TODO: Fix the rest of the function with correct number of arguments to verifiers.
             return r;

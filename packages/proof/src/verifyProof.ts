@@ -15,7 +15,6 @@ export default function verifyProof(verificationKey: any, { proof, publicSignals
             publicSignals.externalNullifier,
             publicSignals.roots,
             publicSignals.chainID,
-            publicSignals.calculatedRoot,
             publicSignals.nullifierHash
         ],
         proof

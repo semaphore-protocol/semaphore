@@ -82,7 +82,6 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         uint256 nullifierHash,
         uint256 pollId,
         bytes calldata roots,
-        uint256 root,
         uint256[8] calldata proof
     ) public override onlyCoordinator(pollId) {
         SemaphoreVerifier verifier;
@@ -96,9 +95,9 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
             verifier = verifiers[depth];
         }
 
-        verifyRoots(pollId, roots, maxEdges);
+        verifyRoots(pollId, roots);
 
-        _verifyProof(vote, nullifierHash, pollId, roots, proof, verifier, maxEdges, root);
+        _verifyProof(vote, nullifierHash, pollId, roots, proof, verifier, maxEdges);
 
         _saveNullifierHash(nullifierHash);
 

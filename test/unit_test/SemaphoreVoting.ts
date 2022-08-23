@@ -202,7 +202,6 @@ describe("SemaphoreVoting", () => {
                 publicSignals.nullifierHash,
                 pollIds[0],
                 createRootsBytes(publicSignals.roots),
-                publicSignals.calculatedRoot,
                 solidityProof
             )
 
@@ -217,7 +216,6 @@ describe("SemaphoreVoting", () => {
                     publicSignals.nullifierHash,
                     pollIds[2], 
                     createRootsBytes(publicSignals.roots),
-                    publicSignals.calculatedRoot,
                     solidityProof
                 )
 
@@ -234,7 +232,6 @@ describe("SemaphoreVoting", () => {
                     nullifierHash, 
                     pollIds[1],  
                     createRootsBytes(publicSignals.roots),
-                    publicSignals.calculatedRoot,
                     solidityProof
                 )
 
@@ -249,7 +246,6 @@ describe("SemaphoreVoting", () => {
                     publicSignals.nullifierHash, 
                     pollIds[1], 
                     createRootsBytes(publicSignals.roots),
-                    publicSignals.calculatedRoot,
                     solidityProof
                 )
 
@@ -264,7 +260,6 @@ describe("SemaphoreVoting", () => {
                     publicSignals.nullifierHash, 
                     pollIds[1], 
                     createRootsBytes(publicSignals.roots),
-                    publicSignals.calculatedRoot,
                     solidityProof
                 )
 

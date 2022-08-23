@@ -57,7 +57,6 @@ template Semaphore(nLevels, length) {
     signal input roots[length];
     signal input chainID;
 
-    signal output root;
     signal output nullifierHash;
 
     component calculateSecret = CalculateSecret();
@@ -90,7 +89,6 @@ template Semaphore(nLevels, length) {
         inclusionProof.pathElements[i] <== treeSiblings[i];
         inclusionProof.pathIndices[i] <== treePathIndices[i];
     }
-    root <== inclusionProof.root;
 
     // Dummy square to prevent tampering signalHash.
     signal signalHashSquared;

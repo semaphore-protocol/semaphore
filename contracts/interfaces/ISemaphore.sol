@@ -37,7 +37,6 @@ interface ISemaphore {
         uint256 nullifierHash,
         uint256 externalNullifier,
         bytes calldata roots,
-        uint256 root,
         uint256[8] calldata proof
     ) external;
 

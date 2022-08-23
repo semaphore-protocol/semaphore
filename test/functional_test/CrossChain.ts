@@ -146,7 +146,6 @@ describe("CrossChain", () => {
             const transaction = contractA.connect(signersA[1]).verifyRoots(
                 groupId,
                 createRootsBytes(roots),
-                maxEdges
             )
             await expect(transaction).to.be.revertedWith("Not initialized edges must be set to 0")
         })
@@ -162,8 +161,7 @@ describe("CrossChain", () => {
 
             const is_valid = await contractB.connect(signersB[1]).verifyRoots(
                 groupId,
-                createRootsBytes(roots),
-                maxEdges
+                createRootsBytes(roots)
             )
             expect(is_valid).to.equal(true)
         })
@@ -172,8 +170,7 @@ describe("CrossChain", () => {
             const roots = [allRootsA[0], allRootsB[0]]
             const transaction = contractB.connect(signersB[1]).verifyRoots(
                 groupId,
-                createRootsBytes(roots),
-                maxEdges
+                createRootsBytes(roots)
             )
             await expect(transaction).to.be.revertedWith("Cannot find your merkle root")
         })
@@ -185,7 +182,6 @@ describe("CrossChain", () => {
             const transaction = contractB.connect(signersB[1]).verifyRoots(
                 groupId,
                 createRootsBytes(roots),
-                maxEdges
             )
             await expect(transaction).to.be.revertedWith("Neighbour root not found")
         })
@@ -202,7 +198,6 @@ describe("CrossChain", () => {
             const is_valid = await contractB.connect(signersB[1]).verifyRoots(
                 groupId,
                 createRootsBytes(roots),
-                maxEdges
             )
             expect(is_valid).to.equal(true)
         })
@@ -246,7 +241,6 @@ describe("CrossChain", () => {
                 fullProof_local_chainA.publicSignals.nullifierHash,
                 fullProof_local_chainA.publicSignals.externalNullifier,
                 createRootsBytes(fullProof_local_chainA.publicSignals.roots),
-                fullProof_local_chainA.publicSignals.calculatedRoot,
                 solidityProof_local_chainA
             )
             await expect(transaction).to.emit(contractA, "ProofVerified").withArgs(groupId, bytes32Signal)
@@ -259,7 +253,6 @@ describe("CrossChain", () => {
                 fullProof_local_chainB.publicSignals.nullifierHash,
                 fullProof_local_chainB.publicSignals.externalNullifier,
                 createRootsBytes(fullProof_local_chainB.publicSignals.roots),
-                fullProof_local_chainB.publicSignals.calculatedRoot,
                 solidityProof_local_chainB
             )
             await expect(transaction).to.emit(contractB, "ProofVerified").withArgs(groupId, bytes32Signal)
@@ -304,7 +297,6 @@ describe("CrossChain", () => {
                 fullProof.publicSignals.nullifierHash,
                 fullProof.publicSignals.externalNullifier,
                 createRootsBytes(fullProof.publicSignals.roots),
-                fullProof.publicSignals.calculatedRoot,
                 solidityProof
             )
             await expect(transaction).to.emit(contractB, "ProofVerified").withArgs(groupId, bytes32Signal)

@@ -19,7 +19,6 @@ library SemaphoreInputEncoder {
     */
     struct Proof {
         uint256[8] proof;
-        uint256 calculatedRoot;
         uint256 nullifierHash;
         uint256 signalHash;
         uint256 externalNullifier;
@@ -65,19 +64,18 @@ library SemaphoreInputEncoder {
         bytes memory encodedInput;
 
         if (_maxEdges == 1) {
-            uint256[7] memory inputs;
+            uint256[6] memory inputs;
             bytes32[2] memory roots = abi.decode(_args.roots, (bytes32[2]));
             // assign roots
             result[0] = roots[0];
             result[1] = roots[1];
             // assign input
-            inputs[0] = _args.calculatedRoot;
-            inputs[1] = _args.nullifierHash;
-            inputs[2] = _args.signalHash;
-            inputs[3] = _args.externalNullifier;
-            inputs[4] = uint256(roots[0]);
-            inputs[5] = uint256(roots[1]);
-            inputs[6] = uint256(_chainId);
+            inputs[0] = _args.nullifierHash;
+            inputs[1] = _args.signalHash;
+            inputs[2] = _args.externalNullifier;
+            inputs[3] = uint256(roots[0]);
+            inputs[4] = uint256(roots[1]);
+            inputs[5] = uint256(_chainId);
             encodedInput = abi.encodePacked(inputs);
         } else if (_maxEdges == 7) {
             uint256[12] memory inputs;

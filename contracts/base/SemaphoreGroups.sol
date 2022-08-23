@@ -93,7 +93,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
 
     // TODO: Generalize this over maxEdges
     // // Function exposed for testing purposes
-    function verifyRoots(uint256 groupId, bytes calldata roots,  uint8 maxEdges) public override view returns (bool) {
+    function verifyRoots(uint256 groupId, bytes calldata roots) public override view returns (bool) {
         bytes32[2] memory roots_decoded = abi.decode(roots, (bytes32[2]));
 
         bytes32[] memory roots_encoded = new bytes32[](roots_decoded.length);
