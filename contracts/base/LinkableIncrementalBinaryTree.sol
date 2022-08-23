@@ -235,11 +235,11 @@ library LinkableIncrementalBinaryTree {
     }
 
     /**
-		@notice Add an edge to the tree or update an existing edge.
-		@param _sourceChainID The chainID of the edge's LinkableTree
-		@param _root The merkle root of the edge's merkle tree
-		@param _leafIndex The latest leaf insertion index of the edge's merkle tree
-	 */
+        @notice Add an edge to the tree or update an existing edge.
+        @param _sourceChainID The chainID of the edge's LinkableTree
+        @param _root The merkle root of the edge's merkle tree
+        @param _leafIndex The latest leaf insertion index of the edge's merkle tree
+     */
     function updateEdge(
         LinkableIncrementalTreeData storage self,
         uint256 _sourceChainID,
@@ -293,9 +293,9 @@ library LinkableIncrementalBinaryTree {
     }
 
     /**
-		@notice Get the latest state of all neighbor edges
-		@return Edge[] An array of all neighboring and potentially empty edges
-		*/
+        @notice Get the latest state of all neighbor edges
+        @return Edge[] An array of all neighboring and potentially empty edges
+        */
     function getLatestNeighborEdges(LinkableIncrementalTreeData storage self) public view returns (Edge[] memory) {
         Edge[] memory edges = new Edge[](self.maxEdges);
         for (uint256 i = 0; i < self.maxEdges; i++) {
@@ -315,9 +315,9 @@ library LinkableIncrementalBinaryTree {
     }
 
     /**
-		@notice Get the latest merkle roots of all neighbor edges
-		@return bytes32[] An array of merkle roots
-	 */
+        @notice Get the latest merkle roots of all neighbor edges
+        @return bytes32[] An array of merkle roots
+     */
     function getLatestNeighborRoots(LinkableIncrementalTreeData storage self) public view returns (bytes32[] memory) {
         bytes32[] memory roots = new bytes32[](self.maxEdges);
         for (uint256 i = 0; i < self.maxEdges; i++) {
@@ -333,10 +333,10 @@ library LinkableIncrementalBinaryTree {
     }
 
     /**
-		@notice Checks to see whether a `_root` is known for a neighboring `neighborChainID`
-		@param _neighborChainID The chainID of the neighbor's edge
-		@param _root The root to check
-	 */
+        @notice Checks to see whether a `_root` is known for a neighboring `neighborChainID`
+        @param _neighborChainID The chainID of the neighbor's edge
+        @param _root The root to check
+     */
     function isKnownNeighborRoot(
         LinkableIncrementalTreeData storage self,
         uint256 _neighborChainID,
@@ -359,32 +359,32 @@ library LinkableIncrementalBinaryTree {
         return false;
     }
 
-	/**
-		@notice Checks validity of an array of merkle roots in the history.
-		The first root should always be the root of `this` underlying merkle
-		tree and the remaining roots are of the neighboring roots in `edges.
-		@param _roots An array of bytes32 merkle roots to be checked against the history.
-	*/
-
-	function isValidRoots(LinkableIncrementalTreeData storage self, bytes32[] memory _roots) public view returns (bool) {
-        require(isKnownRoot(self, _roots[0]), "Cannot find your merkle root");
-		require(_roots.length == self.maxEdges + 1, "Incorrect root array length");
-		uint rootIndex = 1;
-		for (uint i = 0; i < self.edgeList.length; i++) {
-			Edge memory _edge = self.edgeList[i];
-			require(isKnownNeighborRoot(self, _edge.chainID, _roots[rootIndex]), "Neighbour root not found");
-			rootIndex++;
-		}
-		while (rootIndex != self.maxEdges + 1) {
-			require(_roots[rootIndex] == 0, "Not initialized edges must be set to 0");
-			rootIndex++;
-		}
-		return true;
-	}
     /**
-		@notice Decodes a byte string of roots into its parts.
-		@return bytes32[] An array of bytes32 merkle roots
-	 */
+        @notice Checks validity of an array of merkle roots in the history.
+        The first root should always be the root of `this` underlying merkle
+        tree and the remaining roots are of the neighboring roots in `edges.
+        @param _roots An array of bytes32 merkle roots to be checked against the history.
+    */
+
+    function isValidRoots(LinkableIncrementalTreeData storage self, bytes32[] memory _roots) public view returns (bool) {
+        require(isKnownRoot(self, _roots[0]), "Cannot find your merkle root");
+        require(_roots.length == self.maxEdges + 1, "Incorrect root array length");
+        uint rootIndex = 1;
+        for (uint i = 0; i < self.edgeList.length; i++) {
+            Edge memory _edge = self.edgeList[i];
+            require(isKnownNeighborRoot(self, _edge.chainID, _roots[rootIndex]), "Neighbour root not found");
+            rootIndex++;
+        }
+        while (rootIndex != self.maxEdges + 1) {
+            require(_roots[rootIndex] == 0, "Not initialized edges must be set to 0");
+            rootIndex++;
+        }
+        return true;
+    }
+    /**
+        @notice Decodes a byte string of roots into its parts.
+        @return bytes32[] An array of bytes32 merkle roots
+     */
     function decodeRoots(LinkableIncrementalTreeData storage self, bytes calldata roots)
         internal
         view
