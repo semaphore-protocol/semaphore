@@ -78,19 +78,17 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     }
     /**
 		@notice Add an edge to the tree or update an existing edge.
-		@param _groupId The groupID of the LinkableTree
-		@param _sourceChainID The chainID of the edge's LinkableTree
 		@param _root The merkle root of the edge's merkle tree
 		@param _leafIndex The latest leaf insertion index of the edge's merkle tree
+		@param _srcResourceID The chainID of the edge's LinkableTree
 	 */
     function _updateEdge(
         uint256 _groupId,
-        uint256 _sourceChainID,
         bytes32 _root,
-        uint256 _leafIndex,
-        bytes32 _target
+        uint32 _leafIndex,
+		bytes32 _srcResourceID
     ) internal {
-        groups[_groupId].updateEdge(_sourceChainID, _root, _leafIndex, _target);
+        groups[_groupId].updateEdge(_root, _leafIndex, _srcResourceID);
     }
 
     // TODO: Generalize this over maxEdges

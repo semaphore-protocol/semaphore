@@ -36,7 +36,6 @@ interface ISemaphore {
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
-        // TODO: Create standard encoding for which order each root is supposed to be at.
         bytes calldata roots,
         uint256 root,
         uint256[8] calldata proof
@@ -84,17 +83,16 @@ interface ISemaphore {
     ) external;
 
     /**
-		@notice Add an edge to the tree or update an existing edge.
-		@param groupId The groupID of the LinkableTree
-		@param sourceChainID The chainID of the edge's LinkableTree
-		@param root The merkle root of the edge's merkle tree
-		@param leafIndex The latest leaf insertion index of the edge's merkle tree
-	 */
+        @notice Add an edge to the tree or update an existing edge.
+        @param groupId The groupID of the LinkableTree
+        @param root The merkle root of the edge's merkle tree
+        @param leafIndex The latest leaf insertion index of the edge's merkle tree
+        @param srcResourceID The origin resource ID of the originating linked anchor update
+     */
     function updateEdge(
         uint256 groupId,
-        uint256 sourceChainID,
         bytes32 root,
-        uint256 leafIndex,
-        bytes32 target
+        uint32 leafIndex,
+        bytes32 srcResourceID
     ) external;
 }

@@ -27,7 +27,7 @@ describe("CrossChain", () => {
     let allRootsB: string[]
 
     const treeDepth = Number(process.env.TREE_DEPTH) | 20
-    const groupId = 1
+    const groupId = 2
     const maxEdges = 1
     const providerA = new providers.JsonRpcProvider("http://127.0.0.1:8545");
     const providerB = new providers.JsonRpcProvider("http://127.0.0.1:8546");
@@ -154,10 +154,9 @@ describe("CrossChain", () => {
         it("Should verify external root after updateEdge", async () => {
             const tx_update = await contractB.connect(signersB[1]).updateEdge(
                 groupId,
-                chainIDA,
                 allRootsA[0],
                 0,
-                toFixedHex(BigInt(0), 32)
+                toFixedHex(chainIDA, 32),
             )
             const roots = [allRootsB[0], allRootsA[0]]
 
@@ -193,10 +192,9 @@ describe("CrossChain", () => {
         it("Should verify not sequential updates", async () => {
             const tx_update = await contractB.connect(signersB[1]).updateEdge(
                 groupId,
-                chainIDA,
                 allRootsA[2],
                 2,
-                toFixedHex(BigInt(0), 32)
+                toFixedHex(chainIDA, 32),
             )
 
             const roots = [allRootsB[2], allRootsA[2]]
@@ -286,10 +284,9 @@ describe("CrossChain", () => {
 
             const tx_update = contractB.connect(signersB[1]).updateEdge(
                 groupId,
-                chainIDA,
                 BigNumber.from(groupA.root).toHexString(),
                 3,
-                toFixedHex(BigInt(0), 32)
+                toFixedHex(chainIDA, 32),
             )
             const rootA = await contractA.getRoot(groupId)
             const rootB = await contractB.getRoot(groupId)
