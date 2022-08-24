@@ -77,16 +77,16 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         emit MemberRemoved(groupId, identityCommitment, root);
     }
     /**
-		@notice Add an edge to the tree or update an existing edge.
-		@param _root The merkle root of the edge's merkle tree
-		@param _leafIndex The latest leaf insertion index of the edge's merkle tree
-		@param _srcResourceID The chainID of the edge's LinkableTree
-	 */
+        @notice Add an edge to the tree or update an existing edge.
+        @param _root The merkle root of the edge's merkle tree
+        @param _leafIndex The latest leaf insertion index of the edge's merkle tree
+        @param _srcResourceID The chainID of the edge's LinkableTree
+     */
     function _updateEdge(
         uint256 _groupId,
         bytes32 _root,
         uint32 _leafIndex,
-		bytes32 _srcResourceID
+        bytes32 _srcResourceID
     ) internal {
         groups[_groupId].updateEdge(_root, _leafIndex, _srcResourceID);
     }
