@@ -67,7 +67,7 @@ describe("SemaphoreVoting", () => {
 
     describe("# createPoll", () => {
         it("Should not create a poll with a wrong depth", async () => {
-            const transaction = contract.createPoll(pollIds[0], 10, zeroValue, coordinator, maxEdges)
+            const transaction = contract.createPoll(pollIds[0], 10, coordinator, maxEdges)
 
             await expect(transaction).to.be.revertedWith("SemaphoreVoting: depth value is not supported")
         })
@@ -76,7 +76,6 @@ describe("SemaphoreVoting", () => {
             const transaction = contract.createPoll(
                 BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
                 treeDepth,
-                zeroValue,
                 coordinator,
                 maxEdges
             )
@@ -85,13 +84,13 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should create a poll", async () => {
-            const transaction = contract.createPoll(pollIds[0], treeDepth, zeroValue, coordinator, maxEdges)
+            const transaction = contract.createPoll(pollIds[0], treeDepth, coordinator, maxEdges)
 
             await expect(transaction).to.emit(contract, "PollCreated").withArgs(pollIds[0], coordinator)
         })
 
         it("Should not create a poll if it already exists", async () => {
-            const transaction = contract.createPoll(pollIds[0], treeDepth, zeroValue, coordinator, maxEdges)
+            const transaction = contract.createPoll(pollIds[0], treeDepth, coordinator, maxEdges)
 
             await expect(transaction).to.be.revertedWith("Semaphore__GroupAlreadyExists()")
         })
@@ -119,7 +118,7 @@ describe("SemaphoreVoting", () => {
 
     describe("# addVoter", () => {
         before(async () => {
-            await contract.createPoll(pollIds[1], treeDepth, zeroValue, coordinator, maxEdges)
+            await contract.createPoll(pollIds[1], treeDepth, coordinator, maxEdges)
         })
 
         it("Should not add a voter if the caller is not the coordinator", async () => {
@@ -182,7 +181,7 @@ describe("SemaphoreVoting", () => {
         before(async () => {
             await contract.connect(signers[1]).addVoter(pollIds[1], BigInt(1))
             await contract.connect(signers[1]).startPoll(pollIds[1], encryptionKey)
-            await contract.createPoll(pollIds[2], treeDepth, zeroValue, coordinator, maxEdges)
+            await contract.createPoll(pollIds[2], treeDepth, coordinator, maxEdges)
             const root = await contract.getRoot(pollIds[1])
 
             roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]

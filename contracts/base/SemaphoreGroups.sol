@@ -19,11 +19,10 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     /// @dev Creates a new group by initializing the associated tree.
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.
-    /// @param zeroValue: Zero value of the tree.
+    /// @param maxEdges: The maximum # of edges supported by this group
     function _createGroup(
         uint256 groupId,
         uint8 depth,
-        uint256 zeroValue,
         uint8 maxEdges
     ) internal virtual {
         if (groupId >= SNARK_SCALAR_FIELD) {
@@ -34,9 +33,9 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
             revert Semaphore__GroupAlreadyExists();
         }
 
-        groups[groupId].init(depth, zeroValue, maxEdges);
+        groups[groupId].init(depth, maxEdges);
 
-        emit GroupCreated(groupId, depth, zeroValue);
+        emit GroupCreated(groupId, depth);
     }
 
     /// @dev Adds an identity commitment to an existing group.

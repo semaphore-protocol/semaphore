@@ -23,10 +23,10 @@ interface ISemaphoreWhistleblowing {
     /// @param entityId: Id of the entity.
     /// @param editor: Editor of the entity.
     /// @param depth: Depth of the tree.
+    /// @param maxEdges: The maximum # of edges supported by this group
     function createEntity(
         uint256 entityId,
         uint8 depth,
-        uint256 zeroValue,
         address editor,
         uint8 maxEdges
     ) external;

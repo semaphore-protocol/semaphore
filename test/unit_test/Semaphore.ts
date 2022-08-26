@@ -66,15 +66,15 @@ describe("Semaphore", () => {
 
     describe("# createGroup", () => {
         it("Should not create a group if the tree depth is not supported", async () => {
-            const transaction = contract.createGroup(groupId, 10, 0, accounts[0], maxEdges)
+            const transaction = contract.createGroup(groupId, 10, accounts[0], maxEdges)
 
             await expect(transaction).to.be.revertedWith("Semaphore__TreeDepthIsNotSupported()")
         })
 
         it("Should create a group", async () => {
-            const transaction = contract.connect(signers[1]).createGroup(groupId, treeDepth, 0, accounts[1], maxEdges)
+            const transaction = contract.connect(signers[1]).createGroup(groupId, treeDepth, accounts[1], maxEdges)
 
-            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth, 0)
+            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth)
             await expect(transaction)
                 .to.emit(contract, "GroupAdminUpdated")
                 .withArgs(groupId, constants.AddressZero, accounts[1])
@@ -133,7 +133,7 @@ describe("Semaphore", () => {
 
             group.removeMember(0)
 
-            await contract.createGroup(groupId, treeDepth, 0, accounts[0], maxEdges)
+            await contract.createGroup(groupId, treeDepth, accounts[0], maxEdges)
             await contract.addMember(groupId, BigInt(1))
             await contract.addMember(groupId, BigInt(2))
             await contract.addMember(groupId, BigInt(3))
@@ -161,7 +161,7 @@ describe("Semaphore", () => {
         let roots: string[]
 
         before(async () => {
-            await contract.createGroup(groupId2, treeDepth, zeroValue, accounts[0], maxEdges)
+            await contract.createGroup(groupId2, treeDepth, accounts[0], maxEdges)
 
             await contract.addMember(groupId2, members[0])
             await contract.addMember(groupId2, members[1])

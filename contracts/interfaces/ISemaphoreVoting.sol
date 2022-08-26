@@ -45,7 +45,6 @@ interface ISemaphoreVoting {
     function createPoll(
         uint256 pollId,
         uint8 depth,
-        uint256 zeroValue,
         address coordinator,
         uint8 maxEdges
     ) external;

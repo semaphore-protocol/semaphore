@@ -66,7 +66,7 @@ describe("SemaphoreWhistleblowing", () => {
 
     describe("# createEntity", () => {
         it("Should not create an entity with a wrong depth", async () => {
-            const transaction = contract.createEntity(entityIds[0], 10, zeroValue, editor, maxEdges)
+            const transaction = contract.createEntity(entityIds[0], 10, editor, maxEdges)
 
             await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: depth value is not supported")
         })
@@ -75,7 +75,6 @@ describe("SemaphoreWhistleblowing", () => {
             const transaction = contract.createEntity(
                 BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
                 treeDepth,
-                zeroValue,
                 editor,
                 maxEdges
             )
@@ -84,13 +83,13 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should create an entity", async () => {
-            const transaction = contract.createEntity(entityIds[0], treeDepth, zeroValue, editor, maxEdges)
+            const transaction = contract.createEntity(entityIds[0], treeDepth, editor, maxEdges)
 
             await expect(transaction).to.emit(contract, "EntityCreated").withArgs([entityIds[0], maxEdges], editor)
         })
 
         it("Should not create a entity if it already exists", async () => {
-            const transaction = contract.createEntity(entityIds[0], treeDepth, zeroValue, editor, maxEdges)
+            const transaction = contract.createEntity(entityIds[0], treeDepth, editor, maxEdges)
 
             await expect(transaction).to.be.revertedWith("Semaphore__GroupAlreadyExists()")
         })
@@ -186,7 +185,7 @@ describe("SemaphoreWhistleblowing", () => {
         let roots: string[]
 
         before(async () => {
-            await contract.createEntity(entityIds[1], treeDepth, zeroValue, editor, maxEdges)
+            await contract.createEntity(entityIds[1], treeDepth, editor, maxEdges)
             await contract.connect(signers[1]).addWhistleblower(entityIds[1], identityCommitment)
             await contract.connect(signers[1]).addWhistleblower(entityIds[1], BigInt(1))
             const root = await contract.getRoot(entityIds[1])

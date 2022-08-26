@@ -42,13 +42,12 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     function createPoll(
         uint256 pollId,
         uint8 depth,
-        uint256 zeroValue,
         address coordinator,
         uint8 maxEdges
     ) public override {
         require(address(verifiers[depth]) != address(0), "SemaphoreVoting: depth value is not supported");
 
-        _createGroup(pollId, depth, zeroValue, maxEdges);
+        _createGroup(pollId, depth, maxEdges);
 
         Poll memory poll;
 

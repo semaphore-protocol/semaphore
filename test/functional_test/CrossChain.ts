@@ -58,7 +58,7 @@ describe("CrossChain", () => {
 
         // Creating group on-chain and locally
         groupA = new Group(treeDepth, BigInt(zeroValue))
-        const transactionA = contractA.connect(signersA[1]).createGroup(groupId, treeDepth, 0, accounts[1], maxEdges)
+        const transactionA = contractA.connect(signersA[1]).createGroup(groupId, treeDepth, accounts[1], maxEdges)
         await expect(transactionA).to.emit(contractA, "GroupCreated").withArgs(groupId, treeDepth, 0)
         await expect(transactionA)
             .to.emit(contractA, "GroupAdminUpdated")
@@ -67,7 +67,7 @@ describe("CrossChain", () => {
         const rootA = await contractA.getRoot(groupId)
         expect(rootA).to.equal(groupA.root)
 
-        const transactionB = contractB.connect(signersB[1]).createGroup(groupId, treeDepth, 0, accounts[1], maxEdges)
+        const transactionB = contractB.connect(signersB[1]).createGroup(groupId, treeDepth, accounts[1], maxEdges)
         await expect(transactionB).to.emit(contractB, "GroupCreated").withArgs(groupId, treeDepth, 0)
         await expect(transactionB)
             .to.emit(contractB, "GroupAdminUpdated")

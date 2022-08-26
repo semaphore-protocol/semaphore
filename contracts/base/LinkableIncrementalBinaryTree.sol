@@ -56,14 +56,12 @@ library LinkableIncrementalBinaryTree {
     /// @dev Initializes a tree.
     /// @param self: Tree data.
     /// @param depth: Depth of the tree.
-    /// @param zero: Zero value to be used.
+    /// @param maxEdges: The maximum # of edges supported by this group
     function init(
         LinkableIncrementalTreeData storage self,
         uint8 depth,
-        uint256 zero,
         uint8 maxEdges
     ) public {
-        require(zero < SNARK_SCALAR_FIELD, "LinkableIncrementalBinaryTree: leaf must be < SNARK_SCALAR_FIELD");
         require(depth > 0 && depth <= MAX_DEPTH, "LinkableIncrementalBinaryTree: tree depth must be between 1 and 32");
 
         self.depth = depth;
