@@ -43,7 +43,15 @@ function getNetworks(): NetworksUserConfig | undefined {
 }
 
 const hardhatConfig: HardhatUserConfig = {
-    solidity: config.solidity,
+    solidity: {
+        version: config.solidity,
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+    },
     paths: {
         sources: config.paths.contracts,
         tests: config.paths.tests,
