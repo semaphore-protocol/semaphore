@@ -18,16 +18,17 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     /// it is necessary to pass the addresses of the previously deployed contracts with the associated
     /// tree depth. Depending on the depth chosen when creating the poll, a certain verifier will be
     /// used to verify that the proof is correct.
-    /// @param depths: Three depths used in verifiers.
+    /// @param merkleTreeDepths: Three depths used in verifiers.
     /// @param verifierAddresses: Verifier addresses.
-    constructor(uint256[] memory depths, address[] memory verifierAddresses) {
+    constructor(uint256[] memory merkleTreeDepths, address[] memory verifierAddresses) {
         require(
-            depths.length == verifierAddresses.length,
+            merkleTreeDepths.length == verifierAddresses.length,
             "SemaphoreVoting: parameters lists does not have the same length"
         );
 
-        for (uint8 i = 0; i < depths.length; ) {
-            verifiers[depths[i]] = IVerifier(verifierAddresses[i]);
+        for (uint8 i = 0; i < merkleTreeDepths.length; ) {
+            verifiers[merkleTreeDepths[i]] = IVerifier(verifierAddresses[i]);
+
             unchecked {
                 ++i;
             }
@@ -45,11 +46,11 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     function createPoll(
         uint256 pollId,
         address coordinator,
-        uint256 depth
+        uint256 merkleTreeDepth
     ) public override {
-        require(address(verifiers[depth]) != address(0), "SemaphoreVoting: depth value is not supported");
+        require(address(verifiers[merkleTreeDepth]) != address(0), "SemaphoreVoting: Merkle tree depth value is not supported");
 
-        _createGroup(pollId, depth, 0);
+        _createGroup(pollId, merkleTreeDepth, 0);
 
         Poll memory poll;
 
@@ -87,11 +88,12 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
         require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
 
-        uint256 depth = getDepth(pollId);
-        uint256 root = getRoot(pollId);
-        IVerifier verifier = verifiers[depth];
+        uint256 merkleTreeDepth = getMerkleTreeDepth(pollId);
+        uint256 merkleTreeRoot = getMerkleTreeRoot(pollId);
 
-        _verifyProof(vote, root, nullifierHash, pollId, proof, verifier);
+        IVerifier verifier = verifiers[merkleTreeDepth];
+
+        _verifyProof(vote, merkleTreeRoot, nullifierHash, pollId, proof, verifier);
 
         // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).
         _saveNullifierHash(nullifierHash);

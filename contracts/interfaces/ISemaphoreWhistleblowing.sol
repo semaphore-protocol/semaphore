@@ -17,11 +17,11 @@ interface ISemaphoreWhistleblowing {
     /// @dev Creates an entity and the associated Merkle tree/group.
     /// @param entityId: Id of the entity.
     /// @param editor: Editor of the entity.
-    /// @param depth: Depth of the tree.
+    /// @param merkleTreeDepth: Depth of the tree.
     function createEntity(
         uint256 entityId,
         address editor,
-        uint256 depth
+        uint256 merkleTreeDepth
     ) external;
 
     /// @dev Adds a whistleblower to an entity.

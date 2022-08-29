@@ -37,7 +37,7 @@ describe("SemaphoreVoting", () => {
         it("Should not create a poll with a wrong depth", async () => {
             const transaction = contract.createPoll(pollIds[0], coordinator, 10)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreVoting: depth value is not supported")
+            await expect(transaction).to.be.revertedWith("SemaphoreVoting: Merkle tree depth value is not supported")
         })
 
         it("Should not create a poll greater than the snark scalar field", async () => {
@@ -122,7 +122,7 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should return the correct number of poll voters", async () => {
-            const size = await contract.getNumberOfLeaves(pollIds[1])
+            const size = await contract.getNumberOfMerkleTreeLeaves(pollIds[1])
 
             expect(size).to.be.eq(1)
         })

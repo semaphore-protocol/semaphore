@@ -17,39 +17,39 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
 
     /// @dev Creates a new group by initializing the associated tree.
     /// @param groupId: Id of the group.
-    /// @param depth: Depth of the tree.
+    /// @param merkleTreeDepth: Depth of the tree.
     /// @param zeroValue: Zero value of the tree.
     function _createGroup(
         uint256 groupId,
-        uint256 depth,
+        uint256 merkleTreeDepth,
         uint256 zeroValue
     ) internal virtual {
         if (groupId >= SNARK_SCALAR_FIELD) {
             revert Semaphore__GroupIdIsNotLessThanSnarkScalarField();
         }
 
-        if (getDepth(groupId) != 0) {
+        if (getMerkleTreeDepth(groupId) != 0) {
             revert Semaphore__GroupAlreadyExists();
         }
 
-        groups[groupId].init(depth, zeroValue);
+        groups[groupId].init(merkleTreeDepth, zeroValue);
 
-        emit GroupCreated(groupId, depth, zeroValue);
+        emit GroupCreated(groupId, merkleTreeDepth, zeroValue);
     }
 
     /// @dev Adds an identity commitment to an existing group.
     /// @param groupId: Id of the group.
     /// @param identityCommitment: New identity commitment.
     function _addMember(uint256 groupId, uint256 identityCommitment) internal virtual {
-        if (getDepth(groupId) == 0) {
+        if (getMerkleTreeDepth(groupId) == 0) {
             revert Semaphore__GroupDoesNotExist();
         }
 
         groups[groupId].insert(identityCommitment);
 
-        uint256 root = getRoot(groupId);
+        uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
 
-        emit MemberAdded(groupId, identityCommitment, root);
+        emit MemberAdded(groupId, identityCommitment, merkleTreeRoot);
     }
 
     /// @dev Removes an identity commitment from an existing group. A proof of membership is
@@ -64,29 +64,29 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
     ) internal virtual {
-        if (getDepth(groupId) == 0) {
+        if (getMerkleTreeRoot(groupId) == 0) {
             revert Semaphore__GroupDoesNotExist();
         }
 
         groups[groupId].remove(identityCommitment, proofSiblings, proofPathIndices);
 
-        uint256 root = getRoot(groupId);
+        uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
 
-        emit MemberRemoved(groupId, identityCommitment, root);
+        emit MemberRemoved(groupId, identityCommitment, merkleTreeRoot);
     }
 
-    /// @dev See {ISemaphoreGroups-getRoot}.
-    function getRoot(uint256 groupId) public view virtual override returns (uint256) {
+    /// @dev See {ISemaphoreGroups-getMerkleTreeRoot}.
+    function getMerkleTreeRoot(uint256 groupId) public view virtual override returns (uint256) {
         return groups[groupId].root;
     }
 
-    /// @dev See {ISemaphoreGroups-getDepth}.
-    function getDepth(uint256 groupId) public view virtual override returns (uint256) {
+    /// @dev See {ISemaphoreGroups-getMerkleTreeDepth}.
+    function getMerkleTreeDepth(uint256 groupId) public view virtual override returns (uint256) {
         return groups[groupId].depth;
     }
 
-    /// @dev See {ISemaphoreGroups-getNumberOfLeaves}.
-    function getNumberOfLeaves(uint256 groupId) public view virtual override returns (uint256) {
+    /// @dev See {ISemaphoreGroups-getNumberOfMerkleTreeLeaves}.
+    function getNumberOfMerkleTreeLeaves(uint256 groupId) public view virtual override returns (uint256) {
         return groups[groupId].numberOfLeaves;
     }
 }
