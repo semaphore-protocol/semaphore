@@ -48,7 +48,10 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         address coordinator,
         uint256 merkleTreeDepth
     ) public override {
-        require(address(verifiers[merkleTreeDepth]) != address(0), "SemaphoreVoting: Merkle tree depth value is not supported");
+        require(
+            address(verifiers[merkleTreeDepth]) != address(0),
+            "SemaphoreVoting: Merkle tree depth value is not supported"
+        );
 
         _createGroup(pollId, merkleTreeDepth, 0);
 
