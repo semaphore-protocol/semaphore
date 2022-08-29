@@ -14,6 +14,12 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a group id and returns the group admin address.
     mapping(uint256 => address) public groupAdmins;
 
+    /// @dev Gets a group id and returns its Merkle tree root expiration.
+    mapping(uint256 => uint256) public mtrExpirations;
+
+    /// @dev Gets the hash of group id + Merkle tree root and returns the root timestamp.
+    mapping(bytes32 => uint256) public mtrTimestamps;
+
     /// @dev Checks if the group admin is the transaction sender.
     /// @param groupId: Id of the group.
     modifier onlyGroupAdmin(uint256 groupId) {
@@ -24,9 +30,9 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev Checks if there is a verifier for the given tree depth.
-    /// @param depth: Depth of the tree.
-    modifier onlySupportedDepth(uint256 depth) {
-        if (address(verifiers[depth]) == address(0)) {
+    /// @param merkleTreeDepth: Depth of the tree.
+    modifier onlySupportedMerkleTreeDepth(uint256 merkleTreeDepth) {
+        if (address(verifiers[merkleTreeDepth]) == address(0)) {
             revert Semaphore__TreeDepthIsNotSupported();
         }
         _;
@@ -37,6 +43,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     constructor(Verifier[] memory _verifiers) {
         for (uint8 i = 0; i < _verifiers.length; ) {
             verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(_verifiers[i].contractAddress);
+
             unchecked {
                 ++i;
             }
@@ -46,13 +53,30 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev See {ISemaphore-createGroup}.
     function createGroup(
         uint256 groupId,
-        uint256 depth,
+        uint256 merkleTreeDepth,
         uint256 zeroValue,
         address admin
-    ) external override onlySupportedDepth(depth) {
-        _createGroup(groupId, depth, zeroValue);
+    ) external override onlySupportedMerkleTreeDepth(merkleTreeDepth) {
+        _createGroup(groupId, merkleTreeDepth, zeroValue);
 
         groupAdmins[groupId] = admin;
+        mtrExpirations[groupId] = 5 minutes;
+
+        emit GroupAdminUpdated(groupId, address(0), admin);
+    }
+
+    /// @dev See {ISemaphore-createGroup}.
+    function createGroup(
+        uint256 groupId,
+        uint256 merkleTreeDepth,
+        uint256 zeroValue,
+        address admin,
+        uint256 mtrExpiration
+    ) external override onlySupportedMerkleTreeDepth(merkleTreeDepth) {
+        _createGroup(groupId, merkleTreeDepth, zeroValue);
+
+        groupAdmins[groupId] = admin;
+        mtrExpirations[groupId] = mtrExpiration;
 
         emit GroupAdminUpdated(groupId, address(0), admin);
     }
@@ -67,6 +91,10 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev See {ISemaphore-addMember}.
     function addMember(uint256 groupId, uint256 identityCommitment) external override onlyGroupAdmin(groupId) {
         _addMember(groupId, identityCommitment);
+
+        uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
+
+        mtrTimestamps[keccak256(abi.encodePacked(groupId, merkleTreeRoot))] = block.timestamp;
     }
 
     /// @dev See {ISemaphore-removeMember}.
@@ -82,21 +110,35 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev See {ISemaphore-verifyProof}.
     function verifyProof(
         uint256 groupId,
+        uint256 merkleTreeRoot,
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
         uint256[8] calldata proof
     ) external override {
-        uint256 root = getRoot(groupId);
-        uint256 depth = getDepth(groupId);
+        uint256 currentMerkleTreeRoot = getMerkleTreeRoot(groupId);
 
-        if (depth == 0) {
+        if (currentMerkleTreeRoot == 0) {
             revert Semaphore__GroupDoesNotExist();
         }
 
-        IVerifier verifier = verifiers[depth];
+        if (merkleTreeRoot != currentMerkleTreeRoot) {
+            uint256 mtrTimestamp = mtrTimestamps[keccak256(abi.encodePacked(groupId, merkleTreeRoot))];
 
-        _verifyProof(signal, root, nullifierHash, externalNullifier, proof, verifier);
+            if (mtrTimestamp == 0) {
+                revert Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
+            }
+
+            if (block.timestamp > mtrTimestamp + mtrExpirations[groupId]) {
+                revert Semaphore__MerkleTreeRootIsExpired();
+            }
+        }
+
+        uint256 merkleTreeDepth = getMerkleTreeDepth(groupId);
+
+        IVerifier verifier = verifiers[merkleTreeDepth];
+
+        _verifyProof(signal, merkleTreeRoot, nullifierHash, externalNullifier, proof, verifier);
 
         _saveNullifierHash(nullifierHash);
 

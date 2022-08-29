@@ -4,12 +4,12 @@ import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "@s
 import { expect } from "chai"
 import { constants, Signer, utils } from "ethers"
 import { run } from "hardhat"
-import { Semaphore as SemaphoreContract } from "../build/typechain"
+import { Semaphore } from "../build/typechain"
 import { config } from "../package.json"
 import { createIdentityCommitments } from "./utils"
 
 describe("Semaphore", () => {
-    let contract: SemaphoreContract
+    let contract: Semaphore
     let signers: Signer[]
     let accounts: string[]
 
@@ -33,18 +33,41 @@ describe("Semaphore", () => {
 
     describe("# createGroup", () => {
         it("Should not create a group if the tree depth is not supported", async () => {
-            const transaction = contract.createGroup(groupId, 10, 0, accounts[0])
+            const transaction = contract["createGroup(uint256,uint256,uint256,address)"](groupId, 10, 0, accounts[0])
 
             await expect(transaction).to.be.revertedWith("Semaphore__TreeDepthIsNotSupported()")
         })
 
         it("Should create a group", async () => {
-            const transaction = contract.connect(signers[1]).createGroup(groupId, treeDepth, 0, accounts[1])
+            const transaction = contract
+                .connect(signers[1])
+                ["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[1])
 
             await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth, 0)
             await expect(transaction)
                 .to.emit(contract, "GroupAdminUpdated")
                 .withArgs(groupId, constants.AddressZero, accounts[1])
+        })
+
+        it("Should create a group with a custom Merkle tree root expiration", async () => {
+            const groupId = 2
+            const transaction = await contract
+                .connect(signers[1])
+                ["createGroup(uint256,uint256,uint256,address,uint256)"](
+                    groupId,
+                    treeDepth,
+                    0,
+                    accounts[0],
+                    5 // 5 seconds.
+                )
+            await contract.addMember(groupId, members[0])
+            await contract.addMember(groupId, members[1])
+            await contract.addMember(groupId, members[2])
+
+            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth, 0)
+            await expect(transaction)
+                .to.emit(contract, "GroupAdminUpdated")
+                .withArgs(groupId, constants.AddressZero, accounts[0])
         })
     })
 
@@ -92,14 +115,14 @@ describe("Semaphore", () => {
         })
 
         it("Should remove a member from an existing group", async () => {
-            const groupId = 100
+            const groupId = 3
             const group = new Group(treeDepth)
 
             group.addMembers([BigInt(1), BigInt(2), BigInt(3)])
 
             group.removeMember(0)
 
-            await contract.createGroup(groupId, treeDepth, 0, accounts[0])
+            await contract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
             await contract.addMember(groupId, BigInt(1))
             await contract.addMember(groupId, BigInt(2))
             await contract.addMember(groupId, BigInt(3))
@@ -113,8 +136,7 @@ describe("Semaphore", () => {
     })
 
     describe("# verifyProof", () => {
-        const signal = "Hello world"
-        const bytes32Signal = utils.formatBytes32String(signal)
+        const signal = utils.formatBytes32String("Hello world")
         const identity = new Identity("0")
 
         const group = new Group(treeDepth)
@@ -136,15 +158,22 @@ describe("Semaphore", () => {
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
-            const transaction = contract.verifyProof(10, bytes32Signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
+            const transaction = contract.verifyProof(10, 1, signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
 
             await expect(transaction).to.be.revertedWith("Semaphore__GroupDoesNotExist()")
+        })
+
+        it("Should not verify a proof if the Merkle tree root is not part of the group", async () => {
+            const transaction = contract.verifyProof(2, 1, signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
+
+            await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeRootIsNotPartOfTheGroup()")
         })
 
         it("Should throw an exception if the proof is not valid", async () => {
             const transaction = contract.verifyProof(
                 groupId,
-                bytes32Signal,
+                group.root,
+                signal,
                 fullProof.publicSignals.nullifierHash,
                 0,
                 solidityProof
@@ -156,13 +185,39 @@ describe("Semaphore", () => {
         it("Should verify a proof for an onchain group correctly", async () => {
             const transaction = contract.verifyProof(
                 groupId,
-                bytes32Signal,
+                group.root,
+                signal,
                 fullProof.publicSignals.nullifierHash,
                 fullProof.publicSignals.merkleRoot,
                 solidityProof
             )
 
-            await expect(transaction).to.emit(contract, "ProofVerified").withArgs(groupId, bytes32Signal)
+            await expect(transaction).to.emit(contract, "ProofVerified").withArgs(groupId, signal)
+        })
+
+        it("Should not verify a proof if the Merkle tree root is expired", async () => {
+            const groupId = 2
+            const group = new Group(treeDepth)
+
+            group.addMember(members[0])
+            group.addMember(members[1])
+
+            const fullProof = await generateProof(identity, group, group.root, signal, {
+                wasmFilePath,
+                zkeyFilePath
+            })
+            const solidityProof = packToSolidityProof(fullProof.proof)
+
+            const transaction = contract.verifyProof(
+                groupId,
+                group.root,
+                signal,
+                fullProof.publicSignals.nullifierHash,
+                0,
+                solidityProof
+            )
+
+            await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeRootIsExpired()")
         })
     })
 })
