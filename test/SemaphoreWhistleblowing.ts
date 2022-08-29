@@ -35,7 +35,9 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should not create an entity with a wrong depth", async () => {
             const transaction = contract.createEntity(entityIds[0], editor, 10)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: depth value is not supported")
+            await expect(transaction).to.be.revertedWith(
+                "SemaphoreWhistleblowing: Merkle tree depth value is not supported"
+            )
         })
 
         it("Should not create an entity greater than the snark scalar field", async () => {
@@ -87,7 +89,7 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should return the correct number of whistleblowers of an entity", async () => {
-            const size = await contract.getNumberOfLeaves(entityIds[0])
+            const size = await contract.getNumberOfMerkleTreeLeaves(entityIds[0])
 
             expect(size).to.be.eq(1)
         })
