@@ -118,33 +118,33 @@ describe("Semaphore", () => {
         })
     })
 
-    describe("# removeMember", () => {
-        it("Should not remove a member if the caller is not the group admin", async () => {
-            const transaction = contract.connect(signers[1]).removeMember(groupId, members[0], [0, 1], [0, 1])
-
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
-        })
-
-        it("Should remove a member from an existing group", async () => {
-            const groupId = 100
-            const group = new Group(treeDepth, BigInt(zeroValue))
-
-            group.addMembers([BigInt(1), BigInt(2), BigInt(3)])
-
-            group.removeMember(0)
-
-            await contract.createGroup(groupId, treeDepth, accounts[0], maxEdges)
-            await contract.addMember(groupId, BigInt(1))
-            await contract.addMember(groupId, BigInt(2))
-            await contract.addMember(groupId, BigInt(3))
-
-            const { siblings, pathIndices, root } = group.generateProofOfMembership(0)
-
-            const transaction = contract.removeMember(groupId, BigInt(1), siblings, pathIndices)
-
-            await expect(transaction).to.emit(contract, "MemberRemoved").withArgs(groupId, BigInt(1), root)
-        })
-    })
+    // describe("# removeMember", () => {
+    //     it("Should not remove a member if the caller is not the group admin", async () => {
+    //         const transaction = contract.connect(signers[1]).removeMember(groupId, members[0], [0, 1], [0, 1])
+    //
+    //         await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
+    //     })
+    //
+    //     it("Should remove a member from an existing group", async () => {
+    //         const groupId = 100
+    //         const group = new Group(treeDepth, BigInt(zeroValue))
+    //
+    //         group.addMembers([BigInt(1), BigInt(2), BigInt(3)])
+    //
+    //         group.removeMember(0)
+    //
+    //         await contract.createGroup(groupId, treeDepth, accounts[0], maxEdges)
+    //         await contract.addMember(groupId, BigInt(1))
+    //         await contract.addMember(groupId, BigInt(2))
+    //         await contract.addMember(groupId, BigInt(3))
+    //
+    //         const { siblings, pathIndices, root } = group.generateProofOfMembership(0)
+    //
+    //         const transaction = contract.removeMember(groupId, BigInt(1), siblings, pathIndices)
+    //
+    //         await expect(transaction).to.emit(contract, "MemberRemoved").withArgs(groupId, BigInt(1), root)
+    //     })
+    // })
 
     describe("# verifyProof", () => {
         const signal = "Hello world"
@@ -169,7 +169,7 @@ describe("Semaphore", () => {
 
             roots = [BigNumber.from(group.root).toHexString(), toFixedHex(0)]
 
-            fullProof = await generateProof(identities[0], group, roots, BigInt(Date.now()), signal, chainID, {
+            fullProof = await generateProof(identities[0], group, roots, BigNumber.from(Date.now()), signal, chainID, {
                 wasmFilePath,
                 zkeyFilePath
             })

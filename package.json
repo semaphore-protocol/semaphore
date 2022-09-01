@@ -1,6 +1,6 @@
 {
     "name": "semaphore-anchor",
-    "version": "2.0.0",
+    "version": "0.0.1",
     "description": "A zero-knowledge protocol for anonymous signalling on a cross-chain setting.",
     "license": "MIT",
     "homepage": "https://github.com/webb-tools/semaphore-anchor.git#readme",
@@ -11,13 +11,11 @@
     "bugs": {
         "url": "https://github.com/webb-tools/semaphore-anchor.git/issues"
     },
-    "workspaces": [
-        "packages/*"
-    ],
     "private": true,
     "scripts": {
         "start": "hardhat node",
         "compile": "hardhat compile",
+        "build": "yarn workspaces foreach run build",
         "download:snark-artifacts": "hardhat run scripts/download-snark-artifacts.ts",
         "deploy:all": "hardhat run scripts/deploy-all.ts",
         "deploy:cross-chain": "yarn deploy:all --network chainA && yarn deploy:all --network chainB",
@@ -38,24 +36,33 @@
         "commit": "cz",
         "precommit": "lint-staged"
     },
+    "workspaces": [
+        "packages/group",
+        "packages/identity",
+        "packages/proof"
+    ],
     "packageManager": "yarn@3.2.1",
     "devDependencies": {
+        "@babel/core": "^7.16.7",
+        "@babel/preset-env": "^7.16.8",
+        "@babel/preset-typescript": "^7.17.12",
         "@commitlint/cli": "^16.1.0",
         "@commitlint/config-conventional": "^16.0.0",
         "@nomiclabs/hardhat-ethers": "^2.0.6",
         "@nomiclabs/hardhat-waffle": "^2.0.3",
-        "@semaphore-protocol/group": "0.1.2",
-        "@semaphore-protocol/identity": "0.2.2",
-        "@semaphore-protocol/proof": "0.3.3",
+        "@rollup/plugin-typescript": "^8.3.0",
         "@typechain/ethers-v5": "^10.0.0",
         "@typechain/hardhat": "^6.0.0",
         "@types/chai": "^4.3.0",
         "@types/download": "^8.0.1",
+        "@types/glob": "^7.2.0",
+        "@types/jest": "^27.4.0",
         "@types/mocha": "^9.1.0",
         "@types/node": "^17.0.12",
         "@types/rimraf": "^3.0.2",
         "@typescript-eslint/eslint-plugin": "^5.10.1",
         "@typescript-eslint/parser": "^5.10.1",
+        "babel-jest": "^27.4.6",
         "chai": "^4.3.5",
         "circomlib": "^2.0.2",
         "circomlibjs": "^0.0.8",
@@ -64,17 +71,23 @@
         "dotenv": "^14.3.2",
         "download": "^8.0.0",
         "eslint": "^8.7.0",
+        "eslint-config-airbnb-typescript": "^16.1.0",
         "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-import": "^2.25.2",
+        "eslint-plugin-jest": "^25.7.0",
         "ethereum-waffle": "^3.4.4",
         "ethers": "^5.6.8",
         "hardhat": "^2.9.7",
         "hardhat-abi-exporter": "^2.10.0",
         "hardhat-gas-reporter": "^1.0.8",
+        "jest": "^27.4.1",
+        "jest-config": "^27.4.7",
         "js-logger": "^1.6.1",
         "lint-staged": "^12.3.2",
         "prettier": "^2.5.1",
         "prettier-plugin-solidity": "^1.0.0-beta.19",
         "rimraf": "^3.0.2",
+        "rollup": "^2.64.0",
         "rollup-plugin-cleanup": "^3.2.1",
         "rollup-plugin-typescript2": "^0.31.2",
         "snarkjs": "^0.4.13",
@@ -82,6 +95,7 @@
         "solhint-plugin-prettier": "^0.0.5",
         "solidity-coverage": "^0.7.21",
         "ts-node": "^10.4.0",
+        "tslib": "^2.3.1",
         "typechain": "^8.0.0",
         "typescript": "^4.5.5"
     },
@@ -111,7 +125,11 @@
         "@ethersproject/bytes": "^5.6.1",
         "@ethersproject/providers": "^5.6.8",
         "@openzeppelin/contracts": "^4.4.2",
+        "@webb-tools/sdk-core": "0.1.4-96",
+        "@webb-tools/test-utils": "0.1.4-96",
         "@zk-kit/incremental-merkle-tree.sol": "^1.0.0",
+        "ffjavascript": "^0.2.54",
+        "lerna": "~4.0.0",
         "rollup": "^2.77.2"
     }
 }

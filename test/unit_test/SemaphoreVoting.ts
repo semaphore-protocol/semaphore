@@ -222,7 +222,7 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not cast a vote if the proof is not valid", async () => {
-            const nullifierHash = generateNullifierHash(pollIds[0], identity.getNullifier(), chainID)
+            const nullifierHash = generateNullifierHash(pollIds[0], identity.getNullifier())
 
             const transaction = contract
                 .connect(signers[1])

@@ -41,8 +41,11 @@
         "@ethersproject/strings": "^5.5.0",
         "@semaphore-anchor/group": "0.0.1",
         "@semaphore-anchor/identity": "0.0.1",
-        "@zk-kit/incremental-merkle-tree": "0.4.3",
+        "@webb-tools/sdk-core": "0.1.4-96",
+        "@webb-tools/utils": "^0.2.5",
         "circomlibjs": "0.0.8",
+        "ethers": "^5.6.8",
+        "ffjavascript": "^0.2.54",
         "snarkjs": "^0.4.13",
         "typescript": "^4.7.4"
     }

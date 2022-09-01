@@ -1,12 +1,14 @@
-import { Group } from "@semaphore-anchor/group/src"
 // import type { Identity } from "@semaphore-protocol/identity"
-import { BigNumber } from "@ethersproject/bignumber"
-import { MerkleProof } from "@zk-kit/incremental-merkle-tree"
+import {
+  MerkleProof,
+} from "@webb-tools/sdk-core"
 import { groth16 } from "snarkjs"
 import generateSignalHash from "./generateSignalHash"
-import { BigNumberish, FullProof, SnarkArtifacts } from "./types"
+import { BigNumber, BigNumberish } from 'ethers';
+import { FullProof, SnarkArtifacts } from "./types"
 
 import { Identity } from "@semaphore-anchor/identity/src"
+import { Group } from "@semaphore-anchor/group/src"
 
 export type VerifierContractInfo = {
     name: string
@@ -49,16 +51,23 @@ export default async function generateProof(
         throw new Error("The identity is not part of the group")
     }
 
-    const merkleProof = group.generateProofOfMembership(index) // console.log("path INDICES: ", merkleProof.pathIndices)
+    const merkleProof: MerkleProof = group.generateProofOfMembership(index) // console.log("path INDICES: ", merkleProof.pathIndices)
 
+    console.log("CHAINID: ", chainID)
+    console.log("NUMBER CHAINID: ", Number(chainID))
+    console.log("BigInt CHAINID: ", BigInt(Number(chainID)))
+
+    console.log("extNullifier: ", externalNullifier)
+    console.log("NUMBER extNullifier: ", Number(externalNullifier))
+    console.log("BigInt extNullifier: ", BigInt(Number(externalNullifier)))
     const { proof, publicSignals } = await groth16.fullProve(
         {
             identityTrapdoor: identity.getTrapdoor(),
             identityNullifier: identity.getNullifier(),
             treePathIndices: merkleProof.pathIndices,
-            treeSiblings: merkleProof.siblings,
+            treeSiblings: merkleProof.pathElements,
             roots: roots,
-            chainID: chainID,
+            chainID: BigInt(Number(chainID)),
             externalNullifier,
             signalHash: generateSignalHash(signal)
         },

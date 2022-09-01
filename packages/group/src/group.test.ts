@@ -58,17 +58,18 @@ describe("Group", () => {
         })
     })
 
-    describe("# removeMember", () => {
-        it("Should remove a member from a group", () => {
-            const group = new Group()
-            group.addMembers([BigInt(1), BigInt(3)])
-
-            group.removeMember(0)
-
-            expect(group.members).toHaveLength(2)
-            expect(group.members[0]).toBe(group.zeroValue)
-        })
-    })
+    // TODO: Add method to remove onto MerkleTree for @webb-tools/sdk-core
+    // describe("# removeMember", () => {
+    //     it("Should remove a member from a group", () => {
+    //         const group = new Group()
+    //         group.addMembers([BigInt(1), BigInt(3)])
+    //
+    //         group.removeMember(0)
+    //
+    //         expect(group.members).toHaveLength(2)
+    //         expect(group.members[0]).toBe(group.zeroValue)
+    //     })
+    // })
 
     describe("# generateProofOfMembership", () => {
         it("Should generate a proof of membership", () => {
@@ -77,7 +78,7 @@ describe("Group", () => {
 
             const proof = group.generateProofOfMembership(0)
 
-            expect(proof.leaf).toBe(BigInt(1))
+            expect(proof.element).toBe(BigInt(1))
         })
     })
 })

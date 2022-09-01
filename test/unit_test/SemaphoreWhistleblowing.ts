@@ -139,9 +139,9 @@ describe("SemaphoreWhistleblowing", () => {
 
             group.addMember(identityCommitment)
 
-            const { siblings, pathIndices } = group.generateProofOfMembership(0)
+            const { pathElements, pathIndices } = group.generateProofOfMembership(0)
 
-            const transaction = contract.removeWhistleblower(entityIds[0], identityCommitment, siblings, pathIndices)
+            const transaction = contract.removeWhistleblower(entityIds[0], identityCommitment, pathElements, pathIndices)
 
             await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: caller is not the editor")
         })
@@ -153,11 +153,11 @@ describe("SemaphoreWhistleblowing", () => {
 
             group.addMember(identityCommitment)
 
-            const { siblings, pathIndices } = group.generateProofOfMembership(0)
+            const { pathElements, pathIndices } = group.generateProofOfMembership(0)
 
             const transaction = contract
                 .connect(signers[1])
-                .removeWhistleblower(entityIds[0], identityCommitment, siblings, pathIndices)
+                .removeWhistleblower(entityIds[0], identityCommitment, pathElements, pathIndices)
 
             await expect(transaction)
                 .to.emit(contract, "MemberRemoved")
@@ -214,7 +214,7 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should not publish a leak if the proof is not valid", async () => {
-            const nullifierHash = generateNullifierHash(entityIds[0], identity.getNullifier(), chainID)
+            const nullifierHash = generateNullifierHash(entityIds[0], identity.getNullifier())
 
             const transaction = contract
                 .connect(signers[1])

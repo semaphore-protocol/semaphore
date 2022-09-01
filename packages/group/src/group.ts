@@ -1,9 +1,20 @@
-import { IncrementalMerkleTree, MerkleProof } from "@zk-kit/incremental-merkle-tree"
+import { BigNumber, BigNumberish } from 'ethers';
 import { poseidon } from "circomlibjs"
 import { Member } from "./types"
+import {
+  MerkleTree,
+  MerkleProof,
+} from "@webb-tools/sdk-core"
+
+// import { u8aToHex } from '@webb-tools/utils';
+
+export declare type Leaf = {
+    index: number;
+    commitment: BigNumberish;
+};
 
 export default class Group {
-    private _merkleTree: IncrementalMerkleTree
+    private _merkleTree: MerkleTree
 
     /**
      * Initializes the group with the tree depth and the zero value.
@@ -15,15 +26,15 @@ export default class Group {
             throw new Error("The tree depth must be between 16 and 32")
         }
 
-        this._merkleTree = new IncrementalMerkleTree(poseidon, treeDepth, zeroValue, 2)
+        this._merkleTree = new MerkleTree(treeDepth)
     }
 
     /**
      * Returns the root hash of the tree.
      * @returns Root hash.
      */
-    get root(): Member {
-        return this._merkleTree.root
+    get root(): BigNumberish {
+        return this._merkleTree.root()
     }
 
     /**
@@ -31,23 +42,23 @@ export default class Group {
      * @returns Tree depth.
      */
     get depth(): number {
-        return this._merkleTree.depth
+        return this._merkleTree.levels
     }
 
     /**
      * Returns the zero value of the tree.
      * @returns Tree zero value.
      */
-    get zeroValue(): Member {
-        return this._merkleTree.zeroes[0]
+    get zeroValue(): BigNumber {
+        return this._merkleTree.zeros()[0]
     }
 
     /**
      * Returns the members (i.e. identity commitments) of the group.
      * @returns List of members.
      */
-    get members(): Member[] {
-        return this._merkleTree.leaves
+    get members(): BigNumber[] {
+        return this._merkleTree.elements()
     }
 
     /**
@@ -64,26 +75,25 @@ export default class Group {
      * @param identityCommitment New member.
      */
     addMember(identityCommitment: Member) {
-        this._merkleTree.insert(BigInt(identityCommitment))
+        this._merkleTree.insert(identityCommitment)
     }
 
     /**
      * Adds new members to the group.
      * @param identityCommitments New members.
      */
-    addMembers(identityCommitments: Member[]) {
-        for (const identityCommitment of identityCommitments) {
-            this.addMember(identityCommitment)
-        }
+    addMembers(identityCommitments: BigNumberish[]) {
+        this._merkleTree.bulkInsert(identityCommitments)
     }
 
     /**
      * Removes a member from the group.
      * @param index Index of the member to be removed.
      */
-    removeMember(index: number) {
-        this._merkleTree.delete(index)
-    }
+    //TODO: Add removal method to sdk-core MerkleTree
+    // removeMember(index: number) {
+    //     this._merkleTree.delete(index)
+    // }
 
     /**
      * Creates a proof of membership.
@@ -91,10 +101,29 @@ export default class Group {
      * @returns Proof object.
      */
     generateProofOfMembership(index: number): MerkleProof {
-        const merkleProof = this._merkleTree.createProof(index)
-
-        merkleProof.siblings = merkleProof.siblings.map((s) => s[0])
-
+        const merkleProof = this._merkleTree.path(index)
         return merkleProof
     }
+    getMerkleProof(index: number): MerkleProof {
+        let inputMerklePathIndices: number[];
+        let inputMerklePathElements: BigNumber[];
+        const commitment = this._merkleTree.elements()[index];
+
+        if (index < 0) {
+            throw new Error(`Input commitment for index ${index} was not found`);
+        } else {
+            const path = this._merkleTree.path(index);
+            inputMerklePathIndices = path.pathIndices;
+            inputMerklePathElements = path.pathElements;
+            inputMerklePathIndices = new Array(this._merkleTree.levels).fill(0);
+            inputMerklePathElements = new Array(this._merkleTree.levels).fill(0);
+        }
+
+        return {
+          element: BigNumber.from(commitment),
+          pathElements: inputMerklePathElements,
+          pathIndices: inputMerklePathIndices,
+          merkleRoot: this._merkleTree.root(),
+        };
+  }
 }
