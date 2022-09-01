@@ -51,24 +51,18 @@ export default async function generateProof(
         throw new Error("The identity is not part of the group")
     }
 
-    const merkleProof: MerkleProof = group.generateProofOfMembership(index) // console.log("path INDICES: ", merkleProof.pathIndices)
+    const merkleProof = group.generateProofOfMembership(index)
+    const pathElements = merkleProof.pathElements.map((bignum) => bignum.toBigInt())
 
-    console.log("CHAINID: ", chainID)
-    console.log("NUMBER CHAINID: ", Number(chainID))
-    console.log("BigInt CHAINID: ", BigInt(Number(chainID)))
-
-    console.log("extNullifier: ", externalNullifier)
-    console.log("NUMBER extNullifier: ", Number(externalNullifier))
-    console.log("BigInt extNullifier: ", BigInt(Number(externalNullifier)))
     const { proof, publicSignals } = await groth16.fullProve(
         {
             identityTrapdoor: identity.getTrapdoor(),
             identityNullifier: identity.getNullifier(),
             treePathIndices: merkleProof.pathIndices,
-            treeSiblings: merkleProof.pathElements,
+            treeSiblings: pathElements,
             roots: roots,
-            chainID: BigInt(Number(chainID)),
-            externalNullifier,
+            chainID: chainID.toString(),
+            externalNullifier: externalNullifier.toString(),
             signalHash: generateSignalHash(signal)
         },
         snarkArtifacts.wasmFilePath,
