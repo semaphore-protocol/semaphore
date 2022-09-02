@@ -1,2 +1,2 @@
-export { AnchorHandler } from './AnchorHandler';
-export { VAnchor } from './VAnchor';
+export { Semaphore } from './Semaphore';
+export { Verifier } from './Verifier';
