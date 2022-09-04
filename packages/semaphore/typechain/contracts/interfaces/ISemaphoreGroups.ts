@@ -25,9 +25,24 @@ import type {
   PromiseOrValue,
 } from "../../common";
 
+export type EdgeStruct = {
+  chainID: PromiseOrValue<BigNumberish>;
+  root: PromiseOrValue<BytesLike>;
+  latestLeafIndex: PromiseOrValue<BigNumberish>;
+  srcResourceID: PromiseOrValue<BytesLike>;
+};
+
+export type EdgeStructOutput = [BigNumber, string, BigNumber, string] & {
+  chainID: BigNumber;
+  root: string;
+  latestLeafIndex: BigNumber;
+  srcResourceID: string;
+};
+
 export interface ISemaphoreGroupsInterface extends utils.Interface {
   functions: {
     "getDepth(uint256)": FunctionFragment;
+    "getLatestNeighborEdges(uint256)": FunctionFragment;
     "getMaxEdges(uint256)": FunctionFragment;
     "getNumberOfLeaves(uint256)": FunctionFragment;
     "getRoot(uint256)": FunctionFragment;
@@ -37,6 +52,7 @@ export interface ISemaphoreGroupsInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "getDepth"
+      | "getLatestNeighborEdges"
       | "getMaxEdges"
       | "getNumberOfLeaves"
       | "getRoot"
@@ -45,6 +61,10 @@ export interface ISemaphoreGroupsInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "getDepth",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getLatestNeighborEdges",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -65,6 +85,10 @@ export interface ISemaphoreGroupsInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getLatestNeighborEdges",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getMaxEdges",
     data: BytesLike
@@ -157,6 +181,11 @@ export interface ISemaphoreGroups extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[number]>;
 
+    getLatestNeighborEdges(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[EdgeStructOutput[]]>;
+
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -184,6 +213,11 @@ export interface ISemaphoreGroups extends BaseContract {
     overrides?: CallOverrides
   ): Promise<number>;
 
+  getLatestNeighborEdges(
+    groupId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<EdgeStructOutput[]>;
+
   getMaxEdges(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -210,6 +244,11 @@ export interface ISemaphoreGroups extends BaseContract {
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<number>;
+
+    getLatestNeighborEdges(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<EdgeStructOutput[]>;
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
@@ -272,6 +311,11 @@ export interface ISemaphoreGroups extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getLatestNeighborEdges(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -296,6 +340,11 @@ export interface ISemaphoreGroups extends BaseContract {
 
   populateTransaction: {
     getDepth(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

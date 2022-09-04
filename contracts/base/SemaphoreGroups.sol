@@ -4,6 +4,7 @@ pragma solidity ^0.8.4;
 import {SNARK_SCALAR_FIELD} from "./SemaphoreConstants.sol";
 import "../interfaces/ISemaphoreGroups.sol";
 import "./LinkableIncrementalBinaryTree.sol";
+import {Edge} from "./LinkableIncrementalBinaryTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 // import "hardhat/console.sol";
 
@@ -101,6 +102,10 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         }
         bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(groups[groupId], roots_encoded);
         return valid_roots;
+    }
+    /// @dev See {ISemaphoreGroups-getLatestNeighborEdges}.
+    function getLatestNeighborEdges(uint256 groupId) public view virtual override returns (Edge[] memory) {
+        return groups[groupId].getLatestNeighborEdges();
     }
 
     /// @dev See {ISemaphoreGroups-getRoot}.

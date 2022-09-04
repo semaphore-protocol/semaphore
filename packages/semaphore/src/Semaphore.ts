@@ -246,14 +246,14 @@ export class Semaphore {
   //   );
   // }
 
-  // public async populateRootsForProof(group_id: number): Promise<string[]> {
-  //   const neighborEdges = await this.contract.getLatestNeighborEdges();
-  //   const neighborRootInfos = neighborEdges.map((rootData) => {
-  //     return rootData.root;
-  //   });
-  //   let thisRoot = await this.contract.getRoot(group_id);
-  //   return [thisRoot, ...neighborRootInfos];
-  // }
+  public async populateRootsForProof(group_id: number): Promise<string[]> {
+    const neighborEdges = await this.contract.getLatestNeighborEdges(group_id);
+    const neighborRootInfos = neighborEdges.map((rootData) => {
+      return rootData.root;
+    });
+    const thisRoot = await this.contract.getRoot(group_id);
+    return [thisRoot.toString(), ...neighborRootInfos];
+  }
 
   public async createGroup(group_id: number, groupAdmin: string, maxEdges=1, depth=20) {
       if(group_id in this.groups) {

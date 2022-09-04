@@ -27,6 +27,20 @@ import type {
   PromiseOrValue,
 } from "../common";
 
+export type EdgeStruct = {
+  chainID: PromiseOrValue<BigNumberish>;
+  root: PromiseOrValue<BytesLike>;
+  latestLeafIndex: PromiseOrValue<BigNumberish>;
+  srcResourceID: PromiseOrValue<BytesLike>;
+};
+
+export type EdgeStructOutput = [BigNumber, string, BigNumber, string] & {
+  chainID: BigNumber;
+  root: string;
+  latestLeafIndex: BigNumber;
+  srcResourceID: string;
+};
+
 export declare namespace ISemaphore {
   export type VerifierStruct = {
     contractAddress: PromiseOrValue<string>;
@@ -48,6 +62,7 @@ export interface SemaphoreInterface extends utils.Interface {
     "getChainId()": FunctionFragment;
     "getChainIdType()": FunctionFragment;
     "getDepth(uint256)": FunctionFragment;
+    "getLatestNeighborEdges(uint256)": FunctionFragment;
     "getMaxEdges(uint256)": FunctionFragment;
     "getNumberOfLeaves(uint256)": FunctionFragment;
     "getRoot(uint256)": FunctionFragment;
@@ -70,6 +85,7 @@ export interface SemaphoreInterface extends utils.Interface {
       | "getChainId"
       | "getChainIdType"
       | "getDepth"
+      | "getLatestNeighborEdges"
       | "getMaxEdges"
       | "getNumberOfLeaves"
       | "getRoot"
@@ -114,6 +130,10 @@ export interface SemaphoreInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getDepth",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getLatestNeighborEdges",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -197,6 +217,10 @@ export interface SemaphoreInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getLatestNeighborEdges",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getMaxEdges",
     data: BytesLike
@@ -377,6 +401,11 @@ export interface Semaphore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[number]>;
 
+    getLatestNeighborEdges(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[EdgeStructOutput[]]>;
+
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -476,6 +505,11 @@ export interface Semaphore extends BaseContract {
     overrides?: CallOverrides
   ): Promise<number>;
 
+  getLatestNeighborEdges(
+    groupId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<EdgeStructOutput[]>;
+
   getMaxEdges(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -574,6 +608,11 @@ export interface Semaphore extends BaseContract {
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<number>;
+
+    getLatestNeighborEdges(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<EdgeStructOutput[]>;
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
@@ -733,6 +772,11 @@ export interface Semaphore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getLatestNeighborEdges(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -829,6 +873,11 @@ export interface Semaphore extends BaseContract {
     getChainIdType(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getDepth(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

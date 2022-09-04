@@ -131,6 +131,47 @@ const _abi = [
         type: "uint256",
       },
     ],
+    name: "getLatestNeighborEdges",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "chainID",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "root",
+            type: "bytes32",
+          },
+          {
+            internalType: "uint256",
+            name: "latestLeafIndex",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "srcResourceID",
+            type: "bytes32",
+          },
+        ],
+        internalType: "struct Edge[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "groupId",
+        type: "uint256",
+      },
+    ],
     name: "getMaxEdges",
     outputs: [
       {

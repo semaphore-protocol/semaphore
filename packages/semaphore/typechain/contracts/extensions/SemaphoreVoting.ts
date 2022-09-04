@@ -27,6 +27,20 @@ import type {
   PromiseOrValue,
 } from "../../common";
 
+export type EdgeStruct = {
+  chainID: PromiseOrValue<BigNumberish>;
+  root: PromiseOrValue<BytesLike>;
+  latestLeafIndex: PromiseOrValue<BigNumberish>;
+  srcResourceID: PromiseOrValue<BytesLike>;
+};
+
+export type EdgeStructOutput = [BigNumber, string, BigNumber, string] & {
+  chainID: BigNumber;
+  root: string;
+  latestLeafIndex: BigNumber;
+  srcResourceID: string;
+};
+
 export interface SemaphoreVotingInterface extends utils.Interface {
   functions: {
     "addVoter(uint256,uint256)": FunctionFragment;
@@ -34,6 +48,7 @@ export interface SemaphoreVotingInterface extends utils.Interface {
     "createPoll(uint256,uint8,address,uint8)": FunctionFragment;
     "endPoll(uint256,uint256)": FunctionFragment;
     "getDepth(uint256)": FunctionFragment;
+    "getLatestNeighborEdges(uint256)": FunctionFragment;
     "getMaxEdges(uint256)": FunctionFragment;
     "getNumberOfLeaves(uint256)": FunctionFragment;
     "getRoot(uint256)": FunctionFragment;
@@ -48,6 +63,7 @@ export interface SemaphoreVotingInterface extends utils.Interface {
       | "createPoll"
       | "endPoll"
       | "getDepth"
+      | "getLatestNeighborEdges"
       | "getMaxEdges"
       | "getNumberOfLeaves"
       | "getRoot"
@@ -87,6 +103,10 @@ export interface SemaphoreVotingInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "getLatestNeighborEdges",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getMaxEdges",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -112,6 +132,10 @@ export interface SemaphoreVotingInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "createPoll", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "endPoll", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getLatestNeighborEdges",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getMaxEdges",
     data: BytesLike
@@ -301,6 +325,11 @@ export interface SemaphoreVoting extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[number]>;
 
+    getLatestNeighborEdges(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[EdgeStructOutput[]]>;
+
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -363,6 +392,11 @@ export interface SemaphoreVoting extends BaseContract {
     overrides?: CallOverrides
   ): Promise<number>;
 
+  getLatestNeighborEdges(
+    groupId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<EdgeStructOutput[]>;
+
   getMaxEdges(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -424,6 +458,11 @@ export interface SemaphoreVoting extends BaseContract {
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<number>;
+
+    getLatestNeighborEdges(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<EdgeStructOutput[]>;
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
@@ -566,6 +605,11 @@ export interface SemaphoreVoting extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getLatestNeighborEdges(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -625,6 +669,11 @@ export interface SemaphoreVoting extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getDepth(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
