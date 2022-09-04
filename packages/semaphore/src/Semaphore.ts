@@ -19,15 +19,16 @@ import {
   NoteGenInput,
   FIELD_SIZE,
 } from '@webb-tools/sdk-core';
-import {
-  IAnchorDeposit,
-  IAnchor,
-  IVariableAnchorExtData,
-  IVariableAnchorPublicInputs,
-  IAnchorDepositInfo,
-} from '@webb-tools/interfaces';
+import { poseidon_gencontract as poseidonContract } from "circomlibjs"
+// import {
+//   IAnchorDeposit,
+//   IAnchor,
+//   IVariableAnchorExtData,
+//   IVariableAnchorPublicInputs,
+//   IAnchorDepositInfo,
+// } from '@webb-tools/interfaces';
 import { hexToU8a, u8aToHex, getChainIdType, ZkComponents } from '@webb-tools/utils';
-import { Group } from '@semaphore-anchor/group';
+import { Group } from '@semaphore-anchor/group/src';
 import { Verifier } from './Verifier';
 
 const zeroAddress = '0x0000000000000000000000000000000000000000';
@@ -45,6 +46,9 @@ export type Commitment = {
 export type Secret = {
     identityNullifier: BigNumberish;
     identityTrapdoor: BigNumberish;
+}
+export type PublicInputs = {
+    value: string
 }
 
 export const gasBenchmark = [];
@@ -97,9 +101,18 @@ export class Semaphore {
     const linkableTree = await linkableTreeFactory.deploy();
     await linkableTree.deployed()
 
+    const poseidonABI = poseidonContract.generateABI(2)
+    const poseidonBytecode = poseidonContract.createCode(2)
+
+    const PoseidonLibFactory = new ethers.ContractFactory(poseidonABI, poseidonBytecode, signer)
+    const poseidonLib = await PoseidonLibFactory.deploy()
+
+    await poseidonLib.deployed()
+
     const factory = new Semaphore__factory(
-      { ['contracts/libs/SemaphoreInputEncoder.sol:SemaphoreInputEncoder']: encodeLibrary.address },
-      { ['contracts/base/LinkableIncrementalBinaryTree.sol:LinkableIncrementalBinaryTree']: linkableTree.address },
+      { ['contracts/base/SemaphoreInputEncoder.sol:SemaphoreInputEncoder']: encodeLibrary.address,
+      ['contracts/base/LinkableIncrementalBinaryTree.sol:LinkableIncrementalBinaryTree']: linkableTree.address,
+      ["@zk-kit/incremental-merkle-tree.sol/Hashes.sol:PoseidonT3"]: poseidonLib.address, },
       signer
     );
     const semaphore = await factory.deploy([{merkleTreeDepth: BigNumber.from(levels), contractAddress: verifier.contract.address}]);
@@ -150,36 +163,24 @@ export class Semaphore {
       return new Uint8Array();
     }
 
-    var a = [];
-    for (var i = 0, len = str.length; i < len; i += 2) {
+    const a = [];
+    for (let i = 0, len = str.length; i < len; i += 2) {
       a.push(parseInt(str.substr(i, 2), 16));
     }
 
     return new Uint8Array(a);
   }
 
-  public static convertToPublicInputsStruct(args: any[]): IVariableAnchorPublicInputs {
-    return {
-      proof: args[0],
-      roots: args[1],
-      inputNullifiers: args[2],
-      outputCommitments: args[3],
-      publicAmount: args[4],
-      extDataHash: args[5],
-    };
-  }
-
-  public static convertToExtDataStruct(args: any[]): IVariableAnchorExtData {
-    return {
-      recipient: args[0],
-      extAmount: args[1],
-      relayer: args[2],
-      fee: args[3],
-      encryptedOutput1: args[4],
-      encryptedOutput2: args[5],
-    };
-  }
-
+  // public static convertToPublicInputsStruct(args: any[]): PublicInputs {
+  //   return {
+  //     proof: args[0],
+  //     roots: args[1],
+  //     inputNullifiers: args[2],
+  //     outputCommitments: args[3],
+  //     publicAmount: args[4],
+  //     extDataHash: args[5],
+  //   };
+  // }
   // Sync the local tree with the tree on chain.
   // Start syncing from the given block number, otherwise zero.
   // public async update(blockNumber?: number) {
@@ -245,16 +246,16 @@ export class Semaphore {
   //   );
   // }
 
-  public async populateRootsForProof(group_id: number): Promise<string[]> {
-    const neighborEdges = await this.contract.getLatestNeighborEdges();
-    const neighborRootInfos = neighborEdges.map((rootData) => {
-      return rootData.root;
-    });
-    let thisRoot = await this.contract.getRoot(group_id);
-    return [thisRoot, ...neighborRootInfos];
-  }
+  // public async populateRootsForProof(group_id: number): Promise<string[]> {
+  //   const neighborEdges = await this.contract.getLatestNeighborEdges();
+  //   const neighborRootInfos = neighborEdges.map((rootData) => {
+  //     return rootData.root;
+  //   });
+  //   let thisRoot = await this.contract.getRoot(group_id);
+  //   return [thisRoot, ...neighborRootInfos];
+  // }
 
-  public async createGroup(group_id: number, groupAdmin: string, maxEdges: number=1, depth: number=20) {
+  public async createGroup(group_id: number, groupAdmin: string, maxEdges=1, depth=20) {
       if(group_id in this.groups) {
         throw new Error(`Group ${group_id} has already been created`);
       } else {
@@ -264,7 +265,7 @@ export class Semaphore {
   }
 
   public async getClassAndContractRoots(group_id: number) {
-    return [this.groups[group_id].root(), await this.contract.getRoot(group_id)];
+    return [this.groups[group_id].root, await this.contract.getRoot(group_id)];
   }
 
   /**

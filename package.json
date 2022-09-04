@@ -39,7 +39,8 @@
     "workspaces": [
         "packages/group",
         "packages/identity",
-        "packages/proof"
+        "packages/proof",
+        "packages/semaphore"
     ],
     "packageManager": "yarn@3.2.1",
     "devDependencies": {

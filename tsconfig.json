@@ -14,7 +14,7 @@
         "declarationDir": "types",
         "typeRoots": ["node_modules/@types", "types"],
         "paths": {
-            "@semaphore-protocol/*": ["packages/*/src"]
+            "@semaphore-anchor/*": ["packages/*/src"]
         }
     },
     "ts-node": {
