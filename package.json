@@ -24,6 +24,8 @@
         "deploy:semaphore-voting": "hardhat deploy:semaphore-voting",
         "deploy:semaphore-whistleblowing": "hardhat deploy:semaphore-whistleblowing",
         "test": "hardhat test ./test/unit_test/*",
+        "test:custom": "hardhat test",
+        "test:semaphore": "hardhat test ./test/unit_test/Semaphore.ts",
         "test:cross-chain": "hardhat test ./test/functional_test/CrossChain.ts",
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage test/unit_test/*",
@@ -107,12 +109,11 @@
         "paths": {
             "contracts": "./contracts",
             "circuit": "./circuit",
-            "@identity": "./packages/identity/*",
             "tests": "./test",
             "cache": "./cache",
             "snarkjs-templates": "./snarkjs-templates",
             "build": {
-                "snark-artifacts": "./fixtures",
+                "snark-artifacts": "/home/semar/Projects/webb/semaphore-anchor/fixtures",
                 "contracts": "./build/contracts",
                 "typechain": "./build/typechain"
             }

@@ -1,4 +1,5 @@
-import { BigNumber, BigNumberish, ContractTransaction, ethers } from 'ethers';
+import { BigNumber, BigNumberish, ContractTransaction, Signer, ethers } from 'ethers';
+import path from "path";
 import {
   Semaphore as SemaphoreContract,
   Verifier20_2__factory,
@@ -27,7 +28,7 @@ import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 //   IVariableAnchorPublicInputs,
 //   IAnchorDepositInfo,
 // } from '@webb-tools/interfaces';
-import { hexToU8a, u8aToHex, getChainIdType, ZkComponents } from '@webb-tools/utils';
+import { getChainIdType, ZkComponents } from '@webb-tools/utils';
 import { Group } from '@semaphore-anchor/group/src';
 import { Verifier } from './Verifier';
 
@@ -58,7 +59,7 @@ export const proofTimeBenchmark = [];
 // Functionality relevant to anchors in general (proving, verifying) is implemented in static methods
 // Functionality relevant to a particular anchor deployment (deposit, withdraw) is implemented in instance methods
 export class Semaphore {
-  signer: ethers.Signer;
+  signer: Signer;
   contract: SemaphoreContract;
   groups: Record<number, Group>;
   rootHistory: Record<number, string>;
@@ -66,13 +67,12 @@ export class Semaphore {
   latestSyncedBlock: number;
   // The depositHistory stores leafIndex => information to create proposals (new root)
   smallCircuitZkComponents: ZkComponents;
-  largeCircuitZkComponents: ZkComponents;
 
   constructor(
     contract: SemaphoreContract,
-    signer: ethers.Signer,
+    signer: Signer,
+    maxEdges: number,
     smallCircuitZkComponents: ZkComponents,
-    largeCircuitZkComponents: ZkComponents
   ) {
     this.signer = signer;
     this.contract = contract;
@@ -81,17 +81,13 @@ export class Semaphore {
     this.rootHistory = {}
     // this.rootHistory = undefined;
     this.smallCircuitZkComponents = smallCircuitZkComponents
-    this.largeCircuitZkComponents = largeCircuitZkComponents
+    // this.largeCircuitZkComponents = largeCircuitZkComponents
   }
   public static async createSemaphore(
     levels: BigNumberish,
-    hasher: string,
-    handler: string,
-    token: string,
     maxEdges: number,
     smallCircuitZkComponents: ZkComponents,
-    largeCircuitZkComponents: ZkComponents,
-    signer: ethers.Signer
+    signer: Signer
   ): Promise<Semaphore> {
     const encodeLibraryFactory = new SemaphoreInputEncoder__factory(signer);
     const encodeLibrary = await encodeLibraryFactory.deploy();
@@ -100,7 +96,6 @@ export class Semaphore {
     const linkableTreeFactory = new LinkableIncrementalBinaryTree__factory(signer)
     const linkableTree = await linkableTreeFactory.deploy();
     await linkableTree.deployed()
-
     const poseidonABI = poseidonContract.generateABI(2)
     const poseidonBytecode = poseidonContract.createCode(2)
 
@@ -108,7 +103,6 @@ export class Semaphore {
     const poseidonLib = await PoseidonLibFactory.deploy()
 
     await poseidonLib.deployed()
-
     const factory = new Semaphore__factory(
       { ['contracts/base/SemaphoreInputEncoder.sol:SemaphoreInputEncoder']: encodeLibrary.address,
       ['contracts/base/LinkableIncrementalBinaryTree.sol:LinkableIncrementalBinaryTree']: linkableTree.address,
@@ -120,11 +114,11 @@ export class Semaphore {
     const createdSemaphore = new Semaphore(
       semaphore,
       signer,
+      maxEdges,
       smallCircuitZkComponents,
-      largeCircuitZkComponents
     );
-    createdSemaphore.latestSyncedBlock = semaphore.deployTransaction.blockNumber!;
     return createdSemaphore;
+    // createdSemaphore.latestSyncedBlock = semaphore.deployTransaction.blockNumber!;
   }
 
   public static async connect(
@@ -132,15 +126,15 @@ export class Semaphore {
     // build up tree by querying provider for logs
     address: string,
     smallCircuitZkComponents: ZkComponents,
-    largeCircuitZkComponents: ZkComponents,
-    signer: ethers.Signer
+    maxEdges: number,
+    signer: Signer
   ) {
     const semaphore = Semaphore__factory.connect(address, signer);
     const createdSemaphore = new Semaphore(
       semaphore,
       signer,
+      maxEdges,
       smallCircuitZkComponents,
-      largeCircuitZkComponents
     );
     return createdSemaphore;
   }
@@ -212,7 +206,7 @@ export class Semaphore {
   //   await tx.wait();
   // }
 
-  public async setSigner(newSigner: ethers.Signer) {
+  public async setSigner(newSigner: Signer) {
     const currentChainId = await this.signer.getChainId();
     const newChainId = await newSigner.getChainId();
 

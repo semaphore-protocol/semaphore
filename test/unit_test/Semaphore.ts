@@ -1,11 +1,13 @@
 import { expect } from "chai"
 import { constants, Signer, utils, BigNumber } from "ethers"
-import { run } from "hardhat"
+import { run, ethers} from "hardhat"
 import { Semaphore as SemaphoreContract } from "../../build/typechain"
 import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Group } from "../../packages/group/src"
-import { FullProof, generateProof, packToSolidityProof, SolidityProof, BigNumberish } from "../../packages/proof/src/"
+import { Semaphore } from "@semaphore-anchor/semaphore"
+import { Group } from "@semaphore-anchor/group"
+import { FullProof, generateProof, packToSolidityProof, SolidityProof, BigNumberish } from "@semaphore-anchor/proof"
+import { ZkComponents, fetchComponentsFromFilePaths } from '@webb-tools/utils';
 import { toFixedHex, VerifierContractInfo, createRootsBytes, createIdentities } from "../utils"
 
 describe("Semaphore", () => {
@@ -22,46 +24,23 @@ describe("Semaphore", () => {
     const { identities, members } = createIdentities(Number(chainID), 3)
 
     const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/semaphore_20_2.wasm`
+    const witnessCalcPath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/witness_calculator.js`
     const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/circuit_final.zkey`
 
     before(async () => {
-        const { address: v2_address } = await run("deploy:verifier", {
-            logs: false,
-            depth: treeDepth,
-            circuitLength: circuitLength
-        })
-        const VerifierV2: VerifierContractInfo = {
-            name: `Verifier${treeDepth}_${circuitLength}`,
-            address: v2_address,
-            depth: `${treeDepth}`,
-            circuitLength: `2`
-        }
+        signers = await ethers.getSigners();
 
-        const { address: v7_address } = await run("deploy:verifier", { logs: false, depth: treeDepth, maxEdges: 7 })
-        const VerifierV7: VerifierContractInfo = {
-            name: `Verifier${treeDepth}_${7}`,
-            address: v7_address,
-            depth: `${treeDepth}`,
-            circuitLength: `7`
-        }
-
-        const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([
-            ["v2", VerifierV2],
-            ["v7", VerifierV7]
-        ])
-
-        const verifierSelector = await run("deploy:verifier-selector", {
-            logs: false,
-            verifiers: deployedVerifiers
-        })
-
-        contract = await run("deploy:semaphore", {
-            logs: false,
-            verifiers: [{ merkleTreeDepth: treeDepth, contractAddress: verifierSelector.address }]
-        })
-
-        signers = await run("accounts", { logs: false })
         accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
+
+        const zkComponents2_2 = await fetchComponentsFromFilePaths(
+            wasmFilePath,
+            witnessCalcPath,
+            zkeyFilePath
+        );
+        const semaphore = await Semaphore.createSemaphore(treeDepth, maxEdges, zkComponents2_2, signers[1])
+
+        contract = await semaphore.contract.connect(signers[0])
+
     })
 
     describe("# createGroup", () => {
@@ -83,7 +62,7 @@ describe("Semaphore", () => {
 
     describe("# updateGroupAdmin", () => {
         it("Should not update a group admin if the caller is not the group admin", async () => {
-            const transaction = contract.updateGroupAdmin(groupId, accounts[0])
+            const transaction = contract.connect(signers[0]).updateGroupAdmin(groupId, accounts[0])
 
             await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
         })
