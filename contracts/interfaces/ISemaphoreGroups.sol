@@ -20,9 +20,21 @@ interface ISemaphoreGroups {
     /// @param merkleTreeRoot: New root hash of the tree.
     event MemberAdded(uint256 indexed groupId, uint256 identityCommitment, uint256 merkleTreeRoot);
 
-    /// @dev Emitted when a new identity commitment is removed.
+    /// @dev Emitted when an identity commitment is updated.
     /// @param groupId: Group id of the group.
     /// @param identityCommitment: New identity commitment.
+    /// @param newIdentityCommitment: New identity commitment.
+    /// @param merkleTreeRoot: New root hash of the tree.
+    event MemberUpdated(
+        uint256 indexed groupId,
+        uint256 identityCommitment,
+        uint256 newIdentityCommitment,
+        uint256 merkleTreeRoot
+    );
+
+    /// @dev Emitted when a new identity commitment is removed.
+    /// @param groupId: Group id of the group.
+    /// @param identityCommitment: Existing identity commitment to be removed.
     /// @param merkleTreeRoot: New root hash of the tree.
     event MemberRemoved(uint256 indexed groupId, uint256 identityCommitment, uint256 merkleTreeRoot);
 

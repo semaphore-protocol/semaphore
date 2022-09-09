@@ -85,10 +85,25 @@ interface ISemaphore {
     /// @param identityCommitment: New identity commitment.
     function addMember(uint256 groupId, uint256 identityCommitment) external;
 
+    /// @dev Updates an identity commitment of an existing group. A proof of membership is
+    /// needed to check if the node to be updated is part of the tree.
+    /// @param groupId: Id of the group.
+    /// @param identityCommitment: Existing identity commitment to be updated.
+    /// @param newIdentityCommitment: New identity commitment.
+    /// @param proofSiblings: Array of the sibling nodes of the proof of membership.
+    /// @param proofPathIndices: Path of the proof of membership.
+    function updateMember(
+        uint256 groupId,
+        uint256 identityCommitment,
+        uint256 newIdentityCommitment,
+        uint256[] calldata proofSiblings,
+        uint8[] calldata proofPathIndices
+    ) external;
+
     /// @dev Removes a member from an existing group. A proof of membership is
     /// needed to check if the node to be removed is part of the tree.
     /// @param groupId: Id of the group.
-    /// @param identityCommitment: Identity commitment to be deleted.
+    /// @param identityCommitment: Identity commitment to be removed.
     /// @param proofSiblings: Array of the sibling nodes of the proof of membership.
     /// @param proofPathIndices: Path of the proof of membership.
     function removeMember(
