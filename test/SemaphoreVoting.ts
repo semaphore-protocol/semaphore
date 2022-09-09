@@ -41,7 +41,7 @@ describe("SemaphoreVoting", () => {
         it("Should not create a poll with a wrong depth", async () => {
             const transaction = contract.createPoll(pollIds[0], coordinator, 10)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreVoting: Merkle tree depth value is not supported")
+            await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeDepthIsNotSupported()")
         })
 
         it("Should not create a poll greater than the snark scalar field", async () => {
@@ -71,7 +71,7 @@ describe("SemaphoreVoting", () => {
         it("Should not start the poll if the caller is not the coordinator", async () => {
             const transaction = contract.startPoll(pollIds[0], encryptionKey)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreVoting: caller is not the poll coordinator")
+            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotThePollCoordinator()")
         })
 
         it("Should start the poll", async () => {
@@ -83,7 +83,7 @@ describe("SemaphoreVoting", () => {
         it("Should not start a poll if it has already been started", async () => {
             const transaction = contract.connect(accounts[1]).startPoll(pollIds[0], encryptionKey)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreVoting: poll has already been started")
+            await expect(transaction).to.be.revertedWith("Semaphore__PollHasAlreadyBeenStarted()")
         })
     })
 
@@ -98,7 +98,7 @@ describe("SemaphoreVoting", () => {
 
             const transaction = contract.addVoter(pollIds[0], identityCommitment)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreVoting: caller is not the poll coordinator")
+            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotThePollCoordinator()")
         })
 
         it("Should not add a voter if the poll has already been started", async () => {
@@ -107,7 +107,7 @@ describe("SemaphoreVoting", () => {
 
             const transaction = contract.connect(accounts[1]).addVoter(pollIds[0], identityCommitment)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreVoting: voters can only be added before voting")
+            await expect(transaction).to.be.revertedWith("Semaphore__PollHasAlreadyBeenStarted()")
         })
 
         it("Should add a voter to an existing poll", async () => {
@@ -162,7 +162,7 @@ describe("SemaphoreVoting", () => {
         it("Should not cast a vote if the caller is not the coordinator", async () => {
             const transaction = contract.castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[0], solidityProof)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreVoting: caller is not the poll coordinator")
+            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotThePollCoordinator()")
         })
 
         it("Should not cast a vote if the poll is not ongoing", async () => {
@@ -170,7 +170,7 @@ describe("SemaphoreVoting", () => {
                 .connect(accounts[1])
                 .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[2], solidityProof)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreVoting: vote can only be cast in an ongoing poll")
+            await expect(transaction).to.be.revertedWith("Semaphore__PollIsNotOngoing()")
         })
 
         it("Should not cast a vote if the proof is not valid", async () => {
@@ -204,7 +204,7 @@ describe("SemaphoreVoting", () => {
         it("Should not end the poll if the caller is not the coordinator", async () => {
             const transaction = contract.endPoll(pollIds[1], decryptionKey)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreVoting: caller is not the poll coordinator")
+            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotThePollCoordinator()")
         })
 
         it("Should end the poll", async () => {
@@ -216,7 +216,7 @@ describe("SemaphoreVoting", () => {
         it("Should not end a poll if it has already been ended", async () => {
             const transaction = contract.connect(accounts[1]).endPoll(pollIds[1], encryptionKey)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreVoting: poll is not ongoing")
+            await expect(transaction).to.be.revertedWith("Semaphore__PollIsNotOngoing()")
         })
     })
 })
