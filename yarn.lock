@@ -1080,10 +1080,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:^4.4.2":
-  version: 4.7.3
-  resolution: "@openzeppelin/contracts@npm:4.7.3"
-  checksum: 18382fcacf7cfd652f5dd0e70c08f08ea74eaa8ff11e9f9850639ada70198ae01a3f9493d89a52d724f2db394e9616bf6258017804612ba273167cf657fbb073
+"@openzeppelin/contracts@npm:4.4.2":
+  version: 4.4.2
+  resolution: "@openzeppelin/contracts@npm:4.4.2"
+  checksum: 5c6be7bfe757c6a43eb5b24aa9c61a79deaed9de4bc5f59356b35f5519b0fb340f4da8b4df99588bded5e6b6a773fc54961917a1c657063247c1763f9752bd0e
   languageName: node
   linkType: hard
 
@@ -1918,7 +1918,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/incremental-merkle-tree.sol@npm:^1.0.0":
+"@zk-kit/incremental-merkle-tree.sol@npm:1.2.0":
   version: 1.2.0
   resolution: "@zk-kit/incremental-merkle-tree.sol@npm:1.2.0"
   checksum: 7fc03fe399bc18e6a6e3775e1fd37f85cfea01846004e3a7d3829eeef11bccd432685aaab03045e7c24f42df67c9ec89c5fa01b36c1c47576874e1ef3b57cc08
@@ -13169,7 +13169,7 @@ __metadata:
     "@nomiclabs/hardhat-ethers": ^2.0.6
     "@nomiclabs/hardhat-etherscan": ^3.1.0
     "@nomiclabs/hardhat-waffle": ^2.0.3
-    "@openzeppelin/contracts": ^4.4.2
+    "@openzeppelin/contracts": 4.4.2
     "@semaphore-protocol/group": 0.1.2
     "@semaphore-protocol/identity": 0.2.2
     "@semaphore-protocol/proof": 0.3.3
@@ -13182,7 +13182,7 @@ __metadata:
     "@types/rimraf": ^3.0.2
     "@typescript-eslint/eslint-plugin": ^5.10.1
     "@typescript-eslint/parser": ^5.10.1
-    "@zk-kit/incremental-merkle-tree.sol": ^1.0.0
+    "@zk-kit/incremental-merkle-tree.sol": 1.2.0
     chai: ^4.3.5
     circomlib: ^2.0.2
     circomlibjs: ^0.0.8
