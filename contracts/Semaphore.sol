@@ -14,11 +14,8 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a group id and returns the group admin address.
     mapping(uint256 => address) public groupAdmins;
 
-    /// @dev Gets a group id and returns its Merkle tree root expiration.
-    mapping(uint256 => uint256) public mtrExpirations;
-
-    /// @dev Gets the hash of group id + Merkle tree root and returns the root timestamp.
-    mapping(bytes32 => uint256) public mtrTimestamps;
+    /// @dev Gets a group id and returns data to check if a Merkle root is expired.
+    mapping(uint256 => MerkleTreeExpiry) public merkleTreeExpiries;
 
     /// @dev Checks if the group admin is the transaction sender.
     /// @param groupId: Id of the group.
@@ -60,7 +57,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         _createGroup(groupId, merkleTreeDepth, zeroValue);
 
         groupAdmins[groupId] = admin;
-        mtrExpirations[groupId] = 5 minutes;
+        merkleTreeExpiries[groupId].rootDuration = 1 hours;
 
         emit GroupAdminUpdated(groupId, address(0), admin);
     }
@@ -71,12 +68,12 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint256 merkleTreeDepth,
         uint256 zeroValue,
         address admin,
-        uint256 mtrExpiration
+        uint256 merkleTreeRootDuration
     ) external override onlySupportedMerkleTreeDepth(merkleTreeDepth) {
         _createGroup(groupId, merkleTreeDepth, zeroValue);
 
         groupAdmins[groupId] = admin;
-        mtrExpirations[groupId] = mtrExpiration;
+        merkleTreeExpiries[groupId].rootDuration = merkleTreeRootDuration;
 
         emit GroupAdminUpdated(groupId, address(0), admin);
     }
@@ -94,7 +91,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
 
-        mtrTimestamps[keccak256(abi.encodePacked(groupId, merkleTreeRoot))] = block.timestamp;
+        merkleTreeExpiries[groupId].rootCreationDates[merkleTreeRoot] = block.timestamp;
     }
 
     /// @dev See {ISemaphore-removeMember}.
@@ -123,13 +120,14 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         }
 
         if (merkleTreeRoot != currentMerkleTreeRoot) {
-            uint256 mtrTimestamp = mtrTimestamps[keccak256(abi.encodePacked(groupId, merkleTreeRoot))];
+            uint256 rootCreationDate = merkleTreeExpiries[groupId].rootCreationDates[merkleTreeRoot];
+            uint256 rootDuration = merkleTreeExpiries[groupId].rootDuration;
 
-            if (mtrTimestamp == 0) {
+            if (rootCreationDate == 0) {
                 revert Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
             }
 
-            if (block.timestamp > mtrTimestamp + mtrExpirations[groupId]) {
+            if (block.timestamp > rootCreationDate + rootDuration) {
                 revert Semaphore__MerkleTreeRootIsExpired();
             }
         }
