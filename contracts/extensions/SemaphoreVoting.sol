@@ -14,20 +14,11 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a poll id and returns the poll data.
     mapping(uint256 => Poll) internal polls;
 
-    /// @dev Since there can be multiple verifier contracts (each associated with a certain tree depth),
-    /// it is necessary to pass the addresses of the previously deployed contracts with the associated
-    /// tree depth. Depending on the depth chosen when creating the poll, a certain verifier will be
-    /// used to verify that the proof is correct.
-    /// @param merkleTreeDepths: Three depths used in verifiers.
-    /// @param verifierAddresses: Verifier addresses.
-    constructor(uint256[] memory merkleTreeDepths, address[] memory verifierAddresses) {
-        require(
-            merkleTreeDepths.length == verifierAddresses.length,
-            "SemaphoreVoting: parameters lists does not have the same length"
-        );
-
-        for (uint8 i = 0; i < merkleTreeDepths.length; ) {
-            verifiers[merkleTreeDepths[i]] = IVerifier(verifierAddresses[i]);
+    /// @dev Initializes the Semaphore verifiers used to verify the user's ZK proofs.
+    /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
+    constructor(Verifier[] memory _verifiers) {
+        for (uint8 i = 0; i < _verifiers.length; ) {
+            verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(_verifiers[i].contractAddress);
 
             unchecked {
                 ++i;
@@ -38,7 +29,10 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     /// @dev Checks if the poll coordinator is the transaction sender.
     /// @param pollId: Id of the poll.
     modifier onlyCoordinator(uint256 pollId) {
-        require(polls[pollId].coordinator == _msgSender(), "SemaphoreVoting: caller is not the poll coordinator");
+        if (polls[pollId].coordinator != _msgSender()) {
+            revert Semaphore__CallerIsNotThePollCoordinator();
+        }
+
         _;
     }
 
@@ -48,10 +42,9 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         address coordinator,
         uint256 merkleTreeDepth
     ) public override {
-        require(
-            address(verifiers[merkleTreeDepth]) != address(0),
-            "SemaphoreVoting: Merkle tree depth value is not supported"
-        );
+        if (address(verifiers[merkleTreeDepth]) == address(0)) {
+            revert Semaphore__MerkleTreeDepthIsNotSupported();
+        }
 
         _createGroup(pollId, merkleTreeDepth, 0);
 
@@ -66,14 +59,18 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
     /// @dev See {ISemaphoreVoting-addVoter}.
     function addVoter(uint256 pollId, uint256 identityCommitment) public override onlyCoordinator(pollId) {
-        require(polls[pollId].state == PollState.Created, "SemaphoreVoting: voters can only be added before voting");
+        if (polls[pollId].state != PollState.Created) {
+            revert Semaphore__PollHasAlreadyBeenStarted();
+        }
 
         _addMember(pollId, identityCommitment);
     }
 
     /// @dev See {ISemaphoreVoting-addVoter}.
     function startPoll(uint256 pollId, uint256 encryptionKey) public override onlyCoordinator(pollId) {
-        require(polls[pollId].state == PollState.Created, "SemaphoreVoting: poll has already been started");
+        if (polls[pollId].state != PollState.Created) {
+            revert Semaphore__PollHasAlreadyBeenStarted();
+        }
 
         polls[pollId].state = PollState.Ongoing;
 
@@ -89,7 +86,9 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     ) public override onlyCoordinator(pollId) {
         Poll memory poll = polls[pollId];
 
-        require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
+        if (poll.state != PollState.Ongoing) {
+            revert Semaphore__PollIsNotOngoing();
+        }
 
         uint256 merkleTreeDepth = getMerkleTreeDepth(pollId);
         uint256 merkleTreeRoot = getMerkleTreeRoot(pollId);
@@ -106,7 +105,9 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
     /// @dev See {ISemaphoreVoting-publishDecryptionKey}.
     function endPoll(uint256 pollId, uint256 decryptionKey) public override onlyCoordinator(pollId) {
-        require(polls[pollId].state == PollState.Ongoing, "SemaphoreVoting: poll is not ongoing");
+        if (polls[pollId].state != PollState.Ongoing) {
+            revert Semaphore__PollIsNotOngoing();
+        }
 
         polls[pollId].state = PollState.Ended;
 

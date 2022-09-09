@@ -30,7 +30,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @param merkleTreeDepth: Depth of the tree.
     modifier onlySupportedMerkleTreeDepth(uint256 merkleTreeDepth) {
         if (address(verifiers[merkleTreeDepth]) == address(0)) {
-            revert Semaphore__TreeDepthIsNotSupported();
+            revert Semaphore__MerkleTreeDepthIsNotSupported();
         }
         _;
     }

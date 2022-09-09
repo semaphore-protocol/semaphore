@@ -35,7 +35,7 @@ describe("Semaphore", () => {
         it("Should not create a group if the tree depth is not supported", async () => {
             const transaction = contract["createGroup(uint256,uint256,uint256,address)"](groupId, 10, 0, accounts[0])
 
-            await expect(transaction).to.be.revertedWith("Semaphore__TreeDepthIsNotSupported()")
+            await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeDepthIsNotSupported()")
         })
 
         it("Should create a group", async () => {
