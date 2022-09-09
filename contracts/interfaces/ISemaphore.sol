@@ -14,6 +14,13 @@ interface ISemaphore {
         uint256 merkleTreeDepth;
     }
 
+    /// It defines all the parameters needed to check whether a
+    /// zero-knowledge proof generated with a certain Merkle tree is still valid.
+    struct MerkleTreeExpiry {
+        uint256 rootDuration;
+        mapping(uint256 => uint256) rootCreationDates;
+    }
+
     /// @dev Emitted when an admin is assigned to a group.
     /// @param groupId: Id of the group.
     /// @param oldAdmin: Old admin of the group.
@@ -59,13 +66,13 @@ interface ISemaphore {
     /// @param depth: Depth of the tree.
     /// @param zeroValue: Zero value of the tree.
     /// @param admin: Admin of the group.
-    /// @param mtrExpiration: Time before the validity of a root expires.
+    /// @param merkleTreeRootDuration: Time before the validity of a root expires.
     function createGroup(
         uint256 groupId,
         uint256 depth,
         uint256 zeroValue,
         address admin,
-        uint256 mtrExpiration
+        uint256 merkleTreeRootDuration
     ) external;
 
     /// @dev Updates the group admin.
