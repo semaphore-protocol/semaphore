@@ -52,10 +52,35 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         emit MemberAdded(groupId, identityCommitment, merkleTreeRoot);
     }
 
+    /// @dev Updates an identity commitment of an existing group. A proof of membership is
+    /// needed to check if the node to be updated is part of the tree.
+    /// @param groupId: Id of the group.
+    /// @param identityCommitment: Existing identity commitment to be updated.
+    /// @param newIdentityCommitment: New identity commitment.
+    /// @param proofSiblings: Array of the sibling nodes of the proof of membership.
+    /// @param proofPathIndices: Path of the proof of membership.
+    function _updateMember(
+        uint256 groupId,
+        uint256 identityCommitment,
+        uint256 newIdentityCommitment,
+        uint256[] calldata proofSiblings,
+        uint8[] calldata proofPathIndices
+    ) internal virtual {
+        if (getMerkleTreeRoot(groupId) == 0) {
+            revert Semaphore__GroupDoesNotExist();
+        }
+
+        groups[groupId].update(identityCommitment, newIdentityCommitment, proofSiblings, proofPathIndices);
+
+        uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
+
+        emit MemberUpdated(groupId, identityCommitment, newIdentityCommitment, merkleTreeRoot);
+    }
+
     /// @dev Removes an identity commitment from an existing group. A proof of membership is
     /// needed to check if the node to be deleted is part of the tree.
     /// @param groupId: Id of the group.
-    /// @param identityCommitment: Existing identity commitment to be deleted.
+    /// @param identityCommitment: Existing identity commitment to be removed.
     /// @param proofSiblings: Array of the sibling nodes of the proof of membership.
     /// @param proofPathIndices: Path of the proof of membership.
     function _removeMember(
