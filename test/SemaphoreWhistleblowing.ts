@@ -26,7 +26,11 @@ describe("SemaphoreWhistleblowing", () => {
 
     before(async () => {
         const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth: treeDepth })
-        contract = await run("deploy:semaphore-whistleblowing", { logs: false, verifier: verifierAddress })
+        contract = await run("deploy:semaphore-whistleblowing", {
+            logs: false,
+            verifiers: [{ merkleTreeDepth: treeDepth, contractAddress: verifierAddress }]
+        })
+
         accounts = await ethers.getSigners()
         editor = await accounts[1].getAddress()
     })

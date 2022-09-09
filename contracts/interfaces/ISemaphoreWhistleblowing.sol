@@ -4,6 +4,11 @@ pragma solidity 0.8.4;
 /// @title SemaphoreWhistleblowing interface.
 /// @dev Interface of SemaphoreWhistleblowing contract.
 interface ISemaphoreWhistleblowing {
+    struct Verifier {
+        address contractAddress;
+        uint256 merkleTreeDepth;
+    }
+
     /// @dev Emitted when a new entity is created.
     /// @param entityId: Id of the entity.
     /// @param editor: Editor of the entity.

@@ -16,20 +16,11 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     /// @dev Gets an editor address and return their entity.
     mapping(address => uint256) private entities;
 
-    /// @dev Since there can be multiple verifier contracts (each associated with a certain tree depth),
-    /// it is necessary to pass the addresses of the previously deployed contracts with the associated
-    /// tree depth. Depending on the depth chosen when creating the entity, a certain verifier will be
-    /// used to verify that the proof is correct.
-    /// @param merkleTreeDepths: Three depths used in verifiers.
-    /// @param verifierAddresses: Verifier addresses.
-    constructor(uint256[] memory merkleTreeDepths, address[] memory verifierAddresses) {
-        require(
-            merkleTreeDepths.length == verifierAddresses.length,
-            "SemaphoreWhistleblowing: parameters lists does not have the same length"
-        );
-
-        for (uint8 i = 0; i < merkleTreeDepths.length; ) {
-            verifiers[merkleTreeDepths[i]] = IVerifier(verifierAddresses[i]);
+    /// @dev Initializes the Semaphore verifiers used to verify the user's ZK proofs.
+    /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
+    constructor(Verifier[] memory _verifiers) {
+        for (uint8 i = 0; i < _verifiers.length; ) {
+            verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(_verifiers[i].contractAddress);
 
             unchecked {
                 ++i;
