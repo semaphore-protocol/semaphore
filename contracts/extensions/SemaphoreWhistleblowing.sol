@@ -31,7 +31,10 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     /// @dev Checks if the editor is the transaction sender.
     /// @param entityId: Id of the entity.
     modifier onlyEditor(uint256 entityId) {
-        require(entityId == entities[_msgSender()], "SemaphoreWhistleblowing: caller is not the editor");
+        if (entityId != entities[_msgSender()]) {
+            revert Semaphore__CallerIsNotTheEditor();
+        }
+
         _;
     }
 
@@ -41,10 +44,9 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         address editor,
         uint256 merkleTreeDepth
     ) public override {
-        require(
-            address(verifiers[merkleTreeDepth]) != address(0),
-            "SemaphoreWhistleblowing: Merkle tree depth value is not supported"
-        );
+        if (address(verifiers[merkleTreeDepth]) == address(0)) {
+            revert Semaphore__MerkleTreeDepthIsNotSupported();
+        }
 
         _createGroup(entityId, merkleTreeDepth, 0);
 

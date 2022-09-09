@@ -4,6 +4,11 @@ pragma solidity 0.8.4;
 /// @title SemaphoreVoting interface.
 /// @dev Interface of SemaphoreVoting contract.
 interface ISemaphoreVoting {
+    error Semaphore__CallerIsNotThePollCoordinator();
+    error Semaphore__MerkleTreeDepthIsNotSupported();
+    error Semaphore__PollHasAlreadyBeenStarted();
+    error Semaphore__PollIsNotOngoing();
+
     enum PollState {
         Created,
         Ongoing,

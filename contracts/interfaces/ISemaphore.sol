@@ -5,7 +5,7 @@ pragma solidity 0.8.4;
 /// @dev Interface of a Semaphore contract.
 interface ISemaphore {
     error Semaphore__CallerIsNotTheGroupAdmin();
-    error Semaphore__TreeDepthIsNotSupported();
+    error Semaphore__MerkleTreeDepthIsNotSupported();
     error Semaphore__MerkleTreeRootIsExpired();
     error Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
 

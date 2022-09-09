@@ -39,9 +39,7 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should not create an entity with a wrong depth", async () => {
             const transaction = contract.createEntity(entityIds[0], editor, 10)
 
-            await expect(transaction).to.be.revertedWith(
-                "SemaphoreWhistleblowing: Merkle tree depth value is not supported"
-            )
+            await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeDepthIsNotSupported()")
         })
 
         it("Should not create an entity greater than the snark scalar field", async () => {
@@ -74,7 +72,7 @@ describe("SemaphoreWhistleblowing", () => {
 
             const transaction = contract.addWhistleblower(entityIds[0], identityCommitment)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: caller is not the editor")
+            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheEditor()")
         })
 
         it("Should add a whistleblower to an existing entity", async () => {
@@ -111,7 +109,7 @@ describe("SemaphoreWhistleblowing", () => {
 
             const transaction = contract.removeWhistleblower(entityIds[0], identityCommitment, siblings, pathIndices)
 
-            await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: caller is not the editor")
+            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheEditor()")
         })
 
         it("Should remove a whistleblower from an existing entity", async () => {
@@ -172,7 +170,7 @@ describe("SemaphoreWhistleblowing", () => {
                 solidityProof
             )
 
-            await expect(transaction).to.be.revertedWith("SemaphoreWhistleblowing: caller is not the editor")
+            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheEditor()")
         })
 
         it("Should not publish a leak if the proof is not valid", async () => {
