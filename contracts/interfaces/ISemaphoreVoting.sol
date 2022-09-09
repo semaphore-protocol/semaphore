@@ -40,11 +40,11 @@ interface ISemaphoreVoting {
     /// @dev Creates a poll and the associated Merkle tree/group.
     /// @param pollId: Id of the poll.
     /// @param coordinator: Coordinator of the poll.
-    /// @param depth: Depth of the tree.
+    /// @param merkleTreeDepth: Depth of the tree.
     function createPoll(
         uint256 pollId,
         address coordinator,
-        uint256 depth
+        uint256 merkleTreeDepth
     ) external;
 
     /// @dev Adds a voter to a poll.
