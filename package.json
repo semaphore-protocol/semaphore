@@ -1,6 +1,5 @@
 {
     "name": "semaphore",
-    "version": "2.0.0",
     "description": "A zero-knowledge protocol for anonymous signalling on Ethereum.",
     "license": "MIT",
     "homepage": "https://github.com/semaphore-protocol/semaphore.git#readme",
