@@ -107,6 +107,34 @@ describe("Semaphore", () => {
         })
     })
 
+    describe("# updateMember", () => {
+        it("Should not update a member if the caller is not the group admin", async () => {
+            const transaction = contract.connect(signers[1]).updateMember(groupId, members[0], 1, [0, 1], [0, 1])
+
+            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
+        })
+
+        it("Should update a member from an existing group", async () => {
+            const groupId = 3
+            const group = new Group(treeDepth)
+
+            group.addMembers([BigInt(1), BigInt(2), BigInt(3)])
+
+            group.updateMember(0, BigInt(4))
+
+            await contract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
+            await contract.addMember(groupId, BigInt(1))
+            await contract.addMember(groupId, BigInt(2))
+            await contract.addMember(groupId, BigInt(3))
+
+            const { siblings, pathIndices, root } = group.generateProofOfMembership(0)
+
+            const transaction = contract.updateMember(groupId, BigInt(1), BigInt(4), siblings, pathIndices)
+
+            await expect(transaction).to.emit(contract, "MemberUpdated").withArgs(groupId, BigInt(1), BigInt(4), root)
+        })
+    })
+
     describe("# removeMember", () => {
         it("Should not remove a member if the caller is not the group admin", async () => {
             const transaction = contract.connect(signers[1]).removeMember(groupId, members[0], [0, 1], [0, 1])
@@ -115,7 +143,7 @@ describe("Semaphore", () => {
         })
 
         it("Should remove a member from an existing group", async () => {
-            const groupId = 3
+            const groupId = 4
             const group = new Group(treeDepth)
 
             group.addMembers([BigInt(1), BigInt(2), BigInt(3)])

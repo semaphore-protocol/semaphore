@@ -94,6 +94,17 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         merkleTreeExpiries[groupId].rootCreationDates[merkleTreeRoot] = block.timestamp;
     }
 
+    /// @dev See {ISemaphore-updateMember}.
+    function updateMember(
+        uint256 groupId,
+        uint256 identityCommitment,
+        uint256 newIdentityCommitment,
+        uint256[] calldata proofSiblings,
+        uint8[] calldata proofPathIndices
+    ) external override onlyGroupAdmin(groupId) {
+        _updateMember(groupId, identityCommitment, newIdentityCommitment, proofSiblings, proofPathIndices);
+    }
+
     /// @dev See {ISemaphore-removeMember}.
     function removeMember(
         uint256 groupId,
