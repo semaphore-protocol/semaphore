@@ -20,16 +20,17 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     /// it is necessary to pass the addresses of the previously deployed contracts with the associated
     /// tree depth. Depending on the depth chosen when creating the entity, a certain verifier will be
     /// used to verify that the proof is correct.
-    /// @param depths: Three depths used in verifiers.
+    /// @param merkleTreeDepths: Three depths used in verifiers.
     /// @param verifierAddresses: Verifier addresses.
-    constructor(uint256[] memory depths, address[] memory verifierAddresses) {
+    constructor(uint256[] memory merkleTreeDepths, address[] memory verifierAddresses) {
         require(
-            depths.length == verifierAddresses.length,
+            merkleTreeDepths.length == verifierAddresses.length,
             "SemaphoreWhistleblowing: parameters lists does not have the same length"
         );
 
-        for (uint8 i = 0; i < depths.length; ) {
-            verifiers[depths[i]] = IVerifier(verifierAddresses[i]);
+        for (uint8 i = 0; i < merkleTreeDepths.length; ) {
+            verifiers[merkleTreeDepths[i]] = IVerifier(verifierAddresses[i]);
+
             unchecked {
                 ++i;
             }
@@ -47,11 +48,14 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     function createEntity(
         uint256 entityId,
         address editor,
-        uint256 depth
+        uint256 merkleTreeDepth
     ) public override {
-        require(address(verifiers[depth]) != address(0), "SemaphoreWhistleblowing: depth value is not supported");
+        require(
+            address(verifiers[merkleTreeDepth]) != address(0),
+            "SemaphoreWhistleblowing: Merkle tree depth value is not supported"
+        );
 
-        _createGroup(entityId, depth, 0);
+        _createGroup(entityId, merkleTreeDepth, 0);
 
         entities[editor] = entityId;
 
@@ -80,11 +84,12 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         uint256 entityId,
         uint256[8] calldata proof
     ) public override onlyEditor(entityId) {
-        uint256 depth = getDepth(entityId);
-        uint256 root = getRoot(entityId);
-        IVerifier verifier = verifiers[depth];
+        uint256 merkleTreeDepth = getMerkleTreeDepth(entityId);
+        uint256 merkleTreeRoot = getMerkleTreeRoot(entityId);
 
-        _verifyProof(leak, root, nullifierHash, entityId, proof, verifier);
+        IVerifier verifier = verifiers[merkleTreeDepth];
+
+        _verifyProof(leak, merkleTreeRoot, nullifierHash, entityId, proof, verifier);
 
         emit LeakPublished(entityId, leak);
     }

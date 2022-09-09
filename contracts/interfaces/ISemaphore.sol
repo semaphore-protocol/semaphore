@@ -6,10 +6,19 @@ pragma solidity 0.8.4;
 interface ISemaphore {
     error Semaphore__CallerIsNotTheGroupAdmin();
     error Semaphore__TreeDepthIsNotSupported();
+    error Semaphore__MerkleTreeRootIsExpired();
+    error Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
 
     struct Verifier {
         address contractAddress;
         uint256 merkleTreeDepth;
+    }
+
+    /// It defines all the parameters needed to check whether a
+    /// zero-knowledge proof generated with a certain Merkle tree is still valid.
+    struct MerkleTreeExpiry {
+        uint256 rootDuration;
+        mapping(uint256 => uint256) rootCreationDates;
     }
 
     /// @dev Emitted when an admin is assigned to a group.
@@ -26,12 +35,14 @@ interface ISemaphore {
     /// @dev Saves the nullifier hash to avoid double signaling and emits an event
     /// if the zero-knowledge proof is valid.
     /// @param groupId: Id of the group.
+    /// @param merkleTreeRoot: Root of the Merkle tree.
     /// @param signal: Semaphore signal.
     /// @param nullifierHash: Nullifier hash.
     /// @param externalNullifier: External nullifier.
     /// @param proof: Zero-knowledge proof.
     function verifyProof(
         uint256 groupId,
+        uint256 merkleTreeRoot,
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
@@ -48,6 +59,20 @@ interface ISemaphore {
         uint256 depth,
         uint256 zeroValue,
         address admin
+    ) external;
+
+    /// @dev Creates a new group. Only the admin will be able to add or remove members.
+    /// @param groupId: Id of the group.
+    /// @param depth: Depth of the tree.
+    /// @param zeroValue: Zero value of the tree.
+    /// @param admin: Admin of the group.
+    /// @param merkleTreeRootDuration: Time before the validity of a root expires.
+    function createGroup(
+        uint256 groupId,
+        uint256 depth,
+        uint256 zeroValue,
+        address admin,
+        uint256 merkleTreeRootDuration
     ) external;
 
     /// @dev Updates the group admin.
