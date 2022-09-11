@@ -42,13 +42,12 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     function createPoll(
         uint256 pollId,
         uint8 depth,
-        uint256 zeroValue,
         address coordinator,
         uint8 maxEdges
     ) public override {
         require(address(verifiers[depth]) != address(0), "SemaphoreVoting: depth value is not supported");
 
-        _createGroup(pollId, depth, zeroValue, maxEdges);
+        _createGroup(pollId, depth, maxEdges);
 
         Poll memory poll;
 
@@ -84,20 +83,21 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         bytes calldata roots,
         uint256[8] calldata proof
     ) public override onlyCoordinator(pollId) {
-        Poll memory poll = polls[pollId];
-
-        require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
-
-        uint8 depth = getDepth(pollId);
-        uint256 root = getRoot(pollId);
+        SemaphoreVerifier verifier;
         uint8 maxEdges = getMaxEdges(pollId);
-        SemaphoreVerifier verifier = verifiers[depth];
+        // TODO: Can we improve this? getting stack too deep error
+        {
+            Poll memory poll = polls[pollId];
 
-        // require(contract_root == root, "merkle root supplied does not match current contract root");
-        // _verifyProof(vote, root, nullifierHash, pollId, proof, verifier);
-        _verifyProof(vote, nullifierHash, pollId, roots, proof, verifier, maxEdges, root);
+            require(poll.state == PollState.Ongoing, "SemaphoreVoting: vote can only be cast in an ongoing poll");
+            uint8 depth = getDepth(pollId);
+            verifier = verifiers[depth];
+        }
 
-        // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).
+        verifyRoots(pollId, roots);
+
+        _verifyProof(vote, nullifierHash, pollId, roots, proof, verifier, maxEdges);
+
         _saveNullifierHash(nullifierHash);
 
         emit VoteAdded(pollId, vote);

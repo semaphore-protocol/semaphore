@@ -2,6 +2,7 @@
 pragma solidity ^0.8.4;
 
 import {PoseidonT3} from "@zk-kit/incremental-merkle-tree.sol/Hashes.sol";
+import "./ChainIdWithType.sol";
 
 /**
     @dev The Edge struct is used to store the edge data for linkable tree connections.
@@ -14,7 +15,7 @@ struct Edge {
     uint256 chainID;
     bytes32 root;
     uint256 latestLeafIndex;
-    bytes32 target;
+    bytes32 srcResourceID;
 }
 
 // Each incremental tree has certain properties and data that will
@@ -42,6 +43,7 @@ struct LinkableIncrementalTreeData {
 /// the integrity of the tree.
 library LinkableIncrementalBinaryTree {
     // Historical roots
+    bytes2 public constant EVM_CHAIN_ID_TYPE = 0x0100;
     uint32 internal constant ROOT_HISTORY_SIZE = 30;
     uint8 internal constant MAX_DEPTH = 32;
     uint256 internal constant SNARK_SCALAR_FIELD =
@@ -54,18 +56,16 @@ library LinkableIncrementalBinaryTree {
     /// @dev Initializes a tree.
     /// @param self: Tree data.
     /// @param depth: Depth of the tree.
-    /// @param zero: Zero value to be used.
+    /// @param maxEdges: The maximum # of edges supported by this group
     function init(
         LinkableIncrementalTreeData storage self,
         uint8 depth,
-        uint256 zero,
         uint8 maxEdges
     ) public {
-        require(zero < SNARK_SCALAR_FIELD, "LinkableIncrementalBinaryTree: leaf must be < SNARK_SCALAR_FIELD");
         require(depth > 0 && depth <= MAX_DEPTH, "LinkableIncrementalBinaryTree: tree depth must be between 1 and 32");
 
         self.depth = depth;
-        self.roots[0] = zeros(depth - 1);
+        self.roots[0] = zeros(depth);
         self.maxEdges = maxEdges;
     }
 
@@ -235,66 +235,58 @@ library LinkableIncrementalBinaryTree {
     }
 
     /**
-		@notice Add an edge to the tree or update an existing edge.
-		@param _sourceChainID The chainID of the edge's LinkableTree
-		@param _root The merkle root of the edge's merkle tree
-		@param _leafIndex The latest leaf insertion index of the edge's merkle tree
-	 */
+        @notice Add an edge to the tree or update an existing edge.
+        @param _root The merkle root of the edge's merkle tree
+        @param _leafIndex The latest leaf insertion index of the edge's merkle tree
+        @param _srcResourceID The origin resource ID of the originating linked anchor update
+     */
     function updateEdge(
         LinkableIncrementalTreeData storage self,
-        uint256 _sourceChainID,
         bytes32 _root,
-        uint256 _leafIndex,
-        bytes32 _target
+        uint32 _leafIndex,
+        bytes32 _srcResourceID
     ) internal {
-        if (self.edgeExistsForChain[_sourceChainID]) {
-            // Update Edge
-            require(self.edgeExistsForChain[_sourceChainID], "Chain must be integrated from the bridge before updates");
-            require(
-                self.edgeList[self.edgeIndex[_sourceChainID]].latestLeafIndex < _leafIndex,
-                "New leaf index must be greater"
-            );
-            require(
-                _leafIndex < self.edgeList[self.edgeIndex[_sourceChainID]].latestLeafIndex + (65_536),
-                "New leaf index must within 2^16 updates"
-            );
-            uint256 index = self.edgeIndex[_sourceChainID];
+        uint64 _srcChainID = parseChainIdFromResourceId(_srcResourceID);
+
+        if (hasEdge(self, _srcChainID)) {
+            // Require increasing nonce
+            require(self.edgeList[self.edgeIndex[_srcChainID]].latestLeafIndex < _leafIndex, "New leaf index must be greater");
+            // Require leaf index increase is bounded by 65,536 updates at once
+            require(_leafIndex < self.edgeList[self.edgeIndex[_srcChainID]].latestLeafIndex + (65_536), "New leaf index must within 2^16 updates");
+            require(_srcResourceID == self.edgeList[self.edgeIndex[_srcChainID]].srcResourceID, "srcResourceID must be the same");
+            uint index = self.edgeIndex[_srcChainID];
             // update the edge in the edge list
-            self.edgeList[index] = Edge({
-                chainID: _sourceChainID,
-                root: _root,
-                latestLeafIndex: _leafIndex,
-                target: _target
-            });
+            self.edgeList[index].latestLeafIndex = _leafIndex;
+            self.edgeList[index].root = _root;
             // add to root histories
-            uint32 neighborRootIndex = (self.currentNeighborRootIndex[_sourceChainID] + 1) % ROOT_HISTORY_SIZE;
-            self.currentNeighborRootIndex[_sourceChainID] = neighborRootIndex;
-            self.neighborRoots[_sourceChainID][neighborRootIndex] = _root;
-            emit EdgeUpdate(_sourceChainID, _leafIndex, _root);
+            uint32 neighborRootIndex = (self.currentNeighborRootIndex[_srcChainID] + 1) % ROOT_HISTORY_SIZE;
+            self.currentNeighborRootIndex[_srcChainID] = neighborRootIndex;
+            self.neighborRoots[_srcChainID][neighborRootIndex] = _root;
+            emit EdgeUpdate(_srcChainID, _leafIndex, _root);
         } else {
             //Add Edge
             require(self.edgeList.length < self.maxEdges, "This Anchor is at capacity");
-            self.edgeExistsForChain[_sourceChainID] = true;
-            uint256 index = self.edgeList.length;
+            self.edgeExistsForChain[_srcChainID] = true;
+            uint index = self.edgeList.length;
             Edge memory edge = Edge({
-                chainID: _sourceChainID,
+                chainID: _srcChainID,
                 root: _root,
                 latestLeafIndex: _leafIndex,
-                target: _target
+                srcResourceID: _srcResourceID
             });
             self.edgeList.push(edge);
-            self.edgeIndex[_sourceChainID] = index;
+            self.edgeIndex[_srcChainID] = index;
             // add to root histories
             uint32 neighborRootIndex = 0;
-            self.neighborRoots[_sourceChainID][neighborRootIndex] = _root;
-            emit EdgeAddition(_sourceChainID, _leafIndex, _root);
+            self.neighborRoots[_srcChainID][neighborRootIndex] = _root;
+            emit EdgeAddition(_srcChainID, _leafIndex, _root);
         }
     }
 
     /**
-		@notice Get the latest state of all neighbor edges
-		@return Edge[] An array of all neighboring and potentially empty edges
-		*/
+        @notice Get the latest state of all neighbor edges
+        @return Edge[] An array of all neighboring and potentially empty edges
+        */
     function getLatestNeighborEdges(LinkableIncrementalTreeData storage self) public view returns (Edge[] memory) {
         Edge[] memory edges = new Edge[](self.maxEdges);
         for (uint256 i = 0; i < self.maxEdges; i++) {
@@ -302,10 +294,11 @@ library LinkableIncrementalBinaryTree {
                 edges[i] = self.edgeList[i];
             } else {
                 edges[i] = Edge({
-                    root: zeros(self.depth), // merkle tree height for zeros,
+                    // merkle tree height for zeros
+                    root: zeros(self.depth),
                     chainID: 0,
                     latestLeafIndex: 0,
-                    target: 0x0
+                    srcResourceID: 0x0
                 });
             }
         }
@@ -314,9 +307,9 @@ library LinkableIncrementalBinaryTree {
     }
 
     /**
-		@notice Get the latest merkle roots of all neighbor edges
-		@return bytes32[] An array of merkle roots
-	 */
+        @notice Get the latest merkle roots of all neighbor edges
+        @return bytes32[] An array of merkle roots
+     */
     function getLatestNeighborRoots(LinkableIncrementalTreeData storage self) public view returns (bytes32[] memory) {
         bytes32[] memory roots = new bytes32[](self.maxEdges);
         for (uint256 i = 0; i < self.maxEdges; i++) {
@@ -332,10 +325,10 @@ library LinkableIncrementalBinaryTree {
     }
 
     /**
-		@notice Checks to see whether a `_root` is known for a neighboring `neighborChainID`
-		@param _neighborChainID The chainID of the neighbor's edge
-		@param _root The root to check
-	 */
+        @notice Checks to see whether a `_root` is known for a neighboring `neighborChainID`
+        @param _neighborChainID The chainID of the neighbor's edge
+        @param _root The root to check
+     */
     function isKnownNeighborRoot(
         LinkableIncrementalTreeData storage self,
         uint256 _neighborChainID,
@@ -359,29 +352,35 @@ library LinkableIncrementalBinaryTree {
     }
 
     /**
-		@notice Checks validity of an array of merkle roots in the history.
-		The first root should always be the root of `this` underlying merkle
-		tree and the remaining roots are of the neighboring roots in `edges.
-		@param _roots An array of bytes32 merkle roots to be checked against the history.
-	 */
-    function isValidRoots(LinkableIncrementalTreeData storage self, bytes32[] memory _roots)
-        public
-        view
-        returns (bool)
-    {
+        @notice Checks validity of an array of merkle roots in the history.
+        The first root should always be the root of `this` underlying merkle
+        tree and the remaining roots are of the neighboring roots in `edges.
+        @param _roots An array of bytes32 merkle roots to be checked against the history.
+    */
+
+    function isValidRoots(LinkableIncrementalTreeData storage self, bytes32[] memory _roots) public view returns (bool) {
         require(isKnownRoot(self, _roots[0]), "Cannot find your merkle root");
         require(_roots.length == self.maxEdges + 1, "Incorrect root array length");
-        for (uint256 i = 0; i < self.edgeList.length; i++) {
+        uint rootIndex = 1;
+        for (uint i = 0; i < self.edgeList.length; i++) {
             Edge memory _edge = self.edgeList[i];
-            require(isKnownNeighborRoot(self, _edge.chainID, _roots[i + 1]), "Neighbor root not found");
+            require(isKnownNeighborRoot(self, _edge.chainID, _roots[rootIndex]), "Neighbour root not found");
+            rootIndex++;
+        }
+        while (rootIndex != self.maxEdges + 1) {
+            require(_roots[rootIndex] == 0, "Not initialized edges must be set to 0");
+            rootIndex++;
         }
         return true;
     }
 
+    function hasEdge(LinkableIncrementalTreeData storage self, uint256 _chainID) public view returns (bool) {
+        return self.edgeExistsForChain[_chainID];
+    }
     /**
-		@notice Decodes a byte string of roots into its parts.
-		@return bytes32[] An array of bytes32 merkle roots
-	 */
+        @notice Decodes a byte string of roots into its parts.
+        @return bytes32[] An array of bytes32 merkle roots
+     */
     function decodeRoots(LinkableIncrementalTreeData storage self, bytes calldata roots)
         internal
         view
@@ -389,9 +388,42 @@ library LinkableIncrementalBinaryTree {
     {
         bytes32[] memory decodedRoots = new bytes32[](self.maxEdges + 1);
         for (uint256 i = 0; i <= self.maxEdges; i++) {
-            decodedRoots[i] = bytes32(roots[32 * i:32 * (i + 1)]);
+            decodedRoots[i] = bytes32(roots[(32 * i):(32 * (i + 1))]);
         }
 
         return decodedRoots;
+    }
+
+
+    /**
+        @notice Gets the chain id using the chain id opcode
+     */
+    function getChainId() public view returns (uint) {
+        uint chainId;
+        assembly { chainId := chainid() }
+        return chainId;
+    }
+
+    /**
+        @notice Computes the modified chain id using the underlying chain type (EVM)
+     */
+    function getChainIdType() public view returns (uint48) {
+        // The chain ID and type pair is 6 bytes in length
+        // The first 2 bytes are reserved for the chain type.
+        // The last 4 bytes are reserved for a u32 (uint32) chain ID.
+        bytes4 chainID = bytes4(uint32(getChainId()));
+        bytes2 chainType = EVM_CHAIN_ID_TYPE;
+        // We encode the chain ID and type pair into packed bytes which
+        // should be 6 bytes using the encode packed method. We will
+        // cast this as a bytes32 in order to encode as a uint256 for zkp verification.
+        bytes memory chainIdWithType = abi.encodePacked(chainType, chainID);
+        return uint48(bytes6(chainIdWithType));
+    }
+
+    /**
+        Parses the typed chain ID out from a 32-byte resource ID
+     */
+    function parseChainIdFromResourceId(bytes32 _resourceId) public pure returns (uint64) {
+        return uint64(uint48(bytes6(_resourceId << (26 * 8))));
     }
 }

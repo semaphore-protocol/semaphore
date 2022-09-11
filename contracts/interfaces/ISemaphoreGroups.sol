@@ -1,5 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
+import { Edge } from "../base/LinkableIncrementalBinaryTree.sol";
 
 /// @title SemaphoreGroups interface.
 /// @dev Interface of a SemaphoreGroups contract.
@@ -7,12 +8,13 @@ interface ISemaphoreGroups {
     error Semaphore__GroupDoesNotExist();
     error Semaphore__GroupAlreadyExists();
     error Semaphore__GroupIdIsNotLessThanSnarkScalarField();
+    error Semaphore__InvalidCurrentChainRoot();
+    error Semaphore__InvalidEdgeChainRoot();
 
     /// @dev Emitted when a new group is created.
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.
-    /// @param zeroValue: Zero value of the tree.
-    event GroupCreated(uint256 indexed groupId, uint8 depth, uint256 zeroValue);
+    event GroupCreated(uint256 indexed groupId, uint8 depth);
 
     /// @dev Emitted when a new identity commitment is added.
     /// @param groupId: Group id of the group.
@@ -25,6 +27,21 @@ interface ISemaphoreGroups {
     /// @param identityCommitment: New identity commitment.
     /// @param root: New root hash of the tree.
     event MemberRemoved(uint256 indexed groupId, uint256 identityCommitment, uint256 root);
+
+    function verifyRoots(uint256 groupId, bytes calldata roots) external view returns (bool);
+
+    // function _updateEdge(
+    //     uint256 groupId,
+    //     uint256 sourceChainID,
+    //     bytes32 root,
+    //     uint256 leafIndex,
+    //     bytes32 target
+    // ) external;
+
+    /// @dev Returns the last root hash of a group.
+    /// @param groupId: Id of the group.
+    /// @return Latests roots from each edge connected
+    function getLatestNeighborEdges(uint256 groupId) external view returns (Edge[] memory);
 
     /// @dev Returns the last root hash of a group.
     /// @param groupId: Id of the group.

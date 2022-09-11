@@ -12,7 +12,6 @@ template ManyMerkleProof(levels, length) {
     signal input pathElements[levels];
     signal input pathIndices[levels];
     signal input roots[length];
-    signal output root;
 
     component switcher[levels];
     component hasher[levels];
@@ -38,5 +37,4 @@ template ManyMerkleProof(levels, length) {
         set.set[i] <== roots[i];
     }
     set.element <== hasher[levels - 1].out;
-    root <== hasher[levels - 1].out;
 }

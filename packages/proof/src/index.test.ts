@@ -1,7 +1,7 @@
-import { Group } from "@semaphore-protocol/group"
-import { Identity } from "@semaphore-protocol/identity"
+import { Group } from "@semaphore-anchor/group/src"
+import { Identity } from "@semaphore-anchor/identity/src"
+import { BigNumber, BigNumberish } from 'ethers';
 import download from "download"
-import { getCurveFromName } from "ffjavascript"
 import fs from "fs"
 import generateNullifierHash from "./generateNullifierHash"
 import generateProof from "./generateProof"
@@ -15,33 +15,23 @@ describe("Proof", () => {
 
     const externalNullifier = "1"
     const signal = "0x111"
+    const chainID = BigInt(1099511629113)
 
     const snarkArtifactsPath = "./packages/proof/snark-artifacts"
-    const snarkArtifactsUrl = `http://www.trusted-setup-pse.org/semaphore/${treeDepth}`
+    const wasmFilePath = `${snarkArtifactsPath}/semaphore_20_2.wasm`;
+    const zkeyFilePath = `${snarkArtifactsPath}/circuit_final.zkey`;
 
-    const identity = new Identity()
+    const identity = new Identity(chainID)
     const identityCommitment = identity.generateCommitment()
 
     let fullProof: FullProof
-    let curve: any
 
     beforeAll(async () => {
-        curve = await getCurveFromName("bn128")
 
         if (!fs.existsSync(snarkArtifactsPath)) {
             fs.mkdirSync(snarkArtifactsPath)
         }
-
-        if (!fs.existsSync(`${snarkArtifactsPath}/semaphore.zkey`)) {
-            await download(`${snarkArtifactsUrl}/semaphore.wasm`, snarkArtifactsPath)
-            await download(`${snarkArtifactsUrl}/semaphore.zkey`, snarkArtifactsPath)
-            await download(`${snarkArtifactsUrl}/semaphore.json`, snarkArtifactsPath)
-        }
     }, 10000)
-
-    afterAll(async () => {
-        await curve.terminate()
-    })
 
     describe("# generateProof", () => {
         it("Should not generate Semaphore proofs if the identity is not part of the group", async () => {
@@ -50,22 +40,12 @@ describe("Proof", () => {
             group.addMembers([BigInt(1), BigInt(2)])
 
             const fun = () =>
-                generateProof(identity, group, externalNullifier, signal, {
-                    wasmFilePath: `${snarkArtifactsPath}/semaphore.wasm`,
-                    zkeyFilePath: `${snarkArtifactsPath}/semaphore.zkey`
+                generateProof(identity, group, [group.root], externalNullifier, signal, chainID, {
+                    wasmFilePath: wasmFilePath,
+                    zkeyFilePath: zkeyFilePath
                 })
 
             await expect(fun).rejects.toThrow("The identity is not part of the group")
-        })
-
-        it("Should not generate a Semaphore proof with default snark artifacts with Node.js", async () => {
-            const group = new Group(treeDepth)
-
-            group.addMembers([BigInt(1), BigInt(2), identityCommitment])
-
-            const fun = () => generateProof(identity, group, externalNullifier, signal)
-
-            await expect(fun).rejects.toThrow("ENOENT: no such file or directory")
         })
 
         it("Should generate a Semaphore proof passing a group as parameter", async () => {
@@ -73,14 +53,13 @@ describe("Proof", () => {
 
             group.addMembers([BigInt(1), BigInt(2), identityCommitment])
 
-            fullProof = await generateProof(identity, group, externalNullifier, signal, {
-                wasmFilePath: `${snarkArtifactsPath}/semaphore.wasm`,
-                zkeyFilePath: `${snarkArtifactsPath}/semaphore.zkey`
+            fullProof = await generateProof(identity, group, [group.root], externalNullifier, signal, chainID, {
+                    wasmFilePath: wasmFilePath,
+                    zkeyFilePath: zkeyFilePath
             })
 
             expect(typeof fullProof).toBe("object")
             expect(fullProof.publicSignals.externalNullifier).toBe(externalNullifier)
-            expect(fullProof.publicSignals.merkleRoot).toBe(group.root.toString())
         }, 20000)
 
         it("Should generate a Semaphore proof passing a Merkle proof as parametr", async () => {
@@ -88,14 +67,13 @@ describe("Proof", () => {
 
             group.addMembers([BigInt(1), BigInt(2), identityCommitment])
 
-            fullProof = await generateProof(identity, group.generateProofOfMembership(2), externalNullifier, signal, {
-                wasmFilePath: `${snarkArtifactsPath}/semaphore.wasm`,
-                zkeyFilePath: `${snarkArtifactsPath}/semaphore.zkey`
+            fullProof = await generateProof(identity, group, [group.root], externalNullifier, signal, chainID, {
+                    wasmFilePath: wasmFilePath,
+                    zkeyFilePath: zkeyFilePath
             })
 
             expect(typeof fullProof).toBe("object")
             expect(fullProof.publicSignals.externalNullifier).toBe(externalNullifier)
-            expect(fullProof.publicSignals.merkleRoot).toBe(group.root.toString())
         }, 20000)
     })
 

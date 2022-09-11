@@ -36,6 +36,31 @@ function getNetworks(): NetworksUserConfig | undefined {
                 url: "https://arb1.arbitrum.io/rpc",
                 chainId: 42161,
                 accounts
+            },
+            chainA: {
+                url: `http://localhost:8545`,
+                chainId: 1338,
+                accounts
+            },
+            chainB: {
+                url: `http://localhost:8546`,
+                chainId: 1339,
+                accounts
+            }
+        }
+    }
+    if (process.env.ENABLE_LOCAL_CHAINS) {
+        const accounts = [`0x${process.env.BACKEND_PRIVATE_KEY}`]
+        return {
+            chainA: {
+                url: `http://localhost:8545`,
+                chainId: 1338,
+                accounts
+            },
+            chainB: {
+                url: `http://localhost:8546`,
+                chainId: 1339,
+                accounts
             }
         }
     }

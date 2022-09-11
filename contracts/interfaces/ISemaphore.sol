@@ -12,12 +12,6 @@ interface ISemaphore {
         uint8 merkleTreeDepth;
     }
 
-    // struct Verifiers {
-    //     Verifier v2;
-    //     Verifier v7;
-    //     uint8 merkleTreeDepth;
-    // }
-
     /// @dev Emitted when an admin is assigned to a group.
     /// @param groupId: Id of the group.
     /// @param oldAdmin: Old admin of the group.
@@ -46,16 +40,18 @@ interface ISemaphore {
         uint256[8] calldata proof
     ) external;
 
+    function decodeRoots(
+        bytes calldata roots
+    ) external view returns (bytes32[] memory roots_decoded);
+
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.
-    /// @param zeroValue: Zero value of the tree.
     /// @param admin: Admin of the group.
     /// @param maxEdges: The maximum # of edges supported by this group
     function createGroup(
         uint256 groupId,
         uint8 depth,
-        uint256 zeroValue,
         address admin,
         uint8 maxEdges
     ) external;
@@ -81,5 +77,19 @@ interface ISemaphore {
         uint256 identityCommitment,
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
+    ) external;
+
+    /**
+        @notice Add an edge to the tree or update an existing edge.
+        @param groupId The groupID of the LinkableTree
+        @param root The merkle root of the edge's merkle tree
+        @param leafIndex The latest leaf insertion index of the edge's merkle tree
+        @param srcResourceID The origin resource ID of the originating linked anchor update
+     */
+    function updateEdge(
+        uint256 groupId,
+        bytes32 root,
+        uint32 leafIndex,
+        bytes32 srcResourceID
     ) external;
 }

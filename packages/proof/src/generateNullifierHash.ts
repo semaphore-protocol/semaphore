@@ -10,7 +10,6 @@ import { BigNumberish } from "./types"
 export default function generateNullifierHash(
     externalNullifier: BigNumberish,
     identityNullifier: BigNumberish,
-    chainID: BigNumberish
 ): bigint {
-    return poseidon([BigInt(externalNullifier), BigInt(identityNullifier), BigInt(chainID)])
+    return poseidon([BigInt(externalNullifier), BigInt(identityNullifier)])
 }

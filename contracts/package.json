@@ -1,7 +1,7 @@
 {
-    "name": "@semaphore-protocol/contracts",
-    "version": "2.0.0",
-    "description": "Semaphore contracts to manage groups and broadcast anonymous signals.",
+    "name": "@semaphore-anchor/contracts",
+    "version": "0.0.1",
+    "description": "Semaphore-anchor contracts to manage groups and broadcast anonymous signals across blockchains.",
     "license": "MIT",
     "files": [
         "**/*.sol"
@@ -20,13 +20,13 @@
         "circom",
         "proof-of-membership"
     ],
-    "homepage": "https://github.com/semaphore-protocol/semaphore.git#readme",
+    "homepage": "https://github.com/webb-tools/semaphore-anchor.git#readme",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/semaphore-protocol/semaphore.git.git"
+        "url": "git+https://github.com/webb-tools/semaphore-anchor.git.git"
     },
     "bugs": {
-        "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
+        "url": "https://github.com/webb-tools/semaphore-anchor.git/issues"
     },
     "publishConfig": {
         "access": "public"

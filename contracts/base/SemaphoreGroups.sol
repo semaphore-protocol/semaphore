@@ -4,7 +4,9 @@ pragma solidity ^0.8.4;
 import {SNARK_SCALAR_FIELD} from "./SemaphoreConstants.sol";
 import "../interfaces/ISemaphoreGroups.sol";
 import "./LinkableIncrementalBinaryTree.sol";
+import {Edge} from "./LinkableIncrementalBinaryTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
+// import "hardhat/console.sol";
 
 /// @title Semaphore groups contract.
 /// @dev The following code allows you to create groups, add and remove members.
@@ -18,11 +20,10 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     /// @dev Creates a new group by initializing the associated tree.
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.
-    /// @param zeroValue: Zero value of the tree.
+    /// @param maxEdges: The maximum # of edges supported by this group
     function _createGroup(
         uint256 groupId,
         uint8 depth,
-        uint256 zeroValue,
         uint8 maxEdges
     ) internal virtual {
         if (groupId >= SNARK_SCALAR_FIELD) {
@@ -33,9 +34,9 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
             revert Semaphore__GroupAlreadyExists();
         }
 
-        groups[groupId].init(depth, zeroValue, maxEdges);
+        groups[groupId].init(depth, maxEdges);
 
-        emit GroupCreated(groupId, depth, zeroValue);
+        emit GroupCreated(groupId, depth);
     }
 
     /// @dev Adds an identity commitment to an existing group.
@@ -74,6 +75,37 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         uint256 root = getRoot(groupId);
 
         emit MemberRemoved(groupId, identityCommitment, root);
+    }
+    /**
+        @notice Add an edge to the tree or update an existing edge.
+        @param _root The merkle root of the edge's merkle tree
+        @param _leafIndex The latest leaf insertion index of the edge's merkle tree
+        @param _srcResourceID The chainID of the edge's LinkableTree
+     */
+    function _updateEdge(
+        uint256 _groupId,
+        bytes32 _root,
+        uint32 _leafIndex,
+        bytes32 _srcResourceID
+    ) internal {
+        groups[_groupId].updateEdge(_root, _leafIndex, _srcResourceID);
+    }
+
+    // TODO: Generalize this over maxEdges
+    // // Function exposed for testing purposes
+    function verifyRoots(uint256 groupId, bytes calldata roots) public override view returns (bool) {
+        bytes32[2] memory roots_decoded = abi.decode(roots, (bytes32[2]));
+
+        bytes32[] memory roots_encoded = new bytes32[](roots_decoded.length);
+        for (uint i = 0; i < roots_decoded.length; i++) {
+            roots_encoded[i] = roots_decoded[i];
+        }
+        bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(groups[groupId], roots_encoded);
+        return valid_roots;
+    }
+    /// @dev See {ISemaphoreGroups-getLatestNeighborEdges}.
+    function getLatestNeighborEdges(uint256 groupId) public view virtual override returns (Edge[] memory) {
+        return groups[groupId].getLatestNeighborEdges();
     }
 
     /// @dev See {ISemaphoreGroups-getRoot}.

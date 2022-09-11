@@ -31,18 +31,14 @@ contract SemaphoreCore is ISemaphoreCore {
         bytes calldata roots,
         uint256[8] calldata proof,
         SemaphoreVerifier verifier,
-        uint8 maxEdges,
-        uint256 root
+        uint8 maxEdges
     ) internal view {
-        if (nullifierHashes[nullifierHash]) {
-            revert Semaphore__YouAreUsingTheSameNillifierTwice();
-        }
+        require(nullifierHashes[nullifierHash] == false, "You are using same nullifier twice");
 
         uint256 signalHash = _hashSignal(signal);
 
         SemaphoreInputEncoder.Proof memory p = SemaphoreInputEncoder.Proof({
             proof: proof,
-            calculatedRoot: root,
             nullifierHash: nullifierHash,
             signalHash: signalHash,
             externalNullifier: externalNullifier,
@@ -57,10 +53,7 @@ contract SemaphoreCore is ISemaphoreCore {
             inputs,
             maxEdges
         );
-
-        if (!success) {
-            revert("InvalidProof()");
-        }
+        require(success, "invalidProof");
     }
 
     /// @dev Stores the nullifier hash to prevent double-signaling.

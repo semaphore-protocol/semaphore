@@ -1,36 +1,37 @@
 import { expect } from "chai"
 import { ethers, run } from "hardhat"
-import { SemaphoreVoting } from "../build/typechain"
+import { SemaphoreVoting } from "../../build/typechain"
 import { BigNumber, Signer, utils } from "ethers"
-import { config } from "../package.json"
+import { config } from "../../package.json"
 
-import { Identity } from "../packages/identity/src"
-import { Group } from "@semaphore-protocol/group"
+import { Identity } from "../../packages/identity/src"
+import { Group } from "../../packages/group/src"
 import {
     generateNullifierHash,
     generateProof,
     packToSolidityProof,
     PublicSignals,
     SolidityProof
-} from "../packages/proof/src"
-import { VerifierContractInfo, toFixedHex, createRootsBytes } from "./utils"
+} from "../../packages/proof/src"
+import { VerifierContractInfo, toFixedHex, createRootsBytes } from "../utils"
 
 describe("SemaphoreVoting", () => {
     let contract: SemaphoreVoting
-    let accounts: Signer[]
+    let signers: Signer[]
+    let accounts: string[]
     let coordinator: string
 
-    const zero = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
+    const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
     const chainID = BigInt(1099511629113)
-    const treeDepth = Number(process.env.TREE_DEPTH)
+    const treeDepth = Number(process.env.TREE_DEPTH) | 20
     const pollIds = [BigInt(1), BigInt(2), BigInt(3)]
     const encryptionKey = BigInt(0)
     const decryptionKey = BigInt(0)
     const maxEdges = 1
     const circuitLength = 2
 
-    const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/${circuitLength}/semaphore_${treeDepth}_${circuitLength}.wasm`
-    const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/${circuitLength}/circuit_final.zkey`
+    const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/semaphore_20_2.wasm`
+    const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/circuit_final.zkey`
 
     before(async () => {
         const { address: v2_address } = await run("deploy:verifier", { logs: false, depth: treeDepth, maxEdges: 2 })
@@ -59,13 +60,14 @@ describe("SemaphoreVoting", () => {
             verifiers: deployedVerifiers
         })
         contract = await run("deploy:semaphore-voting", { logs: false, verifier: verifierSelector.address })
-        accounts = await ethers.getSigners()
-        coordinator = await accounts[1].getAddress()
+        signers = await run("accounts", { logs: false })
+        accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
+        coordinator = await signers[1].getAddress()
     })
 
     describe("# createPoll", () => {
         it("Should not create a poll with a wrong depth", async () => {
-            const transaction = contract.createPoll(pollIds[0], 10, zero, coordinator, maxEdges)
+            const transaction = contract.createPoll(pollIds[0], 10, coordinator, maxEdges)
 
             await expect(transaction).to.be.revertedWith("SemaphoreVoting: depth value is not supported")
         })
@@ -74,7 +76,6 @@ describe("SemaphoreVoting", () => {
             const transaction = contract.createPoll(
                 BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
                 treeDepth,
-                zero,
                 coordinator,
                 maxEdges
             )
@@ -83,13 +84,13 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should create a poll", async () => {
-            const transaction = contract.createPoll(pollIds[0], treeDepth, zero, coordinator, maxEdges)
+            const transaction = contract.createPoll(pollIds[0], treeDepth, coordinator, maxEdges)
 
             await expect(transaction).to.emit(contract, "PollCreated").withArgs(pollIds[0], coordinator)
         })
 
         it("Should not create a poll if it already exists", async () => {
-            const transaction = contract.createPoll(pollIds[0], treeDepth, zero, coordinator, maxEdges)
+            const transaction = contract.createPoll(pollIds[0], treeDepth, coordinator, maxEdges)
 
             await expect(transaction).to.be.revertedWith("Semaphore__GroupAlreadyExists()")
         })
@@ -103,13 +104,13 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should start the poll", async () => {
-            const transaction = contract.connect(accounts[1]).startPoll(pollIds[0], encryptionKey)
+            const transaction = contract.connect(signers[1]).startPoll(pollIds[0], encryptionKey)
 
             await expect(transaction).to.emit(contract, "PollStarted").withArgs(pollIds[0], coordinator, encryptionKey)
         })
 
         it("Should not start a poll if it has already been started", async () => {
-            const transaction = contract.connect(accounts[1]).startPoll(pollIds[0], encryptionKey)
+            const transaction = contract.connect(signers[1]).startPoll(pollIds[0], encryptionKey)
 
             await expect(transaction).to.be.revertedWith("SemaphoreVoting: poll has already been started")
         })
@@ -117,7 +118,7 @@ describe("SemaphoreVoting", () => {
 
     describe("# addVoter", () => {
         before(async () => {
-            await contract.createPoll(pollIds[1], treeDepth, zero, coordinator, maxEdges)
+            await contract.createPoll(pollIds[1], treeDepth, coordinator, maxEdges)
         })
 
         it("Should not add a voter if the caller is not the coordinator", async () => {
@@ -133,7 +134,7 @@ describe("SemaphoreVoting", () => {
             const identity = new Identity(chainID)
             const identityCommitment = identity.generateCommitment()
 
-            const transaction = contract.connect(accounts[1]).addVoter(pollIds[0], identityCommitment)
+            const transaction = contract.connect(signers[1]).addVoter(pollIds[0], identityCommitment)
 
             await expect(transaction).to.be.revertedWith("SemaphoreVoting: voters can only be added before voting")
         })
@@ -142,13 +143,16 @@ describe("SemaphoreVoting", () => {
             const identity = new Identity(chainID, "test")
             const identityCommitment = identity.generateCommitment()
 
-            const transaction = contract.connect(accounts[1]).addVoter(pollIds[1], identityCommitment)
+            const group = new Group(treeDepth, zeroValue)
+            group.addMember(identityCommitment)
+
+            const transaction = contract.connect(signers[1]).addVoter(pollIds[1], identityCommitment)
 
             await expect(transaction).to.emit(contract, "MemberAdded").withArgs(
                 pollIds[1],
                 identityCommitment,
-                // "14787813191318312920980352979830075893203307366494541177071234930769373297362"
-                "7943806797233700547041913393384710769504872928213070894800658208056456315893"
+                group.root,
+                // "7943806797233700547041913393384710769504872928213070894800658208056456315893"
             )
         })
 
@@ -165,19 +169,24 @@ describe("SemaphoreVoting", () => {
         const vote = "1"
         const bytes32Vote = utils.formatBytes32String(vote)
 
-        const group = new Group(treeDepth, zero)
+        const group = new Group(treeDepth, zeroValue)
 
-        group.addMembers([identityCommitment, BigInt(1)])
+        group.addMember(identityCommitment)
+        group.addMember(BigInt(1))
 
         let solidityProof: SolidityProof
         let publicSignals: PublicSignals
+        let roots: string[]
 
         before(async () => {
-            await contract.connect(accounts[1]).addVoter(pollIds[1], BigInt(1))
-            await contract.connect(accounts[1]).startPoll(pollIds[1], encryptionKey)
-            await contract.createPoll(pollIds[2], treeDepth, zero, coordinator, maxEdges)
+            await contract.connect(signers[1]).addVoter(pollIds[1], BigInt(1))
+            await contract.connect(signers[1]).startPoll(pollIds[1], encryptionKey)
+            await contract.createPoll(pollIds[2], treeDepth, coordinator, maxEdges)
+            const root = await contract.getRoot(pollIds[1])
 
-            const fullProof = await generateProof(identity, group, pollIds[1], vote, {
+            roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
+
+            const fullProof = await generateProof(identity, group, roots, BigInt(pollIds[1]), vote, chainID, {
                 wasmFilePath,
                 zkeyFilePath
             })
@@ -187,13 +196,11 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not cast a vote if the caller is not the coordinator", async () => {
-            const root = await contract.getRoot(pollIds[0])
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const transaction = contract.castVote(
                 bytes32Vote,
                 publicSignals.nullifierHash,
                 pollIds[0],
-                createRootsBytes(roots),
+                createRootsBytes(publicSignals.roots),
                 solidityProof
             )
 
@@ -201,46 +208,61 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not cast a vote if the poll is not ongoing", async () => {
-            const root = await contract.getRoot(pollIds[2])
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const transaction = contract
-                .connect(accounts[1])
-                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[2], createRootsBytes(roots), solidityProof)
+                .connect(signers[1])
+                .castVote(
+                    bytes32Vote,
+                    publicSignals.nullifierHash,
+                    pollIds[2], 
+                    createRootsBytes(publicSignals.roots),
+                    solidityProof
+                )
 
             await expect(transaction).to.be.revertedWith("SemaphoreVoting: vote can only be cast in an ongoing poll")
         })
 
         it("Should not cast a vote if the proof is not valid", async () => {
-            const root = await contract.getRoot(pollIds[0])
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
-            const nullifierHash = generateNullifierHash(pollIds[0], identity.getNullifier(), chainID)
+            const nullifierHash = generateNullifierHash(pollIds[0], identity.getNullifier())
 
             const transaction = contract
-                .connect(accounts[1])
-                .castVote(bytes32Vote, nullifierHash, pollIds[1], createRootsBytes(roots), solidityProof)
+                .connect(signers[1])
+                .castVote( 
+                    bytes32Vote, 
+                    nullifierHash, 
+                    pollIds[1],  
+                    createRootsBytes(publicSignals.roots),
+                    solidityProof
+                )
 
-            await expect(transaction).to.be.revertedWith("InvalidProof()")
+            await expect(transaction).to.be.revertedWith("invalidProof")
         })
 
         it("Should cast a vote", async () => {
-            const root = await contract.getRoot(pollIds[1])
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
             const transaction = contract
-                .connect(accounts[1])
-                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[1], createRootsBytes(roots), solidityProof)
+                .connect(signers[1])
+                .castVote(
+                    bytes32Vote, 
+                    publicSignals.nullifierHash, 
+                    pollIds[1], 
+                    createRootsBytes(publicSignals.roots),
+                    solidityProof
+                )
 
             await expect(transaction).to.emit(contract, "VoteAdded").withArgs(pollIds[1], bytes32Vote)
         })
 
         it("Should not cast a vote twice", async () => {
-            const root = await contract.getRoot(pollIds[0])
-            const roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
-
             const transaction = contract
-                .connect(accounts[1])
-                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[1], createRootsBytes(roots), solidityProof)
+                .connect(signers[1])
+                .castVote(
+                    bytes32Vote, 
+                    publicSignals.nullifierHash, 
+                    pollIds[1], 
+                    createRootsBytes(publicSignals.roots),
+                    solidityProof
+                )
 
-            await expect(transaction).to.be.revertedWith("Semaphore__YouAreUsingTheSameNillifierTwice()")
+            await expect(transaction).to.be.revertedWith("You are using same nullifier twice")
         })
     })
 
@@ -252,13 +274,13 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should end the poll", async () => {
-            const transaction = contract.connect(accounts[1]).endPoll(pollIds[1], encryptionKey)
+            const transaction = contract.connect(signers[1]).endPoll(pollIds[1], encryptionKey)
 
             await expect(transaction).to.emit(contract, "PollEnded").withArgs(pollIds[1], coordinator, decryptionKey)
         })
 
         it("Should not end a poll if it has already been ended", async () => {
-            const transaction = contract.connect(accounts[1]).endPoll(pollIds[1], encryptionKey)
+            const transaction = contract.connect(signers[1]).endPoll(pollIds[1], encryptionKey)
 
             await expect(transaction).to.be.revertedWith("SemaphoreVoting: poll is not ongoing")
         })

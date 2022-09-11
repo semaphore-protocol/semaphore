@@ -9,6 +9,7 @@ import {PoseidonT3} from "@zk-kit/incremental-merkle-tree.sol/Hashes.sol";
 
 /// @title Semaphore
 contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
+    bytes2 public constant EVM_CHAIN_ID_TYPE = 0x0100;
     /// @dev Gets a tree depth and returns its verifier address.
     mapping(uint8 => SemaphoreVerifier) public verifiers;
 
@@ -48,11 +49,10 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     function createGroup(
         uint256 groupId,
         uint8 depth,
-        uint256 zeroValue,
         address admin,
         uint8 maxEdges
     ) external override onlySupportedDepth(depth) {
-        _createGroup(groupId, depth, zeroValue, maxEdges);
+        _createGroup(groupId, depth, maxEdges);
         groupMaxEdges[groupId] = maxEdges;
         groupAdmins[groupId] = admin;
 
@@ -66,6 +66,45 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         emit GroupAdminUpdated(groupId, _msgSender(), newAdmin);
     }
 
+    /**
+        @notice Gets the chain id using the chain id opcode
+    */
+    function getChainId() public view returns (uint256) {
+        uint256 chainId;
+        assembly {
+            chainId := chainid()
+        }
+        return chainId;
+    }
+
+    function getChainIdType() public view returns (uint48) {
+        // The chain ID and type pair is 6 bytes in length
+        // The first 2 bytes are reserved for the chain type.
+        // The last 4 bytes are reserved for a u32 (uint32) chain ID.
+        bytes4 chainID = bytes4(uint32(getChainId()));
+        bytes2 chainType = EVM_CHAIN_ID_TYPE;
+        // We encode the chain ID and type pair into packed bytes which
+        // should be 6 bytes using the encode packed method. We will
+        // cast this as a bytes32 in order to encode as a uint256 for zkp verification.
+        bytes memory chainIdWithType = abi.encodePacked(chainType, chainID);
+        return uint48(bytes6(chainIdWithType));
+    }
+
+    /**
+        @notice Add an edge to the tree or update an existing edge.
+        @param groupId The groupID of the LinkableTree
+        @param root The merkle root of the edge's merkle tree
+        @param leafIndex The latest leaf insertion index of the edge's merkle tree
+        @param srcResourceID The origin resource ID of the originating linked anchor update
+     */
+    function updateEdge(
+        uint256 groupId,
+        bytes32 root,
+        uint32 leafIndex,
+        bytes32 srcResourceID
+    ) external override onlyGroupAdmin(groupId) {
+        _updateEdge(groupId, root, leafIndex, srcResourceID);
+    }
     /// @dev See {ISemaphore-addMember}.
     function addMember(uint256 groupId, uint256 identityCommitment) external override onlyGroupAdmin(groupId) {
         _addMember(groupId, identityCommitment);
@@ -81,17 +120,24 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         _removeMember(groupId, identityCommitment, proofSiblings, proofPathIndices);
     }
 
+    // Function exposed for testing purposes
+    function decodeRoots(
+        bytes calldata roots
+    ) external override view returns (bytes32[] memory roots_decoded) {
+        roots_decoded = abi.decode(roots, (bytes32[]));
+        return roots_decoded;
+    }
+
     /// @dev See {ISemaphore-verifyProof}.
     function verifyProof(
         uint256 groupId,
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
+        // TODO: Create standard encoding for which order each root is supposed to be at.
         bytes calldata roots,
         uint256[8] calldata proof
     ) external override {
-        // TODO: check here if roots match?
-        uint256 root = getRoot(groupId);
         uint8 depth = getDepth(groupId);
         uint8 maxEdges = getMaxEdges(groupId);
 
@@ -99,9 +145,11 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
             revert Semaphore__GroupDoesNotExist();
         }
 
+        verifyRoots(groupId, roots);
+
         SemaphoreVerifier verifier = verifiers[depth];
 
-        _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges, root);
+        _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges);
 
         _saveNullifierHash(nullifierHash);
 

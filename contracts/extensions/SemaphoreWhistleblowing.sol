@@ -44,13 +44,12 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
     function createEntity(
         uint256 entityId,
         uint8 depth,
-        uint256 zeroValue,
         address editor,
         uint8 maxEdges
     ) public override {
         require(address(verifiers[depth]) != address(0), "SemaphoreWhistleblowing: depth value is not supported");
 
-        _createGroup(entityId, depth, zeroValue, maxEdges);
+        _createGroup(entityId, depth, maxEdges);
         Entity memory entity;
 
         entity.id = entityId;
@@ -84,12 +83,16 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         bytes calldata roots,
         uint256[8] calldata proof
     ) public override onlyEditor(entityId) {
-        uint256 root = getRoot(entityId);
-        uint8 depth = getDepth(entityId);
+        SemaphoreVerifier verifier;
         uint8 maxEdges = getMaxEdges(entityId);
-        SemaphoreVerifier verifier = verifiers[depth];
+        // TODO: Stack too deep error. Can we improve it?
+        {
+            uint8 depth = getDepth(entityId);
+            verifier = verifiers[depth];
+        }
+        verifyRoots(entityId, roots);
 
-        _verifyProof(leak, nullifierHash, entityId, roots, proof, verifier, maxEdges, root);
+        _verifyProof(leak, nullifierHash, entityId, roots, proof, verifier, maxEdges);
 
         emit LeakPublished(entityId, leak);
     }

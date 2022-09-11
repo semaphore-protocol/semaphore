@@ -25,7 +25,6 @@ export type PublicSignals = {
     roots: BigNumberish[],
 
     chainID: BigNumberish,
-    calculatedRoot: BigNumberish,
     nullifierHash: BigNumberish
     // merkleRoot: BigNumberish
     // nullifierHash: BigNumberish
