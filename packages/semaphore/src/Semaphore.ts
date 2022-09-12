@@ -254,7 +254,11 @@ export class Semaphore {
         throw new Error(`Group ${group_id} has already been created`);
       } else {
         this.groups[group_id] = new Group(depth)
-        const transaction = this.contract.createGroup(group_id, 20, groupAdmin, maxEdges)
+        const transaction = await this.contract.createGroup(group_id, 20, groupAdmin, maxEdges)
+        console.log("createGroup: ", transaction)
+        const receipt = transaction.wait()
+        console.log("receipt: ", receipt)
+        return receipt
       }
   }
 
