@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-anchor/semaphore",
-    "version": "0.0.2",
+    "version": "0.0.2-0d",
     "description": "A library to help deploy Semaphore usage on typescript.",
     "license": "MIT",
     "main": "dist/index.node.js",
