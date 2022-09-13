@@ -94,6 +94,25 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         merkleTreeExpiries[groupId].rootCreationDates[merkleTreeRoot] = block.timestamp;
     }
 
+    /// @dev See {ISemaphore-addMembers}.
+    function addMembers(uint256 groupId, uint256[] calldata identityCommitments)
+        external
+        override
+        onlyGroupAdmin(groupId)
+    {
+        for (uint8 i = 0; i < identityCommitments.length; ) {
+            _addMember(groupId, identityCommitments[i]);
+
+            unchecked {
+                ++i;
+            }
+        }
+
+        uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
+
+        merkleTreeExpiries[groupId].rootCreationDates[merkleTreeRoot] = block.timestamp;
+    }
+
     /// @dev See {ISemaphore-updateMember}.
     function updateMember(
         uint256 groupId,
