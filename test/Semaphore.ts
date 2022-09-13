@@ -107,6 +107,28 @@ describe("Semaphore", () => {
         })
     })
 
+    describe("# addMembers", () => {
+        it("Should not add members if the caller is not the group admin", async () => {
+            const transaction = contract.connect(signers[1]).addMembers(groupId, [1, 2, 3])
+
+            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
+        })
+
+        it("Should add new members to an existing group", async () => {
+            const groupId = 3
+            const members = [BigInt(1), BigInt(2), BigInt(3)]
+            const group = new Group(treeDepth)
+
+            group.addMembers(members)
+
+            await contract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
+
+            const transaction = contract.addMembers(groupId, members)
+
+            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(groupId, BigInt(3), group.root)
+        })
+    })
+
     describe("# updateMember", () => {
         it("Should not update a member if the caller is not the group admin", async () => {
             const transaction = contract.connect(signers[1]).updateMember(groupId, members[0], 1, [0, 1], [0, 1])
@@ -115,17 +137,16 @@ describe("Semaphore", () => {
         })
 
         it("Should update a member from an existing group", async () => {
-            const groupId = 3
+            const groupId = 4
+            const members = [BigInt(1), BigInt(2), BigInt(3)]
             const group = new Group(treeDepth)
 
-            group.addMembers([BigInt(1), BigInt(2), BigInt(3)])
+            group.addMembers(members)
 
             group.updateMember(0, BigInt(4))
 
             await contract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
-            await contract.addMember(groupId, BigInt(1))
-            await contract.addMember(groupId, BigInt(2))
-            await contract.addMember(groupId, BigInt(3))
+            await contract.addMembers(groupId, members)
 
             const { siblings, pathIndices, root } = group.generateProofOfMembership(0)
 
@@ -143,17 +164,16 @@ describe("Semaphore", () => {
         })
 
         it("Should remove a member from an existing group", async () => {
-            const groupId = 4
+            const groupId = 5
+            const members = [BigInt(1), BigInt(2), BigInt(3)]
             const group = new Group(treeDepth)
 
-            group.addMembers([BigInt(1), BigInt(2), BigInt(3)])
+            group.addMembers(members)
 
             group.removeMember(0)
 
             await contract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
-            await contract.addMember(groupId, BigInt(1))
-            await contract.addMember(groupId, BigInt(2))
-            await contract.addMember(groupId, BigInt(3))
+            await contract.addMembers(groupId, members)
 
             const { siblings, pathIndices, root } = group.generateProofOfMembership(0)
 
@@ -175,8 +195,7 @@ describe("Semaphore", () => {
         let solidityProof: SolidityProof
 
         before(async () => {
-            await contract.addMember(groupId, members[1])
-            await contract.addMember(groupId, members[2])
+            await contract.addMembers(groupId, [members[1], members[2]])
 
             fullProof = await generateProof(identity, group, group.root, signal, {
                 wasmFilePath,
@@ -227,8 +246,7 @@ describe("Semaphore", () => {
             const groupId = 2
             const group = new Group(treeDepth)
 
-            group.addMember(members[0])
-            group.addMember(members[1])
+            group.addMembers([members[0], members[1]])
 
             const fullProof = await generateProof(identity, group, group.root, signal, {
                 wasmFilePath,
