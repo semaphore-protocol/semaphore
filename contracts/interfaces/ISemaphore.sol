@@ -85,6 +85,11 @@ interface ISemaphore {
     /// @param identityCommitment: New identity commitment.
     function addMember(uint256 groupId, uint256 identityCommitment) external;
 
+    /// @dev Adds new members to an existing group.
+    /// @param groupId: Id of the group.
+    /// @param identityCommitments: New identity commitments.
+    function addMembers(uint256 groupId, uint256[] calldata identityCommitments) external;
+
     /// @dev Updates an identity commitment of an existing group. A proof of membership is
     /// needed to check if the node to be updated is part of the tree.
     /// @param groupId: Id of the group.
