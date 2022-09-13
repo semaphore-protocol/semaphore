@@ -173,11 +173,11 @@ Deploy all verifiers and Semaphore contract:
 yarn deploy:all
 ```
 
-If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, goerli, kovan, arbitrum). Or you can specify it as option:
+If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, goerli, arbitrum). Or you can specify it as option:
 
 ```bash
-yarn deploy:all --network kovan
+yarn deploy:all --network goerli
 yarn deploy:all --network localhost
 ```
 
-If you want to deploy contracts on Goerli, Kovan or Arbitrum, remember to provide a valid private key and an Infura API in your `.env` file.
+If you want to deploy contracts on Goerli or Arbitrum, remember to provide a valid private key and an Infura API in your `.env` file.
