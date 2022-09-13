@@ -28,11 +28,6 @@ function getNetworks(): NetworksUserConfig | undefined {
                 chainId: 5,
                 accounts
             },
-            kovan: {
-                url: `https://kovan.infura.io/v3/${infuraApiKey}`,
-                chainId: 42,
-                accounts
-            },
             arbitrum: {
                 url: "https://arb1.arbitrum.io/rpc",
                 chainId: 42161,
