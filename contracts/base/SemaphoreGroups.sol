@@ -48,9 +48,9 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         groups[groupId].insert(identityCommitment);
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
-        uint256 index = getNumberOfMerkleTreeLeaves(groupId);
+        uint256 index = getNumberOfMerkleTreeLeaves(groupId) - 1;
 
-        emit MemberAdded(groupId, index - 1, identityCommitment, merkleTreeRoot);
+        emit MemberAdded(groupId, index, identityCommitment, merkleTreeRoot);
     }
 
     /// @dev Updates an identity commitment of an existing group. A proof of membership is
