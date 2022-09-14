@@ -118,7 +118,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         return groups[groupId].numberOfLeaves;
     }
 
-    /// @dev Converts the path indices of a Merkle proof to the identity commitment index in the three.
+    /// @dev Converts the path indices of a Merkle proof to the identity commitment index in the tree.
     /// @param proofPathIndices: Path of the proof of membership.
     /// @return Index of a group member.
     function proofPathIndicesToMemberIndex(uint8[] calldata proofPathIndices) private pure returns (uint256) {
