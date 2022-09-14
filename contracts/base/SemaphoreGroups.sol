@@ -48,8 +48,9 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         groups[groupId].insert(identityCommitment);
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
+        uint256 index = getNumberOfMerkleTreeLeaves(groupId) - 1;
 
-        emit MemberAdded(groupId, identityCommitment, merkleTreeRoot);
+        emit MemberAdded(groupId, index, identityCommitment, merkleTreeRoot);
     }
 
     /// @dev Updates an identity commitment of an existing group. A proof of membership is
@@ -73,8 +74,9 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         groups[groupId].update(identityCommitment, newIdentityCommitment, proofSiblings, proofPathIndices);
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
+        uint256 index = proofPathIndicesToMemberIndex(proofPathIndices);
 
-        emit MemberUpdated(groupId, identityCommitment, newIdentityCommitment, merkleTreeRoot);
+        emit MemberUpdated(groupId, index, identityCommitment, newIdentityCommitment, merkleTreeRoot);
     }
 
     /// @dev Removes an identity commitment from an existing group. A proof of membership is
@@ -96,8 +98,9 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         groups[groupId].remove(identityCommitment, proofSiblings, proofPathIndices);
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
+        uint256 index = proofPathIndicesToMemberIndex(proofPathIndices);
 
-        emit MemberRemoved(groupId, identityCommitment, merkleTreeRoot);
+        emit MemberRemoved(groupId, index, identityCommitment, merkleTreeRoot);
     }
 
     /// @dev See {ISemaphoreGroups-getMerkleTreeRoot}.
@@ -113,5 +116,28 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     /// @dev See {ISemaphoreGroups-getNumberOfMerkleTreeLeaves}.
     function getNumberOfMerkleTreeLeaves(uint256 groupId) public view virtual override returns (uint256) {
         return groups[groupId].numberOfLeaves;
+    }
+
+    /// @dev Converts the path indices of a Merkle proof to the identity commitment index in the tree.
+    /// @param proofPathIndices: Path of the proof of membership.
+    /// @return Index of a group member.
+    function proofPathIndicesToMemberIndex(uint8[] calldata proofPathIndices) private pure returns (uint256) {
+        uint256 memberIndex = 0;
+
+        for (uint8 i = uint8(proofPathIndices.length); i > 0; ) {
+            if (memberIndex > 0 || proofPathIndices[i - 1] != 0) {
+                memberIndex *= 2;
+
+                if (proofPathIndices[i - 1] == 1) {
+                    memberIndex += 1;
+                }
+            }
+
+            unchecked {
+                --i;
+            }
+        }
+
+        return memberIndex;
     }
 }

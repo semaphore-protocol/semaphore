@@ -101,6 +101,7 @@ describe("Semaphore", () => {
                 .to.emit(contract, "MemberAdded")
                 .withArgs(
                     groupId,
+                    0,
                     members[0],
                     "18951329906296061785889394467312334959162736293275411745101070722914184798221"
                 )
@@ -125,7 +126,7 @@ describe("Semaphore", () => {
 
             const transaction = contract.addMembers(groupId, members)
 
-            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(groupId, BigInt(3), group.root)
+            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(groupId, 2, BigInt(3), group.root)
         })
     })
 
@@ -152,7 +153,9 @@ describe("Semaphore", () => {
 
             const transaction = contract.updateMember(groupId, BigInt(1), BigInt(4), siblings, pathIndices)
 
-            await expect(transaction).to.emit(contract, "MemberUpdated").withArgs(groupId, BigInt(1), BigInt(4), root)
+            await expect(transaction)
+                .to.emit(contract, "MemberUpdated")
+                .withArgs(groupId, 0, BigInt(1), BigInt(4), root)
         })
     })
 
@@ -170,16 +173,16 @@ describe("Semaphore", () => {
 
             group.addMembers(members)
 
-            group.removeMember(0)
+            group.removeMember(2)
 
             await contract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
             await contract.addMembers(groupId, members)
 
-            const { siblings, pathIndices, root } = group.generateProofOfMembership(0)
+            const { siblings, pathIndices, root } = group.generateProofOfMembership(2)
 
-            const transaction = contract.removeMember(groupId, BigInt(1), siblings, pathIndices)
+            const transaction = contract.removeMember(groupId, BigInt(3), siblings, pathIndices)
 
-            await expect(transaction).to.emit(contract, "MemberRemoved").withArgs(groupId, BigInt(1), root)
+            await expect(transaction).to.emit(contract, "MemberRemoved").withArgs(groupId, 2, BigInt(3), root)
         })
     })
 
