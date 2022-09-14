@@ -120,6 +120,7 @@ describe("SemaphoreVoting", () => {
                 .to.emit(contract, "MemberAdded")
                 .withArgs(
                     pollIds[1],
+                    0,
                     identityCommitment,
                     "14787813191318312920980352979830075893203307366494541177071234930769373297362"
                 )

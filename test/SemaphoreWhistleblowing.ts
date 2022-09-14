@@ -85,6 +85,7 @@ describe("SemaphoreWhistleblowing", () => {
                 .to.emit(contract, "MemberAdded")
                 .withArgs(
                     entityIds[0],
+                    0,
                     identityCommitment,
                     "14787813191318312920980352979830075893203307366494541177071234930769373297362"
                 )
@@ -129,6 +130,7 @@ describe("SemaphoreWhistleblowing", () => {
                 .to.emit(contract, "MemberRemoved")
                 .withArgs(
                     entityIds[0],
+                    0,
                     identityCommitment,
                     "15019797232609675441998260052101280400536945603062888308240081994073687793470"
                 )
