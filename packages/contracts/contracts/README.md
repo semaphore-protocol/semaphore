@@ -59,3 +59,78 @@ or yarn:
 ```bash
 yarn add @semaphore-protocol/contracts
 ```
+
+## 📜 Usage
+
+Copy the `.env.example` file as `.env`:
+
+```bash
+cp .env.example .env
+```
+
+And add your environment variables.
+
+### Snark artifacts
+
+Download the Semaphore snark artifacts needed to generate and verify proofs:
+
+```bash
+yarn download:snark-artifacts
+```
+
+### Compile contracts
+
+Compile the smart contracts with [Hardhat](https://hardhat.org/):
+
+```bash
+yarn compile
+```
+
+### Testing
+
+Run [Mocha](https://mochajs.org/) to test the contracts:
+
+```bash
+yarn test
+```
+
+You can also generate a test coverage report:
+
+```bash
+yarn test:coverage
+```
+
+Or a test gas report:
+
+```bash
+yarn test:report-gas
+```
+
+### Deploy contracts
+
+Deploy a verifier contract with depth = 20:
+
+```bash
+yarn deploy:verifier --depth 20
+```
+
+Deploy the `Semaphore.sol` contract with one verifier:
+
+```bash
+yarn deploy:semaphore --verifiers '[{"merkleTreeDepth": 20, "contractAddress": "0x06bcD633988c1CE7Bd134DbE2C12119b6f3E4bD1"}]'
+```
+
+Deploy all verifiers and Semaphore contract:
+
+```bash
+yarn deploy:all
+```
+
+If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, goerli, arbitrum). Or you can specify it as option:
+
+```bash
+yarn deploy:all --network goerli
+yarn deploy:all --network localhost
+```
+
+If you want to deploy contracts on Goerli or Arbitrum, remember to provide a valid private key and an Infura API in your `.env` file.

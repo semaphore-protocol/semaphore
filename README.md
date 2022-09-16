@@ -252,7 +252,7 @@ Or test everything with:
 yarn test
 ```
 
-### Build packages & compile contracts
+### Build libraries & compile contracts
 
 Run [Rollup](https://www.rollupjs.org) to build all the packages:
 
