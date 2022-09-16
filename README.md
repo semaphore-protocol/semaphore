@@ -13,7 +13,7 @@
     <a href="https://github.com/semaphore-protocol" target="_blank">
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
-    <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
+    <a href="/LICENSE">
         <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
     </a>
     <a href="https://github.com/semaphore-protocol/semaphore/actions?query=workflow%3Atest">
@@ -75,7 +75,7 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
     <tbody>
         <tr>
             <td>
-                <a href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/contracts/contracts">
+                <a href="/packages/contracts/contracts">
                     @semaphore-protocol/contracts
                 </a>
             </td>
@@ -94,7 +94,7 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
         </tr>
         <tr>
             <td>
-                <a href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/identity">
+                <a href="/packages/identity">
                     @semaphore-protocol/identity
                 </a>
                 <a href="https://semaphore-protocol.github.io/semaphore/identity">
@@ -116,7 +116,7 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
         </tr>
         <tr>
             <td>
-                <a href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/group">
+                <a href="/packages/group">
                     @semaphore-protocol/group
                 </a>
                 <a href="https://semaphore-protocol.github.io/semaphore/group">
@@ -138,7 +138,7 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
         </tr>
         <tr>
             <td>
-                <a href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/proof">
+                <a href="/packages/proof">
                     @semaphore-protocol/proof
                 </a>
                 <a href="https://semaphore-protocol.github.io/semaphore/proof">
@@ -160,7 +160,7 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
         </tr>
         <tr>
             <td>
-                <a href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/subgraph">
+                <a href="/packages/subgraph">
                     @semaphore-protocol/subgraph
                 </a>
                 <a href="https://semaphore-protocol.github.io/semaphore/subgraph">
