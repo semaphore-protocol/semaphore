@@ -25,6 +25,9 @@
     <a href="https://coveralls.io/github/semaphore-protocol/semaphore">
         <img alt="Coveralls" src="https://img.shields.io/coveralls/github/semaphore-protocol/semaphore?style=flat-square&logo=coveralls">
     </a>
+    <a href="https://deepscan.io/dashboard#view=project&tid=16502&pid=22324&bid=657461">
+        <img src="https://deepscan.io/api/teams/16502/projects/22324/branches/657461/badge/grade.svg" alt="DeepScan grade">
+    </a>
     <a href="https://eslint.org/">
         <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint">
     </a>
@@ -57,11 +60,131 @@
 | Semaphore is a protocol, designed to be a simple and generic privacy layer for Ethereum DApps. Using zero knowledge, Ethereum users can prove their membership of a group and send signals such as votes or endorsements without revealing their original identity. |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/contracts) (NPM: `@semaphore-protocol/contracts`) and [JavaScript libraries](https://github.com/semaphore-protocol/semaphore.js) to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit [semaphore.appliedzkp.org](https://semaphore.appliedzkp.org).
+The core of the Semaphore protocol is in the [circuit logic](/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/packages/contracts) (NPM: `@semaphore-protocol/contracts`) and JavaScript libraries to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit [semaphore.appliedzkp.org](https://semaphore.appliedzkp.org).
 
 You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-protocol/semaphore/tree/version/1.0.0).
 
 ---
+
+## 📦 Packages
+
+<table>
+    <th>Package</th>
+    <th>Version</th>
+    <th>Downloads</th>
+    <tbody>
+        <tr>
+            <td>
+                <a href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/contracts/contracts">
+                    @semaphore-protocol/contracts
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/contracts">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/contracts.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/contracts">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/contracts.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/identity">
+                    @semaphore-protocol/identity
+                </a>
+                <a href="https://semaphore-protocol.github.io/semaphore/identity">
+                    (docs)
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/identity">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/identity.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/identity">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/identity.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/group">
+                    @semaphore-protocol/group
+                </a>
+                <a href="https://semaphore-protocol.github.io/semaphore/group">
+                    (docs)
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/group">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/group.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/group">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/group.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/proof">
+                    @semaphore-protocol/proof
+                </a>
+                <a href="https://semaphore-protocol.github.io/semaphore/proof">
+                    (docs)
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/proof">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/proof.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/proof">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/proof.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/subgraph">
+                    @semaphore-protocol/subgraph
+                </a>
+                <a href="https://semaphore-protocol.github.io/semaphore/subgraph">
+                    (docs)
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/subgraph">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/subgraph.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/subgraph">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/subgraph.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+    <tbody>
+
+</table>
+
+
 
 ## 🛠 Install
 
@@ -71,21 +194,13 @@ Clone this repository:
 git clone https://github.com/semaphore-protocol/semaphore.git
 ```
 
-and install the dependencies:
+And install the dependencies:
 
 ```bash
 cd semaphore && yarn
 ```
 
 ## 📜 Usage
-
-Copy the `.env.example` file as `.env`:
-
-```bash
-cp .env.example .env
-```
-
-and add your environment variables.
 
 ### Code quality and formatting
 
@@ -101,7 +216,7 @@ Run [Prettier](https://prettier.io/) to check formatting rules:
 yarn prettier
 ```
 
-or to automatically format the code:
+Or to automatically format the code:
 
 ```bash
 yarn prettier:write
@@ -117,67 +232,46 @@ yarn commit
 
 It will also automatically check that the modified files comply with ESLint and Prettier rules.
 
-### Snark artifacts
-
-Download the Semaphore snark artifacts needed to generate and verify proofs:
-
-```bash
-yarn download:snark-artifacts
-```
-
-### Compile contracts
-
-Compile the smart contracts with [Hardhat](https://hardhat.org/):
-
-```bash
-yarn compile
-```
-
 ### Testing
 
+Run [Jest](https://jestjs.io/) to test the JS libraries:
+
+```bash
+yarn test:libraries
+```
+
 Run [Mocha](https://mochajs.org/) to test the contracts:
+
+```bash
+yarn test:contracts
+```
+
+Or test everything with:
 
 ```bash
 yarn test
 ```
 
-You can also generate a test coverage report:
+### Build packages & compile contracts
+
+Run [Rollup](https://www.rollupjs.org) to build all the packages:
 
 ```bash
-yarn test:coverage
+yarn build:libraries
 ```
 
-or a test gas report:
+Compile the smart contracts with [Hardhat](https://hardhat.org/):
 
 ```bash
-yarn test:report-gas
+yarn compile:contracts
 ```
 
-### Deploy contracts
+### Documentation (JS libraries)
 
-Deploy a verifier contract with depth = 20:
+Run [TypeDoc](https://typedoc.org/) to generate a documentation website for each package:
 
 ```bash
-yarn deploy:verifier --depth 20
+yarn docs
 ```
 
-Deploy the `Semaphore.sol` contract with one verifier:
-
-```bash
-yarn deploy:semaphore --verifiers '[{"merkleTreeDepth": 20, "contractAddress": "0x06bcD633988c1CE7Bd134DbE2C12119b6f3E4bD1"}]'
-```
-
-Deploy all verifiers and Semaphore contract:
-
-```bash
-yarn deploy:all
-```
-
-If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, goerli, arbitrum). Or you can specify it as option:
-
-```bash
-yarn deploy:all --network goerli
-yarn deploy:all --network localhost
-```
-
-If you want to deploy contracts on Goerli or Arbitrum, remember to provide a valid private key and an Infura API in your `.env` file.
+The output will be placed on the `docs` folder.

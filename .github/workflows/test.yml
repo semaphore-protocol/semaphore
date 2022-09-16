@@ -10,7 +10,7 @@ env:
     TREE_DEPTH: 20
 
 jobs:
-    test:
+    install:
         runs-on: ubuntu-latest
 
         steps:
@@ -35,13 +35,52 @@ jobs:
                       ${{ runner.os }}-yarn-
 
             - name: Install dependencies
-              run: YARN_CHECKSUM_BEHAVIOR=ignore yarn
+              run: yarn
 
-            - name: Download Snark artifacts
-              run: yarn download:snark-artifacts
+    style:
+        needs: install
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Run Prettier
+              run: yarn prettier
+
+            - name: Run Eslint
+              run: yarn lint
 
             - name: Compile contracts
-              run: yarn compile
+              run: yarn compile:contracts
 
-            - name: Test contracts with coverage
-              run: yarn test:coverage
+            - name: Build libraries
+              run: yarn build:libs
+
+    test:
+        needs: style
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                type:
+                    - libraries
+                    - contracts
+
+        steps:
+            - name: Test contracts and libraries
+              run: yarn test:${{ matrix.type }}
+
+            - name: Coveralls
+              uses: coverallsapp/github-action@master
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  flag-name: run-${{ matrix.type }}
+                  path-to-lcov: ./coverage/${{ matrix.type }}/lcov.info
+                  parallel: true
+
+    finish:
+        needs: test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Coveralls Finished
+              uses: coverallsapp/github-action@master
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  parallel-finished: true
