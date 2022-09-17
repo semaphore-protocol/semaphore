@@ -46,7 +46,6 @@ jobs:
               run: yarn build:libraries
 
     test:
-        needs: style
         runs-on: ubuntu-latest
         strategy:
             matrix:

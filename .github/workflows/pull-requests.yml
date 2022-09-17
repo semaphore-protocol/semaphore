@@ -44,7 +44,6 @@ jobs:
               run: yarn lint
 
     test:
-        needs: style
         runs-on: ubuntu-latest
 
         steps:
