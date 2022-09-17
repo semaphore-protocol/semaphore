@@ -23,6 +23,7 @@ Verifier*.sol
 # production
 dist
 build
+docs
 
 # github
 .github/ISSUE_TEMPLATE
