@@ -31,17 +31,17 @@ jobs:
             - name: Install dependencies
               run: yarn
 
-            - name: Run Prettier
-              run: yarn prettier
-
-            - name: Run Eslint
-              run: yarn lint
-
             - name: Compile contracts
               run: yarn compile:contracts
 
             - name: Build libraries
               run: yarn build:libs
+
+            - name: Run Prettier
+              run: yarn prettier
+
+            - name: Run Eslint
+              run: yarn lint
 
     test:
         needs: style
