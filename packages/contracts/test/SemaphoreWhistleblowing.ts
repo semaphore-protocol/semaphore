@@ -19,7 +19,7 @@ describe("SemaphoreWhistleblowing", () => {
     let accounts: Signer[]
     let editor: string
 
-    const treeDepth = Number(process.env.TREE_DEPTH)
+    const treeDepth = Number(process.env.TREE_DEPTH) || 20
     const entityIds = [BigInt(1), BigInt(2)]
 
     const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`

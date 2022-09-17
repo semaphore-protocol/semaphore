@@ -15,7 +15,7 @@ describe("Semaphore", () => {
     let signers: Signer[]
     let accounts: string[]
 
-    const treeDepth = Number(process.env.TREE_DEPTH)
+    const treeDepth = Number(process.env.TREE_DEPTH) || 20
     const groupId = 1
     const members = createIdentityCommitments(3)
 

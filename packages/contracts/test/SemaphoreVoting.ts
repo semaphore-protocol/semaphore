@@ -19,7 +19,7 @@ describe("SemaphoreVoting", () => {
     let accounts: Signer[]
     let coordinator: string
 
-    const treeDepth = Number(process.env.TREE_DEPTH)
+    const treeDepth = Number(process.env.TREE_DEPTH) || 20
     const pollIds = [BigInt(1), BigInt(2), BigInt(3)]
     const encryptionKey = BigInt(0)
     const decryptionKey = BigInt(0)
