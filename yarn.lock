@@ -2996,7 +2996,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/proof@2.3.1, @semaphore-protocol/proof@workspace:packages/proof":
+"@semaphore-protocol/proof@workspace:packages/proof":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/proof@workspace:packages/proof"
   dependencies:
@@ -6910,9 +6910,9 @@ __metadata:
     "@nomiclabs/hardhat-etherscan": ^3.1.0
     "@nomiclabs/hardhat-waffle": ^2.0.3
     "@openzeppelin/contracts": 4.4.2
-    "@semaphore-protocol/group": 2.2.0
-    "@semaphore-protocol/identity": 2.0.0
-    "@semaphore-protocol/proof": 2.3.1
+    "@semaphore-protocol/group": "workspace:packages/group"
+    "@semaphore-protocol/identity": "workspace:packages/identity"
+    "@semaphore-protocol/proof": "workspace:packages/proof"
     "@typechain/ethers-v5": ^10.0.0
     "@typechain/hardhat": ^6.0.0
     "@types/chai": ^4.3.0
@@ -8835,7 +8835,7 @@ __metadata:
   dependencies:
     bn.js: ^4.11.8
     ethereumjs-util: ^6.0.0
-  checksum: 03127d09960e5f8a44167463faf25b2894db2f746376dbb8195b789ed11762f93db9c574eaa7c498c400063508e9dfc1c80de2edf5f0e1406b25c87d860ff2f1
+  checksum: ae074be0bb012857ab5d3ae644d1163b908a48dd724b7d2567cfde309dc72222d460438f2411936a70dc949dc604ce1ef7118f7273bd525815579143c907e336
   languageName: node
   linkType: hard
 
