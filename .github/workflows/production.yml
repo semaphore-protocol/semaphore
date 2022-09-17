@@ -78,6 +78,9 @@ jobs:
             - name: Install dependencies
               run: yarn
 
+            - name: Build libraries
+              run: yarn build:libraries
+
             - name: Test contracts and libraries
               run: yarn test:${{ matrix.type }}
 
