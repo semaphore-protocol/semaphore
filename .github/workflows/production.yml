@@ -43,7 +43,7 @@ jobs:
               run: yarn compile:contracts
 
             - name: Build libraries
-              run: yarn build:libs
+              run: yarn build:libraries
 
     test:
         needs: style
