@@ -75,7 +75,7 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
     <tbody>
         <tr>
             <td>
-                <a href="/packages/contracts/contracts">
+                <a href="/packages/contracts">
                     @semaphore-protocol/contracts
                 </a>
             </td>
@@ -183,8 +183,6 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
     <tbody>
 
 </table>
-
-
 
 ## 🛠 Install
 
