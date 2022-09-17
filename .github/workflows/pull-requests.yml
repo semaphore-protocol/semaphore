@@ -1,16 +1,10 @@
-name: test
+name: pull-requests
 
 on:
     pull_request:
-    push:
-        branches:
-            - main
-
-env:
-    TREE_DEPTH: 20
 
 jobs:
-    install:
+    style:
         runs-on: ubuntu-latest
 
         steps:
@@ -37,11 +31,6 @@ jobs:
             - name: Install dependencies
               run: yarn
 
-    style:
-        needs: install
-        runs-on: ubuntu-latest
-
-        steps:
             - name: Run Prettier
               run: yarn prettier
 
@@ -57,30 +46,30 @@ jobs:
     test:
         needs: style
         runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                type:
-                    - libraries
-                    - contracts
 
         steps:
+            - uses: actions/checkout@v2
+
+            - name: Install Node.js
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 16.x
+
+            - name: Get yarn cache directory path
+              id: yarn-cache-dir-path
+              run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+            - name: Restore yarn cache
+              uses: actions/cache@v3
+              id: yarn-cache
+              with:
+                  path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-yarn-
+
+            - name: Install dependencies
+              run: yarn
+
             - name: Test contracts and libraries
-              run: yarn test:${{ matrix.type }}
-
-            - name: Coveralls
-              uses: coverallsapp/github-action@master
-              with:
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
-                  flag-name: run-${{ matrix.type }}
-                  path-to-lcov: ./coverage/${{ matrix.type }}/lcov.info
-                  parallel: true
-
-    finish:
-        needs: test
-        runs-on: ubuntu-latest
-        steps:
-            - name: Coveralls Finished
-              uses: coverallsapp/github-action@master
-              with:
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
-                  parallel-finished: true
+              run: yarn test
