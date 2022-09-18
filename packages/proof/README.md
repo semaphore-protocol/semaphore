@@ -53,16 +53,16 @@
 
 ### npm or yarn
 
-Install the `@semaphore-protocol/proof` package with npm:
+Install the `@semaphore-protocol/proof` package and its peer dependencies with npm:
 
 ```bash
-npm i @semaphore-protocol/proof
+npm i @semaphore-protocol/identity @semaphore-protocol/group @semaphore-protocol/proof
 ```
 
 or yarn:
 
 ```bash
-yarn add @semaphore-protocol/proof
+yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-protocol/proof
 ```
 
 ## 📜 Usage
