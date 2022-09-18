@@ -20,6 +20,7 @@ circuits
 # production
 dist
 build
+docs
 
 # misc
 .DS_Store
