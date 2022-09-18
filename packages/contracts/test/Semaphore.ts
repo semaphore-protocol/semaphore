@@ -241,7 +241,15 @@ describe("Semaphore", () => {
                 solidityProof
             )
 
-            await expect(transaction).to.emit(contract, "ProofVerified").withArgs(groupId, signal)
+            await expect(transaction)
+                .to.emit(contract, "ProofVerified")
+                .withArgs(
+                    groupId,
+                    group.root,
+                    fullProof.publicSignals.nullifierHash,
+                    fullProof.publicSignals.externalNullifier,
+                    signal
+                )
         })
 
         it("Should not verify a proof if the Merkle tree root is expired", async () => {

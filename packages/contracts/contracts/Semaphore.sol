@@ -168,8 +168,8 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
         _verifyProof(signal, merkleTreeRoot, nullifierHash, externalNullifier, proof, verifier);
 
-        _saveNullifierHash(nullifierHash);
+        _saveNullifierHash(uint256(keccak256(abi.encodePacked(groupId, nullifierHash))));
 
-        emit ProofVerified(groupId, signal);
+        emit ProofVerified(groupId, merkleTreeRoot, nullifierHash, externalNullifier, signal);
     }
 }
