@@ -7,6 +7,7 @@ const projects: any = fs
     .map(({ name }) => ({
         rootDir: `packages/${name}`,
         displayName: name,
+        setupFiles: ["dotenv/config"],
         moduleNameMapper: {
             "@semaphore-protocol/(.*)": "<rootDir>/../$1/src/index.ts" // Interdependency packages.
         }

@@ -12,7 +12,6 @@ import { expect } from "chai"
 import { Signer, utils } from "ethers"
 import { ethers, run } from "hardhat"
 import { SemaphoreWhistleblowing } from "../build/typechain"
-import { config } from "../package.json"
 
 describe("SemaphoreWhistleblowing", () => {
     let contract: SemaphoreWhistleblowing
@@ -22,8 +21,8 @@ describe("SemaphoreWhistleblowing", () => {
     const treeDepth = Number(process.env.TREE_DEPTH) || 20
     const entityIds = [BigInt(1), BigInt(2)]
 
-    const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
-    const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
+    const wasmFilePath = `../../snark-artifacts/semaphore.wasm`
+    const zkeyFilePath = `../../snark-artifacts/semaphore.zkey`
 
     before(async () => {
         const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth: treeDepth })

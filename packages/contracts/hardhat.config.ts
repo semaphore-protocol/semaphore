@@ -15,7 +15,7 @@ import "./tasks/deploy-semaphore-voting"
 import "./tasks/deploy-semaphore-whistleblowing"
 import "./tasks/deploy-verifier"
 
-dotenvConfig({ path: resolve(__dirname, "./.env") })
+dotenvConfig({ path: resolve(__dirname, "../../.env") })
 
 function getNetworks(): NetworksUserConfig {
     if (!process.env.INFURA_API_KEY || !process.env.BACKEND_PRIVATE_KEY) {

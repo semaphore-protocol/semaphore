@@ -1,6 +1,6 @@
 /* eslint-disable jest/valid-expect */
-import { Identity } from "@semaphore-protocol/identity"
 import { Group } from "@semaphore-protocol/group"
+import { Identity } from "@semaphore-protocol/identity"
 import {
     generateNullifierHash,
     generateProof,
@@ -12,7 +12,6 @@ import { expect } from "chai"
 import { Signer, utils } from "ethers"
 import { ethers, run } from "hardhat"
 import { SemaphoreVoting } from "../build/typechain"
-import { config } from "../package.json"
 
 describe("SemaphoreVoting", () => {
     let contract: SemaphoreVoting
@@ -24,8 +23,8 @@ describe("SemaphoreVoting", () => {
     const encryptionKey = BigInt(0)
     const decryptionKey = BigInt(0)
 
-    const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
-    const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
+    const wasmFilePath = `../../snark-artifacts/semaphore.wasm`
+    const zkeyFilePath = `../../snark-artifacts/semaphore.zkey`
 
     before(async () => {
         const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth: treeDepth })
