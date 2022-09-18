@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html style="height: 100%">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="IE=edge" />
+        <title>Semaphore packages</title>
+        <meta
+            name="description"
+            content="A monorepo of Semaphore packages."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+    </head>
+    <body
+        style="
+            margin: 0;
+            background-color: #EAF0F4;
+            color: #000;
+            height: 100%;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        "
+    >
+        <div
+            style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                flex: 1;
+                padding: 0 20px;
+                text-align: center;
+            "
+        >
+            <div style="display: flex">
+                <span style="margin-right: 5px">
+                    <img width="40" src="https://raw.githubusercontent.com/semaphore-protocol/website/main/static/img/semaphore-icon.svg">
+                </span>
+                <h1 style="margin: 0; font-size: 40px">Semaphore packages</h1>
+            </div>
+            <p style="max-width: 500px">
+                A monorepo of Semaphore packages.
+            </p>
+            <ul style="list-style-type: none; padding: 0; margin: 0; margin-top: 10px"></ul>
+        </div>
+        <footer
+            style="
+                display: flex;
+                justify-content: center;
+                padding: 15px 20px;
+                background-color: #EAF0F4;
+            "
+        >
+            <div
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 900px;
+                "
+            >
+                <p style="margin: 0; font-size: 16px">
+                    Copyright © 2022 Ethereum Foundation
+                </p>
+                <div>
+                    <a
+                        style="margin-right: 15px; text-decoration: none"
+                        target="_blank"
+                        href="https://github.com/semaphore-protocol/semaphore"
+                    >
+                        <i
+                            class="fa fa-github"
+                            style="font-size: 24px; color: #000"
+                        ></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </body>
+    <script>
+        const url =
+            "https://api.github.com/repos/semaphore-protocol/semaphore/contents?ref=gh-pages"
+
+        function insertLinks(packages) {
+            const [element] = window.document.getElementsByTagName("ul")
+            let html = ""
+
+            for (const package of packages) {
+                html += `<li style="display: flex; align-items: center; margin-bottom: 8px">
+            <a style="margin-right: 15px" target="_blank" href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/${package}">
+              <i class="fa fa-github" style="font-size: 24px; color: #000"></i>
+            </a>
+            <a style="color: #000; text-decoration: none; font-size: 16px"
+              onmouseover="this.style.color='#404A4E';"
+              onmouseout="this.style.color='#000';"
+              target="_blank" href="https://semaphore-protocol.github.io/semaphore/${package}">
+                @semaphore-protocol/${package} >
+            </a></li>`
+            }
+
+            element.innerHTML = html
+        }
+
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                const ignore = [".nojekyll", "index.html", "CNAME"]
+                const packages = data
+                    .map((c) => c.name)
+                    .filter((name) => !ignore.includes(name))
+
+                localStorage.setItem("packages", JSON.stringify(packages))
+
+                insertLinks(packages)
+            })
+    </script>
+</html>
