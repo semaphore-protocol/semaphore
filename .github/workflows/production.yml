@@ -92,7 +92,6 @@ jobs:
                   parallel: true
 
     coverage:
-        needs: test
         runs-on: ubuntu-latest
         steps:
             - name: Coveralls Finished
