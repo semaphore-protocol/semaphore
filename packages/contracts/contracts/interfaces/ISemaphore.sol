@@ -29,8 +29,17 @@ interface ISemaphore {
 
     /// @dev Emitted when a Semaphore proof is verified.
     /// @param groupId: Id of the group.
+    /// @param merkleTreeRoot: Root of the Merkle tree.
+    /// @param externalNullifier: External nullifier.
+    /// @param nullifierHash: Nullifier hash.
     /// @param signal: Semaphore signal.
-    event ProofVerified(uint256 indexed groupId, bytes32 signal);
+    event ProofVerified(
+        uint256 indexed groupId,
+        uint256 merkleTreeRoot,
+        uint256 externalNullifier,
+        uint256 nullifierHash,
+        bytes32 signal
+    );
 
     /// @dev Saves the nullifier hash to avoid double signaling and emits an event
     /// if the zero-knowledge proof is valid.
