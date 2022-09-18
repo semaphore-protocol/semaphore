@@ -35,12 +35,14 @@
         "rollup-plugin-typescript2": "^0.31.2",
         "typedoc": "^0.22.11"
     },
+    "peerDependencies": {
+        "@semaphore-protocol/group": "2.2.0",
+        "@semaphore-protocol/identity": "2.0.0"
+    },
     "dependencies": {
         "@ethersproject/bytes": "^5.7.0",
         "@ethersproject/solidity": "^5.5.0",
         "@ethersproject/strings": "^5.5.0",
-        "@semaphore-protocol/group": "2.2.0",
-        "@semaphore-protocol/identity": "2.0.0",
         "@zk-kit/incremental-merkle-tree": "0.4.3",
         "circomlibjs": "0.0.8",
         "snarkjs": "^0.4.13"
