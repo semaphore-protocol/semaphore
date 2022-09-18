@@ -7,7 +7,6 @@ import { expect } from "chai"
 import { constants, Signer, utils } from "ethers"
 import { run } from "hardhat"
 import { Semaphore } from "../build/typechain"
-import { config } from "../package.json"
 import { createIdentityCommitments } from "./utils"
 
 describe("Semaphore", () => {
@@ -19,8 +18,8 @@ describe("Semaphore", () => {
     const groupId = 1
     const members = createIdentityCommitments(3)
 
-    const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
-    const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
+    const wasmFilePath = `../../snark-artifacts/semaphore.wasm`
+    const zkeyFilePath = `../../snark-artifacts/semaphore.zkey`
 
     before(async () => {
         const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth: treeDepth })

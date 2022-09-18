@@ -4,15 +4,14 @@
     "scripts": {
         "start": "hardhat node",
         "compile": "hardhat compile",
-        "download:snark-artifacts": "hardhat run scripts/download-snark-artifacts.ts",
         "deploy:all": "hardhat run scripts/deploy-all.ts",
         "deploy:verifier": "hardhat deploy:verifier",
         "deploy:semaphore": "hardhat deploy:semaphore",
         "deploy:semaphore-voting": "hardhat deploy:semaphore-voting",
         "deploy:semaphore-whistleblowing": "hardhat deploy:semaphore-whistleblowing",
-        "test": "yarn download:snark-artifacts && hardhat test",
-        "test:report-gas": "yarn download:snark-artifacts && REPORT_GAS=true hardhat test",
-        "test:coverage": "yarn download:snark-artifacts && hardhat coverage",
+        "test": "hardhat test",
+        "test:report-gas": "REPORT_GAS=true hardhat test",
+        "test:coverage": "hardhat coverage",
         "typechain": "hardhat typechain",
         "lint": "solhint 'contracts/**/*.sol'"
     },
@@ -33,7 +32,6 @@
         "chai": "^4.3.5",
         "circomlib": "^2.0.2",
         "circomlibjs": "^0.0.8",
-        "dotenv": "^14.3.2",
         "download": "^8.0.0",
         "ethereum-waffle": "^3.4.4",
         "ethers": "^5.6.8",
@@ -60,7 +58,6 @@
             "cache": "./cache",
             "snarkjs-templates": "./snarkjs-templates",
             "build": {
-                "snark-artifacts": "./build/snark-artifacts",
                 "contracts": "./build/contracts",
                 "typechain": "./build/typechain"
             }

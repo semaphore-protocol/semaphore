@@ -1,7 +1,6 @@
 import { formatBytes32String } from "@ethersproject/strings"
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import download from "download"
 import { getCurveFromName } from "ffjavascript"
 import fs from "fs"
 import generateNullifierHash from "./generateNullifierHash"
@@ -12,13 +11,14 @@ import { FullProof } from "./types"
 import verifyProof from "./verifyProof"
 
 describe("Proof", () => {
-    const treeDepth = 20
+    const treeDepth = Number(process.env.TREE_DEPTH) || 20
 
     const externalNullifier = "1"
     const signal = "0x111"
 
-    const snarkArtifactsPath = "./packages/proof/snark-artifacts"
-    const snarkArtifactsUrl = `http://www.trusted-setup-pse.org/semaphore/${treeDepth}`
+    const wasmFilePath = `./snark-artifacts/semaphore.wasm`
+    const zkeyFilePath = `./snark-artifacts/semaphore.zkey`
+    const verificationKeyPath = `./snark-artifacts/semaphore.json`
 
     const identity = new Identity()
     const identityCommitment = identity.generateCommitment()
@@ -28,17 +28,7 @@ describe("Proof", () => {
 
     beforeAll(async () => {
         curve = await getCurveFromName("bn128")
-
-        if (!fs.existsSync(snarkArtifactsPath)) {
-            fs.mkdirSync(snarkArtifactsPath)
-        }
-
-        if (!fs.existsSync(`${snarkArtifactsPath}/semaphore.zkey`)) {
-            await download(`${snarkArtifactsUrl}/semaphore.wasm`, snarkArtifactsPath)
-            await download(`${snarkArtifactsUrl}/semaphore.zkey`, snarkArtifactsPath)
-            await download(`${snarkArtifactsUrl}/semaphore.json`, snarkArtifactsPath)
-        }
-    }, 10000)
+    })
 
     afterAll(async () => {
         await curve.terminate()
@@ -52,8 +42,8 @@ describe("Proof", () => {
 
             const fun = () =>
                 generateProof(identity, group, externalNullifier, signal, {
-                    wasmFilePath: `${snarkArtifactsPath}/semaphore.wasm`,
-                    zkeyFilePath: `${snarkArtifactsPath}/semaphore.zkey`
+                    wasmFilePath,
+                    zkeyFilePath
                 })
 
             await expect(fun).rejects.toThrow("The identity is not part of the group")
@@ -75,8 +65,8 @@ describe("Proof", () => {
             group.addMembers([BigInt(1), BigInt(2), identityCommitment])
 
             fullProof = await generateProof(identity, group, externalNullifier, signal, {
-                wasmFilePath: `${snarkArtifactsPath}/semaphore.wasm`,
-                zkeyFilePath: `${snarkArtifactsPath}/semaphore.zkey`
+                wasmFilePath,
+                zkeyFilePath
             })
 
             expect(typeof fullProof).toBe("object")
@@ -90,8 +80,8 @@ describe("Proof", () => {
             group.addMembers([BigInt(1), BigInt(2), identityCommitment])
 
             fullProof = await generateProof(identity, group.generateProofOfMembership(2), externalNullifier, signal, {
-                wasmFilePath: `${snarkArtifactsPath}/semaphore.wasm`,
-                zkeyFilePath: `${snarkArtifactsPath}/semaphore.zkey`
+                wasmFilePath,
+                zkeyFilePath
             })
 
             expect(typeof fullProof).toBe("object")
@@ -132,7 +122,7 @@ describe("Proof", () => {
 
     describe("# verifyProof", () => {
         it("Should generate and verify a Semaphore proof", async () => {
-            const verificationKey = JSON.parse(fs.readFileSync(`${snarkArtifactsPath}/semaphore.json`, "utf-8"))
+            const verificationKey = JSON.parse(fs.readFileSync(verificationKeyPath, "utf-8"))
 
             const response = await verifyProof(verificationKey, fullProof)
 

@@ -9,6 +9,7 @@
     "scripts": {
         "build:libraries": "yarn workspaces foreach run build",
         "compile:contracts": "yarn workspace contracts compile",
+        "download:snark-artifacts": "ts-node scripts/download-snark-artifacts.ts",
         "test": "yarn test:libraries && yarn test:contracts",
         "test:libraries": "jest --coverage",
         "test:contracts": "yarn workspace contracts test:coverage",
@@ -17,7 +18,8 @@
         "prettier:write": "prettier -w .",
         "docs": "yarn workspaces foreach run docs",
         "commit": "cz",
-        "precommit": "lint-staged"
+        "precommit": "lint-staged",
+        "postinstall": "yarn download:snark-artifacts"
     },
     "keywords": [
         "ethereum",
@@ -54,6 +56,7 @@
         "circomlibjs": "^0.0.8",
         "commitizen": "^4.2.4",
         "cz-conventional-changelog": "^3.3.0",
+        "dotenv": "^16.0.2",
         "eslint": "^8.2.0",
         "eslint-config-airbnb-base": "15.0.0",
         "eslint-config-airbnb-typescript": "^16.1.0",

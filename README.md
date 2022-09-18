@@ -200,6 +200,14 @@ cd semaphore && yarn
 
 ## 📜 Usage
 
+Copy the `.env.example` file as `.env`:
+
+```bash
+cp .env.example .env
+```
+
+And add your environment variables.
+
 ### Code quality and formatting
 
 Run [ESLint](https://eslint.org/) to analyze the code and catch bugs:
@@ -229,6 +237,14 @@ yarn commit
 ```
 
 It will also automatically check that the modified files comply with ESLint and Prettier rules.
+
+### Snark artifacts
+
+Download the Semaphore snark artifacts needed to generate and verify proofs:
+
+```bash
+yarn download:snark-artifacts
+```
 
 ### Testing
 

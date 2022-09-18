@@ -62,22 +62,6 @@ yarn add @semaphore-protocol/contracts
 
 ## 📜 Usage
 
-Copy the `.env.example` file as `.env`:
-
-```bash
-cp .env.example .env
-```
-
-And add your environment variables.
-
-### Snark artifacts
-
-Download the Semaphore snark artifacts needed to generate and verify proofs:
-
-```bash
-yarn download:snark-artifacts
-```
-
 ### Compile contracts
 
 Compile the smart contracts with [Hardhat](https://hardhat.org/):

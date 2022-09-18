@@ -3007,7 +3007,6 @@ __metadata:
     "@semaphore-protocol/identity": 2.0.0
     "@zk-kit/incremental-merkle-tree": 0.4.3
     circomlibjs: 0.0.8
-    download: ^8.0.0
     ffjavascript: ^0.2.54
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
@@ -6924,7 +6923,6 @@ __metadata:
     chai: ^4.3.5
     circomlib: ^2.0.2
     circomlibjs: ^0.0.8
-    dotenv: ^14.3.2
     download: ^8.0.0
     ethereum-waffle: ^3.4.4
     ethers: ^5.6.8
@@ -7810,10 +7808,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^14.3.2":
-  version: 14.3.2
-  resolution: "dotenv@npm:14.3.2"
-  checksum: 86c06758915d6facc35275f4a7fafc16705b6f3b44befaa8abca91367991efc8ff8db5437d3cc14778231d19fb97610fe82d60f8a53ba723cdb69fe4171439aa
+"dotenv@npm:^16.0.2":
+  version: 16.0.2
+  resolution: "dotenv@npm:16.0.2"
+  checksum: ca8f9ca2d67929c7771069f4c31b4e46b9932621009e658e5afd655dde2d69b77642bf36dbc9e72bc170523dfd908a9ee41c26f034c1fdc605ace3b1b4b10faf
   languageName: node
   linkType: hard
 
@@ -16872,6 +16870,7 @@ __metadata:
     circomlibjs: ^0.0.8
     commitizen: ^4.2.4
     cz-conventional-changelog: ^3.3.0
+    dotenv: ^16.0.2
     eslint: ^8.2.0
     eslint-config-airbnb-base: 15.0.0
     eslint-config-airbnb-typescript: ^16.1.0
