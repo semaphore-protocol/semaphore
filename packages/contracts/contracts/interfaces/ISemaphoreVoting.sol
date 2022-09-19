@@ -8,6 +8,7 @@ interface ISemaphoreVoting {
     error Semaphore__MerkleTreeDepthIsNotSupported();
     error Semaphore__PollHasAlreadyBeenStarted();
     error Semaphore__PollIsNotOngoing();
+    error Semaphore__YouAreUsingTheSameNillifierTwice();
 
     enum PollState {
         Created,
