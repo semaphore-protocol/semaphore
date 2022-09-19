@@ -4,11 +4,12 @@
     "scripts": {
         "start": "hardhat node",
         "compile": "hardhat compile",
-        "deploy:all": "hardhat run scripts/deploy-all.ts",
         "deploy:verifier": "hardhat deploy:verifier",
+        "deploy:verifiers": "hardhat run scripts/deploy-verifiers.ts",
         "deploy:semaphore": "hardhat deploy:semaphore",
         "deploy:semaphore-voting": "hardhat deploy:semaphore-voting",
         "deploy:semaphore-whistleblowing": "hardhat deploy:semaphore-whistleblowing",
+        "verify:contracts": "hardhat run scripts/verify-contracts.ts",
         "test": "hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
