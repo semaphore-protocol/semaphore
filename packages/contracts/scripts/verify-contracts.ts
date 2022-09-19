@@ -6,12 +6,12 @@ async function main() {
 
     if (deployedContracts) {
         await run("verify:verify", {
-            address: deployedContracts["Semaphore.sol"],
+            address: deployedContracts["Semaphore"],
             constructorArguments: [verifiersToSolidityArgument(deployedContracts)]
         })
 
         await run("verify:verify", {
-            address: deployedContracts["IncrementalBinaryTree.sol"]
+            address: deployedContracts["IncrementalBinaryTree"]
         })
     }
 }
