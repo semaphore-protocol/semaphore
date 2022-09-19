@@ -14,6 +14,10 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a poll id and returns the poll data.
     mapping(uint256 => Poll) internal polls;
 
+    /// @dev Gets a nullifier hash and returns true or false.
+    /// It is used to prevent double-voting.
+    mapping(uint256 => bool) internal nullifierHashes;
+
     /// @dev Initializes the Semaphore verifiers used to verify the user's ZK proofs.
     /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
     constructor(Verifier[] memory _verifiers) {
@@ -90,6 +94,10 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
             revert Semaphore__PollIsNotOngoing();
         }
 
+        if (nullifierHashes[nullifierHash]) {
+            revert Semaphore__YouAreUsingTheSameNillifierTwice();
+        }
+
         uint256 merkleTreeDepth = getMerkleTreeDepth(pollId);
         uint256 merkleTreeRoot = getMerkleTreeRoot(pollId);
 
@@ -97,8 +105,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
         _verifyProof(vote, merkleTreeRoot, nullifierHash, pollId, proof, verifier);
 
-        // Prevent double-voting (nullifierHash = hash(pollId + identityNullifier)).
-        _saveNullifierHash(nullifierHash);
+        nullifierHashes[nullifierHash] = true;
 
         emit VoteAdded(pollId, vote);
     }

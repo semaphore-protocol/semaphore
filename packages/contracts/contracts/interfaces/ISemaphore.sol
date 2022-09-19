@@ -8,17 +8,19 @@ interface ISemaphore {
     error Semaphore__MerkleTreeDepthIsNotSupported();
     error Semaphore__MerkleTreeRootIsExpired();
     error Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
+    error Semaphore__YouAreUsingTheSameNillifierTwice();
 
     struct Verifier {
         address contractAddress;
         uint256 merkleTreeDepth;
     }
 
-    /// It defines all the parameters needed to check whether a
-    /// zero-knowledge proof generated with a certain Merkle tree is still valid.
-    struct MerkleTreeExpiry {
-        uint256 rootDuration;
-        mapping(uint256 => uint256) rootCreationDates;
+    /// It defines all the group parameters, in addition to those in the Merkle tree.
+    struct Group {
+        address admin;
+        uint256 merkleRootDuration;
+        mapping(uint256 => uint256) merkleRootCreationDates;
+        mapping(uint256 => bool) nullifierHashes;
     }
 
     /// @dev Emitted when an admin is assigned to a group.
