@@ -40,10 +40,12 @@ describe("Subgraph", () => {
                     groups: [
                         {
                             id: "1",
-                            depth: 20,
-                            zeroValue: 0,
-                            numberOfLeaves: 2,
-                            root: "2",
+                            merkleTree: {
+                                depth: 20,
+                                zeroValue: 0,
+                                numberOfLeaves: 2,
+                                root: "2"
+                            },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
                         }
                     ]
@@ -56,10 +58,12 @@ describe("Subgraph", () => {
             expect(Array.isArray(expectedValue)).toBeTruthy()
             expect(expectedValue).toContainEqual({
                 id: "1",
-                depth: 20,
-                zeroValue: 0,
-                numberOfLeaves: 2,
-                root: "2",
+                merkleTree: {
+                    depth: 20,
+                    zeroValue: 0,
+                    numberOfLeaves: 2,
+                    root: "2"
+                },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
             })
         })
@@ -70,16 +74,18 @@ describe("Subgraph", () => {
             await expect(fun).rejects.toThrow("Parameter 'options' is not an object")
         })
 
-        it("Should return all the existing groups with their members and signals", async () => {
+        it("Should return all the existing groups with their members and verified proofs", async () => {
             requestMocked.mockImplementationOnce(() =>
                 Promise.resolve({
                     groups: [
                         {
                             id: "1",
-                            depth: 20,
-                            zeroValue: 0,
-                            numberOfLeaves: 2,
-                            root: "2",
+                            merkleTree: {
+                                depth: 20,
+                                zeroValue: 0,
+                                numberOfLeaves: 2,
+                                root: "2"
+                            },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
                             members: [
                                 {
@@ -92,10 +98,16 @@ describe("Subgraph", () => {
                             verifiedProofs: [
                                 {
                                     signal: "0x3243b",
+                                    merkleTree: "1332132",
+                                    externalNullifier: "14324",
+                                    nullifierHash: "442342",
                                     timestamp: "1657306917"
                                 },
                                 {
                                     signal: "0x5233a",
+                                    merkleTree: "1332132",
+                                    externalNullifier: "14324",
+                                    nullifierHash: "442342",
                                     timestamp: "1657306923"
                                 }
                             ]
@@ -106,20 +118,37 @@ describe("Subgraph", () => {
 
             const expectedValue = await subgraph.getGroups({
                 members: true,
-                signals: true
+                verifiedProofs: true
             })
 
             expect(expectedValue).toBeDefined()
             expect(Array.isArray(expectedValue)).toBeTruthy()
             expect(expectedValue).toContainEqual({
                 id: "1",
-                depth: 20,
-                zeroValue: 0,
-                numberOfLeaves: 2,
-                root: "2",
+                merkleTree: {
+                    depth: 20,
+                    zeroValue: 0,
+                    numberOfLeaves: 2,
+                    root: "2"
+                },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
                 members: ["1", "2"],
-                signals: ["0x3243b", "0x5233a"]
+                verifiedProofs: [
+                    {
+                        signal: "0x3243b",
+                        merkleTree: "1332132",
+                        externalNullifier: "14324",
+                        nullifierHash: "442342",
+                        timestamp: "1657306917"
+                    },
+                    {
+                        signal: "0x5233a",
+                        merkleTree: "1332132",
+                        externalNullifier: "14324",
+                        nullifierHash: "442342",
+                        timestamp: "1657306923"
+                    }
+                ]
             })
         })
     })
@@ -131,10 +160,12 @@ describe("Subgraph", () => {
                     groups: [
                         {
                             id: "1",
-                            depth: 20,
-                            zeroValue: 0,
-                            numberOfLeaves: 2,
-                            root: "2",
+                            merkleTree: {
+                                depth: 20,
+                                zeroValue: 0,
+                                numberOfLeaves: 2,
+                                root: "2"
+                            },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
                         }
                     ]
@@ -146,10 +177,12 @@ describe("Subgraph", () => {
             expect(expectedValue).toBeDefined()
             expect(expectedValue).toEqual({
                 id: "1",
-                depth: 20,
-                zeroValue: 0,
-                numberOfLeaves: 2,
-                root: "2",
+                merkleTree: {
+                    depth: 20,
+                    zeroValue: 0,
+                    numberOfLeaves: 2,
+                    root: "2"
+                },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
             })
         })
@@ -160,16 +193,18 @@ describe("Subgraph", () => {
             await expect(fun).rejects.toThrow("Parameter 'options' is not an object")
         })
 
-        it("Should return a specific group with its members and signals", async () => {
+        it("Should return a specific group with its members and verified proofs", async () => {
             requestMocked.mockImplementationOnce(() =>
                 Promise.resolve({
                     groups: [
                         {
                             id: "1",
-                            depth: 20,
-                            zeroValue: 0,
-                            numberOfLeaves: 2,
-                            root: "2",
+                            merkleTree: {
+                                depth: 20,
+                                zeroValue: 0,
+                                numberOfLeaves: 2,
+                                root: "2"
+                            },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
                             members: [
                                 {
@@ -182,10 +217,16 @@ describe("Subgraph", () => {
                             verifiedProofs: [
                                 {
                                     signal: "0x3243b",
+                                    merkleTree: "1332132",
+                                    externalNullifier: "14324",
+                                    nullifierHash: "442342",
                                     timestamp: "1657306917"
                                 },
                                 {
                                     signal: "0x5233a",
+                                    merkleTree: "1332132",
+                                    externalNullifier: "14324",
+                                    nullifierHash: "442342",
                                     timestamp: "1657306923"
                                 }
                             ]
@@ -196,19 +237,36 @@ describe("Subgraph", () => {
 
             const expectedValue = await subgraph.getGroup("1", {
                 members: true,
-                signals: true
+                verifiedProofs: true
             })
 
             expect(expectedValue).toBeDefined()
             expect(expectedValue).toEqual({
                 id: "1",
-                depth: 20,
-                zeroValue: 0,
-                numberOfLeaves: 2,
-                root: "2",
+                merkleTree: {
+                    depth: 20,
+                    zeroValue: 0,
+                    numberOfLeaves: 2,
+                    root: "2"
+                },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
                 members: ["1", "2"],
-                signals: ["0x3243b", "0x5233a"]
+                verifiedProofs: [
+                    {
+                        signal: "0x3243b",
+                        merkleTree: "1332132",
+                        externalNullifier: "14324",
+                        nullifierHash: "442342",
+                        timestamp: "1657306917"
+                    },
+                    {
+                        signal: "0x5233a",
+                        merkleTree: "1332132",
+                        externalNullifier: "14324",
+                        nullifierHash: "442342",
+                        timestamp: "1657306923"
+                    }
+                ]
             })
         })
     })

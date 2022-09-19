@@ -33,10 +33,10 @@ export default class Subgraph {
     async getGroups(options: GroupOptions = {}): Promise<any[]> {
         checkParameter(options, "options", "object")
 
-        const { members = false, signals = false } = options
+        const { members = false, verifiedProofs = false } = options
 
         checkParameter(members, "members", "boolean")
-        checkParameter(signals, "signals", "boolean")
+        checkParameter(verifiedProofs, "verifiedProofs", "boolean")
 
         const config: AxiosRequestConfig = {
             method: "post",
@@ -44,10 +44,12 @@ export default class Subgraph {
                 query: `{
                     groups {
                         id
-                        depth
-                        zeroValue
-                        root
-                        numberOfLeaves
+                        merkleTree {
+                            root
+                            depth
+                            zeroValue
+                            numberOfLeaves
+                        }
                         admin
                         ${
                             members === true
@@ -57,9 +59,13 @@ export default class Subgraph {
                                 : ""
                         }
                         ${
-                            signals === true
+                            verifiedProofs === true
                                 ? `verifiedProofs(orderBy: timestamp) {
                             signal
+                            merkleTreeRoot
+                            externalNullifier
+                            nullifierHash
+                            timestamp
                         }`
                                 : ""
                         }
@@ -76,14 +82,6 @@ export default class Subgraph {
             }
         }
 
-        if (signals) {
-            for (const group of groups) {
-                group.signals = group.verifiedProofs.map((verifiedProof: any) => verifiedProof.signal)
-
-                delete group.verifiedProofs
-            }
-        }
-
         return groups
     }
 
@@ -97,10 +95,10 @@ export default class Subgraph {
         checkParameter(groupId, "groupId", "string")
         checkParameter(options, "options", "object")
 
-        const { members = false, signals = false } = options
+        const { members = false, verifiedProofs = false } = options
 
         checkParameter(members, "members", "boolean")
-        checkParameter(signals, "signals", "boolean")
+        checkParameter(verifiedProofs, "verifiedProofs", "boolean")
 
         const config: AxiosRequestConfig = {
             method: "post",
@@ -108,10 +106,12 @@ export default class Subgraph {
                 query: `{
                     groups(where: { id: "${groupId}" }) {
                         id
-                        depth
-                        zeroValue
-                        root
-                        numberOfLeaves
+                        merkleTree {
+                            root
+                            depth
+                            zeroValue
+                            numberOfLeaves
+                        }
                         admin
                         ${
                             members === true
@@ -121,9 +121,13 @@ export default class Subgraph {
                                 : ""
                         }
                         ${
-                            signals === true
+                            verifiedProofs === true
                                 ? `verifiedProofs(orderBy: timestamp) {
                             signal
+                            merkleTreeRoot
+                            externalNullifier
+                            nullifierHash
+                            timestamp
                         }`
                                 : ""
                         }
@@ -136,12 +140,6 @@ export default class Subgraph {
 
         if (members) {
             groups[0].members = groups[0].members.map((member: any) => member.identityCommitment)
-        }
-
-        if (signals) {
-            groups[0].signals = groups[0].verifiedProofs.map((verifiedProof: any) => verifiedProof.signal)
-
-            delete groups[0].verifiedProofs
         }
 
         return groups[0]
