@@ -252,6 +252,19 @@ describe("Semaphore", () => {
                 )
         })
 
+        it("Should not verify the same proof for an onchain group twice", async () => {
+            const transaction = contract.verifyProof(
+                groupId,
+                group.root,
+                signal,
+                fullProof.publicSignals.nullifierHash,
+                fullProof.publicSignals.merkleRoot,
+                solidityProof
+            )
+
+            await expect(transaction).to.be.revertedWith("Semaphore__YouAreUsingTheSameNillifierTwice()")
+        })
+
         it("Should not verify a proof if the Merkle tree root is expired", async () => {
             const groupId = 2
             const group = new Group(treeDepth)
