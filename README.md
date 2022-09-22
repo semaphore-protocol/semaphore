@@ -182,9 +182,6 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
                 <a href="/packages/hardhat">
                     @semaphore-protocol/hardhat
                 </a>
-                <a href="https://semaphore-protocol.github.io/semaphore/hardhat">
-                    (docs)
-                </a>
             </td>
             <td>
                 <!-- NPM version -->
