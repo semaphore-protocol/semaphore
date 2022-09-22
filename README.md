@@ -177,6 +177,28 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
                 </a>
             </td>
         </tr>
+        <tr>
+            <td>
+                <a href="/packages/hardhat">
+                    @semaphore-protocol/hardhat
+                </a>
+                <a href="https://semaphore-protocol.github.io/semaphore/hardhat">
+                    (docs)
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/hardhat">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/hardhat.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/hardhat">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/hardhat.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
     <tbody>
 
 </table>
