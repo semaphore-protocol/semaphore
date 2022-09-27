@@ -1,6 +1,6 @@
 {
     "name": "semaphore-anchor",
-    "version": "0.0.1",
+    "version": "0.0.1-1",
     "description": "A zero-knowledge protocol for anonymous signalling on a cross-chain setting.",
     "license": "MIT",
     "homepage": "https://github.com/webb-tools/semaphore-anchor.git#readme",
@@ -14,7 +14,7 @@
     "private": true,
     "scripts": {
         "start": "hardhat node",
-        "compile": "yarn compile:contracts && yarn build",
+        "compile": "yarn compile:contracts && sh scripts/copy_typechain.sh && yarn build",
         "compile:contracts": "hardhat compile",
         "build": "yarn workspaces foreach run build",
         "download:snark-artifacts": "hardhat run scripts/download-snark-artifacts.ts",
