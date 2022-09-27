@@ -1,7 +1,7 @@
-import { Group } from "@semaphore-anchor/group/src"
-import { Identity } from "@semaphore-anchor/identity/src"
-import { BigNumber, BigNumberish } from 'ethers';
-import download from "download"
+import { Group } from "@webb-tools/semaphore-group/src"
+import { Identity } from "@webb-tools/semaphore-identity/src"
+// import { BigNumber } from 'ethers';
+// import download from "download"
 import fs from "fs"
 import generateNullifierHash from "./generateNullifierHash"
 import generateProof from "./generateProof"

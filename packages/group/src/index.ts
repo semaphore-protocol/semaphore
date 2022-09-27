@@ -1,4 +1,4 @@
-import Group from "./group"
+// import Group from "./group"
 
-export { Group }
+export { Group } from "./group";
 export * from "./types"

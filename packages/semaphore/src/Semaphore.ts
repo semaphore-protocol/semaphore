@@ -29,7 +29,7 @@ import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 //   IAnchorDepositInfo,
 // } from '@webb-tools/interfaces';
 import { getChainIdType, ZkComponents } from '@webb-tools/utils';
-import { Group } from '@semaphore-anchor/group/src';
+import { Group } from '@webb-tools/semaphore-group/src';
 import { Verifier } from './Verifier';
 
 const zeroAddress = '0x0000000000000000000000000000000000000000';

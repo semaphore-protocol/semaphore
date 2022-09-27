@@ -14,7 +14,7 @@
         "declarationDir": "types",
         "typeRoots": ["node_modules/@types", "types"],
         "paths": {
-            "@semaphore-anchor/*": ["packages/*/src"]
+            "@webb-tools/*": ["packages/*"]
         }
     },
     "ts-node": {

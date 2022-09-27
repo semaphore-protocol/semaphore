@@ -1,14 +1,11 @@
 // import type { Identity } from "@semaphore-protocol/identity"
-import {
-  MerkleProof,
-} from "@webb-tools/sdk-core"
 import { groth16 } from "snarkjs"
 import generateSignalHash from "./generateSignalHash"
 import { BigNumber, BigNumberish } from 'ethers';
 import { FullProof, SnarkArtifacts } from "./types"
 
-import { Identity } from "@semaphore-anchor/identity/src"
-import { Group } from "@semaphore-anchor/group/src"
+import { Identity } from "@webb-tools/semaphore-identity/src"
+import { Group } from "@webb-tools/semaphore-group/src"
 
 export type VerifierContractInfo = {
     name: string

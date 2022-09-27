@@ -4,193 +4,221 @@ import { run, ethers} from "hardhat"
 import { Semaphore as SemaphoreContract } from "../../build/typechain"
 import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Semaphore } from "@semaphore-anchor/semaphore"
-import { Group } from "@semaphore-anchor/group"
-import { FullProof, generateProof, packToSolidityProof, SolidityProof, BigNumberish } from "@semaphore-anchor/proof"
+import { Semaphore } from "@webb-tools/semaphore"
+import { Group } from "@webb-tools/semaphore-group"
+import { FullProof, generateProof, packToSolidityProof, SolidityProof, BigNumberish } from "@webb-tools/semaphore-proof"
 import { ZkComponents, fetchComponentsFromFilePaths } from '@webb-tools/utils';
 import { toFixedHex, VerifierContractInfo, createRootsBytes, createIdentities } from "../utils"
 
 describe("Semaphore", () => {
-    let contract: SemaphoreContract
-    let signers: Signer[]
-    let accounts: string[]
+  let semaphore: Semaphore;
+  let signers: Signer[];
+  let admin: Signer;
+  let adminAddr: string;
+  let user: Signer;
+  let userAddr: string;
+  let accounts: string[];
 
-    const treeDepth = Number(process.env.TREE_DEPTH) | 20
-    const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
-    const groupId = 1
-    const maxEdges = 1
-    const chainID = BigInt(1099511629113)
-    const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
-    const { identities, members } = createIdentities(Number(chainID), 3)
+  const treeDepth = Number(process.env.TREE_DEPTH) | 20
+  const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
+  const groupId = 1
+  const maxEdges = 1
+  const chainID = BigInt(1099511629113)
+  const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
+  const { identities, members } = createIdentities(Number(chainID), 3)
 
-    const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/semaphore_20_2.wasm`
-    const witnessCalcPath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/witness_calculator.js`
-    const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/circuit_final.zkey`
+  const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/semaphore_20_2.wasm`
+  const witnessCalcPath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/witness_calculator.js`
+  const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/circuit_final.zkey`
 
-    before(async () => {
-        signers = await ethers.getSigners();
+  before(async () => {
+    signers = await ethers.getSigners();
+    admin = signers[0];
+    adminAddr = await admin.getAddress()
+    user = signers[1];
+    userAddr = await user.getAddress()
 
-        accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
+    accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
 
-        const zkComponents2_2 = await fetchComponentsFromFilePaths(
-            wasmFilePath,
-            witnessCalcPath,
-            zkeyFilePath
-        );
-        const semaphore = await Semaphore.createSemaphore(treeDepth, maxEdges, zkComponents2_2, signers[1])
+    const zkComponents2_2 = await fetchComponentsFromFilePaths(
+      wasmFilePath,
+      witnessCalcPath,
+      zkeyFilePath
+    );
+    semaphore = await Semaphore.createSemaphore(treeDepth, maxEdges, zkComponents2_2, admin)
 
-        contract = await semaphore.contract.connect(signers[0])
+    await semaphore.setSigner(user)
 
+    // contract = await semaphore.contract.connect(user)
+
+  })
+
+  describe("# createGroup", () => {
+    it("Should not create a group if the tree depth is not supported", async () => {
+      // testing directly in the contract. Typescript fails if called directly too
+      const transaction = semaphore.contract.createGroup(groupId, 10, await user.getAddress(), maxEdges)
+
+      await expect(transaction).revertedWith("Semaphore__TreeDepthIsNotSupported")
     })
 
-    describe("# createGroup", () => {
-        it("Should not create a group if the tree depth is not supported", async () => {
-            const transaction = contract.createGroup(groupId, 10, accounts[0], maxEdges)
+    it("Should create a group", async () => {
+      await semaphore.setSigner(admin)
+      // const transaction = semaphore.contract.createGroup(groupId, treeDepth, await admin.getAddress(), maxEdges)
+      const transaction = semaphore.createGroup(groupId, treeDepth, await admin.getAddress(), maxEdges)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__TreeDepthIsNotSupported()")
-        })
+      await expect(transaction).to.emit(semaphore.contract, "GroupCreated").withArgs(groupId, treeDepth)
+      await expect(transaction)
+        .to.emit(semaphore.contract, "GroupAdminUpdated")
+        .withArgs(groupId, constants.AddressZero, adminAddr)
+    })
+  })
 
-        it("Should create a group", async () => {
-            const transaction = contract.connect(signers[1]).createGroup(groupId, treeDepth, accounts[1], maxEdges)
+  describe("# updateGroupAdmin", () => {
+    it("Should not update a group admin if the caller is not the group admin", async () => {
+      await semaphore.setSigner(user)
 
-            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth)
-            await expect(transaction)
-                .to.emit(contract, "GroupAdminUpdated")
-                .withArgs(groupId, constants.AddressZero, accounts[1])
-        })
+      const transaction = semaphore.contract.updateGroupAdmin(groupId, userAddr)
+
+      await expect(transaction).revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
     })
 
-    describe("# updateGroupAdmin", () => {
-        it("Should not update a group admin if the caller is not the group admin", async () => {
-            const transaction = contract.connect(signers[0]).updateGroupAdmin(groupId, accounts[0])
+    it("Should update the group admin", async () => {
+      await semaphore.setSigner(admin)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
-        })
+      const transaction = semaphore.contract.updateGroupAdmin(groupId, userAddr,{ gasLimit: '0x5B8D80' })
 
-        it("Should update the group admin", async () => {
-            const transaction = contract.connect(signers[1]).updateGroupAdmin(groupId, accounts[0])
+      await expect(transaction).to.emit(semaphore.contract, "GroupAdminUpdated").withArgs(groupId, adminAddr, userAddr)
 
-            await expect(transaction).to.emit(contract, "GroupAdminUpdated").withArgs(groupId, accounts[1], accounts[0])
-        })
+      //reseting it for rest of test
+      await semaphore.setSigner(user)
+
+      const transaction2 = semaphore.contract.updateGroupAdmin(groupId, adminAddr,{ gasLimit: '0x5B8D80' })
+
+      await expect(transaction2).to.emit(semaphore.contract, "GroupAdminUpdated").withArgs(groupId, userAddr, adminAddr)
+    })
+  })
+
+  describe("# addMember", () => {
+    it("Should not add a member if the caller is not the group admin", async () => {
+      const member = BigInt(2)
+
+      const transaction = semaphore.contract.connect(signers[1]).addMember(groupId, member)
+
+      await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
     })
 
-    describe("# addMember", () => {
-        it("Should not add a member if the caller is not the group admin", async () => {
-            const member = BigInt(2)
+    it("Should add a new member in an existing group", async () => {
+      await semaphore.setSigner(admin)
 
-            const transaction = contract.connect(signers[1]).addMember(groupId, member)
+      const group = new Group(treeDepth, BigInt(zeroValue))
+      group.addMember(members[0])
 
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
-        })
+      // console.log(semaphore)
+      const transaction = semaphore.addMember(groupId, members[0])
 
-        it("Should add a new member in an existing group", async () => {
-            const transaction = contract.addMember(groupId, members[0])
-
-            const group = new Group(treeDepth, BigInt(zeroValue))
-            group.addMember(members[0])
-
-            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(
-                groupId,
-                members[0],
-                group.root
-            )
-        })
+      await expect(transaction).to.emit(semaphore.contract, "MemberAdded").withArgs(
+        groupId,
+        members[0],
+        group.root
+      )
     })
+  })
 
-    // describe("# removeMember", () => {
-    //     it("Should not remove a member if the caller is not the group admin", async () => {
-    //         const transaction = contract.connect(signers[1]).removeMember(groupId, members[0], [0, 1], [0, 1])
-    //
-    //         await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
-    //     })
-    //
-    //     it("Should remove a member from an existing group", async () => {
-    //         const groupId = 100
-    //         const group = new Group(treeDepth, BigInt(zeroValue))
-    //
-    //         group.addMembers([BigInt(1), BigInt(2), BigInt(3)])
-    //
-    //         group.removeMember(0)
-    //
-    //         await contract.createGroup(groupId, treeDepth, accounts[0], maxEdges)
-    //         await contract.addMember(groupId, BigInt(1))
-    //         await contract.addMember(groupId, BigInt(2))
-    //         await contract.addMember(groupId, BigInt(3))
-    //
-    //         const { siblings, pathIndices, root } = group.generateProofOfMembership(0)
-    //
-    //         const transaction = contract.removeMember(groupId, BigInt(1), siblings, pathIndices)
-    //
-    //         await expect(transaction).to.emit(contract, "MemberRemoved").withArgs(groupId, BigInt(1), root)
-    //     })
-    // })
+  // describe("# removeMember", () => {
+  //     it("Should not remove a member if the caller is not the group admin", async () => {
+  //         const transaction = contract.connect(signers[1]).removeMember(groupId, members[0], [0, 1], [0, 1])
+  //
+  //         await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
+  //     })
+  //
+  //     it("Should remove a member from an existing group", async () => {
+  //         const groupId = 100
+  //         const group = new Group(treeDepth, BigInt(zeroValue))
+  //
+  //         group.addMembers([BigInt(1), BigInt(2), BigInt(3)])
+  //
+  //         group.removeMember(0)
+  //
+  //         await contract.createGroup(groupId, treeDepth, accounts[0], maxEdges)
+  //         await contract.addMember(groupId, BigInt(1))
+  //         await contract.addMember(groupId, BigInt(2))
+  //         await contract.addMember(groupId, BigInt(3))
+  //
+  //         const { siblings, pathIndices, root } = group.generateProofOfMembership(0)
+  //
+  //         const transaction = contract.removeMember(groupId, BigInt(1), siblings, pathIndices)
+  //
+  //         await expect(transaction).to.emit(contract, "MemberRemoved").withArgs(groupId, BigInt(1), root)
+  //     })
+  // })
 
-    describe("# verifyProof", () => {
-        const signal = "Hello world"
-        const bytes32Signal = utils.formatBytes32String(signal)
-        const groupId2 = 1337
+  describe("# verifyProof", () => {
+      const signal = "Hello world"
+      const bytes32Signal = utils.formatBytes32String(signal)
+      const groupId2 = 1337
 
-        const group = new Group(treeDepth, BigInt(zeroValue))
-        group.addMember(members[0])
-        group.addMember(members[1])
-        group.addMember(members[2])
+      const group = new Group(treeDepth, BigInt(zeroValue))
+      group.addMember(members[0])
+      group.addMember(members[1])
+      group.addMember(members[2])
 
-        let fullProof: FullProof
-        let solidityProof: SolidityProof
-        let roots: string[]
+      let fullProof: FullProof
+      let solidityProof: SolidityProof
+      let roots: string[]
 
-        before(async () => {
-            await contract.createGroup(groupId2, treeDepth, accounts[0], maxEdges)
+      before(async () => {
+          await semaphore.contract.createGroup(groupId2, treeDepth, accounts[0], maxEdges)
 
-            await contract.addMember(groupId2, members[0])
-            await contract.addMember(groupId2, members[1])
-            await contract.addMember(groupId2, members[2])
+          await semaphore.contract.addMember(groupId2, members[0])
+          await semaphore.contract.addMember(groupId2, members[1])
+          await semaphore.contract.addMember(groupId2, members[2])
 
-            roots = [BigNumber.from(group.root).toHexString(), toFixedHex(0)]
+          roots = [BigNumber.from(group.root).toHexString(), toFixedHex(0)]
 
-            fullProof = await generateProof(identities[0], group, roots, BigNumber.from(Date.now()), signal, chainID, {
-                wasmFilePath,
-                zkeyFilePath
-            })
-            solidityProof = packToSolidityProof(fullProof.proof)
-        })
+          fullProof = await generateProof(identities[0], group, roots, BigNumber.from(Date.now()), signal, chainID, {
+              wasmFilePath,
+              zkeyFilePath
+          })
+          solidityProof = packToSolidityProof(fullProof.proof)
+      })
 
-        it("Should not verify a proof if the group does not exist", async () => {
-            const transaction = contract.verifyProof(
-                10,
-                bytes32Signal,
-                0,
-                0,
-                createRootsBytes(roots),
-                [0, 0, 0, 0, 0, 0, 0, 0]
-            )
+      it("Should not verify a proof if the group does not exist", async () => {
+          const transaction = semaphore.contract.verifyProof(
+              10,
+              bytes32Signal,
+              0,
+              0,
+              createRootsBytes(roots),
+              [0, 0, 0, 0, 0, 0, 0, 0]
+          )
 
-            await expect(transaction).to.be.revertedWith("Semaphore__GroupDoesNotExist()")
-        })
+          await expect(transaction).to.be.revertedWith("Semaphore__GroupDoesNotExist()")
+      })
 
-        it("Should throw an exception if the proof is not valid", async () => {
-            const transaction = contract.verifyProof(
-                groupId2,
-                bytes32Signal,
-                fullProof.publicSignals.nullifierHash,
-                0,
-                createRootsBytes(roots),
-                solidityProof
-            )
-            await expect(transaction).to.be.revertedWith("invalidProof")
-        })
+      it("Should throw an exception if the proof is not valid", async () => {
+          const transaction = semaphore.contract.verifyProof(
+              groupId2,
+              bytes32Signal,
+              fullProof.publicSignals.nullifierHash,
+              0,
+              createRootsBytes(roots),
+              solidityProof
+          )
+          await expect(transaction).to.be.revertedWith("invalidProof")
+      })
 
-        it("Should verify a proof for an onchain group correctly", async () => {
-            const transaction = contract.verifyProof(
-                groupId2,
-                bytes32Signal,
-                fullProof.publicSignals.nullifierHash,
-                fullProof.publicSignals.externalNullifier,
-                createRootsBytes(fullProof.publicSignals.roots),
-                solidityProof
-            )
+      it("Should verify a proof for an onchain group correctly", async () => {
+          const transaction = semaphore.contract.verifyProof(
+              groupId2,
+              bytes32Signal,
+              fullProof.publicSignals.nullifierHash,
+              fullProof.publicSignals.externalNullifier,
+              createRootsBytes(roots),
+              solidityProof,
+              { gasLimit: '0x5B8D80' }
+          )
 
-            await expect(transaction).to.emit(contract, "ProofVerified").withArgs(groupId2, bytes32Signal)
-        })
-    })
+          await expect(transaction).to.emit(semaphore.contract, "ProofVerified").withArgs(groupId2, bytes32Signal)
+      })
+  })
 })

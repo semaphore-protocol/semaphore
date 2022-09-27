@@ -13,7 +13,7 @@ export declare type Leaf = {
     commitment: BigNumberish;
 };
 
-export default class Group {
+export class Group {
     private _merkleTree: MerkleTree
 
     /**
@@ -127,3 +127,5 @@ export default class Group {
         };
   }
 }
+
+export default Group;
