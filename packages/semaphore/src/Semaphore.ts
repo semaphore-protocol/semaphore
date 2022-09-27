@@ -67,6 +67,7 @@ export class Semaphore {
   latestSyncedBlock: number;
   // The depositHistory stores leafIndex => information to create proposals (new root)
   smallCircuitZkComponents: ZkComponents;
+  zeroValue: bigint;
 
   constructor(
     contract: SemaphoreContract,
@@ -81,6 +82,7 @@ export class Semaphore {
     this.rootHistory = {}
     // this.rootHistory = undefined;
     this.smallCircuitZkComponents = smallCircuitZkComponents
+    this.zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
     // this.largeCircuitZkComponents = largeCircuitZkComponents
   }
   public static async createSemaphore(
@@ -206,6 +208,10 @@ export class Semaphore {
   //   await tx.wait();
   // }
 
+  // public setSigner(newSigner: Signer) {
+  //   this.signer = newSigner;
+  //   this.contract = this.contract.connect(newSigner);
+  // }
   public async setSigner(newSigner: Signer) {
     const currentChainId = await this.signer.getChainId();
     const newChainId = await newSigner.getChainId();
@@ -240,289 +246,36 @@ export class Semaphore {
   //   );
   // }
 
-  public async populateRootsForProof(group_id: number): Promise<string[]> {
-    const neighborEdges = await this.contract.getLatestNeighborEdges(group_id);
+  public async populateRootsForProof(groupId: number): Promise<string[]> {
+    const neighborEdges = await this.contract.getLatestNeighborEdges(groupId);
     const neighborRootInfos = neighborEdges.map((rootData) => {
       return rootData.root;
     });
-    const thisRoot = await this.contract.getRoot(group_id);
+    const thisRoot = await this.contract.getRoot(groupId);
     return [thisRoot.toString(), ...neighborRootInfos];
   }
 
-  public async createGroup(group_id: number, groupAdmin: string, maxEdges=1, depth=20) {
-      if(group_id in this.groups) {
-        throw new Error(`Group ${group_id} has already been created`);
+  public async createGroup(groupId: number, depth: number, groupAdminAddr: string, maxEdges: number): Promise<ContractTransaction> {
+      if(groupId in this.groups) {
+        throw new Error(`Group ${groupId} has already been created`);
       } else {
-        this.groups[group_id] = new Group(depth)
-        const transaction = await this.contract.createGroup(group_id, depth, groupAdmin, maxEdges)
-        const receipt = transaction.wait()
-        return receipt
+        this.groups[groupId] = new Group(depth, BigInt(this.zeroValue))
+        return this.contract.createGroup(groupId, depth, groupAdminAddr, maxEdges)
       }
   }
 
-  public async getClassAndContractRoots(group_id: number) {
-    return [this.groups[group_id].root, await this.contract.getRoot(group_id)];
+  public async getClassAndContractRoots(groupId: number): Promise<BigNumberish[]> {
+    return [this.groups[groupId].root, await this.contract.getRoot(groupId)];
   }
 
-  /**
-   *
-   * @param input A UTXO object that is inside the tree
-   * @returns
-   */
-  // public getMerkleProof(group_id: number, commitment: Commitment): MerkleProof {
-  //   let inputMerklePathIndices: number[];
-  //   let inputMerklePathElements: BigNumber[];
-  //
-  //   if (commitment.index < 0) {
-  //       throw new Error(`Input commitment ${commitment.value} was not found`);
-  //   }
-  //   const path = this.groups[group_id].path(commitment.index);
-  //   inputMerklePathIndices = path.pathIndices;
-  //   inputMerklePathElements = path.pathElements;
-  //   const root = this.groups[group_id].root();
-  //
-  //   return {
-  //     element: BigNumber.from(commitment.value),
-  //     pathElements: inputMerklePathElements,
-  //     pathIndices: inputMerklePathIndices,
-  //     merkleRoot: root,
-  //   };
-  // }
-
-  // public generatePublicInputs(
-  //   proof: any,
-  //   roots: string[],
-  //   inputs: Utxo[],
-  //   outputs: Utxo[],
-  //   publicAmount: BigNumberish,
-  //   extDataHash: string
-  // ): IVariableAnchorPublicInputs {
-  //   // public inputs to the contract
-  //   const args: IVariableAnchorPublicInputs = {
-  //     proof: `0x${proof}`,
-  //     roots: `0x${roots.map((x) => toFixedHex(x).slice(2)).join('')}`,
-  //     inputNullifiers: inputs.map((x) => toFixedHex(x.nullifier)),
-  //     outputCommitments: [toFixedHex(u8aToHex(outputs[0].commitment)), toFixedHex(u8aToHex(outputs[1].commitment))],
-  //     publicAmount: toFixedHex(publicAmount),
-  //     extDataHash: toFixedHex(extDataHash),
-  //   };
-  //
-  //   return args;
-  // }
-
-  /**
-   * Given a list of leaves and a latest synced block, update internal tree state
-   * The function will create a new tree, and check on chain root before updating its member variable
-   * If the passed leaves match on chain data,
-   *   update this instance and return true
-   * else
-   *   return false
-   */
-  // public async setWithLeaves(leaves: string[], syncedBlock?: number): Promise<Boolean> {
-  //   let newTree = new MerkleTree(this.tree.levels, leaves);
-  //   let root = toFixedHex(newTree.root());
-  //   let validTree = await this.contract.isKnownRoot(root);
-  //
-  //   if (validTree) {
-  //     let index = 0;
-  //     for (const leaf of newTree.elements()) {
-  //       this.rootHistory[index] = toFixedHex(this.groups.root());
-  //       index++;
-  //     }
-  //     if (!syncedBlock) {
-  //       syncedBlock = await this.signer.provider.getBlockNumber();
-  //     }
-  //     this.tree = newTree;
-  //     this.latestSyncedBlock = syncedBlock;
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
-  // public async setupTransaction(
-  //   inputs: Utxo[],
-  //   outputs: [Utxo, Utxo],
-  //   extAmount: BigNumberish,
-  //   fee: BigNumberish,
-  //   recipient: string,
-  //   relayer: string,
-  //   leavesMap: Record<string, Uint8Array[]>
-  // ) {
-  //   // first, check if the merkle root is known on chain - if not, then update
-  //   const chainId = getChainIdType(await this.signer.getChainId());
-  //   const roots = await this.populateRootsForProof();
-  //
-  //   // Start creating notes to satisfy vanchor input
-  //   // Only the sourceChainId and secrets (amount, nullifier, secret, blinding)
-  //   // is required
-  //   let inputNotes: Note[] = [];
-  //   let inputIndices: number[] = [];
-  //
-  //   // calculate the sum of input notes (for calculating the public amount)
-  //   let sumInputNotes: BigNumberish = 0;
-  //
-  //   for (const inputUtxo of inputs) {
-  //     sumInputNotes = BigNumber.from(sumInputNotes).add(inputUtxo.amount);
-  //
-  //     // secrets should be formatted as expected in the wasm-utils for note generation
-  //     const secrets =
-  //       `${toFixedHex(inputUtxo.chainId, 8).slice(2)}:` +
-  //       `${toFixedHex(inputUtxo.amount).slice(2)}:` +
-  //       `${toFixedHex(inputUtxo.secret_key).slice(2)}:` +
-  //       `${toFixedHex(inputUtxo.blinding).slice(2)}`;
-  //
-  //     const noteInput: NoteGenInput = {
-  //       amount: inputUtxo.amount.toString(),
-  //       backend: 'Circom',
-  //       curve: 'Bn254',
-  //       denomination: '18', // assumed erc20
-  //       exponentiation: '5',
-  //       hashFunction: 'Poseidon',
-  //       index: inputUtxo.index,
-  //       protocol: 'vanchor',
-  //       secrets,
-  //       sourceChain: inputUtxo.originChainId.toString(),
-  //       sourceIdentifyingData: '0',
-  //       targetChain: chainId.toString(),
-  //       targetIdentifyingData: this.contract.address,
-  //       tokenSymbol: this.token,
-  //       width: '5',
-  //     };
-  //     const inputNote = await Note.generateNote(noteInput);
-  //     inputNotes.push(inputNote);
-  //     inputIndices.push(inputUtxo.index);
-  //   }
-  //
-  //   const encryptedCommitments: [Uint8Array, Uint8Array] = [
-  //     hexToU8a(outputs[0].encrypt()),
-  //     hexToU8a(outputs[1].encrypt()),
-  //   ];
-  //
-  //   const proofInput: ProvingManagerSetupInput<'vanchor'> = {
-  //     inputNotes,
-  //     leavesMap,
-  //     indices: inputIndices,
-  //     roots: roots.map((root) => hexToU8a(root)),
-  //     chainId: chainId.toString(),
-  //     output: outputs,
-  //     encryptedCommitments,
-  //     publicAmount: BigNumber.from(extAmount).sub(fee).add(FIELD_SIZE).mod(FIELD_SIZE).toString(),
-  //     provingKey: inputs.length > 2 ? this.largeCircuitZkComponents.zkey : this.smallCircuitZkComponents.zkey,
-  //     relayer: hexToU8a(relayer),
-  //     recipient: hexToU8a(recipient),
-  //     extAmount: toFixedHex(BigNumber.from(extAmount)),
-  //     fee: BigNumber.from(fee).toString(),
-  //   };
-  //
-  //   inputs.length > 2
-  //     ? (this.provingManager = new CircomProvingManager(this.largeCircuitZkComponents.wasm, this.tree.levels, null))
-  //     : (this.provingManager = new CircomProvingManager(this.smallCircuitZkComponents.wasm, this.tree.levels, null));
-  //
-  //   const proof = await this.provingManager.prove('vanchor', proofInput);
-  //
-  //   const publicInputs: IVariableAnchorPublicInputs = this.generatePublicInputs(
-  //     proof.proof,
-  //     roots,
-  //     inputs,
-  //     outputs,
-  //     proofInput.publicAmount,
-  //     u8aToHex(proof.extDataHash)
-  //   );
-  //
-  //   const extData: IVariableAnchorExtData = {
-  //     recipient: toFixedHex(proofInput.recipient, 20),
-  //     extAmount: toFixedHex(proofInput.extAmount),
-  //     relayer: toFixedHex(proofInput.relayer, 20),
-  //     fee: toFixedHex(proofInput.fee),
-  //     encryptedOutput1: u8aToHex(proofInput.encryptedCommitments[0]),
-  //     encryptedOutput2: u8aToHex(proofInput.encryptedCommitments[1]),
-  //   };
-  //
-  //   return {
-  //     extData,
-  //     publicInputs,
-  //   };
-  // }
-
-  // public async transact(
-  //   inputs: Utxo[],
-  //   outputs: Utxo[],
-  //   leavesMap: Record<string, Uint8Array[]>,
-  //   fee: BigNumberish,
-  //   recipient: string,
-  //   relayer: string
-  // ): Promise<ethers.ContractReceipt> {
-  //   // Default UTXO chain ID will match with the configured signer's chain ID
-  //   const evmId = await this.signer.getChainId();
-  //   const chainId = getChainIdType(evmId);
-  //   const randomKeypair = new Keypair();
-  //
-  //   while (inputs.length !== 2 && inputs.length < 16) {
-  //     inputs.push(
-  //       await CircomUtxo.generateUtxo({
-  //         curve: 'Bn254',
-  //         backend: 'Circom',
-  //         chainId: chainId.toString(),
-  //         originChainId: chainId.toString(),
-  //         amount: '0',
-  //         blinding: hexToU8a(randomBN(31).toHexString()),
-  //         keypair: randomKeypair,
-  //       })
-  //     );
-  //   }
-  //
-  //   if (outputs.length < 2) {
-  //     while (outputs.length < 2) {
-  //       outputs.push(
-  //         await CircomUtxo.generateUtxo({
-  //           curve: 'Bn254',
-  //           backend: 'Circom',
-  //           chainId: chainId.toString(),
-  //           originChainId: chainId.toString(),
-  //           amount: '0',
-  //           keypair: randomKeypair,
-  //         })
-  //       );
-  //     }
-  //   }
-  //
-  //   let extAmount = BigNumber.from(fee)
-  //     .add(outputs.reduce((sum, x) => sum.add(x.amount), BigNumber.from(0)))
-  //     .sub(inputs.reduce((sum, x) => sum.add(x.amount), BigNumber.from(0)));
-  //
-  //   const { extData, publicInputs } = await this.setupTransaction(
-  //     inputs,
-  //     [outputs[0], outputs[1]],
-  //     extAmount,
-  //     fee,
-  //     recipient,
-  //     relayer,
-  //     leavesMap
-  //   );
-  //
-  //   let tx = await this.contract.transact(
-  //     {
-  //       ...publicInputs,
-  //       outputCommitments: [publicInputs.outputCommitments[0], publicInputs.outputCommitments[1]],
-  //     },
-  //     extData,
-  //     { gasLimit: '0xBB8D80' }
-  //   );
-  //   const receipt = await tx.wait();
-  //   gasBenchmark.push(receipt.gasUsed.toString());
-  //
-  //   // Add the leaves to the tree
-  //   outputs.forEach((x) => {
-  //     this.tree.insert(u8aToHex(x.commitment));
-  //     let numOfElements = this.tree.number_of_elements();
-  //     this.depositHistory[numOfElements - 1] = toFixedHex(this.tree.root().toString());
-  //   });
-  //
-  //   return receipt;
-  // }
-
-
+  public async addMember(groupId: number, leaf: BigNumberish): Promise<ContractTransaction> {
+      if(!(groupId in this.groups)) {
+        throw new Error(`Group ${groupId} doesn't exist`);
+      } else {
+        this.groups[groupId].addMember(leaf)
+        return this.contract.addMember(groupId, leaf, { gasLimit: '0x5B8D80' });
+      }
+  }
 }
 
 export default Semaphore;

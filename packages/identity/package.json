@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-anchor/identity",
-    "version": "0.0.1-2",
+    "version": "0.0.1-1",
     "description": "A library to create Semaphore-anchor identities.",
     "license": "GPL-3.0-or-later",
     "author": "Webb Developers <drew@webb.tools>",
