@@ -25,7 +25,7 @@ describe("SemaphoreWhistleblowing", () => {
 
     const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
     const chainID = BigInt(1099511629113)
-    const treeDepth = Number(process.env.TREE_DEPTH)
+    const treeDepth = Number(process.env.TREE_DEPTH) | 20
     const entityIds = [BigInt(1), BigInt(2)]
     const maxEdges = 1
 
@@ -219,9 +219,9 @@ describe("SemaphoreWhistleblowing", () => {
             const transaction = contract
                 .connect(signers[1])
                 .publishLeak(
-                    bytes32Leak, 
-                    nullifierHash, 
-                    entityIds[1], 
+                    bytes32Leak,
+                    nullifierHash,
+                    entityIds[1],
                     createRootsBytes(publicSignals.roots),
                     solidityProof
                 )
