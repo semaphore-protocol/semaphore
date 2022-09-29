@@ -1,27 +1,16 @@
-import { BigNumber, BigNumberish, ContractTransaction, Signer, ethers } from 'ethers';
-import path from "path";
+import { BigNumber, BigNumberish, ContractReceipt, ContractTransaction, Signer, ethers } from 'ethers';
 import {
   Semaphore as SemaphoreContract,
-  Verifier20_2__factory,
-  Verifier20_7__factory,
   Semaphore__factory,
-  SemaphoreVerifier__factory,
   SemaphoreInputEncoder__factory,
   LinkableIncrementalBinaryTree__factory
 } from '../typechain';
 import {
   toHex,
-  Keypair,
   toFixedHex,
-  Utxo,
-  CircomProvingManager,
-  ProvingManagerSetupInput,
-  Note,
-  NoteGenInput,
-  FIELD_SIZE,
 } from '@webb-tools/sdk-core';
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
-// import {
+// import {)
 //   IAnchorDeposit,
 //   IAnchor,
 //   IVariableAnchorExtData,
@@ -29,31 +18,11 @@ import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 //   IAnchorDepositInfo,
 // } from '@webb-tools/interfaces';
 import { getChainIdType, ZkComponents } from '@webb-tools/utils';
-import { Group } from '@webb-tools/semaphore-group/src';
+import { Group, LinkedGroup } from '@webb-tools/semaphore-group/src';
 import { Verifier } from './Verifier';
 
-const zeroAddress = '0x0000000000000000000000000000000000000000';
-function checkNativeAddress(tokenAddress: string): boolean {
-  if (tokenAddress === zeroAddress || tokenAddress === '0') {
-    return true;
-  }
-  return false;
-}
+const assert = require('assert');
 
-export type Commitment = {
-    value: BigNumberish;
-    index: number;
-}
-export type Secret = {
-    identityNullifier: BigNumberish;
-    identityTrapdoor: BigNumberish;
-}
-export type PublicInputs = {
-    value: string
-}
-
-export const gasBenchmark = [];
-export const proofTimeBenchmark = [];
 // This convenience wrapper class is used in tests -
 // It represents a deployed contract throughout its life (e.g. maintains merkle tree state)
 // Functionality relevant to anchors in general (proving, verifying) is implemented in static methods
@@ -61,7 +30,7 @@ export const proofTimeBenchmark = [];
 export class Semaphore {
   signer: Signer;
   contract: SemaphoreContract;
-  groups: Record<number, Group>;
+  linkedGroups: Record<number, LinkedGroup>;
   rootHistory: Record<number, string>;
   // hex string of the connected root
   latestSyncedBlock: number;
@@ -78,7 +47,7 @@ export class Semaphore {
     this.signer = signer;
     this.contract = contract;
     this.latestSyncedBlock = 0;
-    this.groups = {}
+    this.linkedGroups = {}
     this.rootHistory = {}
     // this.rootHistory = undefined;
     this.smallCircuitZkComponents = smallCircuitZkComponents
@@ -141,10 +110,6 @@ export class Semaphore {
     return createdSemaphore;
   }
 
-  // public static async generateCommitment(input: Secret): Promise<Utxo> {
-  //   return CircomUtxo.generateUtxo(input);
-  // }
-
   public static createRootsBytes(rootArray: string[]) {
     let rootsBytes = '0x';
     for (let i = 0; i < rootArray.length; i++) {
@@ -167,51 +132,30 @@ export class Semaphore {
     return new Uint8Array(a);
   }
 
-  // public static convertToPublicInputsStruct(args: any[]): PublicInputs {
-  //   return {
-  //     proof: args[0],
-  //     roots: args[1],
-  //     inputNullifiers: args[2],
-  //     outputCommitments: args[3],
-  //     publicAmount: args[4],
-  //     extDataHash: args[5],
-  //   };
-  // }
   // Sync the local tree with the tree on chain.
   // Start syncing from the given block number, otherwise zero.
-  // public async update(blockNumber?: number) {
-  //   const filter = this.contract.filters.Deposit();
+  // public async updateState(blockNumber?: number) {
+  //   const filter = this.contract.filters.MemberAdded();
   //   const currentBlockNumber = await this.signer.provider!.getBlockNumber();
   //   const events = await this.contract.queryFilter(filter, blockNumber || 0);
   //   const commitments = events.map((event) => event.args.commitment);
-  //   this.tree.batch_insert(commitments);
+  //   this.linkedGroups.addMembers(commitments);
   //   this.latestSyncedBlock = currentBlockNumber;
   // }
+
+  public async updateGroupAdmin(groupId: number, newAdminAddr: string): Promise<ContractReceipt> {
+    const transaction = await this.contract.updateGroupAdmin(groupId, newAdminAddr,{ gasLimit: '0x5B8D80' })
+      // const transaction = await promise_tx;
+    const receipt = await transaction.wait()
+
+    this.linkedGroups[groupId].updateGroupAdmin(newAdminAddr)
+    return receipt
+  }
 
   public async createResourceId(): Promise<string> {
     return toHex(this.contract.address + toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2), 32);
   }
 
-  // public async setVerifier(verifierAddress: string) {
-  //   const tx = await this.contract.setVerifier(
-  //     verifierAddress,
-  //     BigNumber.from(await this.contract.getProposalNonce()).add(1)
-  //   );
-  //   await tx.wait();
-  // }
-
-  // public async setHandler(handlerAddress: string) {
-  //   const tx = await this.contract.setHandler(
-  //     handlerAddress,
-  //     BigNumber.from(await this.contract.getProposalNonce()).add(1)
-  //   );
-  //   await tx.wait();
-  // }
-
-  // public setSigner(newSigner: Signer) {
-  //   this.signer = newSigner;
-  //   this.contract = this.contract.connect(newSigner);
-  // }
   public async setSigner(newSigner: Signer) {
     const currentChainId = await this.signer.getChainId();
     const newChainId = await newSigner.getChainId();
@@ -224,55 +168,42 @@ export class Semaphore {
     return false;
   }
 
-
-  // public async getHandler(): Promise<string> {
-  //   return this.contract.handler();
-  // }
-
-  // public async getHandlerProposalData(newHandler: string): Promise<string> {
-  //   const resourceID = await this.createResourceId();
-  //   const functionSig = ethers.utils
-  //     .keccak256(ethers.utils.toUtf8Bytes('setHandler(address,uint32)'))
-  //     .slice(0, 10)
-  //     .padEnd(10, '0');
-  //   const nonce = Number(await this.contract.getProposalNonce()) + 1;
-  //
-  //   return (
-  //     '0x' +
-  //     toHex(resourceID, 32).substr(2) +
-  //     functionSig.slice(2) +
-  //     toHex(nonce, 4).substr(2) +
-  //     toHex(newHandler, 20).substr(2)
-  //   );
-  // }
-
   public async populateRootsForProof(groupId: number): Promise<string[]> {
-    const neighborEdges = await this.contract.getLatestNeighborEdges(groupId);
-    const neighborRootInfos = neighborEdges.map((rootData) => {
-      return rootData.root;
-    });
-    const thisRoot = await this.contract.getRoot(groupId);
-    return [thisRoot.toString(), ...neighborRootInfos];
+    return this.linkedGroups[groupId].populateRootsForProof()
   }
 
   public async createGroup(groupId: number, depth: number, groupAdminAddr: string, maxEdges: number): Promise<ContractTransaction> {
-      if(groupId in this.groups) {
+      if(groupId in this.linkedGroups) {
         throw new Error(`Group ${groupId} has already been created`);
       } else {
-        this.groups[groupId] = new Group(depth, BigInt(this.zeroValue))
+        const chainId = getChainIdType(await this.signer.getChainId())
+
+        this.linkedGroups[groupId] = new LinkedGroup(depth, maxEdges, groupAdminAddr, chainId)
         return this.contract.createGroup(groupId, depth, groupAdminAddr, maxEdges)
       }
   }
 
   public async getClassAndContractRoots(groupId: number): Promise<BigNumberish[]> {
-    return [this.groups[groupId].root, await this.contract.getRoot(groupId)];
+    const chainId = getChainIdType(await this.signer.getChainId())
+    return [this.linkedGroups[groupId].roots[chainId], await this.contract.getRoot(groupId)];
+  }
+
+  public async updateLinkedGroupRoots(groupId: number): Promise<string[]> {
+    const neighborEdges = await this.contract.getLatestNeighborEdges(groupId);
+    neighborEdges.map((edge) => {
+      this.linkedGroups[groupId].updateEdge(edge.chainID.toNumber(), edge.root)
+    });
+    const thisRoot = await this.contract.getRoot(groupId);
+    const chainId = getChainIdType(await this.signer.getChainId())
+    assert(thisRoot.toString() == this.linkedGroups[groupId].roots[chainId], "Contract and object are out of sync.")
+    return [thisRoot.toString(), ...neighborEdges.map((edge) => edge.root)];
   }
 
   public async addMember(groupId: number, leaf: BigNumberish): Promise<ContractTransaction> {
-      if(!(groupId in this.groups)) {
+      if(!(groupId in this.linkedGroups)) {
         throw new Error(`Group ${groupId} doesn't exist`);
       } else {
-        this.groups[groupId].addMember(leaf)
+        this.linkedGroups[groupId].addMember(leaf)
         return this.contract.addMember(groupId, leaf, { gasLimit: '0x5B8D80' });
       }
   }

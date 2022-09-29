@@ -1,14 +1,14 @@
 import { expect } from "chai"
-import { constants, Signer, utils, BigNumber } from "ethers"
+import { constants, Signer, utils, ContractTransaction, ContractReceipt, BigNumber } from "ethers"
 import { run, ethers} from "hardhat"
 import { Semaphore as SemaphoreContract } from "../../build/typechain"
 import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Semaphore } from "@webb-tools/semaphore"
-import { Group } from "@webb-tools/semaphore-group"
-import { FullProof, generateProof, packToSolidityProof, SolidityProof, BigNumberish } from "@webb-tools/semaphore-proof"
-import { ZkComponents, fetchComponentsFromFilePaths } from '@webb-tools/utils';
-import { toFixedHex, VerifierContractInfo, createRootsBytes, createIdentities } from "../utils"
+import { Semaphore } from "../../packages/semaphore"
+import { Group, LinkedGroup } from "../../packages/group"
+import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "../../packages/proof"
+import { fetchComponentsFromFilePaths } from '@webb-tools/utils';
+import { toFixedHex, createRootsBytes, createIdentities } from "../utils"
 
 describe("Semaphore", () => {
   let semaphore: Semaphore;
@@ -77,32 +77,33 @@ describe("Semaphore", () => {
     it("Should not update a group admin if the caller is not the group admin", async () => {
       await semaphore.setSigner(user)
 
-      const transaction = semaphore.contract.updateGroupAdmin(groupId, userAddr)
+      // const transaction = semaphore.updateGroupAdmin(groupId, userAddr)
 
-      await expect(transaction).revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
+      await expect(semaphore.updateGroupAdmin(groupId, userAddr)
+).revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
     })
 
     it("Should update the group admin", async () => {
       await semaphore.setSigner(admin)
 
-      const transaction = semaphore.contract.updateGroupAdmin(groupId, userAddr,{ gasLimit: '0x5B8D80' })
+      const receipt: ContractReceipt = semaphore.updateGroupAdmin(groupId, userAddr)
 
-      await expect(transaction).to.emit(semaphore.contract, "GroupAdminUpdated").withArgs(groupId, adminAddr, userAddr)
+      expect(receipt).emit(semaphore.contract, "GroupAdminUpdated").withArgs(groupId, adminAddr, userAddr)
 
-      //reseting it for rest of test
+      // reseting admin for rest of test
       await semaphore.setSigner(user)
 
-      const transaction2 = semaphore.contract.updateGroupAdmin(groupId, adminAddr,{ gasLimit: '0x5B8D80' })
-
-      await expect(transaction2).to.emit(semaphore.contract, "GroupAdminUpdated").withArgs(groupId, userAddr, adminAddr)
+      const receipt2: ContractReceipt = semaphore.updateGroupAdmin(groupId, adminAddr)
+      expect(receipt2).emit(semaphore.contract, "GroupAdminUpdated").withArgs(groupId, userAddr, adminAddr)
     })
   })
 
   describe("# addMember", () => {
     it("Should not add a member if the caller is not the group admin", async () => {
+      await semaphore.setSigner(user)
       const member = BigInt(2)
 
-      const transaction = semaphore.contract.connect(signers[1]).addMember(groupId, member)
+      const transaction = semaphore.addMember(groupId, member)
 
       await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
     })
@@ -110,8 +111,8 @@ describe("Semaphore", () => {
     it("Should add a new member in an existing group", async () => {
       await semaphore.setSigner(admin)
 
-      const group = new Group(treeDepth, BigInt(zeroValue))
-      group.addMember(members[0])
+      const linkedGroup = new LinkedGroup(treeDepth, BigInt(zeroValue))
+      linkedGroup.addMember(members[0])
 
       // console.log(semaphore)
       const transaction = semaphore.addMember(groupId, members[0])
@@ -119,7 +120,7 @@ describe("Semaphore", () => {
       await expect(transaction).to.emit(semaphore.contract, "MemberAdded").withArgs(
         groupId,
         members[0],
-        group.root
+        linkedGroup.root
       )
     })
   })
@@ -213,9 +214,8 @@ describe("Semaphore", () => {
               bytes32Signal,
               fullProof.publicSignals.nullifierHash,
               fullProof.publicSignals.externalNullifier,
-              createRootsBytes(roots),
-              solidityProof,
-              { gasLimit: '0x5B8D80' }
+              createRootsBytes(fullProof.publicSignals.roots),
+              solidityProof
           )
 
           await expect(transaction).to.emit(semaphore.contract, "ProofVerified").withArgs(groupId2, bytes32Signal)

@@ -18,7 +18,7 @@ describe("Group", () => {
         })
 
         it("Should create a group with different parameters", () => {
-            const group = new Group(32, BigInt(1))
+            const group = new Group(32)
 
             expect(group.root.toString()).toContain("640470")
             expect(group.depth).toBe(32)
