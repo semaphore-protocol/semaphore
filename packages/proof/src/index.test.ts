@@ -21,7 +21,6 @@ describe("Proof", () => {
     const verificationKeyPath = `./snark-artifacts/semaphore.json`
 
     const identity = new Identity()
-    const identityCommitment = identity.generateCommitment()
 
     let fullProof: FullProof
     let curve: any
@@ -52,7 +51,7 @@ describe("Proof", () => {
         it("Should not generate a Semaphore proof with default snark artifacts with Node.js", async () => {
             const group = new Group(treeDepth)
 
-            group.addMembers([BigInt(1), BigInt(2), identityCommitment])
+            group.addMembers([BigInt(1), BigInt(2), identity.commitment])
 
             const fun = () => generateProof(identity, group, externalNullifier, signal)
 
@@ -62,7 +61,7 @@ describe("Proof", () => {
         it("Should generate a Semaphore proof passing a group as parameter", async () => {
             const group = new Group(treeDepth)
 
-            group.addMembers([BigInt(1), BigInt(2), identityCommitment])
+            group.addMembers([BigInt(1), BigInt(2), identity.commitment])
 
             fullProof = await generateProof(identity, group, externalNullifier, signal, {
                 wasmFilePath,
@@ -77,7 +76,7 @@ describe("Proof", () => {
         it("Should generate a Semaphore proof passing a Merkle proof as parametr", async () => {
             const group = new Group(treeDepth)
 
-            group.addMembers([BigInt(1), BigInt(2), identityCommitment])
+            group.addMembers([BigInt(1), BigInt(2), identity.commitment])
 
             fullProof = await generateProof(identity, group.generateProofOfMembership(2), externalNullifier, signal, {
                 wasmFilePath,

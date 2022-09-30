@@ -67,26 +67,24 @@ describe("SemaphoreWhistleblowing", () => {
 
     describe("# addWhistleblower", () => {
         it("Should not add a whistleblower if the caller is not the editor", async () => {
-            const identity = new Identity()
-            const identityCommitment = identity.generateCommitment()
+            const { commitment } = new Identity()
 
-            const transaction = contract.addWhistleblower(entityIds[0], identityCommitment)
+            const transaction = contract.addWhistleblower(entityIds[0], commitment)
 
             await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheEditor()")
         })
 
         it("Should add a whistleblower to an existing entity", async () => {
-            const identity = new Identity("test")
-            const identityCommitment = identity.generateCommitment()
+            const { commitment } = new Identity("test")
 
-            const transaction = contract.connect(accounts[1]).addWhistleblower(entityIds[0], identityCommitment)
+            const transaction = contract.connect(accounts[1]).addWhistleblower(entityIds[0], commitment)
 
             await expect(transaction)
                 .to.emit(contract, "MemberAdded")
                 .withArgs(
                     entityIds[0],
                     0,
-                    identityCommitment,
+                    commitment,
                     "14787813191318312920980352979830075893203307366494541177071234930769373297362"
                 )
         })
@@ -100,38 +98,36 @@ describe("SemaphoreWhistleblowing", () => {
 
     describe("# removeWhistleblower", () => {
         it("Should not remove a whistleblower if the caller is not the editor", async () => {
-            const identity = new Identity()
-            const identityCommitment = identity.generateCommitment()
+            const { commitment } = new Identity()
             const group = new Group(treeDepth)
 
-            group.addMember(identityCommitment)
+            group.addMember(commitment)
 
             const { siblings, pathIndices } = group.generateProofOfMembership(0)
 
-            const transaction = contract.removeWhistleblower(entityIds[0], identityCommitment, siblings, pathIndices)
+            const transaction = contract.removeWhistleblower(entityIds[0], commitment, siblings, pathIndices)
 
             await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheEditor()")
         })
 
         it("Should remove a whistleblower from an existing entity", async () => {
-            const identity = new Identity("test")
-            const identityCommitment = identity.generateCommitment()
+            const { commitment } = new Identity("test")
             const group = new Group(treeDepth)
 
-            group.addMember(identityCommitment)
+            group.addMember(commitment)
 
             const { siblings, pathIndices } = group.generateProofOfMembership(0)
 
             const transaction = contract
                 .connect(accounts[1])
-                .removeWhistleblower(entityIds[0], identityCommitment, siblings, pathIndices)
+                .removeWhistleblower(entityIds[0], commitment, siblings, pathIndices)
 
             await expect(transaction)
                 .to.emit(contract, "MemberRemoved")
                 .withArgs(
                     entityIds[0],
                     0,
-                    identityCommitment,
+                    commitment,
                     "15019797232609675441998260052101280400536945603062888308240081994073687793470"
                 )
         })
@@ -139,20 +135,19 @@ describe("SemaphoreWhistleblowing", () => {
 
     describe("# publishLeak", () => {
         const identity = new Identity("test")
-        const identityCommitment = identity.generateCommitment()
         const leak = "leak"
         const bytes32Leak = utils.formatBytes32String(leak)
 
         const group = new Group(treeDepth)
 
-        group.addMembers([identityCommitment, BigInt(1)])
+        group.addMembers([identity.commitment, BigInt(1)])
 
         let solidityProof: SolidityProof
         let publicSignals: PublicSignals
 
         before(async () => {
             await contract.createEntity(entityIds[1], editor, treeDepth)
-            await contract.connect(accounts[1]).addWhistleblower(entityIds[1], identityCommitment)
+            await contract.connect(accounts[1]).addWhistleblower(entityIds[1], identity.commitment)
             await contract.connect(accounts[1]).addWhistleblower(entityIds[1], BigInt(1))
 
             const fullProof = await generateProof(identity, group, entityIds[1], leak, {

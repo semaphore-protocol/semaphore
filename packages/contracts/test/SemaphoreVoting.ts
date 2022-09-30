@@ -93,35 +93,32 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not add a voter if the caller is not the coordinator", async () => {
-            const identity = new Identity()
-            const identityCommitment = identity.generateCommitment()
+            const { commitment } = new Identity()
 
-            const transaction = contract.addVoter(pollIds[0], identityCommitment)
+            const transaction = contract.addVoter(pollIds[0], commitment)
 
             await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotThePollCoordinator()")
         })
 
         it("Should not add a voter if the poll has already been started", async () => {
-            const identity = new Identity()
-            const identityCommitment = identity.generateCommitment()
+            const { commitment } = new Identity()
 
-            const transaction = contract.connect(accounts[1]).addVoter(pollIds[0], identityCommitment)
+            const transaction = contract.connect(accounts[1]).addVoter(pollIds[0], commitment)
 
             await expect(transaction).to.be.revertedWith("Semaphore__PollHasAlreadyBeenStarted()")
         })
 
         it("Should add a voter to an existing poll", async () => {
-            const identity = new Identity("test")
-            const identityCommitment = identity.generateCommitment()
+            const { commitment } = new Identity("test")
 
-            const transaction = contract.connect(accounts[1]).addVoter(pollIds[1], identityCommitment)
+            const transaction = contract.connect(accounts[1]).addVoter(pollIds[1], commitment)
 
             await expect(transaction)
                 .to.emit(contract, "MemberAdded")
                 .withArgs(
                     pollIds[1],
                     0,
-                    identityCommitment,
+                    commitment,
                     "14787813191318312920980352979830075893203307366494541177071234930769373297362"
                 )
         })
@@ -135,13 +132,12 @@ describe("SemaphoreVoting", () => {
 
     describe("# castVote", () => {
         const identity = new Identity("test")
-        const identityCommitment = identity.generateCommitment()
         const vote = "1"
         const bytes32Vote = utils.formatBytes32String(vote)
 
         const group = new Group(treeDepth)
 
-        group.addMembers([identityCommitment, BigInt(1)])
+        group.addMembers([identity.commitment, BigInt(1)])
 
         let solidityProof: SolidityProof
         let publicSignals: PublicSignals
