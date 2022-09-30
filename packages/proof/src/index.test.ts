@@ -1,4 +1,4 @@
-import { Group } from "@webb-tools/semaphore-group/src"
+import { LinkedGroup } from "@webb-tools/semaphore-group/src"
 import { Identity } from "@webb-tools/semaphore-identity/src"
 // import { BigNumber } from 'ethers';
 // import download from "download"
@@ -12,6 +12,7 @@ import verifyProof from "./verifyProof"
 
 describe("Proof", () => {
     const treeDepth = 20
+    const maxEdges = 1
 
     const externalNullifier = "1"
     const signal = "0x111"
@@ -35,12 +36,12 @@ describe("Proof", () => {
 
     describe("# generateProof", () => {
         it("Should not generate Semaphore proofs if the identity is not part of the group", async () => {
-            const group = new Group(treeDepth)
+            const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
 
-            group.addMembers([BigInt(1), BigInt(2)])
+            linkedGroup.addMembers([BigInt(1), BigInt(2)])
 
             const fun = () =>
-                generateProof(identity, group, [group.root], externalNullifier, signal, chainID, {
+                generateProof(identity, linkedGroup, externalNullifier, signal, chainID, {
                     wasmFilePath: wasmFilePath,
                     zkeyFilePath: zkeyFilePath
                 })
@@ -48,12 +49,12 @@ describe("Proof", () => {
             await expect(fun).rejects.toThrow("The identity is not part of the group")
         })
 
-        it("Should generate a Semaphore proof passing a group as parameter", async () => {
-            const group = new Group(treeDepth)
+        it("Should generate a Semaphore proof passing a linkedGroup as parameter", async () => {
+            const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
 
-            group.addMembers([BigInt(1), BigInt(2), identityCommitment])
+            linkedGroup.addMembers([BigInt(1), BigInt(2), identityCommitment])
 
-            fullProof = await generateProof(identity, group, [group.root], externalNullifier, signal, chainID, {
+            fullProof = await generateProof(identity, linkedGroup, externalNullifier, signal, chainID, {
                     wasmFilePath: wasmFilePath,
                     zkeyFilePath: zkeyFilePath
             })
@@ -63,11 +64,11 @@ describe("Proof", () => {
         }, 20000)
 
         it("Should generate a Semaphore proof passing a Merkle proof as parametr", async () => {
-            const group = new Group(treeDepth)
+            const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
 
-            group.addMembers([BigInt(1), BigInt(2), identityCommitment])
+            linkedGroup.addMembers([BigInt(1), BigInt(2), identityCommitment])
 
-            fullProof = await generateProof(identity, group, [group.root], externalNullifier, signal, chainID, {
+            fullProof = await generateProof(identity, linkedGroup, externalNullifier, signal, chainID, {
                     wasmFilePath: wasmFilePath,
                     zkeyFilePath: zkeyFilePath
             })

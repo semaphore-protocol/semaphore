@@ -10,15 +10,8 @@ import {
   toFixedHex,
 } from '@webb-tools/sdk-core';
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
-// import {)
-//   IAnchorDeposit,
-//   IAnchor,
-//   IVariableAnchorExtData,
-//   IVariableAnchorPublicInputs,
-//   IAnchorDepositInfo,
-// } from '@webb-tools/interfaces';
 import { getChainIdType, ZkComponents } from '@webb-tools/utils';
-import { Group, LinkedGroup } from '@webb-tools/semaphore-group/src';
+import { LinkedGroup } from '@webb-tools/semaphore-group/src';
 import { Verifier } from './Verifier';
 
 const assert = require('assert');
@@ -168,17 +161,15 @@ export class Semaphore {
     return false;
   }
 
-  public async populateRootsForProof(groupId: number): Promise<string[]> {
-    return this.linkedGroups[groupId].populateRootsForProof()
+  public populateRootsForProof(groupId: number): string[] {
+    return this.linkedGroups[groupId].getRootsAsStr
   }
 
   public async createGroup(groupId: number, depth: number, groupAdminAddr: string, maxEdges: number): Promise<ContractTransaction> {
       if(groupId in this.linkedGroups) {
         throw new Error(`Group ${groupId} has already been created`);
       } else {
-        const chainId = getChainIdType(await this.signer.getChainId())
-
-        this.linkedGroups[groupId] = new LinkedGroup(depth, maxEdges, groupAdminAddr, chainId)
+        this.linkedGroups[groupId] = new LinkedGroup(depth, maxEdges, groupAdminAddr)
         return this.contract.createGroup(groupId, depth, groupAdminAddr, maxEdges)
       }
   }
@@ -188,14 +179,18 @@ export class Semaphore {
     return [this.linkedGroups[groupId].roots[chainId], await this.contract.getRoot(groupId)];
   }
 
-  public async updateLinkedGroupRoots(groupId: number): Promise<string[]> {
+  public async updateLinkedGroup(groupId: number): Promise<string[]> {
     const neighborEdges = await this.contract.getLatestNeighborEdges(groupId);
+
     neighborEdges.map((edge) => {
       this.linkedGroups[groupId].updateEdge(edge.chainID.toNumber(), edge.root)
     });
+
     const thisRoot = await this.contract.getRoot(groupId);
-    const chainId = getChainIdType(await this.signer.getChainId())
-    assert(thisRoot.toString() == this.linkedGroups[groupId].roots[chainId], "Contract and object are out of sync.")
+    assert(thisRoot.toString() == this.linkedGroups[groupId].root.toString(), "Contract and object are out of sync. You should run update()")
+
+    // TODO: Add query and pre-processing of out-of-sync leaves to recreate group and remove above assert
+
     return [thisRoot.toString(), ...neighborEdges.map((edge) => edge.root)];
   }
 

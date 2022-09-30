@@ -5,7 +5,7 @@ import { BigNumber, Signer, utils } from "ethers"
 import { config } from "../../package.json"
 
 import { Identity } from "../../packages/identity/src"
-import { Group } from "../../packages/group/src"
+import { LinkedGroup } from "../../packages/group/src"
 import {
     generateNullifierHash,
     generateProof,
@@ -143,7 +143,7 @@ describe("SemaphoreVoting", () => {
             const identity = new Identity(chainID, "test")
             const identityCommitment = identity.generateCommitment()
 
-            const group = new Group(treeDepth, zeroValue)
+            const group = new LinkedGroup(treeDepth, maxEdges)
             group.addMember(identityCommitment)
 
             const transaction = contract.connect(signers[1]).addVoter(pollIds[1], identityCommitment)
@@ -169,7 +169,7 @@ describe("SemaphoreVoting", () => {
         const vote = "1"
         const bytes32Vote = utils.formatBytes32String(vote)
 
-        const group = new Group(treeDepth, zeroValue)
+        const group = new LinkedGroup(treeDepth, maxEdges)
 
         group.addMember(identityCommitment)
         group.addMember(BigInt(1))
@@ -186,7 +186,7 @@ describe("SemaphoreVoting", () => {
 
             roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
 
-            const fullProof = await generateProof(identity, group, roots, BigInt(pollIds[1]), vote, chainID, {
+            const fullProof = await generateProof(identity, group, BigInt(pollIds[1]), vote, chainID, {
                 wasmFilePath,
                 zkeyFilePath
             })
@@ -213,7 +213,7 @@ describe("SemaphoreVoting", () => {
                 .castVote(
                     bytes32Vote,
                     publicSignals.nullifierHash,
-                    pollIds[2], 
+                    pollIds[2],
                     createRootsBytes(publicSignals.roots),
                     solidityProof
                 )
@@ -226,10 +226,10 @@ describe("SemaphoreVoting", () => {
 
             const transaction = contract
                 .connect(signers[1])
-                .castVote( 
-                    bytes32Vote, 
-                    nullifierHash, 
-                    pollIds[1],  
+                .castVote(
+                    bytes32Vote,
+                    nullifierHash,
+                    pollIds[1],
                     createRootsBytes(publicSignals.roots),
                     solidityProof
                 )
@@ -241,9 +241,9 @@ describe("SemaphoreVoting", () => {
             const transaction = contract
                 .connect(signers[1])
                 .castVote(
-                    bytes32Vote, 
-                    publicSignals.nullifierHash, 
-                    pollIds[1], 
+                    bytes32Vote,
+                    publicSignals.nullifierHash,
+                    pollIds[1],
                     createRootsBytes(publicSignals.roots),
                     solidityProof
                 )
@@ -255,9 +255,9 @@ describe("SemaphoreVoting", () => {
             const transaction = contract
                 .connect(signers[1])
                 .castVote(
-                    bytes32Vote, 
-                    publicSignals.nullifierHash, 
-                    pollIds[1], 
+                    bytes32Vote,
+                    publicSignals.nullifierHash,
+                    pollIds[1],
                     createRootsBytes(publicSignals.roots),
                     solidityProof
                 )

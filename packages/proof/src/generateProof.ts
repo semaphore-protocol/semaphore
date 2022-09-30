@@ -5,7 +5,7 @@ import { BigNumber, BigNumberish } from 'ethers';
 import { FullProof, SnarkArtifacts } from "./types"
 
 import { Identity } from "@webb-tools/semaphore-identity/src"
-import { Group } from "@webb-tools/semaphore-group/src"
+import { LinkedGroup } from "@webb-tools/semaphore-group/src"
 
 export type VerifierContractInfo = {
     name: string
@@ -34,8 +34,7 @@ export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
 // async function generateProof(
 export default async function generateProof(
     identity: Identity,
-    group: Group,
-    roots: BigNumberish[],
+    group: LinkedGroup,
     externalNullifier: BigNumberish,
     signal: string,
     chainID: BigNumberish,
@@ -57,7 +56,7 @@ export default async function generateProof(
             identityNullifier: identity.getNullifier(),
             treePathIndices: merkleProof.pathIndices,
             treeSiblings: pathElements,
-            roots: roots,
+            roots: group.getRootsAsStr,
             chainID: chainID.toString(),
             externalNullifier: externalNullifier.toString(),
             signalHash: generateSignalHash(signal)

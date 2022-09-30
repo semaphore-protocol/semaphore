@@ -5,7 +5,7 @@ import { Semaphore as SemaphoreContract } from "../../build/typechain"
 import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
 import { Semaphore } from "../../packages/semaphore"
-import { Group, LinkedGroup } from "../../packages/group"
+import { LinkedGroup } from "../../packages/group"
 import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "../../packages/proof"
 import { fetchComponentsFromFilePaths } from '@webb-tools/utils';
 import { toFixedHex, createRootsBytes, createIdentities } from "../utils"
@@ -158,10 +158,10 @@ describe("Semaphore", () => {
       const bytes32Signal = utils.formatBytes32String(signal)
       const groupId2 = 1337
 
-      const group = new Group(treeDepth, BigInt(zeroValue))
-      group.addMember(members[0])
-      group.addMember(members[1])
-      group.addMember(members[2])
+      const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
+      linkedGroup.addMember(members[0])
+      linkedGroup.addMember(members[1])
+      linkedGroup.addMember(members[2])
 
       let fullProof: FullProof
       let solidityProof: SolidityProof
@@ -174,9 +174,9 @@ describe("Semaphore", () => {
           await semaphore.contract.addMember(groupId2, members[1])
           await semaphore.contract.addMember(groupId2, members[2])
 
-          roots = [BigNumber.from(group.root).toHexString(), toFixedHex(0)]
+          roots = [BigNumber.from(linkedGroup.root).toHexString(), toFixedHex(0)]
 
-          fullProof = await generateProof(identities[0], group, roots, BigNumber.from(Date.now()), signal, chainID, {
+          fullProof = await generateProof(identities[0], linkedGroup, BigNumber.from(Date.now()), signal, chainID, {
               wasmFilePath,
               zkeyFilePath
           })

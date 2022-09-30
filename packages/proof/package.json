@@ -39,7 +39,7 @@
         "@ethersproject/bytes": "^5.5.0",
         "@ethersproject/solidity": "^5.5.0",
         "@ethersproject/strings": "^5.5.0",
-        "@webb-tools/sdk-core": "0.1.4-106",
+        "@webb-tools/sdk-core": "0.1.4-108",
         "@webb-tools/semaphore-group": "0.0.1-1",
         "@webb-tools/semaphore-identity": "0.0.1-1",
         "@webb-tools/utils": "^0.2.7",

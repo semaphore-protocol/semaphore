@@ -4,7 +4,7 @@ import { ethers, run } from "hardhat"
 import { SemaphoreWhistleblowing } from "../../build/typechain"
 import { config } from "../../package.json"
 
-import { Group } from "../../packages/group/src"
+import { LinkedGroup } from "../../packages/group/src"
 import { Identity } from "../../packages/identity/src"
 
 import {
@@ -109,7 +109,7 @@ describe("SemaphoreWhistleblowing", () => {
             const identity = new Identity(chainID, "test")
             const identityCommitment = identity.generateCommitment()
 
-            const group = new Group(treeDepth, zeroValue)
+            const group = new LinkedGroup(treeDepth, maxEdges)
             group.addMember(identityCommitment)
 
             const transaction = contract.connect(signers[1]).addWhistleblower(entityIds[0], identityCommitment)
@@ -135,7 +135,7 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should not remove a whistleblower if the caller is not the editor", async () => {
             const identity = new Identity(chainID)
             const identityCommitment = identity.generateCommitment()
-            const group = new Group(treeDepth, zeroValue)
+            const group = new LinkedGroup(treeDepth, maxEdges)
 
             group.addMember(identityCommitment)
 
@@ -149,7 +149,7 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should remove a whistleblower from an existing entity", async () => {
             const identity = new Identity(chainID, "test")
             const identityCommitment = identity.generateCommitment()
-            const group = new Group(treeDepth, zeroValue)
+            const group = new LinkedGroup(treeDepth, maxEdges)
 
             group.addMember(identityCommitment)
 
@@ -175,7 +175,7 @@ describe("SemaphoreWhistleblowing", () => {
         const leak = "leak"
         const bytes32Leak = utils.formatBytes32String(leak)
 
-        const group = new Group(treeDepth, zeroValue)
+        const group = new LinkedGroup(treeDepth, maxEdges)
 
         group.addMember(identityCommitment)
         group.addMember(BigInt(1))
@@ -192,7 +192,7 @@ describe("SemaphoreWhistleblowing", () => {
 
             roots = [root.toHexString(), toFixedHex(BigNumber.from(0).toHexString(), 32)]
 
-            const fullProof = await generateProof(identity, group, roots, entityIds[1], leak, chainID, {
+            const fullProof = await generateProof(identity, group, entityIds[1], leak, chainID, {
                 wasmFilePath,
                 zkeyFilePath
             })

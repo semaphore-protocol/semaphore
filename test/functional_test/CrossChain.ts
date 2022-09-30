@@ -6,6 +6,7 @@ import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
 import { Identity } from "../../packages/identity/src"
 import { Group } from "../../packages/group/src"
+import { Semaphore } from "../../packages/semaphore/src"
 import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "../../packages/proof/src/"
 import { toFixedHex, createRootsBytes, createIdentities } from "../utils"
 import { private_keys as ganacheAccounts } from "../../accounts.json";
@@ -32,7 +33,7 @@ describe("CrossChain", () => {
     const providerA = new providers.JsonRpcProvider("http://127.0.0.1:8545");
     const providerB = new providers.JsonRpcProvider("http://127.0.0.1:8546");
     const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
-    const contractAddr = "0xE800b887db490d9523212813a7907AFDB7493E45"
+    const contractAddr = "0xe800b887db490d9523212813a7907afdb7493e45"
 
     const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/semaphore_20_2.wasm`
     const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/circuit_final.zkey`
@@ -41,12 +42,12 @@ describe("CrossChain", () => {
 
     before(async () => {
         // Starting contracts / accounts
-        contractA = await hreEthers.getContractAt("Semaphore", contractAddr, signersA[1])
-        contractB = await hreEthers.getContractAt("Semaphore", contractAddr, signersB[1])
+        // contractA = await hreEthers.getContractAt("Semaphore", contractAddr, signersA[1])
+        // contractB = await hreEthers.getContractAt("Semaphore", contractAddr, signersB[1])
         accounts = await Promise.all(signersA.map((signer: Signer) => signer.getAddress()))
 
-        chainIDA = await contractA.connect(signersA[1]).getChainIdType()
-        chainIDB = await contractB.connect(signersB[1]).getChainIdType()
+        chainIDA = await contractA.getChainIdType()
+        chainIDB = await contractB.getChainIdType()
 
         // Creating members
         const idsA = createIdentities(chainIDA, 5)
@@ -57,7 +58,7 @@ describe("CrossChain", () => {
         identitiesB = idsB.identities
 
         // Creating group on-chain and locally
-        groupA = new Group(treeDepth, BigInt(zeroValue))
+        groupA = new Group(treeDepth)
         const transactionA = contractA.connect(signersA[1]).createGroup(groupId, treeDepth, accounts[1], maxEdges)
         await expect(transactionA).to.emit(contractA, "GroupCreated").withArgs(groupId, treeDepth, 0)
         await expect(transactionA)
@@ -74,7 +75,7 @@ describe("CrossChain", () => {
             .withArgs(groupId, constants.AddressZero, accounts[1])
         const rootB = await contractB.getRoot(groupId)
 
-        groupB = new Group(treeDepth, BigInt(zeroValue))
+        groupB = new Group(treeDepth)
         expect(rootB).to.equal(groupB.root)
         allRootsB = [rootB.toHexString()];
 

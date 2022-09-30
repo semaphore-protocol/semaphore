@@ -49,7 +49,7 @@ function getNetworks(): NetworksUserConfig | undefined {
             }
         }
     }
-    if (process.env.ENABLE_LOCAL_CHAINS) {
+    if (process.env.ENABLE_LOCAL_CHAINS && process.env.BACKEND_PRIVATE_KEY) {
         const accounts = [`0x${process.env.BACKEND_PRIVATE_KEY}`]
         return {
             chainA: {

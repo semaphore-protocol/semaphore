@@ -16,7 +16,6 @@ export class Group {
   /**
    * Initializes the group with the tree depth and the zero value.
    * @param treeDepth Tree depth.
-   * @param zeroValue Zero values for zeroes.
    */
   constructor(treeDepth = 20) {
     if (treeDepth < 16 || treeDepth > 32) {
@@ -85,12 +84,19 @@ export class Group {
 
   /**
    * Removes a member from the group.
-   * @param index Index of the member to be removed.
+   * @param member member to be removed.
    */
-  //TODO: Add removal method to sdk-core MerkleTree
-  // removeMember(index: number) {
-  //     this._merkleTree.delete(index)
-  // }
+  removeMember(member: Member) {
+      this._merkleTree.remove(member)
+  }
+
+  /**
+   * Removes a list of members from the group.
+   * @param members member to be removed.
+   */
+  removeMembers(members: Member[]) {
+      this._merkleTree.bulkRemove(members)
+  }
 
   /**
    * Creates a proof of membership.
