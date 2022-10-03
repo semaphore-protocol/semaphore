@@ -56,7 +56,7 @@ export default async function generateProof(
             identityNullifier: identity.getNullifier(),
             treePathIndices: merkleProof.pathIndices,
             treeSiblings: pathElements,
-            roots: group.getRootsAsStr,
+            roots: group.getRoots().map((bignum) => bignum.toString()),
             chainID: chainID.toString(),
             externalNullifier: externalNullifier.toString(),
             signalHash: generateSignalHash(signal)

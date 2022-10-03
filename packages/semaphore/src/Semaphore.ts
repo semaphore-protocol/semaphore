@@ -162,7 +162,7 @@ export class Semaphore {
   }
 
   public populateRootsForProof(groupId: number): string[] {
-    return this.linkedGroups[groupId].getRootsAsStr
+    return this.linkedGroups[groupId].getRoots().map((bignum) => bignum.toString())
   }
 
   public async createGroup(groupId: number, depth: number, groupAdminAddr: string, maxEdges: number): Promise<ContractTransaction> {

@@ -18,7 +18,7 @@ export class LinkedGroup {
   // chainId -> merkle-root
   roots: Record<number, BigNumber>
   // externalGroups: Record<number, Group>
-  initialRoot = BigInt(
+  initialRoot = BigNumber.from(
     "21663839004416932945382355908790599225266501822907911457504978515578255421292"
   )
 
@@ -75,7 +75,7 @@ export class LinkedGroup {
    * Removes a member from the group.
    * @param member member to be removed.
    */
-  removeMember(member: Member) {
+  public removeMember(member: Member) {
     this.group.removeMember(member)
   }
 
@@ -83,7 +83,7 @@ export class LinkedGroup {
    * Removes a list of members from the group.
    * @param members members to be removed.
    */
-  removeMembers(members: Member[]) {
+  public removeMembers(members: Member[]) {
     this.group.removeMembers(members)
   }
 
@@ -143,32 +143,19 @@ export class LinkedGroup {
    * Returns the members (i.e. identity commitments) of the group.
    * @returns List of members.
    */
-  get getRoots(): BigNumber[] {
-    const roots = Object.values(this.roots)
+  public getRoots(): BigNumber[] {
+    const roots: BigNumber[] = Object.values(this.roots);
     while (roots.length < this.maxEdges + 1) {
-      roots.push(BigNumber.from(0))
+      roots.push(BigNumber.from(0))  //   padding = this.maxEdges + 1 - chainIds.length
     }
-    assert(
-      roots.length == this.maxEdges + 1,
-      `root set must have ${this.maxEdges+1} values`
-    )
     return roots
   }
-  /**
-   * Returns the members (i.e. identity commitments) of the group.
-   * @returns List of members.
-   */
-  get getRootsAsStr(): string[] {
-    const roots = this.getRoots
-    return Object.values(roots).map((bignum) => toFixedHex(bignum.toHexString()))
-  }
-
   /**
    * Returns the index of a member. If the member does not exist it returns -1.
    * @param member Group member.
    * @returns Index of the member.
    */
-  indexOf(member: Member): number {
+  public indexOf(member: Member): number {
     return this.group.indexOf(member)
   }
 
@@ -187,7 +174,7 @@ export class LinkedGroup {
    * @returns MerkleProof to that index on the tree
    */
 
-  generateProofOfMembership(index: number, group?: Group): MerkleProof {
+  public generateProofOfMembership(index: number, group?: Group): MerkleProof {
     let merkleProof: MerkleProof
     // if no group was supplied. Assume index is in current chain group
     if (typeof group === "undefined") {
