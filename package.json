@@ -114,7 +114,7 @@
       "cache": "./cache",
       "snarkjs-templates": "./snarkjs-templates",
       "build": {
-        "snark-artifacts": "/home/semar/Projects/webb/semaphore-anchor/fixtures",
+        "snark-artifacts": "./fixtures",
         "contracts": "./build/contracts",
         "typechain": "./build/typechain"
       }
