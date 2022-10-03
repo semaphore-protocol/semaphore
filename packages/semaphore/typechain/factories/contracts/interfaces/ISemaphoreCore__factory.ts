@@ -2,18 +2,18 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import type { Provider } from "@ethersproject/providers"
+import { Contract, Signer, utils } from "ethers";
+import type { Provider } from "@ethersproject/providers";
 import type {
   ISemaphoreCore,
-  ISemaphoreCoreInterface
-} from "../../../contracts/interfaces/ISemaphoreCore"
+  ISemaphoreCoreInterface,
+} from "../../../contracts/interfaces/ISemaphoreCore";
 
 const _abi = [
   {
     inputs: [],
     name: "Semaphore__YouAreUsingTheSameNillifierTwice",
-    type: "error"
+    type: "error",
   },
   {
     anonymous: false,
@@ -22,23 +22,23 @@ const _abi = [
         indexed: false,
         internalType: "uint256",
         name: "nullifierHash",
-        type: "uint256"
-      }
+        type: "uint256",
+      },
     ],
     name: "NullifierHashAdded",
-    type: "event"
-  }
-]
+    type: "event",
+  },
+];
 
 export class ISemaphoreCore__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): ISemaphoreCoreInterface {
-    return new utils.Interface(_abi) as ISemaphoreCoreInterface
+    return new utils.Interface(_abi) as ISemaphoreCoreInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): ISemaphoreCore {
-    return new Contract(address, _abi, signerOrProvider) as ISemaphoreCore
+    return new Contract(address, _abi, signerOrProvider) as ISemaphoreCore;
   }
 }

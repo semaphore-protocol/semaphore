@@ -11,6 +11,7 @@
   "types": "./dist/types/packages/semaphore/src/index.d.ts",
   "files": [
     "dist/",
+    "typechain/",
     "src/",
     "LICENSE",
     "README.md"

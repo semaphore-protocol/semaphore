@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import type { Provider } from "@ethersproject/providers"
+import { Contract, Signer, utils } from "ethers";
+import type { Provider } from "@ethersproject/providers";
 import type {
   IVerifier,
-  IVerifierInterface
-} from "../../../contracts/interfaces/IVerifier"
+  IVerifierInterface,
+} from "../../../contracts/interfaces/IVerifier";
 
 const _abi = [
   {
@@ -15,51 +15,51 @@ const _abi = [
       {
         internalType: "uint256[2]",
         name: "a",
-        type: "uint256[2]"
+        type: "uint256[2]",
       },
       {
         internalType: "uint256[2][2]",
         name: "b",
-        type: "uint256[2][2]"
+        type: "uint256[2][2]",
       },
       {
         internalType: "uint256[2]",
         name: "c",
-        type: "uint256[2]"
+        type: "uint256[2]",
       },
       {
         internalType: "bytes",
         name: "input",
-        type: "bytes"
+        type: "bytes",
       },
       {
         internalType: "uint8",
         name: "maxEdges",
-        type: "uint8"
-      }
+        type: "uint8",
+      },
     ],
     name: "verifyProof",
     outputs: [
       {
         internalType: "bool",
         name: "r",
-        type: "bool"
-      }
+        type: "bool",
+      },
     ],
     stateMutability: "view",
-    type: "function"
-  }
-]
+    type: "function",
+  },
+];
 
 export class IVerifier__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): IVerifierInterface {
-    return new utils.Interface(_abi) as IVerifierInterface
+    return new utils.Interface(_abi) as IVerifierInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): IVerifier {
-    return new Contract(address, _abi, signerOrProvider) as IVerifier
+    return new Contract(address, _abi, signerOrProvider) as IVerifier;
   }
 }

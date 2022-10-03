@@ -1,12 +1,12 @@
 import { expect } from "chai"
 import { constants, Signer, utils, BigNumber, providers, Wallet } from "ethers"
-import { ethers as hreEthers } from "hardhat"
+// import { ethers as hreEthers } from "hardhat"
 import { Semaphore as SemaphoreContract } from "../../build/typechain"
 import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Identity } from "../../packages/identity/src"
-import { Group } from "../../packages/group/src"
-import { Semaphore } from "../../packages/semaphore/src"
+import { Identity } from "../../packages/identity"
+import { Group } from "../../packages/group"
+// import { Semaphore } from "../../packages/semaphore/src"
 import {
   FullProof,
   generateProof,
@@ -37,10 +37,7 @@ describe("CrossChain", () => {
   const maxEdges = 1
   const providerA = new providers.JsonRpcProvider("http://127.0.0.1:8545")
   const providerB = new providers.JsonRpcProvider("http://127.0.0.1:8546")
-  const zeroValue = BigInt(
-    "21663839004416932945382355908790599225266501822907911457504978515578255421292"
-  )
-  const contractAddr = "0xe800b887db490d9523212813a7907afdb7493e45"
+  // const contractAddr = "0xe800b887db490d9523212813a7907afdb7493e45"
 
   const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/semaphore_20_2.wasm`
   const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/circuit_final.zkey`
@@ -142,7 +139,7 @@ describe("CrossChain", () => {
   })
   describe("# CrossChainVerifyRoots", () => {
     let roots: string[]
-    let roots_zero: string[]
+    // let roots_zero: string[]
     let rootA: BigNumber
     let rootB: BigNumber
 
@@ -150,7 +147,7 @@ describe("CrossChain", () => {
       rootA = await contractA.getRoot(groupId)
       rootB = await contractB.getRoot(groupId)
       roots = [rootA.toHexString(), rootB.toHexString()]
-      roots_zero = [rootA.toHexString(), toFixedHex(0, 32)]
+      // roots_zero = [rootA.toHexString(), toFixedHex(0, 32)]
     })
     it("Should not verify if updateEdge has not been called", async () => {
       const transaction = contractA
@@ -162,9 +159,10 @@ describe("CrossChain", () => {
     })
 
     it("Should verify external root after updateEdge", async () => {
-      const tx_update = await contractB
+      await contractB
         .connect(signersB[1])
         .updateEdge(groupId, allRootsA[0], 0, toFixedHex(chainIDA, 32))
+
       const roots = [allRootsB[0], allRootsA[0]]
 
       const is_valid = await contractB
@@ -193,7 +191,7 @@ describe("CrossChain", () => {
       await expect(transaction).to.be.revertedWith("Neighbour root not found")
     })
     it("Should verify not sequential updates", async () => {
-      const tx_update = await contractB
+      await contractB
         .connect(signersB[1])
         .updateEdge(groupId, allRootsA[2], 2, toFixedHex(chainIDA, 32))
 
@@ -309,7 +307,7 @@ describe("CrossChain", () => {
         .to.emit(contractB, "MemberAdded")
         .withArgs(groupId, membersB[3], groupB.root)
 
-      const tx_update = contractB
+       await contractB
         .connect(signersB[1])
         .updateEdge(
           groupId,

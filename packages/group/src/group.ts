@@ -1,5 +1,4 @@
 import { BigNumber, BigNumberish } from "ethers"
-import { poseidon } from "circomlibjs"
 import { Member } from "./types"
 import { MerkleTree, MerkleProof } from "@webb-tools/sdk-core"
 

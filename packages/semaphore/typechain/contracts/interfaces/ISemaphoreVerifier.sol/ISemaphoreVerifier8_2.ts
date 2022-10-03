@@ -9,24 +9,24 @@ import type {
   CallOverrides,
   PopulatedTransaction,
   Signer,
-  utils
-} from "ethers"
-import type { FunctionFragment, Result } from "@ethersproject/abi"
-import type { Listener, Provider } from "@ethersproject/providers"
+  utils,
+} from "ethers";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue
-} from "../../../common"
+  PromiseOrValue,
+} from "../../../common";
 
 export interface ISemaphoreVerifier8_2Interface extends utils.Interface {
   functions: {
-    "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[15])": FunctionFragment
-  }
+    "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[15])": FunctionFragment;
+  };
 
-  getFunction(nameOrSignatureOrTopic: "verifyProof"): FunctionFragment
+  getFunction(nameOrSignatureOrTopic: "verifyProof"): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "verifyProof",
@@ -39,38 +39,41 @@ export interface ISemaphoreVerifier8_2Interface extends utils.Interface {
       [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       PromiseOrValue<BigNumberish>[]
     ]
-  ): string
+  ): string;
 
-  decodeFunctionResult(functionFragment: "verifyProof", data: BytesLike): Result
+  decodeFunctionResult(
+    functionFragment: "verifyProof",
+    data: BytesLike
+  ): Result;
 
-  events: {}
+  events: {};
 }
 
 export interface ISemaphoreVerifier8_2 extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: ISemaphoreVerifier8_2Interface
+  interface: ISemaphoreVerifier8_2Interface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     verifyProof(
@@ -82,8 +85,8 @@ export interface ISemaphoreVerifier8_2 extends BaseContract {
       c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       input: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
-    ): Promise<[boolean] & { r: boolean }>
-  }
+    ): Promise<[boolean] & { r: boolean }>;
+  };
 
   verifyProof(
     a: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
@@ -94,7 +97,7 @@ export interface ISemaphoreVerifier8_2 extends BaseContract {
     c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
     input: PromiseOrValue<BigNumberish>[],
     overrides?: CallOverrides
-  ): Promise<boolean>
+  ): Promise<boolean>;
 
   callStatic: {
     verifyProof(
@@ -106,10 +109,10 @@ export interface ISemaphoreVerifier8_2 extends BaseContract {
       c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       input: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
-    ): Promise<boolean>
-  }
+    ): Promise<boolean>;
+  };
 
-  filters: {}
+  filters: {};
 
   estimateGas: {
     verifyProof(
@@ -121,8 +124,8 @@ export interface ISemaphoreVerifier8_2 extends BaseContract {
       c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       input: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
     verifyProof(
@@ -134,6 +137,6 @@ export interface ISemaphoreVerifier8_2 extends BaseContract {
       c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       input: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
-  }
+    ): Promise<PopulatedTransaction>;
+  };
 }

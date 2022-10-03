@@ -1,11 +1,11 @@
 import { expect } from "chai"
-import { Signer, utils, BigNumber } from "ethers"
-import { ethers, run } from "hardhat"
+import { Signer, utils } from "ethers"
+import { run } from "hardhat"
 import { SemaphoreWhistleblowing } from "../../build/typechain"
 import { config } from "../../package.json"
 
-import { LinkedGroup } from "../../packages/group/src"
-import { Identity } from "../../packages/identity/src"
+import { LinkedGroup } from "../../packages/group"
+import { Identity } from "../../packages/identity"
 
 import {
   generateNullifierHash,
@@ -13,24 +13,18 @@ import {
   packToSolidityProof,
   PublicSignals,
   SolidityProof
-} from "../../packages/proof/src"
+} from "../../packages/proof"
 
 import {
-  toFixedHex,
   VerifierContractInfo,
   createRootsBytes,
-  createIdentities
 } from "../utils"
 
 describe("SemaphoreWhistleblowing", () => {
   let contract: SemaphoreWhistleblowing
   let signers: Signer[]
-  let accounts: string[]
   let editor: string
 
-  const zeroValue = BigInt(
-    "21663839004416932945382355908790599225266501822907911457504978515578255421292"
-  )
   const chainID = BigInt(1099511629113)
   const treeDepth = Number(process.env.TREE_DEPTH) | 20
   const entityIds = [BigInt(1), BigInt(2)]
@@ -78,9 +72,6 @@ describe("SemaphoreWhistleblowing", () => {
       verifier: verifierSelector.address
     })
     signers = await run("accounts", { logs: false })
-    accounts = await Promise.all(
-      signers.map((signer: Signer) => signer.getAddress())
-    )
     editor = await signers[1].getAddress()
   })
 
@@ -244,7 +235,6 @@ describe("SemaphoreWhistleblowing", () => {
 
     let solidityProof: SolidityProof
     let publicSignals: PublicSignals
-    let roots: string[]
 
     before(async () => {
       await contract.createEntity(entityIds[1], treeDepth, editor, maxEdges)
@@ -254,12 +244,7 @@ describe("SemaphoreWhistleblowing", () => {
       await contract
         .connect(signers[1])
         .addWhistleblower(entityIds[1], BigInt(1))
-      const root = await contract.getRoot(entityIds[1])
-
-      roots = [
-        root.toHexString(),
-        toFixedHex(BigNumber.from(0).toHexString(), 32)
-      ]
+      // const root = await contract.getRoot(entityIds[1])
 
       const fullProof = await generateProof(
         identity,

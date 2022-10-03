@@ -2,7 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber"
 import Identity from "./identity"
 
 describe("Identity", () => {
-  const chainID: bigint = BigInt(1337)
+  const chainID = BigInt(1337)
   describe("# Identity", () => {
     it("Should not create a identity if the parameter is not valid", () => {
       const fun1 = () => new Identity(chainID, 13 as any)

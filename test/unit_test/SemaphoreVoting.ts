@@ -1,7 +1,7 @@
 import { expect } from "chai"
-import { ethers, run } from "hardhat"
+import { run } from "hardhat"
 import { SemaphoreVoting } from "../../build/typechain"
-import { BigNumber, Signer, utils } from "ethers"
+import { Signer, utils } from "ethers"
 import { config } from "../../package.json"
 
 import { Identity } from "../../packages/identity/src"
@@ -13,24 +13,19 @@ import {
   PublicSignals,
   SolidityProof
 } from "../../packages/proof/src"
-import { VerifierContractInfo, toFixedHex, createRootsBytes } from "../utils"
+import { VerifierContractInfo, createRootsBytes } from "../utils"
 
 describe("SemaphoreVoting", () => {
   let contract: SemaphoreVoting
   let signers: Signer[]
-  let accounts: string[]
   let coordinator: string
 
-  const zeroValue = BigInt(
-    "21663839004416932945382355908790599225266501822907911457504978515578255421292"
-  )
   const chainID = BigInt(1099511629113)
   const treeDepth = Number(process.env.TREE_DEPTH) | 20
   const pollIds = [BigInt(1), BigInt(2), BigInt(3)]
   const encryptionKey = BigInt(0)
   const decryptionKey = BigInt(0)
   const maxEdges = 1
-  const circuitLength = 2
 
   const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/semaphore_20_2.wasm`
   const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/circuit_final.zkey`
@@ -74,9 +69,6 @@ describe("SemaphoreVoting", () => {
       verifier: verifierSelector.address
     })
     signers = await run("accounts", { logs: false })
-    accounts = await Promise.all(
-      signers.map((signer: Signer) => signer.getAddress())
-    )
     coordinator = await signers[1].getAddress()
   })
 
@@ -234,18 +226,11 @@ describe("SemaphoreVoting", () => {
 
     let solidityProof: SolidityProof
     let publicSignals: PublicSignals
-    let roots: string[]
 
     before(async () => {
       await contract.connect(signers[1]).addVoter(pollIds[1], BigInt(1))
       await contract.connect(signers[1]).startPoll(pollIds[1], encryptionKey)
       await contract.createPoll(pollIds[2], treeDepth, coordinator, maxEdges)
-      const root = await contract.getRoot(pollIds[1])
-
-      roots = [
-        root.toHexString(),
-        toFixedHex(BigNumber.from(0).toHexString(), 32)
-      ]
 
       const fullProof = await generateProof(
         identity,

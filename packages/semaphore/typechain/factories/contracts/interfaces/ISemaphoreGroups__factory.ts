@@ -2,38 +2,38 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import type { Provider } from "@ethersproject/providers"
+import { Contract, Signer, utils } from "ethers";
+import type { Provider } from "@ethersproject/providers";
 import type {
   ISemaphoreGroups,
-  ISemaphoreGroupsInterface
-} from "../../../contracts/interfaces/ISemaphoreGroups"
+  ISemaphoreGroupsInterface,
+} from "../../../contracts/interfaces/ISemaphoreGroups";
 
 const _abi = [
   {
     inputs: [],
     name: "Semaphore__GroupAlreadyExists",
-    type: "error"
+    type: "error",
   },
   {
     inputs: [],
     name: "Semaphore__GroupDoesNotExist",
-    type: "error"
+    type: "error",
   },
   {
     inputs: [],
     name: "Semaphore__GroupIdIsNotLessThanSnarkScalarField",
-    type: "error"
+    type: "error",
   },
   {
     inputs: [],
     name: "Semaphore__InvalidCurrentChainRoot",
-    type: "error"
+    type: "error",
   },
   {
     inputs: [],
     name: "Semaphore__InvalidEdgeChainRoot",
-    type: "error"
+    type: "error",
   },
   {
     anonymous: false,
@@ -42,17 +42,17 @@ const _abi = [
         indexed: true,
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
+        type: "uint256",
       },
       {
         indexed: false,
         internalType: "uint8",
         name: "depth",
-        type: "uint8"
-      }
+        type: "uint8",
+      },
     ],
     name: "GroupCreated",
-    type: "event"
+    type: "event",
   },
   {
     anonymous: false,
@@ -61,23 +61,23 @@ const _abi = [
         indexed: true,
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
+        type: "uint256",
       },
       {
         indexed: false,
         internalType: "uint256",
         name: "identityCommitment",
-        type: "uint256"
+        type: "uint256",
       },
       {
         indexed: false,
         internalType: "uint256",
         name: "root",
-        type: "uint256"
-      }
+        type: "uint256",
+      },
     ],
     name: "MemberAdded",
-    type: "event"
+    type: "event",
   },
   {
     anonymous: false,
@@ -86,50 +86,50 @@ const _abi = [
         indexed: true,
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
+        type: "uint256",
       },
       {
         indexed: false,
         internalType: "uint256",
         name: "identityCommitment",
-        type: "uint256"
+        type: "uint256",
       },
       {
         indexed: false,
         internalType: "uint256",
         name: "root",
-        type: "uint256"
-      }
+        type: "uint256",
+      },
     ],
     name: "MemberRemoved",
-    type: "event"
+    type: "event",
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
-      }
+        type: "uint256",
+      },
     ],
     name: "getDepth",
     outputs: [
       {
         internalType: "uint8",
         name: "",
-        type: "uint8"
-      }
+        type: "uint8",
+      },
     ],
     stateMutability: "view",
-    type: "function"
+    type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
-      }
+        type: "uint256",
+      },
     ],
     name: "getLatestNeighborEdges",
     outputs: [
@@ -138,124 +138,124 @@ const _abi = [
           {
             internalType: "uint256",
             name: "chainID",
-            type: "uint256"
+            type: "uint256",
           },
           {
             internalType: "bytes32",
             name: "root",
-            type: "bytes32"
+            type: "bytes32",
           },
           {
             internalType: "uint256",
             name: "latestLeafIndex",
-            type: "uint256"
+            type: "uint256",
           },
           {
             internalType: "bytes32",
             name: "srcResourceID",
-            type: "bytes32"
-          }
+            type: "bytes32",
+          },
         ],
         internalType: "struct Edge[]",
         name: "",
-        type: "tuple[]"
-      }
+        type: "tuple[]",
+      },
     ],
     stateMutability: "view",
-    type: "function"
+    type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
-      }
+        type: "uint256",
+      },
     ],
     name: "getMaxEdges",
     outputs: [
       {
         internalType: "uint8",
         name: "",
-        type: "uint8"
-      }
+        type: "uint8",
+      },
     ],
     stateMutability: "view",
-    type: "function"
+    type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
-      }
+        type: "uint256",
+      },
     ],
     name: "getNumberOfLeaves",
     outputs: [
       {
         internalType: "uint256",
         name: "",
-        type: "uint256"
-      }
+        type: "uint256",
+      },
     ],
     stateMutability: "view",
-    type: "function"
+    type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
-      }
+        type: "uint256",
+      },
     ],
     name: "getRoot",
     outputs: [
       {
         internalType: "uint256",
         name: "",
-        type: "uint256"
-      }
+        type: "uint256",
+      },
     ],
     stateMutability: "view",
-    type: "function"
+    type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
+        type: "uint256",
       },
       {
         internalType: "bytes",
         name: "roots",
-        type: "bytes"
-      }
+        type: "bytes",
+      },
     ],
     name: "verifyRoots",
     outputs: [
       {
         internalType: "bool",
         name: "",
-        type: "bool"
-      }
+        type: "bool",
+      },
     ],
     stateMutability: "view",
-    type: "function"
-  }
-]
+    type: "function",
+  },
+];
 
 export class ISemaphoreGroups__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): ISemaphoreGroupsInterface {
-    return new utils.Interface(_abi) as ISemaphoreGroupsInterface
+    return new utils.Interface(_abi) as ISemaphoreGroupsInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): ISemaphoreGroups {
-    return new Contract(address, _abi, signerOrProvider) as ISemaphoreGroups
+    return new Contract(address, _abi, signerOrProvider) as ISemaphoreGroups;
   }
 }

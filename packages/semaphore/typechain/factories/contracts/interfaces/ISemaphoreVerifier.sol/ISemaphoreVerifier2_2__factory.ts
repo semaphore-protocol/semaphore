@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import type { Provider } from "@ethersproject/providers"
+import { Contract, Signer, utils } from "ethers";
+import type { Provider } from "@ethersproject/providers";
 import type {
   ISemaphoreVerifier2_2,
-  ISemaphoreVerifier2_2Interface
-} from "../../../../contracts/interfaces/ISemaphoreVerifier.sol/ISemaphoreVerifier2_2"
+  ISemaphoreVerifier2_2Interface,
+} from "../../../../contracts/interfaces/ISemaphoreVerifier.sol/ISemaphoreVerifier2_2";
 
 const _abi = [
   {
@@ -15,41 +15,41 @@ const _abi = [
       {
         internalType: "uint256[2]",
         name: "a",
-        type: "uint256[2]"
+        type: "uint256[2]",
       },
       {
         internalType: "uint256[2][2]",
         name: "b",
-        type: "uint256[2][2]"
+        type: "uint256[2][2]",
       },
       {
         internalType: "uint256[2]",
         name: "c",
-        type: "uint256[2]"
+        type: "uint256[2]",
       },
       {
         internalType: "uint256[6]",
         name: "input",
-        type: "uint256[6]"
-      }
+        type: "uint256[6]",
+      },
     ],
     name: "verifyProof",
     outputs: [
       {
         internalType: "bool",
         name: "r",
-        type: "bool"
-      }
+        type: "bool",
+      },
     ],
     stateMutability: "view",
-    type: "function"
-  }
-]
+    type: "function",
+  },
+];
 
 export class ISemaphoreVerifier2_2__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): ISemaphoreVerifier2_2Interface {
-    return new utils.Interface(_abi) as ISemaphoreVerifier2_2Interface
+    return new utils.Interface(_abi) as ISemaphoreVerifier2_2Interface;
   }
   static connect(
     address: string,
@@ -59,6 +59,6 @@ export class ISemaphoreVerifier2_2__factory {
       address,
       _abi,
       signerOrProvider
-    ) as ISemaphoreVerifier2_2
+    ) as ISemaphoreVerifier2_2;
   }
 }

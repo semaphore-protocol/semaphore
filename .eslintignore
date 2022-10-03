@@ -13,9 +13,13 @@ cache
 
 # types
 types
+typechain
 
 # circuits
 circuits
+
+# fixtures
+witness_calculator.js
 
 # production
 dist

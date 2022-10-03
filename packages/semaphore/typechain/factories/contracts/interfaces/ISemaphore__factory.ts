@@ -2,23 +2,23 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import type { Provider } from "@ethersproject/providers"
+import { Contract, Signer, utils } from "ethers";
+import type { Provider } from "@ethersproject/providers";
 import type {
   ISemaphore,
-  ISemaphoreInterface
-} from "../../../contracts/interfaces/ISemaphore"
+  ISemaphoreInterface,
+} from "../../../contracts/interfaces/ISemaphore";
 
 const _abi = [
   {
     inputs: [],
     name: "Semaphore__CallerIsNotTheGroupAdmin",
-    type: "error"
+    type: "error",
   },
   {
     inputs: [],
     name: "Semaphore__TreeDepthIsNotSupported",
-    type: "error"
+    type: "error",
   },
   {
     anonymous: false,
@@ -27,23 +27,23 @@ const _abi = [
         indexed: true,
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
+        type: "uint256",
       },
       {
         indexed: true,
         internalType: "address",
         name: "oldAdmin",
-        type: "address"
+        type: "address",
       },
       {
         indexed: true,
         internalType: "address",
         name: "newAdmin",
-        type: "address"
-      }
+        type: "address",
+      },
     ],
     name: "GroupAdminUpdated",
-    type: "event"
+    type: "event",
   },
   {
     anonymous: false,
@@ -52,206 +52,206 @@ const _abi = [
         indexed: true,
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
+        type: "uint256",
       },
       {
         indexed: false,
         internalType: "bytes32",
         name: "signal",
-        type: "bytes32"
-      }
+        type: "bytes32",
+      },
     ],
     name: "ProofVerified",
-    type: "event"
+    type: "event",
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
+        type: "uint256",
       },
       {
         internalType: "uint256",
         name: "identityCommitment",
-        type: "uint256"
-      }
+        type: "uint256",
+      },
     ],
     name: "addMember",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function"
+    type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
+        type: "uint256",
       },
       {
         internalType: "uint8",
         name: "depth",
-        type: "uint8"
+        type: "uint8",
       },
       {
         internalType: "address",
         name: "admin",
-        type: "address"
+        type: "address",
       },
       {
         internalType: "uint8",
         name: "maxEdges",
-        type: "uint8"
-      }
+        type: "uint8",
+      },
     ],
     name: "createGroup",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function"
+    type: "function",
   },
   {
     inputs: [
       {
         internalType: "bytes",
         name: "roots",
-        type: "bytes"
-      }
+        type: "bytes",
+      },
     ],
     name: "decodeRoots",
     outputs: [
       {
         internalType: "bytes32[]",
         name: "roots_decoded",
-        type: "bytes32[]"
-      }
+        type: "bytes32[]",
+      },
     ],
     stateMutability: "view",
-    type: "function"
+    type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
+        type: "uint256",
       },
       {
         internalType: "uint256",
         name: "identityCommitment",
-        type: "uint256"
+        type: "uint256",
       },
       {
         internalType: "uint256[]",
         name: "proofSiblings",
-        type: "uint256[]"
+        type: "uint256[]",
       },
       {
         internalType: "uint8[]",
         name: "proofPathIndices",
-        type: "uint8[]"
-      }
+        type: "uint8[]",
+      },
     ],
     name: "removeMember",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function"
+    type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
+        type: "uint256",
       },
       {
         internalType: "bytes32",
         name: "root",
-        type: "bytes32"
+        type: "bytes32",
       },
       {
         internalType: "uint32",
         name: "leafIndex",
-        type: "uint32"
+        type: "uint32",
       },
       {
         internalType: "bytes32",
         name: "srcResourceID",
-        type: "bytes32"
-      }
+        type: "bytes32",
+      },
     ],
     name: "updateEdge",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function"
+    type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
+        type: "uint256",
       },
       {
         internalType: "address",
         name: "newAdmin",
-        type: "address"
-      }
+        type: "address",
+      },
     ],
     name: "updateGroupAdmin",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function"
+    type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "groupId",
-        type: "uint256"
+        type: "uint256",
       },
       {
         internalType: "bytes32",
         name: "signal",
-        type: "bytes32"
+        type: "bytes32",
       },
       {
         internalType: "uint256",
         name: "nullifierHash",
-        type: "uint256"
+        type: "uint256",
       },
       {
         internalType: "uint256",
         name: "externalNullifier",
-        type: "uint256"
+        type: "uint256",
       },
       {
         internalType: "bytes",
         name: "roots",
-        type: "bytes"
+        type: "bytes",
       },
       {
         internalType: "uint256[8]",
         name: "proof",
-        type: "uint256[8]"
-      }
+        type: "uint256[8]",
+      },
     ],
     name: "verifyProof",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function"
-  }
-]
+    type: "function",
+  },
+];
 
 export class ISemaphore__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): ISemaphoreInterface {
-    return new utils.Interface(_abi) as ISemaphoreInterface
+    return new utils.Interface(_abi) as ISemaphoreInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): ISemaphore {
-    return new Contract(address, _abi, signerOrProvider) as ISemaphore
+    return new Contract(address, _abi, signerOrProvider) as ISemaphore;
   }
 }

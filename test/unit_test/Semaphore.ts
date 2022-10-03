@@ -3,16 +3,15 @@ import {
   constants,
   Signer,
   utils,
-  ContractTransaction,
   ContractReceipt,
   BigNumber
 } from "ethers"
-import { run, ethers } from "hardhat"
-import { Semaphore as SemaphoreContract } from "../../build/typechain"
-import { config } from "../../package.json"
+import { ethers } from 'hardhat'
+// import { Semaphore as SemaphoreContract } from "../../build/typechain"
+// import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Semaphore } from "../../packages/semaphore"
-import { LinkedGroup } from "../../packages/group"
+import { Semaphore } from '@webb-tools/semaphore';
+import { LinkedGroup } from '@webb-tools/semaphore-group';
 import {
   FullProof,
   generateProof,
@@ -32,18 +31,15 @@ describe("Semaphore", () => {
   let accounts: string[]
 
   const treeDepth = Number(process.env.TREE_DEPTH) | 20
-  const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
+  // const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
   const groupId = 1
   const maxEdges = 1
   const chainID = BigInt(1099511629113)
-  const zeroValue = BigInt(
-    "21663839004416932945382355908790599225266501822907911457504978515578255421292"
-  )
   const { identities, members } = createIdentities(Number(chainID), 3)
 
-  const wasmFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/semaphore_20_2.wasm`
-  const witnessCalcPath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/witness_calculator.js`
-  const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/${treeDepth}/2/circuit_final.zkey`
+  const wasmFilePath = __dirname + `/../../fixtures/${treeDepth}/2/semaphore_20_2.wasm`
+  const witnessCalcPath = __dirname + `/../../fixtures/${treeDepth}/2/witness_calculator.js`
+  const zkeyFilePath = __dirname + `/../../fixtures/${treeDepth}/2/circuit_final.zkey`
 
   before(async () => {
     signers = await ethers.getSigners()
@@ -121,7 +117,7 @@ describe("Semaphore", () => {
     it("Should update the group admin", async () => {
       await semaphore.setSigner(admin)
 
-      const receipt: ContractReceipt = semaphore.updateGroupAdmin(
+      const receipt: ContractReceipt = await semaphore.updateGroupAdmin(
         groupId,
         userAddr
       )
@@ -133,7 +129,7 @@ describe("Semaphore", () => {
       // reseting admin for rest of test
       await semaphore.setSigner(user)
 
-      const receipt2: ContractReceipt = semaphore.updateGroupAdmin(
+      const receipt2: ContractReceipt = await semaphore.updateGroupAdmin(
         groupId,
         adminAddr
       )
@@ -158,7 +154,7 @@ describe("Semaphore", () => {
     it("Should add a new member in an existing group", async () => {
       await semaphore.setSigner(admin)
 
-      const linkedGroup = new LinkedGroup(treeDepth, BigInt(zeroValue))
+      const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
       linkedGroup.addMember(members[0])
 
       // console.log(semaphore)

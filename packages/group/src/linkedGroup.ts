@@ -1,8 +1,8 @@
 import { BigNumber, BigNumberish } from "ethers"
 import { Group } from "./group"
 import { Member } from "./types"
-import { MerkleProof, toFixedHex } from "@webb-tools/sdk-core"
-const assert = require("assert")
+import { MerkleProof } from "@webb-tools/sdk-core"
+import { strict as assert } from "assert"
 // import assert from 'assert';
 
 // This convenience wrapper class is used in tests -
