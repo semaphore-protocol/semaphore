@@ -15,10 +15,7 @@ import {
   SolidityProof
 } from "../../packages/proof"
 
-import {
-  VerifierContractInfo,
-  createRootsBytes,
-} from "../utils"
+import { VerifierContractInfo, createRootsBytes } from "../utils"
 
 describe("SemaphoreWhistleblowing", () => {
   let contract: SemaphoreWhistleblowing

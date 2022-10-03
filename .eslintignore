@@ -13,7 +13,7 @@ cache
 
 # types
 types
-typechain
+packages/semaphore/typechain/**/*
 
 # circuits
 circuits

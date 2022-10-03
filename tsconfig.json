@@ -23,7 +23,7 @@
       "module": "commonjs"
     }
   },
-  "exclude": [ "fixtures/**/**/*" ],
+  "exclude": ["fixtures/**/**/*"],
   "include": [
     "packages/**/*",
     "scripts/**/*",
@@ -31,7 +31,7 @@
     "test/**/*",
     "test/**/**/*",
     "build/typechain/**/*",
-    "types/**/*",
+    "types/**/*"
   ],
   "files": ["hardhat.config.ts"]
 }

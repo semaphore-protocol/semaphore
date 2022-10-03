@@ -18,7 +18,7 @@ import { getChainIdType, ZkComponents } from "@webb-tools/utils"
 import { LinkedGroup } from "@webb-tools/semaphore-group/src"
 import { Verifier } from "./Verifier"
 
-import { strict as assert } from 'assert';
+import { strict as assert } from "assert"
 // const assert = require("assert")
 
 // This convenience wrapper class is used in tests -
@@ -260,4 +260,4 @@ export class Semaphore {
   }
 }
 
-export default Semaphore;
+export default Semaphore

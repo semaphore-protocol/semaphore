@@ -307,7 +307,7 @@ describe("CrossChain", () => {
         .to.emit(contractB, "MemberAdded")
         .withArgs(groupId, membersB[3], groupB.root)
 
-       await contractB
+      await contractB
         .connect(signersB[1])
         .updateEdge(
           groupId,

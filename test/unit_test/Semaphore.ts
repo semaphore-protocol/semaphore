@@ -1,17 +1,11 @@
 import { expect } from "chai"
-import {
-  constants,
-  Signer,
-  utils,
-  ContractReceipt,
-  BigNumber
-} from "ethers"
-import { ethers } from 'hardhat'
+import { constants, Signer, utils, ContractReceipt, BigNumber } from "ethers"
+import { ethers } from "hardhat"
 // import { Semaphore as SemaphoreContract } from "../../build/typechain"
 // import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Semaphore } from '@webb-tools/semaphore';
-import { LinkedGroup } from '@webb-tools/semaphore-group';
+import { Semaphore } from "@webb-tools/semaphore"
+import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
   FullProof,
   generateProof,
@@ -37,9 +31,12 @@ describe("Semaphore", () => {
   const chainID = BigInt(1099511629113)
   const { identities, members } = createIdentities(Number(chainID), 3)
 
-  const wasmFilePath = __dirname + `/../../fixtures/${treeDepth}/2/semaphore_20_2.wasm`
-  const witnessCalcPath = __dirname + `/../../fixtures/${treeDepth}/2/witness_calculator.js`
-  const zkeyFilePath = __dirname + `/../../fixtures/${treeDepth}/2/circuit_final.zkey`
+  const wasmFilePath =
+    __dirname + `/../../fixtures/${treeDepth}/2/semaphore_20_2.wasm`
+  const witnessCalcPath =
+    __dirname + `/../../fixtures/${treeDepth}/2/witness_calculator.js`
+  const zkeyFilePath =
+    __dirname + `/../../fixtures/${treeDepth}/2/circuit_final.zkey`
 
   before(async () => {
     signers = await ethers.getSigners()

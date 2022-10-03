@@ -1,7 +1,4 @@
-import {
-  ethers,
-  Signer
-} from "ethers"
+import { ethers, Signer } from "ethers"
 import {
   Verifier20_2__factory,
   Verifier20_7__factory,
