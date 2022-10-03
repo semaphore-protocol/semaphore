@@ -6,63 +6,68 @@ import { toUtf8Bytes } from "@ethersproject/strings"
 import Web3 from "web3"
 
 export type VerifierContractInfo = {
-    name: string
-    address: string
-    depth: string
-    circuitLength: string
+  name: string
+  address: string
+  depth: string
+  circuitLength: string
 }
 export function toFixedHex(number: BigNumberish, length = 32): string {
-    return (
-        "0x" +
-        (number instanceof Buffer ? number.toString("hex") : BigNumber.from(number).toHexString().slice(2)).padStart(
-            length * 2,
-            "0"
-        )
-    )
+  return (
+    "0x" +
+    (number instanceof Buffer
+      ? number.toString("hex")
+      : BigNumber.from(number).toHexString().slice(2)
+    ).padStart(length * 2, "0")
+  )
 }
 
-export function createRootsBytesWeb3(rootArray: string[] | BigNumberish[]): string {
-    const web3 = new Web3();
-    return web3.eth.abi.encodeParameters(
-        ['bytes32[]'],
-        [rootArray]
-    ).toString();
+export function createRootsBytesWeb3(
+  rootArray: string[] | BigNumberish[]
+): string {
+  const web3 = new Web3()
+  return web3.eth.abi.encodeParameters(["bytes32[]"], [rootArray]).toString()
 }
 
 export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
-    let rootsBytes = "0x"
-    for (let i = 0; i < rootArray.length; i++) {
-        rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
-    }
-    return rootsBytes // root byte string (32 * array.length bytes)
+  let rootsBytes = "0x"
+  for (let i = 0; i < rootArray.length; i++) {
+    rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
+  }
+  return rootsBytes // root byte string (32 * array.length bytes)
 }
 
-export function createIdentities(chainId: number, n: number): { identities: Identity[]; members: bigint[] } {
-    const identityCommitments: bigint[] = []
-    const identities: Identity[] = []
+export function createIdentities(
+  chainId: number,
+  n: number
+): { identities: Identity[]; members: bigint[] } {
+  const identityCommitments: bigint[] = []
+  const identities: Identity[] = []
 
-    for (let i = 0; i < n; i++) {
-        const identity = new Identity(BigInt(chainId))
-        const identityCommitment = identity.generateCommitment()
+  for (let i = 0; i < n; i++) {
+    const identity = new Identity(BigInt(chainId))
+    const identityCommitment = identity.generateCommitment()
 
-        identities.push(identity)
-        identityCommitments.push(identityCommitment)
-    }
+    identities.push(identity)
+    identityCommitments.push(identityCommitment)
+  }
 
-    return { identities, members: identityCommitments }
+  return { identities, members: identityCommitments }
 }
 
-export function createIdentityCommitments(chainId: number, n: number): bigint[] {
-    const identityCommitments: bigint[] = []
+export function createIdentityCommitments(
+  chainId: number,
+  n: number
+): bigint[] {
+  const identityCommitments: bigint[] = []
 
-    for (let i = 0; i < n; i++) {
-        const identity = new Identity(BigInt(chainId), i.toString())
-        const identityCommitment = identity.generateCommitment()
+  for (let i = 0; i < n; i++) {
+    const identity = new Identity(BigInt(chainId), i.toString())
+    const identityCommitment = identity.generateCommitment()
 
-        identityCommitments.push(identityCommitment)
-    }
+    identityCommitments.push(identityCommitment)
+  }
 
-    return identityCommitments
+  return identityCommitments
 }
 
 /**
@@ -71,9 +76,9 @@ export function createIdentityCommitments(chainId: number, n: number): bigint[] 
  * @returns The hexadecimal hash of the message.
  */
 export function sha256(message: string): string {
-    const hash = _sha256(toUtf8Bytes(message))
+  const hash = _sha256(toUtf8Bytes(message))
 
-    return hash
+  return hash
 }
 
 /**
@@ -82,7 +87,7 @@ export function sha256(message: string): string {
  * @returns The generated random number.
  */
 export function genRandomNumber(numberOfBytes = 31): bigint {
-    return BigNumber.from(randomBytes(numberOfBytes)).toBigInt()
+  return BigNumber.from(randomBytes(numberOfBytes)).toBigInt()
 }
 
 /**
@@ -91,9 +96,9 @@ export function genRandomNumber(numberOfBytes = 31): bigint {
  * @returns True or false.
  */
 export function isJsonArray(jsonString: string) {
-    try {
-        return Array.isArray(JSON.parse(jsonString))
-    } catch (error) {
-        return false
-    }
+  try {
+    return Array.isArray(JSON.parse(jsonString))
+  } catch (error) {
+    return false
+  }
 }

@@ -1,38 +1,38 @@
 {
-    "name": "@semaphore-anchor/contracts",
-    "version": "0.0.1",
-    "description": "Semaphore-anchor contracts to manage groups and broadcast anonymous signals across blockchains.",
-    "license": "MIT",
-    "files": [
-        "**/*.sol"
-    ],
-    "keywords": [
-        "blockchain",
-        "ethereum",
-        "hardhat",
-        "smart-contracts",
-        "semaphore",
-        "identity",
-        "solidity",
-        "zero-knowledge",
-        "zk-snarks",
-        "zero-knowledge-proofs",
-        "circom",
-        "proof-of-membership"
-    ],
-    "homepage": "https://github.com/webb-tools/semaphore-anchor.git#readme",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/webb-tools/semaphore-anchor.git.git"
-    },
-    "bugs": {
-        "url": "https://github.com/webb-tools/semaphore-anchor.git/issues"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "dependencies": {
-        "@openzeppelin/contracts": "^4.4.2",
-        "@zk-kit/incremental-merkle-tree.sol": "^1.0.0"
-    }
+  "name": "@semaphore-anchor/contracts",
+  "version": "0.0.1",
+  "description": "Semaphore-anchor contracts to manage groups and broadcast anonymous signals across blockchains.",
+  "license": "MIT",
+  "files": [
+    "**/*.sol"
+  ],
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "hardhat",
+    "smart-contracts",
+    "semaphore",
+    "identity",
+    "solidity",
+    "zero-knowledge",
+    "zk-snarks",
+    "zero-knowledge-proofs",
+    "circom",
+    "proof-of-membership"
+  ],
+  "homepage": "https://github.com/webb-tools/semaphore-anchor.git#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webb-tools/semaphore-anchor.git.git"
+  },
+  "bugs": {
+    "url": "https://github.com/webb-tools/semaphore-anchor.git/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.4.2",
+    "@zk-kit/incremental-merkle-tree.sol": "^1.0.0"
+  }
 }

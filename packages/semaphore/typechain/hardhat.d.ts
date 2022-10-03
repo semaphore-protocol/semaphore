@@ -2,248 +2,248 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { ethers } from "ethers";
+import { ethers } from "ethers"
 import {
   FactoryOptions,
-  HardhatEthersHelpers as HardhatEthersHelpersBase,
-} from "@nomiclabs/hardhat-ethers/types";
+  HardhatEthersHelpers as HardhatEthersHelpersBase
+} from "@nomiclabs/hardhat-ethers/types"
 
-import * as Contracts from ".";
+import * as Contracts from "."
 
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
       name: "PoseidonT3",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.PoseidonT3__factory>;
+    ): Promise<Contracts.PoseidonT3__factory>
     getContractFactory(
       name: "PoseidonT6",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.PoseidonT6__factory>;
+    ): Promise<Contracts.PoseidonT6__factory>
     getContractFactory(
       name: "ChainIdWithType",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ChainIdWithType__factory>;
+    ): Promise<Contracts.ChainIdWithType__factory>
     getContractFactory(
       name: "LinkableIncrementalBinaryTree",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.LinkableIncrementalBinaryTree__factory>;
+    ): Promise<Contracts.LinkableIncrementalBinaryTree__factory>
     getContractFactory(
       name: "SemaphoreCore",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SemaphoreCore__factory>;
+    ): Promise<Contracts.SemaphoreCore__factory>
     getContractFactory(
       name: "SemaphoreGroups",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SemaphoreGroups__factory>;
+    ): Promise<Contracts.SemaphoreGroups__factory>
     getContractFactory(
       name: "SemaphoreInputEncoder",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SemaphoreInputEncoder__factory>;
+    ): Promise<Contracts.SemaphoreInputEncoder__factory>
     getContractFactory(
       name: "SemaphoreVoting",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SemaphoreVoting__factory>;
+    ): Promise<Contracts.SemaphoreVoting__factory>
     getContractFactory(
       name: "SemaphoreWhistleblowing",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SemaphoreWhistleblowing__factory>;
+    ): Promise<Contracts.SemaphoreWhistleblowing__factory>
     getContractFactory(
       name: "ISemaphore",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ISemaphore__factory>;
+    ): Promise<Contracts.ISemaphore__factory>
     getContractFactory(
       name: "ISemaphoreCore",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ISemaphoreCore__factory>;
+    ): Promise<Contracts.ISemaphoreCore__factory>
     getContractFactory(
       name: "ISemaphoreGroups",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ISemaphoreGroups__factory>;
+    ): Promise<Contracts.ISemaphoreGroups__factory>
     getContractFactory(
       name: "ISemaphoreNullifiers",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ISemaphoreNullifiers__factory>;
+    ): Promise<Contracts.ISemaphoreNullifiers__factory>
     getContractFactory(
       name: "ISemaphoreVerifier2_2",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ISemaphoreVerifier2_2__factory>;
+    ): Promise<Contracts.ISemaphoreVerifier2_2__factory>
     getContractFactory(
       name: "ISemaphoreVerifier8_2",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ISemaphoreVerifier8_2__factory>;
+    ): Promise<Contracts.ISemaphoreVerifier8_2__factory>
     getContractFactory(
       name: "ISemaphoreVoting",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ISemaphoreVoting__factory>;
+    ): Promise<Contracts.ISemaphoreVoting__factory>
     getContractFactory(
       name: "ISemaphoreWhistleblowing",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ISemaphoreWhistleblowing__factory>;
+    ): Promise<Contracts.ISemaphoreWhistleblowing__factory>
     getContractFactory(
       name: "IVerifier",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IVerifier__factory>;
+    ): Promise<Contracts.IVerifier__factory>
     getContractFactory(
       name: "Semaphore",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Semaphore__factory>;
+    ): Promise<Contracts.Semaphore__factory>
     getContractFactory(
       name: "SemaphoreVerifier",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SemaphoreVerifier__factory>;
+    ): Promise<Contracts.SemaphoreVerifier__factory>
     getContractFactory(
       name: "Verifier19_2",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Verifier19_2__factory>;
+    ): Promise<Contracts.Verifier19_2__factory>
     getContractFactory(
       name: "Verifier19_7",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Verifier19_7__factory>;
+    ): Promise<Contracts.Verifier19_7__factory>
     getContractFactory(
       name: "Verifier20_2",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Verifier20_2__factory>;
+    ): Promise<Contracts.Verifier20_2__factory>
     getContractFactory(
       name: "Verifier20_7",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Verifier20_7__factory>;
+    ): Promise<Contracts.Verifier20_7__factory>
 
     getContractAt(
       name: "PoseidonT3",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.PoseidonT3>;
+    ): Promise<Contracts.PoseidonT3>
     getContractAt(
       name: "PoseidonT6",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.PoseidonT6>;
+    ): Promise<Contracts.PoseidonT6>
     getContractAt(
       name: "ChainIdWithType",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ChainIdWithType>;
+    ): Promise<Contracts.ChainIdWithType>
     getContractAt(
       name: "LinkableIncrementalBinaryTree",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.LinkableIncrementalBinaryTree>;
+    ): Promise<Contracts.LinkableIncrementalBinaryTree>
     getContractAt(
       name: "SemaphoreCore",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.SemaphoreCore>;
+    ): Promise<Contracts.SemaphoreCore>
     getContractAt(
       name: "SemaphoreGroups",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.SemaphoreGroups>;
+    ): Promise<Contracts.SemaphoreGroups>
     getContractAt(
       name: "SemaphoreInputEncoder",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.SemaphoreInputEncoder>;
+    ): Promise<Contracts.SemaphoreInputEncoder>
     getContractAt(
       name: "SemaphoreVoting",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.SemaphoreVoting>;
+    ): Promise<Contracts.SemaphoreVoting>
     getContractAt(
       name: "SemaphoreWhistleblowing",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.SemaphoreWhistleblowing>;
+    ): Promise<Contracts.SemaphoreWhistleblowing>
     getContractAt(
       name: "ISemaphore",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ISemaphore>;
+    ): Promise<Contracts.ISemaphore>
     getContractAt(
       name: "ISemaphoreCore",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ISemaphoreCore>;
+    ): Promise<Contracts.ISemaphoreCore>
     getContractAt(
       name: "ISemaphoreGroups",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ISemaphoreGroups>;
+    ): Promise<Contracts.ISemaphoreGroups>
     getContractAt(
       name: "ISemaphoreNullifiers",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ISemaphoreNullifiers>;
+    ): Promise<Contracts.ISemaphoreNullifiers>
     getContractAt(
       name: "ISemaphoreVerifier2_2",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ISemaphoreVerifier2_2>;
+    ): Promise<Contracts.ISemaphoreVerifier2_2>
     getContractAt(
       name: "ISemaphoreVerifier8_2",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ISemaphoreVerifier8_2>;
+    ): Promise<Contracts.ISemaphoreVerifier8_2>
     getContractAt(
       name: "ISemaphoreVoting",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ISemaphoreVoting>;
+    ): Promise<Contracts.ISemaphoreVoting>
     getContractAt(
       name: "ISemaphoreWhistleblowing",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ISemaphoreWhistleblowing>;
+    ): Promise<Contracts.ISemaphoreWhistleblowing>
     getContractAt(
       name: "IVerifier",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IVerifier>;
+    ): Promise<Contracts.IVerifier>
     getContractAt(
       name: "Semaphore",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Semaphore>;
+    ): Promise<Contracts.Semaphore>
     getContractAt(
       name: "SemaphoreVerifier",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.SemaphoreVerifier>;
+    ): Promise<Contracts.SemaphoreVerifier>
     getContractAt(
       name: "Verifier19_2",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Verifier19_2>;
+    ): Promise<Contracts.Verifier19_2>
     getContractAt(
       name: "Verifier19_7",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Verifier19_7>;
+    ): Promise<Contracts.Verifier19_7>
     getContractAt(
       name: "Verifier20_2",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Verifier20_2>;
+    ): Promise<Contracts.Verifier20_2>
     getContractAt(
       name: "Verifier20_7",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Verifier20_7>;
+    ): Promise<Contracts.Verifier20_7>
 
     // default types
     getContractFactory(
       name: string,
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<ethers.ContractFactory>;
+    ): Promise<ethers.ContractFactory>
     getContractFactory(
       abi: any[],
       bytecode: ethers.utils.BytesLike,
       signer?: ethers.Signer
-    ): Promise<ethers.ContractFactory>;
+    ): Promise<ethers.ContractFactory>
     getContractAt(
       nameOrAbi: string | any[],
       address: string,
       signer?: ethers.Signer
-    ): Promise<ethers.Contract>;
+    ): Promise<ethers.Contract>
   }
 }

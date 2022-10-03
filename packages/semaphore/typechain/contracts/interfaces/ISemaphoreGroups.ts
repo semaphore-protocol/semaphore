@@ -9,45 +9,45 @@ import type {
   CallOverrides,
   PopulatedTransaction,
   Signer,
-  utils,
-} from "ethers";
+  utils
+} from "ethers"
 import type {
   FunctionFragment,
   Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  EventFragment
+} from "@ethersproject/abi"
+import type { Listener, Provider } from "@ethersproject/providers"
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
-} from "../../common";
+  PromiseOrValue
+} from "../../common"
 
 export type EdgeStruct = {
-  chainID: PromiseOrValue<BigNumberish>;
-  root: PromiseOrValue<BytesLike>;
-  latestLeafIndex: PromiseOrValue<BigNumberish>;
-  srcResourceID: PromiseOrValue<BytesLike>;
-};
+  chainID: PromiseOrValue<BigNumberish>
+  root: PromiseOrValue<BytesLike>
+  latestLeafIndex: PromiseOrValue<BigNumberish>
+  srcResourceID: PromiseOrValue<BytesLike>
+}
 
 export type EdgeStructOutput = [BigNumber, string, BigNumber, string] & {
-  chainID: BigNumber;
-  root: string;
-  latestLeafIndex: BigNumber;
-  srcResourceID: string;
-};
+  chainID: BigNumber
+  root: string
+  latestLeafIndex: BigNumber
+  srcResourceID: string
+}
 
 export interface ISemaphoreGroupsInterface extends utils.Interface {
   functions: {
-    "getDepth(uint256)": FunctionFragment;
-    "getLatestNeighborEdges(uint256)": FunctionFragment;
-    "getMaxEdges(uint256)": FunctionFragment;
-    "getNumberOfLeaves(uint256)": FunctionFragment;
-    "getRoot(uint256)": FunctionFragment;
-    "verifyRoots(uint256,bytes)": FunctionFragment;
-  };
+    "getDepth(uint256)": FunctionFragment
+    "getLatestNeighborEdges(uint256)": FunctionFragment
+    "getMaxEdges(uint256)": FunctionFragment
+    "getNumberOfLeaves(uint256)": FunctionFragment
+    "getRoot(uint256)": FunctionFragment
+    "verifyRoots(uint256,bytes)": FunctionFragment
+  }
 
   getFunction(
     nameOrSignatureOrTopic:
@@ -57,317 +57,311 @@ export interface ISemaphoreGroupsInterface extends utils.Interface {
       | "getNumberOfLeaves"
       | "getRoot"
       | "verifyRoots"
-  ): FunctionFragment;
+  ): FunctionFragment
 
   encodeFunctionData(
     functionFragment: "getDepth",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getLatestNeighborEdges",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getMaxEdges",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getNumberOfLeaves",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getRoot",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "verifyRoots",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
-  ): string;
+  ): string
 
-  decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result
   decodeFunctionResult(
     functionFragment: "getLatestNeighborEdges",
     data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getMaxEdges",
-    data: BytesLike
-  ): Result;
+  ): Result
+  decodeFunctionResult(functionFragment: "getMaxEdges", data: BytesLike): Result
   decodeFunctionResult(
     functionFragment: "getNumberOfLeaves",
     data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getRoot", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "verifyRoots",
-    data: BytesLike
-  ): Result;
+  ): Result
+  decodeFunctionResult(functionFragment: "getRoot", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "verifyRoots", data: BytesLike): Result
 
   events: {
-    "GroupCreated(uint256,uint8)": EventFragment;
-    "MemberAdded(uint256,uint256,uint256)": EventFragment;
-    "MemberRemoved(uint256,uint256,uint256)": EventFragment;
-  };
+    "GroupCreated(uint256,uint8)": EventFragment
+    "MemberAdded(uint256,uint256,uint256)": EventFragment
+    "MemberRemoved(uint256,uint256,uint256)": EventFragment
+  }
 
-  getEvent(nameOrSignatureOrTopic: "GroupCreated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "MemberAdded"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "MemberRemoved"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "GroupCreated"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "MemberAdded"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "MemberRemoved"): EventFragment
 }
 
 export interface GroupCreatedEventObject {
-  groupId: BigNumber;
-  depth: number;
+  groupId: BigNumber
+  depth: number
 }
 export type GroupCreatedEvent = TypedEvent<
   [BigNumber, number],
   GroupCreatedEventObject
->;
+>
 
-export type GroupCreatedEventFilter = TypedEventFilter<GroupCreatedEvent>;
+export type GroupCreatedEventFilter = TypedEventFilter<GroupCreatedEvent>
 
 export interface MemberAddedEventObject {
-  groupId: BigNumber;
-  identityCommitment: BigNumber;
-  root: BigNumber;
+  groupId: BigNumber
+  identityCommitment: BigNumber
+  root: BigNumber
 }
 export type MemberAddedEvent = TypedEvent<
   [BigNumber, BigNumber, BigNumber],
   MemberAddedEventObject
->;
+>
 
-export type MemberAddedEventFilter = TypedEventFilter<MemberAddedEvent>;
+export type MemberAddedEventFilter = TypedEventFilter<MemberAddedEvent>
 
 export interface MemberRemovedEventObject {
-  groupId: BigNumber;
-  identityCommitment: BigNumber;
-  root: BigNumber;
+  groupId: BigNumber
+  identityCommitment: BigNumber
+  root: BigNumber
 }
 export type MemberRemovedEvent = TypedEvent<
   [BigNumber, BigNumber, BigNumber],
   MemberRemovedEventObject
->;
+>
 
-export type MemberRemovedEventFilter = TypedEventFilter<MemberRemovedEvent>;
+export type MemberRemovedEventFilter = TypedEventFilter<MemberRemovedEvent>
 
 export interface ISemaphoreGroups extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
-  interface: ISemaphoreGroupsInterface;
+  interface: ISemaphoreGroupsInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TEvent>>
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
+  ): Array<TypedListener<TEvent>>
+  listeners(eventName?: string): Array<Listener>
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  ): this
+  removeAllListeners(eventName?: string): this
+  off: OnEvent<this>
+  on: OnEvent<this>
+  once: OnEvent<this>
+  removeListener: OnEvent<this>
 
   functions: {
     getDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[number]>;
+    ): Promise<[number]>
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[EdgeStructOutput[]]>;
+    ): Promise<[EdgeStructOutput[]]>
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[number]>;
+    ): Promise<[number]>
 
     getNumberOfLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    ): Promise<[BigNumber]>
 
     getRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    ): Promise<[BigNumber]>
 
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
-  };
+    ): Promise<[boolean]>
+  }
 
   getDepth(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<number>;
+  ): Promise<number>
 
   getLatestNeighborEdges(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<EdgeStructOutput[]>;
+  ): Promise<EdgeStructOutput[]>
 
   getMaxEdges(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<number>;
+  ): Promise<number>
 
   getNumberOfLeaves(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumber>
 
   getRoot(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumber>
 
   verifyRoots(
     groupId: PromiseOrValue<BigNumberish>,
     roots: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<boolean>
 
   callStatic: {
     getDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<number>;
+    ): Promise<number>
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<EdgeStructOutput[]>;
+    ): Promise<EdgeStructOutput[]>
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<number>;
+    ): Promise<number>
 
     getNumberOfLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<boolean>;
-  };
+    ): Promise<boolean>
+  }
 
   filters: {
     "GroupCreated(uint256,uint8)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
       depth?: null
-    ): GroupCreatedEventFilter;
+    ): GroupCreatedEventFilter
     GroupCreated(
       groupId?: PromiseOrValue<BigNumberish> | null,
       depth?: null
-    ): GroupCreatedEventFilter;
+    ): GroupCreatedEventFilter
 
     "MemberAdded(uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
       identityCommitment?: null,
       root?: null
-    ): MemberAddedEventFilter;
+    ): MemberAddedEventFilter
     MemberAdded(
       groupId?: PromiseOrValue<BigNumberish> | null,
       identityCommitment?: null,
       root?: null
-    ): MemberAddedEventFilter;
+    ): MemberAddedEventFilter
 
     "MemberRemoved(uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
       identityCommitment?: null,
       root?: null
-    ): MemberRemovedEventFilter;
+    ): MemberRemovedEventFilter
     MemberRemoved(
       groupId?: PromiseOrValue<BigNumberish> | null,
       identityCommitment?: null,
       root?: null
-    ): MemberRemovedEventFilter;
-  };
+    ): MemberRemovedEventFilter
+  }
 
   estimateGas: {
     getDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getNumberOfLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-  };
+    ): Promise<BigNumber>
+  }
 
   populateTransaction: {
     getDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getNumberOfLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-  };
+    ): Promise<PopulatedTransaction>
+  }
 }

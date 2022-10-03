@@ -7,5 +7,7 @@ import { formatBytes32String } from "@ethersproject/strings"
  * @returns The signal hash.
  */
 export default function genSignalHash(signal: string): bigint {
-    return BigInt(keccak256(["bytes32"], [formatBytes32String(signal)])) >> BigInt(8)
+  return (
+    BigInt(keccak256(["bytes32"], [formatBytes32String(signal)])) >> BigInt(8)
+  )
 }

@@ -16,7 +16,11 @@ interface ISemaphore {
     /// @param groupId: Id of the group.
     /// @param oldAdmin: Old admin of the group.
     /// @param newAdmin: New admin of the group.
-    event GroupAdminUpdated(uint256 indexed groupId, address indexed oldAdmin, address indexed newAdmin);
+    event GroupAdminUpdated(
+        uint256 indexed groupId,
+        address indexed oldAdmin,
+        address indexed newAdmin
+    );
 
     /// @dev Emitted when a Semaphore proof is verified.
     /// @param groupId: Id of the group.
@@ -40,9 +44,10 @@ interface ISemaphore {
         uint256[8] calldata proof
     ) external;
 
-    function decodeRoots(
-        bytes calldata roots
-    ) external view returns (bytes32[] memory roots_decoded);
+    function decodeRoots(bytes calldata roots)
+        external
+        view
+        returns (bytes32[] memory roots_decoded);
 
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @param groupId: Id of the group.

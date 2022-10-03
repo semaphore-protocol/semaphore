@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import { Contract, Signer, utils } from "ethers"
+import type { Provider } from "@ethersproject/providers"
 import type {
   ChainIdWithType,
-  ChainIdWithTypeInterface,
-} from "../../../contracts/base/ChainIdWithType";
+  ChainIdWithTypeInterface
+} from "../../../contracts/base/ChainIdWithType"
 
 const _abi = [
   {
@@ -17,11 +17,11 @@ const _abi = [
       {
         internalType: "bytes2",
         name: "",
-        type: "bytes2",
-      },
+        type: "bytes2"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [],
@@ -30,11 +30,11 @@ const _abi = [
       {
         internalType: "uint256",
         name: "",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [],
@@ -43,42 +43,42 @@ const _abi = [
       {
         internalType: "uint48",
         name: "",
-        type: "uint48",
-      },
+        type: "uint48"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "bytes32",
         name: "_resourceId",
-        type: "bytes32",
-      },
+        type: "bytes32"
+      }
     ],
     name: "parseChainIdFromResourceId",
     outputs: [
       {
         internalType: "uint64",
         name: "",
-        type: "uint64",
-      },
+        type: "uint64"
+      }
     ],
     stateMutability: "pure",
-    type: "function",
-  },
-];
+    type: "function"
+  }
+]
 
 export class ChainIdWithType__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): ChainIdWithTypeInterface {
-    return new utils.Interface(_abi) as ChainIdWithTypeInterface;
+    return new utils.Interface(_abi) as ChainIdWithTypeInterface
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): ChainIdWithType {
-    return new Contract(address, _abi, signerOrProvider) as ChainIdWithType;
+    return new Contract(address, _abi, signerOrProvider) as ChainIdWithType
   }
 }

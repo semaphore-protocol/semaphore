@@ -8,8 +8,8 @@ import { BigNumberish } from "./types"
  * @returns The nullifier hash.
  */
 export default function generateNullifierHash(
-    externalNullifier: BigNumberish,
-    identityNullifier: BigNumberish,
+  externalNullifier: BigNumberish,
+  identityNullifier: BigNumberish
 ): bigint {
-    return poseidon([BigInt(externalNullifier), BigInt(identityNullifier)])
+  return poseidon([BigInt(externalNullifier), BigInt(identityNullifier)])
 }

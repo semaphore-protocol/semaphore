@@ -11,61 +11,61 @@ import type {
   Overrides,
   PopulatedTransaction,
   Signer,
-  utils,
-} from "ethers";
+  utils
+} from "ethers"
 import type {
   FunctionFragment,
   Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  EventFragment
+} from "@ethersproject/abi"
+import type { Listener, Provider } from "@ethersproject/providers"
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
-} from "../../common";
+  PromiseOrValue
+} from "../../common"
 
 export type EdgeStruct = {
-  chainID: PromiseOrValue<BigNumberish>;
-  root: PromiseOrValue<BytesLike>;
-  latestLeafIndex: PromiseOrValue<BigNumberish>;
-  srcResourceID: PromiseOrValue<BytesLike>;
-};
+  chainID: PromiseOrValue<BigNumberish>
+  root: PromiseOrValue<BytesLike>
+  latestLeafIndex: PromiseOrValue<BigNumberish>
+  srcResourceID: PromiseOrValue<BytesLike>
+}
 
 export type EdgeStructOutput = [BigNumber, string, BigNumber, string] & {
-  chainID: BigNumber;
-  root: string;
-  latestLeafIndex: BigNumber;
-  srcResourceID: string;
-};
+  chainID: BigNumber
+  root: string
+  latestLeafIndex: BigNumber
+  srcResourceID: string
+}
 
 export declare namespace ISemaphoreWhistleblowing {
   export type EntityStruct = {
-    id: PromiseOrValue<BigNumberish>;
-    maxEdges: PromiseOrValue<BigNumberish>;
-  };
+    id: PromiseOrValue<BigNumberish>
+    maxEdges: PromiseOrValue<BigNumberish>
+  }
 
   export type EntityStructOutput = [BigNumber, number] & {
-    id: BigNumber;
-    maxEdges: number;
-  };
+    id: BigNumber
+    maxEdges: number
+  }
 }
 
 export interface SemaphoreWhistleblowingInterface extends utils.Interface {
   functions: {
-    "addWhistleblower(uint256,uint256)": FunctionFragment;
-    "createEntity(uint256,uint8,address,uint8)": FunctionFragment;
-    "getDepth(uint256)": FunctionFragment;
-    "getLatestNeighborEdges(uint256)": FunctionFragment;
-    "getMaxEdges(uint256)": FunctionFragment;
-    "getNumberOfLeaves(uint256)": FunctionFragment;
-    "getRoot(uint256)": FunctionFragment;
-    "publishLeak(bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
-    "removeWhistleblower(uint256,uint256,uint256[],uint8[])": FunctionFragment;
-    "verifyRoots(uint256,bytes)": FunctionFragment;
-  };
+    "addWhistleblower(uint256,uint256)": FunctionFragment
+    "createEntity(uint256,uint8,address,uint8)": FunctionFragment
+    "getDepth(uint256)": FunctionFragment
+    "getLatestNeighborEdges(uint256)": FunctionFragment
+    "getMaxEdges(uint256)": FunctionFragment
+    "getNumberOfLeaves(uint256)": FunctionFragment
+    "getRoot(uint256)": FunctionFragment
+    "publishLeak(bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment
+    "removeWhistleblower(uint256,uint256,uint256[],uint8[])": FunctionFragment
+    "verifyRoots(uint256,bytes)": FunctionFragment
+  }
 
   getFunction(
     nameOrSignatureOrTopic:
@@ -79,12 +79,12 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
       | "publishLeak"
       | "removeWhistleblower"
       | "verifyRoots"
-  ): FunctionFragment;
+  ): FunctionFragment
 
   encodeFunctionData(
     functionFragment: "addWhistleblower",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "createEntity",
     values: [
@@ -93,27 +93,27 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>
     ]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getDepth",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getLatestNeighborEdges",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getMaxEdges",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getNumberOfLeaves",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getRoot",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "publishLeak",
     values: [
@@ -123,7 +123,7 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
       PromiseOrValue<BytesLike>,
       PromiseOrValue<BigNumberish>[]
     ]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "removeWhistleblower",
     values: [
@@ -132,164 +132,155 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>[],
       PromiseOrValue<BigNumberish>[]
     ]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "verifyRoots",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
-  ): string;
+  ): string
 
   decodeFunctionResult(
     functionFragment: "addWhistleblower",
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
     functionFragment: "createEntity",
     data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result;
+  ): Result
+  decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result
   decodeFunctionResult(
     functionFragment: "getLatestNeighborEdges",
     data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getMaxEdges",
-    data: BytesLike
-  ): Result;
+  ): Result
+  decodeFunctionResult(functionFragment: "getMaxEdges", data: BytesLike): Result
   decodeFunctionResult(
     functionFragment: "getNumberOfLeaves",
     data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getRoot", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "publishLeak",
-    data: BytesLike
-  ): Result;
+  ): Result
+  decodeFunctionResult(functionFragment: "getRoot", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "publishLeak", data: BytesLike): Result
   decodeFunctionResult(
     functionFragment: "removeWhistleblower",
     data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "verifyRoots",
-    data: BytesLike
-  ): Result;
+  ): Result
+  decodeFunctionResult(functionFragment: "verifyRoots", data: BytesLike): Result
 
   events: {
-    "EntityCreated(tuple,address)": EventFragment;
-    "GroupCreated(uint256,uint8)": EventFragment;
-    "LeakPublished(uint256,bytes32)": EventFragment;
-    "MemberAdded(uint256,uint256,uint256)": EventFragment;
-    "MemberRemoved(uint256,uint256,uint256)": EventFragment;
-    "NullifierHashAdded(uint256)": EventFragment;
-  };
+    "EntityCreated(tuple,address)": EventFragment
+    "GroupCreated(uint256,uint8)": EventFragment
+    "LeakPublished(uint256,bytes32)": EventFragment
+    "MemberAdded(uint256,uint256,uint256)": EventFragment
+    "MemberRemoved(uint256,uint256,uint256)": EventFragment
+    "NullifierHashAdded(uint256)": EventFragment
+  }
 
-  getEvent(nameOrSignatureOrTopic: "EntityCreated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "GroupCreated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "LeakPublished"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "MemberAdded"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "MemberRemoved"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "NullifierHashAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "EntityCreated"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "GroupCreated"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "LeakPublished"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "MemberAdded"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "MemberRemoved"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "NullifierHashAdded"): EventFragment
 }
 
 export interface EntityCreatedEventObject {
-  entity: ISemaphoreWhistleblowing.EntityStructOutput;
-  editor: string;
+  entity: ISemaphoreWhistleblowing.EntityStructOutput
+  editor: string
 }
 export type EntityCreatedEvent = TypedEvent<
   [ISemaphoreWhistleblowing.EntityStructOutput, string],
   EntityCreatedEventObject
->;
+>
 
-export type EntityCreatedEventFilter = TypedEventFilter<EntityCreatedEvent>;
+export type EntityCreatedEventFilter = TypedEventFilter<EntityCreatedEvent>
 
 export interface GroupCreatedEventObject {
-  groupId: BigNumber;
-  depth: number;
+  groupId: BigNumber
+  depth: number
 }
 export type GroupCreatedEvent = TypedEvent<
   [BigNumber, number],
   GroupCreatedEventObject
->;
+>
 
-export type GroupCreatedEventFilter = TypedEventFilter<GroupCreatedEvent>;
+export type GroupCreatedEventFilter = TypedEventFilter<GroupCreatedEvent>
 
 export interface LeakPublishedEventObject {
-  entityId: BigNumber;
-  leak: string;
+  entityId: BigNumber
+  leak: string
 }
 export type LeakPublishedEvent = TypedEvent<
   [BigNumber, string],
   LeakPublishedEventObject
->;
+>
 
-export type LeakPublishedEventFilter = TypedEventFilter<LeakPublishedEvent>;
+export type LeakPublishedEventFilter = TypedEventFilter<LeakPublishedEvent>
 
 export interface MemberAddedEventObject {
-  groupId: BigNumber;
-  identityCommitment: BigNumber;
-  root: BigNumber;
+  groupId: BigNumber
+  identityCommitment: BigNumber
+  root: BigNumber
 }
 export type MemberAddedEvent = TypedEvent<
   [BigNumber, BigNumber, BigNumber],
   MemberAddedEventObject
->;
+>
 
-export type MemberAddedEventFilter = TypedEventFilter<MemberAddedEvent>;
+export type MemberAddedEventFilter = TypedEventFilter<MemberAddedEvent>
 
 export interface MemberRemovedEventObject {
-  groupId: BigNumber;
-  identityCommitment: BigNumber;
-  root: BigNumber;
+  groupId: BigNumber
+  identityCommitment: BigNumber
+  root: BigNumber
 }
 export type MemberRemovedEvent = TypedEvent<
   [BigNumber, BigNumber, BigNumber],
   MemberRemovedEventObject
->;
+>
 
-export type MemberRemovedEventFilter = TypedEventFilter<MemberRemovedEvent>;
+export type MemberRemovedEventFilter = TypedEventFilter<MemberRemovedEvent>
 
 export interface NullifierHashAddedEventObject {
-  nullifierHash: BigNumber;
+  nullifierHash: BigNumber
 }
 export type NullifierHashAddedEvent = TypedEvent<
   [BigNumber],
   NullifierHashAddedEventObject
->;
+>
 
 export type NullifierHashAddedEventFilter =
-  TypedEventFilter<NullifierHashAddedEvent>;
+  TypedEventFilter<NullifierHashAddedEvent>
 
 export interface SemaphoreWhistleblowing extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
-  interface: SemaphoreWhistleblowingInterface;
+  interface: SemaphoreWhistleblowingInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TEvent>>
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
+  ): Array<TypedListener<TEvent>>
+  listeners(eventName?: string): Array<Listener>
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  ): this
+  removeAllListeners(eventName?: string): this
+  off: OnEvent<this>
+  on: OnEvent<this>
+  once: OnEvent<this>
+  removeListener: OnEvent<this>
 
   functions: {
     addWhistleblower(
       entityId: PromiseOrValue<BigNumberish>,
       identityCommitment: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     createEntity(
       entityId: PromiseOrValue<BigNumberish>,
@@ -297,32 +288,32 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       editor: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     getDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[number]>;
+    ): Promise<[number]>
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[EdgeStructOutput[]]>;
+    ): Promise<[EdgeStructOutput[]]>
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[number]>;
+    ): Promise<[number]>
 
     getNumberOfLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    ): Promise<[BigNumber]>
 
     getRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    ): Promise<[BigNumber]>
 
     publishLeak(
       leak: PromiseOrValue<BytesLike>,
@@ -331,7 +322,7 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       roots: PromiseOrValue<BytesLike>,
       proof: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     removeWhistleblower(
       entityId: PromiseOrValue<BigNumberish>,
@@ -339,20 +330,20 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       proofSiblings: PromiseOrValue<BigNumberish>[],
       proofPathIndices: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
-  };
+    ): Promise<[boolean]>
+  }
 
   addWhistleblower(
     entityId: PromiseOrValue<BigNumberish>,
     identityCommitment: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   createEntity(
     entityId: PromiseOrValue<BigNumberish>,
@@ -360,32 +351,32 @@ export interface SemaphoreWhistleblowing extends BaseContract {
     editor: PromiseOrValue<string>,
     maxEdges: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   getDepth(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<number>;
+  ): Promise<number>
 
   getLatestNeighborEdges(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<EdgeStructOutput[]>;
+  ): Promise<EdgeStructOutput[]>
 
   getMaxEdges(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<number>;
+  ): Promise<number>
 
   getNumberOfLeaves(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumber>
 
   getRoot(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumber>
 
   publishLeak(
     leak: PromiseOrValue<BytesLike>,
@@ -394,7 +385,7 @@ export interface SemaphoreWhistleblowing extends BaseContract {
     roots: PromiseOrValue<BytesLike>,
     proof: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   removeWhistleblower(
     entityId: PromiseOrValue<BigNumberish>,
@@ -402,20 +393,20 @@ export interface SemaphoreWhistleblowing extends BaseContract {
     proofSiblings: PromiseOrValue<BigNumberish>[],
     proofPathIndices: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   verifyRoots(
     groupId: PromiseOrValue<BigNumberish>,
     roots: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<boolean>
 
   callStatic: {
     addWhistleblower(
       entityId: PromiseOrValue<BigNumberish>,
       identityCommitment: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     createEntity(
       entityId: PromiseOrValue<BigNumberish>,
@@ -423,32 +414,32 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       editor: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     getDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<number>;
+    ): Promise<number>
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<EdgeStructOutput[]>;
+    ): Promise<EdgeStructOutput[]>
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<number>;
+    ): Promise<number>
 
     getNumberOfLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     publishLeak(
       leak: PromiseOrValue<BytesLike>,
@@ -457,7 +448,7 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       roots: PromiseOrValue<BytesLike>,
       proof: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     removeWhistleblower(
       entityId: PromiseOrValue<BigNumberish>,
@@ -465,77 +456,77 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       proofSiblings: PromiseOrValue<BigNumberish>[],
       proofPathIndices: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<boolean>;
-  };
+    ): Promise<boolean>
+  }
 
   filters: {
     "EntityCreated(tuple,address)"(
       entity?: null,
       editor?: PromiseOrValue<string> | null
-    ): EntityCreatedEventFilter;
+    ): EntityCreatedEventFilter
     EntityCreated(
       entity?: null,
       editor?: PromiseOrValue<string> | null
-    ): EntityCreatedEventFilter;
+    ): EntityCreatedEventFilter
 
     "GroupCreated(uint256,uint8)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
       depth?: null
-    ): GroupCreatedEventFilter;
+    ): GroupCreatedEventFilter
     GroupCreated(
       groupId?: PromiseOrValue<BigNumberish> | null,
       depth?: null
-    ): GroupCreatedEventFilter;
+    ): GroupCreatedEventFilter
 
     "LeakPublished(uint256,bytes32)"(
       entityId?: PromiseOrValue<BigNumberish> | null,
       leak?: null
-    ): LeakPublishedEventFilter;
+    ): LeakPublishedEventFilter
     LeakPublished(
       entityId?: PromiseOrValue<BigNumberish> | null,
       leak?: null
-    ): LeakPublishedEventFilter;
+    ): LeakPublishedEventFilter
 
     "MemberAdded(uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
       identityCommitment?: null,
       root?: null
-    ): MemberAddedEventFilter;
+    ): MemberAddedEventFilter
     MemberAdded(
       groupId?: PromiseOrValue<BigNumberish> | null,
       identityCommitment?: null,
       root?: null
-    ): MemberAddedEventFilter;
+    ): MemberAddedEventFilter
 
     "MemberRemoved(uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
       identityCommitment?: null,
       root?: null
-    ): MemberRemovedEventFilter;
+    ): MemberRemovedEventFilter
     MemberRemoved(
       groupId?: PromiseOrValue<BigNumberish> | null,
       identityCommitment?: null,
       root?: null
-    ): MemberRemovedEventFilter;
+    ): MemberRemovedEventFilter
 
     "NullifierHashAdded(uint256)"(
       nullifierHash?: null
-    ): NullifierHashAddedEventFilter;
-    NullifierHashAdded(nullifierHash?: null): NullifierHashAddedEventFilter;
-  };
+    ): NullifierHashAddedEventFilter
+    NullifierHashAdded(nullifierHash?: null): NullifierHashAddedEventFilter
+  }
 
   estimateGas: {
     addWhistleblower(
       entityId: PromiseOrValue<BigNumberish>,
       identityCommitment: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     createEntity(
       entityId: PromiseOrValue<BigNumberish>,
@@ -543,32 +534,32 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       editor: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getNumberOfLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     publishLeak(
       leak: PromiseOrValue<BytesLike>,
@@ -577,7 +568,7 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       roots: PromiseOrValue<BytesLike>,
       proof: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     removeWhistleblower(
       entityId: PromiseOrValue<BigNumberish>,
@@ -585,21 +576,21 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       proofSiblings: PromiseOrValue<BigNumberish>[],
       proofPathIndices: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-  };
+    ): Promise<BigNumber>
+  }
 
   populateTransaction: {
     addWhistleblower(
       entityId: PromiseOrValue<BigNumberish>,
       identityCommitment: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     createEntity(
       entityId: PromiseOrValue<BigNumberish>,
@@ -607,32 +598,32 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       editor: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getNumberOfLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     publishLeak(
       leak: PromiseOrValue<BytesLike>,
@@ -641,7 +632,7 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       roots: PromiseOrValue<BytesLike>,
       proof: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     removeWhistleblower(
       entityId: PromiseOrValue<BigNumberish>,
@@ -649,12 +640,12 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       proofSiblings: PromiseOrValue<BigNumberish>[],
       proofPathIndices: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-  };
+    ): Promise<PopulatedTransaction>
+  }
 }

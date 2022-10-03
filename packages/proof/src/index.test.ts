@@ -1,4 +1,4 @@
-import { LinkedGroup } from "@webb-tools/semaphore-group/src"
+import { LinkedGroup } from "@webb-tools/semaphore-group"
 import { Identity } from "@webb-tools/semaphore-identity/src"
 // import { BigNumber } from 'ethers';
 // import download from "download"
@@ -11,104 +11,131 @@ import { FullProof } from "./types"
 import verifyProof from "./verifyProof"
 
 describe("Proof", () => {
-    const treeDepth = 20
-    const maxEdges = 1
+  const treeDepth = 20
+  const maxEdges = 1
 
-    const externalNullifier = "1"
-    const signal = "0x111"
-    const chainID = BigInt(1099511629113)
+  const externalNullifier = "1"
+  const signal = "0x111"
+  const chainID = BigInt(1099511629113)
 
-    const snarkArtifactsPath = "./packages/proof/snark-artifacts"
-    const wasmFilePath = `${snarkArtifactsPath}/semaphore_20_2.wasm`;
-    const zkeyFilePath = `${snarkArtifactsPath}/circuit_final.zkey`;
+  const snarkArtifactsPath = "./packages/proof/snark-artifacts"
+  const wasmFilePath = `${snarkArtifactsPath}/semaphore_20_2.wasm`
+  const zkeyFilePath = `${snarkArtifactsPath}/circuit_final.zkey`
 
-    const identity = new Identity(chainID)
-    const identityCommitment = identity.generateCommitment()
+  const identity = new Identity(chainID)
+  const identityCommitment = identity.generateCommitment()
 
-    let fullProof: FullProof
+  let fullProof: FullProof
 
-    beforeAll(async () => {
+  beforeAll(async () => {
+    if (!fs.existsSync(snarkArtifactsPath)) {
+      fs.mkdirSync(snarkArtifactsPath)
+    }
+  }, 10000)
 
-        if (!fs.existsSync(snarkArtifactsPath)) {
-            fs.mkdirSync(snarkArtifactsPath)
+  describe("# generateProof", () => {
+    it("Should not generate Semaphore proofs if the identity is not part of the group", async () => {
+      const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
+
+      linkedGroup.addMembers([BigInt(1), BigInt(2)])
+
+      const fun = () =>
+        generateProof(
+          identity,
+          linkedGroup,
+          externalNullifier,
+          signal,
+          chainID,
+          {
+            wasmFilePath: wasmFilePath,
+            zkeyFilePath: zkeyFilePath
+          }
+        )
+
+      await expect(fun).rejects.toThrow("The identity is not part of the group")
+    })
+
+    it("Should generate a Semaphore proof passing a linkedGroup as parameter", async () => {
+      const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
+
+      linkedGroup.addMembers([BigInt(1), BigInt(2), identityCommitment])
+
+      fullProof = await generateProof(
+        identity,
+        linkedGroup,
+        externalNullifier,
+        signal,
+        chainID,
+        {
+          wasmFilePath: wasmFilePath,
+          zkeyFilePath: zkeyFilePath
         }
-    }, 10000)
+      )
 
-    describe("# generateProof", () => {
-        it("Should not generate Semaphore proofs if the identity is not part of the group", async () => {
-            const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
+      expect(typeof fullProof).toBe("object")
+      expect(fullProof.publicSignals.externalNullifier).toBe(externalNullifier)
+    }, 20000)
 
-            linkedGroup.addMembers([BigInt(1), BigInt(2)])
+    it("Should generate a Semaphore proof passing a Merkle proof as parametr", async () => {
+      const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
 
-            const fun = () =>
-                generateProof(identity, linkedGroup, externalNullifier, signal, chainID, {
-                    wasmFilePath: wasmFilePath,
-                    zkeyFilePath: zkeyFilePath
-                })
+      linkedGroup.addMembers([BigInt(1), BigInt(2), identityCommitment])
 
-            await expect(fun).rejects.toThrow("The identity is not part of the group")
-        })
+      fullProof = await generateProof(
+        identity,
+        linkedGroup,
+        externalNullifier,
+        signal,
+        chainID,
+        {
+          wasmFilePath: wasmFilePath,
+          zkeyFilePath: zkeyFilePath
+        }
+      )
 
-        it("Should generate a Semaphore proof passing a linkedGroup as parameter", async () => {
-            const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
+      expect(typeof fullProof).toBe("object")
+      expect(fullProof.publicSignals.externalNullifier).toBe(externalNullifier)
+    }, 20000)
+  })
 
-            linkedGroup.addMembers([BigInt(1), BigInt(2), identityCommitment])
+  describe("# generateSignalHash", () => {
+    it("Should generate a valid signal hash", async () => {
+      const signalHash = generateSignalHash(signal)
 
-            fullProof = await generateProof(identity, linkedGroup, externalNullifier, signal, chainID, {
-                    wasmFilePath: wasmFilePath,
-                    zkeyFilePath: zkeyFilePath
-            })
-
-            expect(typeof fullProof).toBe("object")
-            expect(fullProof.publicSignals.externalNullifier).toBe(externalNullifier)
-        }, 20000)
-
-        it("Should generate a Semaphore proof passing a Merkle proof as parametr", async () => {
-            const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
-
-            linkedGroup.addMembers([BigInt(1), BigInt(2), identityCommitment])
-
-            fullProof = await generateProof(identity, linkedGroup, externalNullifier, signal, chainID, {
-                    wasmFilePath: wasmFilePath,
-                    zkeyFilePath: zkeyFilePath
-            })
-
-            expect(typeof fullProof).toBe("object")
-            expect(fullProof.publicSignals.externalNullifier).toBe(externalNullifier)
-        }, 20000)
+      expect(signalHash.toString()).toBe(fullProof.publicSignals.signalHash)
     })
+  })
 
-    describe("# generateSignalHash", () => {
-        it("Should generate a valid signal hash", async () => {
-            const signalHash = generateSignalHash(signal)
+  describe("# generateNullifierHash", () => {
+    it("Should generate a valid nullifier hash", async () => {
+      const nullifierHash = generateNullifierHash(
+        externalNullifier,
+        identity.getNullifier()
+      )
 
-            expect(signalHash.toString()).toBe(fullProof.publicSignals.signalHash)
-        })
+      expect(nullifierHash.toString()).toBe(
+        fullProof.publicSignals.nullifierHash
+      )
     })
+  })
 
-    describe("# generateNullifierHash", () => {
-        it("Should generate a valid nullifier hash", async () => {
-            const nullifierHash = generateNullifierHash(externalNullifier, identity.getNullifier())
+  describe("# packToSolidityProof", () => {
+    it("Should return a Solidity proof", async () => {
+      const solidityProof = packToSolidityProof(fullProof.proof)
 
-            expect(nullifierHash.toString()).toBe(fullProof.publicSignals.nullifierHash)
-        })
+      expect(solidityProof).toHaveLength(8)
     })
+  })
 
-    describe("# packToSolidityProof", () => {
-        it("Should return a Solidity proof", async () => {
-            const solidityProof = packToSolidityProof(fullProof.proof)
+  describe("# verifyProof", () => {
+    it("Should generate and verify a Semaphore proof", async () => {
+      const verificationKey = JSON.parse(
+        fs.readFileSync(`${snarkArtifactsPath}/semaphore.json`, "utf-8")
+      )
 
-            expect(solidityProof).toHaveLength(8)
-        })
+      const response = await verifyProof(verificationKey, fullProof)
+
+      expect(response).toBe(true)
     })
-
-    describe("# verifyProof", () => {
-        it("Should generate and verify a Semaphore proof", async () => {
-            const verificationKey = JSON.parse(fs.readFileSync(`${snarkArtifactsPath}/semaphore.json`, "utf-8"))
-
-            const response = await verifyProof(verificationKey, fullProof)
-
-            expect(response).toBe(true)
-        })
-    })
+  })
 })

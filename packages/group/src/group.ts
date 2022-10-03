@@ -87,7 +87,7 @@ export class Group {
    * @param member member to be removed.
    */
   removeMember(member: Member) {
-      this._merkleTree.remove(member)
+    this._merkleTree.remove(member)
   }
 
   /**
@@ -95,7 +95,7 @@ export class Group {
    * @param members member to be removed.
    */
   removeMembers(members: Member[]) {
-      this._merkleTree.bulkRemove(members)
+    this._merkleTree.bulkRemove(members)
   }
 
   /**

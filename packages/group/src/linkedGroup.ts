@@ -1,7 +1,7 @@
 import { BigNumber, BigNumberish } from "ethers"
 import { Group } from "./group"
 import { Member } from "./types"
-import { MerkleProof, toFixedHex   } from "@webb-tools/sdk-core"
+import { MerkleProof, toFixedHex } from "@webb-tools/sdk-core"
 const assert = require("assert")
 // import assert from 'assert';
 
@@ -144,9 +144,9 @@ export class LinkedGroup {
    * @returns List of members.
    */
   public getRoots(): BigNumber[] {
-    const roots: BigNumber[] = Object.values(this.roots);
+    const roots: BigNumber[] = Object.values(this.roots)
     while (roots.length < this.maxEdges + 1) {
-      roots.push(BigNumber.from(0))  //   padding = this.maxEdges + 1 - chainIds.length
+      roots.push(BigNumber.from(0)) //   padding = this.maxEdges + 1 - chainIds.length
     }
     return roots
   }

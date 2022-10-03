@@ -11,30 +11,30 @@ import type {
   Overrides,
   PopulatedTransaction,
   Signer,
-  utils,
-} from "ethers";
+  utils
+} from "ethers"
 import type {
   FunctionFragment,
   Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  EventFragment
+} from "@ethersproject/abi"
+import type { Listener, Provider } from "@ethersproject/providers"
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
-} from "../../common";
+  PromiseOrValue
+} from "../../common"
 
 export interface ISemaphoreVotingInterface extends utils.Interface {
   functions: {
-    "addVoter(uint256,uint256)": FunctionFragment;
-    "castVote(bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
-    "createPoll(uint256,uint8,address,uint8)": FunctionFragment;
-    "endPoll(uint256,uint256)": FunctionFragment;
-    "startPoll(uint256,uint256)": FunctionFragment;
-  };
+    "addVoter(uint256,uint256)": FunctionFragment
+    "castVote(bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment
+    "createPoll(uint256,uint8,address,uint8)": FunctionFragment
+    "endPoll(uint256,uint256)": FunctionFragment
+    "startPoll(uint256,uint256)": FunctionFragment
+  }
 
   getFunction(
     nameOrSignatureOrTopic:
@@ -43,12 +43,12 @@ export interface ISemaphoreVotingInterface extends utils.Interface {
       | "createPoll"
       | "endPoll"
       | "startPoll"
-  ): FunctionFragment;
+  ): FunctionFragment
 
   encodeFunctionData(
     functionFragment: "addVoter",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "castVote",
     values: [
@@ -58,7 +58,7 @@ export interface ISemaphoreVotingInterface extends utils.Interface {
       PromiseOrValue<BytesLike>,
       PromiseOrValue<BigNumberish>[]
     ]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "createPoll",
     values: [
@@ -67,113 +67,113 @@ export interface ISemaphoreVotingInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>
     ]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "endPoll",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "startPoll",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
 
-  decodeFunctionResult(functionFragment: "addVoter", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "castVote", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "createPoll", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "endPoll", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "startPoll", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "addVoter", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "castVote", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "createPoll", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "endPoll", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "startPoll", data: BytesLike): Result
 
   events: {
-    "PollCreated(uint256,address)": EventFragment;
-    "PollEnded(uint256,address,uint256)": EventFragment;
-    "PollStarted(uint256,address,uint256)": EventFragment;
-    "VoteAdded(uint256,bytes32)": EventFragment;
-  };
+    "PollCreated(uint256,address)": EventFragment
+    "PollEnded(uint256,address,uint256)": EventFragment
+    "PollStarted(uint256,address,uint256)": EventFragment
+    "VoteAdded(uint256,bytes32)": EventFragment
+  }
 
-  getEvent(nameOrSignatureOrTopic: "PollCreated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PollEnded"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PollStarted"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "VoteAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "PollCreated"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "PollEnded"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "PollStarted"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "VoteAdded"): EventFragment
 }
 
 export interface PollCreatedEventObject {
-  pollId: BigNumber;
-  coordinator: string;
+  pollId: BigNumber
+  coordinator: string
 }
 export type PollCreatedEvent = TypedEvent<
   [BigNumber, string],
   PollCreatedEventObject
->;
+>
 
-export type PollCreatedEventFilter = TypedEventFilter<PollCreatedEvent>;
+export type PollCreatedEventFilter = TypedEventFilter<PollCreatedEvent>
 
 export interface PollEndedEventObject {
-  pollId: BigNumber;
-  coordinator: string;
-  decryptionKey: BigNumber;
+  pollId: BigNumber
+  coordinator: string
+  decryptionKey: BigNumber
 }
 export type PollEndedEvent = TypedEvent<
   [BigNumber, string, BigNumber],
   PollEndedEventObject
->;
+>
 
-export type PollEndedEventFilter = TypedEventFilter<PollEndedEvent>;
+export type PollEndedEventFilter = TypedEventFilter<PollEndedEvent>
 
 export interface PollStartedEventObject {
-  pollId: BigNumber;
-  coordinator: string;
-  encryptionKey: BigNumber;
+  pollId: BigNumber
+  coordinator: string
+  encryptionKey: BigNumber
 }
 export type PollStartedEvent = TypedEvent<
   [BigNumber, string, BigNumber],
   PollStartedEventObject
->;
+>
 
-export type PollStartedEventFilter = TypedEventFilter<PollStartedEvent>;
+export type PollStartedEventFilter = TypedEventFilter<PollStartedEvent>
 
 export interface VoteAddedEventObject {
-  pollId: BigNumber;
-  vote: string;
+  pollId: BigNumber
+  vote: string
 }
 export type VoteAddedEvent = TypedEvent<
   [BigNumber, string],
   VoteAddedEventObject
->;
+>
 
-export type VoteAddedEventFilter = TypedEventFilter<VoteAddedEvent>;
+export type VoteAddedEventFilter = TypedEventFilter<VoteAddedEvent>
 
 export interface ISemaphoreVoting extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
-  interface: ISemaphoreVotingInterface;
+  interface: ISemaphoreVotingInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TEvent>>
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
+  ): Array<TypedListener<TEvent>>
+  listeners(eventName?: string): Array<Listener>
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  ): this
+  removeAllListeners(eventName?: string): this
+  off: OnEvent<this>
+  on: OnEvent<this>
+  once: OnEvent<this>
+  removeListener: OnEvent<this>
 
   functions: {
     addVoter(
       pollId: PromiseOrValue<BigNumberish>,
       identityCommitment: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     castVote(
       vote: PromiseOrValue<BytesLike>,
@@ -182,7 +182,7 @@ export interface ISemaphoreVoting extends BaseContract {
       roots: PromiseOrValue<BytesLike>,
       proof: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
@@ -190,26 +190,26 @@ export interface ISemaphoreVoting extends BaseContract {
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     endPoll(
       pollId: PromiseOrValue<BigNumberish>,
       decryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     startPoll(
       pollId: PromiseOrValue<BigNumberish>,
       encryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-  };
+    ): Promise<ContractTransaction>
+  }
 
   addVoter(
     pollId: PromiseOrValue<BigNumberish>,
     identityCommitment: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   castVote(
     vote: PromiseOrValue<BytesLike>,
@@ -218,7 +218,7 @@ export interface ISemaphoreVoting extends BaseContract {
     roots: PromiseOrValue<BytesLike>,
     proof: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   createPoll(
     pollId: PromiseOrValue<BigNumberish>,
@@ -226,26 +226,26 @@ export interface ISemaphoreVoting extends BaseContract {
     coordinator: PromiseOrValue<string>,
     maxEdges: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   endPoll(
     pollId: PromiseOrValue<BigNumberish>,
     decryptionKey: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   startPoll(
     pollId: PromiseOrValue<BigNumberish>,
     encryptionKey: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   callStatic: {
     addVoter(
       pollId: PromiseOrValue<BigNumberish>,
       identityCommitment: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     castVote(
       vote: PromiseOrValue<BytesLike>,
@@ -254,7 +254,7 @@ export interface ISemaphoreVoting extends BaseContract {
       roots: PromiseOrValue<BytesLike>,
       proof: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
@@ -262,69 +262,69 @@ export interface ISemaphoreVoting extends BaseContract {
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     endPoll(
       pollId: PromiseOrValue<BigNumberish>,
       decryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     startPoll(
       pollId: PromiseOrValue<BigNumberish>,
       encryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
-  };
+    ): Promise<void>
+  }
 
   filters: {
     "PollCreated(uint256,address)"(
       pollId?: null,
       coordinator?: PromiseOrValue<string> | null
-    ): PollCreatedEventFilter;
+    ): PollCreatedEventFilter
     PollCreated(
       pollId?: null,
       coordinator?: PromiseOrValue<string> | null
-    ): PollCreatedEventFilter;
+    ): PollCreatedEventFilter
 
     "PollEnded(uint256,address,uint256)"(
       pollId?: null,
       coordinator?: PromiseOrValue<string> | null,
       decryptionKey?: null
-    ): PollEndedEventFilter;
+    ): PollEndedEventFilter
     PollEnded(
       pollId?: null,
       coordinator?: PromiseOrValue<string> | null,
       decryptionKey?: null
-    ): PollEndedEventFilter;
+    ): PollEndedEventFilter
 
     "PollStarted(uint256,address,uint256)"(
       pollId?: null,
       coordinator?: PromiseOrValue<string> | null,
       encryptionKey?: null
-    ): PollStartedEventFilter;
+    ): PollStartedEventFilter
     PollStarted(
       pollId?: null,
       coordinator?: PromiseOrValue<string> | null,
       encryptionKey?: null
-    ): PollStartedEventFilter;
+    ): PollStartedEventFilter
 
     "VoteAdded(uint256,bytes32)"(
       pollId?: PromiseOrValue<BigNumberish> | null,
       vote?: null
-    ): VoteAddedEventFilter;
+    ): VoteAddedEventFilter
     VoteAdded(
       pollId?: PromiseOrValue<BigNumberish> | null,
       vote?: null
-    ): VoteAddedEventFilter;
-  };
+    ): VoteAddedEventFilter
+  }
 
   estimateGas: {
     addVoter(
       pollId: PromiseOrValue<BigNumberish>,
       identityCommitment: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     castVote(
       vote: PromiseOrValue<BytesLike>,
@@ -333,7 +333,7 @@ export interface ISemaphoreVoting extends BaseContract {
       roots: PromiseOrValue<BytesLike>,
       proof: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
@@ -341,27 +341,27 @@ export interface ISemaphoreVoting extends BaseContract {
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     endPoll(
       pollId: PromiseOrValue<BigNumberish>,
       decryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     startPoll(
       pollId: PromiseOrValue<BigNumberish>,
       encryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-  };
+    ): Promise<BigNumber>
+  }
 
   populateTransaction: {
     addVoter(
       pollId: PromiseOrValue<BigNumberish>,
       identityCommitment: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     castVote(
       vote: PromiseOrValue<BytesLike>,
@@ -370,7 +370,7 @@ export interface ISemaphoreVoting extends BaseContract {
       roots: PromiseOrValue<BytesLike>,
       proof: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
@@ -378,18 +378,18 @@ export interface ISemaphoreVoting extends BaseContract {
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     endPoll(
       pollId: PromiseOrValue<BigNumberish>,
       decryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     startPoll(
       pollId: PromiseOrValue<BigNumberish>,
       encryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-  };
+    ): Promise<PopulatedTransaction>
+  }
 }

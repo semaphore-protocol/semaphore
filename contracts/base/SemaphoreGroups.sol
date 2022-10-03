@@ -6,6 +6,7 @@ import "../interfaces/ISemaphoreGroups.sol";
 import "./LinkableIncrementalBinaryTree.sol";
 import {Edge} from "./LinkableIncrementalBinaryTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
+
 // import "hardhat/console.sol";
 
 /// @title Semaphore groups contract.
@@ -42,7 +43,10 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     /// @dev Adds an identity commitment to an existing group.
     /// @param groupId: Id of the group.
     /// @param identityCommitment: New identity commitment.
-    function _addMember(uint256 groupId, uint256 identityCommitment) internal virtual {
+    function _addMember(uint256 groupId, uint256 identityCommitment)
+        internal
+        virtual
+    {
         if (getDepth(groupId) == 0) {
             revert Semaphore__GroupDoesNotExist();
         }
@@ -70,12 +74,17 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
             revert Semaphore__GroupDoesNotExist();
         }
 
-        groups[groupId].remove(identityCommitment, proofSiblings, proofPathIndices);
+        groups[groupId].remove(
+            identityCommitment,
+            proofSiblings,
+            proofPathIndices
+        );
 
         uint256 root = getRoot(groupId);
 
         emit MemberRemoved(groupId, identityCommitment, root);
     }
+
     /**
         @notice Add an edge to the tree or update an existing edge.
         @param _root The merkle root of the edge's merkle tree
@@ -93,38 +102,77 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
 
     // TODO: Generalize this over maxEdges
     // // Function exposed for testing purposes
-    function verifyRoots(uint256 groupId, bytes calldata roots) public override view returns (bool) {
+    function verifyRoots(uint256 groupId, bytes calldata roots)
+        public
+        view
+        override
+        returns (bool)
+    {
         bytes32[2] memory roots_decoded = abi.decode(roots, (bytes32[2]));
 
         bytes32[] memory roots_encoded = new bytes32[](roots_decoded.length);
-        for (uint i = 0; i < roots_decoded.length; i++) {
+        for (uint256 i = 0; i < roots_decoded.length; i++) {
             roots_encoded[i] = roots_decoded[i];
         }
-        bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(groups[groupId], roots_encoded);
+        bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(
+            groups[groupId],
+            roots_encoded
+        );
         return valid_roots;
     }
+
     /// @dev See {ISemaphoreGroups-getLatestNeighborEdges}.
-    function getLatestNeighborEdges(uint256 groupId) public view virtual override returns (Edge[] memory) {
+    function getLatestNeighborEdges(uint256 groupId)
+        public
+        view
+        virtual
+        override
+        returns (Edge[] memory)
+    {
         return groups[groupId].getLatestNeighborEdges();
     }
 
     /// @dev See {ISemaphoreGroups-getRoot}.
-    function getRoot(uint256 groupId) public view virtual override returns (uint256) {
+    function getRoot(uint256 groupId)
+        public
+        view
+        virtual
+        override
+        returns (uint256)
+    {
         return uint256(groups[groupId].getLastRoot());
     }
 
     /// @dev See {ISemaphoreGroups-getDepth}.
-    function getDepth(uint256 groupId) public view virtual override returns (uint8) {
+    function getDepth(uint256 groupId)
+        public
+        view
+        virtual
+        override
+        returns (uint8)
+    {
         return groups[groupId].depth;
     }
 
     /// @dev See {ISemaphoreGroups-getMaxEdges}.
-    function getMaxEdges(uint256 groupId) public view virtual override returns (uint8) {
+    function getMaxEdges(uint256 groupId)
+        public
+        view
+        virtual
+        override
+        returns (uint8)
+    {
         return groups[groupId].maxEdges;
     }
 
     /// @dev See {ISemaphoreGroups-getNumberOfLeaves}.
-    function getNumberOfLeaves(uint256 groupId) public view virtual override returns (uint256) {
+    function getNumberOfLeaves(uint256 groupId)
+        public
+        view
+        virtual
+        override
+        returns (uint256)
+    {
         return groups[groupId].numberOfLeaves;
     }
 }

@@ -73,10 +73,16 @@ const signal = "Hello world"
 
 group.addMembers([...identityCommitments, identity.generateCommitment()])
 
-const fullProof = await generateProof(identity, merkleProof, externalNullifier, signal, {
-    zkeyFilePath: "./semaphore.zkey",
-    wasmFilePath: "./semaphore.wasm"
-})
+const fullProof = await generateProof(
+    identity,
+    merkleProof,
+    externalNullifier,
+    signal,
+    {
+        zkeyFilePath: "./semaphore.zkey",
+        wasmFilePath: "./semaphore.wasm"
+    }
+)
 
 // You can also use the default zkey/wasm files (only for browsers!).
 // const fullProof = await generateProof(identity, merkleProof, externalNullifier, signal)
@@ -105,7 +111,10 @@ const solidityProof = packToSolidityProof(fullProof.proof)
 ```typescript
 import { generateNullifierHash } from "@semaphore-protocol/proof"
 
-const nullifierHash = generateNullifierHash(externalNullifier, identity.getNullifier())
+const nullifierHash = generateNullifierHash(
+    externalNullifier,
+    identity.getNullifier()
+)
 ```
 
 \# **generateSignalHash**(signal: _string_): _bigint_

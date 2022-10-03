@@ -25,7 +25,11 @@ interface ISemaphoreVoting {
     /// @param pollId: Id of the poll.
     /// @param coordinator: Coordinator of the poll.
     /// @param encryptionKey: Key to encrypt the poll votes.
-    event PollStarted(uint256 pollId, address indexed coordinator, uint256 encryptionKey);
+    event PollStarted(
+        uint256 pollId,
+        address indexed coordinator,
+        uint256 encryptionKey
+    );
 
     /// @dev Emitted when a user votes on a poll.
     /// @param pollId: Id of the poll.
@@ -36,7 +40,11 @@ interface ISemaphoreVoting {
     /// @param pollId: Id of the poll.
     /// @param coordinator: Coordinator of the poll.
     /// @param decryptionKey: Key to decrypt the poll votes.
-    event PollEnded(uint256 pollId, address indexed coordinator, uint256 decryptionKey);
+    event PollEnded(
+        uint256 pollId,
+        address indexed coordinator,
+        uint256 decryptionKey
+    );
 
     /// @dev Creates a poll and the associated Merkle tree/group.
     /// @param pollId: Id of the poll.

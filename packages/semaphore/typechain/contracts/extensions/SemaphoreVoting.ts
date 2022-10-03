@@ -11,50 +11,50 @@ import type {
   Overrides,
   PopulatedTransaction,
   Signer,
-  utils,
-} from "ethers";
+  utils
+} from "ethers"
 import type {
   FunctionFragment,
   Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  EventFragment
+} from "@ethersproject/abi"
+import type { Listener, Provider } from "@ethersproject/providers"
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
-} from "../../common";
+  PromiseOrValue
+} from "../../common"
 
 export type EdgeStruct = {
-  chainID: PromiseOrValue<BigNumberish>;
-  root: PromiseOrValue<BytesLike>;
-  latestLeafIndex: PromiseOrValue<BigNumberish>;
-  srcResourceID: PromiseOrValue<BytesLike>;
-};
+  chainID: PromiseOrValue<BigNumberish>
+  root: PromiseOrValue<BytesLike>
+  latestLeafIndex: PromiseOrValue<BigNumberish>
+  srcResourceID: PromiseOrValue<BytesLike>
+}
 
 export type EdgeStructOutput = [BigNumber, string, BigNumber, string] & {
-  chainID: BigNumber;
-  root: string;
-  latestLeafIndex: BigNumber;
-  srcResourceID: string;
-};
+  chainID: BigNumber
+  root: string
+  latestLeafIndex: BigNumber
+  srcResourceID: string
+}
 
 export interface SemaphoreVotingInterface extends utils.Interface {
   functions: {
-    "addVoter(uint256,uint256)": FunctionFragment;
-    "castVote(bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
-    "createPoll(uint256,uint8,address,uint8)": FunctionFragment;
-    "endPoll(uint256,uint256)": FunctionFragment;
-    "getDepth(uint256)": FunctionFragment;
-    "getLatestNeighborEdges(uint256)": FunctionFragment;
-    "getMaxEdges(uint256)": FunctionFragment;
-    "getNumberOfLeaves(uint256)": FunctionFragment;
-    "getRoot(uint256)": FunctionFragment;
-    "startPoll(uint256,uint256)": FunctionFragment;
-    "verifyRoots(uint256,bytes)": FunctionFragment;
-  };
+    "addVoter(uint256,uint256)": FunctionFragment
+    "castVote(bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment
+    "createPoll(uint256,uint8,address,uint8)": FunctionFragment
+    "endPoll(uint256,uint256)": FunctionFragment
+    "getDepth(uint256)": FunctionFragment
+    "getLatestNeighborEdges(uint256)": FunctionFragment
+    "getMaxEdges(uint256)": FunctionFragment
+    "getNumberOfLeaves(uint256)": FunctionFragment
+    "getRoot(uint256)": FunctionFragment
+    "startPoll(uint256,uint256)": FunctionFragment
+    "verifyRoots(uint256,bytes)": FunctionFragment
+  }
 
   getFunction(
     nameOrSignatureOrTopic:
@@ -69,12 +69,12 @@ export interface SemaphoreVotingInterface extends utils.Interface {
       | "getRoot"
       | "startPoll"
       | "verifyRoots"
-  ): FunctionFragment;
+  ): FunctionFragment
 
   encodeFunctionData(
     functionFragment: "addVoter",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "castVote",
     values: [
@@ -84,7 +84,7 @@ export interface SemaphoreVotingInterface extends utils.Interface {
       PromiseOrValue<BytesLike>,
       PromiseOrValue<BigNumberish>[]
     ]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "createPoll",
     values: [
@@ -93,209 +93,203 @@ export interface SemaphoreVotingInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>
     ]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "endPoll",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getDepth",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getLatestNeighborEdges",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getMaxEdges",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getNumberOfLeaves",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "getRoot",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "startPoll",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
     functionFragment: "verifyRoots",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
-  ): string;
+  ): string
 
-  decodeFunctionResult(functionFragment: "addVoter", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "castVote", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "createPoll", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "endPoll", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "addVoter", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "castVote", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "createPoll", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "endPoll", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result
   decodeFunctionResult(
     functionFragment: "getLatestNeighborEdges",
     data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getMaxEdges",
-    data: BytesLike
-  ): Result;
+  ): Result
+  decodeFunctionResult(functionFragment: "getMaxEdges", data: BytesLike): Result
   decodeFunctionResult(
     functionFragment: "getNumberOfLeaves",
     data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getRoot", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "startPoll", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "verifyRoots",
-    data: BytesLike
-  ): Result;
+  ): Result
+  decodeFunctionResult(functionFragment: "getRoot", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "startPoll", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "verifyRoots", data: BytesLike): Result
 
   events: {
-    "GroupCreated(uint256,uint8)": EventFragment;
-    "MemberAdded(uint256,uint256,uint256)": EventFragment;
-    "MemberRemoved(uint256,uint256,uint256)": EventFragment;
-    "NullifierHashAdded(uint256)": EventFragment;
-    "PollCreated(uint256,address)": EventFragment;
-    "PollEnded(uint256,address,uint256)": EventFragment;
-    "PollStarted(uint256,address,uint256)": EventFragment;
-    "VoteAdded(uint256,bytes32)": EventFragment;
-  };
+    "GroupCreated(uint256,uint8)": EventFragment
+    "MemberAdded(uint256,uint256,uint256)": EventFragment
+    "MemberRemoved(uint256,uint256,uint256)": EventFragment
+    "NullifierHashAdded(uint256)": EventFragment
+    "PollCreated(uint256,address)": EventFragment
+    "PollEnded(uint256,address,uint256)": EventFragment
+    "PollStarted(uint256,address,uint256)": EventFragment
+    "VoteAdded(uint256,bytes32)": EventFragment
+  }
 
-  getEvent(nameOrSignatureOrTopic: "GroupCreated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "MemberAdded"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "MemberRemoved"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "NullifierHashAdded"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PollCreated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PollEnded"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PollStarted"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "VoteAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "GroupCreated"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "MemberAdded"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "MemberRemoved"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "NullifierHashAdded"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "PollCreated"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "PollEnded"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "PollStarted"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "VoteAdded"): EventFragment
 }
 
 export interface GroupCreatedEventObject {
-  groupId: BigNumber;
-  depth: number;
+  groupId: BigNumber
+  depth: number
 }
 export type GroupCreatedEvent = TypedEvent<
   [BigNumber, number],
   GroupCreatedEventObject
->;
+>
 
-export type GroupCreatedEventFilter = TypedEventFilter<GroupCreatedEvent>;
+export type GroupCreatedEventFilter = TypedEventFilter<GroupCreatedEvent>
 
 export interface MemberAddedEventObject {
-  groupId: BigNumber;
-  identityCommitment: BigNumber;
-  root: BigNumber;
+  groupId: BigNumber
+  identityCommitment: BigNumber
+  root: BigNumber
 }
 export type MemberAddedEvent = TypedEvent<
   [BigNumber, BigNumber, BigNumber],
   MemberAddedEventObject
->;
+>
 
-export type MemberAddedEventFilter = TypedEventFilter<MemberAddedEvent>;
+export type MemberAddedEventFilter = TypedEventFilter<MemberAddedEvent>
 
 export interface MemberRemovedEventObject {
-  groupId: BigNumber;
-  identityCommitment: BigNumber;
-  root: BigNumber;
+  groupId: BigNumber
+  identityCommitment: BigNumber
+  root: BigNumber
 }
 export type MemberRemovedEvent = TypedEvent<
   [BigNumber, BigNumber, BigNumber],
   MemberRemovedEventObject
->;
+>
 
-export type MemberRemovedEventFilter = TypedEventFilter<MemberRemovedEvent>;
+export type MemberRemovedEventFilter = TypedEventFilter<MemberRemovedEvent>
 
 export interface NullifierHashAddedEventObject {
-  nullifierHash: BigNumber;
+  nullifierHash: BigNumber
 }
 export type NullifierHashAddedEvent = TypedEvent<
   [BigNumber],
   NullifierHashAddedEventObject
->;
+>
 
 export type NullifierHashAddedEventFilter =
-  TypedEventFilter<NullifierHashAddedEvent>;
+  TypedEventFilter<NullifierHashAddedEvent>
 
 export interface PollCreatedEventObject {
-  pollId: BigNumber;
-  coordinator: string;
+  pollId: BigNumber
+  coordinator: string
 }
 export type PollCreatedEvent = TypedEvent<
   [BigNumber, string],
   PollCreatedEventObject
->;
+>
 
-export type PollCreatedEventFilter = TypedEventFilter<PollCreatedEvent>;
+export type PollCreatedEventFilter = TypedEventFilter<PollCreatedEvent>
 
 export interface PollEndedEventObject {
-  pollId: BigNumber;
-  coordinator: string;
-  decryptionKey: BigNumber;
+  pollId: BigNumber
+  coordinator: string
+  decryptionKey: BigNumber
 }
 export type PollEndedEvent = TypedEvent<
   [BigNumber, string, BigNumber],
   PollEndedEventObject
->;
+>
 
-export type PollEndedEventFilter = TypedEventFilter<PollEndedEvent>;
+export type PollEndedEventFilter = TypedEventFilter<PollEndedEvent>
 
 export interface PollStartedEventObject {
-  pollId: BigNumber;
-  coordinator: string;
-  encryptionKey: BigNumber;
+  pollId: BigNumber
+  coordinator: string
+  encryptionKey: BigNumber
 }
 export type PollStartedEvent = TypedEvent<
   [BigNumber, string, BigNumber],
   PollStartedEventObject
->;
+>
 
-export type PollStartedEventFilter = TypedEventFilter<PollStartedEvent>;
+export type PollStartedEventFilter = TypedEventFilter<PollStartedEvent>
 
 export interface VoteAddedEventObject {
-  pollId: BigNumber;
-  vote: string;
+  pollId: BigNumber
+  vote: string
 }
 export type VoteAddedEvent = TypedEvent<
   [BigNumber, string],
   VoteAddedEventObject
->;
+>
 
-export type VoteAddedEventFilter = TypedEventFilter<VoteAddedEvent>;
+export type VoteAddedEventFilter = TypedEventFilter<VoteAddedEvent>
 
 export interface SemaphoreVoting extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
-  interface: SemaphoreVotingInterface;
+  interface: SemaphoreVotingInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TEvent>>
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
+  ): Array<TypedListener<TEvent>>
+  listeners(eventName?: string): Array<Listener>
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  ): this
+  removeAllListeners(eventName?: string): this
+  off: OnEvent<this>
+  on: OnEvent<this>
+  once: OnEvent<this>
+  removeListener: OnEvent<this>
 
   functions: {
     addVoter(
       pollId: PromiseOrValue<BigNumberish>,
       identityCommitment: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     castVote(
       vote: PromiseOrValue<BytesLike>,
@@ -304,7 +298,7 @@ export interface SemaphoreVoting extends BaseContract {
       roots: PromiseOrValue<BytesLike>,
       proof: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
@@ -312,57 +306,57 @@ export interface SemaphoreVoting extends BaseContract {
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     endPoll(
       pollId: PromiseOrValue<BigNumberish>,
       decryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     getDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[number]>;
+    ): Promise<[number]>
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[EdgeStructOutput[]]>;
+    ): Promise<[EdgeStructOutput[]]>
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[number]>;
+    ): Promise<[number]>
 
     getNumberOfLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    ): Promise<[BigNumber]>
 
     getRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    ): Promise<[BigNumber]>
 
     startPoll(
       pollId: PromiseOrValue<BigNumberish>,
       encryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
-  };
+    ): Promise<[boolean]>
+  }
 
   addVoter(
     pollId: PromiseOrValue<BigNumberish>,
     identityCommitment: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   castVote(
     vote: PromiseOrValue<BytesLike>,
@@ -371,7 +365,7 @@ export interface SemaphoreVoting extends BaseContract {
     roots: PromiseOrValue<BytesLike>,
     proof: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   createPoll(
     pollId: PromiseOrValue<BigNumberish>,
@@ -379,57 +373,57 @@ export interface SemaphoreVoting extends BaseContract {
     coordinator: PromiseOrValue<string>,
     maxEdges: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   endPoll(
     pollId: PromiseOrValue<BigNumberish>,
     decryptionKey: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   getDepth(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<number>;
+  ): Promise<number>
 
   getLatestNeighborEdges(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<EdgeStructOutput[]>;
+  ): Promise<EdgeStructOutput[]>
 
   getMaxEdges(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<number>;
+  ): Promise<number>
 
   getNumberOfLeaves(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumber>
 
   getRoot(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumber>
 
   startPoll(
     pollId: PromiseOrValue<BigNumberish>,
     encryptionKey: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   verifyRoots(
     groupId: PromiseOrValue<BigNumberish>,
     roots: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<boolean>
 
   callStatic: {
     addVoter(
       pollId: PromiseOrValue<BigNumberish>,
       identityCommitment: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     castVote(
       vote: PromiseOrValue<BytesLike>,
@@ -438,7 +432,7 @@ export interface SemaphoreVoting extends BaseContract {
       roots: PromiseOrValue<BytesLike>,
       proof: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
@@ -446,136 +440,136 @@ export interface SemaphoreVoting extends BaseContract {
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     endPoll(
       pollId: PromiseOrValue<BigNumberish>,
       decryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     getDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<number>;
+    ): Promise<number>
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<EdgeStructOutput[]>;
+    ): Promise<EdgeStructOutput[]>
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<number>;
+    ): Promise<number>
 
     getNumberOfLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     startPoll(
       pollId: PromiseOrValue<BigNumberish>,
       encryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<boolean>;
-  };
+    ): Promise<boolean>
+  }
 
   filters: {
     "GroupCreated(uint256,uint8)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
       depth?: null
-    ): GroupCreatedEventFilter;
+    ): GroupCreatedEventFilter
     GroupCreated(
       groupId?: PromiseOrValue<BigNumberish> | null,
       depth?: null
-    ): GroupCreatedEventFilter;
+    ): GroupCreatedEventFilter
 
     "MemberAdded(uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
       identityCommitment?: null,
       root?: null
-    ): MemberAddedEventFilter;
+    ): MemberAddedEventFilter
     MemberAdded(
       groupId?: PromiseOrValue<BigNumberish> | null,
       identityCommitment?: null,
       root?: null
-    ): MemberAddedEventFilter;
+    ): MemberAddedEventFilter
 
     "MemberRemoved(uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
       identityCommitment?: null,
       root?: null
-    ): MemberRemovedEventFilter;
+    ): MemberRemovedEventFilter
     MemberRemoved(
       groupId?: PromiseOrValue<BigNumberish> | null,
       identityCommitment?: null,
       root?: null
-    ): MemberRemovedEventFilter;
+    ): MemberRemovedEventFilter
 
     "NullifierHashAdded(uint256)"(
       nullifierHash?: null
-    ): NullifierHashAddedEventFilter;
-    NullifierHashAdded(nullifierHash?: null): NullifierHashAddedEventFilter;
+    ): NullifierHashAddedEventFilter
+    NullifierHashAdded(nullifierHash?: null): NullifierHashAddedEventFilter
 
     "PollCreated(uint256,address)"(
       pollId?: null,
       coordinator?: PromiseOrValue<string> | null
-    ): PollCreatedEventFilter;
+    ): PollCreatedEventFilter
     PollCreated(
       pollId?: null,
       coordinator?: PromiseOrValue<string> | null
-    ): PollCreatedEventFilter;
+    ): PollCreatedEventFilter
 
     "PollEnded(uint256,address,uint256)"(
       pollId?: null,
       coordinator?: PromiseOrValue<string> | null,
       decryptionKey?: null
-    ): PollEndedEventFilter;
+    ): PollEndedEventFilter
     PollEnded(
       pollId?: null,
       coordinator?: PromiseOrValue<string> | null,
       decryptionKey?: null
-    ): PollEndedEventFilter;
+    ): PollEndedEventFilter
 
     "PollStarted(uint256,address,uint256)"(
       pollId?: null,
       coordinator?: PromiseOrValue<string> | null,
       encryptionKey?: null
-    ): PollStartedEventFilter;
+    ): PollStartedEventFilter
     PollStarted(
       pollId?: null,
       coordinator?: PromiseOrValue<string> | null,
       encryptionKey?: null
-    ): PollStartedEventFilter;
+    ): PollStartedEventFilter
 
     "VoteAdded(uint256,bytes32)"(
       pollId?: PromiseOrValue<BigNumberish> | null,
       vote?: null
-    ): VoteAddedEventFilter;
+    ): VoteAddedEventFilter
     VoteAdded(
       pollId?: PromiseOrValue<BigNumberish> | null,
       vote?: null
-    ): VoteAddedEventFilter;
-  };
+    ): VoteAddedEventFilter
+  }
 
   estimateGas: {
     addVoter(
       pollId: PromiseOrValue<BigNumberish>,
       identityCommitment: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     castVote(
       vote: PromiseOrValue<BytesLike>,
@@ -584,7 +578,7 @@ export interface SemaphoreVoting extends BaseContract {
       roots: PromiseOrValue<BytesLike>,
       proof: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
@@ -592,58 +586,58 @@ export interface SemaphoreVoting extends BaseContract {
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     endPoll(
       pollId: PromiseOrValue<BigNumberish>,
       decryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getNumberOfLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     getRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     startPoll(
       pollId: PromiseOrValue<BigNumberish>,
       encryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-  };
+    ): Promise<BigNumber>
+  }
 
   populateTransaction: {
     addVoter(
       pollId: PromiseOrValue<BigNumberish>,
       identityCommitment: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     castVote(
       vote: PromiseOrValue<BytesLike>,
@@ -652,7 +646,7 @@ export interface SemaphoreVoting extends BaseContract {
       roots: PromiseOrValue<BytesLike>,
       proof: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
@@ -660,49 +654,49 @@ export interface SemaphoreVoting extends BaseContract {
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     endPoll(
       pollId: PromiseOrValue<BigNumberish>,
       decryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getMaxEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getNumberOfLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     getRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     startPoll(
       pollId: PromiseOrValue<BigNumberish>,
       encryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-  };
+    ): Promise<PopulatedTransaction>
+  }
 }

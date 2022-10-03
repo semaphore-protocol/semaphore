@@ -1,47 +1,47 @@
 name: test
 
 on:
-    pull_request:
-    push:
-        branches:
-            - main
+  pull_request:
+  push:
+    branches:
+      - main
 
 env:
-    TREE_DEPTH: 20
+  TREE_DEPTH: 20
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
 
-            - name: Install Node.js
-              uses: actions/setup-node@v1
-              with:
-                  node-version: 16.x
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
 
-            - name: Get yarn cache directory path
-              id: yarn-cache-dir-path
-              run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
 
-            - name: Restore yarn cache
-              uses: actions/cache@v3
-              id: yarn-cache
-              with:
-                  path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn-
+      - name: Restore yarn cache
+        uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
-            - name: Install dependencies
-              run: yarn
+      - name: Install dependencies
+        run: yarn
 
-            - name: Download Snark artifacts
-              run: yarn download:snark-artifacts
+      - name: Download Snark artifacts
+        run: yarn download:snark-artifacts
 
-            - name: Compile contracts
-              run: yarn compile
+      - name: Compile contracts
+        run: yarn compile
 
-            - name: Test contracts with coverage
-              run: yarn test:coverage
+      - name: Test contracts with coverage
+        run: yarn test:coverage
