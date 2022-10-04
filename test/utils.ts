@@ -3,6 +3,7 @@ import { BigNumber, BigNumberish } from "@ethersproject/bignumber"
 import { randomBytes } from "@ethersproject/random"
 import { sha256 as _sha256 } from "@ethersproject/sha2"
 import { toUtf8Bytes } from "@ethersproject/strings"
+import ganache from 'ganache';
 import Web3 from "web3"
 
 export type VerifierContractInfo = {
@@ -101,4 +102,30 @@ export function isJsonArray(jsonString: string) {
   } catch (error) {
     return false
   }
+}
+
+
+export type GanacheAccounts = {
+  balance: string;
+  secretKey: string;
+};
+
+export async function startGanacheServer (
+  port: number,
+  networkId: number,
+  populatedAccounts: GanacheAccounts[],
+  options: any = {}
+) {
+  const ganacheServer = ganache.server({
+    accounts: populatedAccounts,
+    chainId: networkId,
+    network_id: networkId,
+    quiet: true,
+    ...options
+  });
+
+  await ganacheServer.listen(port);
+  console.log(`Ganache Started on http://127.0.0.1:${port} ..`);
+
+  return ganacheServer;
 }

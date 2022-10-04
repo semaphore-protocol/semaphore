@@ -195,6 +195,10 @@ export class Semaphore {
     return false
   }
 
+  public async getGroupRoot(groupId: number): Promise<BigNumber> {
+    return this.contract.getRoot(groupId)
+  }
+
   public populateRootsForProof(groupId: number): string[] {
     return this.linkedGroups[groupId]
       .getRoots()
@@ -243,10 +247,19 @@ export class Semaphore {
     )
 
     // TODO: Add query and pre-processing of out-of-sync leaves to recreate group and remove above assert
-
     return [thisRoot.toString(), ...neighborEdges.map((edge) => edge.root)]
   }
 
+  public async addMembers(
+    groupId: number,
+    leafs: BigNumberish[]
+  ): Promise<ContractTransaction[]> {
+    const txs = []
+    for(const leaf of leafs) {
+      txs.push(await this.addMember(groupId, leaf))
+    }
+    return txs
+  }
   public async addMember(
     groupId: number,
     leaf: BigNumberish
@@ -258,6 +271,29 @@ export class Semaphore {
       return this.contract.addMember(groupId, leaf, { gasLimit: "0x5B8D80" })
     }
   }
+
+  public async updateEdge(
+    groupId: number,
+    root: string,
+    index: number,
+    typedChainId: number,
+  ): Promise<ContractTransaction> {
+
+    const tx = await this.contract.updateEdge(groupId, root, index, toFixedHex(typedChainId), { gasLimit: "0x5B8D80" })
+    this.linkedGroups[groupId].updateEdge(typedChainId, root)
+
+    return tx
+  }
+
+  public async verifyRoots(
+    groupId: number,
+    rootsBytes: string,
+  ): Promise<boolean> {
+
+    const tx = await this.contract.verifyRoots(groupId, rootsBytes, { gasLimit: "0x5B8D80" })
+    return tx
+  }
+
 }
 
 export default Semaphore

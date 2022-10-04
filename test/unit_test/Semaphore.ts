@@ -1,11 +1,11 @@
 import { expect } from "chai"
 import { constants, Signer, utils, ContractReceipt, BigNumber } from "ethers"
 import { ethers } from "hardhat"
-// import { Semaphore as SemaphoreContract } from "../../build/typechain"
+import { Semaphore as SemaphoreContract, Semaphore__factory, ISemaphore, SemaphoreGroups } from "../../packages/semaphore/typechain"
 // import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Semaphore } from "@webb-tools/semaphore"
-import { LinkedGroup } from "@webb-tools/semaphore-group"
+import { Semaphore } from "../../packages/semaphore"
+import { LinkedGroup } from "../../packages/group"
 import {
   FullProof,
   generateProof,
@@ -72,11 +72,16 @@ describe("Semaphore", () => {
       const transaction = semaphore.contract.createGroup(
         groupId,
         10,
-        await user.getAddress(),
-        maxEdges
+        adminAddr,
+        maxEdges,
+        { gasLimit: "0x5B8D80" }
       )
 
-      await expect(transaction).revertedWith(
+      // console.log('tx: ', await transaction)
+
+      // TODO: I think this is a bug on hardhat, similar to the one documented here:
+      // https://github.com/NomicFoundation/hardhat/issues/2751
+      await expect(transaction).to.be.revertedWith(
         "Semaphore__TreeDepthIsNotSupported"
       )
     })
@@ -104,9 +109,9 @@ describe("Semaphore", () => {
     it("Should not update a group admin if the caller is not the group admin", async () => {
       await semaphore.setSigner(user)
 
-      // const transaction = semaphore.updateGroupAdmin(groupId, userAddr)
+      const transaction = semaphore.updateGroupAdmin(groupId, userAddr)
 
-      await expect(semaphore.updateGroupAdmin(groupId, userAddr)).revertedWith(
+      await expect(transaction).revertedWith(
         "Semaphore__CallerIsNotTheGroupAdmin()"
       )
     })

@@ -101,15 +101,15 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         @param groupId The groupID of the LinkableTree
         @param root The merkle root of the edge's merkle tree
         @param leafIndex The latest leaf insertion index of the edge's merkle tree
-        @param srcResourceID The origin resource ID of the originating linked anchor update
+        @param typedChainId The origin resource ID of the originating linked anchor update
      */
     function updateEdge(
         uint256 groupId,
         bytes32 root,
         uint32 leafIndex,
-        bytes32 srcResourceID
+        bytes32 typedChainId
     ) external override onlyGroupAdmin(groupId) {
-        _updateEdge(groupId, root, leafIndex, srcResourceID);
+        _updateEdge(groupId, root, leafIndex, typedChainId);
     }
 
     /// @dev See {ISemaphore-addMember}.

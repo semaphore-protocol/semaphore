@@ -43,5 +43,5 @@ jobs:
       - name: Compile contracts
         run: yarn compile
 
-      - name: Test contracts with coverage
-        run: yarn test:coverage
+      - name: Test contracts
+        run: yarn test

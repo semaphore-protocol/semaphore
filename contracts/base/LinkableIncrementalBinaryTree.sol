@@ -228,6 +228,7 @@ library LinkableIncrementalBinaryTree {
         return self.roots[self.currentRootIndex];
     }
 
+    // solium-disable-next-line security/code-complexity
     function zeros(uint256 i) public pure returns (bytes32) {
         if (i == 0)
             return
