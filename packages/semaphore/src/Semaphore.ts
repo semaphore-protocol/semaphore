@@ -255,7 +255,7 @@ export class Semaphore {
     leafs: BigNumberish[]
   ): Promise<ContractTransaction[]> {
     const txs = []
-    for(const leaf of leafs) {
+    for (const leaf of leafs) {
       txs.push(await this.addMember(groupId, leaf))
     }
     return txs
@@ -276,10 +276,15 @@ export class Semaphore {
     groupId: number,
     root: string,
     index: number,
-    typedChainId: number,
+    typedChainId: number
   ): Promise<ContractTransaction> {
-
-    const tx = await this.contract.updateEdge(groupId, root, index, toFixedHex(typedChainId), { gasLimit: "0x5B8D80" })
+    const tx = await this.contract.updateEdge(
+      groupId,
+      root,
+      index,
+      toFixedHex(typedChainId),
+      { gasLimit: "0x5B8D80" }
+    )
     this.linkedGroups[groupId].updateEdge(typedChainId, root)
 
     return tx
@@ -287,13 +292,13 @@ export class Semaphore {
 
   public async verifyRoots(
     groupId: number,
-    rootsBytes: string,
+    rootsBytes: string
   ): Promise<boolean> {
-
-    const tx = await this.contract.verifyRoots(groupId, rootsBytes, { gasLimit: "0x5B8D80" })
+    const tx = await this.contract.verifyRoots(groupId, rootsBytes, {
+      gasLimit: "0x5B8D80"
+    })
     return tx
   }
-
 }
 
 export default Semaphore

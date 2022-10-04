@@ -20,6 +20,7 @@ circuits
 
 # fixtures
 witness_calculator.js
+hardhatAccounts.js
 
 # production
 dist

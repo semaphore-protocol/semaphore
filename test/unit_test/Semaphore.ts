@@ -1,7 +1,12 @@
 import { expect } from "chai"
 import { constants, Signer, utils, ContractReceipt, BigNumber } from "ethers"
 import { ethers } from "hardhat"
-import { Semaphore as SemaphoreContract, Semaphore__factory, ISemaphore, SemaphoreGroups } from "../../packages/semaphore/typechain"
+import {
+  Semaphore as SemaphoreContract,
+  Semaphore__factory,
+  ISemaphore,
+  SemaphoreGroups
+} from "../../packages/semaphore/typechain"
 // import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
 import { Semaphore } from "../../packages/semaphore"
