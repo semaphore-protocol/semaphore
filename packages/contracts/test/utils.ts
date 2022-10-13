@@ -5,10 +5,9 @@ export function createIdentityCommitments(n: number): bigint[] {
     const identityCommitments: bigint[] = []
 
     for (let i = 0; i < n; i += 1) {
-        const identity = new Identity(i.toString())
-        const identityCommitment = identity.generateCommitment()
+        const { commitment } = new Identity(i.toString())
 
-        identityCommitments.push(identityCommitment)
+        identityCommitments.push(commitment)
     }
 
     return identityCommitments

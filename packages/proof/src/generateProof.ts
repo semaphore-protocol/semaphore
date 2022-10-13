@@ -6,14 +6,12 @@ import generateSignalHash from "./generateSignalHash"
 import { BigNumberish, FullProof, SnarkArtifacts } from "./types"
 
 export default async function generateProof(
-    identity: Identity,
+    { trapdoor, nullifier, commitment }: Identity,
     groupOrMerkleProof: Group | MerkleProof,
     externalNullifier: BigNumberish,
     signal: string,
     snarkArtifacts?: SnarkArtifacts
 ): Promise<FullProof> {
-    const commitment = identity.generateCommitment()
-
     let merkleProof: MerkleProof
 
     if ("depth" in groupOrMerkleProof) {
@@ -37,8 +35,8 @@ export default async function generateProof(
 
     const { proof, publicSignals } = await groth16.fullProve(
         {
-            identityTrapdoor: identity.getTrapdoor(),
-            identityNullifier: identity.getNullifier(),
+            identityTrapdoor: trapdoor,
+            identityNullifier: nullifier,
             treePathIndices: merkleProof.pathIndices,
             treeSiblings: merkleProof.siblings,
             externalNullifier,

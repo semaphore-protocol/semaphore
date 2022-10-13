@@ -17,16 +17,17 @@ describe("Identity", () => {
             const identity1 = new Identity()
             const identity2 = new Identity()
 
-            expect(identity1.getTrapdoor()).not.toBe(identity2.getTrapdoor())
-            expect(identity1.getNullifier()).not.toBe(identity2.getNullifier())
+            expect(identity1.trapdoor).not.toBe(identity2.getTrapdoor())
+            expect(identity1.nullifier).not.toBe(identity2.getNullifier())
+            expect(identity1.commitment).not.toBe(identity2.getCommitment())
         })
 
         it("Should create deterministic identities from a message", () => {
             const identity1 = new Identity("message")
             const identity2 = new Identity("message")
 
-            expect(identity1.getTrapdoor()).toBe(identity2.getTrapdoor())
-            expect(identity1.getNullifier()).toBe(identity2.getNullifier())
+            expect(identity1.trapdoor).toBe(identity2.getTrapdoor())
+            expect(identity1.nullifier).toBe(identity2.getNullifier())
         })
 
         it("Should create deterministic identities from number/boolean messages", () => {
@@ -35,10 +36,10 @@ describe("Identity", () => {
             const identity3 = new Identity("7")
             const identity4 = new Identity("7")
 
-            expect(identity1.getTrapdoor()).toBe(identity2.getTrapdoor())
-            expect(identity1.getNullifier()).toBe(identity2.getNullifier())
-            expect(identity3.getTrapdoor()).toBe(identity4.getTrapdoor())
-            expect(identity3.getNullifier()).toBe(identity4.getNullifier())
+            expect(identity1.trapdoor).toBe(identity2.getTrapdoor())
+            expect(identity1.nullifier).toBe(identity2.getNullifier())
+            expect(identity3.trapdoor).toBe(identity4.getTrapdoor())
+            expect(identity3.nullifier).toBe(identity4.getNullifier())
         })
 
         it("Should not recreate an existing invalid identity", () => {
@@ -52,8 +53,8 @@ describe("Identity", () => {
 
             const identity2 = new Identity(identity1.toString())
 
-            expect(identity1.getTrapdoor()).toBe(identity2.getTrapdoor())
-            expect(identity1.getNullifier()).toBe(identity2.getNullifier())
+            expect(identity1.trapdoor).toBe(identity2.getTrapdoor())
+            expect(identity1.nullifier).toBe(identity2.getNullifier())
         })
     })
 
