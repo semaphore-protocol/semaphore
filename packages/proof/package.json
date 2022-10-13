@@ -36,8 +36,8 @@
         "typedoc": "^0.22.11"
     },
     "peerDependencies": {
-        "@semaphore-protocol/group": "2.4.0",
-        "@semaphore-protocol/identity": "2.4.0"
+        "@semaphore-protocol/group": "2.5.0",
+        "@semaphore-protocol/identity": "2.5.0"
     },
     "dependencies": {
         "@ethersproject/bytes": "^5.7.0",
