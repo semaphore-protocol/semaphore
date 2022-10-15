@@ -46,8 +46,8 @@
     </h4>
 </div>
 
-| This library provides a class that can be used to create identities compatible with the Semaphore [circuits](https://github.com/semaphore-protocol/semaphore/tree/main/circuits). Each identity contains two private values (_trapdoor_ and _nullifier_), and the Poseidon hash of these values (_commitment_) is used as the public identifier of the Semaphore identity. |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| This library provides a class that can be used to create identities compatible with the Semaphore [circuits](https://github.com/semaphore-protocol/semaphore/tree/main/circuits). Each identity contains two secret values: _trapdoor_ and _nullifier_. The Poseidon hash of the secret values is the identity _secret_, and its hash is the identity _commitment_. |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## 🛠 Install
 
@@ -72,30 +72,15 @@ yarn add @semaphore-protocol/identity
 ```typescript
 import { Identity } from "@semaphore-protocol/identity"
 
-// Trapdoor and nullifier are generated randomly.
+// The identity can be generated randomly.
 const identity1 = new Identity()
 
-// Trapdoor and nullifier are generated deterministically from a secret message.
+// Deterministically from a secret message.
 const identity2 = new Identity("secret-message")
 
-// Trapdoor and nullifier are generated from an existing identity.
+// Or it can be retrieved from an existing identity.
 const identity3 = new Identity(identity1.toString())
-```
 
-\# **getTrapdoor**(): _bigint_
-
-```typescript
-const trapdoor = identity.getTrapdoor()
-```
-
-\# **getNullifier**(): _bigint_
-
-```typescript
-const nullifier = identity.getNullifier()
-```
-
-\# **generateCommitment**(): _bigint_
-
-```typescript
-const commitment = identity.generateCommitment()
+// Trapdoor, nullifier and commitment are the attributes (e.g. JS getters).
+const { trapdoor, nullifier, commitment } = identity1
 ```
