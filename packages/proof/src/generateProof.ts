@@ -4,6 +4,7 @@ import generateSignalHash from "./generateSignalHash"
 import { BigNumber, BigNumberish } from "ethers"
 import { FullProof, SnarkArtifacts } from "./types"
 import { MerkleProof } from "@webb-tools/sdk-core"
+import { ZkComponents } from "@webb-tools/utils"
 
 import { Identity } from "@webb-tools/semaphore-identity/src"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
@@ -32,7 +33,7 @@ export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
   return rootsBytes // root byte string (32 * array.length bytes)
 }
 // async function generateProof(
-export default async function generateProof(
+export async function generateProof(
   identity: Identity,
   group: LinkedGroup,
   externalNullifier: BigNumberish,
@@ -77,5 +78,45 @@ export default async function generateProof(
 
       chainID: publicSignals[5]
     }
+  }
+}
+
+export async function shouldWork(
+  identity: Identity,
+  group: LinkedGroup,
+  externalNullifier: BigNumberish,
+  signal: string,
+  chainId: BigNumberish,
+  zkComponents: ZkComponents
+): Promise<FullProof> {
+  const commitment = identity.generateCommitment()
+  const index = group.indexOf(commitment)
+
+  if (index === -1) {
+    throw new Error("The identity is not part of the group")
+  }
+
+  const merkleProof: MerkleProof = group.generateProofOfMembership(index)
+  const pathElements = merkleProof.pathElements.map((bignum) =>
+    bignum.toBigInt()
+  )
+
+  const { proof, publicSignals } = await groth16.fullProve(
+    {
+      identityTrapdoor: identity.getTrapdoor(),
+      identityNullifier: identity.getNullifier(),
+      treePathIndices: merkleProof.pathIndices,
+      treeSiblings: pathElements,
+      roots: group.getRoots().map((bignum) => bignum.toString()),
+      chainID: chainId.toString(),
+      externalNullifier: externalNullifier.toString(),
+      signalHash: generateSignalHash(signal)
+    },
+    zkComponents.wasm,
+    zkComponents.zkey
+  )
+  return {
+    proof,
+    publicSignals
   }
 }

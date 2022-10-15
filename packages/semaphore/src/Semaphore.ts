@@ -15,7 +15,16 @@ import {
 import { toHex, toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
-import { LinkedGroup } from "@webb-tools/semaphore-group/src"
+import { LinkedGroup } from "@webb-tools/semaphore-group"
+import { Identity } from "@webb-tools/semaphore-identity/src"
+// import Identity from "@webb-tools/semaphore-identity/src"
+
+import {
+  FullProof,
+  shouldWork,
+  packToSolidityProof,
+  SolidityProof
+} from "../../proof/src"
 import { Verifier } from "./Verifier"
 
 import { strict as assert } from "assert"
@@ -28,6 +37,7 @@ import { strict as assert } from "assert"
 export class Semaphore {
   signer: Signer
   contract: SemaphoreContract
+  chainId: number
   linkedGroups: Record<number, LinkedGroup>
   rootHistory: Record<number, string>
   // hex string of the connected root
@@ -40,10 +50,12 @@ export class Semaphore {
     contract: SemaphoreContract,
     signer: Signer,
     maxEdges: number,
+    chainId: number,
     smallCircuitZkComponents: ZkComponents
   ) {
     this.signer = signer
     this.contract = contract
+    this.chainId = chainId
     this.latestSyncedBlock = 0
     this.linkedGroups = {}
     this.rootHistory = {}
@@ -60,6 +72,8 @@ export class Semaphore {
     smallCircuitZkComponents: ZkComponents,
     signer: Signer
   ): Promise<Semaphore> {
+    const chainId = getChainIdType(await signer.getChainId())
+
     const encodeLibraryFactory = new SemaphoreInputEncoder__factory(signer)
     const encodeLibrary = await encodeLibraryFactory.deploy()
     await encodeLibrary.deployed()
@@ -102,6 +116,7 @@ export class Semaphore {
       semaphore,
       signer,
       maxEdges,
+      chainId,
       smallCircuitZkComponents
     )
     return createdSemaphore
@@ -116,11 +131,13 @@ export class Semaphore {
     maxEdges: number,
     signer: Signer
   ) {
+    const chainId = getChainIdType(await signer.getChainId())
     const semaphore = Semaphore__factory.connect(address, signer)
     const createdSemaphore = new Semaphore(
       semaphore,
       signer,
       maxEdges,
+      chainId,
       smallCircuitZkComponents
     )
     return createdSemaphore
@@ -298,6 +315,24 @@ export class Semaphore {
       gasLimit: "0x5B8D80"
     })
     return tx
+  }
+
+  public async genProof(
+    identity: Identity,
+    signal: string,
+    groupId: number,
+    externalNullifier: BigNumberish
+  ) {
+    const fullProof = await shouldWork(
+      identity,
+      this.linkedGroups[groupId],
+      externalNullifier,
+      signal,
+      this.chainId,
+      this.smallCircuitZkComponents
+    )
+    const solidityProof = packToSolidityProof(fullProof.proof)
+    return fullProof
   }
 }
 

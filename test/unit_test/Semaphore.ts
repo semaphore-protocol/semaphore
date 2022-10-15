@@ -9,14 +9,14 @@ import {
 } from "../../packages/semaphore/typechain"
 // import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Semaphore } from "../../packages/semaphore"
-import { LinkedGroup } from "../../packages/group"
+import { Semaphore } from "@webb-tools/semaphore"
+import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
   FullProof,
   generateProof,
   packToSolidityProof,
   SolidityProof
-} from "../../packages/proof"
+} from "../../packages/proof/src"
 import { fetchComponentsFromFilePaths } from "@webb-tools/utils"
 import { toFixedHex, createRootsBytes, createIdentities } from "../utils"
 
@@ -216,16 +216,11 @@ describe("Semaphore", () => {
     let roots: string[]
 
     before(async () => {
-      await semaphore.contract.createGroup(
-        groupId2,
-        treeDepth,
-        accounts[0],
-        maxEdges
-      )
+      await semaphore.createGroup(groupId2, treeDepth, accounts[0], maxEdges)
 
-      await semaphore.contract.addMember(groupId2, members[0])
-      await semaphore.contract.addMember(groupId2, members[1])
-      await semaphore.contract.addMember(groupId2, members[2])
+      await semaphore.addMember(groupId2, members[0])
+      await semaphore.addMember(groupId2, members[1])
+      await semaphore.addMember(groupId2, members[2])
 
       roots = [BigNumber.from(linkedGroup.root).toHexString(), toFixedHex(0)]
 
