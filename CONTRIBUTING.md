@@ -56,7 +56,7 @@ Each commit message consists of a **header**, a **body** and a **footer**. The *
     <BLANK LINE>
     <footer>
 
-The **header** is mandatory and the **scope** of the header is optional.
+The **header** is mandatory and the **scope** of the header must contain the name of the package you are working on.
 
 #### Type
 
