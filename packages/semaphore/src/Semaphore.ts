@@ -212,7 +212,7 @@ export class Semaphore {
     return false
   }
 
-  public async getGroupRoot(groupId: number): Promise<BigNumber> {
+  public async getRoot(groupId: number): Promise<BigNumber> {
     return this.contract.getRoot(groupId)
   }
 

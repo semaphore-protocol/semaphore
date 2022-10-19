@@ -564,10 +564,7 @@ library LinkableIncrementalBinaryTree {
             rootIndex++;
         }
         while (rootIndex != self.maxEdges + 1) {
-            require(
-                _roots[rootIndex] == 0,
-                "Not initialized edges must be set to 0"
-            );
+            require(_roots[rootIndex] == zeros(self.depth), "non-existent edge is not set to the default root");
             rootIndex++;
         }
         return true;

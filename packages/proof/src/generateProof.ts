@@ -8,6 +8,7 @@ import { ZkComponents } from "@webb-tools/utils"
 
 import { Identity } from "@webb-tools/semaphore-identity/src"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
+// const assert = require("assert")
 
 export type VerifierContractInfo = {
   name: string
@@ -32,6 +33,27 @@ export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
   }
   return rootsBytes // root byte string (32 * array.length bytes)
 }
+export type PublicSignals = {
+  nullifierHash: string;
+  signalHash: string;
+  externalNullifier: string;
+  roots: string[];
+  chainID: string;
+}
+
+export function convertPublicSignals(publicSignals: string[]): PublicSignals {
+  // assert(publicSignals.length == 6)
+  console.log('publicsignals length: ', publicSignals.length)
+
+  return {
+    nullifierHash: publicSignals[0],
+    signalHash: publicSignals[1],
+    externalNullifier: publicSignals[2],
+    roots: [publicSignals[3], publicSignals[4]],
+    chainID: publicSignals[5],
+  }
+
+}
 // async function generateProof(
 export async function generateProof(
   identity: Identity,
@@ -53,7 +75,7 @@ export async function generateProof(
     bignum.toBigInt()
   )
 
-  const { proof, publicSignals } = await groth16.fullProve(
+  let { proof, publicSignals } = await groth16.fullProve(
     {
       identityTrapdoor: identity.getTrapdoor(),
       identityNullifier: identity.getNullifier(),
@@ -67,17 +89,20 @@ export async function generateProof(
     snarkArtifacts.wasmFilePath,
     snarkArtifacts.zkeyFilePath
   )
+  publicSignals = await convertPublicSignals(publicSignals)
+
   return {
     proof,
-    publicSignals: {
-      nullifierHash: publicSignals[0],
-      signalHash: publicSignals[1],
-      externalNullifier: publicSignals[2],
-      // TODO: generalize roots for diff maxEdges
-      roots: [publicSignals[3], publicSignals[4]],
-
-      chainID: publicSignals[5]
-    }
+    publicSignals
+    // publicSignals: {
+    //   nullifierHash: publicSignals[0],
+    //   signalHash: publicSignals[1],
+    //   externalNullifier: publicSignals[2],
+    //   // TODO: generalize roots for diff maxEdges
+    //   roots: [publicSignals[3], publicSignals[4]],
+    //
+    //   chainID: publicSignals[5]
+    // }
   }
 }
 

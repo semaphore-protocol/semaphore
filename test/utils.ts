@@ -1,4 +1,4 @@
-import { Identity } from "../packages/identity/src"
+import { Identity } from "../packages/identity"
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber"
 import { randomBytes } from "@ethersproject/random"
 import { sha256 as _sha256 } from "@ethersproject/sha2"

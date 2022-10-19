@@ -55,9 +55,9 @@ describe("2-sided CrossChain tests", () => {
   // let chainIDB: number
   let allRootsA: string[]
   let allRootsB: string[]
+  const groupIdNum = 2;
 
   const treeDepth = Number(process.env.TREE_DEPTH) | 20
-  const groupId = 2
   const maxEdges = 1
   const providerA = new providers.JsonRpcProvider("http://127.0.0.1:8545")
   const providerB = new providers.JsonRpcProvider("http://127.0.0.1:8546")
@@ -65,17 +65,24 @@ describe("2-sided CrossChain tests", () => {
 
   const AddMembersAndVerifyEvents = async (
     semaphore: Semaphore,
+    numb: number,
     membersToAdd: BigNumber[],
     linkedGroup: LinkedGroup
-  ) => {
-    const txs = await semaphore.addMembers(groupId, membersToAdd)
-    const roots: string[] = []
-    for (let i = 0; i < txs.length; i++) {
-      linkedGroup.addMember(membersToAdd[i])
+  ): Promise<string[]> => {
+    // const txs = await semaphore.addMembers(groupId, membersToAdd)
+    const roots: string[] = [BigNumber.from(linkedGroup.root).toHexString()]
+    for (let i = 0; i < membersToAdd.length; i++) {
+      const tx = await semaphore.addMember(numb, membersToAdd[i])
+      await linkedGroup.addMember(membersToAdd[i])
       const root = BigNumber.from(linkedGroup.group.root)
-      await expect(txs[i])
+      // console.log('tx: ', tx)
+
+      const receipt = await tx.wait()
+
+      // console.log('receipt: ', receipt)
+      await expect(tx)
         .to.emit(semaphore.contract, "MemberAdded")
-        .withArgs(groupId, membersToAdd[i], root)
+        .withArgs(numb, membersToAdd[i], root)
 
       roots.push(root.toHexString())
     }
@@ -178,7 +185,7 @@ describe("2-sided CrossChain tests", () => {
     // Creating group on-chain and locally
     groupA = new LinkedGroup(treeDepth, maxEdges)
     const transactionA = semaphore1.createGroup(
-      groupId,
+      groupIdNum,
       treeDepth,
       hardhatAdminAddr,
       maxEdges
@@ -186,41 +193,45 @@ describe("2-sided CrossChain tests", () => {
 
     await expect(transactionA)
       .to.emit(semaphore1.contract, "GroupCreated")
-      .withArgs(groupId, treeDepth)
+      .withArgs(groupIdNum, treeDepth)
 
     await expect(transactionA)
       .to.emit(semaphore1.contract, "GroupAdminUpdated")
-      .withArgs(groupId, constants.AddressZero, hardhatAdminAddr)
-    const rootA = await semaphore1.contract.getRoot(groupId)
+      .withArgs(groupIdNum, constants.AddressZero, hardhatAdminAddr)
+    const rootA = await semaphore1.contract.getRoot(groupIdNum)
     expect(rootA).to.equal(groupA.root)
 
     const transactionB = semaphore2.createGroup(
-      groupId,
+      groupIdNum,
       treeDepth,
       ganacheAdminAddr,
       maxEdges
     )
     await expect(transactionB)
       .to.emit(semaphore2.contract, "GroupCreated")
-      .withArgs(groupId, treeDepth)
+      .withArgs(groupIdNum, treeDepth)
     await expect(transactionB)
       .to.emit(semaphore2.contract, "GroupAdminUpdated")
-      .withArgs(groupId, constants.AddressZero, ganacheAdminAddr)
-    const rootB = await semaphore2.contract.getRoot(groupId)
+      .withArgs(groupIdNum, constants.AddressZero, ganacheAdminAddr)
+    const rootB = await semaphore2.contract.getRoot(groupIdNum)
 
     groupB = new LinkedGroup(treeDepth, maxEdges)
+    const defaultRoot = groupB.root
+    console.log(defaultRoot)
     expect(rootB).to.equal(groupB.root)
     allRootsB = [rootB.toHexString()]
     console.log("members slice: ", membersA.slice(0, 3))
 
     historicalRootsA = await AddMembersAndVerifyEvents(
       semaphore1,
+      groupIdNum,
       membersA.slice(0, 3).map((bigint) => BigNumber.from(bigint)),
       groupA
     )
 
     historicalRootsB = await AddMembersAndVerifyEvents(
       semaphore2,
+      groupIdNum,
       membersB.slice(0, 3).map((bigint) => BigNumber.from(bigint)),
       groupB
     )
@@ -233,45 +244,47 @@ describe("2-sided CrossChain tests", () => {
     let rootB: BigNumber
 
     before(async () => {
-      rootA = await semaphore1.linkedGroups[groupId].getRoots()[0]
-      rootB = await semaphore2.linkedGroups[groupId].getRoots()[0]
-      roots1 = [rootA.toHexString(), rootB.toHexString()]
-      roots2 = [rootB.toHexString(), rootA.toHexString()]
+      rootA = await semaphore1.linkedGroups[groupIdNum].getRoots()[0]
+      rootB = await semaphore2.linkedGroups[groupIdNum].getRoots()[0]
+
+      roots1 = [toFixedHex(rootA.toHexString()), toFixedHex(rootB.toHexString())]
+      roots2 = [toFixedHex(rootB.toHexString()), toFixedHex(rootA.toHexString())]
       // roots_zero = [rootA.toHexString(), toFixedHex(0, 32)]
     })
     it("Should not verify if updateEdge has not been called", async () => {
       const signers = await ethers.getSigners()
       const transaction1 = semaphore1.contract.verifyRoots(
-        groupId,
+        groupIdNum,
         createRootsBytes(roots1)
       )
       await expect(transaction1).to.be.revertedWith(
-        "Not initialized edges must be set to 0"
+        "non-existent edge is not set to the default root"
       )
 
       const transaction2 = semaphore2.contract.verifyRoots(
-        groupId,
+        groupIdNum,
         createRootsBytes(roots2)
       )
       await expect(transaction2).to.be.revertedWith(
-        "Not initialized edges must be set to 0"
+        "non-existent edge is not set to the default root"
       )
     })
 
     it("Should verify external root after updateEdge", async () => {
-      await semaphore2.updateEdge(groupId, historicalRootsA[0], 0, chainIDA)
+      await semaphore2.updateEdge(groupIdNum, historicalRootsA[0], 0, chainIDA)
 
       const roots = [rootB.toHexString(), historicalRootsA[0]]
       const is_valid = await semaphore2.verifyRoots(
-        groupId,
+        groupIdNum,
         createRootsBytes(roots)
       )
 
       expect(is_valid).to.equal(true)
     })
     it("Should not verify invalid order of roots", async () => {
+      console.log('roots: ', roots1)
       const transaction1 = semaphore1.verifyRoots(
-        groupId,
+        groupIdNum,
         createRootsBytes(roots2)
       )
       await expect(transaction1).to.be.revertedWith(
@@ -279,7 +292,7 @@ describe("2-sided CrossChain tests", () => {
       )
 
       const transaction2 = semaphore2.verifyRoots(
-        groupId,
+        groupIdNum,
         createRootsBytes(roots1)
       )
       await expect(transaction2).to.be.revertedWith(
@@ -287,19 +300,19 @@ describe("2-sided CrossChain tests", () => {
       )
     })
     it("Should not verify out of date edges", async () => {
-      const rootA = await semaphore1.getGroupRoot(groupId)
-      const rootB = await semaphore2.getGroupRoot(groupId)
+      const rootA = await semaphore1.getRoot(groupIdNum)
+      const rootB = await semaphore2.getRoot(groupIdNum)
       const roots = [rootB.toHexString(), rootA.toHexString()]
 
       const transaction = semaphore2.verifyRoots(
-        groupId,
+        groupIdNum,
         createRootsBytes(roots)
       )
       await expect(transaction).to.be.revertedWith("Neighbour root not found")
     })
     it("Should verify not sequential updates", async () => {
       await semaphore2.updateEdge(
-        groupId,
+        groupIdNum,
         historicalRootsA[2],
         2,
         toFixedHex(chainIDA, 32)
@@ -308,7 +321,7 @@ describe("2-sided CrossChain tests", () => {
       const roots = [historicalRootsB[2], historicalRootsA[2]]
 
       const is_valid = await semaphore2.verifyRoots(
-        groupId,
+        groupIdNum,
         createRootsBytes(roots)
       )
       expect(is_valid).to.equal(true)
@@ -323,21 +336,63 @@ describe("2-sided CrossChain tests", () => {
     let solidityProof_local_chainA: SolidityProof
     let chainA_not_updated_roots: string[]
 
+    let groupA2: LinkedGroup
+    let groupB2: LinkedGroup
+
     let fullProof_local_chainB: FullProof
     let solidityProof_local_chainB: SolidityProof
     let chainB_not_updated_roots: string[]
+    let historicalRootsA: string[];
+    let historicalRootsB: string[];
+    const groupId2 = 40
 
     before(async () => {
-      const rootA = await semaphore1.getGroupRoot(groupId)
-      const rootB = await semaphore2.getGroupRoot(groupId)
-      chainA_not_updated_roots = [
-        rootA.toHexString(),
-        toFixedHex(BigNumber.from(0), 32)
-      ]
-      groupA.updateEdge(chainIDB, toFixedHex(BigNumber.from(0), 32))
+
+      groupA2 = new LinkedGroup(treeDepth, maxEdges)
+      const transactionA = await semaphore1.createGroup(
+        groupId2,
+        treeDepth,
+        hardhatAdminAddr,
+        maxEdges
+      )
+      const defaultRoot = await semaphore1.getRoot(groupId2)
+      console.log('Group Root: ', groupA2.root)
+      console.log('default Root: ', defaultRoot)
+      // await expect(groupA2.root).equal(defaultRoot)
+
+      await expect(transactionA)
+        .to.emit(semaphore1.contract, "GroupCreated")
+        .withArgs(groupId2, treeDepth)
+
+      historicalRootsA = await AddMembersAndVerifyEvents(
+        semaphore1,
+        groupId2,
+        membersA.slice(0, 3).map((bigint) => BigNumber.from(bigint)),
+        groupA2
+      )
+
+
+      groupB2 = new LinkedGroup(treeDepth, maxEdges)
+      const transactionB = await semaphore2.createGroup(
+        groupId2,
+        treeDepth,
+        ganacheAdminAddr,
+        maxEdges
+      )
+
+      historicalRootsB = await AddMembersAndVerifyEvents(
+        semaphore2,
+        groupId2,
+        membersB.slice(0, 3).map((bigint) => BigNumber.from(bigint)),
+        groupB2
+      )
+
+      const rootA = await semaphore1.getRoot(groupId2)
+      const rootB = await semaphore2.getRoot(groupId2)
+      groupA2.updateEdge(chainIDB, historicalRootsB[0])
       fullProof_local_chainA = await generateProof(
         identitiesA[0],
-        groupA,
+        groupA2,
         BigInt(Date.now() * 100),
         signal,
         BigInt(chainIDA),
@@ -346,16 +401,14 @@ describe("2-sided CrossChain tests", () => {
           zkeyFilePath
         }
       )
-      solidityProof_local_chainA = packToSolidityProof(
+      solidityProof_local_chainA = await packToSolidityProof(
         fullProof_local_chainA.proof
       )
 
-      chainB_not_updated_roots = [rootB.toHexString(), historicalRootsA[0]]
-
-      groupB.updateEdge(chainIDA, historicalRootsA[0])
+      groupB2.updateEdge(chainIDA, historicalRootsA[0])
       fullProof_local_chainB = await generateProof(
         identitiesB[2],
-        groupB,
+        groupB2,
         BigInt(Date.now() * 100),
         signal,
         BigInt(chainIDB),
@@ -365,40 +418,41 @@ describe("2-sided CrossChain tests", () => {
         }
       )
 
-      solidityProof_local_chainB = packToSolidityProof(
+      solidityProof_local_chainB = await packToSolidityProof(
         fullProof_local_chainB.proof
       )
     })
 
     it("Should verify local proof chainA", async () => {
-      semaphore1.setSigner(signers[1])
-
+      // semaphore1.setSigner(signers[1])
+      // groupA.addMember(membersA[3])
+      // const tx4a = await semaphore1.addMember(groupId2, membersA[0])
+      // console.log(tx4a)
       const transaction = semaphore1.contract.verifyProof(
-        groupId,
+        groupId2,
         bytes32Signal,
         fullProof_local_chainA.publicSignals.nullifierHash,
         fullProof_local_chainA.publicSignals.externalNullifier,
         createRootsBytes(fullProof_local_chainA.publicSignals.roots),
         solidityProof_local_chainA,
-        { gasLimit: "0x5B8D80" }
       )
       await expect(transaction)
         .to.emit(semaphore1.contract, "ProofVerified")
-        .withArgs(groupId, bytes32Signal)
+        .withArgs(groupId2, bytes32Signal)
     })
 
     it("Should verify local proof chainB", async () => {
       const transaction = semaphore2.contract.verifyProof(
-        groupId,
+        groupId2,
         bytes32Signal,
         fullProof_local_chainB.publicSignals.nullifierHash,
         fullProof_local_chainB.publicSignals.externalNullifier,
         createRootsBytes(fullProof_local_chainB.publicSignals.roots),
-        solidityProof_local_chainB
+        solidityProof_local_chainB,
       )
       await expect(transaction)
         .to.emit(semaphore2.contract, "ProofVerified")
-        .withArgs(groupId, bytes32Signal)
+        .withArgs(groupId2, bytes32Signal)
     })
 
     //   it("Should verify if edges are updated2", async () => {

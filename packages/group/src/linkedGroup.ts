@@ -140,13 +140,20 @@ export class LinkedGroup {
     return this.group.members
   }
   /**
+   * Returns the zeros array for merkle tree intial values
+   * @returns List of tree zeros value.
+   */
+  get zeros(): BigNumber[] {
+    return this.group.zeros
+  }
+  /**
    * Returns the members (i.e. identity commitments) of the group.
    * @returns List of members.
    */
   public getRoots(): BigNumber[] {
     const roots: BigNumber[] = Object.values(this.roots)
     while (roots.length < this.maxEdges + 1) {
-      roots.push(BigNumber.from(0)) //   padding = this.maxEdges + 1 - chainIds.length
+      roots.push(this.zeros[this.depth])
     }
     return roots
   }

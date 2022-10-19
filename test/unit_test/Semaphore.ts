@@ -82,10 +82,6 @@ describe("Semaphore", () => {
         { gasLimit: "0x5B8D80" }
       )
 
-      // console.log('tx: ', await transaction)
-
-      // TODO: I think this is a bug on hardhat, similar to the one documented here:
-      // https://github.com/NomicFoundation/hardhat/issues/2751
       await expect(transaction).to.be.revertedWith(
         "Semaphore__TreeDepthIsNotSupported"
       )
@@ -164,7 +160,6 @@ describe("Semaphore", () => {
       const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
       linkedGroup.addMember(members[0])
 
-      // console.log(semaphore)
       const transaction = semaphore.addMember(groupId, members[0])
 
       await expect(transaction)
@@ -218,11 +213,13 @@ describe("Semaphore", () => {
     before(async () => {
       await semaphore.createGroup(groupId2, treeDepth, accounts[0], maxEdges)
 
+      // const defaultRoot = await semaphore.contract.getLatestNeighborEdges(groupId2)
+
       await semaphore.addMember(groupId2, members[0])
       await semaphore.addMember(groupId2, members[1])
       await semaphore.addMember(groupId2, members[2])
 
-      roots = [BigNumber.from(linkedGroup.root).toHexString(), toFixedHex(0)]
+      roots = linkedGroup.getRoots().map((bignum) => bignum.toHexString())
 
       fullProof = await generateProof(
         identities[0],

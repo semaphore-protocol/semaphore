@@ -49,6 +49,14 @@ export class Group {
   }
 
   /**
+   * Returns the zeros array for merkle tree intial values
+   * @returns List of tree zeros value.
+   */
+  get zeros(): BigNumber[] {
+    return this._merkleTree.zeros()
+  }
+
+  /**
    * Returns the members (i.e. identity commitments) of the group.
    * @returns List of members.
    */
