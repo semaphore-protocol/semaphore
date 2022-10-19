@@ -100,6 +100,7 @@ describe("2-sided CrossChain tests", () => {
   const FIRST_CHAIN_ID = 1337
   const hardhatWallet1 = new ethers.Wallet(HARDHAT_PK_1, ethers.provider)
 
+  const SECOND_CHAIN_PORT = 10000
   const SECOND_CHAIN_ID = 10000
   const ganacheProvider2 = new ethers.providers.JsonRpcProvider(
     `http://localhost:${SECOND_CHAIN_ID}`
@@ -118,11 +119,8 @@ describe("2-sided CrossChain tests", () => {
   let signers: Signer[]
 
   before(async () => {
-    // Starting contracts / accounts
-    // contractA = await hreEthers.getContractAt("Semaphore", contractAddr, signersA[1])
-    // contractB = await hreEthers.getContractAt("Semaphore", contractAddr, signersB[1])
     ganacheServer2 = await startGanacheServer(
-      SECOND_CHAIN_ID,
+      SECOND_CHAIN_PORT,
       SECOND_CHAIN_ID,
       [
         {
@@ -346,10 +344,7 @@ describe("2-sided CrossChain tests", () => {
 
     before(async () => {
 
-      const linkedGroupA = new LinkedGroup(treeDepth, maxEdges)
-      linkedGroupA.addMember(membersA[0])
-      linkedGroupA.addMember(membersA[1])
-      linkedGroupA.addMember(membersA[2])
+      groupA2 = new LinkedGroup(treeDepth, maxEdges)
       const transactionA = await semaphore1.createGroup(groupId2, treeDepth, accounts[0], maxEdges)
 
       await expect(transactionA)
@@ -361,20 +356,20 @@ describe("2-sided CrossChain tests", () => {
       const initialRoot = semaphore1.getRoot(groupId2)
       // const defaultRoot = await semaphore.contract.getLatestNeighborEdges(groupId2)
 
-      await semaphore1.addMember(groupId2, membersA[0])
-      await semaphore1.addMember(groupId2, membersA[1])
-      await semaphore1.addMember(groupId2, membersA[2])
+      // await semaphore1.addMember(groupId2, membersA[0])
+      // await semaphore1.addMember(groupId2, membersA[1])
+      // await semaphore1.addMember(groupId2, membersA[2])
 
 
-      // historicalRootsA = await AddMembersAndVerifyEvents(
-      //   semaphore1,
-      //   groupId2,
-      //   membersA.slice(0, 3).map((bigint) => BigNumber.from(bigint)),
-      //   groupA2
-      // )
+      historicalRootsA = await AddMembersAndVerifyEvents(
+        semaphore1,
+        groupId2,
+        membersA.slice(0, 3).map((bigint) => BigNumber.from(bigint)),
+        groupA2
+      )
 
-      expect(linkedGroupA.root).equal(groupA.root)
-      expect(await semaphore1.getRoot(groupId2)).equal(linkedGroupA.root)
+      expect(groupA2.root).equal(groupA.root)
+      expect(await semaphore1.getRoot(groupId2)).equal(groupA2.root)
 
       groupB2 = new LinkedGroup(treeDepth, maxEdges)
       const transactionB = await semaphore2.createGroup(
@@ -396,7 +391,7 @@ describe("2-sided CrossChain tests", () => {
       // groupA2.updateEdge(chainIDB, historicalRootsB[0])
       fullProof_local_chainA = await generateProof(
         identitiesA[0],
-        linkedGroupA,
+        groupA2,
         BigInt(Date.now() * 100),
         signal,
         BigInt(chainIDA),
@@ -455,62 +450,56 @@ describe("2-sided CrossChain tests", () => {
         .withArgs(groupId2, bytes32Signal)
     })
 
-    //   it("Should verify if edges are updated2", async () => {
-    //     groupA.addMember(membersA[3])
-    //     const tx4a = contractA
-    //       .connect(signersA[1])
-    //       .addMember(groupId, membersA[3])
-    //     await expect(tx4a)
-    //       .to.emit(contractA, "MemberAdded")
-    //       .withArgs(groupId, membersA[3], groupA.root)
-    //
-    //     groupB.addMember(membersB[3])
-    //     const tx4b = contractB
-    //       .connect(signersB[1])
-    //       .addMember(groupId, membersB[3])
-    //     await expect(tx4b)
-    //       .to.emit(contractB, "MemberAdded")
-    //       .withArgs(groupId, membersB[3], groupB.root)
-    //
-    //     await contractB
-    //       .connect(signersB[1])
-    //       .updateEdge(
-    //         groupId,
-    //         BigNumber.from(groupA.root).toHexString(),
-    //         3,
-    //         toFixedHex(chainIDA, 32)
-    //       )
-    //     const rootA = await contractA.getRoot(groupId)
-    //     const rootB = await contractB.getRoot(groupId)
-    //
-    //     const chainB_roots = [rootB.toHexString(), rootA.toHexString()]
-    //     const fullProof = await generateProof(
-    //       identitiesA[0],
-    //       groupA,
-    //       chainB_roots,
-    //       BigInt(Date.now() * 3),
-    //       signal,
-    //       BigInt(chainIDB),
-    //       {
-    //         wasmFilePath,
-    //         zkeyFilePath
-    //       }
-    //     )
-    //     const solidityProof = packToSolidityProof(fullProof.proof)
-    //
-    //     const transaction = contractB
-    //       .connect(signersB[1])
-    //       .verifyProof(
-    //         groupId,
-    //         bytes32Signal,
-    //         fullProof.publicSignals.nullifierHash,
-    //         fullProof.publicSignals.externalNullifier,
-    //         createRootsBytes(fullProof.publicSignals.roots),
-    //         solidityProof
-    //       )
-    //     await expect(transaction)
-    //       .to.emit(contractB, "ProofVerified")
-    //       .withArgs(groupId, bytes32Signal)
-    //   })
+      it("Should verify if edges are updated2", async () => {
+        groupA2.addMember(membersA[3])
+        const tx4a = semaphore1.addMember(groupId2, membersA[3])
+        await expect(tx4a)
+          .to.emit(semaphore1.contract, "MemberAdded")
+          .withArgs(groupId2, membersA[3], groupA2.root)
+
+        groupB2.addMember(membersB[3])
+        const tx4b = semaphore2.contract
+          .addMember(groupId2, membersB[3])
+        await expect(tx4b)
+          .to.emit(semaphore2.contract, "MemberAdded")
+          .withArgs(groupId2, membersB[3], groupB2.root)
+
+        await semaphore2.contract
+          .updateEdge(
+            groupId2,
+            BigNumber.from(groupA.root).toHexString(),
+            3,
+            toFixedHex(chainIDA, 32)
+          )
+        const rootA = await semaphore1.contract.getRoot(groupId2)
+        const rootB = await semaphore2.contract.getRoot(groupId2)
+
+        const chainB_roots = [rootB.toHexString(), rootA.toHexString()]
+        const fullProof = await generateProof(
+          identitiesA[0],
+          groupA2,
+          BigInt(Date.now() * 3),
+          signal,
+          BigInt(chainIDB),
+          {
+            wasmFilePath,
+            zkeyFilePath
+          }
+        )
+        const solidityProof = packToSolidityProof(fullProof.proof)
+
+        const transaction = semaphore2.contract
+          .verifyProof(
+            groupId2,
+            bytes32Signal,
+            fullProof.publicSignals.nullifierHash,
+            fullProof.publicSignals.externalNullifier,
+            createRootsBytes(fullProof.publicSignals.roots),
+            solidityProof
+          )
+        await expect(transaction)
+          .to.emit(semaphore2.contract, "ProofVerified")
+          .withArgs(groupId2, bytes32Signal)
+      })
   })
 })
