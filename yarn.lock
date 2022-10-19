@@ -3045,8 +3045,8 @@ __metadata:
     snarkjs: ^0.4.13
     typedoc: ^0.22.11
   peerDependencies:
-    "@semaphore-protocol/group": 2.5.0
-    "@semaphore-protocol/identity": 2.5.0
+    "@semaphore-protocol/group": 2.6.0
+    "@semaphore-protocol/identity": 2.6.0
   languageName: unknown
   linkType: soft
 
