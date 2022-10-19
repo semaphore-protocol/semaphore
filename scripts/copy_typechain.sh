@@ -4,8 +4,17 @@ diff_result=$(diff -r -q build/typechain packages/semaphore/typechain);
 
 if [ -z "$diff_result" ];
 then
-    echo 'Files are the same'
+    echo 'Typechain files are the same'
 else 
     rm -rf packages/semaphore/typechain;
     cp -r build/typechain packages/semaphore/typechain
+fi
+
+diff_result=$(diff -r -q fixtures/20/2 packages/proof/snark-artifacts);
+if [ -z "$diff_result" ];
+then
+    echo 'Snark artifacts are the same'
+else 
+    rm -rf packages/proof/snark-artifacts;
+    cp -r fixtures/20/2 packages/proof/snark-artifacts
 fi
