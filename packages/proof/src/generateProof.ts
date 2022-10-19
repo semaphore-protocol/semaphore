@@ -43,8 +43,6 @@ export type PublicSignals = {
 
 export function convertPublicSignals(publicSignals: string[]): PublicSignals {
   // assert(publicSignals.length == 6)
-  console.log('publicsignals length: ', publicSignals.length)
-
   return {
     nullifierHash: publicSignals[0],
     signalHash: publicSignals[1],
@@ -61,7 +59,8 @@ export async function generateProof(
   externalNullifier: BigNumberish,
   signal: string,
   chainID: BigNumberish,
-  snarkArtifacts: SnarkArtifacts
+  snarkArtifacts: SnarkArtifacts,
+  externalGroup?: LinkedGroup,
 ): Promise<FullProof> {
   const commitment = identity.generateCommitment()
   const index = group.indexOf(commitment)
@@ -70,10 +69,19 @@ export async function generateProof(
     throw new Error("The identity is not part of the group")
   }
 
+  // let pathElements: bigint[]
+  // let merkleProof: MerkleProof
+  let roots: string[]
   const merkleProof: MerkleProof = group.generateProofOfMembership(index)
-  const pathElements = merkleProof.pathElements.map((bignum) =>
+  const pathElements: bigint[] = merkleProof.pathElements.map((bignum) =>
     bignum.toBigInt()
   )
+  if(externalGroup == undefined) {
+    roots = group.getRoots().map((bignum: BigNumber) => bignum.toString())
+  } else {
+    roots = externalGroup.getRoots().map((bignum: BigNumber) => bignum.toString())
+
+  }
 
   let { proof, publicSignals } = await groth16.fullProve(
     {
@@ -81,7 +89,7 @@ export async function generateProof(
       identityNullifier: identity.getNullifier(),
       treePathIndices: merkleProof.pathIndices,
       treeSiblings: pathElements,
-      roots: group.getRoots().map((bignum) => bignum.toString()),
+      roots: roots,
       chainID: chainID.toString(),
       externalNullifier: externalNullifier.toString(),
       signalHash: generateSignalHash(signal)
