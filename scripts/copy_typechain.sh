@@ -12,11 +12,11 @@ else
 fi
 
 mkdir -p packages/proof/snark-artifacts
-diff_result=$(diff -r -q fixtures/20/2 packages/proof/snark-artifacts);
+diff_result=$(diff -r -q solidity-fixtures/solidity-fixtures/20/2 packages/proof/snark-artifacts);
 if [ -z "$diff_result" ];
 then
     echo 'Snark artifacts are the same'
 else 
     rm -rf packages/proof/snark-artifacts;
-    cp -r fixtures/20/2 packages/proof/snark-artifacts
+    cp -r solidity-fixtures/solidity-fixtures/20/2 packages/proof/snark-artifacts
 fi

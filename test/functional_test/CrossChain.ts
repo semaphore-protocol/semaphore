@@ -128,7 +128,7 @@ describe("2-sided CrossChain tests", () => {
 
     semaphore1 = await Semaphore.createSemaphore(
       treeDepth,
-      maxEdges,
+      zkComponents2_2,
       zkComponents2_2,
       hardhatAdmin
     )
@@ -141,7 +141,7 @@ describe("2-sided CrossChain tests", () => {
 
     semaphore2 = await Semaphore.createSemaphore(
       treeDepth,
-      maxEdges,
+      zkComponents2_2,
       zkComponents2_2,
       ganacheAdmin
     )

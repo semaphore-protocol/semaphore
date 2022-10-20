@@ -53,14 +53,15 @@ export class Semaphore {
   latestSyncedBlock: number
   // The depositHistory stores leafIndex => information to create proposals (new root)
   smallCircuitZkComponents: ZkComponents
+  largeCircuitZkComponents: ZkComponents
   zeroValue: bigint
 
   constructor(
     contract: SemaphoreContract,
     signer: Signer,
-    maxEdges: number,
     chainId: number,
-    smallCircuitZkComponents: ZkComponents
+    smallCircuitZkComponents: ZkComponents,
+    largeCircuitZkComponents: ZkComponents
   ) {
     this.signer = signer
     this.contract = contract
@@ -70,6 +71,7 @@ export class Semaphore {
     this.rootHistory = {}
     // this.rootHistory = undefined;
     this.smallCircuitZkComponents = smallCircuitZkComponents
+    this.largeCircuitZkComponents = largeCircuitZkComponents
     this.zeroValue = BigInt(
       "21663839004416932945382355908790599225266501822907911457504978515578255421292"
     )
@@ -77,8 +79,8 @@ export class Semaphore {
   }
   public static async createSemaphore(
     levels: BigNumberish,
-    maxEdges: number,
     smallCircuitZkComponents: ZkComponents,
+    largeCircuitZkComponents: ZkComponents,
     signer: Signer
   ): Promise<Semaphore> {
     const chainId = getChainIdType(await signer.getChainId())
@@ -124,9 +126,9 @@ export class Semaphore {
     const createdSemaphore = new Semaphore(
       semaphore,
       signer,
-      maxEdges,
       chainId,
-      smallCircuitZkComponents
+      smallCircuitZkComponents,
+      largeCircuitZkComponents
     )
     return createdSemaphore
     // createdSemaphore.latestSyncedBlock = semaphore.deployTransaction.blockNumber!;
@@ -137,7 +139,7 @@ export class Semaphore {
     // build up tree by querying provider for logs
     address: string,
     smallCircuitZkComponents: ZkComponents,
-    maxEdges: number,
+    largeCircuitZkComponents: ZkComponents,
     signer: Signer
   ) {
     const chainId = getChainIdType(await signer.getChainId())
@@ -145,9 +147,9 @@ export class Semaphore {
     const createdSemaphore = new Semaphore(
       semaphore,
       signer,
-      maxEdges,
       chainId,
-      smallCircuitZkComponents
+      smallCircuitZkComponents,
+      largeCircuitZkComponents
     )
     return createdSemaphore
   }
@@ -351,6 +353,7 @@ export class Semaphore {
         .getRoots()
         .map((bignum: BigNumber) => bignum.toString())
     }
+    const zkComponent = this.linkedGroups[groupId].maxEdges == 1 ? this.smallCircuitZkComponents : this.largeCircuitZkComponents
 
     const fullProof = await generateProof(
       identity,
@@ -358,7 +361,7 @@ export class Semaphore {
       externalNullifier,
       signal,
       BigInt(chainId),
-      this.smallCircuitZkComponents,
+      zkComponent,
       roots
     )
     const solidityProof = packToSolidityProof(fullProof.proof)

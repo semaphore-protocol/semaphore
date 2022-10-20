@@ -21,6 +21,7 @@ import { fetchComponentsFromFilePaths } from "@webb-tools/utils"
 import { toFixedHex, createRootsBytes, createIdentities } from "../utils"
 
 describe("Semaphore", () => {
+  // Semaphore with 1 maxEdge
   let semaphore: Semaphore
   let signers: Signer[]
   let admin: Signer
@@ -32,19 +33,29 @@ describe("Semaphore", () => {
   const treeDepth = Number(process.env.TREE_DEPTH) | 20
   // const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
   const groupId = 1
-  const maxEdges = 1
+  const maxEdges1 = 1
   const chainID = BigInt(1099511629113)
   const { identities, members } = createIdentities(Number(chainID), 3)
 
-  const wasmFilePath =
+  const wasmFilePath20_2 =
     __dirname +
     `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/semaphore_20_2.wasm`
-  const witnessCalcPath =
+  const witnessCalcPath20_2 =
     __dirname +
     `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/witness_calculator.js`
-  const zkeyFilePath =
+  const zkeyFilePath20_2 =
     __dirname +
     `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/circuit_final.zkey`
+
+  const wasmFilePath20_7 =
+    __dirname +
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/7/semaphore_20_7.wasm`
+  const witnessCalcPath20_7 =
+    __dirname +
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/7/witness_calculator.js`
+  const zkeyFilePath20_7 =
+    __dirname +
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/7/circuit_final.zkey`
 
   before(async () => {
     signers = await ethers.getSigners()
@@ -57,18 +68,22 @@ describe("Semaphore", () => {
       signers.map((signer: Signer) => signer.getAddress())
     )
 
-    const zkComponents2_2 = await fetchComponentsFromFilePaths(
-      wasmFilePath,
-      witnessCalcPath,
-      zkeyFilePath
+    const zkComponents20_2 = await fetchComponentsFromFilePaths(
+      wasmFilePath20_2,
+      witnessCalcPath20_2,
+      zkeyFilePath20_2
+    )
+    const zkComponents20_7 = await fetchComponentsFromFilePaths(
+      wasmFilePath20_7,
+      witnessCalcPath20_7,
+      zkeyFilePath20_7
     )
     semaphore = await Semaphore.createSemaphore(
       treeDepth,
-      maxEdges,
-      zkComponents2_2,
+      zkComponents20_2,
+      zkComponents20_7,
       admin
     )
-
     await semaphore.setSigner(user)
 
     // contract = await semaphore.contract.connect(user)
@@ -81,7 +96,7 @@ describe("Semaphore", () => {
         groupId,
         10,
         adminAddr,
-        maxEdges,
+        maxEdges1,
         { gasLimit: "0x5B8D80" }
       )
 
@@ -92,12 +107,12 @@ describe("Semaphore", () => {
 
     it("Should create a group", async () => {
       await semaphore.setSigner(admin)
-      // const transaction = semaphore.contract.createGroup(groupId, treeDepth, await admin.getAddress(), maxEdges)
+
       const transaction = semaphore.createGroup(
         groupId,
         treeDepth,
         await admin.getAddress(),
-        maxEdges
+        maxEdges1
       )
 
       await expect(transaction)
@@ -160,7 +175,7 @@ describe("Semaphore", () => {
     it("Should add a new member in an existing group", async () => {
       await semaphore.setSigner(admin)
 
-      const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
+      const linkedGroup = new LinkedGroup(treeDepth, maxEdges1)
       linkedGroup.addMember(members[0])
 
       const transaction = semaphore.addMember(groupId, members[0])
@@ -199,12 +214,12 @@ describe("Semaphore", () => {
   //     })
   // })
 
-  describe("# verifyProof", () => {
+  describe("# verifyProof 1 maxEdge", () => {
     const signal = "Hello world"
     const bytes32Signal = utils.formatBytes32String(signal)
     const groupId2 = 1337
 
-    const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
+    const linkedGroup = new LinkedGroup(treeDepth, maxEdges1)
     linkedGroup.addMember(members[0])
     linkedGroup.addMember(members[1])
     linkedGroup.addMember(members[2])
@@ -214,7 +229,7 @@ describe("Semaphore", () => {
     let roots: string[]
 
     before(async () => {
-      await semaphore.createGroup(groupId2, treeDepth, accounts[0], maxEdges)
+      await semaphore.createGroup(groupId2, treeDepth, accounts[0], maxEdges1)
 
       // const defaultRoot = await semaphore.contract.getLatestNeighborEdges(groupId2)
 
@@ -231,8 +246,8 @@ describe("Semaphore", () => {
         signal,
         chainID,
         {
-          wasmFilePath,
-          zkeyFilePath
+          wasmFilePath: wasmFilePath20_2,
+          zkeyFilePath: zkeyFilePath20_2
         }
       )
       solidityProof = packToSolidityProof(fullProof.proof)
@@ -277,6 +292,72 @@ describe("Semaphore", () => {
       await expect(transaction)
         .to.emit(semaphore.contract, "ProofVerified")
         .withArgs(groupId2, bytes32Signal)
+    })
+  })
+  describe("# verifyProof 7 maxEdges", () => {
+    const signal = "Hello world"
+    const bytes32Signal = utils.formatBytes32String(signal)
+    const groupId3 = 1338
+    const maxEdges7 = 7
+
+    const linkedGroup = new LinkedGroup(treeDepth, maxEdges7)
+    linkedGroup.addMember(members[0])
+    linkedGroup.addMember(members[1])
+    linkedGroup.addMember(members[2])
+
+    let fullProof: FullProof
+    let solidityProof: SolidityProof
+    let roots: string[]
+
+    before(async () => {
+      await semaphore.createGroup(groupId3, treeDepth, accounts[0], maxEdges7)
+
+      // const defaultRoot = await semaphore.contract.getLatestNeighborEdges(groupId2)
+
+      await semaphore.addMember(groupId3, members[0])
+      await semaphore.addMember(groupId3, members[1])
+      await semaphore.addMember(groupId3, members[2])
+
+      roots = linkedGroup.getRoots().map((bignum) => bignum.toHexString())
+
+      fullProof = await generateProof(
+        identities[0],
+        linkedGroup,
+        BigNumber.from(Date.now()),
+        signal,
+        chainID,
+        {
+          wasmFilePath: wasmFilePath20_7,
+          zkeyFilePath: zkeyFilePath20_7
+        }
+      )
+      solidityProof = packToSolidityProof(fullProof.proof)
+    })
+
+    it("Should throw an exception if the proof is not valid", async () => {
+      const transaction = semaphore.contract.verifyProof(
+        groupId3,
+        bytes32Signal,
+        fullProof.publicSignals.nullifierHash,
+        0,
+        createRootsBytes(roots),
+        solidityProof
+      )
+      await expect(transaction).to.be.revertedWith("invalidProof")
+    })
+
+    it("Should verify a proof for an onchain group correctly", async () => {
+      const transaction = semaphore.verifyIdentity(
+        identities[0],
+        signal,
+        groupId3,
+        chainID,
+        BigNumber.from(Date.now())
+      )
+
+      await expect(transaction)
+        .to.emit(semaphore.contract, "ProofVerified")
+        .withArgs(groupId3, bytes32Signal)
     })
   })
 })
