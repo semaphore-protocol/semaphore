@@ -24,11 +24,7 @@ import { generateProof } from "@webb-tools/semaphore-proof/src"
 // import { Identity } from "../../identity/src"
 // import Identity from "@webb-tools/semaphore-identity/src"
 
-import {
-  FullProof,
-  packToSolidityProof,
-  SolidityProof
-} from "../../proof/src"
+import { FullProof, packToSolidityProof, SolidityProof } from "../../proof/src"
 import { Verifier } from "./Verifier"
 
 import { strict as assert } from "assert"
@@ -341,12 +337,19 @@ export class Semaphore {
     const bytes32Signal = utils.formatBytes32String(signal)
 
     let roots: string[]
-    if(externalGroup !== undefined) {
+    if (externalGroup !== undefined) {
       // roots = this.linkedGroups[groupId].getRoots().map((bignum: BigNumber) => bignum.toString())
-      externalGroup.updateEdge(chainId, this.linkedGroups[groupId].root.toString())
-      roots = externalGroup.getRoots().map((bignum: BigNumber) => bignum.toString())
+      externalGroup.updateEdge(
+        chainId,
+        this.linkedGroups[groupId].root.toString()
+      )
+      roots = externalGroup
+        .getRoots()
+        .map((bignum: BigNumber) => bignum.toString())
     } else {
-      roots = this.linkedGroups[groupId].getRoots().map((bignum: BigNumber) => bignum.toString())
+      roots = this.linkedGroups[groupId]
+        .getRoots()
+        .map((bignum: BigNumber) => bignum.toString())
     }
 
     const fullProof = await generateProof(
@@ -360,17 +363,16 @@ export class Semaphore {
     )
     const solidityProof = packToSolidityProof(fullProof.proof)
 
-    const transaction = this.contract
-      .verifyProof(
-        groupId,
-        bytes32Signal,
-        fullProof.publicSignals.nullifierHash,
-        fullProof.publicSignals.externalNullifier,
-        createRootsBytes(fullProof.publicSignals.roots),
-        solidityProof
-      )
+    const transaction = this.contract.verifyProof(
+      groupId,
+      bytes32Signal,
+      fullProof.publicSignals.nullifierHash,
+      fullProof.publicSignals.externalNullifier,
+      createRootsBytes(fullProof.publicSignals.roots),
+      solidityProof
+    )
 
-    return transaction;
+    return transaction
   }
 
   // public async genProof(

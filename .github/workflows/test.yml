@@ -38,7 +38,7 @@ jobs:
         run: yarn
 
       - name: Download Snark artifacts
-        run: yarn download:snark-artifacts
+        run: yarn fetch:fixtures
 
       - name: Compile contracts
         run: yarn compile

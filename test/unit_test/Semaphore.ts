@@ -37,11 +37,14 @@ describe("Semaphore", () => {
   const { identities, members } = createIdentities(Number(chainID), 3)
 
   const wasmFilePath =
-    __dirname + `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/semaphore_20_2.wasm`
+    __dirname +
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/semaphore_20_2.wasm`
   const witnessCalcPath =
-    __dirname + `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/witness_calculator.js`
+    __dirname +
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/witness_calculator.js`
   const zkeyFilePath =
-    __dirname + `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/circuit_final.zkey`
+    __dirname +
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/circuit_final.zkey`
 
   before(async () => {
     signers = await ethers.getSigners()
@@ -268,7 +271,7 @@ describe("Semaphore", () => {
         signal,
         groupId2,
         chainID,
-        BigNumber.from(Date.now()),
+        BigNumber.from(Date.now())
       )
 
       await expect(transaction)

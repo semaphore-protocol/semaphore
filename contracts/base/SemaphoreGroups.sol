@@ -22,11 +22,10 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.
     /// @param maxEdges: The maximum # of edges supported by this group
-    function _createGroup(
-        uint256 groupId,
-        uint8 depth,
-        uint8 maxEdges
-    ) internal virtual {
+    function _createGroup(uint256 groupId, uint8 depth, uint8 maxEdges)
+        internal
+        virtual
+    {
         if (groupId >= SNARK_SCALAR_FIELD) {
             revert Semaphore__GroupIdIsNotLessThanSnarkScalarField();
         }

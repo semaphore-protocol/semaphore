@@ -34,11 +34,11 @@ export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
   return rootsBytes // root byte string (32 * array.length bytes)
 }
 export type PublicSignals = {
-  nullifierHash: string;
-  signalHash: string;
-  externalNullifier: string;
-  roots: string[];
-  chainID: string;
+  nullifierHash: string
+  signalHash: string
+  externalNullifier: string
+  roots: string[]
+  chainID: string
 }
 
 export function convertPublicSignals(publicSignals: string[]): PublicSignals {
@@ -48,11 +48,10 @@ export function convertPublicSignals(publicSignals: string[]): PublicSignals {
     signalHash: publicSignals[1],
     externalNullifier: publicSignals[2],
     roots: [publicSignals[3], publicSignals[4]],
-    chainID: publicSignals[5],
+    chainID: publicSignals[5]
   }
-
 }
-export type Artifacts = SnarkArtifacts | ZkComponents;
+export type Artifacts = SnarkArtifacts | ZkComponents
 // async function generateProof(
 export async function generateProof(
   identity: Identity,
@@ -63,7 +62,7 @@ export async function generateProof(
   artifacts: Artifacts,
   // Optional parameter if used on same chain as `group`.
   // Required if using for cross-chain verification
-  roots?: string[],
+  roots?: string[]
 ): Promise<FullProof> {
   const commitment = identity.generateCommitment()
   const index = group.indexOf(commitment)
@@ -73,18 +72,19 @@ export async function generateProof(
   }
 
   const merkleProof: MerkleProof = group.generateProofOfMembership(index)
-  const pathElements: bigint[] = merkleProof.pathElements
-    .map((bignum: BigNumber) => bignum.toBigInt())
+  const pathElements: bigint[] = merkleProof.pathElements.map(
+    (bignum: BigNumber) => bignum.toBigInt()
+  )
 
-  if(roots == undefined) {
+  if (roots == undefined) {
     roots = group.getRoots().map((bignum: BigNumber) => bignum.toString())
   }
   let wasm: Buffer | string
   let zkey: Uint8Array | string
   // console.log("artifacts.type: ", artifacts.kind)
-  if('wasmFilePath' in artifacts && 'zkeyFilePath' in artifacts) {
-      wasm = artifacts.wasmFilePath
-      zkey = artifacts.zkeyFilePath
+  if ("wasmFilePath" in artifacts && "zkeyFilePath" in artifacts) {
+    wasm = artifacts.wasmFilePath
+    zkey = artifacts.zkeyFilePath
   } else {
     wasm = artifacts.wasm
     zkey = artifacts.zkey
