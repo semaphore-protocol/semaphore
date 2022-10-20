@@ -21,6 +21,9 @@ jobs:
         with:
           node-version: 16.x
 
+      - name: Setup DVC
+        uses: iterative/setup-dvc@v1
+
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"

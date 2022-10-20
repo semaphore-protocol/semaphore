@@ -90,7 +90,7 @@ export async function generateProof(
     zkey = artifacts.zkey
   }
 
-  let { proof, publicSignals } = await groth16.fullProve(
+  const { proof, publicSignals } = await groth16.fullProve(
     {
       identityTrapdoor: identity.getTrapdoor(),
       identityNullifier: identity.getNullifier(),
@@ -104,10 +104,10 @@ export async function generateProof(
     wasm,
     zkey
   )
-  publicSignals = await convertPublicSignals(publicSignals)
+  const convertedPublicSignals = await convertPublicSignals(publicSignals)
 
   return {
     proof,
-    publicSignals
+    publicSignals: convertedPublicSignals
   }
 }
