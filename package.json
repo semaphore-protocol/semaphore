@@ -17,7 +17,7 @@
     "compile": "yarn compile:contracts && sh scripts/copy_typechain.sh && yarn build",
     "compile:contracts": "hardhat compile",
     "build": "yarn workspaces foreach run build",
-    "download:snark-artifacts": "hardhat run scripts/download-snark-artifacts.ts",
+    "fetch:fixtures": "cd solidity-fixtures && dvc pull && cd ..",
     "deploy:all": "hardhat run scripts/deploy-all.ts",
     "deploy:cross-chain": "yarn deploy:all --network chainA && yarn deploy:all --network chainB",
     "deploy:verifier": "hardhat deploy:verifier",
@@ -116,7 +116,7 @@
       "cache": "./cache",
       "snarkjs-templates": "./snarkjs-templates",
       "build": {
-        "snark-artifacts": "./fixtures",
+        "snark-artifacts": "./solidity-fixtures/solidity-fixtures",
         "contracts": "./build/contracts",
         "typechain": "./build/typechain"
       }
