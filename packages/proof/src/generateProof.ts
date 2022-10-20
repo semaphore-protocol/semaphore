@@ -52,6 +52,7 @@ export function convertPublicSignals(publicSignals: string[]): PublicSignals {
   }
 
 }
+export type Artifacts = SnarkArtifacts | ZkComponents;
 // async function generateProof(
 export async function generateProof(
   identity: Identity,
@@ -59,8 +60,10 @@ export async function generateProof(
   externalNullifier: BigNumberish,
   signal: string,
   chainID: BigNumberish,
-  snarkArtifacts: SnarkArtifacts,
-  externalGroup?: LinkedGroup,
+  artifacts: Artifacts,
+  // Optional parameter if used on same chain as `group`.
+  // Required if using for cross-chain verification
+  roots?: string[],
 ): Promise<FullProof> {
   const commitment = identity.generateCommitment()
   const index = group.indexOf(commitment)
@@ -69,18 +72,22 @@ export async function generateProof(
     throw new Error("The identity is not part of the group")
   }
 
-  // let pathElements: bigint[]
-  // let merkleProof: MerkleProof
-  let roots: string[]
   const merkleProof: MerkleProof = group.generateProofOfMembership(index)
-  const pathElements: bigint[] = merkleProof.pathElements.map((bignum) =>
-    bignum.toBigInt()
-  )
-  if(externalGroup == undefined) {
-    roots = group.getRoots().map((bignum: BigNumber) => bignum.toString())
-  } else {
-    roots = externalGroup.getRoots().map((bignum: BigNumber) => bignum.toString())
+  const pathElements: bigint[] = merkleProof.pathElements
+    .map((bignum: BigNumber) => bignum.toBigInt())
 
+  if(roots == undefined) {
+    roots = group.getRoots().map((bignum: BigNumber) => bignum.toString())
+  }
+  let wasm: Buffer | string
+  let zkey: Uint8Array | string
+  // console.log("artifacts.type: ", artifacts.kind)
+  if('wasmFilePath' in artifacts && 'zkeyFilePath' in artifacts) {
+      wasm = artifacts.wasmFilePath
+      zkey = artifacts.zkeyFilePath
+  } else {
+    wasm = artifacts.wasm
+    zkey = artifacts.zkey
   }
 
   let { proof, publicSignals } = await groth16.fullProve(
@@ -94,60 +101,11 @@ export async function generateProof(
       externalNullifier: externalNullifier.toString(),
       signalHash: generateSignalHash(signal)
     },
-    snarkArtifacts.wasmFilePath,
-    snarkArtifacts.zkeyFilePath
+    wasm,
+    zkey
   )
   publicSignals = await convertPublicSignals(publicSignals)
 
-  return {
-    proof,
-    publicSignals
-    // publicSignals: {
-    //   nullifierHash: publicSignals[0],
-    //   signalHash: publicSignals[1],
-    //   externalNullifier: publicSignals[2],
-    //   // TODO: generalize roots for diff maxEdges
-    //   roots: [publicSignals[3], publicSignals[4]],
-    //
-    //   chainID: publicSignals[5]
-    // }
-  }
-}
-
-export async function shouldWork(
-  identity: Identity,
-  group: LinkedGroup,
-  externalNullifier: BigNumberish,
-  signal: string,
-  chainId: BigNumberish,
-  zkComponents: ZkComponents
-): Promise<FullProof> {
-  const commitment = identity.generateCommitment()
-  const index = group.indexOf(commitment)
-
-  if (index === -1) {
-    throw new Error("The identity is not part of the group")
-  }
-
-  const merkleProof: MerkleProof = group.generateProofOfMembership(index)
-  const pathElements = merkleProof.pathElements.map((bignum) =>
-    bignum.toBigInt()
-  )
-
-  const { proof, publicSignals } = await groth16.fullProve(
-    {
-      identityTrapdoor: identity.getTrapdoor(),
-      identityNullifier: identity.getNullifier(),
-      treePathIndices: merkleProof.pathIndices,
-      treeSiblings: pathElements,
-      roots: group.getRoots().map((bignum) => bignum.toString()),
-      chainID: chainId.toString(),
-      externalNullifier: externalNullifier.toString(),
-      signalHash: generateSignalHash(signal)
-    },
-    zkComponents.wasm,
-    zkComponents.zkey
-  )
   return {
     proof,
     publicSignals

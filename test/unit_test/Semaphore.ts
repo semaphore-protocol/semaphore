@@ -263,13 +263,12 @@ describe("Semaphore", () => {
     })
 
     it("Should verify a proof for an onchain group correctly", async () => {
-      const transaction = semaphore.contract.verifyProof(
+      const transaction = semaphore.verifyIdentity(
+        identities[0],
+        signal,
         groupId2,
-        bytes32Signal,
-        fullProof.publicSignals.nullifierHash,
-        fullProof.publicSignals.externalNullifier,
-        createRootsBytes(fullProof.publicSignals.roots),
-        solidityProof
+        chainID,
+        BigNumber.from(Date.now()),
       )
 
       await expect(transaction)

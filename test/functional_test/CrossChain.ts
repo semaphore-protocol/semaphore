@@ -458,24 +458,20 @@ describe("2-sided CrossChain tests", () => {
           .withArgs(groupId2, membersA[3], groupA2.root)
 
         groupB2.addMember(membersB[3])
-        const tx4b = semaphore2.contract
-          .addMember(groupId2, membersB[3])
+        const tx4b = semaphore2.addMember(groupId2, membersB[3])
         await expect(tx4b)
           .to.emit(semaphore2.contract, "MemberAdded")
           .withArgs(groupId2, membersB[3], groupB2.root)
 
-        await semaphore2.contract
-          .updateEdge(
-            groupId2,
-            BigNumber.from(groupA2.root).toHexString(),
-            3,
-            toFixedHex(chainIDA, 32)
-          )
-        const rootA = await semaphore1.contract.getRoot(groupId2)
-        const rootB = await semaphore2.contract.getRoot(groupId2)
+        await semaphore2.updateEdge(
+          groupId2,
+          BigNumber.from(groupA2.root).toHexString(),
+          3,
+          toFixedHex(chainIDA, 32)
+        )
 
-        const chainB_roots = [rootB.toHexString(), rootA.toHexString()]
         groupB2.updateEdge(chainIDA, groupA2.root.toString())
+        const roots = groupB2.getRoots().map((bignum: BigNumber) => bignum.toString())
         const fullProof = await generateProof(
           identitiesA[0],
           groupA2,
@@ -486,7 +482,7 @@ describe("2-sided CrossChain tests", () => {
             wasmFilePath,
             zkeyFilePath
           },
-          groupB2,
+          roots
         )
         const solidityProof = packToSolidityProof(fullProof.proof)
 

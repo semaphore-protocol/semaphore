@@ -4,6 +4,7 @@ import {
   ContractReceipt,
   ContractTransaction,
   Signer,
+  utils,
   ethers
 } from "ethers"
 import {
@@ -15,13 +16,16 @@ import {
 import { toHex, toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
-import { LinkedGroup } from "@webb-tools/semaphore-group"
+// import { LinkedGroup } from "@webb-tools/semaphore-group"
+// import { generateProof } from "@webb-tools/semaphore-proof/src"
 import { Identity } from "@webb-tools/semaphore-identity/src"
+import { LinkedGroup } from "@webb-tools/semaphore-group"
+import { generateProof } from "@webb-tools/semaphore-proof/src"
+// import { Identity } from "../../identity/src"
 // import Identity from "@webb-tools/semaphore-identity/src"
 
 import {
   FullProof,
-  shouldWork,
   packToSolidityProof,
   SolidityProof
 } from "../../proof/src"
@@ -34,6 +38,15 @@ import { strict as assert } from "assert"
 // It represents a deployed contract throughout its life (e.g. maintains merkle tree state)
 // Functionality relevant to anchors in general (proving, verifying) is implemented in static methods
 // Functionality relevant to a particular anchor deployment (deposit, withdraw) is implemented in instance methods
+
+function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
+  let rootsBytes = "0x"
+  for (let i = 0; i < rootArray.length; i++) {
+    rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
+  }
+  return rootsBytes // root byte string (32 * array.length bytes)
+}
+
 export class Semaphore {
   signer: Signer
   contract: SemaphoreContract
@@ -317,23 +330,66 @@ export class Semaphore {
     return tx
   }
 
-  public async genProof(
+  public async verifyIdentity(
     identity: Identity,
     signal: string,
     groupId: number,
-    externalNullifier: BigNumberish
-  ) {
-    const fullProof = await shouldWork(
+    chainId: number,
+    externalNullifier: BigNumberish,
+    externalGroup?: LinkedGroup
+  ): Promise<ContractTransaction> {
+    const bytes32Signal = utils.formatBytes32String(signal)
+
+    let roots: string[]
+    if(externalGroup !== undefined) {
+      // roots = this.linkedGroups[groupId].getRoots().map((bignum: BigNumber) => bignum.toString())
+      externalGroup.updateEdge(chainId, this.linkedGroups[groupId].root.toString())
+      roots = externalGroup.getRoots().map((bignum: BigNumber) => bignum.toString())
+    } else {
+      roots = this.linkedGroups[groupId].getRoots().map((bignum: BigNumber) => bignum.toString())
+    }
+
+    const fullProof = await generateProof(
       identity,
       this.linkedGroups[groupId],
       externalNullifier,
       signal,
-      this.chainId,
-      this.smallCircuitZkComponents
+      BigInt(chainId),
+      this.smallCircuitZkComponents,
+      roots
     )
     const solidityProof = packToSolidityProof(fullProof.proof)
-    return fullProof
+
+    const transaction = this.contract
+      .verifyProof(
+        groupId,
+        bytes32Signal,
+        fullProof.publicSignals.nullifierHash,
+        fullProof.publicSignals.externalNullifier,
+        createRootsBytes(fullProof.publicSignals.roots),
+        solidityProof
+      )
+
+    return transaction;
   }
+
+  // public async genProof(
+  //   identity: Identity,
+  //   signal: string,
+  //   groupId: number,
+  //   externalNullifier: BigNumberish
+  // ) {
+  //   const fullProof = await shouldWork(
+  //     identity,
+  //     this.linkedGroups[groupId],
+  //     externalNullifier,
+  //     signal,
+  //     this.chainId,
+  //     this.smallCircuitZkComponents
+  //   )
+  //   const solidityProof = packToSolidityProof(fullProof.proof)
+  //   return fullProof
+  // }
 }
 
 export default Semaphore
