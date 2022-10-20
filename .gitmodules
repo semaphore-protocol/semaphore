@@ -1,3 +1,0 @@
-[submodule "fixtures"]
-	path = fixtures
-	url = git@github.com:webb-tools/semaphore-protocol-solidity-fixtures.git

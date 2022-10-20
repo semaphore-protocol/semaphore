@@ -1,6 +1,6 @@
 {
   "name": "@webb-tools/semaphore-identity",
-  "version": "0.0.1-2",
+  "version": "0.0.1-2a",
   "description": "A library to create Semaphore-anchor identities.",
   "license": "GPL-3.0-or-later",
   "author": "Webb Developers <drew@webb.tools>",
@@ -20,7 +20,7 @@
   "homepage": "https://github.com/webb-tools/semaphore-anchor.git/tree/main/packages/identity",
   "scripts": {
     "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
-    "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
+    "build": "rimraf -rf ./dist && rollup -c rollup.config.ts --configPlugin typescript",
     "prepublishOnly": "yarn build",
     "docs": "typedoc src/index.ts --out ../../docs/identity"
   },
