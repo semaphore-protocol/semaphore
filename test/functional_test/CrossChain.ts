@@ -1,21 +1,12 @@
 import { expect } from "chai"
-import {
-  constants,
-  Signer,
-  utils,
-  BigNumber,
-  providers,
-} from "ethers"
+import { constants, Signer, utils, BigNumber, providers } from "ethers"
 import { ethers } from "hardhat"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
 import { Identity } from "@webb-tools/identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import { Semaphore } from "@webb-tools/semaphore"
 import { startGanacheServer } from "../utils"
-import {
-  fetchComponentsFromFilePaths,
-  getChainIdType,
-} from "@webb-tools/utils"
+import { fetchComponentsFromFilePaths, getChainIdType } from "@webb-tools/utils"
 // import { HARDHAT_PK_1 } from "../../hardhatAccounts.js"
 // import { Semaphore } from "../../packages/semaphore/src"
 
@@ -494,7 +485,7 @@ describe("2-sided CrossChain tests", () => {
     })
   })
 
-  after('terminate networks', async () => {
-    await ganacheServer2.close();
-  });
+  after("terminate networks", async () => {
+    await ganacheServer2.close()
+  })
 })
