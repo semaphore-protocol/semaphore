@@ -47,15 +47,15 @@ describe("Semaphore", () => {
     __dirname +
     `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/circuit_final.zkey`
 
-  const wasmFilePath20_7 =
+  const wasmFilePath20_8 =
     __dirname +
-    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/7/semaphore_20_7.wasm`
-  const witnessCalcPath20_7 =
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/8/semaphore_20_8.wasm`
+  const witnessCalcPath20_8 =
     __dirname +
-    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/7/witness_calculator.js`
-  const zkeyFilePath20_7 =
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/8/witness_calculator.js`
+  const zkeyFilePath20_8 =
     __dirname +
-    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/7/circuit_final.zkey`
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/8/circuit_final.zkey`
 
   before(async () => {
     signers = await ethers.getSigners()
@@ -73,15 +73,15 @@ describe("Semaphore", () => {
       witnessCalcPath20_2,
       zkeyFilePath20_2
     )
-    const zkComponents20_7 = await fetchComponentsFromFilePaths(
-      wasmFilePath20_7,
-      witnessCalcPath20_7,
-      zkeyFilePath20_7
+    const zkComponents20_8 = await fetchComponentsFromFilePaths(
+      wasmFilePath20_8,
+      witnessCalcPath20_8,
+      zkeyFilePath20_8
     )
     semaphore = await Semaphore.createSemaphore(
       treeDepth,
       zkComponents20_2,
-      zkComponents20_7,
+      zkComponents20_8,
       admin
     )
     await semaphore.setSigner(user)
@@ -320,6 +320,8 @@ describe("Semaphore", () => {
 
       roots = linkedGroup.getRoots().map((bignum) => bignum.toHexString())
 
+      console.log('ROOTS: ', roots)
+
       fullProof = await generateProof(
         identities[0],
         linkedGroup,
@@ -327,8 +329,8 @@ describe("Semaphore", () => {
         signal,
         chainID,
         {
-          wasmFilePath: wasmFilePath20_7,
-          zkeyFilePath: zkeyFilePath20_7
+          wasmFilePath: wasmFilePath20_8,
+          zkeyFilePath: zkeyFilePath20_8
         }
       )
       solidityProof = packToSolidityProof(fullProof.proof)
@@ -341,8 +343,12 @@ describe("Semaphore", () => {
         fullProof.publicSignals.nullifierHash,
         0,
         createRootsBytes(roots),
-        solidityProof
+        solidityProof,
+        { gasLimit: "0x5B8D80" }
+
       )
+      console.log('tx: ', transaction)
+      console.log('awaited tx: ', await transaction)
       await expect(transaction).to.be.revertedWith("invalidProof")
     })
 
@@ -352,7 +358,7 @@ describe("Semaphore", () => {
         signal,
         groupId3,
         chainID,
-        BigNumber.from(Date.now())
+        BigNumber.from(Date.now()),
       )
 
       await expect(transaction)

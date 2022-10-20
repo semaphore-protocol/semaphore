@@ -107,17 +107,32 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         override
         returns (bool)
     {
-        bytes32[2] memory roots_decoded = abi.decode(roots, (bytes32[2]));
+        if(groups[groupId].maxEdges == 1) {
+            bytes32[2] memory roots_decoded = abi.decode(roots, (bytes32[2]));
 
-        bytes32[] memory roots_encoded = new bytes32[](roots_decoded.length);
-        for (uint256 i = 0; i < roots_decoded.length; i++) {
-            roots_encoded[i] = roots_decoded[i];
+            bytes32[] memory roots_encoded = new bytes32[](roots_decoded.length);
+            for (uint256 i = 0; i < roots_decoded.length; i++) {
+                roots_encoded[i] = roots_decoded[i];
+            }
+            bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(
+                groups[groupId],
+                roots_encoded
+            );
+            return valid_roots;
+        } else {
+            bytes32[8] memory roots_decoded = abi.decode(roots, (bytes32[8]));
+
+            bytes32[] memory roots_encoded = new bytes32[](roots_decoded.length);
+            for (uint256 i = 0; i < roots_decoded.length; i++) {
+                roots_encoded[i] = roots_decoded[i];
+            }
+            bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(
+                groups[groupId],
+                roots_encoded
+            );
+            return valid_roots;
         }
-        bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(
-            groups[groupId],
-            roots_encoded
-        );
-        return valid_roots;
+
     }
 
     /// @dev See {ISemaphoreGroups-getLatestNeighborEdges}.

@@ -37,7 +37,7 @@ generate_phase_2 () {
 }
 
 move_verifiers_and_metadata () {
-    local indir="$1" depth="$2" length="$3" fixturesDir="fixtures"
+    local indir="$1" depth="$2" length="$3" fixturesDir="solidity-fixtures/solidity-fixtures"
     # cp "$indir/circuit_final.zkey" "protocol-solidity-fixtures/fixtures/$anchorType/$depth/circuit_final.zkey"
 
     mkdir -p "$fixturesDir"/"$depth"/"$length"
@@ -54,17 +54,17 @@ move_verifiers_and_metadata () {
 }
 
 # compile $outdir $circuit_name $depth $length
-compile "$outdir" semaphore_20_2 20 2
-compile "$outdir" semaphore_20_7 20 7
-compile "$outdir" semaphore_19_2 19 2
-compile "$outdir" semaphore_19_7 19 7
+# compile "$outdir" semaphore_20_2 20 2
+compile "$outdir" semaphore_20_8 20 8
+# compile "$outdir" semaphore_19_2 19 2
+compile "$outdir" semaphore_19_8 19 8
 #
-generate_phase_2 ./artifacts/circuits/20/2 semaphore_20_2
-generate_phase_2 ./artifacts/circuits/20/7 semaphore_20_7
-generate_phase_2 ./artifacts/circuits/19/2 semaphore_19_2
-generate_phase_2 ./artifacts/circuits/19/7 semaphore_19_7
+# generate_phase_2 ./artifacts/circuits/20/2 semaphore_20_2
+generate_phase_2 ./artifacts/circuits/20/8 semaphore_20_8
+# generate_phase_2 ./artifacts/circuits/19/2 semaphore_19_2
+generate_phase_2 ./artifacts/circuits/19/8 semaphore_19_8
 
-move_verifiers_and_metadata ./artifacts/circuits/20/2 20 2
-move_verifiers_and_metadata ./artifacts/circuits/20/7 20 7
-move_verifiers_and_metadata ./artifacts/circuits/19/2 19 2
-move_verifiers_and_metadata ./artifacts/circuits/19/7 19 7
+# move_verifiers_and_metadata ./artifacts/circuits/20/2 20 2
+move_verifiers_and_metadata ./artifacts/circuits/20/8 20 8
+# move_verifiers_and_metadata ./artifacts/circuits/19/2 19 2
+move_verifiers_and_metadata ./artifacts/circuits/19/8 19 8
