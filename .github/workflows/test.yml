@@ -44,7 +44,7 @@ jobs:
         run: git submodule update --init --recursive
 
       - name: Download Snark artifacts
-        run: yarn fetch:fixtures
+        run: cd solidity-fixtures && dvc pull --remote aws && cd ..
 
       - name: Compile contracts
         run: yarn compile
