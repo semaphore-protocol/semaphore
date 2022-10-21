@@ -40,6 +40,9 @@ jobs:
       - name: Install dependencies
         run: yarn
 
+      - name: Fetch submodules
+        run: git submodule update --init --recursive
+
       - name: Download Snark artifacts
         run: yarn fetch:fixtures
 
