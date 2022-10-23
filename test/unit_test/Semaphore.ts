@@ -279,7 +279,7 @@ describe("Semaphore", () => {
         identities[0],
         signal,
         groupId2,
-        chainID,
+        Number(chainID),
         BigNumber.from(Date.now())
       )
 
@@ -288,7 +288,7 @@ describe("Semaphore", () => {
         .withArgs(groupId2, bytes32Signal)
     })
   })
-  describe.only("# verifyProof 7 maxEdges", () => {
+  describe("# verifyProof 7 maxEdges", () => {
     const signal = "Hello world"
     const bytes32Signal = utils.formatBytes32String(signal)
     const groupId3 = 1338
@@ -307,16 +307,13 @@ describe("Semaphore", () => {
       await semaphore.setSigner(admin)
       await semaphore.createGroup(groupId3, treeDepth, accounts[0], maxEdges7)
 
-      // const defaultRoot = await semaphore.contract.getLatestNeighborEdges(groupId2)
-
       await semaphore.addMember(groupId3, members[0])
       await semaphore.addMember(groupId3, members[1])
       await semaphore.addMember(groupId3, members[2])
 
-      roots = linkedGroup.getRoots().map((bignum: BigNumber) => bignum.toHexString())
-
-      console.log('ROOTS: ', roots)
-      console.log('ROOTS LENGHT: ', roots.length)
+      roots = linkedGroup
+        .getRoots()
+        .map((bignum: BigNumber) => bignum.toHexString())
 
       fullProof = await generateProof(
         identities[0],
@@ -341,31 +338,17 @@ describe("Semaphore", () => {
         createRootsBytes(roots),
         solidityProof,
         { gasLimit: "0x5B8D80" }
-
       )
       await expect(transaction).to.be.revertedWith("invalidProof")
     })
 
     it("Should verify a proof for an onchain group correctly", async () => {
-      // const transaction = semaphore.verifyIdentity(
-      //   identities[0],
-      //   signal,
-      //   groupId3,
-      //   chainID,
-      //   BigNumber.from(Date.now()),
-      // )
-      console.log('roots: ', fullProof.publicSignals.roots)
-      console.log('roots.length: ', fullProof.publicSignals.roots.length)
-      console.log('rootsBytes: ', createRootsBytes(fullProof.publicSignals.roots))
-
-      const transaction = semaphore.contract.verifyProof(
+      const transaction = semaphore.verifyIdentity(
+        identities[0],
+        signal,
         groupId3,
-        bytes32Signal,
-        fullProof.publicSignals.nullifierHash,
-        fullProof.publicSignals.externalNullifier,
-        createRootsBytes(fullProof.publicSignals.roots),
-        solidityProof,
-        { gasLimit: "0x5B8D80" }
+        Number(chainID),
+        BigNumber.from(Date.now())
       )
       await expect(transaction)
         .to.emit(semaphore.contract, "ProofVerified")

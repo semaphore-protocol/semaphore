@@ -41,16 +41,16 @@ export type PublicSignals = {
   chainID: string
 }
 
-export function convertPublicSignals(publicSignals: string[], maxEdges: number): PublicSignals {
+export function convertPublicSignals(
+  publicSignals: string[],
+  maxEdges: number
+): PublicSignals {
   // assert(publicSignals.length == 6)
-  console.log("publicSignals: ", publicSignals)
-  console.log("publicSignals.length: ", publicSignals.length)
   const nullifierHash = publicSignals[0]
   const signalHash = publicSignals[1]
   const externalNullifier = publicSignals[2]
-  const roots: string[] = publicSignals.slice(3, 3+maxEdges+1)
-  const chainID = publicSignals[publicSignals.length-1]
-  console.log("chainID: ", chainID)
+  const roots: string[] = publicSignals.slice(3, 3 + maxEdges + 1)
+  const chainID = publicSignals[publicSignals.length - 1]
   return {
     nullifierHash,
     signalHash,
@@ -90,7 +90,6 @@ export async function generateProof(
   }
   let wasm: Buffer | string
   let zkey: Uint8Array | string
-  // console.log("artifacts.type: ", artifacts.kind)
   if ("wasmFilePath" in artifacts && "zkeyFilePath" in artifacts) {
     wasm = artifacts.wasmFilePath
     zkey = artifacts.zkeyFilePath
@@ -98,8 +97,6 @@ export async function generateProof(
     wasm = artifacts.wasm
     zkey = artifacts.zkey
   }
-  console.log("generateProof roots: ", roots)
-  console.log("generateProof roots.length: ", roots.length)
 
   const { proof, publicSignals } = await groth16.fullProve(
     {
@@ -115,7 +112,10 @@ export async function generateProof(
     wasm,
     zkey
   )
-  const convertedPublicSignals = await convertPublicSignals(publicSignals, maxEdges)
+  const convertedPublicSignals = await convertPublicSignals(
+    publicSignals,
+    maxEdges
+  )
 
   return {
     proof,

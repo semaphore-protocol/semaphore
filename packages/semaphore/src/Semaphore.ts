@@ -353,7 +353,10 @@ export class Semaphore {
         .getRoots()
         .map((bignum: BigNumber) => bignum.toString())
     }
-    const zkComponent = this.linkedGroups[groupId].maxEdges == 1 ? this.smallCircuitZkComponents : this.largeCircuitZkComponents
+    const zkComponent =
+      this.linkedGroups[groupId].maxEdges == 1
+        ? this.smallCircuitZkComponents
+        : this.largeCircuitZkComponents
 
     const fullProof = await generateProof(
       identity,

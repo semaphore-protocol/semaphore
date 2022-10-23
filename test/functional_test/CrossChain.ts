@@ -1,14 +1,11 @@
 import { expect } from "chai"
 import { constants, Signer, utils, BigNumber, providers } from "ethers"
 import { ethers } from "hardhat"
-// import { SnarkArtifacts } from "@semaphore-protocol/proof"
 import { Identity } from "@webb-tools/identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import { Semaphore } from "@webb-tools/semaphore"
 import { startGanacheServer } from "../utils"
 import { fetchComponentsFromFilePaths, getChainIdType } from "@webb-tools/utils"
-// import { HARDHAT_PK_1 } from "../../hardhatAccounts.js"
-// import { Semaphore } from "../../packages/semaphore/src"
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
@@ -31,14 +28,11 @@ describe("2-sided CrossChain tests", () => {
   let hardhatAdminAddr: string
   let ganacheAdminAddr: string
   let hardhatAdmin: Signer
-  // let ganacheAdmin: Signer
 
   let membersA: bigint[]
   let membersB: bigint[]
   let identitiesA: Identity[]
   let identitiesB: Identity[]
-  // let chainIDA: number
-  // let chainIDB: number
   const groupIdNum = 2
 
   const treeDepth = Number(process.env.TREE_DEPTH) | 20
@@ -150,8 +144,6 @@ describe("2-sided CrossChain tests", () => {
       semaphore2.signer.provider.connection
     )
 
-    // chainIDA = await semaphore1.contract.getChainIdType()
-    // chainIDB = await semaphore2.contract.getChainIdType()
     // Creating members
     const idsA = createIdentities(chainIDA, 5)
     const idsB = createIdentities(chainIDB, 5)
@@ -214,7 +206,6 @@ describe("2-sided CrossChain tests", () => {
   describe("# CrossChainVerifyRoots", () => {
     let roots1: string[]
     let roots2: string[]
-    // let roots_zero: string[]
     let rootA: BigNumber
     let rootB: BigNumber
 
@@ -371,7 +362,6 @@ describe("2-sided CrossChain tests", () => {
 
       const rootA = await semaphore1.getRoot(groupId2)
       const rootB = await semaphore2.getRoot(groupId2)
-      // groupA2.updateEdge(chainIDB, historicalRootsB[0])
       fullProof_local_chainA = await generateProof(
         identitiesA[0],
         groupA2,
@@ -387,7 +377,6 @@ describe("2-sided CrossChain tests", () => {
         fullProof_local_chainA.proof
       )
 
-      // groupB2.updateEdge(chainIDA, initialRoot)
       fullProof_local_chainB = await generateProof(
         identitiesB[2],
         groupB2,

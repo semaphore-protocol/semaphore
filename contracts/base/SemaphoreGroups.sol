@@ -6,6 +6,7 @@ import "../interfaces/ISemaphoreGroups.sol";
 import "./LinkableIncrementalBinaryTree.sol";
 import {Edge} from "./LinkableIncrementalBinaryTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
+
 // import "hardhat/console.sol";
 
 /// @title Semaphore groups contract.
@@ -106,10 +107,12 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         override
         returns (bool)
     {
-        if(groups[groupId].maxEdges == 1) {
+        if (groups[groupId].maxEdges == 1) {
             bytes32[2] memory roots_decoded = abi.decode(roots, (bytes32[2]));
 
-            bytes32[] memory roots_encoded = new bytes32[](roots_decoded.length);
+            bytes32[] memory roots_encoded = new bytes32[](
+                roots_decoded.length
+            );
             for (uint256 i = 0; i < roots_decoded.length; i++) {
                 roots_encoded[i] = roots_decoded[i];
             }
@@ -121,7 +124,9 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         } else {
             bytes32[8] memory roots_decoded = abi.decode(roots, (bytes32[8]));
 
-            bytes32[] memory roots_encoded = new bytes32[](roots_decoded.length);
+            bytes32[] memory roots_encoded = new bytes32[](
+                roots_decoded.length
+            );
             for (uint256 i = 0; i < roots_decoded.length; i++) {
                 roots_encoded[i] = roots_decoded[i];
             }
@@ -131,7 +136,6 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
             );
             return valid_roots;
         }
-
     }
 
     /// @dev See {ISemaphoreGroups-getLatestNeighborEdges}.
