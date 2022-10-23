@@ -6,7 +6,6 @@ import "../interfaces/ISemaphoreGroups.sol";
 import "./LinkableIncrementalBinaryTree.sol";
 import {Edge} from "./LinkableIncrementalBinaryTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
-
 // import "hardhat/console.sol";
 
 /// @title Semaphore groups contract.

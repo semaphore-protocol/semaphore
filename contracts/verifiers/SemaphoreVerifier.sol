@@ -40,7 +40,7 @@ contract SemaphoreVerifier {
             // TODO: Fix the rest of the function with correct number of arguments to verifiers.
             return r;
 		} else if (maxEdges == 7) {
-            uint256[15] memory _inputs = abi.decode(input, (uint256[15]));
+            uint256[12] memory _inputs = abi.decode(input, (uint256[12]));
             return v8_2.verifyProof(a, b, c, _inputs);
 
 		} else {

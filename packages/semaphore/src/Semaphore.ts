@@ -372,7 +372,8 @@ export class Semaphore {
       fullProof.publicSignals.nullifierHash,
       fullProof.publicSignals.externalNullifier,
       createRootsBytes(fullProof.publicSignals.roots),
-      solidityProof
+      solidityProof,
+      { gasLimit: "0x5B8D80" }
     )
 
     return transaction

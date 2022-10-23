@@ -3,6 +3,6 @@
 /* eslint-disable */
 export { SemaphoreVerifier__factory } from "./SemaphoreVerifier__factory";
 export { Verifier19_2__factory } from "./Verifier19_2__factory";
-export { Verifier19_7__factory } from "./Verifier19_7__factory";
+export { Verifier19_8__factory } from "./Verifier19_8__factory";
 export { Verifier20_2__factory } from "./Verifier20_2__factory";
-export { Verifier20_7__factory } from "./Verifier20_7__factory";
+export { Verifier20_8__factory } from "./Verifier20_8__factory";

@@ -48,9 +48,9 @@ export type { SemaphoreVerifier } from "./contracts/verifiers/SemaphoreVerifier"
 export { SemaphoreVerifier__factory } from "./factories/contracts/verifiers/SemaphoreVerifier__factory";
 export type { Verifier19_2 } from "./contracts/verifiers/Verifier19_2";
 export { Verifier19_2__factory } from "./factories/contracts/verifiers/Verifier19_2__factory";
-export type { Verifier19_7 } from "./contracts/verifiers/Verifier19_7";
-export { Verifier19_7__factory } from "./factories/contracts/verifiers/Verifier19_7__factory";
+export type { Verifier19_8 } from "./contracts/verifiers/Verifier19_8";
+export { Verifier19_8__factory } from "./factories/contracts/verifiers/Verifier19_8__factory";
 export type { Verifier20_2 } from "./contracts/verifiers/Verifier20_2";
 export { Verifier20_2__factory } from "./factories/contracts/verifiers/Verifier20_2__factory";
-export type { Verifier20_7 } from "./contracts/verifiers/Verifier20_7";
-export { Verifier20_7__factory } from "./factories/contracts/verifiers/Verifier20_7__factory";
+export type { Verifier20_8 } from "./contracts/verifiers/Verifier20_8";
+export { Verifier20_8__factory } from "./factories/contracts/verifiers/Verifier20_8__factory";

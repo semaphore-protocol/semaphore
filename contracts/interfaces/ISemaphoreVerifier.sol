@@ -54,7 +54,7 @@ interface ISemaphoreVerifier8_2 {
         uint256[2][2] memory b,
         uint256[2] memory c,
         // TODO Change this to correct value
-        uint256[15] memory input
+        uint256[12] memory input
     ) external view returns (bool r);
 }
 

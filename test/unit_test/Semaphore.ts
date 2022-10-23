@@ -343,8 +343,6 @@ describe("Semaphore", () => {
         { gasLimit: "0x5B8D80" }
 
       )
-      console.log('tx: ', transaction)
-      console.log('awaited tx: ', await transaction)
       await expect(transaction).to.be.revertedWith("invalidProof")
     })
 

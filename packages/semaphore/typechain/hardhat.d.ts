@@ -97,17 +97,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Verifier19_2__factory>;
     getContractFactory(
-      name: "Verifier19_7",
+      name: "Verifier19_8",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Verifier19_7__factory>;
+    ): Promise<Contracts.Verifier19_8__factory>;
     getContractFactory(
       name: "Verifier20_2",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Verifier20_2__factory>;
     getContractFactory(
-      name: "Verifier20_7",
+      name: "Verifier20_8",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Verifier20_7__factory>;
+    ): Promise<Contracts.Verifier20_8__factory>;
 
     getContractAt(
       name: "PoseidonT3",
@@ -215,20 +215,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Verifier19_2>;
     getContractAt(
-      name: "Verifier19_7",
+      name: "Verifier19_8",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Verifier19_7>;
+    ): Promise<Contracts.Verifier19_8>;
     getContractAt(
       name: "Verifier20_2",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Verifier20_2>;
     getContractAt(
-      name: "Verifier20_7",
+      name: "Verifier20_8",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Verifier20_7>;
+    ): Promise<Contracts.Verifier20_8>;
 
     // default types
     getContractFactory(
