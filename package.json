@@ -37,7 +37,7 @@
     "prettier": "prettier -c .",
     "prettier:write": "prettier -w .",
     "commit": "cz",
-    "fullclean": "rm -r artifacts build fixtures node_modules yarn.lock packages/proof/snark-artifacts packages/semaphore/typechain",
+    "fullclean": "rm -r artifacts build fixtures node_modules yarn.lock packages/proof/snark-artifacts packages/semaphore/typechain cache",
     "softclean": "rm -r artifacts build node_modules yarn.lock packages/proof/snark-artifacts packages/semaphore/typechain",
     "precommit": "lint-staged"
   },

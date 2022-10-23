@@ -41,14 +41,22 @@ export type PublicSignals = {
   chainID: string
 }
 
-export function convertPublicSignals(publicSignals: string[]): PublicSignals {
+export function convertPublicSignals(publicSignals: string[], maxEdges: number): PublicSignals {
   // assert(publicSignals.length == 6)
+  console.log("publicSignals: ", publicSignals)
+  console.log("publicSignals.length: ", publicSignals.length)
+  const nullifierHash = publicSignals[0]
+  const signalHash = publicSignals[1]
+  const externalNullifier = publicSignals[2]
+  const roots: string[] = publicSignals.slice(3, 3+maxEdges+1)
+  const chainID = publicSignals[publicSignals.length-1]
+  console.log("chainID: ", chainID)
   return {
-    nullifierHash: publicSignals[0],
-    signalHash: publicSignals[1],
-    externalNullifier: publicSignals[2],
-    roots: [publicSignals[3], publicSignals[4]],
-    chainID: publicSignals[5]
+    nullifierHash,
+    signalHash,
+    externalNullifier,
+    roots,
+    chainID
   }
 }
 export type Artifacts = SnarkArtifacts | ZkComponents
@@ -65,6 +73,7 @@ export async function generateProof(
   roots?: string[]
 ): Promise<FullProof> {
   const commitment = identity.generateCommitment()
+  const maxEdges = group.maxEdges
   const index = group.indexOf(commitment)
 
   if (index === -1) {
@@ -89,6 +98,8 @@ export async function generateProof(
     wasm = artifacts.wasm
     zkey = artifacts.zkey
   }
+  console.log("generateProof roots: ", roots)
+  console.log("generateProof roots.length: ", roots.length)
 
   const { proof, publicSignals } = await groth16.fullProve(
     {
@@ -104,7 +115,7 @@ export async function generateProof(
     wasm,
     zkey
   )
-  const convertedPublicSignals = await convertPublicSignals(publicSignals)
+  const convertedPublicSignals = await convertPublicSignals(publicSignals, maxEdges)
 
   return {
     proof,

@@ -1,16 +1,10 @@
 import { expect } from "chai"
 import { constants, Signer, utils, ContractReceipt, BigNumber } from "ethers"
 import { ethers } from "hardhat"
-import {
-  Semaphore as SemaphoreContract,
-  Semaphore__factory,
-  ISemaphore,
-  SemaphoreGroups
-} from "../../packages/semaphore/typechain"
 // import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Semaphore } from "@webb-tools/semaphore"
-import { LinkedGroup } from "@webb-tools/semaphore-group"
+import { Semaphore } from "../../packages/semaphore"
+import { LinkedGroup } from "../../packages/group"
 import {
   FullProof,
   generateProof,
@@ -294,7 +288,7 @@ describe("Semaphore", () => {
         .withArgs(groupId2, bytes32Signal)
     })
   })
-  describe("# verifyProof 7 maxEdges", () => {
+  describe.only("# verifyProof 7 maxEdges", () => {
     const signal = "Hello world"
     const bytes32Signal = utils.formatBytes32String(signal)
     const groupId3 = 1338
@@ -310,6 +304,7 @@ describe("Semaphore", () => {
     let roots: string[]
 
     before(async () => {
+      await semaphore.setSigner(admin)
       await semaphore.createGroup(groupId3, treeDepth, accounts[0], maxEdges7)
 
       // const defaultRoot = await semaphore.contract.getLatestNeighborEdges(groupId2)
@@ -318,9 +313,10 @@ describe("Semaphore", () => {
       await semaphore.addMember(groupId3, members[1])
       await semaphore.addMember(groupId3, members[2])
 
-      roots = linkedGroup.getRoots().map((bignum) => bignum.toHexString())
+      roots = linkedGroup.getRoots().map((bignum: BigNumber) => bignum.toHexString())
 
       console.log('ROOTS: ', roots)
+      console.log('ROOTS LENGHT: ', roots.length)
 
       fullProof = await generateProof(
         identities[0],
@@ -353,14 +349,26 @@ describe("Semaphore", () => {
     })
 
     it("Should verify a proof for an onchain group correctly", async () => {
-      const transaction = semaphore.verifyIdentity(
-        identities[0],
-        signal,
-        groupId3,
-        chainID,
-        BigNumber.from(Date.now()),
-      )
+      // const transaction = semaphore.verifyIdentity(
+      //   identities[0],
+      //   signal,
+      //   groupId3,
+      //   chainID,
+      //   BigNumber.from(Date.now()),
+      // )
+      console.log('roots: ', fullProof.publicSignals.roots)
+      console.log('roots.length: ', fullProof.publicSignals.roots.length)
+      console.log('rootsBytes: ', createRootsBytes(fullProof.publicSignals.roots))
 
+      const transaction = semaphore.contract.verifyProof(
+        groupId3,
+        bytes32Signal,
+        fullProof.publicSignals.nullifierHash,
+        fullProof.publicSignals.externalNullifier,
+        createRootsBytes(fullProof.publicSignals.roots),
+        solidityProof,
+        { gasLimit: "0x5B8D80" }
+      )
       await expect(transaction)
         .to.emit(semaphore.contract, "ProofVerified")
         .withArgs(groupId3, bytes32Signal)

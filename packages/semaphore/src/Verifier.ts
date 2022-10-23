@@ -1,7 +1,7 @@
 import { ethers, Signer } from "ethers"
 import {
   Verifier20_2__factory,
-  Verifier20_7__factory,
+  Verifier20_8__factory,
   SemaphoreVerifier__factory,
   SemaphoreVerifier as SemaphoreVerifierContract
 } from "../typechain"
@@ -21,7 +21,7 @@ export class Verifier {
     const v2 = await v2Factory.deploy()
     await v2.deployed()
 
-    const v7Factory = new Verifier20_7__factory(signer)
+    const v7Factory = new Verifier20_8__factory(signer)
     const v7 = await v7Factory.deploy()
     await v7.deployed()
 
