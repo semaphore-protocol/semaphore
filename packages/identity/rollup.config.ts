@@ -13,17 +13,17 @@ const banner = `/**
 */`
 
 export default {
-    input: "src/index.ts",
-    output: [
-        { file: pkg.exports.require, format: "cjs", banner, exports: "auto" },
-        { file: pkg.exports.import, format: "es", banner }
-    ],
-    external: Object.keys(pkg.dependencies),
-    plugins: [
-        typescript({
-            tsconfig: "./build.tsconfig.json",
-            useTsconfigDeclarationDir: true
-        }),
-        cleanup({ comments: "jsdoc" })
-    ]
+  input: "src/index.ts",
+  output: [
+    { file: pkg.exports.require, format: "cjs", banner, exports: "auto" },
+    { file: pkg.exports.import, format: "es", banner }
+  ],
+  external: Object.keys(pkg.dependencies),
+  plugins: [
+    typescript({
+      tsconfig: "./build.tsconfig.json",
+      useTsconfigDeclarationDir: true
+    }),
+    cleanup({ comments: "jsdoc" })
+  ]
 }

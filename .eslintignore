@@ -13,9 +13,14 @@ cache
 
 # types
 types
+packages/semaphore/typechain/**/*
 
 # circuits
 circuits
+
+# fixtures
+witness_calculator.js
+hardhatAccounts.js
 
 # production
 dist

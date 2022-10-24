@@ -9,9 +9,9 @@ import { toUtf8Bytes } from "@ethersproject/strings"
  * @returns The hexadecimal hash of the message.
  */
 export function sha256(message: string): string {
-    const hash = _sha256(toUtf8Bytes(message))
+  const hash = _sha256(toUtf8Bytes(message))
 
-    return hash
+  return hash
 }
 
 /**
@@ -20,7 +20,7 @@ export function sha256(message: string): string {
  * @returns The generated random number.
  */
 export function genRandomNumber(numberOfBytes = 31): bigint {
-    return BigNumber.from(randomBytes(numberOfBytes)).toBigInt()
+  return BigNumber.from(randomBytes(numberOfBytes)).toBigInt()
 }
 
 /**
@@ -29,9 +29,9 @@ export function genRandomNumber(numberOfBytes = 31): bigint {
  * @returns True or false.
  */
 export function isJsonArray(jsonString: string) {
-    try {
-        return Array.isArray(JSON.parse(jsonString))
-    } catch (error) {
-        return false
-    }
+  try {
+    return Array.isArray(JSON.parse(jsonString))
+  } catch (error) {
+    return false
+  }
 }

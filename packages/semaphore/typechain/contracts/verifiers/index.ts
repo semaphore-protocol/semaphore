@@ -3,6 +3,6 @@
 /* eslint-disable */
 export type { SemaphoreVerifier } from "./SemaphoreVerifier";
 export type { Verifier19_2 } from "./Verifier19_2";
-export type { Verifier19_7 } from "./Verifier19_7";
+export type { Verifier19_8 } from "./Verifier19_8";
 export type { Verifier20_2 } from "./Verifier20_2";
-export type { Verifier20_7 } from "./Verifier20_7";
+export type { Verifier20_8 } from "./Verifier20_8";

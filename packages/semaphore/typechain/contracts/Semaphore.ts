@@ -443,7 +443,7 @@ export interface Semaphore extends BaseContract {
       groupId: PromiseOrValue<BigNumberish>,
       root: PromiseOrValue<BytesLike>,
       leafIndex: PromiseOrValue<BigNumberish>,
-      srcResourceID: PromiseOrValue<BytesLike>,
+      typedChainId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -547,7 +547,7 @@ export interface Semaphore extends BaseContract {
     groupId: PromiseOrValue<BigNumberish>,
     root: PromiseOrValue<BytesLike>,
     leafIndex: PromiseOrValue<BigNumberish>,
-    srcResourceID: PromiseOrValue<BytesLike>,
+    typedChainId: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -651,7 +651,7 @@ export interface Semaphore extends BaseContract {
       groupId: PromiseOrValue<BigNumberish>,
       root: PromiseOrValue<BytesLike>,
       leafIndex: PromiseOrValue<BigNumberish>,
-      srcResourceID: PromiseOrValue<BytesLike>,
+      typedChainId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -814,7 +814,7 @@ export interface Semaphore extends BaseContract {
       groupId: PromiseOrValue<BigNumberish>,
       root: PromiseOrValue<BytesLike>,
       leafIndex: PromiseOrValue<BigNumberish>,
-      srcResourceID: PromiseOrValue<BytesLike>,
+      typedChainId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -919,7 +919,7 @@ export interface Semaphore extends BaseContract {
       groupId: PromiseOrValue<BigNumberish>,
       root: PromiseOrValue<BytesLike>,
       leafIndex: PromiseOrValue<BigNumberish>,
-      srcResourceID: PromiseOrValue<BytesLike>,
+      typedChainId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

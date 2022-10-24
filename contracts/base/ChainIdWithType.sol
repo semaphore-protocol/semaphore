@@ -8,15 +8,17 @@ pragma solidity ^0.8.5;
 /**
     @title ChainIdWithType abstract contract
  */
- abstract contract ChainIdWithType {
+abstract contract ChainIdWithType {
     bytes2 public constant EVM_CHAIN_ID_TYPE = 0x0100;
 
     /**
         @notice Gets the chain id using the chain id opcode
      */
-    function getChainId() public view returns (uint) {
-        uint chainId;
-        assembly { chainId := chainid() }
+    function getChainId() public view returns (uint256) {
+        uint256 chainId;
+        assembly {
+            chainId := chainid()
+        }
         return chainId;
     }
 
@@ -39,7 +41,11 @@ pragma solidity ^0.8.5;
     /**
         Parses the typed chain ID out from a 32-byte resource ID
      */
-    function parseChainIdFromResourceId(bytes32 _resourceId) public pure returns (uint64) {
+    function parseChainIdFromResourceId(bytes32 _resourceId)
+        public
+        pure
+        returns (uint64)
+    {
         return uint64(uint48(bytes6(_resourceId << (26 * 8))));
     }
 }

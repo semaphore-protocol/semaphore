@@ -21,9 +21,9 @@ import type {
   PromiseOrValue,
 } from "../../common";
 
-export interface Verifier19_7Interface extends utils.Interface {
+export interface Verifier19_8Interface extends utils.Interface {
   functions: {
-    "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[11])": FunctionFragment;
+    "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[12])": FunctionFragment;
   };
 
   getFunction(nameOrSignatureOrTopic: "verifyProof"): FunctionFragment;
@@ -49,12 +49,12 @@ export interface Verifier19_7Interface extends utils.Interface {
   events: {};
 }
 
-export interface Verifier19_7 extends BaseContract {
+export interface Verifier19_8 extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: Verifier19_7Interface;
+  interface: Verifier19_8Interface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,

@@ -41,7 +41,9 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
     constructor(Verifier[] memory _verifiers) {
         for (uint8 i = 0; i < _verifiers.length; i++) {
-            verifiers[_verifiers[i].merkleTreeDepth] = SemaphoreVerifier(_verifiers[i].contractAddress);
+            verifiers[_verifiers[i].merkleTreeDepth] = SemaphoreVerifier(
+                _verifiers[i].contractAddress
+            );
         }
     }
 
@@ -60,7 +62,11 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphore-updateGroupAdmin}.
-    function updateGroupAdmin(uint256 groupId, address newAdmin) external override onlyGroupAdmin(groupId) {
+    function updateGroupAdmin(uint256 groupId, address newAdmin)
+        external
+        override
+        onlyGroupAdmin(groupId)
+    {
         groupAdmins[groupId] = newAdmin;
 
         emit GroupAdminUpdated(groupId, _msgSender(), newAdmin);
@@ -95,18 +101,23 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         @param groupId The groupID of the LinkableTree
         @param root The merkle root of the edge's merkle tree
         @param leafIndex The latest leaf insertion index of the edge's merkle tree
-        @param srcResourceID The origin resource ID of the originating linked anchor update
+        @param typedChainId The origin resource ID of the originating linked anchor update
      */
     function updateEdge(
         uint256 groupId,
         bytes32 root,
         uint32 leafIndex,
-        bytes32 srcResourceID
+        bytes32 typedChainId
     ) external override onlyGroupAdmin(groupId) {
-        _updateEdge(groupId, root, leafIndex, srcResourceID);
+        _updateEdge(groupId, root, leafIndex, typedChainId);
     }
+
     /// @dev See {ISemaphore-addMember}.
-    function addMember(uint256 groupId, uint256 identityCommitment) external override onlyGroupAdmin(groupId) {
+    function addMember(uint256 groupId, uint256 identityCommitment)
+        external
+        override
+        onlyGroupAdmin(groupId)
+    {
         _addMember(groupId, identityCommitment);
     }
 
@@ -117,15 +128,23 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
     ) external override onlyGroupAdmin(groupId) {
-        _removeMember(groupId, identityCommitment, proofSiblings, proofPathIndices);
+        _removeMember(
+            groupId,
+            identityCommitment,
+            proofSiblings,
+            proofPathIndices
+        );
     }
 
     // Function exposed for testing purposes
-    function decodeRoots(
-        bytes calldata roots
-    ) external override view returns (bytes32[] memory roots_decoded) {
-        roots_decoded = abi.decode(roots, (bytes32[]));
-        return roots_decoded;
+    function decodeRoots(bytes calldata roots)
+        external
+        view
+        override
+        returns (bytes32[] memory rootsDecoded)
+    {
+        rootsDecoded = abi.decode(roots, (bytes32[]));
+        return rootsDecoded;
     }
 
     /// @dev See {ISemaphore-verifyProof}.
@@ -149,7 +168,15 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
         SemaphoreVerifier verifier = verifiers[depth];
 
-        _verifyProof(signal, nullifierHash, externalNullifier, roots, proof, verifier, maxEdges);
+        _verifyProof(
+            signal,
+            nullifierHash,
+            externalNullifier,
+            roots,
+            proof,
+            verifier,
+            maxEdges
+        );
 
         _saveNullifierHash(nullifierHash);
 

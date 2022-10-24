@@ -23,7 +23,7 @@ import type {
 
 export interface ISemaphoreVerifier8_2Interface extends utils.Interface {
   functions: {
-    "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[15])": FunctionFragment;
+    "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[12])": FunctionFragment;
   };
 
   getFunction(nameOrSignatureOrTopic: "verifyProof"): FunctionFragment;

@@ -1,74 +1,74 @@
 [
-    {
-        "name": "Verifier16",
-        "address": "0x6143ECd9Fd1A00EDe1046d456f8aab53a7D71609"
-    },
-    {
-        "name": "Verifier17",
-        "address": "0xAc12fFFE354D6446eb50dd33E683B78FED73Fb02"
-    },
-    {
-        "name": "Verifier18",
-        "address": "0x610aeF0F2da3CD1C8bDefe4BDB434Ee146E0C701"
-    },
-    {
-        "name": "Verifier19",
-        "address": "0x5477725177035bbC9d70443eb921D29749D6FCb4"
-    },
-    {
-        "name": "Verifier20",
-        "address": "0x3fB2C0988a37b76e760c44e6516aF720935f3136"
-    },
-    {
-        "name": "Verifier21",
-        "address": "0xDc8f6B8A42836d4566256f4c6C53131DFD127DF8"
-    },
-    {
-        "name": "Verifier22",
-        "address": "0x6962b5e706be5278eeCb01c286b50A48484632f2"
-    },
-    {
-        "name": "Verifier23",
-        "address": "0x41e4796Bd89B4BF04013b559c93fC32E9a2BdF6B"
-    },
-    {
-        "name": "Verifier24",
-        "address": "0xD528B1D1408ab3583af4694F92b0aFEbE33d5b60"
-    },
-    {
-        "name": "Verifier25",
-        "address": "0x1683a27EF9c10c5286dB56412E1272cD0Ca733e7"
-    },
-    {
-        "name": "Verifier26",
-        "address": "0x78194bB665d1E33b97eE45B1A755c15717E94C00"
-    },
-    {
-        "name": "Verifier27",
-        "address": "0x997Dac00E6701Ef7F3518280E5a9922801126E42"
-    },
-    {
-        "name": "Verifier28",
-        "address": "0xDd3C7f4cBA2467aE41c0F614A3c3E24bC80268c6"
-    },
-    {
-        "name": "Verifier29",
-        "address": "0xe53eF12093933D5df5691EAbA3821bD1c1EB60Cd"
-    },
-    {
-        "name": "Verifier30",
-        "address": "0x7FeA07c536ABBB0E7FB3c833376EE4EaDc21340e"
-    },
-    {
-        "name": "Verifier31",
-        "address": "0xe4539a592df18936202480FBe77E47DE012F2178"
-    },
-    {
-        "name": "Verifier32",
-        "address": "0x98c90845A7870e215cBd7265DDC653E6c07032F4"
-    },
-    {
-        "name": "Semaphore",
-        "address": "0x49281E30F17A30808a6ce538f979d539747e6707"
-    }
+  {
+    "name": "Verifier16",
+    "address": "0x6143ECd9Fd1A00EDe1046d456f8aab53a7D71609"
+  },
+  {
+    "name": "Verifier17",
+    "address": "0xAc12fFFE354D6446eb50dd33E683B78FED73Fb02"
+  },
+  {
+    "name": "Verifier18",
+    "address": "0x610aeF0F2da3CD1C8bDefe4BDB434Ee146E0C701"
+  },
+  {
+    "name": "Verifier19",
+    "address": "0x5477725177035bbC9d70443eb921D29749D6FCb4"
+  },
+  {
+    "name": "Verifier20",
+    "address": "0x3fB2C0988a37b76e760c44e6516aF720935f3136"
+  },
+  {
+    "name": "Verifier21",
+    "address": "0xDc8f6B8A42836d4566256f4c6C53131DFD127DF8"
+  },
+  {
+    "name": "Verifier22",
+    "address": "0x6962b5e706be5278eeCb01c286b50A48484632f2"
+  },
+  {
+    "name": "Verifier23",
+    "address": "0x41e4796Bd89B4BF04013b559c93fC32E9a2BdF6B"
+  },
+  {
+    "name": "Verifier24",
+    "address": "0xD528B1D1408ab3583af4694F92b0aFEbE33d5b60"
+  },
+  {
+    "name": "Verifier25",
+    "address": "0x1683a27EF9c10c5286dB56412E1272cD0Ca733e7"
+  },
+  {
+    "name": "Verifier26",
+    "address": "0x78194bB665d1E33b97eE45B1A755c15717E94C00"
+  },
+  {
+    "name": "Verifier27",
+    "address": "0x997Dac00E6701Ef7F3518280E5a9922801126E42"
+  },
+  {
+    "name": "Verifier28",
+    "address": "0xDd3C7f4cBA2467aE41c0F614A3c3E24bC80268c6"
+  },
+  {
+    "name": "Verifier29",
+    "address": "0xe53eF12093933D5df5691EAbA3821bD1c1EB60Cd"
+  },
+  {
+    "name": "Verifier30",
+    "address": "0x7FeA07c536ABBB0E7FB3c833376EE4EaDc21340e"
+  },
+  {
+    "name": "Verifier31",
+    "address": "0xe4539a592df18936202480FBe77E47DE012F2178"
+  },
+  {
+    "name": "Verifier32",
+    "address": "0x98c90845A7870e215cBd7265DDC653E6c07032F4"
+  },
+  {
+    "name": "Semaphore",
+    "address": "0x49281E30F17A30808a6ce538f979d539747e6707"
+  }
 ]
