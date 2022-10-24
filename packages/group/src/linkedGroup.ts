@@ -3,7 +3,6 @@ import { Group } from "./group"
 import { Member } from "./types"
 import { MerkleProof } from "@webb-tools/sdk-core"
 import { strict as assert } from "assert"
-// import assert from 'assert';
 
 // This convenience wrapper class is used in tests -
 // It represents a deployed contract throughout its life (e.g. maintains merkle tree state)

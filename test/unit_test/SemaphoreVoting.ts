@@ -4,7 +4,6 @@ import { SemaphoreVoting } from "../../build/typechain"
 import { Signer, utils } from "ethers"
 import { config } from "../../package.json"
 
-import { Semaphore } from "../../packages/semaphore"
 import { Identity } from "../../packages/identity/src"
 import { LinkedGroup } from "../../packages/group/src"
 import {

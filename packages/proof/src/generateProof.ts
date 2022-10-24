@@ -1,4 +1,3 @@
-// import type { Identity } from "@semaphore-protocol/identity"
 import { groth16 } from "snarkjs"
 import generateSignalHash from "./generateSignalHash"
 import { BigNumber, BigNumberish } from "ethers"
@@ -112,10 +111,7 @@ export async function generateProof(
     wasm,
     zkey
   )
-  const convertedPublicSignals = await convertPublicSignals(
-    publicSignals,
-    maxEdges
-  )
+  const convertedPublicSignals = convertPublicSignals(publicSignals, maxEdges)
 
   return {
     proof,

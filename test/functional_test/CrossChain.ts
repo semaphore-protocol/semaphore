@@ -1,5 +1,5 @@
 import { expect } from "chai"
-import { constants, Signer, utils, BigNumber, providers } from "ethers"
+import { constants, Signer, utils, BigNumber } from "ethers"
 import { ethers } from "hardhat"
 import { Identity } from "@webb-tools/identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
@@ -304,16 +304,12 @@ describe("2-sided CrossChain tests", () => {
 
     let fullProof_local_chainA: FullProof
     let solidityProof_local_chainA: SolidityProof
-    let chainA_not_updated_roots: string[]
 
     let groupA2: LinkedGroup
     let groupB2: LinkedGroup
 
     let fullProof_local_chainB: FullProof
     let solidityProof_local_chainB: SolidityProof
-    let chainB_not_updated_roots: string[]
-    let historicalRootsA: string[]
-    let historicalRootsB: string[]
     const groupId2 = 1337
 
     before(async () => {
@@ -360,8 +356,6 @@ describe("2-sided CrossChain tests", () => {
         groupB2
       )
 
-      const rootA = await semaphore1.getRoot(groupId2)
-      const rootB = await semaphore2.getRoot(groupId2)
       fullProof_local_chainA = await generateProof(
         identitiesA[0],
         groupA2,

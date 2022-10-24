@@ -141,10 +141,10 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         external
         view
         override
-        returns (bytes32[] memory roots_decoded)
+        returns (bytes32[] memory rootsDecoded)
     {
-        roots_decoded = abi.decode(roots, (bytes32[]));
-        return roots_decoded;
+        rootsDecoded = abi.decode(roots, (bytes32[]));
+        return rootsDecoded;
     }
 
     /// @dev See {ISemaphore-verifyProof}.

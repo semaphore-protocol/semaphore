@@ -108,33 +108,29 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         returns (bool)
     {
         if (groups[groupId].maxEdges == 1) {
-            bytes32[2] memory roots_decoded = abi.decode(roots, (bytes32[2]));
+            bytes32[2] memory rootsDecoded = abi.decode(roots, (bytes32[2]));
 
-            bytes32[] memory roots_encoded = new bytes32[](
-                roots_decoded.length
-            );
-            for (uint256 i = 0; i < roots_decoded.length; i++) {
-                roots_encoded[i] = roots_decoded[i];
+            bytes32[] memory rootsEncoded = new bytes32[](rootsDecoded.length);
+            for (uint256 i = 0; i < rootsDecoded.length; i++) {
+                rootsEncoded[i] = rootsDecoded[i];
             }
-            bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(
+            bool validRoots = LinkableIncrementalBinaryTree.isValidRoots(
                 groups[groupId],
-                roots_encoded
+                rootsEncoded
             );
-            return valid_roots;
+            return validRoots;
         } else {
-            bytes32[8] memory roots_decoded = abi.decode(roots, (bytes32[8]));
+            bytes32[8] memory rootsDecoded = abi.decode(roots, (bytes32[8]));
 
-            bytes32[] memory roots_encoded = new bytes32[](
-                roots_decoded.length
-            );
-            for (uint256 i = 0; i < roots_decoded.length; i++) {
-                roots_encoded[i] = roots_decoded[i];
+            bytes32[] memory rootsEncoded = new bytes32[](rootsDecoded.length);
+            for (uint256 i = 0; i < rootsDecoded.length; i++) {
+                rootsEncoded[i] = rootsDecoded[i];
             }
-            bool valid_roots = LinkableIncrementalBinaryTree.isValidRoots(
+            bool validRoots = LinkableIncrementalBinaryTree.isValidRoots(
                 groups[groupId],
-                roots_encoded
+                rootsEncoded
             );
-            return valid_roots;
+            return validRoots;
         }
     }
 

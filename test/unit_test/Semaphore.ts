@@ -12,7 +12,7 @@ import {
   SolidityProof
 } from "../../packages/proof/src"
 import { fetchComponentsFromFilePaths } from "@webb-tools/utils"
-import { toFixedHex, createRootsBytes, createIdentities } from "../utils"
+import { createRootsBytes, createIdentities } from "../utils"
 
 describe("Semaphore", () => {
   // Semaphore with 1 maxEdge

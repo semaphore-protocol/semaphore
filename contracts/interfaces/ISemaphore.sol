@@ -47,7 +47,7 @@ interface ISemaphore {
     function decodeRoots(bytes calldata roots)
         external
         view
-        returns (bytes32[] memory roots_decoded);
+        returns (bytes32[] memory rootsDecoded);
 
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @param groupId: Id of the group.

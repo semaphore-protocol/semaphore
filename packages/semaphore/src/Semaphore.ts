@@ -16,19 +16,14 @@ import {
 import { toHex, toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
-// import { LinkedGroup } from "@webb-tools/semaphore-group"
-// import { generateProof } from "@webb-tools/semaphore-proof/src"
 import { Identity } from "@webb-tools/semaphore-identity/src"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
-import { generateProof } from "@webb-tools/semaphore-proof/src"
-// import { Identity } from "../../identity/src"
-// import Identity from "@webb-tools/semaphore-identity/src"
-
-import { FullProof, packToSolidityProof, SolidityProof } from "../../proof/src"
+import {
+  generateProof,
+  packToSolidityProof
+} from "@webb-tools/semaphore-proof/src"
 import { Verifier } from "./Verifier"
-
 import { strict as assert } from "assert"
-// const assert = require("assert")
 
 // This convenience wrapper class is used in tests -
 // It represents a deployed contract throughout its life (e.g. maintains merkle tree state)
@@ -340,7 +335,9 @@ export class Semaphore {
 
     let roots: string[]
     if (externalGroup !== undefined) {
-      // roots = this.linkedGroups[groupId].getRoots().map((bignum: BigNumber) => bignum.toString())
+      // if externalGroup is being provided we assume it's use
+      // on merkle proof generation.
+      // externalGroup should have updated roots.
       externalGroup.updateEdge(
         chainId,
         this.linkedGroups[groupId].root.toString()
@@ -381,24 +378,6 @@ export class Semaphore {
 
     return transaction
   }
-
-  // public async genProof(
-  //   identity: Identity,
-  //   signal: string,
-  //   groupId: number,
-  //   externalNullifier: BigNumberish
-  // ) {
-  //   const fullProof = await shouldWork(
-  //     identity,
-  //     this.linkedGroups[groupId],
-  //     externalNullifier,
-  //     signal,
-  //     this.chainId,
-  //     this.smallCircuitZkComponents
-  //   )
-  //   const solidityProof = packToSolidityProof(fullProof.proof)
-  //   return fullProof
-  // }
 }
 
 export default Semaphore

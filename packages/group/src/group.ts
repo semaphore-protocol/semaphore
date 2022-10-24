@@ -2,8 +2,6 @@ import { BigNumber, BigNumberish } from "ethers"
 import { Member } from "./types"
 import { MerkleTree, MerkleProof } from "@webb-tools/sdk-core"
 
-// import { u8aToHex } from '@webb-tools/utils';
-
 export declare type Leaf = {
   index: number
   commitment: BigNumberish
