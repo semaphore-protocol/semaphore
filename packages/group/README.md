@@ -6,11 +6,19 @@
 </p>
 
 <p align="center">
+<<<<<<< HEAD
     <a href="https://github.com/semaphore-protocol/semaphore.js">
         <img src="https://img.shields.io/badge/project-semaphore-blue.svg?style=flat-square">
     </a>
     <a href="https://github.com/semaphore-protocol/semaphore.js/blob/main/packages/group/LICENSE">
         <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.js.svg?style=flat-square">
+=======
+    <a href="https://github.com/semaphore-protocol">
+        <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
+    </a>
+    <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+>>>>>>> origin/main
     </a>
     <a href="https://www.npmjs.com/package/@semaphore-protocol/group">
         <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/group?style=flat-square" />
@@ -28,12 +36,29 @@
 
 <div align="center">
     <h4>
+<<<<<<< HEAD
         <a href="https://t.me/joinchat/B-PQx1U3GtAh--Z4Fwo56A">
             🗣️ Chat &amp; Support
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
         <a href="https://semaphore-protocol.github.io/semaphore.js/group">
             📘 Docs
+=======
+        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CONTRIBUTING.md">
+            👥 Contributing
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CODE_OF_CONDUCT.md">
+            🤝 Code of conduct
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://github.com/semaphore-protocol/semaphore/contribute">
+            🔎 Issues
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://discord.gg/6mSdGHnstH">
+            🗣️ Chat &amp; Support
+>>>>>>> origin/main
         </a>
     </h4>
 </div>

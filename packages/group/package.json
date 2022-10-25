@@ -9,7 +9,7 @@
     "import": "./dist/index.mjs",
     "require": "./dist/index.node.js"
   },
-  "types": "./dist/types/packages/group/src/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist/",
     "src/",
@@ -20,7 +20,7 @@
   "homepage": "https://github.com/webb-tools/semaphore-anchor.git/tree/main/packages/group",
   "scripts": {
     "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
-    "build": "rimraf -rf ./dist && rollup -c rollup.config.ts --configPlugin typescript",
+    "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
     "prepublishOnly": "yarn build",
     "docs": "typedoc src/index.ts --out ../../docs/group"
   },
@@ -41,7 +41,7 @@
   "dependencies": {
     "@webb-tools/sdk-core": "0.1.4-108",
     "@webb-tools/test-utils": "0.1.4-108",
-    "@zk-kit/incremental-merkle-tree": "0.4.3",
+    "@zk-kit/incremental-merkle-tree": "1.0.0",
     "circomlibjs": "0.0.8",
     "ethers": "^5.6.8",
     "rollup": "^2.77.2"

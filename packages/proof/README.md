@@ -6,11 +6,19 @@
 </p>
 
 <p align="center">
+<<<<<<< HEAD
     <a href="https://github.com/semaphore-protocol/semaphore.js">
         <img src="https://img.shields.io/badge/project-semaphore.js-blue.svg?style=flat-square">
     </a>
     <a href="https://github.com/semaphore-protocol/semaphore.js/blob/main/packages/proof/LICENSE">
         <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.js.svg?style=flat-square">
+=======
+    <a href="https://github.com/semaphore-protocol">
+        <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
+    </a>
+    <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+>>>>>>> origin/main
     </a>
     <a href="https://www.npmjs.com/package/@semaphore-protocol/proof">
         <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/proof?style=flat-square" />
@@ -28,12 +36,29 @@
 
 <div align="center">
     <h4>
+<<<<<<< HEAD
         <a href="https://t.me/joinchat/B-PQx1U3GtAh--Z4Fwo56A">
             🗣️ Chat &amp; Support
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
         <a href="https://semaphore-protocol.github.io/semaphore.js/proof">
             📘 Docs
+=======
+        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CONTRIBUTING.md">
+            👥 Contributing
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CODE_OF_CONDUCT.md">
+            🤝 Code of conduct
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://github.com/semaphore-protocol/semaphore/contribute">
+            🔎 Issues
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://discord.gg/6mSdGHnstH">
+            🗣️ Chat &amp; Support
+>>>>>>> origin/main
         </a>
     </h4>
 </div>
@@ -45,16 +70,27 @@
 
 ### npm or yarn
 
+<<<<<<< HEAD
 Install the `@semaphore-protocol/proof` package with npm:
 
 ```bash
 npm i @semaphore-protocol/proof
+=======
+Install the `@semaphore-protocol/proof` package and its peer dependencies with npm:
+
+```bash
+npm i @semaphore-protocol/identity @semaphore-protocol/group @semaphore-protocol/proof
+>>>>>>> origin/main
 ```
 
 or yarn:
 
 ```bash
+<<<<<<< HEAD
 yarn add @semaphore-protocol/proof
+=======
+yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-protocol/proof
+>>>>>>> origin/main
 ```
 
 ## 📜 Usage
@@ -73,6 +109,7 @@ const signal = "Hello world"
 
 group.addMembers([...identityCommitments, identity.generateCommitment()])
 
+<<<<<<< HEAD
 const fullProof = await generateProof(
     identity,
     merkleProof,
@@ -83,6 +120,12 @@ const fullProof = await generateProof(
         wasmFilePath: "./semaphore.wasm"
     }
 )
+=======
+const fullProof = await generateProof(identity, merkleProof, externalNullifier, signal, {
+    zkeyFilePath: "./semaphore.zkey",
+    wasmFilePath: "./semaphore.wasm"
+})
+>>>>>>> origin/main
 
 // You can also use the default zkey/wasm files (only for browsers!).
 // const fullProof = await generateProof(identity, merkleProof, externalNullifier, signal)
@@ -111,10 +154,14 @@ const solidityProof = packToSolidityProof(fullProof.proof)
 ```typescript
 import { generateNullifierHash } from "@semaphore-protocol/proof"
 
+<<<<<<< HEAD
 const nullifierHash = generateNullifierHash(
     externalNullifier,
     identity.getNullifier()
 )
+=======
+const nullifierHash = generateNullifierHash(externalNullifier, identity.getNullifier())
+>>>>>>> origin/main
 ```
 
 \# **generateSignalHash**(signal: _string_): _bigint_

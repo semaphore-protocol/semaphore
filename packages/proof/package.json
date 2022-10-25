@@ -8,7 +8,7 @@
     "import": "./dist/index.mjs",
     "require": "./dist/index.node.js"
   },
-  "types": "./dist/types/packages/proof/src/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist/",
     "src/",
@@ -19,7 +19,7 @@
   "homepage": "https://github.com/webb-tools/semaphore-anchor.git/tree/main/packages/proof",
   "scripts": {
     "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
-    "build": "rimraf -rf ./dist && rollup -c rollup.config.ts --configPlugin typescript",
+    "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
     "prepublishOnly": "yarn build",
     "docs": "typedoc src/index.ts --out ../../docs/proof"
   },
@@ -32,8 +32,11 @@
     "rollup": "^2.77.2",
     "rollup-plugin-cleanup": "^3.2.1",
     "rollup-plugin-typescript2": "^0.31.2",
-    "typedoc": "^0.23.15",
     "typescript": "^4.7.4"
+  },
+  "peerDependencies": {
+    "@webb-tools/semaphore-group": "workspace:packages/group",
+    "@webb-tools/semaphore-identity": "workspace:packages/identity"
   },
   "dependencies": {
     "@ethersproject/bytes": "^5.5.0",
@@ -46,7 +49,10 @@
     "circomlibjs": "0.0.8",
     "ethers": "^5.6.8",
     "ffjavascript": "^0.2.54",
+    "rollup-plugin-cleanup": "^3.2.1",
+    "rollup-plugin-typescript2": "^0.31.2",
     "snarkjs": "^0.4.13",
+    "typedoc": "^0.23.15",
     "typescript": "^4.7.4"
   }
 }

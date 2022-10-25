@@ -1,0 +1,35 @@
+{
+    "name": "@semaphore-protocol/contracts",
+    "version": "2.6.0",
+    "description": "Semaphore contracts to manage groups and broadcast anonymous signals.",
+    "license": "MIT",
+    "files": [
+        "**/*.sol"
+    ],
+    "keywords": [
+        "blockchain",
+        "ethereum",
+        "hardhat",
+        "smart-contracts",
+        "semaphore",
+        "identity",
+        "solidity",
+        "zero-knowledge",
+        "zk-snarks",
+        "zero-knowledge-proofs",
+        "circom",
+        "proof-of-membership"
+    ],
+    "repository": "https://github.com/semaphore-protocol/semaphore",
+    "homepage": "https://github.com/semaphore-protocol/semaphore/tree/main/packages/contracts",
+    "bugs": {
+        "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@openzeppelin/contracts": "4.7.3",
+        "@zk-kit/incremental-merkle-tree.sol": "1.3.1"
+    }
+}

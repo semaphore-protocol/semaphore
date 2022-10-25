@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Identity } from "../packages/identity"
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber"
 import { randomBytes } from "@ethersproject/random"
@@ -66,10 +67,23 @@ export function createIdentityCommitments(
     const identityCommitment = identity.generateCommitment()
 
     identityCommitments.push(identityCommitment)
+=======
+import { Identity } from "@semaphore-protocol/identity"
+
+// eslint-disable-next-line import/prefer-default-export
+export function createIdentityCommitments(n: number): bigint[] {
+    const identityCommitments: bigint[] = []
+
+    for (let i = 0; i < n; i += 1) {
+        const { commitment } = new Identity(i.toString())
+
+        identityCommitments.push(commitment)
+>>>>>>> origin/main
   }
 
   return identityCommitments
 }
+<<<<<<< HEAD
 
 /**
  * Returns an hexadecimal sha256 hash of the message passed as parameter.
@@ -128,3 +142,5 @@ export async function startGanacheServer(
 
   return ganacheServer
 }
+=======
+>>>>>>> origin/main

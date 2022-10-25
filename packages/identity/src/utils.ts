@@ -2,6 +2,10 @@ import { BigNumber } from "@ethersproject/bignumber"
 import { randomBytes } from "@ethersproject/random"
 import { sha256 as _sha256 } from "@ethersproject/sha2"
 import { toUtf8Bytes } from "@ethersproject/strings"
+<<<<<<< HEAD
+=======
+import { poseidon } from "circomlibjs"
+>>>>>>> origin/main
 
 /**
  * Returns an hexadecimal sha256 hash of the message passed as parameter.
@@ -24,6 +28,19 @@ export function genRandomNumber(numberOfBytes = 31): bigint {
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * Generates the identity commitment from trapdoor and nullifier.
+ * @param nullifier The identity nullifier.
+ * @param trapdoor The identity trapdoor.
+ * @returns identity commitment
+ */
+export function generateCommitment(nullifier: bigint, trapdoor: bigint): bigint {
+    return poseidon([poseidon([nullifier, trapdoor])])
+}
+
+/**
+>>>>>>> origin/main
  * Checks if a string is a JSON.
  * @param jsonString The JSON string.
  * @returns True or false.

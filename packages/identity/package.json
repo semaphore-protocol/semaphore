@@ -9,7 +9,7 @@
     "import": "./dist/index.mjs",
     "require": "./dist/index.node.js"
   },
-  "types": "./dist/types/packages/identity/src/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist/",
     "src/",
@@ -20,7 +20,7 @@
   "homepage": "https://github.com/webb-tools/semaphore-anchor.git/tree/main/packages/identity",
   "scripts": {
     "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
-    "build": "rimraf -rf ./dist && rollup -c rollup.config.ts --configPlugin typescript",
+    "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
     "prepublishOnly": "yarn build",
     "docs": "typedoc src/index.ts --out ../../docs/identity"
   },
