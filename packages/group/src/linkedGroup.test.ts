@@ -7,7 +7,7 @@ describe("LinkedGroup", () => {
 
       expect(group.root.toString()).toContain("150197")
       expect(group.depth).toBe(20)
-      expect(group.zeroValue).toBe(BigInt(0))
+      expect(group.zeroValue.toBigInt()).toBe(BigInt(0))
       expect(group.members).toHaveLength(0)
     })
 
@@ -18,11 +18,11 @@ describe("LinkedGroup", () => {
     })
 
     it("Should create a group with different parameters", () => {
-      const group = new LinkedGroup(32, 1)
+      const group = new LinkedGroup(32, 1, 1)
 
       expect(group.root.toString()).toContain("640470")
       expect(group.depth).toBe(32)
-      expect(group.zeroValue).toBe(BigInt(1))
+      expect(group.zeroValue.toBigInt()).toBe(BigInt(1))
       expect(group.members).toHaveLength(0)
     })
   })
@@ -63,7 +63,7 @@ describe("LinkedGroup", () => {
       const group = new LinkedGroup(20, 1)
       group.addMembers([BigInt(1), BigInt(3)])
 
-      group.removeMember(0)
+      group.removeMember(1)
 
       expect(group.members).toHaveLength(2)
       expect(group.members[0]).toBe(group.zeroValue)
@@ -91,7 +91,7 @@ describe("LinkedGroup", () => {
 
       const proof = group.generateProofOfMembership(0)
 
-      expect(proof.element).toBe(BigInt(1))
+      expect(proof.element.toBigInt()).toBe(BigInt(1))
     })
   })
 })

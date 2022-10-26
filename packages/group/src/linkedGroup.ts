@@ -31,6 +31,7 @@ export class LinkedGroup {
   constructor(
     levels: number,
     maxEdges: number,
+    zeroValue: BigNumberish = BigNumber.from(0),
     // chainId?: number,
     groupAdminAddr?: string,
     group?: Group
@@ -39,7 +40,7 @@ export class LinkedGroup {
     this.maxEdges = maxEdges
     this.groupAdmin = groupAdminAddr
     if (typeof group === "undefined") {
-      this.group = new Group(levels)
+      this.group = new Group(levels, zeroValue)
     } else {
       this.group = group
     }

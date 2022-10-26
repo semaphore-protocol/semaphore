@@ -102,7 +102,7 @@ export class Group {
    * Removes a member from the group.
    * @param member member to be removed.
    */
-  removeMember(member: Member) {
+  removeMember(member: BigNumberish) {
     this._merkleTree.remove(member)
   }
 
