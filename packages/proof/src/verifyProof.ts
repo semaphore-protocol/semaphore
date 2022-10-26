@@ -7,7 +7,6 @@ import { FullProof } from "./types"
  * @param fullProof The SnarkJS full proof.
  * @returns True if the proof is valid, false otherwise.
  */
-<<<<<<< HEAD
 export default function verifyProof(
   verificationKey: any,
   { proof, publicSignals }: FullProof
@@ -20,16 +19,6 @@ export default function verifyProof(
       publicSignals.roots,
       publicSignals.chainID,
       publicSignals.nullifierHash
-=======
-export default function verifyProof(verificationKey: any, { proof, publicSignals }: FullProof): Promise<boolean> {
-    return groth16.verify(
-        verificationKey,
-        [
-            publicSignals.merkleRoot,
-            publicSignals.nullifierHash,
-            publicSignals.signalHash,
-            publicSignals.externalNullifier
->>>>>>> origin/main
     ],
     proof
   )
