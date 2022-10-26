@@ -18,11 +18,7 @@ describe("Group", () => {
     })
 
     it("Should create a group with different parameters", () => {
-<<<<<<< HEAD
       const group = new Group(32)
-=======
-            const group = new Group(32, BigInt(1))
->>>>>>> origin/main
 
       expect(group.root.toString()).toContain("640470")
       expect(group.depth).toBe(32)
@@ -62,8 +58,6 @@ describe("Group", () => {
     })
   })
 
-<<<<<<< HEAD
-=======
     describe("# updateMember", () => {
         it("Should update a member in a group", () => {
             const group = new Group()
@@ -76,7 +70,6 @@ describe("Group", () => {
         })
     })
 
->>>>>>> origin/main
   describe("# removeMember", () => {
     it("Should remove a member from a group", () => {
       const group = new Group()
@@ -87,7 +80,6 @@ describe("Group", () => {
       expect(group.members).toHaveLength(2)
       expect(group.members[0]).toBe(group.zeroValue)
     })
-<<<<<<< HEAD
     it("Should bulkRemove 2 members from a group", () => {
       const emptyGroup = new Group()
       const bulkGroup = new Group()
@@ -102,8 +94,6 @@ describe("Group", () => {
 
       expect(bulkGroup.root.toString()).toBe(emptyGroup.root.toString())
     })
-=======
->>>>>>> origin/main
   })
 
   describe("# generateProofOfMembership", () => {
@@ -113,11 +103,7 @@ describe("Group", () => {
 
       const proof = group.generateProofOfMembership(0)
 
-<<<<<<< HEAD
       expect(proof.element).toBe(BigInt(1))
-=======
-            expect(proof.leaf).toBe(BigInt(1))
->>>>>>> origin/main
     })
   })
 })

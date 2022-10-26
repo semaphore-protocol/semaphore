@@ -33,5 +33,4 @@
     "build/typechain/**/*",
     "types/**/*"
   ],
-  "files": ["hardhat.config.ts"]
 }

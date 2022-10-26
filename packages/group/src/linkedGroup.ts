@@ -1,8 +1,8 @@
 import { BigNumber, BigNumberish } from "ethers"
+import { strict as assert } from "assert"
+import { MerkleProof } from "@webb-tools/sdk-core"
 import { Group } from "./group"
 import { Member } from "./types"
-import { MerkleProof } from "@webb-tools/sdk-core"
-import { strict as assert } from "assert"
 
 // This convenience wrapper class is used in tests -
 // It represents a deployed contract throughout its life (e.g. maintains merkle tree state)
@@ -93,7 +93,7 @@ export class LinkedGroup {
    */
   public updateEdge(chainId: number, root: string): void {
     assert(
-      this.root != root,
+      this.root !== root,
       `Trying to add this chain's group as an edge to itself.`
     )
     this.roots[chainId] = BigNumber.from(root)
