@@ -42,7 +42,6 @@
   "dependencies": {
     "@webb-tools/sdk-core": "0.1.4-108",
     "@webb-tools/test-utils": "0.1.4-108",
-    "@zk-kit/incremental-merkle-tree": "1.0.0",
     "circomlibjs": "0.0.8",
     "ethers": "^5.6.8",
     "rollup": "^2.77.2"

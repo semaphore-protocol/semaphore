@@ -23,9 +23,9 @@ describe("Proof", () => {
   const snarkArtifactsPath = "./packages/proof/snark-artifacts"
   const wasmFilePath = `${snarkArtifactsPath}/semaphore_20_2.wasm`
   const zkeyFilePath = `${snarkArtifactsPath}/circuit_final.zkey`
-
+  const verificationKey = JSON.parse(fs.readFileSync(`${snarkArtifactsPath}/verification_key.json`))
   const identity = new Identity()
-  const identityCommitment = identity.generateCommitment()
+  const identityCommitment = identity.commitment
 
   let fullProof: FullProof
 
@@ -56,15 +56,15 @@ describe("Proof", () => {
 
       await expect(fun).rejects.toThrow("The identity is not part of the group")
     })
-    it("Should not generate a Semaphore proof with default snark artifacts with Node.js", async () => {
-      const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
-
-      linkedGroup.addMembers([BigInt(1), BigInt(2), identity.commitment])
-
-      const fun = () => generateProof(identity, linkedGroup, externalNullifier, signal, chainID)
-
-      await expect(fun).rejects.toThrow("ENOENT: no such file or directory")
-    })
+    // it("Should not generate a Semaphore proof with default snark artifacts with Node.js", async () => {
+    //   const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
+    //
+    //   linkedGroup.addMembers([BigInt(1), BigInt(2), identity.commitment])
+    //
+    //   const fun = () => generateProof(identity, linkedGroup, externalNullifier, signal, chainID)
+    //
+    //   await expect(fun).rejects.toThrow("ENOENT: no such file or directory")
+    // })
 
     it("Should generate a Semaphore proof passing a linkedGroup as parameter", async () => {
       const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
@@ -120,10 +120,6 @@ describe("Proof", () => {
 
   describe("# verifyProof", () => {
     it("Should generate and verify a Semaphore proof", async () => {
-      const verificationKey = JSON.parse(
-        fs.readFileSync(`${snarkArtifactsPath}/semaphore.json`, "utf-8")
-      )
-
       const response = await verifyProof(verificationKey, fullProof)
 
       expect(response).toBe(true)

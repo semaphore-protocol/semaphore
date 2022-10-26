@@ -61,7 +61,7 @@ export function convertPublicSignals(
 export type Artifacts = SnarkArtifacts | ZkComponents
 // async function generateProof(
 export default async function generateProof(
-  { trapdoor, nullifier, commitment }: Identity,
+  identity: Identity,
   group: LinkedGroup,
   // groupOrMerkleProof: Group | MerkleProof,
   externalNullifier: BigNumberish,
@@ -73,8 +73,8 @@ export default async function generateProof(
   roots?: string[]
 ): Promise<FullProof> {
   // const commitment = identity.generateCommitment()
-  const maxEdges = group.maxEdges
-  const index = group.indexOf(commitment)
+  const { maxEdges } = group
+  const index = group.indexOf(identity.commitment)
 
   if (index === -1) {
     throw new Error("The identity is not part of the group")
@@ -85,7 +85,7 @@ export default async function generateProof(
     (bignum: BigNumber) => bignum.toBigInt()
   )
 
-  if (roots == undefined) {
+  if (roots === undefined) {
     roots = group.getRoots().map((bignum: BigNumber) => bignum.toString())
   }
   let wasm: Buffer | string
@@ -100,8 +100,8 @@ export default async function generateProof(
 
   const { proof, publicSignals } = await groth16.fullProve(
     {
-      identityTrapdoor: trapdoor,
-      identityNullifier: nullifier,
+      identityTrapdoor: identity.trapdoor,
+      identityNullifier: identity.nullifier,
       treePathIndices: merkleProof.pathIndices,
       treeSiblings: pathElements,
       roots: roots,
