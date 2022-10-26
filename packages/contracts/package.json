@@ -27,6 +27,7 @@
         "@types/mocha": "^9.1.0",
         "@types/node": "^17.0.12",
         "@types/rimraf": "^3.0.2",
+        "@webb-tools/semaphore": "workspace:packages/semaphore",
         "@webb-tools/semaphore-group": "workspace:packages/group",
         "@webb-tools/semaphore-identity": "workspace:packages/identity",
         "@webb-tools/semaphore-proof": "workspace:packages/proof",

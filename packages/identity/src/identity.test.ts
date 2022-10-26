@@ -2,12 +2,11 @@ import { BigNumber } from "@ethersproject/bignumber"
 import Identity from "./identity"
 
 describe("Identity", () => {
-  const chainID = BigInt(1337)
   describe("# Identity", () => {
     it("Should not create a identity if the parameter is not valid", () => {
-      const fun1 = () => new Identity(chainID, 13 as any)
-      const fun2 = () => new Identity(chainID, true as any)
-      const fun3 = () => new Identity(chainID, (() => true) as any)
+      const fun1 = () => new Identity(13 as any)
+      const fun2 = () => new Identity(true as any)
+      const fun3 = () => new Identity((() => true) as any)
 
       expect(fun1).toThrow("Parameter 'identityOrMessage' is not a string")
       expect(fun2).toThrow("Parameter 'identityOrMessage' is not a string")
@@ -15,26 +14,26 @@ describe("Identity", () => {
     })
 
     it("Should create random identities", () => {
-      const identity1 = new Identity(chainID)
-      const identity2 = new Identity(chainID)
+      const identity1 = new Identity()
+      const identity2 = new Identity()
 
       expect(identity1.trapdoor).not.toBe(identity2.trapdoor)
       expect(identity1.nullifier).not.toBe(identity2.nullifier)
     })
 
     it("should create deterministic identities from a message", () => {
-      const identity1 = new Identity(chainID, "message")
-      const identity2 = new Identity(chainID, "message")
+      const identity1 = new Identity("message")
+      const identity2 = new Identity("message")
 
       expect(identity1.trapdoor).toBe(identity2.trapdoor)
       expect(identity1.nullifier).toBe(identity2.nullifier)
     })
 
     it("Should create deterministic identities from number/boolean messages", () => {
-      const identity1 = new Identity(chainID, "true")
-      const identity2 = new Identity(chainID, "true")
-      const identity3 = new Identity(chainID, "7")
-      const identity4 = new Identity(chainID, "7")
+      const identity1 = new Identity("true")
+      const identity2 = new Identity("true")
+      const identity3 = new Identity("7")
+      const identity4 = new Identity("7")
 
       expect(identity1.trapdoor).toBe(identity2.trapdoor)
       expect(identity1.nullifier).toBe(identity2.nullifier)
@@ -43,14 +42,14 @@ describe("Identity", () => {
     })
 
     it("Should not recreate an existing invalid identity", () => {
-      const fun = () => new Identity(chainID, '[true, "01323"]')
+      const fun = () => new Identity('[true, "01323"]')
       expect(fun).toThrow("invalid BigNumber string")
     })
 
     it("Should recreate an existing identity", () => {
-      const identity1 = new Identity(chainID, "message")
+      const identity1 = new Identity("message")
 
-      const identity2 = new Identity(chainID, identity1.toString())
+      const identity2 = new Identity(identity1.toString())
 
       expect(identity1.trapdoor).toBe(identity2.trapdoor)
       expect(identity1.nullifier).toBe(identity2.nullifier)
@@ -59,7 +58,7 @@ describe("Identity", () => {
 
   describe("# getTrapdoor", () => {
     it("Should return the identity trapdoor", () => {
-      const identity = new Identity(chainID, "message")
+      const identity = new Identity("message")
 
       const trapdoor = identity.trapdoor
 
@@ -73,7 +72,7 @@ describe("Identity", () => {
 
   describe("# getNullifier", () => {
     it("Should return the identity nullifier", () => {
-      const identity = new Identity(chainID, "message")
+      const identity = new Identity("message")
 
       const nullifier = identity.nullifier
 
@@ -87,7 +86,7 @@ describe("Identity", () => {
 
   describe("# generateCommitment", () => {
     it("Should generate an identity commitment", () => {
-      const identity = new Identity(chainID, "message")
+      const identity = new Identity("message")
       const commitment = identity.commitment
 
       expect(commitment).toBe(
@@ -100,7 +99,7 @@ describe("Identity", () => {
 
   describe("# toString", () => {
     it("Should return a string", () => {
-      const identity = new Identity(chainID, "message")
+      const identity = new Identity("message")
 
       const identityString = identity.toString()
 
@@ -108,7 +107,7 @@ describe("Identity", () => {
     })
 
     it("Should return a valid identity string", () => {
-      const identity = new Identity(chainID, "message")
+      const identity = new Identity("message")
 
       const [trapdoor, nullifier] = JSON.parse(identity.toString())
 

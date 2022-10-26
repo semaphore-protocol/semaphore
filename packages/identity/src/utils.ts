@@ -25,19 +25,16 @@ export function genRandomNumber(numberOfBytes = 31): bigint {
 }
 
 /**
-<<<<<<< HEAD
-=======
  * Generates the identity commitment from trapdoor and nullifier.
  * @param nullifier The identity nullifier.
  * @param trapdoor The identity trapdoor.
  * @returns identity commitment
  */
 export function generateCommitment(nullifier: bigint, trapdoor: bigint): bigint {
-    return poseidon([poseidon([nullifier, trapdoor])])
+  return poseidon([poseidon([nullifier, trapdoor])])
 }
 
 /**
->>>>>>> origin/main
  * Checks if a string is a JSON.
  * @param jsonString The JSON string.
  * @returns True or false.

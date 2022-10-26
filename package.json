@@ -15,8 +15,8 @@
   "scripts": {
     "build:libraries": "yarn workspaces foreach run build",
     "compile:contracts": "yarn workspace contracts compile",
-    "test": "yarn test:libraries && yarn test:contracts",
     "fetch:fixtures": "cd solidity-fixtures && dvc pull && cd ..",
+    "test": "yarn test:libraries && yarn test:contracts",
     "test:libraries": "jest --coverage",
     "test:contracts": "yarn workspace contracts test:coverage",
     "lint": "eslint . --ext .js,.ts && yarn workspace contracts lint",
@@ -24,8 +24,7 @@
     "prettier:write": "prettier -w .",
     "docs": "yarn workspaces foreach run docs",
     "commit": "cz",
-    "fullclean": "rm -r artifacts build fixtures node_modules yarn.lock packages/proof/snark-artifacts packages/semaphore/typechain cache",
-    "softclean": "rm -r artifacts build node_modules yarn.lock packages/proof/snark-artifacts packages/semaphore/typechain",
+    "workspace": "yarn workspace",
     "precommit": "lint-staged",
     "postinstall": "yarn fetch:fixtures"
   },

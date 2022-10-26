@@ -24,7 +24,7 @@ describe("Proof", () => {
   const wasmFilePath = `${snarkArtifactsPath}/semaphore_20_2.wasm`
   const zkeyFilePath = `${snarkArtifactsPath}/circuit_final.zkey`
 
-  const identity = new Identity(chainID)
+  const identity = new Identity()
   const identityCommitment = identity.generateCommitment()
 
   let fullProof: FullProof

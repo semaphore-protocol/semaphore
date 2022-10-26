@@ -201,7 +201,7 @@ export class Semaphore {
   public async createResourceId(): Promise<string> {
     return toHex(
       this.contract.address +
-        toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
+      toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
       32
     )
   }
@@ -265,7 +265,7 @@ export class Semaphore {
 
     const thisRoot = await this.contract.getRoot(groupId)
     assert(
-      thisRoot.toString() == this.linkedGroups[groupId].root.toString(),
+      thisRoot.toString() === this.linkedGroups[groupId].root.toString(),
       "Contract and object are out of sync. You should run update()"
     )
 

@@ -3,17 +3,8 @@ import { Contract } from "ethers"
 import { task, types } from "hardhat/config"
 
 task("deploy:semaphore", "Deploy a Semaphore contract")
-    .addParam("verifiers", "Tree depths and verifier addresses", [], types.json)
+  .addParam("verifiers", "Tree depths and verifier addresses", [], types.json)
   .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
-<<<<<<< HEAD:tasks/deploy-semaphore.ts
-  .addParam(
-    "verifiers",
-    "Tree depths and verifier addresses",
-    undefined,
-    types.json
-  )
-=======
->>>>>>> origin/main:packages/hardhat/src/tasks/deploy-semaphore.ts
   .setAction(async ({ logs, verifiers }, { ethers }): Promise<Contract> => {
     const poseidonABI = poseidonContract.generateABI(2)
     const poseidonBytecode = poseidonContract.createCode(2)
@@ -29,16 +20,9 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
 
     await poseidonLib.deployed()
 
-<<<<<<< HEAD:tasks/deploy-semaphore.ts
-    logs &&
-      console.log(
-        `Poseidon library has been deployed to: ${poseidonLib.address}`
-      )
-=======
-        if (logs) {
-            console.info(`Poseidon library has been deployed to: ${poseidonLib.address}`)
-        }
->>>>>>> origin/main:packages/hardhat/src/tasks/deploy-semaphore.ts
+    if (logs) {
+      console.info(`Poseidon library has been deployed to: ${poseidonLib.address}`)
+    }
 
     const LinkableIncrementalBinaryTreeLibFactory =
       await ethers.getContractFactory("LinkableIncrementalBinaryTree", {})
@@ -47,11 +31,11 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
 
     await linkableIncrementalBinaryTreeLib.deployed()
 
-<<<<<<< HEAD:tasks/deploy-semaphore.ts
-    logs &&
+    if (logs) {
       console.log(
         `LinkableIncrementalBinaryTree library has been deployed to: ${linkableIncrementalBinaryTreeLib.address}`
       )
+    }
 
     const SemaphoreInputEncoderLibFactory = await ethers.getContractFactory(
       "SemaphoreInputEncoder"
@@ -61,17 +45,13 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
 
     await semaphoreInputEncoderLib.deployed()
 
-    logs &&
+    if (logs) {
       console.log(
         `SemaphoreInputEncoder library has been deployed to: ${semaphoreInputEncoderLib.address}`
       )
-=======
-        if (logs) {
-            console.info(`IncrementalBinaryTree library has been deployed to: ${incrementalBinaryTreeLib.address}`)
-        }
->>>>>>> origin/main:packages/hardhat/src/tasks/deploy-semaphore.ts
+    }
 
-        const SemaphoreContractFactory = await ethers.getContractFactory("Semaphore", {
+    const SemaphoreContractFactory = await ethers.getContractFactory("Semaphore", {
       libraries: {
         SemaphoreInputEncoder: semaphoreInputEncoderLib.address,
         LinkableIncrementalBinaryTree: linkableIncrementalBinaryTreeLib.address,
@@ -79,20 +59,14 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
       }
     })
 
-        const semaphoreContract = await SemaphoreContractFactory.deploy(verifiers)
+    const semaphoreContract = await SemaphoreContractFactory.deploy(verifiers)
 
-        await semaphoreContract.deployed()
+    await semaphoreContract.deployed()
 
-<<<<<<< HEAD:tasks/deploy-semaphore.ts
-    logs &&
+    if (logs) {
       console.log(
-        `Semaphore contract has been deployed to: ${contract.address}`
+        `Semaphore contract has been deployed to: ${semaphoreContract.address}`
       )
-=======
-        if (logs) {
-            console.info(`Semaphore contract has been deployed to: ${semaphoreContract.address}`)
-        }
->>>>>>> origin/main:packages/hardhat/src/tasks/deploy-semaphore.ts
-
-        return semaphoreContract
+    }
+    return semaphoreContract
   })

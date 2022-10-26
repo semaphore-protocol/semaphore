@@ -30,13 +30,13 @@ export class LinkedGroup {
    */
   constructor(
     levels: number,
-    maxConnectedChains: number,
+    maxEdges: number,
     // chainId?: number,
     groupAdminAddr?: string,
     group?: Group
   ) {
     this.levels = levels
-    this.maxEdges = maxConnectedChains
+    this.maxEdges = maxEdges
     this.groupAdmin = groupAdminAddr
     if (typeof group === "undefined") {
       this.group = new Group(levels)
@@ -114,6 +114,14 @@ export class LinkedGroup {
   get root(): BigNumberish {
     return this.group.root
   }
+
+  // /**
+  //  * Returns the maxEdges of the tree.
+  //  * @returns maxEdges.
+  //  */
+  // get maxEdges(): BigNumberish {
+  //   return this.group.maxEdges
+  // }
 
   /**
    * Returns the depth of the tree.
