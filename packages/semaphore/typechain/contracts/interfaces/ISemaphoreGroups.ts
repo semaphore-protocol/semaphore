@@ -27,42 +27,38 @@ import type {
 
 export type EdgeStruct = {
   chainID: PromiseOrValue<BigNumberish>;
-  root: PromiseOrValue<BytesLike>;
+  root: PromiseOrValue<BigNumberish>;
   latestLeafIndex: PromiseOrValue<BigNumberish>;
   srcResourceID: PromiseOrValue<BytesLike>;
 };
 
-export type EdgeStructOutput = [BigNumber, string, BigNumber, string] & {
+export type EdgeStructOutput = [BigNumber, BigNumber, BigNumber, string] & {
   chainID: BigNumber;
-  root: string;
+  root: BigNumber;
   latestLeafIndex: BigNumber;
   srcResourceID: string;
 };
 
 export interface ISemaphoreGroupsInterface extends utils.Interface {
   functions: {
-    "getDepth(uint256)": FunctionFragment;
     "getLatestNeighborEdges(uint256)": FunctionFragment;
     "getMaxEdges(uint256)": FunctionFragment;
-    "getNumberOfLeaves(uint256)": FunctionFragment;
-    "getRoot(uint256)": FunctionFragment;
+    "getMerkleTreeDepth(uint256)": FunctionFragment;
+    "getMerkleTreeRoot(uint256)": FunctionFragment;
+    "getNumberOfMerkleTreeLeaves(uint256)": FunctionFragment;
     "verifyRoots(uint256,bytes)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "getDepth"
       | "getLatestNeighborEdges"
       | "getMaxEdges"
-      | "getNumberOfLeaves"
-      | "getRoot"
+      | "getMerkleTreeDepth"
+      | "getMerkleTreeRoot"
+      | "getNumberOfMerkleTreeLeaves"
       | "verifyRoots"
   ): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "getDepth",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
   encodeFunctionData(
     functionFragment: "getLatestNeighborEdges",
     values: [PromiseOrValue<BigNumberish>]
@@ -72,11 +68,15 @@ export interface ISemaphoreGroupsInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getNumberOfLeaves",
+    functionFragment: "getMerkleTreeDepth",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getRoot",
+    functionFragment: "getMerkleTreeRoot",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getNumberOfMerkleTreeLeaves",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -84,7 +84,6 @@ export interface ISemaphoreGroupsInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
   ): string;
 
-  decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getLatestNeighborEdges",
     data: BytesLike
@@ -94,32 +93,41 @@ export interface ISemaphoreGroupsInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getNumberOfLeaves",
+    functionFragment: "getMerkleTreeDepth",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "getRoot", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getMerkleTreeRoot",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getNumberOfMerkleTreeLeaves",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "verifyRoots",
     data: BytesLike
   ): Result;
 
   events: {
-    "GroupCreated(uint256,uint8)": EventFragment;
-    "MemberAdded(uint256,uint256,uint256)": EventFragment;
-    "MemberRemoved(uint256,uint256,uint256)": EventFragment;
+    "GroupCreated(uint256,uint256)": EventFragment;
+    "MemberAdded(uint256,uint256,uint256,uint256)": EventFragment;
+    "MemberRemoved(uint256,uint256,uint256,uint256)": EventFragment;
+    "MemberUpdated(uint256,uint256,uint256,uint256,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "GroupCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MemberAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MemberRemoved"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MemberUpdated"): EventFragment;
 }
 
 export interface GroupCreatedEventObject {
   groupId: BigNumber;
-  depth: number;
+  merkleTreeDepth: BigNumber;
 }
 export type GroupCreatedEvent = TypedEvent<
-  [BigNumber, number],
+  [BigNumber, BigNumber],
   GroupCreatedEventObject
 >;
 
@@ -127,11 +135,12 @@ export type GroupCreatedEventFilter = TypedEventFilter<GroupCreatedEvent>;
 
 export interface MemberAddedEventObject {
   groupId: BigNumber;
+  index: BigNumber;
   identityCommitment: BigNumber;
-  root: BigNumber;
+  merkleTreeRoot: BigNumber;
 }
 export type MemberAddedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
+  [BigNumber, BigNumber, BigNumber, BigNumber],
   MemberAddedEventObject
 >;
 
@@ -139,15 +148,30 @@ export type MemberAddedEventFilter = TypedEventFilter<MemberAddedEvent>;
 
 export interface MemberRemovedEventObject {
   groupId: BigNumber;
+  index: BigNumber;
   identityCommitment: BigNumber;
-  root: BigNumber;
+  merkleTreeRoot: BigNumber;
 }
 export type MemberRemovedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
+  [BigNumber, BigNumber, BigNumber, BigNumber],
   MemberRemovedEventObject
 >;
 
 export type MemberRemovedEventFilter = TypedEventFilter<MemberRemovedEvent>;
+
+export interface MemberUpdatedEventObject {
+  groupId: BigNumber;
+  index: BigNumber;
+  identityCommitment: BigNumber;
+  newIdentityCommitment: BigNumber;
+  merkleTreeRoot: BigNumber;
+}
+export type MemberUpdatedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber],
+  MemberUpdatedEventObject
+>;
+
+export type MemberUpdatedEventFilter = TypedEventFilter<MemberUpdatedEvent>;
 
 export interface ISemaphoreGroups extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -176,11 +200,6 @@ export interface ISemaphoreGroups extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[number]>;
-
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -191,12 +210,17 @@ export interface ISemaphoreGroups extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[number]>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    getRoot(
+    getMerkleTreeRoot(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getNumberOfMerkleTreeLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
@@ -208,11 +232,6 @@ export interface ISemaphoreGroups extends BaseContract {
     ): Promise<[boolean]>;
   };
 
-  getDepth(
-    groupId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<number>;
-
   getLatestNeighborEdges(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -223,12 +242,17 @@ export interface ISemaphoreGroups extends BaseContract {
     overrides?: CallOverrides
   ): Promise<number>;
 
-  getNumberOfLeaves(
+  getMerkleTreeDepth(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getRoot(
+  getMerkleTreeRoot(
+    groupId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getNumberOfMerkleTreeLeaves(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
@@ -240,11 +264,6 @@ export interface ISemaphoreGroups extends BaseContract {
   ): Promise<boolean>;
 
   callStatic: {
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<number>;
-
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -255,12 +274,17 @@ export interface ISemaphoreGroups extends BaseContract {
       overrides?: CallOverrides
     ): Promise<number>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getRoot(
+    getMerkleTreeRoot(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getNumberOfMerkleTreeLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -273,44 +297,58 @@ export interface ISemaphoreGroups extends BaseContract {
   };
 
   filters: {
-    "GroupCreated(uint256,uint8)"(
+    "GroupCreated(uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
-      depth?: null
+      merkleTreeDepth?: null
     ): GroupCreatedEventFilter;
     GroupCreated(
       groupId?: PromiseOrValue<BigNumberish> | null,
-      depth?: null
+      merkleTreeDepth?: null
     ): GroupCreatedEventFilter;
 
-    "MemberAdded(uint256,uint256,uint256)"(
+    "MemberAdded(uint256,uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberAddedEventFilter;
     MemberAdded(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberAddedEventFilter;
 
-    "MemberRemoved(uint256,uint256,uint256)"(
+    "MemberRemoved(uint256,uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberRemovedEventFilter;
     MemberRemoved(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberRemovedEventFilter;
+
+    "MemberUpdated(uint256,uint256,uint256,uint256,uint256)"(
+      groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
+      identityCommitment?: null,
+      newIdentityCommitment?: null,
+      merkleTreeRoot?: null
+    ): MemberUpdatedEventFilter;
+    MemberUpdated(
+      groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
+      identityCommitment?: null,
+      newIdentityCommitment?: null,
+      merkleTreeRoot?: null
+    ): MemberUpdatedEventFilter;
   };
 
   estimateGas: {
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -321,12 +359,17 @@ export interface ISemaphoreGroups extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getRoot(
+    getMerkleTreeRoot(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getNumberOfMerkleTreeLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -339,11 +382,6 @@ export interface ISemaphoreGroups extends BaseContract {
   };
 
   populateTransaction: {
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -354,12 +392,17 @@ export interface ISemaphoreGroups extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getRoot(
+    getMerkleTreeRoot(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getNumberOfMerkleTreeLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

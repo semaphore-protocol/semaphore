@@ -31,7 +31,7 @@ export interface ISemaphoreVotingInterface extends utils.Interface {
   functions: {
     "addVoter(uint256,uint256)": FunctionFragment;
     "castVote(bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
-    "createPoll(uint256,uint8,address,uint8)": FunctionFragment;
+    "createPoll(uint256,uint256,address,uint8)": FunctionFragment;
     "endPoll(uint256,uint256)": FunctionFragment;
     "startPoll(uint256,uint256)": FunctionFragment;
   };
@@ -186,7 +186,7 @@ export interface ISemaphoreVoting extends BaseContract {
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -222,7 +222,7 @@ export interface ISemaphoreVoting extends BaseContract {
 
   createPoll(
     pollId: PromiseOrValue<BigNumberish>,
-    depth: PromiseOrValue<BigNumberish>,
+    merkleTreeDepth: PromiseOrValue<BigNumberish>,
     coordinator: PromiseOrValue<string>,
     maxEdges: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -258,7 +258,7 @@ export interface ISemaphoreVoting extends BaseContract {
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -337,7 +337,7 @@ export interface ISemaphoreVoting extends BaseContract {
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -374,7 +374,7 @@ export interface ISemaphoreVoting extends BaseContract {
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }

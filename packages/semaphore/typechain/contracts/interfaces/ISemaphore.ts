@@ -30,22 +30,28 @@ import type {
 export interface ISemaphoreInterface extends utils.Interface {
   functions: {
     "addMember(uint256,uint256)": FunctionFragment;
-    "createGroup(uint256,uint8,address,uint8)": FunctionFragment;
+    "addMembers(uint256,uint256[])": FunctionFragment;
+    "createGroup(uint256,uint256,address,uint8)": FunctionFragment;
+    "createGroup(uint256,uint256,address,uint8,uint256)": FunctionFragment;
     "decodeRoots(bytes)": FunctionFragment;
     "removeMember(uint256,uint256,uint256[],uint8[])": FunctionFragment;
-    "updateEdge(uint256,bytes32,uint32,bytes32)": FunctionFragment;
+    "updateEdge(uint256,uint256,uint32,bytes32)": FunctionFragment;
     "updateGroupAdmin(uint256,address)": FunctionFragment;
-    "verifyProof(uint256,bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
+    "updateMember(uint256,uint256,uint256,uint256[],uint8[])": FunctionFragment;
+    "verifyProof(uint256,uint256,bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "addMember"
-      | "createGroup"
+      | "addMembers"
+      | "createGroup(uint256,uint256,address,uint8)"
+      | "createGroup(uint256,uint256,address,uint8,uint256)"
       | "decodeRoots"
       | "removeMember"
       | "updateEdge"
       | "updateGroupAdmin"
+      | "updateMember"
       | "verifyProof"
   ): FunctionFragment;
 
@@ -54,11 +60,25 @@ export interface ISemaphoreInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "createGroup",
+    functionFragment: "addMembers",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "createGroup(uint256,uint256,address,uint8)",
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "createGroup(uint256,uint256,address,uint8,uint256)",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
   ): string;
@@ -79,7 +99,7 @@ export interface ISemaphoreInterface extends utils.Interface {
     functionFragment: "updateEdge",
     values: [
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BytesLike>
     ]
@@ -89,8 +109,19 @@ export interface ISemaphoreInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "updateMember",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>[],
+      PromiseOrValue<BigNumberish>[]
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "verifyProof",
     values: [
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BytesLike>,
       PromiseOrValue<BigNumberish>,
@@ -101,8 +132,13 @@ export interface ISemaphoreInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "addMember", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "addMembers", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "createGroup",
+    functionFragment: "createGroup(uint256,uint256,address,uint8)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "createGroup(uint256,uint256,address,uint8,uint256)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -119,13 +155,17 @@ export interface ISemaphoreInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "updateMember",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "verifyProof",
     data: BytesLike
   ): Result;
 
   events: {
     "GroupAdminUpdated(uint256,address,address)": EventFragment;
-    "ProofVerified(uint256,bytes32)": EventFragment;
+    "ProofVerified(uint256,uint256,uint256,uint256,bytes32)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "GroupAdminUpdated"): EventFragment;
@@ -147,10 +187,13 @@ export type GroupAdminUpdatedEventFilter =
 
 export interface ProofVerifiedEventObject {
   groupId: BigNumber;
+  merkleTreeRoot: BigNumber;
+  externalNullifier: BigNumber;
+  nullifierHash: BigNumber;
   signal: string;
 }
 export type ProofVerifiedEvent = TypedEvent<
-  [BigNumber, string],
+  [BigNumber, BigNumber, BigNumber, BigNumber, string],
   ProofVerifiedEventObject
 >;
 
@@ -189,7 +232,13 @@ export interface ISemaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    createGroup(
+    addMembers(
+      groupId: PromiseOrValue<BigNumberish>,
+      identityCommitments: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "createGroup(uint256,uint256,address,uint8)"(
       groupId: PromiseOrValue<BigNumberish>,
       depth: PromiseOrValue<BigNumberish>,
       admin: PromiseOrValue<string>,
@@ -197,10 +246,19 @@ export interface ISemaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    "createGroup(uint256,uint256,address,uint8,uint256)"(
+      groupId: PromiseOrValue<BigNumberish>,
+      depth: PromiseOrValue<BigNumberish>,
+      admin: PromiseOrValue<string>,
+      maxEdges: PromiseOrValue<BigNumberish>,
+      merkleTreeRootDuration: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     decodeRoots(
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<[string[]] & { roots_decoded: string[] }>;
+    ): Promise<[string[]] & { rootsDecoded: string[] }>;
 
     removeMember(
       groupId: PromiseOrValue<BigNumberish>,
@@ -212,7 +270,7 @@ export interface ISemaphore extends BaseContract {
 
     updateEdge(
       groupId: PromiseOrValue<BigNumberish>,
-      root: PromiseOrValue<BytesLike>,
+      root: PromiseOrValue<BigNumberish>,
       leafIndex: PromiseOrValue<BigNumberish>,
       srcResourceID: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -224,8 +282,18 @@ export interface ISemaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    updateMember(
+      groupId: PromiseOrValue<BigNumberish>,
+      identityCommitment: PromiseOrValue<BigNumberish>,
+      newIdentityCommitment: PromiseOrValue<BigNumberish>,
+      proofSiblings: PromiseOrValue<BigNumberish>[],
+      proofPathIndices: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     verifyProof(
       groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeRoot: PromiseOrValue<BigNumberish>,
       signal: PromiseOrValue<BytesLike>,
       nullifierHash: PromiseOrValue<BigNumberish>,
       externalNullifier: PromiseOrValue<BigNumberish>,
@@ -241,11 +309,26 @@ export interface ISemaphore extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  createGroup(
+  addMembers(
+    groupId: PromiseOrValue<BigNumberish>,
+    identityCommitments: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "createGroup(uint256,uint256,address,uint8)"(
     groupId: PromiseOrValue<BigNumberish>,
     depth: PromiseOrValue<BigNumberish>,
     admin: PromiseOrValue<string>,
     maxEdges: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "createGroup(uint256,uint256,address,uint8,uint256)"(
+    groupId: PromiseOrValue<BigNumberish>,
+    depth: PromiseOrValue<BigNumberish>,
+    admin: PromiseOrValue<string>,
+    maxEdges: PromiseOrValue<BigNumberish>,
+    merkleTreeRootDuration: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -264,7 +347,7 @@ export interface ISemaphore extends BaseContract {
 
   updateEdge(
     groupId: PromiseOrValue<BigNumberish>,
-    root: PromiseOrValue<BytesLike>,
+    root: PromiseOrValue<BigNumberish>,
     leafIndex: PromiseOrValue<BigNumberish>,
     srcResourceID: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -276,8 +359,18 @@ export interface ISemaphore extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  updateMember(
+    groupId: PromiseOrValue<BigNumberish>,
+    identityCommitment: PromiseOrValue<BigNumberish>,
+    newIdentityCommitment: PromiseOrValue<BigNumberish>,
+    proofSiblings: PromiseOrValue<BigNumberish>[],
+    proofPathIndices: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   verifyProof(
     groupId: PromiseOrValue<BigNumberish>,
+    merkleTreeRoot: PromiseOrValue<BigNumberish>,
     signal: PromiseOrValue<BytesLike>,
     nullifierHash: PromiseOrValue<BigNumberish>,
     externalNullifier: PromiseOrValue<BigNumberish>,
@@ -293,11 +386,26 @@ export interface ISemaphore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    createGroup(
+    addMembers(
+      groupId: PromiseOrValue<BigNumberish>,
+      identityCommitments: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "createGroup(uint256,uint256,address,uint8)"(
       groupId: PromiseOrValue<BigNumberish>,
       depth: PromiseOrValue<BigNumberish>,
       admin: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "createGroup(uint256,uint256,address,uint8,uint256)"(
+      groupId: PromiseOrValue<BigNumberish>,
+      depth: PromiseOrValue<BigNumberish>,
+      admin: PromiseOrValue<string>,
+      maxEdges: PromiseOrValue<BigNumberish>,
+      merkleTreeRootDuration: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -316,7 +424,7 @@ export interface ISemaphore extends BaseContract {
 
     updateEdge(
       groupId: PromiseOrValue<BigNumberish>,
-      root: PromiseOrValue<BytesLike>,
+      root: PromiseOrValue<BigNumberish>,
       leafIndex: PromiseOrValue<BigNumberish>,
       srcResourceID: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -328,8 +436,18 @@ export interface ISemaphore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    updateMember(
+      groupId: PromiseOrValue<BigNumberish>,
+      identityCommitment: PromiseOrValue<BigNumberish>,
+      newIdentityCommitment: PromiseOrValue<BigNumberish>,
+      proofSiblings: PromiseOrValue<BigNumberish>[],
+      proofPathIndices: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     verifyProof(
       groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeRoot: PromiseOrValue<BigNumberish>,
       signal: PromiseOrValue<BytesLike>,
       nullifierHash: PromiseOrValue<BigNumberish>,
       externalNullifier: PromiseOrValue<BigNumberish>,
@@ -351,12 +469,18 @@ export interface ISemaphore extends BaseContract {
       newAdmin?: PromiseOrValue<string> | null
     ): GroupAdminUpdatedEventFilter;
 
-    "ProofVerified(uint256,bytes32)"(
+    "ProofVerified(uint256,uint256,uint256,uint256,bytes32)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      merkleTreeRoot?: null,
+      externalNullifier?: null,
+      nullifierHash?: null,
       signal?: null
     ): ProofVerifiedEventFilter;
     ProofVerified(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      merkleTreeRoot?: null,
+      externalNullifier?: null,
+      nullifierHash?: null,
       signal?: null
     ): ProofVerifiedEventFilter;
   };
@@ -368,11 +492,26 @@ export interface ISemaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    createGroup(
+    addMembers(
+      groupId: PromiseOrValue<BigNumberish>,
+      identityCommitments: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "createGroup(uint256,uint256,address,uint8)"(
       groupId: PromiseOrValue<BigNumberish>,
       depth: PromiseOrValue<BigNumberish>,
       admin: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "createGroup(uint256,uint256,address,uint8,uint256)"(
+      groupId: PromiseOrValue<BigNumberish>,
+      depth: PromiseOrValue<BigNumberish>,
+      admin: PromiseOrValue<string>,
+      maxEdges: PromiseOrValue<BigNumberish>,
+      merkleTreeRootDuration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -391,7 +530,7 @@ export interface ISemaphore extends BaseContract {
 
     updateEdge(
       groupId: PromiseOrValue<BigNumberish>,
-      root: PromiseOrValue<BytesLike>,
+      root: PromiseOrValue<BigNumberish>,
       leafIndex: PromiseOrValue<BigNumberish>,
       srcResourceID: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -403,8 +542,18 @@ export interface ISemaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    updateMember(
+      groupId: PromiseOrValue<BigNumberish>,
+      identityCommitment: PromiseOrValue<BigNumberish>,
+      newIdentityCommitment: PromiseOrValue<BigNumberish>,
+      proofSiblings: PromiseOrValue<BigNumberish>[],
+      proofPathIndices: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     verifyProof(
       groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeRoot: PromiseOrValue<BigNumberish>,
       signal: PromiseOrValue<BytesLike>,
       nullifierHash: PromiseOrValue<BigNumberish>,
       externalNullifier: PromiseOrValue<BigNumberish>,
@@ -421,11 +570,26 @@ export interface ISemaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    createGroup(
+    addMembers(
+      groupId: PromiseOrValue<BigNumberish>,
+      identityCommitments: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "createGroup(uint256,uint256,address,uint8)"(
       groupId: PromiseOrValue<BigNumberish>,
       depth: PromiseOrValue<BigNumberish>,
       admin: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "createGroup(uint256,uint256,address,uint8,uint256)"(
+      groupId: PromiseOrValue<BigNumberish>,
+      depth: PromiseOrValue<BigNumberish>,
+      admin: PromiseOrValue<string>,
+      maxEdges: PromiseOrValue<BigNumberish>,
+      merkleTreeRootDuration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -444,7 +608,7 @@ export interface ISemaphore extends BaseContract {
 
     updateEdge(
       groupId: PromiseOrValue<BigNumberish>,
-      root: PromiseOrValue<BytesLike>,
+      root: PromiseOrValue<BigNumberish>,
       leafIndex: PromiseOrValue<BigNumberish>,
       srcResourceID: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -456,8 +620,18 @@ export interface ISemaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    updateMember(
+      groupId: PromiseOrValue<BigNumberish>,
+      identityCommitment: PromiseOrValue<BigNumberish>,
+      newIdentityCommitment: PromiseOrValue<BigNumberish>,
+      proofSiblings: PromiseOrValue<BigNumberish>[],
+      proofPathIndices: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     verifyProof(
       groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeRoot: PromiseOrValue<BigNumberish>,
       signal: PromiseOrValue<BytesLike>,
       nullifierHash: PromiseOrValue<BigNumberish>,
       externalNullifier: PromiseOrValue<BigNumberish>,

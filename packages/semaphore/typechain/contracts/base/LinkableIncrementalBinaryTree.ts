@@ -81,8 +81,8 @@ export interface LinkableIncrementalBinaryTreeInterface
   decodeFunctionResult(functionFragment: "zeros", data: BytesLike): Result;
 
   events: {
-    "EdgeAddition(uint256,uint256,bytes32)": EventFragment;
-    "EdgeUpdate(uint256,uint256,bytes32)": EventFragment;
+    "EdgeAddition(uint256,uint256,uint256)": EventFragment;
+    "EdgeUpdate(uint256,uint256,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "EdgeAddition"): EventFragment;
@@ -92,10 +92,10 @@ export interface LinkableIncrementalBinaryTreeInterface
 export interface EdgeAdditionEventObject {
   chainID: BigNumber;
   latestLeafIndex: BigNumber;
-  merkleRoot: string;
+  merkleRoot: BigNumber;
 }
 export type EdgeAdditionEvent = TypedEvent<
-  [BigNumber, BigNumber, string],
+  [BigNumber, BigNumber, BigNumber],
   EdgeAdditionEventObject
 >;
 
@@ -104,10 +104,10 @@ export type EdgeAdditionEventFilter = TypedEventFilter<EdgeAdditionEvent>;
 export interface EdgeUpdateEventObject {
   chainID: BigNumber;
   latestLeafIndex: BigNumber;
-  merkleRoot: string;
+  merkleRoot: BigNumber;
 }
 export type EdgeUpdateEvent = TypedEvent<
-  [BigNumber, BigNumber, string],
+  [BigNumber, BigNumber, BigNumber],
   EdgeUpdateEventObject
 >;
 
@@ -154,7 +154,7 @@ export interface LinkableIncrementalBinaryTree extends BaseContract {
     zeros(
       i: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[string]>;
+    ): Promise<[BigNumber]>;
   };
 
   EVM_CHAIN_ID_TYPE(overrides?: CallOverrides): Promise<string>;
@@ -171,7 +171,7 @@ export interface LinkableIncrementalBinaryTree extends BaseContract {
   zeros(
     i: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<string>;
+  ): Promise<BigNumber>;
 
   callStatic: {
     EVM_CHAIN_ID_TYPE(overrides?: CallOverrides): Promise<string>;
@@ -188,11 +188,11 @@ export interface LinkableIncrementalBinaryTree extends BaseContract {
     zeros(
       i: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<string>;
+    ): Promise<BigNumber>;
   };
 
   filters: {
-    "EdgeAddition(uint256,uint256,bytes32)"(
+    "EdgeAddition(uint256,uint256,uint256)"(
       chainID?: null,
       latestLeafIndex?: null,
       merkleRoot?: null
@@ -203,7 +203,7 @@ export interface LinkableIncrementalBinaryTree extends BaseContract {
       merkleRoot?: null
     ): EdgeAdditionEventFilter;
 
-    "EdgeUpdate(uint256,uint256,bytes32)"(
+    "EdgeUpdate(uint256,uint256,uint256)"(
       chainID?: null,
       latestLeafIndex?: null,
       merkleRoot?: null

@@ -11,25 +11,23 @@ import type {
 
 const _abi = [
   {
+    inputs: [],
+    name: "Semaphore__CallerIsNotTheEditor",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "Semaphore__MerkleTreeDepthIsNotSupported",
+    type: "error",
+  },
+  {
     anonymous: false,
     inputs: [
       {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "uint8",
-            name: "maxEdges",
-            type: "uint8",
-          },
-        ],
         indexed: false,
-        internalType: "struct ISemaphoreWhistleblowing.Entity",
-        name: "entity",
-        type: "tuple",
+        internalType: "uint256",
+        name: "entityId",
+        type: "uint256",
       },
       {
         indexed: true,
@@ -86,9 +84,9 @@ const _abi = [
         type: "uint256",
       },
       {
-        internalType: "uint8",
-        name: "depth",
-        type: "uint8",
+        internalType: "uint256",
+        name: "merkleTreeDepth",
+        type: "uint256",
       },
       {
         internalType: "address",

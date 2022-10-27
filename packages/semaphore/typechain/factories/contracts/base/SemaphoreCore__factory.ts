@@ -11,11 +11,6 @@ import type {
 
 const _abi = [
   {
-    inputs: [],
-    name: "Semaphore__YouAreUsingTheSameNillifierTwice",
-    type: "error",
-  },
-  {
     anonymous: false,
     inputs: [
       {
@@ -31,7 +26,7 @@ const _abi = [
 ];
 
 const _bytecode =
-  "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212203a520ca6b894092511ca9bebedd27609902bb585238f13fa0381593db8fd529964736f6c63430008050033";
+  "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220697a06258c17dc606690d8eff8eb5b43baf1cbb503aaca8a4be61230ae35fcf764736f6c63430008050033";
 
 type SemaphoreCoreConstructorParams =
   | [signer?: Signer]

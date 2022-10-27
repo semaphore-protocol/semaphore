@@ -29,39 +29,39 @@ import type {
 
 export type EdgeStruct = {
   chainID: PromiseOrValue<BigNumberish>;
-  root: PromiseOrValue<BytesLike>;
+  root: PromiseOrValue<BigNumberish>;
   latestLeafIndex: PromiseOrValue<BigNumberish>;
   srcResourceID: PromiseOrValue<BytesLike>;
 };
 
-export type EdgeStructOutput = [BigNumber, string, BigNumber, string] & {
+export type EdgeStructOutput = [BigNumber, BigNumber, BigNumber, string] & {
   chainID: BigNumber;
-  root: string;
+  root: BigNumber;
   latestLeafIndex: BigNumber;
   srcResourceID: string;
 };
 
 export declare namespace ISemaphoreWhistleblowing {
-  export type EntityStruct = {
-    id: PromiseOrValue<BigNumberish>;
-    maxEdges: PromiseOrValue<BigNumberish>;
+  export type VerifierStruct = {
+    contractAddress: PromiseOrValue<string>;
+    merkleTreeDepth: PromiseOrValue<BigNumberish>;
   };
 
-  export type EntityStructOutput = [BigNumber, number] & {
-    id: BigNumber;
-    maxEdges: number;
+  export type VerifierStructOutput = [string, BigNumber] & {
+    contractAddress: string;
+    merkleTreeDepth: BigNumber;
   };
 }
 
 export interface SemaphoreWhistleblowingInterface extends utils.Interface {
   functions: {
     "addWhistleblower(uint256,uint256)": FunctionFragment;
-    "createEntity(uint256,uint8,address,uint8)": FunctionFragment;
-    "getDepth(uint256)": FunctionFragment;
+    "createEntity(uint256,uint256,address,uint8)": FunctionFragment;
     "getLatestNeighborEdges(uint256)": FunctionFragment;
     "getMaxEdges(uint256)": FunctionFragment;
-    "getNumberOfLeaves(uint256)": FunctionFragment;
-    "getRoot(uint256)": FunctionFragment;
+    "getMerkleTreeDepth(uint256)": FunctionFragment;
+    "getMerkleTreeRoot(uint256)": FunctionFragment;
+    "getNumberOfMerkleTreeLeaves(uint256)": FunctionFragment;
     "publishLeak(bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
     "removeWhistleblower(uint256,uint256,uint256[],uint8[])": FunctionFragment;
     "verifyRoots(uint256,bytes)": FunctionFragment;
@@ -71,11 +71,11 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "addWhistleblower"
       | "createEntity"
-      | "getDepth"
       | "getLatestNeighborEdges"
       | "getMaxEdges"
-      | "getNumberOfLeaves"
-      | "getRoot"
+      | "getMerkleTreeDepth"
+      | "getMerkleTreeRoot"
+      | "getNumberOfMerkleTreeLeaves"
       | "publishLeak"
       | "removeWhistleblower"
       | "verifyRoots"
@@ -95,10 +95,6 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "getDepth",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getLatestNeighborEdges",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -107,11 +103,15 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getNumberOfLeaves",
+    functionFragment: "getMerkleTreeDepth",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getRoot",
+    functionFragment: "getMerkleTreeRoot",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getNumberOfMerkleTreeLeaves",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -146,7 +146,6 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
     functionFragment: "createEntity",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getLatestNeighborEdges",
     data: BytesLike
@@ -156,10 +155,17 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getNumberOfLeaves",
+    functionFragment: "getMerkleTreeDepth",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "getRoot", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getMerkleTreeRoot",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getNumberOfMerkleTreeLeaves",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "publishLeak",
     data: BytesLike
@@ -174,11 +180,12 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "EntityCreated(tuple,address)": EventFragment;
-    "GroupCreated(uint256,uint8)": EventFragment;
+    "EntityCreated(uint256,address)": EventFragment;
+    "GroupCreated(uint256,uint256)": EventFragment;
     "LeakPublished(uint256,bytes32)": EventFragment;
-    "MemberAdded(uint256,uint256,uint256)": EventFragment;
-    "MemberRemoved(uint256,uint256,uint256)": EventFragment;
+    "MemberAdded(uint256,uint256,uint256,uint256)": EventFragment;
+    "MemberRemoved(uint256,uint256,uint256,uint256)": EventFragment;
+    "MemberUpdated(uint256,uint256,uint256,uint256,uint256)": EventFragment;
     "NullifierHashAdded(uint256)": EventFragment;
   };
 
@@ -187,15 +194,16 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "LeakPublished"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MemberAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MemberRemoved"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MemberUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NullifierHashAdded"): EventFragment;
 }
 
 export interface EntityCreatedEventObject {
-  entity: ISemaphoreWhistleblowing.EntityStructOutput;
+  entityId: BigNumber;
   editor: string;
 }
 export type EntityCreatedEvent = TypedEvent<
-  [ISemaphoreWhistleblowing.EntityStructOutput, string],
+  [BigNumber, string],
   EntityCreatedEventObject
 >;
 
@@ -203,10 +211,10 @@ export type EntityCreatedEventFilter = TypedEventFilter<EntityCreatedEvent>;
 
 export interface GroupCreatedEventObject {
   groupId: BigNumber;
-  depth: number;
+  merkleTreeDepth: BigNumber;
 }
 export type GroupCreatedEvent = TypedEvent<
-  [BigNumber, number],
+  [BigNumber, BigNumber],
   GroupCreatedEventObject
 >;
 
@@ -225,11 +233,12 @@ export type LeakPublishedEventFilter = TypedEventFilter<LeakPublishedEvent>;
 
 export interface MemberAddedEventObject {
   groupId: BigNumber;
+  index: BigNumber;
   identityCommitment: BigNumber;
-  root: BigNumber;
+  merkleTreeRoot: BigNumber;
 }
 export type MemberAddedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
+  [BigNumber, BigNumber, BigNumber, BigNumber],
   MemberAddedEventObject
 >;
 
@@ -237,15 +246,30 @@ export type MemberAddedEventFilter = TypedEventFilter<MemberAddedEvent>;
 
 export interface MemberRemovedEventObject {
   groupId: BigNumber;
+  index: BigNumber;
   identityCommitment: BigNumber;
-  root: BigNumber;
+  merkleTreeRoot: BigNumber;
 }
 export type MemberRemovedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
+  [BigNumber, BigNumber, BigNumber, BigNumber],
   MemberRemovedEventObject
 >;
 
 export type MemberRemovedEventFilter = TypedEventFilter<MemberRemovedEvent>;
+
+export interface MemberUpdatedEventObject {
+  groupId: BigNumber;
+  index: BigNumber;
+  identityCommitment: BigNumber;
+  newIdentityCommitment: BigNumber;
+  merkleTreeRoot: BigNumber;
+}
+export type MemberUpdatedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber],
+  MemberUpdatedEventObject
+>;
+
+export type MemberUpdatedEventFilter = TypedEventFilter<MemberUpdatedEvent>;
 
 export interface NullifierHashAddedEventObject {
   nullifierHash: BigNumber;
@@ -293,16 +317,11 @@ export interface SemaphoreWhistleblowing extends BaseContract {
 
     createEntity(
       entityId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       editor: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[number]>;
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
@@ -314,12 +333,17 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[number]>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    getRoot(
+    getMerkleTreeRoot(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getNumberOfMerkleTreeLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
@@ -356,16 +380,11 @@ export interface SemaphoreWhistleblowing extends BaseContract {
 
   createEntity(
     entityId: PromiseOrValue<BigNumberish>,
-    depth: PromiseOrValue<BigNumberish>,
+    merkleTreeDepth: PromiseOrValue<BigNumberish>,
     editor: PromiseOrValue<string>,
     maxEdges: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
-
-  getDepth(
-    groupId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<number>;
 
   getLatestNeighborEdges(
     groupId: PromiseOrValue<BigNumberish>,
@@ -377,12 +396,17 @@ export interface SemaphoreWhistleblowing extends BaseContract {
     overrides?: CallOverrides
   ): Promise<number>;
 
-  getNumberOfLeaves(
+  getMerkleTreeDepth(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getRoot(
+  getMerkleTreeRoot(
+    groupId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getNumberOfMerkleTreeLeaves(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
@@ -419,16 +443,11 @@ export interface SemaphoreWhistleblowing extends BaseContract {
 
     createEntity(
       entityId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       editor: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<number>;
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
@@ -440,12 +459,17 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       overrides?: CallOverrides
     ): Promise<number>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getRoot(
+    getMerkleTreeRoot(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getNumberOfMerkleTreeLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -475,22 +499,22 @@ export interface SemaphoreWhistleblowing extends BaseContract {
   };
 
   filters: {
-    "EntityCreated(tuple,address)"(
-      entity?: null,
+    "EntityCreated(uint256,address)"(
+      entityId?: null,
       editor?: PromiseOrValue<string> | null
     ): EntityCreatedEventFilter;
     EntityCreated(
-      entity?: null,
+      entityId?: null,
       editor?: PromiseOrValue<string> | null
     ): EntityCreatedEventFilter;
 
-    "GroupCreated(uint256,uint8)"(
+    "GroupCreated(uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
-      depth?: null
+      merkleTreeDepth?: null
     ): GroupCreatedEventFilter;
     GroupCreated(
       groupId?: PromiseOrValue<BigNumberish> | null,
-      depth?: null
+      merkleTreeDepth?: null
     ): GroupCreatedEventFilter;
 
     "LeakPublished(uint256,bytes32)"(
@@ -502,27 +526,46 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       leak?: null
     ): LeakPublishedEventFilter;
 
-    "MemberAdded(uint256,uint256,uint256)"(
+    "MemberAdded(uint256,uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberAddedEventFilter;
     MemberAdded(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberAddedEventFilter;
 
-    "MemberRemoved(uint256,uint256,uint256)"(
+    "MemberRemoved(uint256,uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberRemovedEventFilter;
     MemberRemoved(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberRemovedEventFilter;
+
+    "MemberUpdated(uint256,uint256,uint256,uint256,uint256)"(
+      groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
+      identityCommitment?: null,
+      newIdentityCommitment?: null,
+      merkleTreeRoot?: null
+    ): MemberUpdatedEventFilter;
+    MemberUpdated(
+      groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
+      identityCommitment?: null,
+      newIdentityCommitment?: null,
+      merkleTreeRoot?: null
+    ): MemberUpdatedEventFilter;
 
     "NullifierHashAdded(uint256)"(
       nullifierHash?: null
@@ -539,15 +582,10 @@ export interface SemaphoreWhistleblowing extends BaseContract {
 
     createEntity(
       entityId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       editor: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getLatestNeighborEdges(
@@ -560,12 +598,17 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getRoot(
+    getMerkleTreeRoot(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getNumberOfMerkleTreeLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -603,15 +646,10 @@ export interface SemaphoreWhistleblowing extends BaseContract {
 
     createEntity(
       entityId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       editor: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getLatestNeighborEdges(
@@ -624,12 +662,17 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getRoot(
+    getMerkleTreeRoot(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getNumberOfMerkleTreeLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

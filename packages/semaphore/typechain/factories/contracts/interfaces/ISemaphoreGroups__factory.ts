@@ -46,9 +46,9 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "uint8",
-        name: "depth",
-        type: "uint8",
+        internalType: "uint256",
+        name: "merkleTreeDepth",
+        type: "uint256",
       },
     ],
     name: "GroupCreated",
@@ -66,13 +66,19 @@ const _abi = [
       {
         indexed: false,
         internalType: "uint256",
+        name: "index",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
         name: "identityCommitment",
         type: "uint256",
       },
       {
         indexed: false,
         internalType: "uint256",
-        name: "root",
+        name: "merkleTreeRoot",
         type: "uint256",
       },
     ],
@@ -91,13 +97,19 @@ const _abi = [
       {
         indexed: false,
         internalType: "uint256",
+        name: "index",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
         name: "identityCommitment",
         type: "uint256",
       },
       {
         indexed: false,
         internalType: "uint256",
-        name: "root",
+        name: "merkleTreeRoot",
         type: "uint256",
       },
     ],
@@ -105,23 +117,41 @@ const _abi = [
     type: "event",
   },
   {
+    anonymous: false,
     inputs: [
       {
+        indexed: true,
         internalType: "uint256",
         name: "groupId",
         type: "uint256",
       },
-    ],
-    name: "getDepth",
-    outputs: [
       {
-        internalType: "uint8",
-        name: "",
-        type: "uint8",
+        indexed: false,
+        internalType: "uint256",
+        name: "index",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "identityCommitment",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newIdentityCommitment",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "merkleTreeRoot",
+        type: "uint256",
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    name: "MemberUpdated",
+    type: "event",
   },
   {
     inputs: [
@@ -141,9 +171,9 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "bytes32",
+            internalType: "uint256",
             name: "root",
-            type: "bytes32",
+            type: "uint256",
           },
           {
             internalType: "uint256",
@@ -191,7 +221,7 @@ const _abi = [
         type: "uint256",
       },
     ],
-    name: "getNumberOfLeaves",
+    name: "getMerkleTreeDepth",
     outputs: [
       {
         internalType: "uint256",
@@ -210,7 +240,26 @@ const _abi = [
         type: "uint256",
       },
     ],
-    name: "getRoot",
+    name: "getMerkleTreeRoot",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "groupId",
+        type: "uint256",
+      },
+    ],
+    name: "getNumberOfMerkleTreeLeaves",
     outputs: [
       {
         internalType: "uint256",

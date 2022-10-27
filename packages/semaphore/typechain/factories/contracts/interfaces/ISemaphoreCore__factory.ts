@@ -11,11 +11,6 @@ import type {
 
 const _abi = [
   {
-    inputs: [],
-    name: "Semaphore__YouAreUsingTheSameNillifierTwice",
-    type: "error",
-  },
-  {
     anonymous: false,
     inputs: [
       {

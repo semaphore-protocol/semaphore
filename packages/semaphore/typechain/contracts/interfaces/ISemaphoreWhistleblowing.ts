@@ -27,22 +27,10 @@ import type {
   PromiseOrValue,
 } from "../../common";
 
-export declare namespace ISemaphoreWhistleblowing {
-  export type EntityStruct = {
-    id: PromiseOrValue<BigNumberish>;
-    maxEdges: PromiseOrValue<BigNumberish>;
-  };
-
-  export type EntityStructOutput = [BigNumber, number] & {
-    id: BigNumber;
-    maxEdges: number;
-  };
-}
-
 export interface ISemaphoreWhistleblowingInterface extends utils.Interface {
   functions: {
     "addWhistleblower(uint256,uint256)": FunctionFragment;
-    "createEntity(uint256,uint8,address,uint8)": FunctionFragment;
+    "createEntity(uint256,uint256,address,uint8)": FunctionFragment;
     "publishLeak(bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
     "removeWhistleblower(uint256,uint256,uint256[],uint8[])": FunctionFragment;
   };
@@ -106,7 +94,7 @@ export interface ISemaphoreWhistleblowingInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "EntityCreated(tuple,address)": EventFragment;
+    "EntityCreated(uint256,address)": EventFragment;
     "LeakPublished(uint256,bytes32)": EventFragment;
   };
 
@@ -115,11 +103,11 @@ export interface ISemaphoreWhistleblowingInterface extends utils.Interface {
 }
 
 export interface EntityCreatedEventObject {
-  entity: ISemaphoreWhistleblowing.EntityStructOutput;
+  entityId: BigNumber;
   editor: string;
 }
 export type EntityCreatedEvent = TypedEvent<
-  [ISemaphoreWhistleblowing.EntityStructOutput, string],
+  [BigNumber, string],
   EntityCreatedEventObject
 >;
 
@@ -171,7 +159,7 @@ export interface ISemaphoreWhistleblowing extends BaseContract {
 
     createEntity(
       entityId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       editor: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -203,7 +191,7 @@ export interface ISemaphoreWhistleblowing extends BaseContract {
 
   createEntity(
     entityId: PromiseOrValue<BigNumberish>,
-    depth: PromiseOrValue<BigNumberish>,
+    merkleTreeDepth: PromiseOrValue<BigNumberish>,
     editor: PromiseOrValue<string>,
     maxEdges: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -235,7 +223,7 @@ export interface ISemaphoreWhistleblowing extends BaseContract {
 
     createEntity(
       entityId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       editor: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -260,12 +248,12 @@ export interface ISemaphoreWhistleblowing extends BaseContract {
   };
 
   filters: {
-    "EntityCreated(tuple,address)"(
-      entity?: null,
+    "EntityCreated(uint256,address)"(
+      entityId?: null,
       editor?: PromiseOrValue<string> | null
     ): EntityCreatedEventFilter;
     EntityCreated(
-      entity?: null,
+      entityId?: null,
       editor?: PromiseOrValue<string> | null
     ): EntityCreatedEventFilter;
 
@@ -288,7 +276,7 @@ export interface ISemaphoreWhistleblowing extends BaseContract {
 
     createEntity(
       entityId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       editor: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -321,7 +309,7 @@ export interface ISemaphoreWhistleblowing extends BaseContract {
 
     createEntity(
       entityId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       editor: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }

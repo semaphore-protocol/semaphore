@@ -17,7 +17,22 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "Semaphore__TreeDepthIsNotSupported",
+    name: "Semaphore__MerkleTreeDepthIsNotSupported",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "Semaphore__MerkleTreeRootIsExpired",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "Semaphore__MerkleTreeRootIsNotPartOfTheGroup",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "Semaphore__YouAreUsingTheSameNillifierTwice",
     type: "error",
   },
   {
@@ -56,6 +71,24 @@ const _abi = [
       },
       {
         indexed: false,
+        internalType: "uint256",
+        name: "merkleTreeRoot",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "externalNullifier",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "nullifierHash",
+        type: "uint256",
+      },
+      {
+        indexed: false,
         internalType: "bytes32",
         name: "signal",
         type: "bytes32",
@@ -90,9 +123,27 @@ const _abi = [
         type: "uint256",
       },
       {
-        internalType: "uint8",
+        internalType: "uint256[]",
+        name: "identityCommitments",
+        type: "uint256[]",
+      },
+    ],
+    name: "addMembers",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "groupId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
         name: "depth",
-        type: "uint8",
+        type: "uint256",
       },
       {
         internalType: "address",
@@ -113,6 +164,39 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "groupId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "depth",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "admin",
+        type: "address",
+      },
+      {
+        internalType: "uint8",
+        name: "maxEdges",
+        type: "uint8",
+      },
+      {
+        internalType: "uint256",
+        name: "merkleTreeRootDuration",
+        type: "uint256",
+      },
+    ],
+    name: "createGroup",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes",
         name: "roots",
         type: "bytes",
@@ -122,7 +206,7 @@ const _abi = [
     outputs: [
       {
         internalType: "bytes32[]",
-        name: "roots_decoded",
+        name: "rootsDecoded",
         type: "bytes32[]",
       },
     ],
@@ -165,9 +249,9 @@ const _abi = [
         type: "uint256",
       },
       {
-        internalType: "bytes32",
+        internalType: "uint256",
         name: "root",
-        type: "bytes32",
+        type: "uint256",
       },
       {
         internalType: "uint32",
@@ -208,6 +292,44 @@ const _abi = [
       {
         internalType: "uint256",
         name: "groupId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "identityCommitment",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "newIdentityCommitment",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256[]",
+        name: "proofSiblings",
+        type: "uint256[]",
+      },
+      {
+        internalType: "uint8[]",
+        name: "proofPathIndices",
+        type: "uint8[]",
+      },
+    ],
+    name: "updateMember",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "groupId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "merkleTreeRoot",
         type: "uint256",
       },
       {

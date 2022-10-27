@@ -29,29 +29,41 @@ import type {
 
 export type EdgeStruct = {
   chainID: PromiseOrValue<BigNumberish>;
-  root: PromiseOrValue<BytesLike>;
+  root: PromiseOrValue<BigNumberish>;
   latestLeafIndex: PromiseOrValue<BigNumberish>;
   srcResourceID: PromiseOrValue<BytesLike>;
 };
 
-export type EdgeStructOutput = [BigNumber, string, BigNumber, string] & {
+export type EdgeStructOutput = [BigNumber, BigNumber, BigNumber, string] & {
   chainID: BigNumber;
-  root: string;
+  root: BigNumber;
   latestLeafIndex: BigNumber;
   srcResourceID: string;
 };
+
+export declare namespace ISemaphoreVoting {
+  export type VerifierStruct = {
+    contractAddress: PromiseOrValue<string>;
+    merkleTreeDepth: PromiseOrValue<BigNumberish>;
+  };
+
+  export type VerifierStructOutput = [string, BigNumber] & {
+    contractAddress: string;
+    merkleTreeDepth: BigNumber;
+  };
+}
 
 export interface SemaphoreVotingInterface extends utils.Interface {
   functions: {
     "addVoter(uint256,uint256)": FunctionFragment;
     "castVote(bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
-    "createPoll(uint256,uint8,address,uint8)": FunctionFragment;
+    "createPoll(uint256,uint256,address,uint8)": FunctionFragment;
     "endPoll(uint256,uint256)": FunctionFragment;
-    "getDepth(uint256)": FunctionFragment;
     "getLatestNeighborEdges(uint256)": FunctionFragment;
     "getMaxEdges(uint256)": FunctionFragment;
-    "getNumberOfLeaves(uint256)": FunctionFragment;
-    "getRoot(uint256)": FunctionFragment;
+    "getMerkleTreeDepth(uint256)": FunctionFragment;
+    "getMerkleTreeRoot(uint256)": FunctionFragment;
+    "getNumberOfMerkleTreeLeaves(uint256)": FunctionFragment;
     "startPoll(uint256,uint256)": FunctionFragment;
     "verifyRoots(uint256,bytes)": FunctionFragment;
   };
@@ -62,11 +74,11 @@ export interface SemaphoreVotingInterface extends utils.Interface {
       | "castVote"
       | "createPoll"
       | "endPoll"
-      | "getDepth"
       | "getLatestNeighborEdges"
       | "getMaxEdges"
-      | "getNumberOfLeaves"
-      | "getRoot"
+      | "getMerkleTreeDepth"
+      | "getMerkleTreeRoot"
+      | "getNumberOfMerkleTreeLeaves"
       | "startPoll"
       | "verifyRoots"
   ): FunctionFragment;
@@ -99,10 +111,6 @@ export interface SemaphoreVotingInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getDepth",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getLatestNeighborEdges",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -111,11 +119,15 @@ export interface SemaphoreVotingInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getNumberOfLeaves",
+    functionFragment: "getMerkleTreeDepth",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getRoot",
+    functionFragment: "getMerkleTreeRoot",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getNumberOfMerkleTreeLeaves",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -131,7 +143,6 @@ export interface SemaphoreVotingInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "castVote", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "createPoll", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "endPoll", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getLatestNeighborEdges",
     data: BytesLike
@@ -141,10 +152,17 @@ export interface SemaphoreVotingInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getNumberOfLeaves",
+    functionFragment: "getMerkleTreeDepth",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "getRoot", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getMerkleTreeRoot",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getNumberOfMerkleTreeLeaves",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "startPoll", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "verifyRoots",
@@ -152,9 +170,10 @@ export interface SemaphoreVotingInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "GroupCreated(uint256,uint8)": EventFragment;
-    "MemberAdded(uint256,uint256,uint256)": EventFragment;
-    "MemberRemoved(uint256,uint256,uint256)": EventFragment;
+    "GroupCreated(uint256,uint256)": EventFragment;
+    "MemberAdded(uint256,uint256,uint256,uint256)": EventFragment;
+    "MemberRemoved(uint256,uint256,uint256,uint256)": EventFragment;
+    "MemberUpdated(uint256,uint256,uint256,uint256,uint256)": EventFragment;
     "NullifierHashAdded(uint256)": EventFragment;
     "PollCreated(uint256,address)": EventFragment;
     "PollEnded(uint256,address,uint256)": EventFragment;
@@ -165,6 +184,7 @@ export interface SemaphoreVotingInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "GroupCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MemberAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MemberRemoved"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MemberUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NullifierHashAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PollCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PollEnded"): EventFragment;
@@ -174,10 +194,10 @@ export interface SemaphoreVotingInterface extends utils.Interface {
 
 export interface GroupCreatedEventObject {
   groupId: BigNumber;
-  depth: number;
+  merkleTreeDepth: BigNumber;
 }
 export type GroupCreatedEvent = TypedEvent<
-  [BigNumber, number],
+  [BigNumber, BigNumber],
   GroupCreatedEventObject
 >;
 
@@ -185,11 +205,12 @@ export type GroupCreatedEventFilter = TypedEventFilter<GroupCreatedEvent>;
 
 export interface MemberAddedEventObject {
   groupId: BigNumber;
+  index: BigNumber;
   identityCommitment: BigNumber;
-  root: BigNumber;
+  merkleTreeRoot: BigNumber;
 }
 export type MemberAddedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
+  [BigNumber, BigNumber, BigNumber, BigNumber],
   MemberAddedEventObject
 >;
 
@@ -197,15 +218,30 @@ export type MemberAddedEventFilter = TypedEventFilter<MemberAddedEvent>;
 
 export interface MemberRemovedEventObject {
   groupId: BigNumber;
+  index: BigNumber;
   identityCommitment: BigNumber;
-  root: BigNumber;
+  merkleTreeRoot: BigNumber;
 }
 export type MemberRemovedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
+  [BigNumber, BigNumber, BigNumber, BigNumber],
   MemberRemovedEventObject
 >;
 
 export type MemberRemovedEventFilter = TypedEventFilter<MemberRemovedEvent>;
+
+export interface MemberUpdatedEventObject {
+  groupId: BigNumber;
+  index: BigNumber;
+  identityCommitment: BigNumber;
+  newIdentityCommitment: BigNumber;
+  merkleTreeRoot: BigNumber;
+}
+export type MemberUpdatedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber],
+  MemberUpdatedEventObject
+>;
+
+export type MemberUpdatedEventFilter = TypedEventFilter<MemberUpdatedEvent>;
 
 export interface NullifierHashAddedEventObject {
   nullifierHash: BigNumber;
@@ -308,7 +344,7 @@ export interface SemaphoreVoting extends BaseContract {
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -320,11 +356,6 @@ export interface SemaphoreVoting extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[number]>;
-
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -335,12 +366,17 @@ export interface SemaphoreVoting extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[number]>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    getRoot(
+    getMerkleTreeRoot(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getNumberOfMerkleTreeLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
@@ -375,7 +411,7 @@ export interface SemaphoreVoting extends BaseContract {
 
   createPoll(
     pollId: PromiseOrValue<BigNumberish>,
-    depth: PromiseOrValue<BigNumberish>,
+    merkleTreeDepth: PromiseOrValue<BigNumberish>,
     coordinator: PromiseOrValue<string>,
     maxEdges: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -387,11 +423,6 @@ export interface SemaphoreVoting extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  getDepth(
-    groupId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<number>;
-
   getLatestNeighborEdges(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -402,12 +433,17 @@ export interface SemaphoreVoting extends BaseContract {
     overrides?: CallOverrides
   ): Promise<number>;
 
-  getNumberOfLeaves(
+  getMerkleTreeDepth(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getRoot(
+  getMerkleTreeRoot(
+    groupId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getNumberOfMerkleTreeLeaves(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
@@ -442,7 +478,7 @@ export interface SemaphoreVoting extends BaseContract {
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -454,11 +490,6 @@ export interface SemaphoreVoting extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<number>;
-
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -469,12 +500,17 @@ export interface SemaphoreVoting extends BaseContract {
       overrides?: CallOverrides
     ): Promise<number>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getRoot(
+    getMerkleTreeRoot(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getNumberOfMerkleTreeLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -493,36 +529,55 @@ export interface SemaphoreVoting extends BaseContract {
   };
 
   filters: {
-    "GroupCreated(uint256,uint8)"(
+    "GroupCreated(uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
-      depth?: null
+      merkleTreeDepth?: null
     ): GroupCreatedEventFilter;
     GroupCreated(
       groupId?: PromiseOrValue<BigNumberish> | null,
-      depth?: null
+      merkleTreeDepth?: null
     ): GroupCreatedEventFilter;
 
-    "MemberAdded(uint256,uint256,uint256)"(
+    "MemberAdded(uint256,uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberAddedEventFilter;
     MemberAdded(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberAddedEventFilter;
 
-    "MemberRemoved(uint256,uint256,uint256)"(
+    "MemberRemoved(uint256,uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberRemovedEventFilter;
     MemberRemoved(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberRemovedEventFilter;
+
+    "MemberUpdated(uint256,uint256,uint256,uint256,uint256)"(
+      groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
+      identityCommitment?: null,
+      newIdentityCommitment?: null,
+      merkleTreeRoot?: null
+    ): MemberUpdatedEventFilter;
+    MemberUpdated(
+      groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
+      identityCommitment?: null,
+      newIdentityCommitment?: null,
+      merkleTreeRoot?: null
+    ): MemberUpdatedEventFilter;
 
     "NullifierHashAdded(uint256)"(
       nullifierHash?: null
@@ -588,7 +643,7 @@ export interface SemaphoreVoting extends BaseContract {
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -598,11 +653,6 @@ export interface SemaphoreVoting extends BaseContract {
       pollId: PromiseOrValue<BigNumberish>,
       decryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getLatestNeighborEdges(
@@ -615,12 +665,17 @@ export interface SemaphoreVoting extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getRoot(
+    getMerkleTreeRoot(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getNumberOfMerkleTreeLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -656,7 +711,7 @@ export interface SemaphoreVoting extends BaseContract {
 
     createPoll(
       pollId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       coordinator: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -666,11 +721,6 @@ export interface SemaphoreVoting extends BaseContract {
       pollId: PromiseOrValue<BigNumberish>,
       decryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getLatestNeighborEdges(
@@ -683,12 +733,17 @@ export interface SemaphoreVoting extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getRoot(
+    getMerkleTreeRoot(
+      groupId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getNumberOfMerkleTreeLeaves(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

@@ -151,7 +151,7 @@ export class Semaphore {
 
   public static createRootsBytes(rootArray: string[]) {
     let rootsBytes = "0x"
-    for (let i = 0; i < rootArray.length; i++) {
+    for (let i = 0; i < rootArray.length; i += 1) {
       rootsBytes += toFixedHex(rootArray[i]).substr(2)
     }
     return rootsBytes // root byte string (32 * array.length bytes)
@@ -218,8 +218,8 @@ export class Semaphore {
     return false
   }
 
-  public async getRoot(groupId: number): Promise<BigNumber> {
-    return this.contract.getRoot(groupId)
+  public async getMerkleTreeRoot(groupId: number): Promise<BigNumber> {
+    return this.contract.getMerkleTreeRoot(groupId)
   }
 
   public populateRootsForProof(groupId: number): string[] {
@@ -232,7 +232,8 @@ export class Semaphore {
     groupId: number,
     depth: number,
     groupAdminAddr: string,
-    maxEdges: number
+    maxEdges: number,
+    merkleRootDuration?: BigNumberish
   ): Promise<ContractTransaction> {
     if (groupId in this.linkedGroups) {
       throw new Error(`Group ${groupId} has already been created`)
@@ -242,7 +243,11 @@ export class Semaphore {
         maxEdges,
         groupAdminAddr
       )
-      return this.contract.createGroup(groupId, depth, groupAdminAddr, maxEdges)
+      if (merkleRootDuration === undefined) {
+        // return this.contract.createGroup(groupId, depth, groupAdminAddr, maxEdges)
+        return this.contract["createGroup(uint256,uint256,address,uint8)"](groupId, depth, groupAdminAddr, maxEdges)
+      }
+      return this.contract["createGroup(uint256,uint256,address,uint8,uint256)"](groupId, depth, groupAdminAddr, maxEdges, merkleRootDuration.toString())
     }
   }
 
@@ -252,25 +257,25 @@ export class Semaphore {
     const chainId = getChainIdType(await this.signer.getChainId())
     return [
       this.linkedGroups[groupId].roots[chainId],
-      await this.contract.getRoot(groupId)
+      await this.contract.getMerkleTreeRoot(groupId)
     ]
   }
 
   public async updateLinkedGroup(groupId: number): Promise<string[]> {
     const neighborEdges = await this.contract.getLatestNeighborEdges(groupId)
 
-    neighborEdges.map((edge) => {
-      this.linkedGroups[groupId].updateEdge(edge.chainID.toNumber(), edge.root)
+    neighborEdges.forEach((edge) => {
+      this.linkedGroups[groupId].updateEdge(edge.chainID.toNumber(), edge.root.toString())
     })
 
-    const thisRoot = await this.contract.getRoot(groupId)
+    const thisRoot = await this.contract.getMerkleTreeRoot(groupId)
     assert(
       thisRoot.toString() === this.linkedGroups[groupId].root.toString(),
       "Contract and object are out of sync. You should run update()"
     )
 
     // TODO: Add query and pre-processing of out-of-sync leaves to recreate group and remove above assert
-    return [thisRoot.toString(), ...neighborEdges.map((edge) => edge.root)]
+    return [thisRoot.toString(), ...neighborEdges.map((edge) => edge.root.toString())]
   }
 
   public async addMembers(

@@ -11,6 +11,31 @@ import type {
 
 const _abi = [
   {
+    inputs: [],
+    name: "Semaphore__CallerIsNotThePollCoordinator",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "Semaphore__MerkleTreeDepthIsNotSupported",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "Semaphore__PollHasAlreadyBeenStarted",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "Semaphore__PollIsNotOngoing",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "Semaphore__YouAreUsingTheSameNillifierTwice",
+    type: "error",
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -157,9 +182,9 @@ const _abi = [
         type: "uint256",
       },
       {
-        internalType: "uint8",
-        name: "depth",
-        type: "uint8",
+        internalType: "uint256",
+        name: "merkleTreeDepth",
+        type: "uint256",
       },
       {
         internalType: "address",

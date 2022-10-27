@@ -29,14 +29,14 @@ import type {
 
 export type EdgeStruct = {
   chainID: PromiseOrValue<BigNumberish>;
-  root: PromiseOrValue<BytesLike>;
+  root: PromiseOrValue<BigNumberish>;
   latestLeafIndex: PromiseOrValue<BigNumberish>;
   srcResourceID: PromiseOrValue<BytesLike>;
 };
 
-export type EdgeStructOutput = [BigNumber, string, BigNumber, string] & {
+export type EdgeStructOutput = [BigNumber, BigNumber, BigNumber, string] & {
   chainID: BigNumber;
-  root: string;
+  root: BigNumber;
   latestLeafIndex: BigNumber;
   srcResourceID: string;
 };
@@ -47,9 +47,9 @@ export declare namespace ISemaphore {
     merkleTreeDepth: PromiseOrValue<BigNumberish>;
   };
 
-  export type VerifierStructOutput = [string, number] & {
+  export type VerifierStructOutput = [string, BigNumber] & {
     contractAddress: string;
-    merkleTreeDepth: number;
+    merkleTreeDepth: BigNumber;
   };
 }
 
@@ -57,22 +57,24 @@ export interface SemaphoreInterface extends utils.Interface {
   functions: {
     "EVM_CHAIN_ID_TYPE()": FunctionFragment;
     "addMember(uint256,uint256)": FunctionFragment;
-    "createGroup(uint256,uint8,address,uint8)": FunctionFragment;
+    "addMembers(uint256,uint256[])": FunctionFragment;
+    "createGroup(uint256,uint256,address,uint8)": FunctionFragment;
+    "createGroup(uint256,uint256,address,uint8,uint256)": FunctionFragment;
     "decodeRoots(bytes)": FunctionFragment;
     "getChainId()": FunctionFragment;
     "getChainIdType()": FunctionFragment;
-    "getDepth(uint256)": FunctionFragment;
     "getLatestNeighborEdges(uint256)": FunctionFragment;
     "getMaxEdges(uint256)": FunctionFragment;
-    "getNumberOfLeaves(uint256)": FunctionFragment;
-    "getRoot(uint256)": FunctionFragment;
-    "groupAdmins(uint256)": FunctionFragment;
-    "groupMaxEdges(uint256)": FunctionFragment;
+    "getMerkleTreeDepth(uint256)": FunctionFragment;
+    "getMerkleTreeRoot(uint256)": FunctionFragment;
+    "getNumberOfMerkleTreeLeaves(uint256)": FunctionFragment;
+    "groups(uint256)": FunctionFragment;
     "removeMember(uint256,uint256,uint256[],uint8[])": FunctionFragment;
-    "updateEdge(uint256,bytes32,uint32,bytes32)": FunctionFragment;
+    "updateEdge(uint256,uint256,uint32,bytes32)": FunctionFragment;
     "updateGroupAdmin(uint256,address)": FunctionFragment;
-    "verifiers(uint8)": FunctionFragment;
-    "verifyProof(uint256,bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
+    "updateMember(uint256,uint256,uint256,uint256[],uint8[])": FunctionFragment;
+    "verifiers(uint256)": FunctionFragment;
+    "verifyProof(uint256,uint256,bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
     "verifyRoots(uint256,bytes)": FunctionFragment;
   };
 
@@ -80,20 +82,22 @@ export interface SemaphoreInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "EVM_CHAIN_ID_TYPE"
       | "addMember"
-      | "createGroup"
+      | "addMembers"
+      | "createGroup(uint256,uint256,address,uint8)"
+      | "createGroup(uint256,uint256,address,uint8,uint256)"
       | "decodeRoots"
       | "getChainId"
       | "getChainIdType"
-      | "getDepth"
       | "getLatestNeighborEdges"
       | "getMaxEdges"
-      | "getNumberOfLeaves"
-      | "getRoot"
-      | "groupAdmins"
-      | "groupMaxEdges"
+      | "getMerkleTreeDepth"
+      | "getMerkleTreeRoot"
+      | "getNumberOfMerkleTreeLeaves"
+      | "groups"
       | "removeMember"
       | "updateEdge"
       | "updateGroupAdmin"
+      | "updateMember"
       | "verifiers"
       | "verifyProof"
       | "verifyRoots"
@@ -108,11 +112,25 @@ export interface SemaphoreInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "createGroup",
+    functionFragment: "addMembers",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "createGroup(uint256,uint256,address,uint8)",
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "createGroup(uint256,uint256,address,uint8,uint256)",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
   ): string;
@@ -129,10 +147,6 @@ export interface SemaphoreInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getDepth",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getLatestNeighborEdges",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -141,19 +155,19 @@ export interface SemaphoreInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getNumberOfLeaves",
+    functionFragment: "getMerkleTreeDepth",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getRoot",
+    functionFragment: "getMerkleTreeRoot",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "groupAdmins",
+    functionFragment: "getNumberOfMerkleTreeLeaves",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "groupMaxEdges",
+    functionFragment: "groups",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -169,7 +183,7 @@ export interface SemaphoreInterface extends utils.Interface {
     functionFragment: "updateEdge",
     values: [
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BytesLike>
     ]
@@ -179,12 +193,23 @@ export interface SemaphoreInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "updateMember",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>[],
+      PromiseOrValue<BigNumberish>[]
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "verifiers",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "verifyProof",
     values: [
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BytesLike>,
       PromiseOrValue<BigNumberish>,
@@ -203,8 +228,13 @@ export interface SemaphoreInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "addMember", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "addMembers", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "createGroup",
+    functionFragment: "createGroup(uint256,uint256,address,uint8)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "createGroup(uint256,uint256,address,uint8,uint256)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -216,7 +246,6 @@ export interface SemaphoreInterface extends utils.Interface {
     functionFragment: "getChainIdType",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getLatestNeighborEdges",
     data: BytesLike
@@ -226,18 +255,18 @@ export interface SemaphoreInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getNumberOfLeaves",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getRoot", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "groupAdmins",
+    functionFragment: "getMerkleTreeDepth",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "groupMaxEdges",
+    functionFragment: "getMerkleTreeRoot",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getNumberOfMerkleTreeLeaves",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "groups", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "removeMember",
     data: BytesLike
@@ -245,6 +274,10 @@ export interface SemaphoreInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "updateEdge", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "updateGroupAdmin",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateMember",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "verifiers", data: BytesLike): Result;
@@ -259,17 +292,19 @@ export interface SemaphoreInterface extends utils.Interface {
 
   events: {
     "GroupAdminUpdated(uint256,address,address)": EventFragment;
-    "GroupCreated(uint256,uint8)": EventFragment;
-    "MemberAdded(uint256,uint256,uint256)": EventFragment;
-    "MemberRemoved(uint256,uint256,uint256)": EventFragment;
+    "GroupCreated(uint256,uint256)": EventFragment;
+    "MemberAdded(uint256,uint256,uint256,uint256)": EventFragment;
+    "MemberRemoved(uint256,uint256,uint256,uint256)": EventFragment;
+    "MemberUpdated(uint256,uint256,uint256,uint256,uint256)": EventFragment;
     "NullifierHashAdded(uint256)": EventFragment;
-    "ProofVerified(uint256,bytes32)": EventFragment;
+    "ProofVerified(uint256,uint256,uint256,uint256,bytes32)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "GroupAdminUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GroupCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MemberAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MemberRemoved"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MemberUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NullifierHashAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProofVerified"): EventFragment;
 }
@@ -289,10 +324,10 @@ export type GroupAdminUpdatedEventFilter =
 
 export interface GroupCreatedEventObject {
   groupId: BigNumber;
-  depth: number;
+  merkleTreeDepth: BigNumber;
 }
 export type GroupCreatedEvent = TypedEvent<
-  [BigNumber, number],
+  [BigNumber, BigNumber],
   GroupCreatedEventObject
 >;
 
@@ -300,11 +335,12 @@ export type GroupCreatedEventFilter = TypedEventFilter<GroupCreatedEvent>;
 
 export interface MemberAddedEventObject {
   groupId: BigNumber;
+  index: BigNumber;
   identityCommitment: BigNumber;
-  root: BigNumber;
+  merkleTreeRoot: BigNumber;
 }
 export type MemberAddedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
+  [BigNumber, BigNumber, BigNumber, BigNumber],
   MemberAddedEventObject
 >;
 
@@ -312,15 +348,30 @@ export type MemberAddedEventFilter = TypedEventFilter<MemberAddedEvent>;
 
 export interface MemberRemovedEventObject {
   groupId: BigNumber;
+  index: BigNumber;
   identityCommitment: BigNumber;
-  root: BigNumber;
+  merkleTreeRoot: BigNumber;
 }
 export type MemberRemovedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
+  [BigNumber, BigNumber, BigNumber, BigNumber],
   MemberRemovedEventObject
 >;
 
 export type MemberRemovedEventFilter = TypedEventFilter<MemberRemovedEvent>;
+
+export interface MemberUpdatedEventObject {
+  groupId: BigNumber;
+  index: BigNumber;
+  identityCommitment: BigNumber;
+  newIdentityCommitment: BigNumber;
+  merkleTreeRoot: BigNumber;
+}
+export type MemberUpdatedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber],
+  MemberUpdatedEventObject
+>;
+
+export type MemberUpdatedEventFilter = TypedEventFilter<MemberUpdatedEvent>;
 
 export interface NullifierHashAddedEventObject {
   nullifierHash: BigNumber;
@@ -335,10 +386,13 @@ export type NullifierHashAddedEventFilter =
 
 export interface ProofVerifiedEventObject {
   groupId: BigNumber;
+  merkleTreeRoot: BigNumber;
+  externalNullifier: BigNumber;
+  nullifierHash: BigNumber;
   signal: string;
 }
 export type ProofVerifiedEvent = TypedEvent<
-  [BigNumber, string],
+  [BigNumber, BigNumber, BigNumber, BigNumber, string],
   ProofVerifiedEventObject
 >;
 
@@ -379,27 +433,37 @@ export interface Semaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    createGroup(
+    addMembers(
       groupId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      identityCommitments: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "createGroup(uint256,uint256,address,uint8)"(
+      groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       admin: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "createGroup(uint256,uint256,address,uint8,uint256)"(
+      groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
+      admin: PromiseOrValue<string>,
+      maxEdges: PromiseOrValue<BigNumberish>,
+      merkleTreeRootDuration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     decodeRoots(
       roots: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<[string[]] & { roots_decoded: string[] }>;
+    ): Promise<[string[]] & { rootsDecoded: string[] }>;
 
     getChainId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getChainIdType(overrides?: CallOverrides): Promise<[number]>;
-
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[number]>;
 
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
@@ -411,25 +475,27 @@ export interface Semaphore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[number]>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    getRoot(
+    getMerkleTreeRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    groupAdmins(
-      arg0: PromiseOrValue<BigNumberish>,
+    getNumberOfMerkleTreeLeaves(
+      groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[string]>;
+    ): Promise<[BigNumber]>;
 
-    groupMaxEdges(
+    groups(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[number]>;
+    ): Promise<
+      [string, BigNumber] & { admin: string; merkleRootDuration: BigNumber }
+    >;
 
     removeMember(
       groupId: PromiseOrValue<BigNumberish>,
@@ -441,7 +507,7 @@ export interface Semaphore extends BaseContract {
 
     updateEdge(
       groupId: PromiseOrValue<BigNumberish>,
-      root: PromiseOrValue<BytesLike>,
+      root: PromiseOrValue<BigNumberish>,
       leafIndex: PromiseOrValue<BigNumberish>,
       typedChainId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -453,6 +519,15 @@ export interface Semaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    updateMember(
+      groupId: PromiseOrValue<BigNumberish>,
+      identityCommitment: PromiseOrValue<BigNumberish>,
+      newIdentityCommitment: PromiseOrValue<BigNumberish>,
+      proofSiblings: PromiseOrValue<BigNumberish>[],
+      proofPathIndices: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     verifiers(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -460,6 +535,7 @@ export interface Semaphore extends BaseContract {
 
     verifyProof(
       groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeRoot: PromiseOrValue<BigNumberish>,
       signal: PromiseOrValue<BytesLike>,
       nullifierHash: PromiseOrValue<BigNumberish>,
       externalNullifier: PromiseOrValue<BigNumberish>,
@@ -483,11 +559,26 @@ export interface Semaphore extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  createGroup(
+  addMembers(
     groupId: PromiseOrValue<BigNumberish>,
-    depth: PromiseOrValue<BigNumberish>,
+    identityCommitments: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "createGroup(uint256,uint256,address,uint8)"(
+    groupId: PromiseOrValue<BigNumberish>,
+    merkleTreeDepth: PromiseOrValue<BigNumberish>,
     admin: PromiseOrValue<string>,
     maxEdges: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "createGroup(uint256,uint256,address,uint8,uint256)"(
+    groupId: PromiseOrValue<BigNumberish>,
+    merkleTreeDepth: PromiseOrValue<BigNumberish>,
+    admin: PromiseOrValue<string>,
+    maxEdges: PromiseOrValue<BigNumberish>,
+    merkleTreeRootDuration: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -500,11 +591,6 @@ export interface Semaphore extends BaseContract {
 
   getChainIdType(overrides?: CallOverrides): Promise<number>;
 
-  getDepth(
-    groupId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<number>;
-
   getLatestNeighborEdges(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -515,25 +601,27 @@ export interface Semaphore extends BaseContract {
     overrides?: CallOverrides
   ): Promise<number>;
 
-  getNumberOfLeaves(
+  getMerkleTreeDepth(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getRoot(
+  getMerkleTreeRoot(
     groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  groupAdmins(
-    arg0: PromiseOrValue<BigNumberish>,
+  getNumberOfMerkleTreeLeaves(
+    groupId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<string>;
+  ): Promise<BigNumber>;
 
-  groupMaxEdges(
+  groups(
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<number>;
+  ): Promise<
+    [string, BigNumber] & { admin: string; merkleRootDuration: BigNumber }
+  >;
 
   removeMember(
     groupId: PromiseOrValue<BigNumberish>,
@@ -545,7 +633,7 @@ export interface Semaphore extends BaseContract {
 
   updateEdge(
     groupId: PromiseOrValue<BigNumberish>,
-    root: PromiseOrValue<BytesLike>,
+    root: PromiseOrValue<BigNumberish>,
     leafIndex: PromiseOrValue<BigNumberish>,
     typedChainId: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -557,6 +645,15 @@ export interface Semaphore extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  updateMember(
+    groupId: PromiseOrValue<BigNumberish>,
+    identityCommitment: PromiseOrValue<BigNumberish>,
+    newIdentityCommitment: PromiseOrValue<BigNumberish>,
+    proofSiblings: PromiseOrValue<BigNumberish>[],
+    proofPathIndices: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   verifiers(
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -564,6 +661,7 @@ export interface Semaphore extends BaseContract {
 
   verifyProof(
     groupId: PromiseOrValue<BigNumberish>,
+    merkleTreeRoot: PromiseOrValue<BigNumberish>,
     signal: PromiseOrValue<BytesLike>,
     nullifierHash: PromiseOrValue<BigNumberish>,
     externalNullifier: PromiseOrValue<BigNumberish>,
@@ -587,11 +685,26 @@ export interface Semaphore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    createGroup(
+    addMembers(
       groupId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      identityCommitments: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "createGroup(uint256,uint256,address,uint8)"(
+      groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       admin: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "createGroup(uint256,uint256,address,uint8,uint256)"(
+      groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
+      admin: PromiseOrValue<string>,
+      maxEdges: PromiseOrValue<BigNumberish>,
+      merkleTreeRootDuration: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -604,11 +717,6 @@ export interface Semaphore extends BaseContract {
 
     getChainIdType(overrides?: CallOverrides): Promise<number>;
 
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<number>;
-
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -619,25 +727,27 @@ export interface Semaphore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<number>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getRoot(
+    getMerkleTreeRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    groupAdmins(
-      arg0: PromiseOrValue<BigNumberish>,
+    getNumberOfMerkleTreeLeaves(
+      groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<string>;
+    ): Promise<BigNumber>;
 
-    groupMaxEdges(
+    groups(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<number>;
+    ): Promise<
+      [string, BigNumber] & { admin: string; merkleRootDuration: BigNumber }
+    >;
 
     removeMember(
       groupId: PromiseOrValue<BigNumberish>,
@@ -649,7 +759,7 @@ export interface Semaphore extends BaseContract {
 
     updateEdge(
       groupId: PromiseOrValue<BigNumberish>,
-      root: PromiseOrValue<BytesLike>,
+      root: PromiseOrValue<BigNumberish>,
       leafIndex: PromiseOrValue<BigNumberish>,
       typedChainId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -661,6 +771,15 @@ export interface Semaphore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    updateMember(
+      groupId: PromiseOrValue<BigNumberish>,
+      identityCommitment: PromiseOrValue<BigNumberish>,
+      newIdentityCommitment: PromiseOrValue<BigNumberish>,
+      proofSiblings: PromiseOrValue<BigNumberish>[],
+      proofPathIndices: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     verifiers(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -668,6 +787,7 @@ export interface Semaphore extends BaseContract {
 
     verifyProof(
       groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeRoot: PromiseOrValue<BigNumberish>,
       signal: PromiseOrValue<BytesLike>,
       nullifierHash: PromiseOrValue<BigNumberish>,
       externalNullifier: PromiseOrValue<BigNumberish>,
@@ -695,48 +815,73 @@ export interface Semaphore extends BaseContract {
       newAdmin?: PromiseOrValue<string> | null
     ): GroupAdminUpdatedEventFilter;
 
-    "GroupCreated(uint256,uint8)"(
+    "GroupCreated(uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
-      depth?: null
+      merkleTreeDepth?: null
     ): GroupCreatedEventFilter;
     GroupCreated(
       groupId?: PromiseOrValue<BigNumberish> | null,
-      depth?: null
+      merkleTreeDepth?: null
     ): GroupCreatedEventFilter;
 
-    "MemberAdded(uint256,uint256,uint256)"(
+    "MemberAdded(uint256,uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberAddedEventFilter;
     MemberAdded(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberAddedEventFilter;
 
-    "MemberRemoved(uint256,uint256,uint256)"(
+    "MemberRemoved(uint256,uint256,uint256,uint256)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberRemovedEventFilter;
     MemberRemoved(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
       identityCommitment?: null,
-      root?: null
+      merkleTreeRoot?: null
     ): MemberRemovedEventFilter;
+
+    "MemberUpdated(uint256,uint256,uint256,uint256,uint256)"(
+      groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
+      identityCommitment?: null,
+      newIdentityCommitment?: null,
+      merkleTreeRoot?: null
+    ): MemberUpdatedEventFilter;
+    MemberUpdated(
+      groupId?: PromiseOrValue<BigNumberish> | null,
+      index?: null,
+      identityCommitment?: null,
+      newIdentityCommitment?: null,
+      merkleTreeRoot?: null
+    ): MemberUpdatedEventFilter;
 
     "NullifierHashAdded(uint256)"(
       nullifierHash?: null
     ): NullifierHashAddedEventFilter;
     NullifierHashAdded(nullifierHash?: null): NullifierHashAddedEventFilter;
 
-    "ProofVerified(uint256,bytes32)"(
+    "ProofVerified(uint256,uint256,uint256,uint256,bytes32)"(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      merkleTreeRoot?: null,
+      externalNullifier?: null,
+      nullifierHash?: null,
       signal?: null
     ): ProofVerifiedEventFilter;
     ProofVerified(
       groupId?: PromiseOrValue<BigNumberish> | null,
+      merkleTreeRoot?: null,
+      externalNullifier?: null,
+      nullifierHash?: null,
       signal?: null
     ): ProofVerifiedEventFilter;
   };
@@ -750,11 +895,26 @@ export interface Semaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    createGroup(
+    addMembers(
       groupId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      identityCommitments: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "createGroup(uint256,uint256,address,uint8)"(
+      groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       admin: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "createGroup(uint256,uint256,address,uint8,uint256)"(
+      groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
+      admin: PromiseOrValue<string>,
+      maxEdges: PromiseOrValue<BigNumberish>,
+      merkleTreeRootDuration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -767,11 +927,6 @@ export interface Semaphore extends BaseContract {
 
     getChainIdType(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -782,22 +937,22 @@ export interface Semaphore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getRoot(
+    getMerkleTreeRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    groupAdmins(
-      arg0: PromiseOrValue<BigNumberish>,
+    getNumberOfMerkleTreeLeaves(
+      groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    groupMaxEdges(
+    groups(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -812,7 +967,7 @@ export interface Semaphore extends BaseContract {
 
     updateEdge(
       groupId: PromiseOrValue<BigNumberish>,
-      root: PromiseOrValue<BytesLike>,
+      root: PromiseOrValue<BigNumberish>,
       leafIndex: PromiseOrValue<BigNumberish>,
       typedChainId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -824,6 +979,15 @@ export interface Semaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    updateMember(
+      groupId: PromiseOrValue<BigNumberish>,
+      identityCommitment: PromiseOrValue<BigNumberish>,
+      newIdentityCommitment: PromiseOrValue<BigNumberish>,
+      proofSiblings: PromiseOrValue<BigNumberish>[],
+      proofPathIndices: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     verifiers(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -831,6 +995,7 @@ export interface Semaphore extends BaseContract {
 
     verifyProof(
       groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeRoot: PromiseOrValue<BigNumberish>,
       signal: PromiseOrValue<BytesLike>,
       nullifierHash: PromiseOrValue<BigNumberish>,
       externalNullifier: PromiseOrValue<BigNumberish>,
@@ -855,11 +1020,26 @@ export interface Semaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    createGroup(
+    addMembers(
       groupId: PromiseOrValue<BigNumberish>,
-      depth: PromiseOrValue<BigNumberish>,
+      identityCommitments: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "createGroup(uint256,uint256,address,uint8)"(
+      groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
       admin: PromiseOrValue<string>,
       maxEdges: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "createGroup(uint256,uint256,address,uint8,uint256)"(
+      groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeDepth: PromiseOrValue<BigNumberish>,
+      admin: PromiseOrValue<string>,
+      maxEdges: PromiseOrValue<BigNumberish>,
+      merkleTreeRootDuration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -872,11 +1052,6 @@ export interface Semaphore extends BaseContract {
 
     getChainIdType(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getDepth(
-      groupId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     getLatestNeighborEdges(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -887,22 +1062,22 @@ export interface Semaphore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getNumberOfLeaves(
+    getMerkleTreeDepth(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getRoot(
+    getMerkleTreeRoot(
       groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    groupAdmins(
-      arg0: PromiseOrValue<BigNumberish>,
+    getNumberOfMerkleTreeLeaves(
+      groupId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    groupMaxEdges(
+    groups(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -917,7 +1092,7 @@ export interface Semaphore extends BaseContract {
 
     updateEdge(
       groupId: PromiseOrValue<BigNumberish>,
-      root: PromiseOrValue<BytesLike>,
+      root: PromiseOrValue<BigNumberish>,
       leafIndex: PromiseOrValue<BigNumberish>,
       typedChainId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -929,6 +1104,15 @@ export interface Semaphore extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    updateMember(
+      groupId: PromiseOrValue<BigNumberish>,
+      identityCommitment: PromiseOrValue<BigNumberish>,
+      newIdentityCommitment: PromiseOrValue<BigNumberish>,
+      proofSiblings: PromiseOrValue<BigNumberish>[],
+      proofPathIndices: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     verifiers(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -936,6 +1120,7 @@ export interface Semaphore extends BaseContract {
 
     verifyProof(
       groupId: PromiseOrValue<BigNumberish>,
+      merkleTreeRoot: PromiseOrValue<BigNumberish>,
       signal: PromiseOrValue<BytesLike>,
       nullifierHash: PromiseOrValue<BigNumberish>,
       externalNullifier: PromiseOrValue<BigNumberish>,
