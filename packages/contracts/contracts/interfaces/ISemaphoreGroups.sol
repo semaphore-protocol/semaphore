@@ -14,7 +14,7 @@ interface ISemaphoreGroups {
     /// @dev Emitted when a new group is created.
     /// @param groupId: Id of the group.
     /// @param merkleTreeDepth: Depth of the tree.
-    event GroupCreated(uint256 indexed groupId, uint256 merkleTreeDepth);
+    event GroupCreated(uint256 indexed groupId, uint256 merkleTreeDepth, uint256 merkleTreeRoot);
 
     /// @dev Emitted when a new identity commitment is added.
     /// @param groupId: Group id of the group.

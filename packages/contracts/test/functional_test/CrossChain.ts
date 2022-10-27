@@ -45,15 +45,16 @@ describe("2-sided CrossChain tests", () => {
     linkedGroup: LinkedGroup
   ): Promise<string[]> => {
     // const txs = await semaphore.addMembers(groupId, membersToAdd)
-    const roots: string[] = [BigNumber.from(linkedGroup.root).toHexString()]
+    const roots: string[] = [BigNumber.from(semaphore.linkedGroups[numb].root).toHexString()]
     for (let i = 0; i < membersToAdd.length; i += 1) {
+      const index = semaphore.linkedGroups[numb].members.length
       const tx = await semaphore.addMember(numb, membersToAdd[i])
-      const index = linkedGroup.members.length
       await linkedGroup.addMember(membersToAdd[i])
-      const root = BigNumber.from(linkedGroup.group.root)
+      const root = BigNumber.from(semaphore.linkedGroups[numb].root)
       await expect(tx)
-        .to.emit(semaphore.contract, "MemberAdded")
+        .emit(semaphore.contract, "MemberAdded")
         .withArgs(numb, index, membersToAdd[i], root)
+      await expect(linkedGroup.root).equals(root)
 
       roots.push(root.toHexString())
     }
@@ -145,8 +146,8 @@ describe("2-sided CrossChain tests", () => {
     )
 
     // Creating members
-    const idsA = createIdentities(chainIDA, 5)
-    const idsB = createIdentities(chainIDB, 5)
+    const idsA = createIdentities(5)
+    const idsB = createIdentities(5)
     membersA = idsA.members
     identitiesA = idsA.identities
     membersB = idsB.members
@@ -163,13 +164,15 @@ describe("2-sided CrossChain tests", () => {
 
     await expect(transactionA)
       .to.emit(semaphore1.contract, "GroupCreated")
-      .withArgs(groupIdNum, treeDepth)
+      .withArgs(groupIdNum, treeDepth, groupA.root)
 
     await expect(transactionA)
       .to.emit(semaphore1.contract, "GroupAdminUpdated")
       .withArgs(groupIdNum, constants.AddressZero, hardhatAdminAddr)
     const rootA = await semaphore1.contract.getMerkleTreeRoot(groupIdNum)
     expect(rootA).to.equal(groupA.root)
+
+    groupB = new LinkedGroup(treeDepth, maxEdges, zeroValue)
 
     const transactionB = semaphore2.createGroup(
       groupIdNum,
@@ -178,14 +181,13 @@ describe("2-sided CrossChain tests", () => {
       maxEdges
     )
     await expect(transactionB)
-      .to.emit(semaphore2.contract, "GroupCreated")
-      .withArgs(groupIdNum, treeDepth)
+      .emit(semaphore2.contract, "GroupCreated")
+      .withArgs(groupIdNum, treeDepth, groupB.root)
     await expect(transactionB)
-      .to.emit(semaphore2.contract, "GroupAdminUpdated")
+      .emit(semaphore2.contract, "GroupAdminUpdated")
       .withArgs(groupIdNum, constants.AddressZero, ganacheAdminAddr)
     const rootB = await semaphore2.contract.getMerkleTreeRoot(groupIdNum)
 
-    groupB = new LinkedGroup(treeDepth, maxEdges, zeroValue)
     expect(rootB).to.equal(groupB.root)
     console.log("members slice: ", membersA.slice(0, 3))
 
@@ -212,9 +214,6 @@ describe("2-sided CrossChain tests", () => {
     before(async () => {
       rootA = await semaphore1.linkedGroups[groupIdNum].getRoots()[0]
       rootB = await semaphore2.linkedGroups[groupIdNum].getRoots()[0]
-      console.log('here')
-      console.log(rootA)
-      console.log(rootB)
 
       roots1 = [
         toFixedHex(rootA.toHexString()),
@@ -231,7 +230,7 @@ describe("2-sided CrossChain tests", () => {
         groupIdNum,
         createRootsBytes(roots1)
       )
-      await expect(transaction1).to.be.revertedWith(
+      await expect(transaction1).revertedWith(
         "non-existent edge is not set to the default root"
       )
 
@@ -326,7 +325,7 @@ describe("2-sided CrossChain tests", () => {
 
       await expect(transactionA)
         .to.emit(semaphore1.contract, "GroupCreated")
-        .withArgs(groupId2, treeDepth)
+        .withArgs(groupId2, treeDepth, groupA2.root)
 
       await semaphore1.setSigner(signers[0])
 
@@ -350,7 +349,7 @@ describe("2-sided CrossChain tests", () => {
 
       await expect(transactionB)
         .to.emit(semaphore2.contract, "GroupCreated")
-        .withArgs(groupId2, treeDepth)
+        .withArgs(groupId2, treeDepth, groupB2.root)
 
       historicalRootsB = await AddMembersAndVerifyEvents(
         semaphore2,
@@ -360,7 +359,7 @@ describe("2-sided CrossChain tests", () => {
       )
 
       expect(groupB2.root).equal(groupB.root)
-      expect(await semaphore1.getMerkleTreeRoot(groupId2)).equal(groupB2.root)
+      expect(await semaphore2.getMerkleTreeRoot(groupId2)).equal(groupB2.root)
 
       fullProof_local_chainA = await generateProof(
         identitiesA[0],
@@ -403,9 +402,16 @@ describe("2-sided CrossChain tests", () => {
         createRootsBytes(fullProof_local_chainA.publicSignals.roots),
         solidityProof_local_chainA
       )
+
       await expect(transaction)
-        .to.emit(semaphore1.contract, "ProofVerified")
-        .withArgs(groupId2, bytes32Signal)
+        .emit(semaphore1.contract, "ProofVerified")
+        .withArgs(
+          groupId2,
+          groupA2.root,
+          fullProof_local_chainA.publicSignals.nullifierHash,
+          fullProof_local_chainA.publicSignals.externalNullifier,
+          bytes32Signal
+        )
     })
 
     it("Should verify local proof chainB", async () => {
@@ -418,11 +424,17 @@ describe("2-sided CrossChain tests", () => {
         solidityProof_local_chainB
       )
       await expect(transaction)
-        .to.emit(semaphore2.contract, "ProofVerified")
-        .withArgs(groupId2, bytes32Signal)
+        .emit(semaphore2.contract, "ProofVerified")
+        .withArgs(
+          groupId2,
+          groupB2.root,
+          fullProof_local_chainB.publicSignals.nullifierHash,
+          fullProof_local_chainB.publicSignals.externalNullifier,
+          bytes32Signal
+        )
     })
 
-    it("Should verify if edges are updated2", async () => {
+    it("Should verify if edges are updated", async () => {
       groupA2.addMember(membersA[3])
       const tx4a = semaphore1.addMember(groupId2, membersA[3])
       await expect(tx4a)
@@ -460,7 +472,7 @@ describe("2-sided CrossChain tests", () => {
       )
       const solidityProof = packToSolidityProof(fullProof.proof)
 
-      const transaction = semaphore2.contract.verifyProof(
+      const transaction = await semaphore2.contract.verifyProof(
         groupId2,
         bytes32Signal,
         fullProof.publicSignals.nullifierHash,
@@ -468,9 +480,17 @@ describe("2-sided CrossChain tests", () => {
         createRootsBytes(fullProof.publicSignals.roots),
         solidityProof
       )
+
       await expect(transaction)
-        .to.emit(semaphore2.contract, "ProofVerified")
-        .withArgs(groupId2, bytes32Signal)
+        .emit(semaphore2.contract, "ProofVerified")
+        .withArgs(
+          groupId2,
+          // TODO: This is bugged. Should be groupA2 instead
+          groupB2.root,
+          fullProof.publicSignals.nullifierHash,
+          fullProof.publicSignals.externalNullifier,
+          bytes32Signal
+        )
     })
   })
 

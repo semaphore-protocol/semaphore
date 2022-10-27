@@ -14,7 +14,9 @@ export class LinkedGroup {
   group: Group
   levels: number
   maxEdges: number
+  numNonEmptyEdges: number
   // chainId -> merkle-root
+  chainIds: number[]
   roots: Record<number, BigNumber>
   // externalGroups: Record<number, Group>
   initialRoot = BigNumber.from(
@@ -46,6 +48,8 @@ export class LinkedGroup {
     }
 
     this.roots = {}
+    this.chainIds = []
+    this.numNonEmptyEdges = 0
 
     // chainIds are used to identity roots. Since no other chainId will be 0 there should be no problem
     // in ignoring this group chainId as we can get it from this.group.root
@@ -97,6 +101,17 @@ export class LinkedGroup {
       this.root !== root,
       `Trying to add this chain's group as an edge to itself.`
     )
+    if (chainId in this.chainIds) {
+      this.roots[chainId] = BigNumber.from(root)
+      return
+    }
+
+    if (this.numNonEmptyEdges === this.maxEdges + 1) {
+      throw Error('Max number of chains already connected')
+
+    }
+    this.chainIds.push(chainId)
+    this.numNonEmptyEdges += 1
     this.roots[chainId] = BigNumber.from(root)
   }
 
@@ -159,7 +174,12 @@ export class LinkedGroup {
    * @returns List of members.
    */
   public getRoots(): BigNumber[] {
-    const roots: BigNumber[] = Object.values(this.roots)
+    const roots: BigNumber[] = [this.roots[0]]
+    for (const chainId of this.chainIds) {
+      roots.push(this.roots[chainId])
+    }
+
+    // const roots: BigNumber[] = Object.values(this.roots)
     while (roots.length < this.maxEdges + 1) {
       roots.push(this.zeros[this.depth])
     }

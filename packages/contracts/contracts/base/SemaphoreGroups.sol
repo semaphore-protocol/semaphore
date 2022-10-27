@@ -35,8 +35,9 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         }
 
         merkleTree[groupId].init(merkleTreeDepth, maxEdges);
+        uint root = merkleTree[groupId].getLastRoot();
 
-        emit GroupCreated(groupId, merkleTreeDepth);
+        emit GroupCreated(groupId, merkleTreeDepth, root);
     }
 
     /// @dev Adds an identity commitment to an existing group.

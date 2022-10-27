@@ -38,7 +38,6 @@ export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
 }
 
 export function createIdentities(
-  chainId: number,
   n: number
 ): { identities: Identity[]; members: bigint[] } {
   const identityCommitments: bigint[] = []

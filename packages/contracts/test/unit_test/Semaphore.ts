@@ -31,7 +31,7 @@ describe("Semaphore", () => {
   const groupId = 1
   const maxEdges1 = 1
   const chainID = BigInt(1099511629113)
-  const { identities, members } = createIdentities(Number(chainID), 3)
+  const { identities, members } = createIdentities(3)
 
   const wasmFilePath20_2 =
     __dirname +
@@ -114,7 +114,7 @@ describe("Semaphore", () => {
 
       await expect(transaction)
         .to.emit(semaphore.contract, "GroupCreated")
-        .withArgs(groupId, treeDepth)
+        .withArgs(groupId, treeDepth, semaphore.linkedGroups[groupId].root)
       await expect(transaction)
         .to.emit(semaphore.contract, "GroupAdminUpdated")
         .withArgs(groupId, constants.AddressZero, adminAddr)
@@ -225,13 +225,11 @@ describe("Semaphore", () => {
       let tx = await semaphore.createGroup(groupId2, treeDepth, accounts[0], maxEdges1)
       await expect(tx)
         .emit(semaphore.contract, "GroupCreated")
-        .withArgs(groupId2, treeDepth)
+        .withArgs(groupId2, treeDepth, semaphore.linkedGroups[groupId2].root)
       const linkedGroup = new LinkedGroup(treeDepth, maxEdges1, zeroValue)
 
       // const defaultRoot = await semaphore.contract.getLatestNeighborEdges(groupId2)
       let initialRoot = await semaphore.getMerkleTreeRoot(groupId2)
-      console.log('LinkedGroup initial root: ', linkedGroup.root)
-      console.log('contract initial root: ', initialRoot)
 
       expect(linkedGroup.root).equals(initialRoot)
 
@@ -265,11 +263,8 @@ describe("Semaphore", () => {
 
       initialRoot = await semaphore.getMerkleTreeRoot(groupId2)
       expect(linkedGroup.root).equals(initialRoot)
-      console.log('LinkedGroup final root: ', linkedGroup.root)
-      console.log('contract final root: ', initialRoot)
 
       roots = linkedGroup.getRoots().map((bignum) => bignum.toString())
-      console.log('group roots: ', roots)
 
       fullProof = await generateProof(
         identities[0],
@@ -314,7 +309,7 @@ describe("Semaphore", () => {
     })
 
     it("Should verify a proof for an onchain group correctly", async () => {
-      const transaction = semaphore.verifyIdentity(
+      const { transaction, fullProof } = await semaphore.verifyIdentity(
         identities[0],
         signal,
         groupId2,
@@ -324,7 +319,13 @@ describe("Semaphore", () => {
 
       await expect(transaction)
         .to.emit(semaphore.contract, "ProofVerified")
-        .withArgs(groupId2, bytes32Signal)
+        .withArgs(
+          groupId2,
+          semaphore.linkedGroups[groupId2].root,
+          fullProof.publicSignals.nullifierHash,
+          fullProof.publicSignals.externalNullifier,
+          bytes32Signal
+        )
     })
   })
   describe("# verifyProof 7 maxEdges", () => {
@@ -382,7 +383,7 @@ describe("Semaphore", () => {
     })
 
     it("Should verify a proof for an onchain group correctly", async () => {
-      const transaction = semaphore.verifyIdentity(
+      const { transaction, fullProof } = await semaphore.verifyIdentity(
         identities[0],
         signal,
         groupId3,
@@ -391,7 +392,13 @@ describe("Semaphore", () => {
       )
       await expect(transaction)
         .to.emit(semaphore.contract, "ProofVerified")
-        .withArgs(groupId3, bytes32Signal)
+        .withArgs(
+          groupId3,
+          semaphore.linkedGroups[groupId3].root,
+          fullProof.publicSignals.nullifierHash,
+          fullProof.publicSignals.externalNullifier,
+          bytes32Signal
+        )
     })
   })
 })

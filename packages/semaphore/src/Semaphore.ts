@@ -19,6 +19,7 @@ import { getChainIdType, ZkComponents } from "@webb-tools/utils"
 import { Identity } from "@webb-tools/semaphore-identity/src"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
+  FullProof,
   generateProof,
   packToSolidityProof
 } from "@webb-tools/semaphore-proof/src"
@@ -49,7 +50,8 @@ export class Semaphore {
   // The depositHistory stores leafIndex => information to create proposals (new root)
   smallCircuitZkComponents: ZkComponents
   largeCircuitZkComponents: ZkComponents
-  zeroValue: bigint
+
+  zeroValue: bigint = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
 
   constructor(
     contract: SemaphoreContract,
@@ -245,6 +247,7 @@ export class Semaphore {
       this.linkedGroups[groupId] = new LinkedGroup(
         depth,
         maxEdges,
+        this.zeroValue,
         groupAdminAddr
       )
       if (merkleRootDuration === undefined) {
@@ -339,7 +342,7 @@ export class Semaphore {
     chainId: number,
     externalNullifier: BigNumberish,
     externalGroup?: LinkedGroup
-  ): Promise<ContractTransaction> {
+  ): Promise<{ transaction: ContractTransaction, fullProof: FullProof }> {
     const bytes32Signal = utils.formatBytes32String(signal)
 
     let roots: string[]
@@ -375,7 +378,7 @@ export class Semaphore {
     )
     const solidityProof = packToSolidityProof(fullProof.proof)
 
-    const transaction = this.contract.verifyProof(
+    const transaction = await this.contract.verifyProof(
       groupId,
       bytes32Signal,
       fullProof.publicSignals.nullifierHash,
@@ -385,7 +388,7 @@ export class Semaphore {
       { gasLimit: "0x5B8D80" }
     )
 
-    return transaction
+    return { transaction, fullProof }
   }
 }
 

@@ -13,14 +13,6 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
-      name: "PoseidonT3",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.PoseidonT3__factory>;
-    getContractFactory(
-      name: "PoseidonT6",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.PoseidonT6__factory>;
-    getContractFactory(
       name: "ChainIdWithType",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ChainIdWithType__factory>;
@@ -125,16 +117,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Verifier20_8__factory>;
 
-    getContractAt(
-      name: "PoseidonT3",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.PoseidonT3>;
-    getContractAt(
-      name: "PoseidonT6",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.PoseidonT6>;
     getContractAt(
       name: "ChainIdWithType",
       address: string,
