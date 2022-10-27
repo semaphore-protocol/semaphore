@@ -1,18 +1,18 @@
 import { expect } from "chai"
 import { run } from "hardhat"
-import { SemaphoreVoting } from "../../build/typechain"
+import { SemaphoreVoting } from "contracts/build/typechain"
 import { Signer, utils } from "ethers"
 import { config } from "../../package.json"
 
-import { Identity } from "../../packages/identity/src"
-import { LinkedGroup } from "../../packages/group/src"
+import { Identity } from "@webb-tools/semaphore-identity"
+import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
   generateNullifierHash,
   generateProof,
   packToSolidityProof,
   PublicSignals,
   SolidityProof
-} from "../../packages/proof/src"
+} from "@webb-tools/semaphore-proof"
 import { VerifierContractInfo, createRootsBytes } from "../utils"
 
 describe("SemaphoreVoting", () => {
@@ -188,7 +188,7 @@ describe("SemaphoreVoting", () => {
     })
 
     it("Should add a voter to an existing poll", async () => {
-      const identity = new Identity(chainID, "test")
+      const identity = new Identity("test")
       const identityCommitment = identity.generateCommitment()
 
       const group = new LinkedGroup(treeDepth, maxEdges)
@@ -214,7 +214,7 @@ describe("SemaphoreVoting", () => {
   })
 
   describe("# castVote", () => {
-    const identity = new Identity(chainID, "test")
+    const identity = new Identity("test")
     const identityCommitment = identity.generateCommitment()
     const vote = "1"
     const bytes32Vote = utils.formatBytes32String(vote)

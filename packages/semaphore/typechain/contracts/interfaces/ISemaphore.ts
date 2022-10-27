@@ -38,7 +38,7 @@ export interface ISemaphoreInterface extends utils.Interface {
     "updateEdge(uint256,uint256,uint32,bytes32)": FunctionFragment;
     "updateGroupAdmin(uint256,address)": FunctionFragment;
     "updateMember(uint256,uint256,uint256,uint256[],uint8[])": FunctionFragment;
-    "verifyProof(uint256,uint256,bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
+    "verifyProof(uint256,bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
   };
 
   getFunction(
@@ -121,7 +121,6 @@ export interface ISemaphoreInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "verifyProof",
     values: [
-      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BytesLike>,
       PromiseOrValue<BigNumberish>,
@@ -293,7 +292,6 @@ export interface ISemaphore extends BaseContract {
 
     verifyProof(
       groupId: PromiseOrValue<BigNumberish>,
-      merkleTreeRoot: PromiseOrValue<BigNumberish>,
       signal: PromiseOrValue<BytesLike>,
       nullifierHash: PromiseOrValue<BigNumberish>,
       externalNullifier: PromiseOrValue<BigNumberish>,
@@ -370,7 +368,6 @@ export interface ISemaphore extends BaseContract {
 
   verifyProof(
     groupId: PromiseOrValue<BigNumberish>,
-    merkleTreeRoot: PromiseOrValue<BigNumberish>,
     signal: PromiseOrValue<BytesLike>,
     nullifierHash: PromiseOrValue<BigNumberish>,
     externalNullifier: PromiseOrValue<BigNumberish>,
@@ -447,7 +444,6 @@ export interface ISemaphore extends BaseContract {
 
     verifyProof(
       groupId: PromiseOrValue<BigNumberish>,
-      merkleTreeRoot: PromiseOrValue<BigNumberish>,
       signal: PromiseOrValue<BytesLike>,
       nullifierHash: PromiseOrValue<BigNumberish>,
       externalNullifier: PromiseOrValue<BigNumberish>,
@@ -553,7 +549,6 @@ export interface ISemaphore extends BaseContract {
 
     verifyProof(
       groupId: PromiseOrValue<BigNumberish>,
-      merkleTreeRoot: PromiseOrValue<BigNumberish>,
       signal: PromiseOrValue<BytesLike>,
       nullifierHash: PromiseOrValue<BigNumberish>,
       externalNullifier: PromiseOrValue<BigNumberish>,
@@ -631,7 +626,6 @@ export interface ISemaphore extends BaseContract {
 
     verifyProof(
       groupId: PromiseOrValue<BigNumberish>,
-      merkleTreeRoot: PromiseOrValue<BigNumberish>,
       signal: PromiseOrValue<BytesLike>,
       nullifierHash: PromiseOrValue<BigNumberish>,
       externalNullifier: PromiseOrValue<BigNumberish>,

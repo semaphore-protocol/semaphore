@@ -328,11 +328,6 @@ const _abi = [
         type: "uint256",
       },
       {
-        internalType: "uint256",
-        name: "merkleTreeRoot",
-        type: "uint256",
-      },
-      {
         internalType: "bytes32",
         name: "signal",
         type: "bytes32",

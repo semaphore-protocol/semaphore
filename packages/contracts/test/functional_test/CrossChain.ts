@@ -4,18 +4,17 @@ import { ethers } from "hardhat"
 import { Identity } from "@webb-tools/identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import { Semaphore } from "@webb-tools/semaphore"
-import { startGanacheServer } from "../utils"
 import { fetchComponentsFromFilePaths, getChainIdType } from "@webb-tools/utils"
-
-export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
-
 import {
   FullProof,
   generateProof,
   packToSolidityProof,
   SolidityProof
-} from "../../packages/proof/src/"
-import { toFixedHex, createRootsBytes, createIdentities } from "../utils"
+} from "@webb-tools/semaphore-proof"
+import { startGanacheServer, toFixedHex, createRootsBytes, createIdentities } from "../utils"
+
+// const sleep = (ms: number) => , zeroValuenew Promise((r) => setTimeout(r, ms))
+
 
 describe("2-sided CrossChain tests", () => {
   let semaphore1: Semaphore
@@ -35,6 +34,7 @@ describe("2-sided CrossChain tests", () => {
   let identitiesB: Identity[]
   const groupIdNum = 2
 
+  const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
   const treeDepth = Number(process.env.TREE_DEPTH) | 20
   const maxEdges = 1
 
@@ -46,14 +46,14 @@ describe("2-sided CrossChain tests", () => {
   ): Promise<string[]> => {
     // const txs = await semaphore.addMembers(groupId, membersToAdd)
     const roots: string[] = [BigNumber.from(linkedGroup.root).toHexString()]
-    for (let i = 0; i < membersToAdd.length; i++) {
+    for (let i = 0; i < membersToAdd.length; i += 1) {
       const tx = await semaphore.addMember(numb, membersToAdd[i])
+      const index = linkedGroup.members.length
       await linkedGroup.addMember(membersToAdd[i])
       const root = BigNumber.from(linkedGroup.group.root)
-
       await expect(tx)
         .to.emit(semaphore.contract, "MemberAdded")
-        .withArgs(numb, membersToAdd[i], root)
+        .withArgs(numb, index, membersToAdd[i], root)
 
       roots.push(root.toHexString())
     }
@@ -153,7 +153,7 @@ describe("2-sided CrossChain tests", () => {
     identitiesB = idsB.identities
 
     // Creating group on-chain and locally
-    groupA = new LinkedGroup(treeDepth, maxEdges)
+    groupA = new LinkedGroup(treeDepth, maxEdges, zeroValue)
     const transactionA = semaphore1.createGroup(
       groupIdNum,
       treeDepth,
@@ -168,7 +168,7 @@ describe("2-sided CrossChain tests", () => {
     await expect(transactionA)
       .to.emit(semaphore1.contract, "GroupAdminUpdated")
       .withArgs(groupIdNum, constants.AddressZero, hardhatAdminAddr)
-    const rootA = await semaphore1.contract.getRoot(groupIdNum)
+    const rootA = await semaphore1.contract.getMerkleTreeRoot(groupIdNum)
     expect(rootA).to.equal(groupA.root)
 
     const transactionB = semaphore2.createGroup(
@@ -183,9 +183,9 @@ describe("2-sided CrossChain tests", () => {
     await expect(transactionB)
       .to.emit(semaphore2.contract, "GroupAdminUpdated")
       .withArgs(groupIdNum, constants.AddressZero, ganacheAdminAddr)
-    const rootB = await semaphore2.contract.getRoot(groupIdNum)
+    const rootB = await semaphore2.contract.getMerkleTreeRoot(groupIdNum)
 
-    groupB = new LinkedGroup(treeDepth, maxEdges)
+    groupB = new LinkedGroup(treeDepth, maxEdges, zeroValue)
     expect(rootB).to.equal(groupB.root)
     console.log("members slice: ", membersA.slice(0, 3))
 
@@ -212,6 +212,9 @@ describe("2-sided CrossChain tests", () => {
     before(async () => {
       rootA = await semaphore1.linkedGroups[groupIdNum].getRoots()[0]
       rootB = await semaphore2.linkedGroups[groupIdNum].getRoots()[0]
+      console.log('here')
+      console.log(rootA)
+      console.log(rootB)
 
       roots1 = [
         toFixedHex(rootA.toHexString()),
@@ -270,8 +273,8 @@ describe("2-sided CrossChain tests", () => {
       )
     })
     it("Should not verify out of date edges", async () => {
-      const rootA = await semaphore1.getRoot(groupIdNum)
-      const rootB = await semaphore2.getRoot(groupIdNum)
+      const rootA = await semaphore1.getMerkleTreeRoot(groupIdNum)
+      const rootB = await semaphore2.getMerkleTreeRoot(groupIdNum)
       const roots = [rootB.toHexString(), rootA.toHexString()]
 
       const transaction = semaphore2.verifyRoots(
@@ -313,7 +316,7 @@ describe("2-sided CrossChain tests", () => {
     const groupId2 = 1337
 
     before(async () => {
-      groupA2 = new LinkedGroup(treeDepth, maxEdges)
+      groupA2 = new LinkedGroup(treeDepth, maxEdges, zeroValue)
       const transactionA = await semaphore1.createGroup(
         groupId2,
         treeDepth,
@@ -335,9 +338,9 @@ describe("2-sided CrossChain tests", () => {
       )
 
       expect(groupA2.root).equal(groupA.root)
-      expect(await semaphore1.getRoot(groupId2)).equal(groupA2.root)
+      expect(await semaphore1.getMerkleTreeRoot(groupId2)).equal(groupA2.root)
 
-      groupB2 = new LinkedGroup(treeDepth, maxEdges)
+      groupB2 = new LinkedGroup(treeDepth, maxEdges, zeroValue)
       const transactionB = await semaphore2.createGroup(
         groupId2,
         treeDepth,
@@ -355,6 +358,9 @@ describe("2-sided CrossChain tests", () => {
         membersB.slice(0, 3).map((bigint) => BigNumber.from(bigint)),
         groupB2
       )
+
+      expect(groupB2.root).equal(groupB.root)
+      expect(await semaphore1.getMerkleTreeRoot(groupId2)).equal(groupB2.root)
 
       fullProof_local_chainA = await generateProof(
         identitiesA[0],
@@ -421,13 +427,13 @@ describe("2-sided CrossChain tests", () => {
       const tx4a = semaphore1.addMember(groupId2, membersA[3])
       await expect(tx4a)
         .to.emit(semaphore1.contract, "MemberAdded")
-        .withArgs(groupId2, membersA[3], groupA2.root)
+        .withArgs(groupId2, 3, membersA[3], groupA2.root)
 
       groupB2.addMember(membersB[3])
       const tx4b = semaphore2.addMember(groupId2, membersB[3])
       await expect(tx4b)
         .to.emit(semaphore2.contract, "MemberAdded")
-        .withArgs(groupId2, membersB[3], groupB2.root)
+        .withArgs(groupId2, 3, membersB[3], groupB2.root)
 
       await semaphore2.updateEdge(
         groupId2,

@@ -29,6 +29,22 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.LinkableIncrementalBinaryTree__factory>;
     getContractFactory(
+      name: "IPoseidonT3",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IPoseidonT3__factory>;
+    getContractFactory(
+      name: "PoseidonT3",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PoseidonT3__factory>;
+    getContractFactory(
+      name: "PoseidonT3Lib",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PoseidonT3Lib__factory>;
+    getContractFactory(
+      name: "PoseidonT6Lib",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PoseidonT6Lib__factory>;
+    getContractFactory(
       name: "SemaphoreCore",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SemaphoreCore__factory>;
@@ -129,6 +145,26 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.LinkableIncrementalBinaryTree>;
+    getContractAt(
+      name: "IPoseidonT3",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IPoseidonT3>;
+    getContractAt(
+      name: "PoseidonT3",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PoseidonT3>;
+    getContractAt(
+      name: "PoseidonT3Lib",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PoseidonT3Lib>;
+    getContractAt(
+      name: "PoseidonT6Lib",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PoseidonT6Lib>;
     getContractAt(
       name: "SemaphoreCore",
       address: string,

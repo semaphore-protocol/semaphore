@@ -80,15 +80,6 @@ export class Semaphore {
   ): Promise<Semaphore> {
     const chainId = getChainIdType(await signer.getChainId())
 
-    const encodeLibraryFactory = new SemaphoreInputEncoder__factory(signer)
-    const encodeLibrary = await encodeLibraryFactory.deploy()
-    await encodeLibrary.deployed()
-    const verifier = await Verifier.createVerifier(signer)
-    const linkableTreeFactory = new LinkableIncrementalBinaryTree__factory(
-      signer
-    )
-    const linkableTree = await linkableTreeFactory.deploy()
-    await linkableTree.deployed()
     const poseidonABI = poseidonContract.generateABI(2)
     const poseidonBytecode = poseidonContract.createCode(2)
 
@@ -98,15 +89,28 @@ export class Semaphore {
       signer
     )
     const poseidonLib = await PoseidonLibFactory.deploy()
-
     await poseidonLib.deployed()
+
+    const encodeLibraryFactory = new SemaphoreInputEncoder__factory(signer)
+    const encodeLibrary = await encodeLibraryFactory.deploy()
+    await encodeLibrary.deployed()
+    const verifier = await Verifier.createVerifier(signer)
+    const linkableTreeFactory = new LinkableIncrementalBinaryTree__factory(
+      {
+        ["contracts/base/Poseidon.sol:PoseidonT3Lib"]:
+          poseidonLib.address
+      },
+      signer
+    )
+    const linkableTree = await linkableTreeFactory.deploy()
+    await linkableTree.deployed()
     const factory = new Semaphore__factory(
       {
-        ["contracts/base/SemaphoreInputEncoder.sol:SemaphoreInputEncoder"]:
-          encodeLibrary.address,
         ["contracts/base/LinkableIncrementalBinaryTree.sol:LinkableIncrementalBinaryTree"]:
           linkableTree.address,
-        ["@zk-kit/incremental-merkle-tree.sol/Hashes.sol:PoseidonT3"]:
+        ["contracts/base/SemaphoreInputEncoder.sol:SemaphoreInputEncoder"]:
+          encodeLibrary.address,
+        ["contracts/base/Poseidon.sol:PoseidonT3Lib"]:
           poseidonLib.address
       },
       signer

@@ -1,11 +1,11 @@
 import { expect } from "chai"
 import { Signer, utils } from "ethers"
 import { run } from "hardhat"
-import { SemaphoreWhistleblowing } from "../../build/typechain"
+import { SemaphoreWhistleblowing } from "contracts/build/typechain"
 import { config } from "../../package.json"
 
-import { LinkedGroup } from "../../packages/group"
-import { Identity } from "../../packages/identity"
+import { LinkedGroup } from "@webb-tools/semaphore-group"
+import { Identity } from "@webb-tools/semaphore-identity"
 
 import {
   generateNullifierHash,
@@ -13,7 +13,7 @@ import {
   packToSolidityProof,
   PublicSignals,
   SolidityProof
-} from "../../packages/proof"
+} from "@webb-tools/semaphore-proof"
 
 import { VerifierContractInfo, createRootsBytes } from "../utils"
 
@@ -130,7 +130,7 @@ describe("SemaphoreWhistleblowing", () => {
 
   describe("# addWhistleblower", () => {
     it("Should not add a whistleblower if the caller is not the editor", async () => {
-      const identity = new Identity(chainID)
+      const identity = new Identity()
       const identityCommitment = identity.generateCommitment()
 
       const transaction = contract.addWhistleblower(
@@ -144,7 +144,7 @@ describe("SemaphoreWhistleblowing", () => {
     })
 
     it("Should add a whistleblower to an existing entity", async () => {
-      const identity = new Identity(chainID, "test")
+      const identity = new Identity("test")
       const identityCommitment = identity.generateCommitment()
 
       const group = new LinkedGroup(treeDepth, maxEdges)
@@ -171,7 +171,7 @@ describe("SemaphoreWhistleblowing", () => {
 
   describe("# removeWhistleblower", () => {
     it("Should not remove a whistleblower if the caller is not the editor", async () => {
-      const identity = new Identity(chainID)
+      const identity = new Identity()
       const identityCommitment = identity.generateCommitment()
       const group = new LinkedGroup(treeDepth, maxEdges)
 
@@ -192,7 +192,7 @@ describe("SemaphoreWhistleblowing", () => {
     })
 
     it("Should remove a whistleblower from an existing entity", async () => {
-      const identity = new Identity(chainID, "test")
+      const identity = new Identity("test")
       const identityCommitment = identity.generateCommitment()
       const group = new LinkedGroup(treeDepth, maxEdges)
 
@@ -220,7 +220,7 @@ describe("SemaphoreWhistleblowing", () => {
   })
 
   describe("# publishLeak", () => {
-    const identity = new Identity(chainID, "test")
+    const identity = new Identity("test")
     const identityCommitment = identity.generateCommitment()
     const leak = "leak"
     const bytes32Leak = utils.formatBytes32String(leak)

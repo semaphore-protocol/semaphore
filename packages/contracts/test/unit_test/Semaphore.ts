@@ -3,14 +3,14 @@ import { constants, Signer, utils, ContractReceipt, BigNumber } from "ethers"
 import { ethers } from "hardhat"
 // import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Semaphore } from "../../packages/semaphore"
-import { LinkedGroup } from "../../packages/group"
+import { Semaphore } from "@webb-tools/semaphore"
+import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
   FullProof,
   generateProof,
   packToSolidityProof,
   SolidityProof
-} from "../../packages/proof/src"
+} from "@webb-tools/semaphore-proof"
 import { fetchComponentsFromFilePaths } from "@webb-tools/utils"
 import { createRootsBytes, createIdentities } from "../utils"
 
@@ -23,6 +23,8 @@ describe("Semaphore", () => {
   let user: Signer
   let userAddr: string
   let accounts: string[]
+  const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
+
 
   const treeDepth = Number(process.env.TREE_DEPTH) | 20
   // const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
@@ -86,7 +88,8 @@ describe("Semaphore", () => {
   describe("# createGroup", () => {
     it("Should not create a group if the tree depth is not supported", async () => {
       // testing directly in the contract. Typescript fails if called directly too
-      const transaction = semaphore.contract.createGroup(
+      const transaction = semaphore.contract
+      ["createGroup(uint256,uint256,address,uint8)"](
         groupId,
         10,
         adminAddr,
@@ -94,8 +97,8 @@ describe("Semaphore", () => {
         { gasLimit: "0x5B8D80" }
       )
 
-      await expect(transaction).to.be.revertedWith(
-        "Semaphore__TreeDepthIsNotSupported"
+      await expect(transaction).revertedWith(
+        "Semaphore__MerkleTreeDepthIsNotSupported"
       )
     })
 
@@ -169,14 +172,14 @@ describe("Semaphore", () => {
     it("Should add a new member in an existing group", async () => {
       await semaphore.setSigner(admin)
 
-      const linkedGroup = new LinkedGroup(treeDepth, maxEdges1)
+      const linkedGroup = new LinkedGroup(treeDepth, maxEdges1, zeroValue)
       linkedGroup.addMember(members[0])
 
       const transaction = semaphore.addMember(groupId, members[0])
 
       await expect(transaction)
-        .to.emit(semaphore.contract, "MemberAdded")
-        .withArgs(groupId, members[0], linkedGroup.root)
+        .emit(semaphore.contract, "MemberAdded")
+        .withArgs(groupId, 0, members[0], linkedGroup.root)
     })
   })
 
@@ -211,27 +214,62 @@ describe("Semaphore", () => {
   describe("# verifyProof 1 maxEdge", () => {
     const signal = "Hello world"
     const bytes32Signal = utils.formatBytes32String(signal)
-    const groupId2 = 1337
+    const groupId2 = 1340
 
-    const linkedGroup = new LinkedGroup(treeDepth, maxEdges1)
-    linkedGroup.addMember(members[0])
-    linkedGroup.addMember(members[1])
-    linkedGroup.addMember(members[2])
 
     let fullProof: FullProof
     let solidityProof: SolidityProof
     let roots: string[]
 
     before(async () => {
-      await semaphore.createGroup(groupId2, treeDepth, accounts[0], maxEdges1)
+      let tx = await semaphore.createGroup(groupId2, treeDepth, accounts[0], maxEdges1)
+      await expect(tx)
+        .emit(semaphore.contract, "GroupCreated")
+        .withArgs(groupId2, treeDepth)
+      const linkedGroup = new LinkedGroup(treeDepth, maxEdges1, zeroValue)
 
       // const defaultRoot = await semaphore.contract.getLatestNeighborEdges(groupId2)
+      let initialRoot = await semaphore.getMerkleTreeRoot(groupId2)
+      console.log('LinkedGroup initial root: ', linkedGroup.root)
+      console.log('contract initial root: ', initialRoot)
 
-      await semaphore.addMember(groupId2, members[0])
-      await semaphore.addMember(groupId2, members[1])
-      await semaphore.addMember(groupId2, members[2])
+      expect(linkedGroup.root).equals(initialRoot)
 
-      roots = linkedGroup.getRoots().map((bignum) => bignum.toHexString())
+
+      tx = await semaphore.addMember(groupId2, members[0])
+      linkedGroup.addMember(members[0])
+      await expect(tx)
+        .emit(semaphore.contract, "MemberAdded")
+        .withArgs(groupId2, 0, members[0], linkedGroup.root)
+
+      initialRoot = await semaphore.getMerkleTreeRoot(groupId2)
+      expect(linkedGroup.root).equals(initialRoot)
+
+
+
+      tx = await semaphore.addMember(groupId2, members[1])
+      linkedGroup.addMember(members[1])
+      await expect(tx)
+        .emit(semaphore.contract, "MemberAdded")
+        .withArgs(groupId2, 1, members[1], linkedGroup.root)
+
+      initialRoot = await semaphore.getMerkleTreeRoot(groupId2)
+      expect(linkedGroup.root).equals(initialRoot)
+
+
+      tx = await semaphore.addMember(groupId2, members[2])
+      linkedGroup.addMember(members[2])
+      await expect(tx)
+        .emit(semaphore.contract, "MemberAdded")
+        .withArgs(groupId2, 2, members[2], linkedGroup.root)
+
+      initialRoot = await semaphore.getMerkleTreeRoot(groupId2)
+      expect(linkedGroup.root).equals(initialRoot)
+      console.log('LinkedGroup final root: ', linkedGroup.root)
+      console.log('contract final root: ', initialRoot)
+
+      roots = linkedGroup.getRoots().map((bignum) => bignum.toString())
+      console.log('group roots: ', roots)
 
       fullProof = await generateProof(
         identities[0],
@@ -242,7 +280,8 @@ describe("Semaphore", () => {
         {
           wasmFilePath: wasmFilePath20_2,
           zkeyFilePath: zkeyFilePath20_2
-        }
+        },
+        roots
       )
       solidityProof = packToSolidityProof(fullProof.proof)
     })
@@ -294,7 +333,7 @@ describe("Semaphore", () => {
     const groupId3 = 1338
     const maxEdges7 = 7
 
-    const linkedGroup = new LinkedGroup(treeDepth, maxEdges7)
+    const linkedGroup = new LinkedGroup(treeDepth, maxEdges7, zeroValue)
     linkedGroup.addMember(members[0])
     linkedGroup.addMember(members[1])
     linkedGroup.addMember(members[2])

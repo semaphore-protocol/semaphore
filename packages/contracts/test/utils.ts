@@ -1,4 +1,4 @@
-import { Identity } from "../packages/identity"
+import { Identity } from "@webb-tools/semaphore-identity"
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber"
 import { randomBytes } from "@ethersproject/random"
 import { sha256 as _sha256 } from "@ethersproject/sha2"
@@ -46,7 +46,7 @@ export function createIdentities(
 
   for (let i = 0; i < n; i++) {
     const identity = new Identity()
-    const identityCommitment = identity.generateCommitment()
+    const identityCommitment = identity.commitment
 
     identities.push(identity)
     identityCommitments.push(identityCommitment)

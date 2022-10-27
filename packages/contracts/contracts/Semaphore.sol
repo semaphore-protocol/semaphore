@@ -5,7 +5,7 @@ import "./interfaces/ISemaphore.sol";
 import "./verifiers/SemaphoreVerifier.sol";
 import "./base/SemaphoreCore.sol";
 import "./base/SemaphoreGroups.sol";
-import {PoseidonT3} from "@zk-kit/incremental-merkle-tree.sol/Hashes.sol";
+import {PoseidonT3Lib as PoseidonT3} from "./base/Poseidon.sol";
 
 /// @title Semaphore
 contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
@@ -196,7 +196,6 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev See {ISemaphore-verifyProof}.
     function verifyProof(
         uint256 groupId,
-        uint256 merkleTreeRoot,
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
@@ -213,7 +212,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         }
 
         if (!verifyRoots(groupId, roots)) {
-            uint256 merkleRootCreationDate = groups[groupId].merkleRootCreationDates[merkleTreeRoot];
+            uint256 merkleRootCreationDate = groups[groupId].merkleRootCreationDates[currentMerkleTreeRoot];
             uint256 merkleRootDuration = groups[groupId].merkleRootDuration;
 
             if (merkleRootCreationDate == 0) {
@@ -242,6 +241,6 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
         groups[groupId].nullifierHashes[nullifierHash] = true;
 
-        emit ProofVerified(groupId, merkleTreeRoot, nullifierHash, externalNullifier, signal);
+        emit ProofVerified(groupId, currentMerkleTreeRoot, nullifierHash, externalNullifier, signal);
     }
 }
