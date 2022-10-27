@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later-only
  */
 
-pragma solidity ^0.8.5;
+pragma solidity ^0.8.4;
 
 /**
 	@title IVAnchorVerifier join/split verifier interface with 2 edges

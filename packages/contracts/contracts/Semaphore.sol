@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.5;
+pragma solidity ^0.8.4;
 
 import "./interfaces/ISemaphore.sol";
 import "./verifiers/SemaphoreVerifier.sol";
@@ -185,7 +185,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     // Function exposed for testing purposes
     function decodeRoots(bytes calldata roots)
         external
-        view
+        pure
         override
         returns (bytes32[] memory rootsDecoded)
     {
@@ -227,8 +227,6 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         if (groups[groupId].nullifierHashes[nullifierHash]) {
             revert Semaphore__YouAreUsingTheSameNillifierTwice();
         }
-
-        uint256 merkleTreeDepth = getMerkleTreeDepth(groupId);
 
         SemaphoreVerifier verifier = verifiers[depth];
 

@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.5;
+pragma solidity ^0.8.4;
 import {Edge} from "../base/LinkableIncrementalBinaryTree.sol";
 
 /// @title SemaphoreGroups interface.
