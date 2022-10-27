@@ -23,7 +23,7 @@ describe("Proof", () => {
   const snarkArtifactsPath = "./packages/proof/snark-artifacts"
   const wasmFilePath = `${snarkArtifactsPath}/semaphore_20_2.wasm`
   const zkeyFilePath = `${snarkArtifactsPath}/circuit_final.zkey`
-  const verificationKey = JSON.parse(fs.readFileSync(`${snarkArtifactsPath}/verification_key.json`))
+  const verificationKey = JSON.parse(fs.readFileSync(`${snarkArtifactsPath}/verification_key.json`).toString())
   const identity = new Identity()
   const identityCommitment = identity.commitment
 

@@ -11,15 +11,19 @@ export default function verifyProof(
   verificationKey: any,
   { proof, publicSignals }: FullProof
 ): Promise<boolean> {
+  const publicParams = [
+    publicSignals.nullifierHash,
+    publicSignals.signalHash,
+    publicSignals.externalNullifier,
+  ]
+  for (const root of publicSignals.roots) {
+    publicParams.push(root)
+  }
+  publicParams.push(publicSignals.chainID)
+
   return groth16.verify(
     verificationKey,
-    [
-      publicSignals.signalHash,
-      publicSignals.externalNullifier,
-      publicSignals.roots,
-      publicSignals.chainID,
-      publicSignals.nullifierHash
-    ],
+    publicParams,
     proof
   )
 }
