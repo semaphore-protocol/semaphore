@@ -80,7 +80,10 @@ jobs:
         run: cd solidity-fixtures && dvc pull && cd ..
 
       - name: Compile contracts
-        run: yarn compile
+        run: yarn compile:contracts
+
+      - name: Build libraries
+        run: yarn build:libraries
 
       - name: Test contracts and libraries
         run: yarn test
