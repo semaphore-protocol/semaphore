@@ -3,7 +3,6 @@ import { constants, Signer, utils, ContractReceipt, BigNumber } from "ethers"
 import { ethers } from "hardhat"
 // import { config } from "../../package.json"
 // import { SnarkArtifacts } from "@semaphore-protocol/proof"
-import { Semaphore } from "@webb-tools/semaphore"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
   FullProof,
@@ -12,6 +11,7 @@ import {
   SolidityProof
 } from "@webb-tools/semaphore-proof"
 import { fetchComponentsFromFilePaths } from "@webb-tools/utils"
+import { Semaphore } from "../../src"
 import { createRootsBytes, createIdentities } from "../utils"
 
 describe("Semaphore", () => {

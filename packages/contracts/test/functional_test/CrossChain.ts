@@ -3,7 +3,7 @@ import { constants, Signer, utils, BigNumber } from "ethers"
 import { ethers } from "hardhat"
 import { Identity } from "@webb-tools/identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
-import { Semaphore } from "@webb-tools/semaphore"
+import { Semaphore } from "../../src"
 import { fetchComponentsFromFilePaths, getChainIdType } from "@webb-tools/utils"
 import {
   FullProof,
@@ -127,10 +127,12 @@ describe("2-sided CrossChain tests", () => {
       zkComponents2_2,
       hardhatAdmin
     )
-    console.log(
-      `Semaphore 1 has been deployed to ${semaphore1.contract.address} with signer: `,
-      semaphore1.signer.provider.connection
-    )
+    if (semaphore1.signer.provider !== undefined) {
+      console.log(
+        `Semaphore 1 has been deployed to ${semaphore1.contract.address} with signer: `,
+        await semaphore1.signer.getAddress()
+      )
+    }
 
     await ganacheProvider2.ready
 
@@ -140,10 +142,12 @@ describe("2-sided CrossChain tests", () => {
       zkComponents2_2,
       ganacheAdmin
     )
-    console.log(
-      `Semaphore 2 has been deployed to ${semaphore2.contract.address} with signer: `,
-      semaphore2.signer.provider.connection
-    )
+    if (semaphore2.signer.provider !== undefined) {
+      console.log(
+        `Semaphore 2 has been deployed to ${semaphore2.contract.address} with signer: `,
+        await semaphore2.signer.getAddress()
+      )
+    }
 
     // Creating members
     const idsA = createIdentities(5)
@@ -287,7 +291,7 @@ describe("2-sided CrossChain tests", () => {
         groupIdNum,
         historicalRootsA[2],
         2,
-        toFixedHex(chainIDA, 32)
+        chainIDA
       )
 
       const roots = [historicalRootsB[2], historicalRootsA[2]]
@@ -451,7 +455,7 @@ describe("2-sided CrossChain tests", () => {
         groupId2,
         BigNumber.from(groupA2.root).toHexString(),
         3,
-        toFixedHex(chainIDA, 32)
+        chainIDA
       )
 
       groupB2.updateEdge(chainIDA, groupA2.root.toString())

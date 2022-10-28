@@ -1,5 +1,5 @@
 import { LinkedGroup } from "@webb-tools/semaphore-group"
-import { Identity } from "@webb-tools/semaphore-identity/src"
+import { Identity } from "@webb-tools/semaphore-identity"
 // import { BigNumber } from 'ethers';
 // import download from "download"
 import fs from "fs"

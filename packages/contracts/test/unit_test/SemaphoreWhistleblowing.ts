@@ -1,7 +1,7 @@
 import { expect } from "chai"
 import { Signer, utils } from "ethers"
 import { run } from "hardhat"
-import { SemaphoreWhistleblowing } from "contracts/build/typechain"
+import { SemaphoreWhistleblowing } from "../../build/typechain"
 import { config } from "../../package.json"
 
 import { LinkedGroup } from "@webb-tools/semaphore-group"
@@ -19,7 +19,7 @@ import { VerifierContractInfo, createRootsBytes } from "../utils"
 
 const path = require('path')
 
-describe.only("SemaphoreWhistleblowing", () => {
+describe("SemaphoreWhistleblowing", () => {
   let contract: SemaphoreWhistleblowing
   let signers: Signer[]
   let editor: string

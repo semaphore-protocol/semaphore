@@ -18,51 +18,36 @@ import "./tasks/deploy-verifier"
 dotenvConfig({ path: resolve(__dirname, "../../.env") })
 
 function getNetworks(): NetworksUserConfig {
-    if (!process.env.INFURA_API_KEY || !process.env.BACKEND_PRIVATE_KEY) {
-        return {}
-    }
+  if (!process.env.INFURA_API_KEY || !process.env.BACKEND_PRIVATE_KEY) {
+    return {}
+  }
 
-    const infuraApiKey = process.env.INFURA_API_KEY
-    const accounts = [`0x${process.env.BACKEND_PRIVATE_KEY}`]
+  const infuraApiKey = process.env.INFURA_API_KEY
+  const accounts = [`0x${process.env.BACKEND_PRIVATE_KEY}`]
 
-    return {
-      goerli: {
-        url: `https://goerli.infura.io/v3/${infuraApiKey}`,
-        chainId: 5,
-        accounts
-      },
-      arbitrum: {
-        url: "https://arb1.arbitrum.io/rpc",
-        chainId: 42161,
-        accounts
-      },
-      chainA: {
-        url: `http://localhost:8545`,
-        chainId: 1338,
-        accounts
-      },
-      chainB: {
-        url: `http://localhost:8546`,
-        chainId: 1339,
-        accounts
-      }
+  return {
+    goerli: {
+      url: `https://goerli.infura.io/v3/${infuraApiKey}`,
+      chainId: 5,
+      accounts
+    },
+    arbitrum: {
+      url: "https://arb1.arbitrum.io/rpc",
+      chainId: 42161,
+      accounts
+    },
+    chainA: {
+      url: `http://localhost:8545`,
+      chainId: 1338,
+      accounts
+    },
+    chainB: {
+      url: `http://localhost:8546`,
+      chainId: 1339,
+      accounts
     }
   }
-  if (process.env.ENABLE_LOCAL_CHAINS && process.env.BACKEND_PRIVATE_KEY) {
-    const accounts = [`0x${process.env.BACKEND_PRIVATE_KEY}`]
-    return {
-      chainA: {
-        url: `http://localhost:8545`,
-        chainId: 1338,
-        accounts
-      },
-      chainB: {
-        url: `http://localhost:8546`,
-        chainId: 1339,
-        accounts
-      }
-    }
-  }
+}
 
 const hardhatConfig: HardhatUserConfig = {
   solidity: config.solidity,
@@ -87,9 +72,9 @@ const hardhatConfig: HardhatUserConfig = {
   typechain: {
     outDir: config.paths.build.typechain,
     target: "ethers-v5"
-    },
-    etherscan: {
-        apiKey: process.env.ETHERSCAN_API_KEY
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY
   }
 }
 

@@ -1,6 +1,6 @@
 import { expect } from "chai"
 import { run } from "hardhat"
-import { SemaphoreVoting } from "contracts/build/typechain"
+import { SemaphoreVoting } from "../../build/typechain"
 import { Signer, utils } from "ethers"
 import { config } from "../../package.json"
 

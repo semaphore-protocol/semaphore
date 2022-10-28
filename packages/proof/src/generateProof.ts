@@ -5,7 +5,7 @@ import { FullProof, SnarkArtifacts } from "./types"
 import { MerkleProof } from "@webb-tools/sdk-core"
 import { ZkComponents } from "@webb-tools/utils"
 
-import { Identity } from "@webb-tools/semaphore-identity/src"
+import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 // const assert = require("assert")
 

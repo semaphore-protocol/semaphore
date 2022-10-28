@@ -16,17 +16,16 @@
     "build:libraries": "yarn workspaces foreach run build",
     "compile:contracts": "yarn workspace contracts compile",
     "fetch:fixtures": "cd solidity-fixtures && dvc pull && cd ..",
-    "test": "yarn test:libraries && yarn test:contracts",
+    "test": "yarn test:contracts && yarn test:libraries",
     "test:libraries": "jest --coverage",
-    "test:contracts": "yarn workspace contracts test:coverage",
+    "test:contracts": "yarn workspace contracts test",
     "lint": "eslint . --ext .js,.ts && yarn workspace contracts lint",
     "prettier": "prettier -c .",
     "prettier:write": "prettier -w .",
     "docs": "yarn workspaces foreach run docs",
     "commit": "cz",
     "workspace": "yarn workspace",
-    "precommit": "lint-staged",
-    "postinstall": "yarn fetch:fixtures"
+    "precommit": "lint-staged"
   },
   "keywords": [
     "ethereum",
@@ -42,7 +41,13 @@
     "monorepo"
   ],
   "workspaces": [
-    "packages/*"
+    "packages/identity",
+    "packages/group",
+    "packages/proof",
+    "packages/contracts",
+    "packages/hardhat",
+    "packages/subgraph",
+    "packages/circuits"
   ],
   "packageManager": "yarn@3.2.1",
   "devDependencies": {

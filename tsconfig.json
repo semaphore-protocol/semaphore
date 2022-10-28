@@ -14,6 +14,10 @@
     "declarationDir": "types",
     "typeRoots": ["node_modules/@types", "types"],
     "paths": {
+      "@webb-tools/semaphore-groups": ["packages/group"],
+      "@webb-tools/semaphore-identity": ["packages/identity"],
+      "@webb-tools/semaphore-proof": ["packages/proof"],
+      "@webb-tools/semaphore": ["packages/contracts"],
       "@webb-tools/*": ["packages/*"]
     }
   },

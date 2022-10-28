@@ -70,10 +70,6 @@ import {
 //
 //     return contract
 //   })
-import { poseidon_gencontract as poseidonContract } from "circomlibjs"
-import { Contract } from "ethers"
-import { task, types } from "hardhat/config"
-
 task(
   "deploy:semaphore-whistleblowing",
   "Deploy a SemaphoreWhistleblowing contract"
