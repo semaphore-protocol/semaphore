@@ -10,9 +10,9 @@
         "deploy:semaphore-voting": "hardhat deploy:semaphore-voting",
         "deploy:semaphore-whistleblowing": "hardhat deploy:semaphore-whistleblowing",
         "verify:contracts": "hardhat run scripts/verify-contracts.ts",
-        "test": "hardhat test",
+        "test": "hardhat test --no-compile",
         "test:report-gas": "REPORT_GAS=true hardhat test",
-        "test:coverage": "hardhat coverage",
+        "test:coverage": "hardhat coverage --no-compile",
         "typechain": "hardhat typechain",
         "lint": "solhint 'contracts/**/*.sol'"
     },
