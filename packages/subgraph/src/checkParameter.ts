@@ -5,7 +5,9 @@
  * @param type Expected parameter type.
  */
 export default function checkParameter(value: any, name: string, type: string) {
-    if (typeof value !== type) {
-        throw new TypeError(`Parameter '${name}' is not ${type === "object" ? "an" : "a"} ${type}`)
-    }
+  if (typeof value !== type) {
+    throw new TypeError(
+      `Parameter '${name}' is not ${type === "object" ? "an" : "a"} ${type}`
+    )
+  }
 }

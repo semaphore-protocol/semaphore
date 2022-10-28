@@ -21,7 +21,9 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
     await poseidonLib.deployed()
 
     if (logs) {
-      console.info(`Poseidon library has been deployed to: ${poseidonLib.address}`)
+      console.info(
+        `Poseidon library has been deployed to: ${poseidonLib.address}`
+      )
     }
 
     const LinkableIncrementalBinaryTreeLibFactory =
@@ -51,13 +53,17 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
       )
     }
 
-    const SemaphoreContractFactory = await ethers.getContractFactory("Semaphore", {
-      libraries: {
-        SemaphoreInputEncoder: semaphoreInputEncoderLib.address,
-        LinkableIncrementalBinaryTree: linkableIncrementalBinaryTreeLib.address,
-        PoseidonT3: poseidonLib.address
+    const SemaphoreContractFactory = await ethers.getContractFactory(
+      "Semaphore",
+      {
+        libraries: {
+          SemaphoreInputEncoder: semaphoreInputEncoderLib.address,
+          LinkableIncrementalBinaryTree:
+            linkableIncrementalBinaryTreeLib.address,
+          PoseidonT3: poseidonLib.address
+        }
       }
-    })
+    )
 
     const semaphoreContract = await SemaphoreContractFactory.deploy(verifiers)
 

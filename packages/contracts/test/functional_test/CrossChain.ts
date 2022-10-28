@@ -11,10 +11,14 @@ import {
   packToSolidityProof,
   SolidityProof
 } from "@webb-tools/semaphore-proof"
-import { startGanacheServer, toFixedHex, createRootsBytes, createIdentities } from "../utils"
+import {
+  startGanacheServer,
+  toFixedHex,
+  createRootsBytes,
+  createIdentities
+} from "../utils"
 
 // const sleep = (ms: number) => , zeroValuenew Promise((r) => setTimeout(r, ms))
-
 
 describe("2-sided CrossChain tests", () => {
   let semaphore1: Semaphore
@@ -34,7 +38,9 @@ describe("2-sided CrossChain tests", () => {
   let identitiesB: Identity[]
   const groupIdNum = 2
 
-  const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
+  const zeroValue = BigInt(
+    "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+  )
   const treeDepth = Number(process.env.TREE_DEPTH) | 20
   const maxEdges = 1
 
@@ -45,7 +51,9 @@ describe("2-sided CrossChain tests", () => {
     linkedGroup: LinkedGroup
   ): Promise<string[]> => {
     // const txs = await semaphore.addMembers(groupId, membersToAdd)
-    const roots: string[] = [BigNumber.from(semaphore.linkedGroups[numb].root).toHexString()]
+    const roots: string[] = [
+      BigNumber.from(semaphore.linkedGroups[numb].root).toHexString()
+    ]
     for (let i = 0; i < membersToAdd.length; i += 1) {
       const index = semaphore.linkedGroups[numb].members.length
       const tx = await semaphore.addMember(numb, membersToAdd[i])
@@ -287,12 +295,7 @@ describe("2-sided CrossChain tests", () => {
       await expect(transaction).to.be.revertedWith("Neighbour root not found")
     })
     it("Should verify not sequential updates", async () => {
-      await semaphore2.updateEdge(
-        groupIdNum,
-        historicalRootsA[2],
-        2,
-        chainIDA
-      )
+      await semaphore2.updateEdge(groupIdNum, historicalRootsA[2], 2, chainIDA)
 
       const roots = [historicalRootsB[2], historicalRootsA[2]]
 

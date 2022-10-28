@@ -1,7 +1,12 @@
 import { BigNumber } from "@ethersproject/bignumber"
 import { poseidon } from "circomlibjs"
 import checkParameter from "./checkParameter"
-import { generateCommitment, genRandomNumber, isJsonArray, sha256 } from "./utils"
+import {
+  generateCommitment,
+  genRandomNumber,
+  isJsonArray,
+  sha256
+} from "./utils"
 
 export default class Identity {
   private _trapdoor: bigint
@@ -13,7 +18,6 @@ export default class Identity {
    * @param identityOrMessage Additional data needed to create identity for given strategy.
    */
   constructor(identityOrMessage?: string) {
-
     if (identityOrMessage === undefined) {
       this._trapdoor = genRandomNumber()
       this._nullifier = genRandomNumber()
@@ -27,8 +31,12 @@ export default class Identity {
     if (!isJsonArray(identityOrMessage)) {
       const messageHash = sha256(identityOrMessage).slice(2)
 
-      this._trapdoor = BigNumber.from(sha256(`${messageHash}identity_trapdoor`)).toBigInt()
-      this._nullifier = BigNumber.from(sha256(`${messageHash}identity_nullifier`)).toBigInt()
+      this._trapdoor = BigNumber.from(
+        sha256(`${messageHash}identity_trapdoor`)
+      ).toBigInt()
+      this._nullifier = BigNumber.from(
+        sha256(`${messageHash}identity_nullifier`)
+      ).toBigInt()
       this._commitment = generateCommitment(this._nullifier, this._trapdoor)
 
       return
@@ -58,18 +66,18 @@ export default class Identity {
   }
 
   /**
-     * Returns the identity commitment.
-     * @returns The identity commitment.
-     */
+   * Returns the identity commitment.
+   * @returns The identity commitment.
+   */
   public get commitment(): bigint {
     return this._commitment
   }
 
   /**
    * @deprecated since version 2.6.0
- * Generates the identity commitment from trapdoor and nullifier.
- * @returns identity commitment
- */
+   * Generates the identity commitment from trapdoor and nullifier.
+   * @returns identity commitment
+   */
   public generateCommitment(): bigint {
     return poseidon([poseidon([this._nullifier, this._trapdoor])])
   }

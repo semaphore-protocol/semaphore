@@ -14,16 +14,12 @@ export default function verifyProof(
   const publicParams = [
     publicSignals.nullifierHash,
     publicSignals.signalHash,
-    publicSignals.externalNullifier,
+    publicSignals.externalNullifier
   ]
   for (const root of publicSignals.roots) {
     publicParams.push(root)
   }
   publicParams.push(publicSignals.chainID)
 
-  return groth16.verify(
-    verificationKey,
-    publicParams,
-    proof
-  )
+  return groth16.verify(verificationKey, publicParams, proof)
 }

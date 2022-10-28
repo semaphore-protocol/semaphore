@@ -7,8 +7,11 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
  * @returns Request data.
  */
 /* istanbul ignore next */
-export default async function request(url: string, config?: AxiosRequestConfig): Promise<any> {
-    const { data }: AxiosResponse<any> = await axios(url, config)
+export default async function request(
+  url: string,
+  config?: AxiosRequestConfig
+): Promise<any> {
+  const { data }: AxiosResponse<any> = await axios(url, config)
 
-    return data?.data
+  return data?.data
 }

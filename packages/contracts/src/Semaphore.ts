@@ -51,7 +51,9 @@ export class Semaphore {
   smallCircuitZkComponents: ZkComponents
   largeCircuitZkComponents: ZkComponents
 
-  zeroValue: bigint = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
+  zeroValue: bigint = BigInt(
+    "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+  )
 
   constructor(
     contract: SemaphoreContract,
@@ -99,8 +101,7 @@ export class Semaphore {
     const verifier = await Verifier.createVerifier(signer)
     const linkableTreeFactory = new LinkableIncrementalBinaryTree__factory(
       {
-        ["contracts/base/Poseidon.sol:PoseidonT3Lib"]:
-          poseidonLib.address
+        ["contracts/base/Poseidon.sol:PoseidonT3Lib"]: poseidonLib.address
       },
       signer
     )
@@ -112,8 +113,7 @@ export class Semaphore {
           linkableTree.address,
         ["contracts/base/SemaphoreInputEncoder.sol:SemaphoreInputEncoder"]:
           encodeLibrary.address,
-        ["contracts/base/Poseidon.sol:PoseidonT3Lib"]:
-          poseidonLib.address
+        ["contracts/base/Poseidon.sol:PoseidonT3Lib"]: poseidonLib.address
       },
       signer
     )
@@ -207,7 +207,7 @@ export class Semaphore {
   public async createResourceId(): Promise<string> {
     return toHex(
       this.contract.address +
-      toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
+        toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
       32
     )
   }
@@ -252,9 +252,16 @@ export class Semaphore {
       )
       if (merkleRootDuration === undefined) {
         // return this.contract.createGroup(groupId, depth, groupAdminAddr, maxEdges)
-        return this.contract["createGroup(uint256,uint256,address,uint8)"](groupId, depth, groupAdminAddr, maxEdges)
+        return this.contract["createGroup(uint256,uint256,address,uint8)"](
+          groupId,
+          depth,
+          groupAdminAddr,
+          maxEdges
+        )
       }
-      return this.contract["createGroup(uint256,uint256,address,uint8,uint256)"](groupId, depth, groupAdminAddr, maxEdges, merkleRootDuration.toString())
+      return this.contract[
+        "createGroup(uint256,uint256,address,uint8,uint256)"
+      ](groupId, depth, groupAdminAddr, maxEdges, merkleRootDuration.toString())
     }
   }
 
@@ -272,7 +279,10 @@ export class Semaphore {
     const neighborEdges = await this.contract.getLatestNeighborEdges(groupId)
 
     neighborEdges.forEach((edge) => {
-      this.linkedGroups[groupId].updateEdge(edge.chainID.toNumber(), edge.root.toString())
+      this.linkedGroups[groupId].updateEdge(
+        edge.chainID.toNumber(),
+        edge.root.toString()
+      )
     })
 
     const thisRoot = await this.contract.getMerkleTreeRoot(groupId)
@@ -282,7 +292,10 @@ export class Semaphore {
     )
 
     // TODO: Add query and pre-processing of out-of-sync leaves to recreate group and remove above assert
-    return [thisRoot.toString(), ...neighborEdges.map((edge) => edge.root.toString())]
+    return [
+      thisRoot.toString(),
+      ...neighborEdges.map((edge) => edge.root.toString())
+    ]
   }
 
   public async addMembers(
@@ -342,7 +355,7 @@ export class Semaphore {
     chainId: number,
     externalNullifier: BigNumberish,
     externalGroup?: LinkedGroup
-  ): Promise<{ transaction: ContractTransaction, fullProof: FullProof }> {
+  ): Promise<{ transaction: ContractTransaction; fullProof: FullProof }> {
     const bytes32Signal = utils.formatBytes32String(signal)
 
     let roots: string[]

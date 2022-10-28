@@ -22,10 +22,11 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     /// @param groupId: Id of the group.
     /// @param merkleTreeDepth: Depth of the tree.
     /// @param maxEdges: The maximum # of edges supported by this group
-    function _createGroup(uint256 groupId, uint256 merkleTreeDepth, uint8 maxEdges)
-        internal
-        virtual
-    {
+    function _createGroup(
+        uint256 groupId,
+        uint256 merkleTreeDepth,
+        uint8 maxEdges
+    ) internal virtual {
         if (groupId >= SNARK_SCALAR_FIELD) {
             revert Semaphore__GroupIdIsNotLessThanSnarkScalarField();
         }
@@ -77,12 +78,23 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
             revert Semaphore__GroupDoesNotExist();
         }
 
-        merkleTree[groupId].update(identityCommitment, newIdentityCommitment, proofSiblings, proofPathIndices);
+        merkleTree[groupId].update(
+            identityCommitment,
+            newIdentityCommitment,
+            proofSiblings,
+            proofPathIndices
+        );
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
         uint256 index = proofPathIndicesToMemberIndex(proofPathIndices);
 
-        emit MemberUpdated(groupId, index, identityCommitment, newIdentityCommitment, merkleTreeRoot);
+        emit MemberUpdated(
+            groupId,
+            index,
+            identityCommitment,
+            newIdentityCommitment,
+            merkleTreeRoot
+        );
     }
 
     /// @dev Removes an identity commitment from an existing group. A proof of membership is
@@ -101,7 +113,11 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
             revert Semaphore__GroupDoesNotExist();
         }
 
-        merkleTree[groupId].remove(identityCommitment, proofSiblings, proofPathIndices);
+        merkleTree[groupId].remove(
+            identityCommitment,
+            proofSiblings,
+            proofPathIndices
+        );
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
         uint256 index = proofPathIndicesToMemberIndex(proofPathIndices);
@@ -171,13 +187,24 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreGroups-getMerkleTreeRoot}.
-    function getMerkleTreeRoot(uint256 groupId) public view virtual override returns (uint256) {
+    function getMerkleTreeRoot(uint256 groupId)
+        public
+        view
+        virtual
+        override
+        returns (uint256)
+    {
         return merkleTree[groupId].getLastRoot();
     }
 
-
     /// @dev See {ISemaphoreGroups-getMerkleTreeDepth}.
-    function getMerkleTreeDepth(uint256 groupId) public view virtual override returns (uint256) {
+    function getMerkleTreeDepth(uint256 groupId)
+        public
+        view
+        virtual
+        override
+        returns (uint256)
+    {
         return merkleTree[groupId].depth;
     }
 
@@ -193,14 +220,24 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreGroups-getNumberOfMerkleTreeLeaves}.
-    function getNumberOfMerkleTreeLeaves(uint256 groupId) public view virtual override returns (uint256) {
+    function getNumberOfMerkleTreeLeaves(uint256 groupId)
+        public
+        view
+        virtual
+        override
+        returns (uint256)
+    {
         return merkleTree[groupId].numberOfLeaves;
     }
 
     /// @dev Converts the path indices of a Merkle proof to the identity commitment index in the tree.
     /// @param proofPathIndices: Path of the proof of membership.
     /// @return Index of a group member.
-    function proofPathIndicesToMemberIndex(uint8[] calldata proofPathIndices) private pure returns (uint256) {
+    function proofPathIndicesToMemberIndex(uint8[] calldata proofPathIndices)
+        private
+        pure
+        returns (uint256)
+    {
         uint256 memberIndex = 0;
 
         for (uint8 i = uint8(proofPathIndices.length); i > 0; ) {

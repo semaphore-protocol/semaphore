@@ -37,9 +37,10 @@ export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
   return rootsBytes // root byte string (32 * array.length bytes)
 }
 
-export function createIdentities(
-  n: number
-): { identities: Identity[]; members: bigint[] } {
+export function createIdentities(n: number): {
+  identities: Identity[]
+  members: bigint[]
+} {
   const identityCommitments: bigint[] = []
   const identities: Identity[] = []
 

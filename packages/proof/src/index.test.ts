@@ -23,7 +23,9 @@ describe("Proof", () => {
   const snarkArtifactsPath = "./packages/proof/snark-artifacts"
   const wasmFilePath = `${snarkArtifactsPath}/semaphore_20_2.wasm`
   const zkeyFilePath = `${snarkArtifactsPath}/circuit_final.zkey`
-  const verificationKey = JSON.parse(fs.readFileSync(`${snarkArtifactsPath}/verification_key.json`).toString())
+  const verificationKey = JSON.parse(
+    fs.readFileSync(`${snarkArtifactsPath}/verification_key.json`).toString()
+  )
   const identity = new Identity()
   const identityCommitment = identity.commitment
 
@@ -104,9 +106,14 @@ describe("Proof", () => {
 
   describe("# generateNullifierHash", () => {
     it("Should generate a valid nullifier hash", async () => {
-      const nullifierHash = generateNullifierHash(externalNullifier, identity.nullifier)
+      const nullifierHash = generateNullifierHash(
+        externalNullifier,
+        identity.nullifier
+      )
 
-      expect(nullifierHash.toString()).toBe(fullProof.publicSignals.nullifierHash)
+      expect(nullifierHash.toString()).toBe(
+        fullProof.publicSignals.nullifierHash
+      )
     })
   })
 

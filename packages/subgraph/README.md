@@ -108,5 +108,8 @@ const group = subgraph.getGroup("1")
 
 // or
 
-const { members, verifiedProofs } = subgraph.getGroup("1", { members: true, verifiedProofs: true })
+const { members, verifiedProofs } = subgraph.getGroup("1", {
+    members: true,
+    verifiedProofs: true
+})
 ```

@@ -26,7 +26,9 @@ task("deploy:verifier", "Deploy a Verifier contract")
       await contract.deployed()
 
       if (logs) {
-        console.info(`Verifier${depth}_${circuitLength} contract has been deployed to: ${contract.address}`)
+        console.info(
+          `Verifier${depth}_${circuitLength} contract has been deployed to: ${contract.address}`
+        )
       }
 
       return contract
@@ -59,7 +61,9 @@ task("deploy:verifier-selector", "Deploy a Verifier contract")
     await semaphoreVerifier.deployed()
 
     if (logs) {
-      console.info(`SemaphoreVerifier has been deployed to: ${semaphoreVerifier.address}`)
+      console.info(
+        `SemaphoreVerifier has been deployed to: ${semaphoreVerifier.address}`
+      )
     }
 
     return semaphoreVerifier

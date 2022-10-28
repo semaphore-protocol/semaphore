@@ -6,11 +6,11 @@ import { Network } from "./types"
  * @returns Subgraph URL.
  */
 export default function getURL(network: Network): string {
-    switch (network) {
-        case "goerli":
-        case "arbitrum":
-            return `https://api.thegraph.com/subgraphs/name/semaphore-protocol/${network}`
-        default:
-            throw new TypeError(`Network '${network}' is not supported`)
-    }
+  switch (network) {
+    case "goerli":
+    case "arbitrum":
+      return `https://api.thegraph.com/subgraphs/name/semaphore-protocol/${network}`
+    default:
+      throw new TypeError(`Network '${network}' is not supported`)
+  }
 }

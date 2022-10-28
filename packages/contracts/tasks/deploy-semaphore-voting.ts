@@ -1,9 +1,7 @@
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { Contract } from "ethers"
 import { task, types } from "hardhat/config"
-import {
-  LinkableIncrementalBinaryTree__factory
-} from "../build/typechain"
+import { LinkableIncrementalBinaryTree__factory } from "../build/typechain"
 
 // task("deploy:semaphore-voting", "Deploy a SemaphoreVoting contract")
 //     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
@@ -91,13 +89,13 @@ task("deploy:semaphore-voting", "Deploy a SemaphoreVoting contract")
       )
     }
 
-    const LinkableIncrementalBinaryTreeLibFactory = new LinkableIncrementalBinaryTree__factory(
-      {
-        ["contracts/base/Poseidon.sol:PoseidonT3Lib"]:
-          poseidonLib.address
-      },
-      signer
-    )
+    const LinkableIncrementalBinaryTreeLibFactory =
+      new LinkableIncrementalBinaryTree__factory(
+        {
+          ["contracts/base/Poseidon.sol:PoseidonT3Lib"]: poseidonLib.address
+        },
+        signer
+      )
     const linkableIncrementalBinaryTreeLib =
       await LinkableIncrementalBinaryTreeLibFactory.deploy()
 
@@ -132,10 +130,12 @@ task("deploy:semaphore-voting", "Deploy a SemaphoreVoting contract")
     })
 
     // TODO: Generalize this over depths
-    const contract = await ContractFactory.deploy([{
-      contractAddress: verifier,
-      merkleTreeDepth: 20
-    }])
+    const contract = await ContractFactory.deploy([
+      {
+        contractAddress: verifier,
+        merkleTreeDepth: 20
+      }
+    ])
 
     await contract.deployed()
 

@@ -22,7 +22,9 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
     constructor(Verifier[] memory _verifiers) {
         for (uint8 i = 0; i < _verifiers.length; ) {
-            verifiers[_verifiers[i].merkleTreeDepth] = SemaphoreVerifier(_verifiers[i].contractAddress);
+            verifiers[_verifiers[i].merkleTreeDepth] = SemaphoreVerifier(
+                _verifiers[i].contractAddress
+            );
 
             unchecked {
                 ++i;

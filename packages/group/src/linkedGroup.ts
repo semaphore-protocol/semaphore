@@ -107,8 +107,7 @@ export class LinkedGroup {
     }
 
     if (this.numNonEmptyEdges === this.maxEdges + 1) {
-      throw Error('Max number of chains already connected')
-
+      throw Error("Max number of chains already connected")
     }
     this.chainIds.push(chainId)
     this.numNonEmptyEdges += 1

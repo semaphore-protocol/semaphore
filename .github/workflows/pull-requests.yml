@@ -26,7 +26,7 @@ jobs:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           subgraphkey: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-                ${{ runner.os }}-yarn-
+            ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: yarn

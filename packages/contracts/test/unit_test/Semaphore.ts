@@ -23,8 +23,9 @@ describe("Semaphore", () => {
   let user: Signer
   let userAddr: string
   let accounts: string[]
-  const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
-
+  const zeroValue = BigInt(
+    "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+  )
 
   const treeDepth = Number(process.env.TREE_DEPTH) | 20
   // const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
@@ -88,14 +89,9 @@ describe("Semaphore", () => {
   describe("# createGroup", () => {
     it("Should not create a group if the tree depth is not supported", async () => {
       // testing directly in the contract. Typescript fails if called directly too
-      const transaction = semaphore.contract
-      ["createGroup(uint256,uint256,address,uint8)"](
-        groupId,
-        10,
-        adminAddr,
-        maxEdges1,
-        { gasLimit: "0x5B8D80" }
-      )
+      const transaction = semaphore.contract[
+        "createGroup(uint256,uint256,address,uint8)"
+      ](groupId, 10, adminAddr, maxEdges1, { gasLimit: "0x5B8D80" })
 
       await expect(transaction).revertedWith(
         "Semaphore__MerkleTreeDepthIsNotSupported"
@@ -216,13 +212,17 @@ describe("Semaphore", () => {
     const bytes32Signal = utils.formatBytes32String(signal)
     const groupId2 = 1340
 
-
     let fullProof: FullProof
     let solidityProof: SolidityProof
     let roots: string[]
 
     before(async () => {
-      let tx = await semaphore.createGroup(groupId2, treeDepth, accounts[0], maxEdges1)
+      let tx = await semaphore.createGroup(
+        groupId2,
+        treeDepth,
+        accounts[0],
+        maxEdges1
+      )
       await expect(tx)
         .emit(semaphore.contract, "GroupCreated")
         .withArgs(groupId2, treeDepth, semaphore.linkedGroups[groupId2].root)
@@ -233,7 +233,6 @@ describe("Semaphore", () => {
 
       expect(linkedGroup.root).equals(initialRoot)
 
-
       tx = await semaphore.addMember(groupId2, members[0])
       linkedGroup.addMember(members[0])
       await expect(tx)
@@ -243,8 +242,6 @@ describe("Semaphore", () => {
       initialRoot = await semaphore.getMerkleTreeRoot(groupId2)
       expect(linkedGroup.root).equals(initialRoot)
 
-
-
       tx = await semaphore.addMember(groupId2, members[1])
       linkedGroup.addMember(members[1])
       await expect(tx)
@@ -253,7 +250,6 @@ describe("Semaphore", () => {
 
       initialRoot = await semaphore.getMerkleTreeRoot(groupId2)
       expect(linkedGroup.root).equals(initialRoot)
-
 
       tx = await semaphore.addMember(groupId2, members[2])
       linkedGroup.addMember(members[2])

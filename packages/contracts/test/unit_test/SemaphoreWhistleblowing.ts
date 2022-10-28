@@ -17,25 +17,29 @@ import {
 
 import { VerifierContractInfo, createRootsBytes } from "../utils"
 
-const path = require('path')
+const path = require("path")
 
 describe("SemaphoreWhistleblowing", () => {
   let contract: SemaphoreWhistleblowing
   let signers: Signer[]
   let editor: string
 
-  const zeroValue = BigInt("21663839004416932945382355908790599225266501822907911457504978515578255421292")
+  const zeroValue = BigInt(
+    "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+  )
   const chainID = BigInt(1099511629113)
   const treeDepth = Number(process.env.TREE_DEPTH) | 20
   const entityIds = [BigInt(1), BigInt(2)]
   const maxEdges = 1
 
-  const wasmFilePath =
-    path.join(__dirname,
-      `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/semaphore_20_2.wasm`)
-  const zkeyFilePath =
-    path.join(__dirname,
-      `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/circuit_final.zkey`)
+  const wasmFilePath = path.join(
+    __dirname,
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/semaphore_20_2.wasm`
+  )
+  const zkeyFilePath = path.join(
+    __dirname,
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/circuit_final.zkey`
+  )
 
   before(async () => {
     const { address: v2Address } = await run("deploy:verifier", {

@@ -79,7 +79,11 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphore-updateGroupAdmin}.
-    function updateGroupAdmin(uint256 groupId, address newAdmin) external override onlyGroupAdmin(groupId) {
+    function updateGroupAdmin(uint256 groupId, address newAdmin)
+        external
+        override
+        onlyGroupAdmin(groupId)
+    {
         groups[groupId].admin = newAdmin;
         emit GroupAdminUpdated(groupId, _msgSender(), newAdmin);
     }
@@ -134,7 +138,8 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
 
-        groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
+        groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block
+            .timestamp;
     }
 
     /// @dev See {ISemaphore-addMembers}.
@@ -153,7 +158,8 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
 
-        groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
+        groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block
+            .timestamp;
     }
 
     /// @dev See {ISemaphore-updateMember}.
@@ -164,7 +170,13 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
     ) external override onlyGroupAdmin(groupId) {
-        _updateMember(groupId, identityCommitment, newIdentityCommitment, proofSiblings, proofPathIndices);
+        _updateMember(
+            groupId,
+            identityCommitment,
+            newIdentityCommitment,
+            proofSiblings,
+            proofPathIndices
+        );
     }
 
     /// @dev See {ISemaphore-removeMember}.
@@ -212,7 +224,8 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
         }
 
         if (!verifyRoots(groupId, roots)) {
-            uint256 merkleRootCreationDate = groups[groupId].merkleRootCreationDates[currentMerkleTreeRoot];
+            uint256 merkleRootCreationDate = groups[groupId]
+                .merkleRootCreationDates[currentMerkleTreeRoot];
             uint256 merkleRootDuration = groups[groupId].merkleRootDuration;
 
             if (merkleRootCreationDate == 0) {
@@ -241,6 +254,12 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
         groups[groupId].nullifierHashes[nullifierHash] = true;
 
-        emit ProofVerified(groupId, currentMerkleTreeRoot, nullifierHash, externalNullifier, signal);
+        emit ProofVerified(
+            groupId,
+            currentMerkleTreeRoot,
+            nullifierHash,
+            externalNullifier,
+            signal
+        );
     }
 }

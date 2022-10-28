@@ -147,4 +147,4 @@ export class Group {
   }
 }
 
-export default Group;
+export default Group

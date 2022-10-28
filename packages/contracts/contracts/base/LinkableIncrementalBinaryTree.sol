@@ -114,6 +114,7 @@ library LinkableIncrementalBinaryTree {
         self.roots[newRootIndex] = hash;
         self.numberOfLeaves += 1;
     }
+
     /// @dev Updates a leaf in the tree.
     /// @param self: Tree data.
     /// @param leaf: Leaf to be updated.
@@ -156,7 +157,10 @@ library LinkableIncrementalBinaryTree {
                 ++i;
             }
         }
-        require(updateIndex < self.numberOfLeaves, "IncrementalBinaryTree: leaf index out of range");
+        require(
+            updateIndex < self.numberOfLeaves,
+            "IncrementalBinaryTree: leaf index out of range"
+        );
 
         self.roots[self.currentRootIndex] = hash;
     }

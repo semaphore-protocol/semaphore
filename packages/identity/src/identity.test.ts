@@ -111,9 +111,7 @@ describe("Identity", () => {
 
       const [trapdoor, nullifier] = JSON.parse(identity.toString())
 
-      expect(BigNumber.from(`0x${trapdoor}`).toBigInt()).toBe(
-        identity.trapdoor
-      )
+      expect(BigNumber.from(`0x${trapdoor}`).toBigInt()).toBe(identity.trapdoor)
       expect(BigNumber.from(`0x${nullifier}`).toBigInt()).toBe(
         identity.nullifier
       )

@@ -1,10 +1,18 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "target": "ES2018",
-        "module": "esnext",
-        "outDir": "dist"
-    },
-    "include": ["src", "rollup.config.ts", "scripts/**/*", "tasks/**/*", "test/**/*", "build/typechain/**/*", "types/**/*"],
-    "files": ["hardhat.config.ts"]
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "esnext",
+    "outDir": "dist"
+  },
+  "include": [
+    "src",
+    "rollup.config.ts",
+    "scripts/**/*",
+    "tasks/**/*",
+    "test/**/*",
+    "build/typechain/**/*",
+    "types/**/*"
+  ],
+  "files": ["hardhat.config.ts"]
 }
