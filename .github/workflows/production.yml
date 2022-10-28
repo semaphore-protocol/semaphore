@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-    style:
+  style:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,80 +34,75 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-<<<<<<< HEAD:.github/workflows/coverall.yml
-        run: YARN_CHECKSUM_BEHAVIOR=ignore yarn
+        run: yarn
 
       - name: Download Snark artifacts
         run: yarn fetch:fixtures
-=======
-              run: yarn
->>>>>>> origin/main:.github/workflows/production.yml
 
       - name: Compile contracts
-              run: yarn compile:contracts
+        run: yarn compile:contracts
 
-            - name: Build libraries
-              run: yarn build:libraries
+      - name: Build libraries
+        run: yarn build:libraries
 
-            - name: Run Prettier
-              run: yarn prettier
+      - name: Run Prettier
+        run: yarn prettier
 
-            - name: Run Eslint
-              run: yarn lint
+      - name: Run Eslint
+        run: yarn lint
 
-    test:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                type:
-                    - libraries
-                    - contracts
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        type:
+          - libraries
+          - contracts
+    steps:
+      - uses: actions/checkout@v2
 
-        steps:
-            - uses: actions/checkout@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+            node-version: 16.x
 
-            - name: Install Node.js
-              uses: actions/setup-node@v1
-              with:
-                  node-version: 16.x
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
 
-            - name: Get yarn cache directory path
-              id: yarn-cache-dir-path
-              run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - name: Restore yarn cache
+        uses: actions/cache@v3
+        id: yarn-cache
+        with:
+            path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            restore-keys: |
+                ${{ runner.os }}-yarn-
 
-            - name: Restore yarn cache
-              uses: actions/cache@v3
-              id: yarn-cache
-              with:
-                  path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn
 
-            - name: Install dependencies
-              run: yarn
+      - name: Build libraries
+        run: yarn build:libraries
 
-            - name: Build libraries
-              run: yarn build:libraries
+      - name: Test contracts and libraries
+        run: yarn test:${{ matrix.type }}
 
-            - name: Test contracts and libraries
-              run: yarn test:${{ matrix.type }}
-
-            - name: Coveralls
-              uses: coverallsapp/github-action@master
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-                  flag-name: run-${{ matrix.type }}
-                  path-to-lcov: ./coverage/${{ matrix.type }}/lcov.info
-                  parallel: true
+          flag-name: run-${{ matrix.type }}
+          path-to-lcov: ./coverage/${{ matrix.type }}/lcov.info
+          parallel: true
 
-    coverage:
-        runs-on: ubuntu-latest
-        needs: test
+  coverage:
+    runs-on: ubuntu-latest
+    needs: test
 
-        steps:
-            - name: Coveralls Finished
-              uses: coverallsapp/github-action@master
-              with:
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
-                  parallel-finished: true
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
