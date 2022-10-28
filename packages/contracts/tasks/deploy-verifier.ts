@@ -9,7 +9,7 @@ task("deploy:verifier", "Deploy a Verifier contract")
     types.int
   )
   .addOptionalParam<number>(
-    "circuitLength",
+    "merkleRootSize",
     "Number of chains connected",
     2,
     types.int
@@ -42,18 +42,18 @@ task("deploy:verifier-selector", "Deploy a Verifier contract")
   )
   .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
   .setAction(async ({ verifiers, logs }, { ethers }): Promise<Contract> => {
-    const v1 = verifiers.get("v1").address
-    const v7 = verifiers.get("v7").address
+    const v2 = verifiers.get("v2").address
+    const v8 = verifiers.get("v8").address
 
     if (logs) {
-      console.info("v1 address: ", v1)
+      console.info("v2 address: ", v2)
     }
     if (logs) {
-      console.info("v7 address: ", v7)
+      console.info("v8 address: ", v8)
     }
     const ContractFactory = await ethers.getContractFactory(`SemaphoreVerifier`)
 
-    const semaphoreVerifier = await ContractFactory.deploy(v1, v7)
+    const semaphoreVerifier = await ContractFactory.deploy(v2, v8)
 
     // console.log("verifier: ", semaphoreVerifier)
     await semaphoreVerifier.deployed()

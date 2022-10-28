@@ -14,9 +14,10 @@ import {
   SolidityProof
 } from "@webb-tools/semaphore-proof"
 import { VerifierContractInfo, createRootsBytes } from "../utils"
+
 const path = require('path')
 
-describe.only("SemaphoreVoting", () => {
+describe("SemaphoreVoting", () => {
   let contract: SemaphoreVoting
   let signers: Signer[]
   let coordinator: string
@@ -33,37 +34,37 @@ describe.only("SemaphoreVoting", () => {
     path.join(__dirname,
       `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/semaphore_20_2.wasm`)
   const zkeyFilePath =
-    __dirname +
-    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/circuit_final.zkey`
+    path.join(__dirname,
+      `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/circuit_final.zkey`)
 
   before(async () => {
-    const { address: v1_address } = await run("deploy:verifier", {
+    const { address: v2Address } = await run("deploy:verifier", {
       logs: false,
       depth: treeDepth,
-      maxEdges: 2
+      circuitLength: 2
     })
     const VerifierV1: VerifierContractInfo = {
       name: `Verifier${treeDepth}_${2}`,
-      address: v1_address,
+      address: v2Address,
       depth: `${treeDepth}`,
       circuitLength: `2`
     }
 
-    const { address: v7_address } = await run("deploy:verifier", {
+    const { address: v8Address } = await run("deploy:verifier", {
       logs: false,
       depth: treeDepth,
-      maxEdges: 7
+      circuitLength: 8
     })
-    const VerifierV7: VerifierContractInfo = {
-      name: `Verifier${treeDepth}_${7}`,
-      address: v7_address,
+    const VerifierV8: VerifierContractInfo = {
+      name: `Verifier${treeDepth}_${8}`,
+      address: v8Address,
       depth: `${treeDepth}`,
-      circuitLength: `7`
+      circuitLength: `8`
     }
 
     const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([
-      ["v1", VerifierV1],
-      ["v7", VerifierV7]
+      ["v2", VerifierV1],
+      ["v8", VerifierV8]
     ])
     // console.log(deployedVerifiers)
 
