@@ -1,7 +1,7 @@
 import { expect } from "chai"
 import { constants, Signer, utils, BigNumber } from "ethers"
 import { ethers } from "hardhat"
-import { Identity } from "@webb-tools/identity"
+import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import { Semaphore } from "../../src"
 import { fetchComponentsFromFilePaths, getChainIdType } from "@webb-tools/utils"
