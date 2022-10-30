@@ -44,7 +44,7 @@
     "packages/identity",
     "packages/group",
     "packages/proof",
-    "packages/contracts",
+    "packages/semaphore",
     "packages/hardhat",
     "packages/subgraph",
     "packages/circuits"
