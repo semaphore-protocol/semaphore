@@ -7010,9 +7010,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@webb-tools/semaphore@workspace:packages/contracts":
+"@webb-tools/semaphore@workspace:packages/semaphore":
   version: 0.0.0-use.local
-  resolution: "@webb-tools/semaphore@workspace:packages/contracts"
+  resolution: "@webb-tools/semaphore@workspace:packages/semaphore"
   dependencies:
     "@ethersproject/bytes": ^5.5.0
     "@ethersproject/solidity": ^5.5.0
