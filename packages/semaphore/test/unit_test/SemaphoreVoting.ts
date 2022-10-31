@@ -1,9 +1,6 @@
 import { expect } from "chai"
 import { run } from "hardhat"
-import { SemaphoreVoting } from "../../build/typechain"
 import { Signer, utils } from "ethers"
-import { config } from "../../package.json"
-
 import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
@@ -14,6 +11,7 @@ import {
   SolidityProof
 } from "@webb-tools/semaphore-proof"
 import { VerifierContractInfo, createRootsBytes } from "../utils"
+import { SemaphoreVoting } from "../../build/typechain"
 
 const path = require("path")
 
@@ -110,7 +108,7 @@ describe("SemaphoreVoting", () => {
         maxEdges
       )
 
-      await expect(transaction).to.be.revertedWith(
+      await expect(transaction).revertedWith(
         "Semaphore__GroupIdIsNotLessThanSnarkScalarField()"
       )
     })
@@ -124,7 +122,7 @@ describe("SemaphoreVoting", () => {
       )
 
       await expect(transaction)
-        .to.emit(contract, "PollCreated")
+        .emit(contract, "PollCreated")
         .withArgs(pollIds[0], coordinator)
     })
 
@@ -136,9 +134,7 @@ describe("SemaphoreVoting", () => {
         maxEdges
       )
 
-      await expect(transaction).to.be.revertedWith(
-        "Semaphore__GroupAlreadyExists()"
-      )
+      await expect(transaction).revertedWith("Semaphore__GroupAlreadyExists()")
     })
   })
 
@@ -272,7 +268,7 @@ describe("SemaphoreVoting", () => {
         solidityProof
       )
 
-      await expect(transaction).to.be.revertedWith(
+      await expect(transaction).revertedWith(
         "emaphore__CallerIsNotThePollCoordinator()"
       )
     })
@@ -288,9 +284,7 @@ describe("SemaphoreVoting", () => {
           solidityProof
         )
 
-      await expect(transaction).to.be.revertedWith(
-        "Semaphore__PollIsNotOngoing()"
-      )
+      await expect(transaction).revertedWith("Semaphore__PollIsNotOngoing()")
     })
 
     it("Should not cast a vote if the proof is not valid", async () => {
@@ -309,7 +303,7 @@ describe("SemaphoreVoting", () => {
           solidityProof
         )
 
-      await expect(transaction).to.be.revertedWith("invalidProof")
+      await expect(transaction).revertedWith("invalidProof")
     })
 
     it("Should cast a vote", async () => {
@@ -324,7 +318,7 @@ describe("SemaphoreVoting", () => {
         )
 
       await expect(transaction)
-        .to.emit(contract, "VoteAdded")
+        .emit(contract, "VoteAdded")
         .withArgs(pollIds[1], bytes32Vote)
     })
 

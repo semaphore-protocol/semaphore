@@ -1,11 +1,6 @@
 import { expect } from "chai"
 import { Signer, utils } from "ethers"
 import { run } from "hardhat"
-import { SemaphoreWhistleblowing } from "../../build/typechain"
-import { config } from "../../package.json"
-
-import { LinkedGroup } from "@webb-tools/semaphore-group"
-import { Identity } from "@webb-tools/semaphore-identity"
 
 import {
   generateNullifierHash,
@@ -14,6 +9,9 @@ import {
   PublicSignals,
   SolidityProof
 } from "@webb-tools/semaphore-proof"
+import { LinkedGroup } from "@webb-tools/semaphore-group"
+import { Identity } from "@webb-tools/semaphore-identity"
+import { SemaphoreWhistleblowing } from "../../build/typechain"
 
 import { VerifierContractInfo, createRootsBytes } from "../utils"
 
@@ -92,7 +90,7 @@ describe("SemaphoreWhistleblowing", () => {
         maxEdges
       )
 
-      await expect(transaction).to.be.revertedWith(
+      await expect(transaction).revertedWith(
         "Semaphore__MerkleTreeDepthIsNotSupported()"
       )
     })
@@ -107,7 +105,7 @@ describe("SemaphoreWhistleblowing", () => {
         maxEdges
       )
 
-      await expect(transaction).to.be.revertedWith(
+      await expect(transaction).revertedWith(
         "Semaphore__GroupIdIsNotLessThanSnarkScalarField()"
       )
     })
@@ -133,9 +131,7 @@ describe("SemaphoreWhistleblowing", () => {
         maxEdges
       )
 
-      await expect(transaction).to.be.revertedWith(
-        "Semaphore__GroupAlreadyExists()"
-      )
+      await expect(transaction).revertedWith("Semaphore__GroupAlreadyExists()")
     })
   })
 
@@ -149,7 +145,7 @@ describe("SemaphoreWhistleblowing", () => {
         identityCommitment
       )
 
-      await expect(transaction).to.be.revertedWith(
+      await expect(transaction).revertedWith(
         "Semaphore__CallerIsNotTheEditor()"
       )
     })
@@ -165,7 +161,7 @@ describe("SemaphoreWhistleblowing", () => {
         .connect(signers[1])
         .addWhistleblower(entityIds[0], identityCommitment)
 
-      await expect(transaction).to.emit(contract, "MemberAdded").withArgs(
+      await expect(transaction).emit(contract, "MemberAdded").withArgs(
         entityIds[0],
         0,
         identityCommitment,
@@ -222,7 +218,7 @@ describe("SemaphoreWhistleblowing", () => {
     //     )
     //
     //   await expect(transaction)
-    //     .to.emit(contract, "MemberRemoved")
+    //     .emit(contract, "MemberRemoved")
     //     .withArgs(
     //       entityIds[0],
     //       identityCommitment,
@@ -316,7 +312,7 @@ describe("SemaphoreWhistleblowing", () => {
         )
 
       await expect(transaction)
-        .to.emit(contract, "LeakPublished")
+        .emit(contract, "LeakPublished")
         .withArgs(entityIds[1], bytes32Leak)
     })
   })

@@ -95,7 +95,7 @@ task(
     await poseidonLib.deployed()
 
     if (logs) {
-      console.log(
+      console.info(
         `Poseidon library has been deployed to: ${poseidonLib.address}`
       )
     }
@@ -113,13 +113,13 @@ task(
     await linkableIncrementalBinaryTreeLib.deployed()
 
     if (logs) {
-      console.log(
+      console.info(
         `LinkableIncrementalBinaryTree library has been deployed to: ${linkableIncrementalBinaryTreeLib.address}`
       )
     }
 
     if (logs) {
-      console.log(
+      console.info(
         `LinkableIncrementalBinaryTree library has been deployed to: ${linkableIncrementalBinaryTreeLib.address}`
       )
     }
@@ -133,7 +133,7 @@ task(
     await semaphoreInputEncoderLib.deployed()
 
     if (logs) {
-      console.log(
+      console.info(
         `SemaphoreInputEncoder library has been deployed to: ${semaphoreInputEncoderLib.address}`
       )
     }
@@ -161,7 +161,7 @@ task(
     await contract.deployed()
 
     if (logs) {
-      console.log(
+      console.info(
         `SemaphoreWhistleblowing contract has been deployed to: ${contract.address}`
       )
     }

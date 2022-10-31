@@ -1,6 +1,6 @@
 import { BigNumber } from "ethers"
-import Group from "./group"
 import { MerkleTree } from "@webb-tools/sdk-core"
+import { Group } from "./group"
 
 describe("Group", () => {
   describe("# Group", () => {

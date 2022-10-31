@@ -4,6 +4,7 @@ package-lock.json
 yarn.lock
 .yarn
 
+jest.config.ts
 # testing
 coverage
 coverage.json

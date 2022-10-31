@@ -13,8 +13,7 @@ export type VerifierContractInfo = {
   circuitLength: string
 }
 export function toFixedHex(number: BigNumberish, length = 32): string {
-  return (
-    "0x" +
+  return "0x".concat(
     (number instanceof Buffer
       ? number.toString("hex")
       : BigNumber.from(number).toHexString().slice(2)
@@ -31,7 +30,7 @@ export function createRootsBytesWeb3(
 
 export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
   let rootsBytes = "0x"
-  for (let i = 0; i < rootArray.length; i++) {
+  for (let i = 0; i < rootArray.length; i += 1) {
     rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
   }
   return rootsBytes // root byte string (32 * array.length bytes)
@@ -44,7 +43,7 @@ export function createIdentities(n: number): {
   const identityCommitments: bigint[] = []
   const identities: Identity[] = []
 
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i += 1) {
     const identity = new Identity()
     const identityCommitment = identity.commitment
 
@@ -120,7 +119,7 @@ export async function startGanacheServer(
   })
 
   await ganacheServer.listen(port)
-  console.log(`Ganache Started on http://127.0.0.1:${port} ..`)
+  console.info(`Ganache Started on http://127.0.0.1:${port} ..`)
 
   return ganacheServer
 }

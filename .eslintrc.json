@@ -22,9 +22,15 @@
     "import/no-extraneous-dependencies": "off",
     "no-bitwise": "off",
     "no-await-in-loop": "off",
+    "jest/no-standalone-expect": "off",
     "no-restricted-syntax": "off",
     "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
     "@typescript-eslint/lines-between-class-members": "off",
+    "@typescript-eslint/": "off",
+    "@typescript-eslint/naming-convention": "off",
+    "prefer-destructuring": "off",
+    "no-useless-computed-key": "off",
+    "jest/no-commented-out-tests": "off",
     "no-param-reassign": "off"
   }
 }

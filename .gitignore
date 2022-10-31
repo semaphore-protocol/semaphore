@@ -61,7 +61,6 @@ node_modules/
 .env.local
 
 # Production
-build
 dist
 docs/*
 !docs/CNAME

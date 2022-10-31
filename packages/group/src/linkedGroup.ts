@@ -1,6 +1,6 @@
 import { BigNumber, BigNumberish } from "ethers"
-import { strict as assert } from "assert"
 import { MerkleProof } from "@webb-tools/sdk-core"
+import { strict as assert } from "assert"
 import { Group } from "./group"
 import { Member } from "./types"
 

@@ -84,7 +84,7 @@ task("deploy:semaphore-voting", "Deploy a SemaphoreVoting contract")
     await poseidonLib.deployed()
 
     if (logs) {
-      console.log(
+      console.info(
         `Poseidon library has been deployed to: ${poseidonLib.address}`
       )
     }
@@ -102,7 +102,7 @@ task("deploy:semaphore-voting", "Deploy a SemaphoreVoting contract")
     await linkableIncrementalBinaryTreeLib.deployed()
 
     if (logs) {
-      console.log(
+      console.info(
         `LinkableIncrementalBinaryTree library has been deployed to: ${linkableIncrementalBinaryTreeLib.address}`
       )
     }
@@ -116,7 +116,7 @@ task("deploy:semaphore-voting", "Deploy a SemaphoreVoting contract")
     await semaphoreInputEncoderLib.deployed()
 
     if (logs) {
-      console.log(
+      console.info(
         `SemaphoreInputEncoder library has been deployed to: ${semaphoreInputEncoderLib.address}`
       )
     }
@@ -140,7 +140,7 @@ task("deploy:semaphore-voting", "Deploy a SemaphoreVoting contract")
     await contract.deployed()
 
     if (logs) {
-      console.log(
+      console.info(
         `SemaphoreVoting contract has been deployed to: ${contract.address}`
       )
     }

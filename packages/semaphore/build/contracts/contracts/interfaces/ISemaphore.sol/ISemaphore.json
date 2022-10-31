@@ -1,0 +1,359 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ISemaphore",
+  "sourceName": "contracts/interfaces/ISemaphore.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "Semaphore__CallerIsNotTheGroupAdmin",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Semaphore__MerkleTreeDepthIsNotSupported",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Semaphore__MerkleTreeRootIsExpired",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Semaphore__MerkleTreeRootIsNotPartOfTheGroup",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Semaphore__YouAreUsingTheSameNillifierTwice",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "groupId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "oldAdmin",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "GroupAdminUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "groupId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "merkleTreeRoot",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "externalNullifier",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "nullifierHash",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "signal",
+          "type": "bytes32"
+        }
+      ],
+      "name": "ProofVerified",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "groupId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "identityCommitment",
+          "type": "uint256"
+        }
+      ],
+      "name": "addMember",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "groupId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "identityCommitments",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "addMembers",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "groupId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "depth",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "admin",
+          "type": "address"
+        },
+        {
+          "internalType": "uint8",
+          "name": "maxEdges",
+          "type": "uint8"
+        }
+      ],
+      "name": "createGroup",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "groupId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "depth",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "admin",
+          "type": "address"
+        },
+        {
+          "internalType": "uint8",
+          "name": "maxEdges",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "merkleTreeRootDuration",
+          "type": "uint256"
+        }
+      ],
+      "name": "createGroup",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "roots",
+          "type": "bytes"
+        }
+      ],
+      "name": "decodeRoots",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "rootsDecoded",
+          "type": "bytes32[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "groupId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "identityCommitment",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "proofSiblings",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint8[]",
+          "name": "proofPathIndices",
+          "type": "uint8[]"
+        }
+      ],
+      "name": "removeMember",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "groupId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "root",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint32",
+          "name": "leafIndex",
+          "type": "uint32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "srcResourceID",
+          "type": "bytes32"
+        }
+      ],
+      "name": "updateEdge",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "groupId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "newAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "updateGroupAdmin",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "groupId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "identityCommitment",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "newIdentityCommitment",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "proofSiblings",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint8[]",
+          "name": "proofPathIndices",
+          "type": "uint8[]"
+        }
+      ],
+      "name": "updateMember",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "groupId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "signal",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "nullifierHash",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "externalNullifier",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "roots",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint256[8]",
+          "name": "proof",
+          "type": "uint256[8]"
+        }
+      ],
+      "name": "verifyProof",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

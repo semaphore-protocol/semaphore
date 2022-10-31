@@ -1,12 +1,12 @@
 import { groth16 } from "snarkjs"
-import generateSignalHash from "./generateSignalHash"
 import { BigNumber, BigNumberish } from "ethers"
-import { FullProof, SnarkArtifacts } from "./types"
 import { MerkleProof } from "@webb-tools/sdk-core"
 import { ZkComponents } from "@webb-tools/utils"
 
 import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
+import { FullProof, SnarkArtifacts } from "./types"
+import generateSignalHash from "./generateSignalHash"
 // const assert = require("assert")
 
 export type VerifierContractInfo = {
@@ -16,8 +16,7 @@ export type VerifierContractInfo = {
   circuitLength: string
 }
 export function toFixedHex(numb: any, length = 32): string {
-  return (
-    "0x" +
+  return "0x".concat(
     (numb instanceof Buffer
       ? numb.toString("hex")
       : BigNumber.from(numb).toHexString().slice(2)
@@ -27,7 +26,7 @@ export function toFixedHex(numb: any, length = 32): string {
 
 export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
   let rootsBytes = "0x"
-  for (let i = 0; i < rootArray.length; i++) {
+  for (let i = 0; i < rootArray.length; i += 1) {
     rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
   }
   return rootsBytes // root byte string (32 * array.length bytes)
@@ -104,7 +103,7 @@ export default async function generateProof(
       identityNullifier: identity.nullifier,
       treePathIndices: merkleProof.pathIndices,
       treeSiblings: pathElements,
-      roots: roots,
+      roots,
       chainID: chainID.toString(),
       externalNullifier: externalNullifier.toString(),
       signalHash: generateSignalHash(signal)

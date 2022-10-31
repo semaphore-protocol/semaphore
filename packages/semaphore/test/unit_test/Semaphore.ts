@@ -1,8 +1,6 @@
 import { expect } from "chai"
 import { constants, Signer, utils, ContractReceipt, BigNumber } from "ethers"
 import { ethers } from "hardhat"
-// import { config } from "../../package.json"
-// import { SnarkArtifacts } from "@semaphore-protocol/proof"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
   FullProof,
@@ -13,6 +11,8 @@ import {
 import { fetchComponentsFromFilePaths } from "@webb-tools/utils"
 import { Semaphore } from "../../src"
 import { createRootsBytes, createIdentities } from "../utils"
+
+const path = require("path")
 
 describe("Semaphore", () => {
   // Semaphore with 1 maxEdge
@@ -34,25 +34,31 @@ describe("Semaphore", () => {
   const chainID = BigInt(1099511629113)
   const { identities, members } = createIdentities(3)
 
-  const wasmFilePath20_2 =
-    __dirname +
+  const wasmFilePath20_2 = path.join(
+    __dirname,
     `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/semaphore_20_2.wasm`
-  const witnessCalcPath20_2 =
-    __dirname +
+  )
+  const witnessCalcPath20_2 = path.join(
+    __dirname,
     `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/witness_calculator.js`
-  const zkeyFilePath20_2 =
-    __dirname +
+  )
+  const zkeyFilePath20_2 = path.join(
+    __dirname,
     `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/circuit_final.zkey`
+  )
 
-  const wasmFilePath20_8 =
-    __dirname +
+  const wasmFilePath20_8 = path.join(
+    __dirname,
     `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/8/semaphore_20_8.wasm`
-  const witnessCalcPath20_8 =
-    __dirname +
+  )
+  const witnessCalcPath20_8 = path.join(
+    __dirname,
     `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/8/witness_calculator.js`
-  const zkeyFilePath20_8 =
-    __dirname +
+  )
+  const zkeyFilePath20_8 = path.join(
+    __dirname,
     `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/8/circuit_final.zkey`
+  )
 
   before(async () => {
     signers = await ethers.getSigners()
@@ -109,10 +115,10 @@ describe("Semaphore", () => {
       )
 
       await expect(transaction)
-        .to.emit(semaphore.contract, "GroupCreated")
+        .emit(semaphore.contract, "GroupCreated")
         .withArgs(groupId, treeDepth, semaphore.linkedGroups[groupId].root)
       await expect(transaction)
-        .to.emit(semaphore.contract, "GroupAdminUpdated")
+        .emit(semaphore.contract, "GroupAdminUpdated")
         .withArgs(groupId, constants.AddressZero, adminAddr)
     })
   })
@@ -160,7 +166,7 @@ describe("Semaphore", () => {
 
       const transaction = semaphore.addMember(groupId, member)
 
-      await expect(transaction).to.be.revertedWith(
+      await expect(transaction).revertedWith(
         "Semaphore__CallerIsNotTheGroupAdmin()"
       )
     })
@@ -183,7 +189,7 @@ describe("Semaphore", () => {
   //     it("Should not remove a member if the caller is not the group admin", async () => {
   //         const transaction = contract.connect(signers[1]).removeMember(groupId, members[0], [0, 1], [0, 1])
   //
-  //         await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
+  //         await expect(transaction).revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
   //     })
   //
   //     it("Should remove a member from an existing group", async () => {
@@ -203,7 +209,7 @@ describe("Semaphore", () => {
   //
   //         const transaction = contract.removeMember(groupId, BigInt(1), siblings, pathIndices)
   //
-  //         await expect(transaction).to.emit(contract, "MemberRemoved").withArgs(groupId, BigInt(1), root)
+  //         await expect(transaction).emit(contract, "MemberRemoved").withArgs(groupId, BigInt(1), root)
   //     })
   // })
 
@@ -287,9 +293,7 @@ describe("Semaphore", () => {
         [0, 0, 0, 0, 0, 0, 0, 0]
       )
 
-      await expect(transaction).to.be.revertedWith(
-        "Semaphore__GroupDoesNotExist()"
-      )
+      await expect(transaction).revertedWith("Semaphore__GroupDoesNotExist()")
     })
 
     it("Should throw an exception if the proof is not valid", async () => {
@@ -301,11 +305,11 @@ describe("Semaphore", () => {
         createRootsBytes(roots),
         solidityProof
       )
-      await expect(transaction).to.be.revertedWith("invalidProof")
+      await expect(transaction).revertedWith("invalidProof")
     })
 
     it("Should verify a proof for an onchain group correctly", async () => {
-      const { transaction, fullProof } = await semaphore.verifyIdentity(
+      const { transaction, fullProof: proof } = await semaphore.verifyIdentity(
         identities[0],
         signal,
         groupId2,
@@ -314,12 +318,12 @@ describe("Semaphore", () => {
       )
 
       await expect(transaction)
-        .to.emit(semaphore.contract, "ProofVerified")
+        .emit(semaphore.contract, "ProofVerified")
         .withArgs(
           groupId2,
           semaphore.linkedGroups[groupId2].root,
-          fullProof.publicSignals.nullifierHash,
-          fullProof.publicSignals.externalNullifier,
+          proof.publicSignals.nullifierHash,
+          proof.publicSignals.externalNullifier,
           bytes32Signal
         )
     })
@@ -375,11 +379,11 @@ describe("Semaphore", () => {
         solidityProof,
         { gasLimit: "0x5B8D80" }
       )
-      await expect(transaction).to.be.revertedWith("invalidProof")
+      await expect(transaction).revertedWith("invalidProof")
     })
 
     it("Should verify a proof for an onchain group correctly", async () => {
-      const { transaction, fullProof } = await semaphore.verifyIdentity(
+      const { transaction, fullProof: proof } = await semaphore.verifyIdentity(
         identities[0],
         signal,
         groupId3,
@@ -387,12 +391,12 @@ describe("Semaphore", () => {
         BigNumber.from(Date.now())
       )
       await expect(transaction)
-        .to.emit(semaphore.contract, "ProofVerified")
+        .emit(semaphore.contract, "ProofVerified")
         .withArgs(
           groupId3,
           semaphore.linkedGroups[groupId3].root,
-          fullProof.publicSignals.nullifierHash,
-          fullProof.publicSignals.externalNullifier,
+          proof.publicSignals.nullifierHash,
+          proof.publicSignals.externalNullifier,
           bytes32Signal
         )
     })

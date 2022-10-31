@@ -7,24 +7,24 @@ import {
   utils,
   ethers
 } from "ethers"
-import {
-  Semaphore as SemaphoreContract,
-  Semaphore__factory,
-  SemaphoreInputEncoder__factory,
-  LinkableIncrementalBinaryTree__factory
-} from "../build/typechain"
 import { toHex, toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
 import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
+import { strict as assert } from "assert"
 import {
   FullProof,
   generateProof,
   packToSolidityProof
 } from "@webb-tools/semaphore-proof"
 import { Verifier } from "./Verifier"
-import { strict as assert } from "assert"
+import {
+  Semaphore as SemaphoreContract,
+  Semaphore__factory,
+  SemaphoreInputEncoder__factory,
+  LinkableIncrementalBinaryTree__factory
+} from "../build/typechain"
 
 // This convenience wrapper class is used in tests -
 // It represents a deployed contract throughout its life (e.g. maintains merkle tree state)
@@ -33,7 +33,7 @@ import { strict as assert } from "assert"
 
 function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
   let rootsBytes = "0x"
-  for (let i = 0; i < rootArray.length; i++) {
+  for (let i = 0; i < rootArray.length; i += 1) {
     rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
   }
   return rootsBytes // root byte string (32 * array.length bytes)
@@ -376,7 +376,7 @@ export class Semaphore {
         .map((bignum: BigNumber) => bignum.toString())
     }
     const zkComponent =
-      this.linkedGroups[groupId].maxEdges == 1
+      this.linkedGroups[groupId].maxEdges === 1
         ? this.smallCircuitZkComponents
         : this.largeCircuitZkComponents
 

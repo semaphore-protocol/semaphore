@@ -1,4 +1,4 @@
-import LinkedGroup from "./linkedGroup"
+import { LinkedGroup } from "./linkedGroup"
 
 describe("LinkedGroup", () => {
   describe("# LinkedGroup", () => {

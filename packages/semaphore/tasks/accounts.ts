@@ -8,7 +8,7 @@ task("accounts", "Prints the list of accounts")
 
     if (logs) {
       for (const account of accounts) {
-        console.log(await account.getAddress())
+        console.info(await account.getAddress())
       }
     }
     return accounts
