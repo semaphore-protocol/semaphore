@@ -4,6 +4,7 @@ package-lock.json
 yarn.lock
 .yarn
 
+jest.config.ts
 # testing
 coverage
 coverage.json
@@ -25,6 +26,7 @@ hardhatAccounts.js
 # production
 dist
 build
+docs
 
 # misc
 .DS_Store

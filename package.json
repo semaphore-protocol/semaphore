@@ -13,39 +13,41 @@
   },
   "private": true,
   "scripts": {
-    "start": "hardhat node",
-    "compile": "yarn compile:contracts && sh scripts/copy_typechain.sh && yarn build",
-    "compile:contracts": "hardhat compile",
-    "build": "yarn workspaces foreach run build",
-    "fetch:fixtures": "cd solidity-fixtures && dvc pull && cd ..",
-    "deploy:all": "hardhat run scripts/deploy-all.ts",
-    "deploy:cross-chain": "yarn deploy:all --network chainA && yarn deploy:all --network chainB",
-    "deploy:verifier": "hardhat deploy:verifier",
-    "deploy:semaphore": "hardhat deploy:semaphore",
-    "deploy:semaphore-voting": "hardhat deploy:semaphore-voting",
-    "deploy:semaphore-whistleblowing": "hardhat deploy:semaphore-whistleblowing",
-    "test:unit-tests": "hardhat test ./test/unit_test/*",
-    "test": "hardhat test",
-    "test:semaphore": "hardhat test ./test/unit_test/Semaphore.ts",
-    "test:cross-chain": "hardhat test ./test/functional_test/CrossChain.ts",
-    "test:report-gas": "REPORT_GAS=true hardhat test",
-    "test:coverage": "hardhat coverage",
-    "typechain": "hardhat typechain",
-    "lint": "yarn lint:sol && yarn lint:ts",
-    "lint:ts": "eslint . --ext .js,.ts",
-    "lint:sol": "solhint 'contracts/**/*.sol'",
+    "build:libraries": "yarn workspaces foreach run build",
+    "compile:contracts": "yarn workspace @webb-tools/semaphore compile",
+    "fetch:fixtures": "cd solidity-fixtures && dvc pull && cd .. && mv solidity-fixtures packages/semaphore",
+    "test": "yarn test:contracts && yarn test:libraries",
+    "test:libraries": "jest --coverage",
+    "test:contracts": "yarn workspace @webb-tools/semaphore test",
+    "lint": "eslint . --ext .js,.ts && yarn workspace @webb-tools/semaphore lint",
     "prettier": "prettier -c .",
     "prettier:write": "prettier -w .",
+    "docs": "yarn workspaces foreach run docs",
     "commit": "cz",
-    "fullclean": "rm -r artifacts build fixtures node_modules yarn.lock packages/proof/snark-artifacts packages/semaphore/typechain cache",
-    "softclean": "rm -r artifacts build node_modules yarn.lock packages/proof/snark-artifacts packages/semaphore/typechain",
+    "workspace": "yarn workspace",
     "precommit": "lint-staged"
   },
+  "keywords": [
+    "ethereum",
+    "semaphore",
+    "solidity",
+    "circom",
+    "javascript",
+    "typescript",
+    "zero-knowledge",
+    "zk-snarks",
+    "zero-knowledge-proofs",
+    "proof-of-membership",
+    "monorepo"
+  ],
   "workspaces": [
-    "packages/group",
     "packages/identity",
+    "packages/group",
     "packages/proof",
-    "packages/semaphore"
+    "packages/semaphore",
+    "packages/hardhat",
+    "packages/subgraph",
+    "packages/circuits"
   ],
   "packageManager": "yarn@3.2.1",
   "devDependencies": {
@@ -91,7 +93,6 @@
     "js-logger": "^1.6.1",
     "lint-staged": "^12.3.2",
     "prettier": "^2.5.1",
-    "prettier-plugin-solidity": "^1.0.0-beta.19",
     "rimraf": "^3.0.2",
     "rollup": "^2.64.0",
     "rollup-plugin-cleanup": "^3.2.1",
@@ -107,7 +108,7 @@
   },
   "config": {
     "solidity": {
-      "version": "0.8.5"
+      "version": "0.8.6"
     },
     "paths": {
       "contracts": "./contracts",

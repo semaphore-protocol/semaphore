@@ -1,8 +1,8 @@
 import { BigNumber, BigNumberish } from "ethers"
-import { Group } from "./group"
-import { Member } from "./types"
 import { MerkleProof } from "@webb-tools/sdk-core"
 import { strict as assert } from "assert"
+import { Group } from "./group"
+import { Member } from "./types"
 
 // This convenience wrapper class is used in tests -
 // It represents a deployed contract throughout its life (e.g. maintains merkle tree state)
@@ -14,7 +14,9 @@ export class LinkedGroup {
   group: Group
   levels: number
   maxEdges: number
+  numNonEmptyEdges: number
   // chainId -> merkle-root
+  chainIds: number[]
   roots: Record<number, BigNumber>
   // externalGroups: Record<number, Group>
   initialRoot = BigNumber.from(
@@ -30,21 +32,24 @@ export class LinkedGroup {
    */
   constructor(
     levels: number,
-    maxConnectedChains: number,
+    maxEdges: number,
+    zeroValue: BigNumberish = BigNumber.from(0),
     // chainId?: number,
     groupAdminAddr?: string,
     group?: Group
   ) {
     this.levels = levels
-    this.maxEdges = maxConnectedChains
+    this.maxEdges = maxEdges
     this.groupAdmin = groupAdminAddr
     if (typeof group === "undefined") {
-      this.group = new Group(levels)
+      this.group = new Group(levels, zeroValue)
     } else {
       this.group = group
     }
 
     this.roots = {}
+    this.chainIds = []
+    this.numNonEmptyEdges = 0
 
     // chainIds are used to identity roots. Since no other chainId will be 0 there should be no problem
     // in ignoring this group chainId as we can get it from this.group.root
@@ -93,9 +98,19 @@ export class LinkedGroup {
    */
   public updateEdge(chainId: number, root: string): void {
     assert(
-      this.root != root,
+      this.root !== root,
       `Trying to add this chain's group as an edge to itself.`
     )
+    if (chainId in this.chainIds) {
+      this.roots[chainId] = BigNumber.from(root)
+      return
+    }
+
+    if (this.numNonEmptyEdges === this.maxEdges + 1) {
+      throw Error("Max number of chains already connected")
+    }
+    this.chainIds.push(chainId)
+    this.numNonEmptyEdges += 1
     this.roots[chainId] = BigNumber.from(root)
   }
 
@@ -114,6 +129,14 @@ export class LinkedGroup {
   get root(): BigNumberish {
     return this.group.root
   }
+
+  // /**
+  //  * Returns the maxEdges of the tree.
+  //  * @returns maxEdges.
+  //  */
+  // get maxEdges(): BigNumberish {
+  //   return this.group.maxEdges
+  // }
 
   /**
    * Returns the depth of the tree.
@@ -150,7 +173,12 @@ export class LinkedGroup {
    * @returns List of members.
    */
   public getRoots(): BigNumber[] {
-    const roots: BigNumber[] = Object.values(this.roots)
+    const roots: BigNumber[] = [this.roots[0]]
+    for (const chainId of this.chainIds) {
+      roots.push(this.roots[chainId])
+    }
+
+    // const roots: BigNumber[] = Object.values(this.roots)
     while (roots.length < this.maxEdges + 1) {
       roots.push(this.zeros[this.depth])
     }

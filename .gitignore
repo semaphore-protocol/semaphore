@@ -16,9 +16,14 @@ pids
 *.seed
 *.pid.lock
 
+# IDE
+.vscode
+.idea
+
 # Testing
 coverage
 coverage.json
+*.lcov
 
 # Dependency directories
 node_modules/
@@ -28,6 +33,10 @@ node_modules/
 
 # Optional npm cache directory
 .npm
+.DS_Store
+
+# Output of 'npm pack'
+*.tgz
 
 # Optional eslint cache
 .eslintcache
@@ -52,10 +61,10 @@ node_modules/
 .env.local
 
 # Production
-build
 dist
-deployed-contracts/undefined.json
-deployed-contracts/localhost.json
+docs/*
+!docs/CNAME
+!docs/index.html
 
 # Hardhat
 artifacts
@@ -72,3 +81,6 @@ cache
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Other
+snark-artifacts

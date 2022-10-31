@@ -4,7 +4,7 @@ import {
   Verifier20_8__factory,
   SemaphoreVerifier__factory,
   SemaphoreVerifier as SemaphoreVerifierContract
-} from "../typechain"
+} from "../build/typechain"
 
 export class Verifier {
   signer: Signer

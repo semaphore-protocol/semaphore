@@ -7,23 +7,24 @@ import {
   utils,
   ethers
 } from "ethers"
+import { toHex, toFixedHex } from "@webb-tools/sdk-core"
+import { poseidon_gencontract as poseidonContract } from "circomlibjs"
+import { getChainIdType, ZkComponents } from "@webb-tools/utils"
+import { Identity } from "@webb-tools/semaphore-identity"
+import { LinkedGroup } from "@webb-tools/semaphore-group"
+import { strict as assert } from "assert"
+import {
+  FullProof,
+  generateProof,
+  packToSolidityProof
+} from "@webb-tools/semaphore-proof"
+import { Verifier } from "./Verifier"
 import {
   Semaphore as SemaphoreContract,
   Semaphore__factory,
   SemaphoreInputEncoder__factory,
   LinkableIncrementalBinaryTree__factory
-} from "../typechain"
-import { toHex, toFixedHex } from "@webb-tools/sdk-core"
-import { poseidon_gencontract as poseidonContract } from "circomlibjs"
-import { getChainIdType, ZkComponents } from "@webb-tools/utils"
-import { Identity } from "@webb-tools/semaphore-identity/src"
-import { LinkedGroup } from "@webb-tools/semaphore-group"
-import {
-  generateProof,
-  packToSolidityProof
-} from "@webb-tools/semaphore-proof/src"
-import { Verifier } from "./Verifier"
-import { strict as assert } from "assert"
+} from "../build/typechain"
 
 // This convenience wrapper class is used in tests -
 // It represents a deployed contract throughout its life (e.g. maintains merkle tree state)
@@ -32,7 +33,7 @@ import { strict as assert } from "assert"
 
 function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
   let rootsBytes = "0x"
-  for (let i = 0; i < rootArray.length; i++) {
+  for (let i = 0; i < rootArray.length; i += 1) {
     rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
   }
   return rootsBytes // root byte string (32 * array.length bytes)
@@ -49,7 +50,10 @@ export class Semaphore {
   // The depositHistory stores leafIndex => information to create proposals (new root)
   smallCircuitZkComponents: ZkComponents
   largeCircuitZkComponents: ZkComponents
-  zeroValue: bigint
+
+  zeroValue: bigint = BigInt(
+    "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+  )
 
   constructor(
     contract: SemaphoreContract,
@@ -80,15 +84,6 @@ export class Semaphore {
   ): Promise<Semaphore> {
     const chainId = getChainIdType(await signer.getChainId())
 
-    const encodeLibraryFactory = new SemaphoreInputEncoder__factory(signer)
-    const encodeLibrary = await encodeLibraryFactory.deploy()
-    await encodeLibrary.deployed()
-    const verifier = await Verifier.createVerifier(signer)
-    const linkableTreeFactory = new LinkableIncrementalBinaryTree__factory(
-      signer
-    )
-    const linkableTree = await linkableTreeFactory.deploy()
-    await linkableTree.deployed()
     const poseidonABI = poseidonContract.generateABI(2)
     const poseidonBytecode = poseidonContract.createCode(2)
 
@@ -98,16 +93,27 @@ export class Semaphore {
       signer
     )
     const poseidonLib = await PoseidonLibFactory.deploy()
-
     await poseidonLib.deployed()
+
+    const encodeLibraryFactory = new SemaphoreInputEncoder__factory(signer)
+    const encodeLibrary = await encodeLibraryFactory.deploy()
+    await encodeLibrary.deployed()
+    const verifier = await Verifier.createVerifier(signer)
+    const linkableTreeFactory = new LinkableIncrementalBinaryTree__factory(
+      {
+        ["contracts/base/Poseidon.sol:PoseidonT3Lib"]: poseidonLib.address
+      },
+      signer
+    )
+    const linkableTree = await linkableTreeFactory.deploy()
+    await linkableTree.deployed()
     const factory = new Semaphore__factory(
       {
-        ["contracts/base/SemaphoreInputEncoder.sol:SemaphoreInputEncoder"]:
-          encodeLibrary.address,
         ["contracts/base/LinkableIncrementalBinaryTree.sol:LinkableIncrementalBinaryTree"]:
           linkableTree.address,
-        ["@zk-kit/incremental-merkle-tree.sol/Hashes.sol:PoseidonT3"]:
-          poseidonLib.address
+        ["contracts/base/SemaphoreInputEncoder.sol:SemaphoreInputEncoder"]:
+          encodeLibrary.address,
+        ["contracts/base/Poseidon.sol:PoseidonT3Lib"]: poseidonLib.address
       },
       signer
     )
@@ -151,7 +157,7 @@ export class Semaphore {
 
   public static createRootsBytes(rootArray: string[]) {
     let rootsBytes = "0x"
-    for (let i = 0; i < rootArray.length; i++) {
+    for (let i = 0; i < rootArray.length; i += 1) {
       rootsBytes += toFixedHex(rootArray[i]).substr(2)
     }
     return rootsBytes // root byte string (32 * array.length bytes)
@@ -218,8 +224,8 @@ export class Semaphore {
     return false
   }
 
-  public async getRoot(groupId: number): Promise<BigNumber> {
-    return this.contract.getRoot(groupId)
+  public async getMerkleTreeRoot(groupId: number): Promise<BigNumber> {
+    return this.contract.getMerkleTreeRoot(groupId)
   }
 
   public populateRootsForProof(groupId: number): string[] {
@@ -232,7 +238,8 @@ export class Semaphore {
     groupId: number,
     depth: number,
     groupAdminAddr: string,
-    maxEdges: number
+    maxEdges: number,
+    merkleRootDuration?: BigNumberish
   ): Promise<ContractTransaction> {
     if (groupId in this.linkedGroups) {
       throw new Error(`Group ${groupId} has already been created`)
@@ -240,9 +247,21 @@ export class Semaphore {
       this.linkedGroups[groupId] = new LinkedGroup(
         depth,
         maxEdges,
+        this.zeroValue,
         groupAdminAddr
       )
-      return this.contract.createGroup(groupId, depth, groupAdminAddr, maxEdges)
+      if (merkleRootDuration === undefined) {
+        // return this.contract.createGroup(groupId, depth, groupAdminAddr, maxEdges)
+        return this.contract["createGroup(uint256,uint256,address,uint8)"](
+          groupId,
+          depth,
+          groupAdminAddr,
+          maxEdges
+        )
+      }
+      return this.contract[
+        "createGroup(uint256,uint256,address,uint8,uint256)"
+      ](groupId, depth, groupAdminAddr, maxEdges, merkleRootDuration.toString())
     }
   }
 
@@ -252,25 +271,31 @@ export class Semaphore {
     const chainId = getChainIdType(await this.signer.getChainId())
     return [
       this.linkedGroups[groupId].roots[chainId],
-      await this.contract.getRoot(groupId)
+      await this.contract.getMerkleTreeRoot(groupId)
     ]
   }
 
   public async updateLinkedGroup(groupId: number): Promise<string[]> {
     const neighborEdges = await this.contract.getLatestNeighborEdges(groupId)
 
-    neighborEdges.map((edge) => {
-      this.linkedGroups[groupId].updateEdge(edge.chainID.toNumber(), edge.root)
+    neighborEdges.forEach((edge) => {
+      this.linkedGroups[groupId].updateEdge(
+        edge.chainID.toNumber(),
+        edge.root.toString()
+      )
     })
 
-    const thisRoot = await this.contract.getRoot(groupId)
+    const thisRoot = await this.contract.getMerkleTreeRoot(groupId)
     assert(
-      thisRoot.toString() == this.linkedGroups[groupId].root.toString(),
+      thisRoot.toString() === this.linkedGroups[groupId].root.toString(),
       "Contract and object are out of sync. You should run update()"
     )
 
     // TODO: Add query and pre-processing of out-of-sync leaves to recreate group and remove above assert
-    return [thisRoot.toString(), ...neighborEdges.map((edge) => edge.root)]
+    return [
+      thisRoot.toString(),
+      ...neighborEdges.map((edge) => edge.root.toString())
+    ]
   }
 
   public async addMembers(
@@ -330,7 +355,7 @@ export class Semaphore {
     chainId: number,
     externalNullifier: BigNumberish,
     externalGroup?: LinkedGroup
-  ): Promise<ContractTransaction> {
+  ): Promise<{ transaction: ContractTransaction; fullProof: FullProof }> {
     const bytes32Signal = utils.formatBytes32String(signal)
 
     let roots: string[]
@@ -351,7 +376,7 @@ export class Semaphore {
         .map((bignum: BigNumber) => bignum.toString())
     }
     const zkComponent =
-      this.linkedGroups[groupId].maxEdges == 1
+      this.linkedGroups[groupId].maxEdges === 1
         ? this.smallCircuitZkComponents
         : this.largeCircuitZkComponents
 
@@ -366,7 +391,7 @@ export class Semaphore {
     )
     const solidityProof = packToSolidityProof(fullProof.proof)
 
-    const transaction = this.contract.verifyProof(
+    const transaction = await this.contract.verifyProof(
       groupId,
       bytes32Signal,
       fullProof.publicSignals.nullifierHash,
@@ -376,7 +401,7 @@ export class Semaphore {
       { gasLimit: "0x5B8D80" }
     )
 
-    return transaction
+    return { transaction, fullProof }
   }
 }
 

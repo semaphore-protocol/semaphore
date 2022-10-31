@@ -6,11 +6,11 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/semaphore-protocol/semaphore.js">
-        <img src="https://img.shields.io/badge/project-semaphore.js-blue.svg?style=flat-square">
+    <a href="https://github.com/semaphore-protocol">
+        <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
-    <a href="https://github.com/semaphore-protocol/semaphore.js/blob/main/packages/proof/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.js.svg?style=flat-square">
+    <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
     </a>
     <a href="https://www.npmjs.com/package/@semaphore-protocol/proof">
         <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/proof?style=flat-square" />
@@ -28,12 +28,14 @@
 
 <div align="center">
     <h4>
-        <a href="https://t.me/joinchat/B-PQx1U3GtAh--Z4Fwo56A">
-            🗣️ Chat &amp; Support
+        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CONTRIBUTING.md">
+            👥 Contributing
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://semaphore-protocol.github.io/semaphore.js/proof">
-            📘 Docs
+        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CODE_OF_CONDUCT.md">
+        <a href="https://github.com/semaphore-protocol/semaphore/contribute">
+            🔎 Issues
+            🗣️ Chat &amp; Support
         </a>
     </h4>
 </div>
@@ -45,16 +47,16 @@
 
 ### npm or yarn
 
-Install the `@semaphore-protocol/proof` package with npm:
+Install the `@semaphore-protocol/proof` package and its peer dependencies with npm:
 
 ```bash
-npm i @semaphore-protocol/proof
+npm i @semaphore-protocol/identity @semaphore-protocol/group @semaphore-protocol/proof
 ```
 
 or yarn:
 
 ```bash
-yarn add @semaphore-protocol/proof
+yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-protocol/proof
 ```
 
 ## 📜 Usage

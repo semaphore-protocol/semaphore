@@ -1,6 +1,6 @@
 import { BigNumber, BigNumberish } from "ethers"
-import { Member } from "./types"
 import { MerkleTree, MerkleProof } from "@webb-tools/sdk-core"
+import { Member } from "./types"
 
 export declare type Leaf = {
   index: number
@@ -14,20 +14,22 @@ export class Group {
    * Initializes the group with the tree depth and the zero value.
    * @param treeDepth Tree depth.
    */
-  constructor(treeDepth = 20) {
+  constructor(treeDepth = 20, zeroValue: BigNumberish = BigNumber.from(0)) {
     if (treeDepth < 16 || treeDepth > 32) {
       throw new Error("The tree depth must be between 16 and 32")
     }
 
-    this._merkleTree = new MerkleTree(treeDepth)
+    this._merkleTree = new MerkleTree(treeDepth, [], {
+      zeroElement: zeroValue
+    })
   }
 
   /**
    * Returns the root hash of the tree.
    * @returns Root hash.
    */
-  get root(): BigNumberish {
-    return this._merkleTree.root()
+  get root(): BigNumber {
+    return BigNumber.from(this._merkleTree.root())
   }
 
   /**
@@ -88,10 +90,19 @@ export class Group {
   }
 
   /**
+   * Updates a member in the group.
+   * @param index Index of the member to be updated.
+   * @param identityCommitment New member value.
+   */
+  updateMember(index: number, identityCommitment: Member) {
+    this._merkleTree.update(index, identityCommitment)
+  }
+
+  /**
    * Removes a member from the group.
    * @param member member to be removed.
    */
-  removeMember(member: Member) {
+  removeMember(member: BigNumberish) {
     this._merkleTree.remove(member)
   }
 

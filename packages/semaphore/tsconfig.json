@@ -1,4 +1,18 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src", "rollup.config.ts", "typechain"]
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "esnext",
+    "outDir": "dist"
+  },
+  "include": [
+    "src",
+    "rollup.config.ts",
+    "scripts/**/*",
+    "tasks/**/*",
+    "test/**/*",
+    "build/typechain/**/*",
+    "types/**/*"
+  ],
+  "files": ["hardhat.config.ts"]
 }

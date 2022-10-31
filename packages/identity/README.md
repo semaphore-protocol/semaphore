@@ -6,11 +6,11 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/semaphore-protocol/semaphore.js">
-        <img src="https://img.shields.io/badge/project-semaphore-blue.svg?style=flat-square">
+    <a href="https://github.com/semaphore-protocol">
+        <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
-    <a href="https://github.com/semaphore-protocol/semaphore.js/blob/main/packages/identity/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.js.svg?style=flat-square">
+    <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
     </a>
     <a href="https://www.npmjs.com/package/@semaphore-protocol/identity">
         <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/identity?style=flat-square" />
@@ -28,18 +28,26 @@
 
 <div align="center">
     <h4>
-        <a href="https://t.me/joinchat/B-PQx1U3GtAh--Z4Fwo56A">
-            🗣️ Chat &amp; Support
+        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CONTRIBUTING.md">
+            👥 Contributing
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://semaphore-protocol.github.io/semaphore.js/identity">
-            📘 Docs
+        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CODE_OF_CONDUCT.md">
+            🤝 Code of conduct
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://github.com/semaphore-protocol/semaphore/contribute">
+            🔎 Issues
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://discord.gg/6mSdGHnstH">
+            🗣️ Chat &amp; Support
         </a>
     </h4>
 </div>
 
-| This library provides a class that can be used to create identities compatible with the Semaphore [circuits](https://github.com/semaphore-protocol/semaphore/tree/main/circuits). Each identity contains two private values (_trapdoor_ and _nullifier_), and the Poseidon hash of these values (_commitment_) is used as the public identifier of the Semaphore identity. |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| This library provides a class that can be used to create identities compatible with the Semaphore [circuits](https://github.com/semaphore-protocol/semaphore/tree/main/circuits). Each identity contains two secret values: _trapdoor_ and _nullifier_, and one public value: _commitment_. The Poseidon hash of the secret values is the identity secret, and its hash is the identity commitment. |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## 🛠 Install
 
@@ -64,30 +72,15 @@ yarn add @semaphore-protocol/identity
 ```typescript
 import { Identity } from "@semaphore-protocol/identity"
 
-// Trapdoor and nullifier are generated randomly.
-const identity1 = new Identity()
+// The identity can be generated randomly.
+const identity1 = new Identity(chainID)
 
-// Trapdoor and nullifier are generated deterministically from a secret message.
-const identity2 = new Identity("secret-message")
+// Deterministically from a secret message.
+const identity2 = new Identity(chainID, "secret-message")
 
-// Trapdoor and nullifier are generated from an existing identity.
-const identity3 = new Identity(identity1.toString())
-```
+// Or it can be retrieved from an existing identity.
+const identity3 = new Identity(chainID, identity1.toString())
 
-\# **getTrapdoor**(): _bigint_
-
-```typescript
-const trapdoor = identity.getTrapdoor()
-```
-
-\# **getNullifier**(): _bigint_
-
-```typescript
-const nullifier = identity.getNullifier()
-```
-
-\# **generateCommitment**(): _bigint_
-
-```typescript
-const commitment = identity.generateCommitment()
+// Trapdoor, nullifier and commitment are the attributes (e.g. JS getters).
+const { trapdoor, nullifier, commitment } = identity1
 ```

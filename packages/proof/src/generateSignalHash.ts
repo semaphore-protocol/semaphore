@@ -1,3 +1,4 @@
+import { isHexString } from "@ethersproject/bytes"
 import { keccak256 } from "@ethersproject/solidity"
 import { formatBytes32String } from "@ethersproject/strings"
 
@@ -7,7 +8,9 @@ import { formatBytes32String } from "@ethersproject/strings"
  * @returns The signal hash.
  */
 export default function genSignalHash(signal: string): bigint {
-  return (
-    BigInt(keccak256(["bytes32"], [formatBytes32String(signal)])) >> BigInt(8)
-  )
+  if (!isHexString(signal, 32)) {
+    signal = formatBytes32String(signal)
+  }
+
+  return BigInt(keccak256(["bytes32"], [signal])) >> BigInt(8)
 }

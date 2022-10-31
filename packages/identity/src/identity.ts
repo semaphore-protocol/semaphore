@@ -1,23 +1,27 @@
 import { BigNumber } from "@ethersproject/bignumber"
 import { poseidon } from "circomlibjs"
 import checkParameter from "./checkParameter"
-import { genRandomNumber, isJsonArray, sha256 } from "./utils"
+import {
+  generateCommitment,
+  genRandomNumber,
+  isJsonArray,
+  sha256
+} from "./utils"
 
 export default class Identity {
   private _trapdoor: bigint
   private _nullifier: bigint
-  private _chainID: bigint
+  private _commitment: bigint
 
   /**
    * Initializes the class attributes based on the strategy passed as parameter.
    * @param identityOrMessage Additional data needed to create identity for given strategy.
    */
-  constructor(chainID: bigint, identityOrMessage?: string) {
-    this._chainID = chainID
-
+  constructor(identityOrMessage?: string) {
     if (identityOrMessage === undefined) {
       this._trapdoor = genRandomNumber()
       this._nullifier = genRandomNumber()
+      this._commitment = generateCommitment(this._nullifier, this._trapdoor)
 
       return
     }
@@ -33,6 +37,7 @@ export default class Identity {
       this._nullifier = BigNumber.from(
         sha256(`${messageHash}identity_nullifier`)
       ).toBigInt()
+      this._commitment = generateCommitment(this._nullifier, this._trapdoor)
 
       return
     }
@@ -41,21 +46,14 @@ export default class Identity {
 
     this._trapdoor = BigNumber.from(`0x${trapdoor}`).toBigInt()
     this._nullifier = BigNumber.from(`0x${nullifier}`).toBigInt()
-  }
-
-  /**
-   * Returns the chainID.
-   * @returns The chainID.
-   */
-  public getChainID(): bigint {
-    return this._chainID
+    this._commitment = generateCommitment(this._nullifier, this._trapdoor)
   }
 
   /**
    * Returns the identity trapdoor.
    * @returns The identity trapdoor.
    */
-  public getTrapdoor(): bigint {
+  public get trapdoor(): bigint {
     return this._trapdoor
   }
 
@@ -63,11 +61,20 @@ export default class Identity {
    * Returns the identity nullifier.
    * @returns The identity nullifier.
    */
-  public getNullifier(): bigint {
+  public get nullifier(): bigint {
     return this._nullifier
   }
 
   /**
+   * Returns the identity commitment.
+   * @returns The identity commitment.
+   */
+  public get commitment(): bigint {
+    return this._commitment
+  }
+
+  /**
+   * @deprecated since version 2.6.0
    * Generates the identity commitment from trapdoor and nullifier.
    * @returns identity commitment
    */

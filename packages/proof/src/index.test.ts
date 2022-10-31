@@ -1,17 +1,18 @@
-import { LinkedGroup } from "@webb-tools/semaphore-group"
-import { Identity } from "@webb-tools/semaphore-identity/src"
-// import { BigNumber } from 'ethers';
-// import download from "download"
 import fs from "fs"
+import { getCurveFromName } from "ffjavascript"
+import { LinkedGroup } from "@webb-tools/semaphore-group"
+import { Identity } from "@webb-tools/semaphore-identity"
+
+import { formatBytes32String } from "@ethersproject/strings"
 import generateNullifierHash from "./generateNullifierHash"
-import { generateProof } from "./generateProof"
+import generateProof from "./generateProof"
 import generateSignalHash from "./generateSignalHash"
 import packToSolidityProof from "./packToSolidityProof"
 import { FullProof } from "./types"
 import verifyProof from "./verifyProof"
 
 describe("Proof", () => {
-  const treeDepth = 20
+  const treeDepth = Number(process.env.TREE_DEPTH) || 20
   const maxEdges = 1
 
   const externalNullifier = "1"
@@ -21,17 +22,22 @@ describe("Proof", () => {
   const snarkArtifactsPath = "./packages/proof/snark-artifacts"
   const wasmFilePath = `${snarkArtifactsPath}/semaphore_20_2.wasm`
   const zkeyFilePath = `${snarkArtifactsPath}/circuit_final.zkey`
-
-  const identity = new Identity(chainID)
-  const identityCommitment = identity.generateCommitment()
+  const verificationKey = JSON.parse(
+    fs.readFileSync(`${snarkArtifactsPath}/verification_key.json`).toString()
+  )
+  const identity = new Identity()
+  const identityCommitment = identity.commitment
 
   let fullProof: FullProof
+  let curve: any
 
   beforeAll(async () => {
-    if (!fs.existsSync(snarkArtifactsPath)) {
-      fs.mkdirSync(snarkArtifactsPath)
-    }
-  }, 10000)
+    curve = await getCurveFromName("bn128")
+  })
+
+  afterAll(async () => {
+    await curve.terminate()
+  })
 
   describe("# generateProof", () => {
     it("Should not generate Semaphore proofs if the identity is not part of the group", async () => {
@@ -47,13 +53,22 @@ describe("Proof", () => {
           signal,
           chainID,
           {
-            wasmFilePath: wasmFilePath,
-            zkeyFilePath: zkeyFilePath
+            wasmFilePath,
+            zkeyFilePath
           }
         )
 
       await expect(fun).rejects.toThrow("The identity is not part of the group")
     })
+    // it("Should not generate a Semaphore proof with default snark artifacts with Node.js", async () => {
+    //   const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
+    //
+    //   linkedGroup.addMembers([BigInt(1), BigInt(2), identity.commitment])
+    //
+    //   const fun = () => generateProof(identity, linkedGroup, externalNullifier, signal, chainID)
+    //
+    //   await expect(fun).rejects.toThrow("ENOENT: no such file or directory")
+    // })
 
     it("Should generate a Semaphore proof passing a linkedGroup as parameter", async () => {
       const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
@@ -67,29 +82,8 @@ describe("Proof", () => {
         signal,
         chainID,
         {
-          wasmFilePath: wasmFilePath,
-          zkeyFilePath: zkeyFilePath
-        }
-      )
-
-      expect(typeof fullProof).toBe("object")
-      expect(fullProof.publicSignals.externalNullifier).toBe(externalNullifier)
-    }, 20000)
-
-    it("Should generate a Semaphore proof passing a Merkle proof as parametr", async () => {
-      const linkedGroup = new LinkedGroup(treeDepth, maxEdges)
-
-      linkedGroup.addMembers([BigInt(1), BigInt(2), identityCommitment])
-
-      fullProof = await generateProof(
-        identity,
-        linkedGroup,
-        externalNullifier,
-        signal,
-        chainID,
-        {
-          wasmFilePath: wasmFilePath,
-          zkeyFilePath: zkeyFilePath
+          wasmFilePath,
+          zkeyFilePath
         }
       )
 
@@ -104,13 +98,19 @@ describe("Proof", () => {
 
       expect(signalHash.toString()).toBe(fullProof.publicSignals.signalHash)
     })
+
+    it("Should generate a valid signal hash by passing a valid hex string", async () => {
+      const signalHash = generateSignalHash(formatBytes32String(signal))
+
+      expect(signalHash.toString()).toBe(fullProof.publicSignals.signalHash)
+    })
   })
 
   describe("# generateNullifierHash", () => {
     it("Should generate a valid nullifier hash", async () => {
       const nullifierHash = generateNullifierHash(
         externalNullifier,
-        identity.getNullifier()
+        identity.nullifier
       )
 
       expect(nullifierHash.toString()).toBe(
@@ -129,10 +129,6 @@ describe("Proof", () => {
 
   describe("# verifyProof", () => {
     it("Should generate and verify a Semaphore proof", async () => {
-      const verificationKey = JSON.parse(
-        fs.readFileSync(`${snarkArtifactsPath}/semaphore.json`, "utf-8")
-      )
-
       const response = await verifyProof(verificationKey, fullProof)
 
       expect(response).toBe(true)
