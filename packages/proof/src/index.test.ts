@@ -1,6 +1,8 @@
+import fs from "fs"
+import { getCurveFromName } from "ffjavascript"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import { Identity } from "@webb-tools/semaphore-identity"
-import fs from "fs"
+
 import { formatBytes32String } from "@ethersproject/strings"
 import generateNullifierHash from "./generateNullifierHash"
 import generateProof from "./generateProof"
@@ -27,12 +29,15 @@ describe("Proof", () => {
   const identityCommitment = identity.commitment
 
   let fullProof: FullProof
+  let curve: any
 
   beforeAll(async () => {
-    if (!fs.existsSync(snarkArtifactsPath)) {
-      fs.mkdirSync(snarkArtifactsPath)
-    }
-  }, 10000)
+    curve = await getCurveFromName("bn128")
+  })
+
+  afterAll(async () => {
+    await curve.terminate()
+  })
 
   describe("# generateProof", () => {
     it("Should not generate Semaphore proofs if the identity is not part of the group", async () => {
