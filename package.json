@@ -15,7 +15,7 @@
   "scripts": {
     "build:libraries": "yarn workspaces foreach run build",
     "compile:contracts": "yarn workspace @webb-tools/semaphore compile",
-    "fetch:fixtures": "cd solidity-fixtures && dvc pull && cd ..",
+    "fetch:fixtures": "cd solidity-fixtures && dvc pull && cd .. && mv solidity-fixtures packages/semaphore",
     "test": "yarn test:contracts && yarn test:libraries",
     "test:libraries": "jest --coverage",
     "test:contracts": "yarn workspace @webb-tools/semaphore test",

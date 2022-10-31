@@ -76,8 +76,8 @@ jobs:
       - name: Fetch submodules
         run: git submodule update --init --recursive
 
-      - name: Download Snark artifacts
-        run: cd solidity-fixtures && dvc pull && cd ..
+      - name: fetch Fixtures
+        run: cd solidity-fixtures && dvc pull && cd .. && mv solidity-fixtures packages/semaphore
 
       - name: Compile contracts
         run: yarn compile:contracts
