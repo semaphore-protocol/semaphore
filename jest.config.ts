@@ -24,10 +24,10 @@ export default async (): Promise<Config.InitialOptions> => ({
   ],
   coverageThreshold: {
     global: {
-      branches: 90,
-      functions: 95,
-      lines: 95,
-      statements: 95
+      statements: 75,
+      branches: 78,
+      lines: 75,
+      functions: 82
     }
   }
 })
