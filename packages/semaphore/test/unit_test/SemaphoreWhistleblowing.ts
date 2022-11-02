@@ -9,84 +9,85 @@ import {
   PublicSignals,
   SolidityProof
 } from "@webb-tools/semaphore-proof"
+import { fetchComponentsFromFilePaths } from "@webb-tools/utils"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import { Identity } from "@webb-tools/semaphore-identity"
-import { SemaphoreWhistleblowing } from "../../build/typechain"
+import { SemaphoreWhistleblowing } from "../../src"
 
 import { VerifierContractInfo, createRootsBytes } from "../utils"
 
 const path = require("path")
 
 describe("SemaphoreWhistleblowing", () => {
-  let contract: SemaphoreWhistleblowing
+  let semaphore: SemaphoreWhistleblowing
   let signers: Signer[]
-  let editor: string
+  let editorAddr: string
+  let editor: Signer
+  let user: Signer
 
+  const entityIds = [1, 2]
   const zeroValue = BigInt(
     "21663839004416932945382355908790599225266501822907911457504978515578255421292"
   )
-  const chainID = BigInt(1099511629113)
+  const chainId = BigInt(1099511629113)
   const treeDepth = Number(process.env.TREE_DEPTH) | 20
-  const entityIds = [BigInt(1), BigInt(2)]
   const maxEdges = 1
-
-  const wasmFilePath = path.join(
+  // const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
+  const wasmFilePath20_2 = path.join(
     __dirname,
     `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/semaphore_20_2.wasm`
   )
-  const zkeyFilePath = path.join(
+  const witnessCalcPath20_2 = path.join(
+    __dirname,
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/witness_calculator.js`
+  )
+  const zkeyFilePath20_2 = path.join(
     __dirname,
     `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/2/circuit_final.zkey`
   )
 
+  const wasmFilePath20_8 = path.join(
+    __dirname,
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/8/semaphore_20_8.wasm`
+  )
+  const witnessCalcPath20_8 = path.join(
+    __dirname,
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/8/witness_calculator.js`
+  )
+  const zkeyFilePath20_8 = path.join(
+    __dirname,
+    `/../../solidity-fixtures/solidity-fixtures/${treeDepth}/8/circuit_final.zkey`
+  )
+
   before(async () => {
-    const { address: v2Address } = await run("deploy:verifier", {
-      logs: false,
-      depth: treeDepth,
-      circuitLength: 2
-    })
-    const VerifierV2: VerifierContractInfo = {
-      name: `Verifier${treeDepth}_${2}`,
-      address: v2Address,
-      depth: `${treeDepth}`,
-      circuitLength: `2`
-    }
-
-    const { address: v8Address } = await run("deploy:verifier", {
-      logs: false,
-      depth: treeDepth,
-      circuitLength: 8
-    })
-    const VerifierV8: VerifierContractInfo = {
-      name: `Verifier${treeDepth}_${8}`,
-      address: v8Address,
-      depth: `${treeDepth}`,
-      circuitLength: `8`
-    }
-
-    const deployedVerifiers: Map<string, VerifierContractInfo> = new Map([
-      ["v2", VerifierV2],
-      ["v8", VerifierV8]
-    ])
-
-    const verifierSelector = await run("deploy:verifier-selector", {
-      logs: true,
-      verifiers: deployedVerifiers
-    })
-    contract = await run("deploy:semaphore-whistleblowing", {
-      logs: true,
-      verifier: verifierSelector.address
-    })
     signers = await run("accounts", { logs: false })
-    editor = await signers[1].getAddress()
+    editorAddr = await signers[1].getAddress()
+    editor = signers[1]
+    user = signers[0]
+    const zkComponents20_2 = await fetchComponentsFromFilePaths(
+      wasmFilePath20_2,
+      witnessCalcPath20_2,
+      zkeyFilePath20_2
+    )
+    const zkComponents20_8 = await fetchComponentsFromFilePaths(
+      wasmFilePath20_8,
+      witnessCalcPath20_8,
+      zkeyFilePath20_8
+    )
+    semaphore = await SemaphoreWhistleblowing.createSemaphoreWhistleblowing(
+      treeDepth,
+      zkComponents20_2,
+      zkComponents20_8,
+      signers[0]
+    )
   })
 
   describe("# createEntity", () => {
     it("Should not create an entity with a wrong depth", async () => {
-      const transaction = contract.createEntity(
+      const transaction = semaphore.contract.createEntity(
         entityIds[0],
         10,
-        editor,
+        editorAddr,
         maxEdges
       )
 
@@ -96,12 +97,12 @@ describe("SemaphoreWhistleblowing", () => {
     })
 
     it("Should not create an entity greater than the snark scalar field", async () => {
-      const transaction = contract.createEntity(
+      const transaction = semaphore.contract.createEntity(
         BigInt(
           "21888242871839275222246405745257275088548364400416034343698204186575808495618"
         ),
         treeDepth,
-        editor,
+        editorAddr,
         maxEdges
       )
 
@@ -111,23 +112,23 @@ describe("SemaphoreWhistleblowing", () => {
     })
 
     it("Should create an entity", async () => {
-      const transaction = contract.createEntity(
+      const transaction = semaphore.createEntity(
         entityIds[0],
         treeDepth,
-        editor,
+        editorAddr,
         maxEdges
       )
 
       await expect(transaction)
-        .emit(contract, "EntityCreated")
-        .withArgs(entityIds[0], editor)
+        .emit(semaphore.contract, "EntityCreated")
+        .withArgs(entityIds[0], editorAddr)
     })
 
     it("Should not create a entity if it already exists", async () => {
-      const transaction = contract.createEntity(
+      const transaction = semaphore.contract.createEntity(
         entityIds[0],
         treeDepth,
-        editor,
+        editorAddr,
         maxEdges
       )
 
@@ -139,8 +140,9 @@ describe("SemaphoreWhistleblowing", () => {
     it("Should not add a whistleblower if the caller is not the editor", async () => {
       const identity = new Identity()
       const identityCommitment = identity.generateCommitment()
+      await semaphore.setSigner(user)
 
-      const transaction = contract.addWhistleblower(
+      const transaction = semaphore.contract.addWhistleblower(
         entityIds[0],
         identityCommitment
       )
@@ -151,17 +153,16 @@ describe("SemaphoreWhistleblowing", () => {
     })
 
     it("Should add a whistleblower to an existing entity", async () => {
+      await semaphore.setSigner(editor)
       const identity = new Identity("test")
       const identityCommitment = identity.generateCommitment()
 
       const group = new LinkedGroup(treeDepth, maxEdges, zeroValue)
       group.addMember(identityCommitment)
 
-      const transaction = contract
-        .connect(signers[1])
-        .addWhistleblower(entityIds[0], identityCommitment)
+      const transaction = semaphore.addWhistleblower(entityIds[0], identityCommitment)
 
-      await expect(transaction).emit(contract, "MemberAdded").withArgs(
+      await expect(transaction).emit(semaphore.contract, "MemberAdded").withArgs(
         entityIds[0],
         0,
         identityCommitment,
@@ -171,65 +172,66 @@ describe("SemaphoreWhistleblowing", () => {
     })
 
     it("Should return the correct number of whistleblowers of an entity", async () => {
-      const size = await contract.getNumberOfMerkleTreeLeaves(entityIds[0])
+      const size = await semaphore.getNumberOfMerkleTreeLeaves(entityIds[0])
 
       expect(size).eq(1)
     })
   })
 
-  describe("# removeWhistleblower", () => {
-    it("Should not remove a whistleblower if the caller is not the editor", async () => {
-      const identity = new Identity()
-      const identityCommitment = identity.generateCommitment()
-      const group = new LinkedGroup(treeDepth, maxEdges, zeroValue)
+  // NOTE: this is not currently a working feature in the cross-chain setting
+  // describe("# removeWhistleblower", () => {
+  //   it("Should not remove a whistleblower if the caller is not the editor", async () => {
+  //     const identity = new Identity()
+  //     const identityCommitment = identity.generateCommitment()
+  //     const group = new LinkedGroup(treeDepth, maxEdges, zeroValue)
+  //
+  //     group.addMember(identityCommitment)
+  //
+  //     const { pathElements, pathIndices } = group.generateProofOfMembership(0)
+  //
+  //     const transaction = semaphore.removeWhistleblower(
+  //       entityIds[0],
+  //       identityCommitment,
+  //       pathElements,
+  //       pathIndices
+  //     )
+  //
+  //     await expect(transaction).revertedWith(
+  //       "Semaphore__CallerIsNotTheEditor()"
+  //     )
+  //   })
 
-      group.addMember(identityCommitment)
-
-      const { pathElements, pathIndices } = group.generateProofOfMembership(0)
-
-      const transaction = contract.removeWhistleblower(
-        entityIds[0],
-        identityCommitment,
-        pathElements,
-        pathIndices
-      )
-
-      await expect(transaction).revertedWith(
-        "Semaphore__CallerIsNotTheEditor()"
-      )
-    })
-
-    // it("Should remove a whistleblower from an existing entity", async () => {
-    //   const identity = new Identity("test")
-    //   const identityCommitment = identity.generateCommitment()
-    //   const group = new LinkedGroup(treeDepth, maxEdges)
-    //
-    //   group.addMember(identityCommitment)
-    //
-    //   const { pathElements, pathIndices } = group.generateProofOfMembership(0)
-    //
-    //   const transaction = contract
-    //     .connect(signers[1])
-    //     .removeWhistleblower(
-    //       entityIds[0],
-    //       identityCommitment,
-    //       pathElements,
-    //       pathIndices
-    //     )
-    //
-    //   await expect(transaction)
-    //     .emit(contract, "MemberRemoved")
-    //     .withArgs(
-    //       entityIds[0],
-    //       identityCommitment,
-    //       "19476726467694243150694636071195943429153087843379888650723427850220480216251"
-    //     )
-    // })
-  })
+  // it("Should remove a whistleblower from an existing entity", async () => {
+  //   const identity = new Identity("test")
+  //   const identityCommitment = identity.generateCommitment()
+  //   const group = new LinkedGroup(treeDepth, maxEdges)
+  //
+  //   group.addMember(identityCommitment)
+  //
+  //   const { pathElements, pathIndices } = group.generateProofOfMembership(0)
+  //
+  //   const transaction = contract
+  //     .connect(signers[1])
+  //     .removeWhistleblower(
+  //       entityIds[0],
+  //       identityCommitment,
+  //       pathElements,
+  //       pathIndices
+  //     )
+  //
+  //   await expect(transaction)
+  //     .emit(contract, "MemberRemoved")
+  //     .withArgs(
+  //       entityIds[0],
+  //       identityCommitment,
+  //       "19476726467694243150694636071195943429153087843379888650723427850220480216251"
+  //     )
+  // })
+  // })
 
   describe("# publishLeak", () => {
     const identity = new Identity("test")
-    const identityCommitment = identity.generateCommitment()
+    const identityCommitment = identity.commitment
     const leak = "leak"
     const bytes32Leak = utils.formatBytes32String(leak)
 
@@ -242,24 +244,20 @@ describe("SemaphoreWhistleblowing", () => {
     let publicSignals: PublicSignals
 
     before(async () => {
-      await contract.createEntity(entityIds[1], treeDepth, editor, maxEdges)
-      await contract
-        .connect(signers[1])
-        .addWhistleblower(entityIds[1], identityCommitment)
-      await contract
-        .connect(signers[1])
-        .addWhistleblower(entityIds[1], BigInt(1))
+      await semaphore.setSigner(editor)
+      await semaphore.createEntity(entityIds[1], treeDepth, editorAddr, maxEdges)
+      await semaphore.addWhistleblower(entityIds[1], identityCommitment)
+      await semaphore.addWhistleblower(entityIds[1], BigInt(1))
       // const root = await contract.getRoot(entityIds[1])
-
       const fullProof = await generateProof(
         identity,
         group,
         entityIds[1],
         leak,
-        chainID,
+        chainId,
         {
-          wasmFilePath,
-          zkeyFilePath
+          wasmFilePath: wasmFilePath20_2,
+          zkeyFilePath: zkeyFilePath20_2
         }
       )
 
@@ -268,7 +266,7 @@ describe("SemaphoreWhistleblowing", () => {
     })
 
     it("Should not publish a leak if the caller is not the editor", async () => {
-      const transaction = contract.publishLeak(
+      const transaction = semaphore.contract.publishLeak(
         bytes32Leak,
         publicSignals.nullifierHash,
         entityIds[0],
@@ -283,11 +281,11 @@ describe("SemaphoreWhistleblowing", () => {
 
     it("Should not publish a leak if the proof is not valid", async () => {
       const nullifierHash = generateNullifierHash(
-        entityIds[0],
+        BigInt(entityIds[0]),
         identity.nullifier
       )
 
-      const transaction = contract
+      const transaction = semaphore.contract
         .connect(signers[1])
         .publishLeak(
           bytes32Leak,
@@ -301,18 +299,16 @@ describe("SemaphoreWhistleblowing", () => {
     })
 
     it("Should publish a leak", async () => {
-      const transaction = contract
-        .connect(signers[1])
+      const { transaction } = await semaphore
         .publishLeak(
-          bytes32Leak,
-          publicSignals.nullifierHash,
+          identity,
+          leak,
           entityIds[1],
-          createRootsBytes(publicSignals.roots),
-          solidityProof
+          Number(chainId),
         )
 
       await expect(transaction)
-        .emit(contract, "LeakPublished")
+        .emit(semaphore.contract, "LeakPublished")
         .withArgs(entityIds[1], bytes32Leak)
     })
   })

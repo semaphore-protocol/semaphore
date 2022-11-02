@@ -7,18 +7,18 @@ import {
   utils,
   ethers
 } from "ethers"
-import { toHex, toFixedHex } from "@webb-tools/sdk-core"
+import { toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
 import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
-import { strict as assert } from "assert"
 import {
   FullProof,
   generateProof,
   packToSolidityProof
 } from "@webb-tools/semaphore-proof"
-import { Verifier } from "./Verifier"
+import { Verifier } from "./verifier"
+import { SemaphoreBase, createRootsBytes } from "./semaphoreBase"
 import {
   Semaphore as SemaphoreContract,
   Semaphore__factory,
@@ -31,29 +31,9 @@ import {
 // Functionality relevant to anchors in general (proving, verifying) is implemented in static methods
 // Functionality relevant to a particular anchor deployment (deposit, withdraw) is implemented in instance methods
 
-function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
-  let rootsBytes = "0x"
-  for (let i = 0; i < rootArray.length; i += 1) {
-    rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
-  }
-  return rootsBytes // root byte string (32 * array.length bytes)
-}
 
-export class Semaphore {
-  signer: Signer
+export class Semaphore extends SemaphoreBase {
   contract: SemaphoreContract
-  chainId: number
-  linkedGroups: Record<number, LinkedGroup>
-  rootHistory: Record<number, string>
-  // hex string of the connected root
-  latestSyncedBlock: number
-  // The depositHistory stores leafIndex => information to create proposals (new root)
-  smallCircuitZkComponents: ZkComponents
-  largeCircuitZkComponents: ZkComponents
-
-  zeroValue: bigint = BigInt(
-    "21663839004416932945382355908790599225266501822907911457504978515578255421292"
-  )
 
   constructor(
     contract: SemaphoreContract,
@@ -62,18 +42,9 @@ export class Semaphore {
     smallCircuitZkComponents: ZkComponents,
     largeCircuitZkComponents: ZkComponents
   ) {
-    this.signer = signer
+    super(contract, signer, chainId, smallCircuitZkComponents, largeCircuitZkComponents)
     this.contract = contract
-    this.chainId = chainId
-    this.latestSyncedBlock = 0
-    this.linkedGroups = {}
-    this.rootHistory = {}
     // this.rootHistory = undefined;
-    this.smallCircuitZkComponents = smallCircuitZkComponents
-    this.largeCircuitZkComponents = largeCircuitZkComponents
-    this.zeroValue = BigInt(
-      "21663839004416932945382355908790599225266501822907911457504978515578255421292"
-    )
     // this.largeCircuitZkComponents = largeCircuitZkComponents
   }
   public static async createSemaphore(
@@ -154,29 +125,6 @@ export class Semaphore {
     )
     return createdSemaphore
   }
-
-  public static createRootsBytes(rootArray: string[]) {
-    let rootsBytes = "0x"
-    for (let i = 0; i < rootArray.length; i += 1) {
-      rootsBytes += toFixedHex(rootArray[i]).substr(2)
-    }
-    return rootsBytes // root byte string (32 * array.length bytes)
-  }
-
-  // Convert a hex string to a byte array
-  public static hexStringToByte(str: string) {
-    if (!str) {
-      return new Uint8Array()
-    }
-
-    const a = []
-    for (let i = 0, len = str.length; i < len; i += 2) {
-      a.push(parseInt(str.substr(i, 2), 16))
-    }
-
-    return new Uint8Array(a)
-  }
-
   // Sync the local tree with the tree on chain.
   // Start syncing from the given block number, otherwise zero.
   // public async updateState(blockNumber?: number) {
@@ -204,36 +152,6 @@ export class Semaphore {
     return receipt
   }
 
-  public async createResourceId(): Promise<string> {
-    return toHex(
-      this.contract.address +
-        toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
-      32
-    )
-  }
-
-  public async setSigner(newSigner: Signer) {
-    const currentChainId = await this.signer.getChainId()
-    const newChainId = await newSigner.getChainId()
-
-    if (currentChainId === newChainId) {
-      this.signer = newSigner
-      this.contract = this.contract.connect(newSigner)
-      return true
-    }
-    return false
-  }
-
-  public async getMerkleTreeRoot(groupId: number): Promise<BigNumber> {
-    return this.contract.getMerkleTreeRoot(groupId)
-  }
-
-  public populateRootsForProof(groupId: number): string[] {
-    return this.linkedGroups[groupId]
-      .getRoots()
-      .map((bignum) => bignum.toString())
-  }
-
   public async createGroup(
     groupId: number,
     depth: number,
@@ -243,59 +161,25 @@ export class Semaphore {
   ): Promise<ContractTransaction> {
     if (groupId in this.linkedGroups) {
       throw new Error(`Group ${groupId} has already been created`)
-    } else {
-      this.linkedGroups[groupId] = new LinkedGroup(
-        depth,
-        maxEdges,
-        this.zeroValue,
-        groupAdminAddr
-      )
-      if (merkleRootDuration === undefined) {
-        // return this.contract.createGroup(groupId, depth, groupAdminAddr, maxEdges)
-        return this.contract["createGroup(uint256,uint256,address,uint8)"](
-          groupId,
-          depth,
-          groupAdminAddr,
-          maxEdges
-        )
-      }
-      return this.contract[
-        "createGroup(uint256,uint256,address,uint8,uint256)"
-      ](groupId, depth, groupAdminAddr, maxEdges, merkleRootDuration.toString())
     }
-  }
-
-  public async getClassAndContractRoots(
-    groupId: number
-  ): Promise<BigNumberish[]> {
-    const chainId = getChainIdType(await this.signer.getChainId())
-    return [
-      this.linkedGroups[groupId].roots[chainId],
-      await this.contract.getMerkleTreeRoot(groupId)
-    ]
-  }
-
-  public async updateLinkedGroup(groupId: number): Promise<string[]> {
-    const neighborEdges = await this.contract.getLatestNeighborEdges(groupId)
-
-    neighborEdges.forEach((edge) => {
-      this.linkedGroups[groupId].updateEdge(
-        edge.chainID.toNumber(),
-        edge.root.toString()
-      )
-    })
-
-    const thisRoot = await this.contract.getMerkleTreeRoot(groupId)
-    assert(
-      thisRoot.toString() === this.linkedGroups[groupId].root.toString(),
-      "Contract and object are out of sync. You should run update()"
+    this.linkedGroups[groupId] = new LinkedGroup(
+      depth,
+      maxEdges,
+      this.zeroValue,
+      groupAdminAddr
     )
-
-    // TODO: Add query and pre-processing of out-of-sync leaves to recreate group and remove above assert
-    return [
-      thisRoot.toString(),
-      ...neighborEdges.map((edge) => edge.root.toString())
-    ]
+    if (merkleRootDuration === undefined) {
+      // return this.contract.createGroup(groupId, depth, groupAdminAddr, maxEdges)
+      return this.contract["createGroup(uint256,uint256,address,uint8)"](
+        groupId,
+        depth,
+        groupAdminAddr,
+        maxEdges
+      )
+    }
+    return this.contract[
+      "createGroup(uint256,uint256,address,uint8,uint256)"
+    ](groupId, depth, groupAdminAddr, maxEdges, merkleRootDuration.toString())
   }
 
   public async addMembers(
@@ -314,10 +198,9 @@ export class Semaphore {
   ): Promise<ContractTransaction> {
     if (!(groupId in this.linkedGroups)) {
       throw new Error(`Group ${groupId} doesn't exist`)
-    } else {
-      this.linkedGroups[groupId].addMember(leaf)
-      return this.contract.addMember(groupId, leaf, { gasLimit: "0x5B8D80" })
     }
+    this.linkedGroups[groupId].addMember(leaf)
+    return this.contract.addMember(groupId, leaf, { gasLimit: "0x5B8D80" })
   }
 
   public async updateEdge(

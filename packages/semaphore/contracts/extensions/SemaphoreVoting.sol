@@ -64,6 +64,16 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         emit PollCreated(pollId, coordinator);
     }
 
+    /// @dev See {ISemaphoreVoting-updateEdge}.
+    function updateEdge(
+        uint256 pollId,
+        uint256 root,
+        uint32 leafIndex,
+        bytes32 typedChainId
+    ) external override onlyCoordinator(pollId) {
+        _updateEdge(pollId, root, leafIndex, typedChainId);
+    }
+
     /// @dev See {ISemaphoreVoting-addVoter}.
     function addVoter(uint256 pollId, uint256 identityCommitment)
         public

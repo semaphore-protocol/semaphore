@@ -31,7 +31,7 @@ describe("Semaphore", () => {
   // const circuitLength = Number(process.env.CIRCUIT_LENGTH) | 2
   const groupId = 1
   const maxEdges1 = 1
-  const chainID = BigInt(1099511629113)
+  const chainId = BigInt(1099511629113)
   const { identities, members } = createIdentities(3)
 
   const wasmFilePath20_2 = path.join(
@@ -273,7 +273,7 @@ describe("Semaphore", () => {
         linkedGroup,
         BigNumber.from(Date.now()),
         signal,
-        chainID,
+        chainId,
         {
           wasmFilePath: wasmFilePath20_2,
           zkeyFilePath: zkeyFilePath20_2
@@ -313,7 +313,7 @@ describe("Semaphore", () => {
         identities[0],
         signal,
         groupId2,
-        Number(chainID),
+        Number(chainId),
         BigNumber.from(Date.now())
       )
 
@@ -360,7 +360,7 @@ describe("Semaphore", () => {
         linkedGroup,
         BigNumber.from(Date.now()),
         signal,
-        chainID,
+        chainId,
         {
           wasmFilePath: wasmFilePath20_8,
           zkeyFilePath: zkeyFilePath20_8
@@ -387,7 +387,7 @@ describe("Semaphore", () => {
         identities[0],
         signal,
         groupId3,
-        Number(chainID),
+        Number(chainId),
         BigNumber.from(Date.now())
       )
       await expect(transaction)
