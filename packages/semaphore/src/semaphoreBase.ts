@@ -1,9 +1,4 @@
-import {
-  BigNumber,
-  BigNumberish,
-  Signer,
-  ethers
-} from "ethers"
+import { BigNumber, BigNumberish, Signer, ethers } from "ethers"
 import { toHex, toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
@@ -136,7 +131,7 @@ export class SemaphoreBase {
   public async createResourceId(): Promise<string> {
     return toHex(
       this.contract.address +
-      toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
+        toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
       32
     )
   }
