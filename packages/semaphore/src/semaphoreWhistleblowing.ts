@@ -1,7 +1,6 @@
 import {
   BigNumber,
   BigNumberish,
-  ContractReceipt,
   ContractTransaction,
   Signer,
   utils,
@@ -41,7 +40,13 @@ export class SemaphoreWhistleblowing extends SemaphoreBase {
     smallCircuitZkComponents: ZkComponents,
     largeCircuitZkComponents: ZkComponents
   ) {
-    super(contract, signer, chainId, smallCircuitZkComponents, largeCircuitZkComponents)
+    super(
+      contract,
+      signer,
+      chainId,
+      smallCircuitZkComponents,
+      largeCircuitZkComponents
+    )
     this.contract = contract
     // this.rootHistory = undefined;
     // this.largeCircuitZkComponents = largeCircuitZkComponents
@@ -139,7 +144,7 @@ export class SemaphoreWhistleblowing extends SemaphoreBase {
     entityId: number,
     depth: number,
     editorAddr: string,
-    maxEdges: number,
+    maxEdges: number
   ): Promise<ContractTransaction> {
     if (entityId in this.linkedGroups) {
       throw new Error(`Group ${entityId} has already been created`)
@@ -150,12 +155,7 @@ export class SemaphoreWhistleblowing extends SemaphoreBase {
       this.zeroValue,
       editorAddr
     )
-    return this.contract.createEntity(
-      entityId,
-      depth,
-      editorAddr,
-      maxEdges
-    )
+    return this.contract.createEntity(entityId, depth, editorAddr, maxEdges)
   }
 
   public async addWhistleblowers(
@@ -176,7 +176,9 @@ export class SemaphoreWhistleblowing extends SemaphoreBase {
       throw new Error(`Group ${entityId} doesn't exist`)
     }
     this.linkedGroups[entityId].addMember(leaf)
-    return this.contract.addWhistleblower(entityId, leaf, { gasLimit: "0x5B8D80" })
+    return this.contract.addWhistleblower(entityId, leaf, {
+      gasLimit: "0x5B8D80"
+    })
   }
 
   public async updateEdge(
@@ -262,4 +264,4 @@ export class SemaphoreWhistleblowing extends SemaphoreBase {
   }
 }
 
-export default SemaphoreWhistleblowing;
+export default SemaphoreWhistleblowing

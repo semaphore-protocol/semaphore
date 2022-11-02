@@ -1,18 +1,16 @@
 import {
   BigNumber,
   BigNumberish,
-  ContractReceipt,
   ContractTransaction,
   Signer,
   utils,
   ethers
 } from "ethers"
-import { toHex, toFixedHex } from "@webb-tools/sdk-core"
+import { toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
 import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
-import { strict as assert } from "assert"
 import {
   FullProof,
   generateProof,
@@ -42,7 +40,13 @@ export class SemaphoreVoting extends SemaphoreBase {
     smallCircuitZkComponents: ZkComponents,
     largeCircuitZkComponents: ZkComponents
   ) {
-    super(contract, signer, chainId, smallCircuitZkComponents, largeCircuitZkComponents)
+    super(
+      contract,
+      signer,
+      chainId,
+      smallCircuitZkComponents,
+      largeCircuitZkComponents
+    )
     this.contract = contract
   }
   public static async createSemaphoreVoting(
@@ -138,19 +142,24 @@ export class SemaphoreVoting extends SemaphoreBase {
     groupId: number,
     depth: number,
     groupAdminAddr: string,
-    maxEdges: number,
+    maxEdges: number
   ): Promise<ContractTransaction> {
     if (groupId in this.linkedGroups) {
       throw new Error(`Group ${groupId} has already been created`)
     }
-    const tx = await this.contract.createPoll(groupId, depth, groupAdminAddr, maxEdges)
+    const tx = await this.contract.createPoll(
+      groupId,
+      depth,
+      groupAdminAddr,
+      maxEdges
+    )
     this.linkedGroups[groupId] = new LinkedGroup(
       depth,
       maxEdges,
       this.zeroValue,
       groupAdminAddr
     )
-    return tx;
+    return tx
   }
 
   public async getNumberVoters(pollId: BigNumberish): Promise<BigNumberish> {
@@ -174,7 +183,9 @@ export class SemaphoreVoting extends SemaphoreBase {
     if (!(groupId in this.linkedGroups)) {
       throw new Error(`Group ${groupId} doesn't exist`)
     }
-    const tx = await this.contract.addVoter(groupId, leaf, { gasLimit: "0x5B8D80" })
+    const tx = await this.contract.addVoter(groupId, leaf, {
+      gasLimit: "0x5B8D80"
+    })
     this.linkedGroups[groupId].addMember(leaf)
 
     return tx
@@ -202,7 +213,6 @@ export class SemaphoreVoting extends SemaphoreBase {
     pollId: number | BigNumberish,
     encryptionKey: BigNumberish
   ): Promise<ContractTransaction> {
-
     const tx = await this.contract.startPoll(pollId, encryptionKey)
     return tx
   }
@@ -212,7 +222,7 @@ export class SemaphoreVoting extends SemaphoreBase {
     decryptionKey: BigNumberish
   ): Promise<ContractTransaction> {
     const tx = await this.contract.endPoll(pollId, decryptionKey)
-    return tx;
+    return tx
   }
 
   public async castVote(

@@ -169,7 +169,12 @@ describe("SemaphoreVoting", () => {
 
   describe("# addVoter", () => {
     before(async () => {
-      await semaphore.createPoll(pollIds[1], treeDepth, coordinatorAddr, maxEdges)
+      await semaphore.createPoll(
+        pollIds[1],
+        treeDepth,
+        coordinatorAddr,
+        maxEdges
+      )
     })
 
     it("Should not add a voter if the caller is not the coordinator", async () => {
@@ -205,13 +210,15 @@ describe("SemaphoreVoting", () => {
 
       const transaction = semaphore.addVoter(pollIds[1], identityCommitment)
 
-      await expect(transaction).emit(semaphore.contract, "MemberAdded").withArgs(
-        pollIds[1],
-        0,
-        identityCommitment,
-        group.root
-        // "7943806797233700547041913393384710769504872928213070894800658208056456315893"
-      )
+      await expect(transaction)
+        .emit(semaphore.contract, "MemberAdded")
+        .withArgs(
+          pollIds[1],
+          0,
+          identityCommitment,
+          group.root
+          // "7943806797233700547041913393384710769504872928213070894800658208056456315893"
+        )
     })
 
     it("Should return the correct number of poll voters", async () => {
@@ -239,7 +246,12 @@ describe("SemaphoreVoting", () => {
       await semaphore.setSigner(coordinator)
       await semaphore.addVoter(pollIds[1], BigInt(1))
       await semaphore.startPoll(pollIds[1], encryptionKey)
-      await semaphore.createPoll(pollIds[2], treeDepth, coordinatorAddr, maxEdges)
+      await semaphore.createPoll(
+        pollIds[2],
+        treeDepth,
+        coordinatorAddr,
+        maxEdges
+      )
 
       const fullProof = await generateProof(
         identity,

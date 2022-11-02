@@ -31,7 +31,6 @@ import {
 // Functionality relevant to anchors in general (proving, verifying) is implemented in static methods
 // Functionality relevant to a particular anchor deployment (deposit, withdraw) is implemented in instance methods
 
-
 export class Semaphore extends SemaphoreBase {
   contract: SemaphoreContract
 
@@ -42,7 +41,13 @@ export class Semaphore extends SemaphoreBase {
     smallCircuitZkComponents: ZkComponents,
     largeCircuitZkComponents: ZkComponents
   ) {
-    super(contract, signer, chainId, smallCircuitZkComponents, largeCircuitZkComponents)
+    super(
+      contract,
+      signer,
+      chainId,
+      smallCircuitZkComponents,
+      largeCircuitZkComponents
+    )
     this.contract = contract
     // this.rootHistory = undefined;
     // this.largeCircuitZkComponents = largeCircuitZkComponents
@@ -177,9 +182,13 @@ export class Semaphore extends SemaphoreBase {
         maxEdges
       )
     }
-    return this.contract[
-      "createGroup(uint256,uint256,address,uint8,uint256)"
-    ](groupId, depth, groupAdminAddr, maxEdges, merkleRootDuration.toString())
+    return this.contract["createGroup(uint256,uint256,address,uint8,uint256)"](
+      groupId,
+      depth,
+      groupAdminAddr,
+      maxEdges,
+      merkleRootDuration.toString()
+    )
   }
 
   public async addMembers(

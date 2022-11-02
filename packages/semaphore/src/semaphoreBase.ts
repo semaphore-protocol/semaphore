@@ -1,23 +1,13 @@
 import {
   BigNumber,
   BigNumberish,
-  ContractReceipt,
-  ContractTransaction,
   Signer,
-  utils,
   ethers
 } from "ethers"
 import { toHex, toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
-// import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
-import { strict as assert } from "assert"
-// import {
-//   FullProof,
-//   generateProof,
-//   packToSolidityProof
-// } from "@webb-tools/semaphore-proof"
 import { Verifier } from "./verifier"
 import {
   Semaphore as SemaphoreContract,
@@ -35,14 +25,16 @@ export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
   return rootsBytes // root byte string (32 * array.length bytes)
 }
 
-export type SemaphoreContractInstance = SemaphoreContract | SemaphoreVotingContract | SemaphoreWhistleblowingContract
+export type SemaphoreContractInstance =
+  | SemaphoreContract
+  | SemaphoreVotingContract
+  | SemaphoreWhistleblowingContract
 
 export type SemaphoreDeployDependencies = {
-  poseidonLibAddr: string;
-  linkableTreeAddr: string;
-  encodeLibraryAddr: string;
-  verifierAddr: string;
-
+  poseidonLibAddr: string
+  linkableTreeAddr: string
+  encodeLibraryAddr: string
+  verifierAddr: string
 }
 
 export class SemaphoreBase {
@@ -171,7 +163,9 @@ export class SemaphoreBase {
       .map((bignum: BigNumber) => bignum.toString())
   }
 
-  public async getNumberOfMerkleTreeLeaves(pollId: BigNumberish): Promise<BigNumberish> {
+  public async getNumberOfMerkleTreeLeaves(
+    pollId: BigNumberish
+  ): Promise<BigNumberish> {
     return this.contract.getNumberOfMerkleTreeLeaves(pollId)
   }
 
@@ -184,6 +178,5 @@ export class SemaphoreBase {
     })
     return tx
   }
-
 }
 export default SemaphoreBase

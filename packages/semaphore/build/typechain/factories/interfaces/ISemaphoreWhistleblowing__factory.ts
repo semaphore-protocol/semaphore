@@ -165,6 +165,34 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "entityId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "root",
+        type: "uint256",
+      },
+      {
+        internalType: "uint32",
+        name: "leafIndex",
+        type: "uint32",
+      },
+      {
+        internalType: "bytes32",
+        name: "typedChainId",
+        type: "bytes32",
+      },
+    ],
+    name: "updateEdge",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ];
 
 export class ISemaphoreWhistleblowing__factory {

@@ -64,6 +64,7 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
     "getNumberOfMerkleTreeLeaves(uint256)": FunctionFragment;
     "publishLeak(bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
     "removeWhistleblower(uint256,uint256,uint256[],uint8[])": FunctionFragment;
+    "updateEdge(uint256,uint256,uint32,bytes32)": FunctionFragment;
     "verifyRoots(uint256,bytes)": FunctionFragment;
   };
 
@@ -78,6 +79,7 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
       | "getNumberOfMerkleTreeLeaves"
       | "publishLeak"
       | "removeWhistleblower"
+      | "updateEdge"
       | "verifyRoots"
   ): FunctionFragment;
 
@@ -134,6 +136,15 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "updateEdge",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "verifyRoots",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
   ): string;
@@ -174,6 +185,7 @@ export interface SemaphoreWhistleblowingInterface extends utils.Interface {
     functionFragment: "removeWhistleblower",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "updateEdge", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "verifyRoots",
     data: BytesLike
@@ -366,6 +378,14 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    updateEdge(
+      entityId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
@@ -429,6 +449,14 @@ export interface SemaphoreWhistleblowing extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  updateEdge(
+    entityId: PromiseOrValue<BigNumberish>,
+    root: PromiseOrValue<BigNumberish>,
+    leafIndex: PromiseOrValue<BigNumberish>,
+    typedChainId: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   verifyRoots(
     groupId: PromiseOrValue<BigNumberish>,
     roots: PromiseOrValue<BytesLike>,
@@ -489,6 +517,14 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       identityCommitment: PromiseOrValue<BigNumberish>,
       proofSiblings: PromiseOrValue<BigNumberish>[],
       proofPathIndices: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateEdge(
+      entityId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -633,6 +669,14 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    updateEdge(
+      entityId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
@@ -694,6 +738,14 @@ export interface SemaphoreWhistleblowing extends BaseContract {
       identityCommitment: PromiseOrValue<BigNumberish>,
       proofSiblings: PromiseOrValue<BigNumberish>[],
       proofPathIndices: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateEdge(
+      entityId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

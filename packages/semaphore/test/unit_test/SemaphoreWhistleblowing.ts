@@ -14,7 +14,7 @@ import { LinkedGroup } from "@webb-tools/semaphore-group"
 import { Identity } from "@webb-tools/semaphore-identity"
 import { SemaphoreWhistleblowing } from "../../src"
 
-import { VerifierContractInfo, createRootsBytes } from "../utils"
+import { createRootsBytes } from "../utils"
 
 const path = require("path")
 
@@ -160,15 +160,20 @@ describe("SemaphoreWhistleblowing", () => {
       const group = new LinkedGroup(treeDepth, maxEdges, zeroValue)
       group.addMember(identityCommitment)
 
-      const transaction = semaphore.addWhistleblower(entityIds[0], identityCommitment)
-
-      await expect(transaction).emit(semaphore.contract, "MemberAdded").withArgs(
+      const transaction = semaphore.addWhistleblower(
         entityIds[0],
-        0,
-        identityCommitment,
-        group.root
-        // "7943806797233700547041913393384710769504872928213070894800658208056456315893"
+        identityCommitment
       )
+
+      await expect(transaction)
+        .emit(semaphore.contract, "MemberAdded")
+        .withArgs(
+          entityIds[0],
+          0,
+          identityCommitment,
+          group.root
+          // "7943806797233700547041913393384710769504872928213070894800658208056456315893"
+        )
     })
 
     it("Should return the correct number of whistleblowers of an entity", async () => {
@@ -245,7 +250,12 @@ describe("SemaphoreWhistleblowing", () => {
 
     before(async () => {
       await semaphore.setSigner(editor)
-      await semaphore.createEntity(entityIds[1], treeDepth, editorAddr, maxEdges)
+      await semaphore.createEntity(
+        entityIds[1],
+        treeDepth,
+        editorAddr,
+        maxEdges
+      )
       await semaphore.addWhistleblower(entityIds[1], identityCommitment)
       await semaphore.addWhistleblower(entityIds[1], BigInt(1))
       // const root = await contract.getRoot(entityIds[1])
@@ -299,13 +309,12 @@ describe("SemaphoreWhistleblowing", () => {
     })
 
     it("Should publish a leak", async () => {
-      const { transaction } = await semaphore
-        .publishLeak(
-          identity,
-          leak,
-          entityIds[1],
-          Number(chainId),
-        )
+      const { transaction } = await semaphore.publishLeak(
+        identity,
+        leak,
+        entityIds[1],
+        Number(chainId)
+      )
 
       await expect(transaction)
         .emit(semaphore.contract, "LeakPublished")
