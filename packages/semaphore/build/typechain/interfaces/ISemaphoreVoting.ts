@@ -34,6 +34,7 @@ export interface ISemaphoreVotingInterface extends utils.Interface {
     "createPoll(uint256,uint256,address,uint8)": FunctionFragment;
     "endPoll(uint256,uint256)": FunctionFragment;
     "startPoll(uint256,uint256)": FunctionFragment;
+    "updateEdge(uint256,uint256,uint32,bytes32)": FunctionFragment;
   };
 
   getFunction(
@@ -43,6 +44,7 @@ export interface ISemaphoreVotingInterface extends utils.Interface {
       | "createPoll"
       | "endPoll"
       | "startPoll"
+      | "updateEdge"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -76,12 +78,22 @@ export interface ISemaphoreVotingInterface extends utils.Interface {
     functionFragment: "startPoll",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "updateEdge",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
 
   decodeFunctionResult(functionFragment: "addVoter", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "castVote", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "createPoll", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "endPoll", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "startPoll", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "updateEdge", data: BytesLike): Result;
 
   events: {
     "PollCreated(uint256,address)": EventFragment;
@@ -203,6 +215,14 @@ export interface ISemaphoreVoting extends BaseContract {
       encryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    updateEdge(
+      pollId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   addVoter(
@@ -240,6 +260,14 @@ export interface ISemaphoreVoting extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  updateEdge(
+    pollId: PromiseOrValue<BigNumberish>,
+    root: PromiseOrValue<BigNumberish>,
+    leafIndex: PromiseOrValue<BigNumberish>,
+    typedChainId: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     addVoter(
       pollId: PromiseOrValue<BigNumberish>,
@@ -273,6 +301,14 @@ export interface ISemaphoreVoting extends BaseContract {
     startPoll(
       pollId: PromiseOrValue<BigNumberish>,
       encryptionKey: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateEdge(
+      pollId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -354,6 +390,14 @@ export interface ISemaphoreVoting extends BaseContract {
       encryptionKey: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    updateEdge(
+      pollId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -389,6 +433,14 @@ export interface ISemaphoreVoting extends BaseContract {
     startPoll(
       pollId: PromiseOrValue<BigNumberish>,
       encryptionKey: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateEdge(
+      pollId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

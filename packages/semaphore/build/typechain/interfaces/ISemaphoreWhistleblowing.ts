@@ -33,6 +33,7 @@ export interface ISemaphoreWhistleblowingInterface extends utils.Interface {
     "createEntity(uint256,uint256,address,uint8)": FunctionFragment;
     "publishLeak(bytes32,uint256,uint256,bytes,uint256[8])": FunctionFragment;
     "removeWhistleblower(uint256,uint256,uint256[],uint8[])": FunctionFragment;
+    "updateEdge(uint256,uint256,uint32,bytes32)": FunctionFragment;
   };
 
   getFunction(
@@ -41,6 +42,7 @@ export interface ISemaphoreWhistleblowingInterface extends utils.Interface {
       | "createEntity"
       | "publishLeak"
       | "removeWhistleblower"
+      | "updateEdge"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -75,6 +77,15 @@ export interface ISemaphoreWhistleblowingInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>[]
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "updateEdge",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "addWhistleblower",
@@ -92,6 +103,7 @@ export interface ISemaphoreWhistleblowingInterface extends utils.Interface {
     functionFragment: "removeWhistleblower",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "updateEdge", data: BytesLike): Result;
 
   events: {
     "EntityCreated(uint256,address)": EventFragment;
@@ -181,6 +193,14 @@ export interface ISemaphoreWhistleblowing extends BaseContract {
       proofPathIndices: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    updateEdge(
+      entityId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   addWhistleblower(
@@ -214,6 +234,14 @@ export interface ISemaphoreWhistleblowing extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  updateEdge(
+    entityId: PromiseOrValue<BigNumberish>,
+    root: PromiseOrValue<BigNumberish>,
+    leafIndex: PromiseOrValue<BigNumberish>,
+    typedChainId: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     addWhistleblower(
       entityId: PromiseOrValue<BigNumberish>,
@@ -243,6 +271,14 @@ export interface ISemaphoreWhistleblowing extends BaseContract {
       identityCommitment: PromiseOrValue<BigNumberish>,
       proofSiblings: PromiseOrValue<BigNumberish>[],
       proofPathIndices: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateEdge(
+      entityId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -298,6 +334,14 @@ export interface ISemaphoreWhistleblowing extends BaseContract {
       proofPathIndices: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    updateEdge(
+      entityId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -329,6 +373,14 @@ export interface ISemaphoreWhistleblowing extends BaseContract {
       identityCommitment: PromiseOrValue<BigNumberish>,
       proofSiblings: PromiseOrValue<BigNumberish>[],
       proofPathIndices: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateEdge(
+      entityId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

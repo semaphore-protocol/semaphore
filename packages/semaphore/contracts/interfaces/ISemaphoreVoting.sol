@@ -68,6 +68,18 @@ interface ISemaphoreVoting {
         uint8 maxEdges
     ) external;
 
+    /// @dev Add an edge to the tree or update an existing edge.
+    /// @param pollId The pollId of the LinkableTree
+    /// @param root The merkle root of the edge's merkle tree
+    /// @param leafIndex The latest leaf insertion index of the edge's merkle tree
+    /// @param typedChainId The origin resource ID of the originating linked anchor update
+    function updateEdge(
+        uint256 pollId,
+        uint256 root,
+        uint32 leafIndex,
+        bytes32 typedChainId
+    ) external;
+
     /// @dev Adds a voter to a poll.
     /// @param pollId: Id of the poll.
     /// @param identityCommitment: Identity commitment of the group member.

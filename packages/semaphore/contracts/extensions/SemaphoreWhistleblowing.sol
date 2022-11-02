@@ -62,6 +62,16 @@ contract SemaphoreWhistleblowing is
         emit EntityCreated(entityId, editor);
     }
 
+    /// @dev See {ISemaphoreWhistleblowing-updateEdge}.
+    function updateEdge(
+        uint256 entityId,
+        uint256 root,
+        uint32 leafIndex,
+        bytes32 typedChainId
+    ) external override onlyEditor(entityId) {
+        _updateEdge(entityId, root, leafIndex, typedChainId);
+    }
+
     /// @dev See {ISemaphoreWhistleblowing-addWhistleblower}.
     function addWhistleblower(uint256 entityId, uint256 identityCommitment)
         public

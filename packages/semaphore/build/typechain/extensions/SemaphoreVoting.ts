@@ -65,6 +65,7 @@ export interface SemaphoreVotingInterface extends utils.Interface {
     "getMerkleTreeRoot(uint256)": FunctionFragment;
     "getNumberOfMerkleTreeLeaves(uint256)": FunctionFragment;
     "startPoll(uint256,uint256)": FunctionFragment;
+    "updateEdge(uint256,uint256,uint32,bytes32)": FunctionFragment;
     "verifyRoots(uint256,bytes)": FunctionFragment;
   };
 
@@ -80,6 +81,7 @@ export interface SemaphoreVotingInterface extends utils.Interface {
       | "getMerkleTreeRoot"
       | "getNumberOfMerkleTreeLeaves"
       | "startPoll"
+      | "updateEdge"
       | "verifyRoots"
   ): FunctionFragment;
 
@@ -135,6 +137,15 @@ export interface SemaphoreVotingInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "updateEdge",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "verifyRoots",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
   ): string;
@@ -164,6 +175,7 @@ export interface SemaphoreVotingInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "startPoll", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "updateEdge", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "verifyRoots",
     data: BytesLike
@@ -388,6 +400,14 @@ export interface SemaphoreVoting extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    updateEdge(
+      pollId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
@@ -455,6 +475,14 @@ export interface SemaphoreVoting extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  updateEdge(
+    pollId: PromiseOrValue<BigNumberish>,
+    root: PromiseOrValue<BigNumberish>,
+    leafIndex: PromiseOrValue<BigNumberish>,
+    typedChainId: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   verifyRoots(
     groupId: PromiseOrValue<BigNumberish>,
     roots: PromiseOrValue<BytesLike>,
@@ -519,6 +547,14 @@ export interface SemaphoreVoting extends BaseContract {
     startPoll(
       pollId: PromiseOrValue<BigNumberish>,
       encryptionKey: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateEdge(
+      pollId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -689,6 +725,14 @@ export interface SemaphoreVoting extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    updateEdge(
+      pollId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     verifyRoots(
       groupId: PromiseOrValue<BigNumberish>,
       roots: PromiseOrValue<BytesLike>,
@@ -754,6 +798,14 @@ export interface SemaphoreVoting extends BaseContract {
     startPoll(
       pollId: PromiseOrValue<BigNumberish>,
       encryptionKey: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateEdge(
+      pollId: PromiseOrValue<BigNumberish>,
+      root: PromiseOrValue<BigNumberish>,
+      leafIndex: PromiseOrValue<BigNumberish>,
+      typedChainId: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

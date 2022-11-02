@@ -39,6 +39,18 @@ interface ISemaphoreWhistleblowing {
         uint8 maxEdges
     ) external;
 
+    /// @dev Add an edge to the tree or update an existing edge.
+    /// @param entityId The entityId of the LinkableTree
+    /// @param root The merkle root of the edge's merkle tree
+    /// @param leafIndex The latest leaf insertion index of the edge's merkle tree
+    /// @param typedChainId The origin resource ID of the originating linked anchor update
+    function updateEdge(
+        uint256 entityId,
+        uint256 root,
+        uint32 leafIndex,
+        bytes32 typedChainId
+    ) external;
+
     /// @dev Adds a whistleblower to an entity.
     /// @param entityId: Id of the entity.
     /// @param identityCommitment: Identity commitment of the group member.
