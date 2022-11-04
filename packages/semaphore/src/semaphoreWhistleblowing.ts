@@ -17,7 +17,7 @@ import {
   packToSolidityProof
 } from "@webb-tools/semaphore-proof"
 import { Verifier } from "./verifier"
-import { SemaphoreBase, createRootsBytes } from "./semaphoreBase"
+import { SemaphoreBase } from "./semaphoreBase"
 import {
   SemaphoreWhistleblowing as SemaphoreWhistleblowingContract,
   SemaphoreWhistleblowing__factory,
@@ -255,7 +255,7 @@ export class SemaphoreWhistleblowing extends SemaphoreBase {
       bytes32Leak,
       fullProof.publicSignals.nullifierHash,
       entityId,
-      createRootsBytes(fullProof.publicSignals.roots),
+      SemaphoreBase.createRootsBytes(fullProof.publicSignals.roots),
       solidityProof,
       { gasLimit: "0x5B8D80" }
     )

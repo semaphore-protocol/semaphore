@@ -5,7 +5,7 @@ import { Identity } from "@webb-tools/semaphore-identity"
 
 import { formatBytes32String } from "@ethersproject/strings"
 import generateNullifierHash from "./generateNullifierHash"
-import generateProof from "./generateProof"
+import { generateProof } from "./generateProof"
 import generateSignalHash from "./generateSignalHash"
 import packToSolidityProof from "./packToSolidityProof"
 import { FullProof } from "./types"

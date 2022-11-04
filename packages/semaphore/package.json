@@ -21,11 +21,11 @@
   "homepage": "https://github.com/webb-tools/semaphore-anchor.git/tree/main/packages/semaphore",
   "scripts": {
     "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
-    "build": "rimraf -rf ./dist ./cache ./build/contracts; yarn compile && rollup -c rollup.config.ts --configPlugin typescript",
+    "compile": "rimraf -rf ./dist ./cache ./build/contracts; yarn compile:contracts && rollup -c rollup.config.ts --configPlugin typescript",
     "prepublishOnly": "yarn build",
     "docs": "typedoc src/index.ts --out ../../docs/proof",
     "start": "hardhat node",
-    "compile": "hardhat compile",
+    "compile:contracts": "hardhat compile",
     "deploy:verifier": "hardhat deploy:verifier",
     "deploy:verifiers": "hardhat run scripts/deploy-verifiers.ts",
     "deploy:semaphore": "hardhat deploy:semaphore",

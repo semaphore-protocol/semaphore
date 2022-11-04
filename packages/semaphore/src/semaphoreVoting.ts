@@ -17,7 +17,7 @@ import {
   packToSolidityProof
 } from "@webb-tools/semaphore-proof"
 import { Verifier } from "./verifier"
-import { SemaphoreBase, createRootsBytes } from "./semaphoreBase"
+import { SemaphoreBase } from "./semaphoreBase"
 import {
   SemaphoreVoting as SemaphoreVotingContract,
   SemaphoreVoting__factory,
@@ -271,7 +271,7 @@ export class SemaphoreVoting extends SemaphoreBase {
       bytes32Vote,
       fullProof.publicSignals.nullifierHash,
       pollId,
-      createRootsBytes(fullProof.publicSignals.roots),
+      SemaphoreBase.createRootsBytes(fullProof.publicSignals.roots),
       solidityProof,
       { gasLimit: "0x5B8D80" }
     )

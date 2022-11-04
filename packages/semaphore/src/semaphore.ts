@@ -15,10 +15,11 @@ import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
   FullProof,
   generateProof,
-  packToSolidityProof
+  packToSolidityProof,
+  createRootsBytes
 } from "@webb-tools/semaphore-proof"
 import { Verifier } from "./verifier"
-import { SemaphoreBase, createRootsBytes } from "./semaphoreBase"
+import { SemaphoreBase } from "./semaphoreBase"
 import {
   Semaphore as SemaphoreContract,
   Semaphore__factory,

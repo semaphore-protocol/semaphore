@@ -12,14 +12,6 @@ import {
   LinkableIncrementalBinaryTree__factory
 } from "../build/typechain"
 
-export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
-  let rootsBytes = "0x"
-  for (let i = 0; i < rootArray.length; i += 1) {
-    rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
-  }
-  return rootsBytes // root byte string (32 * array.length bytes)
-}
-
 export type SemaphoreContractInstance =
   | SemaphoreContract
   | SemaphoreVotingContract
@@ -99,21 +91,6 @@ export class SemaphoreBase {
     }
   }
 
-  // public static createRootsBytes(rootArray: string[]) {
-  //   let rootsBytes = "0x"
-  //   for (let i = 0; i < rootArray.length; i += 1) {
-  //     rootsBytes += toFixedHex(rootArray[i]).substr(2)
-  //   }
-  //   return rootsBytes // root byte string (32 * array.length bytes)
-  // }
-  public static createRootsBytes(rootArray: string[] | BigNumberish[]): string {
-    let rootsBytes = "0x"
-    for (let i = 0; i < rootArray.length; i += 1) {
-      rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
-    }
-    return rootsBytes // root byte string (32 * array.length bytes)
-  }
-
   // Convert a hex string to a byte array
   public static hexStringToByte(str: string) {
     if (!str) {
@@ -131,7 +108,7 @@ export class SemaphoreBase {
   public async createResourceId(): Promise<string> {
     return toHex(
       this.contract.address +
-        toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
+      toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
       32
     )
   }

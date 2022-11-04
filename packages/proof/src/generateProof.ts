@@ -16,7 +16,7 @@ export type VerifierContractInfo = {
   depth: string
   circuitLength: string
 }
-export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
+export function createRootsBytes(rootArray: BigNumberish[]): string {
   let rootsBytes = "0x"
   for (let i = 0; i < rootArray.length; i += 1) {
     rootsBytes += toFixedHex(rootArray[i], 32).substr(2)
@@ -51,7 +51,7 @@ export function convertPublicSignals(
 }
 export type Artifacts = SnarkArtifacts | ZkComponents
 // async function generateProof(
-export default async function generateProof(
+export async function generateProof(
   identity: Identity,
   group: LinkedGroup,
   // groupOrMerkleProof: Group | MerkleProof,
