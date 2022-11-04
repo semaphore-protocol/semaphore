@@ -1,6 +1,6 @@
 {
   "name": "semaphore-anchor",
-  "version": "0.0.1-2",
+  "version": "0.0.1-4",
   "description": "A zero-knowledge protocol for anonymous signalling on a cross-chain setting.",
   "license": "MIT",
   "homepage": "https://github.com/webb-tools/semaphore-anchor.git#readme",
