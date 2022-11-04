@@ -123,28 +123,6 @@ export class Group {
     const merkleProof = this._merkleTree.path(index)
     return merkleProof
   }
-  getMerkleProof(index: number): MerkleProof {
-    let inputMerklePathIndices: number[]
-    let inputMerklePathElements: BigNumber[]
-    const commitment = this._merkleTree.elements()[index]
-
-    if (index < 0) {
-      throw new Error(`Input commitment for index ${index} was not found`)
-    } else {
-      const path = this._merkleTree.path(index)
-      inputMerklePathIndices = path.pathIndices
-      inputMerklePathElements = path.pathElements
-      inputMerklePathIndices = new Array(this._merkleTree.levels).fill(0)
-      inputMerklePathElements = new Array(this._merkleTree.levels).fill(0)
-    }
-
-    return {
-      element: BigNumber.from(commitment),
-      pathElements: inputMerklePathElements,
-      pathIndices: inputMerklePathIndices,
-      merkleRoot: this._merkleTree.root()
-    }
-  }
 }
 
 export default Group

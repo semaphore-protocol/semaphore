@@ -114,4 +114,16 @@ describe("Group", () => {
       expect(proof.element).toStrictEqual(BigNumber.from(1))
     })
   })
+  describe("# zeros", () => {
+    it("Should be using correct zeros leaf", () => {
+      const group = new Group()
+      const merkleTree = new MerkleTree(20, [], {
+        zeroElement: BigNumber.from(0)
+      })
+      const actual = group.zeros
+      const expected = merkleTree.zeros()
+      expect(actual).toHaveLength(expected.length)
+      expect(actual).toStrictEqual(expected)
+    })
+  })
 })
