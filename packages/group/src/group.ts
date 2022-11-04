@@ -6,6 +6,7 @@ export declare type Leaf = {
   index: number
   commitment: BigNumberish
 }
+const DEFAULT_ZERO: BigNumberish = '21663839004416932945382355908790599225266501822907911457504978515578255421292';
 
 export class Group {
   private _merkleTree: MerkleTree
@@ -14,7 +15,7 @@ export class Group {
    * Initializes the group with the tree depth and the zero value.
    * @param treeDepth Tree depth.
    */
-  constructor(treeDepth = 20, zeroValue: BigNumberish = BigNumber.from(0)) {
+  constructor(treeDepth = 20, zeroValue: BigNumberish = DEFAULT_ZERO) {
     if (treeDepth < 16 || treeDepth > 32) {
       throw new Error("The tree depth must be between 16 and 32")
     }

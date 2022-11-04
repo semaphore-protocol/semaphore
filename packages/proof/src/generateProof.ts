@@ -5,6 +5,7 @@ import { ZkComponents } from "@webb-tools/utils"
 
 import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
+import { toFixedHex } from "@webb-tools/sdk-core"
 import { FullProof, SnarkArtifacts } from "./types"
 import generateSignalHash from "./generateSignalHash"
 // const assert = require("assert")
@@ -15,15 +16,6 @@ export type VerifierContractInfo = {
   depth: string
   circuitLength: string
 }
-export function toFixedHex(numb: any, length = 32): string {
-  return "0x".concat(
-    (numb instanceof Buffer
-      ? numb.toString("hex")
-      : BigNumber.from(numb).toHexString().slice(2)
-    ).padStart(length * 2, "0")
-  )
-}
-
 export function createRootsBytes(rootArray: string[] | BigNumberish[]): string {
   let rootsBytes = "0x"
   for (let i = 0; i < rootArray.length; i += 1) {

@@ -5,7 +5,7 @@ import { Group } from "./group"
 describe("Group", () => {
   describe("# Group", () => {
     it("Should create a group", () => {
-      const group = new Group()
+      const group = new Group(20, BigNumber.from(0))
       expect(group.root.toString()).toContain("150197")
       expect(group.depth).toBe(20)
       expect(group.zeroValue).toStrictEqual(BigNumber.from(0))
@@ -86,7 +86,7 @@ describe("Group", () => {
       group.removeMember(1)
 
       expect(group.members).toHaveLength(2)
-      expect(group.members[0]).toBe(group.zeroValue)
+      expect(group.members[0]).toStrictEqual(group.zeroValue)
     })
     it("Should bulkRemove 2 members from a group", () => {
       const emptyGroup = new Group()
@@ -117,9 +117,8 @@ describe("Group", () => {
   describe("# zeros", () => {
     it("Should be using correct zeros leaf", () => {
       const group = new Group()
-      const merkleTree = new MerkleTree(20, [], {
-        zeroElement: BigNumber.from(0)
-      })
+      const merkleTree = new MerkleTree(20)
+
       const actual = group.zeros
       const expected = merkleTree.zeros()
       expect(actual).toHaveLength(expected.length)
