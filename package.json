@@ -8,6 +8,7 @@
     "private": true,
     "scripts": {
         "build:libraries": "yarn workspaces foreach run build",
+        "build:circom": "sh scripts/build-snark-artifacts.sh",
         "compile:contracts": "yarn workspace contracts compile",
         "download:snark-artifacts": "ts-node scripts/download-snark-artifacts.ts",
         "test": "yarn test:libraries && yarn test:contracts",
