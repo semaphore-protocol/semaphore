@@ -14,6 +14,7 @@ import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
   FullProof,
   generateProof,
+  createRootsBytes,
   packToSolidityProof
 } from "@webb-tools/semaphore-proof"
 import { Verifier } from "./verifier"
@@ -255,7 +256,7 @@ export class SemaphoreWhistleblowing extends SemaphoreBase {
       bytes32Leak,
       fullProof.publicSignals.nullifierHash,
       entityId,
-      SemaphoreBase.createRootsBytes(fullProof.publicSignals.roots),
+      createRootsBytes(fullProof.publicSignals.roots),
       solidityProof,
       { gasLimit: "0x5B8D80" }
     )

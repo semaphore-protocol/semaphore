@@ -14,7 +14,8 @@ import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
   FullProof,
   generateProof,
-  packToSolidityProof
+  packToSolidityProof,
+  createRootsBytes
 } from "@webb-tools/semaphore-proof"
 import { Verifier } from "./verifier"
 import { SemaphoreBase } from "./semaphoreBase"
@@ -271,7 +272,7 @@ export class SemaphoreVoting extends SemaphoreBase {
       bytes32Vote,
       fullProof.publicSignals.nullifierHash,
       pollId,
-      SemaphoreBase.createRootsBytes(fullProof.publicSignals.roots),
+      createRootsBytes(fullProof.publicSignals.roots),
       solidityProof,
       { gasLimit: "0x5B8D80" }
     )
