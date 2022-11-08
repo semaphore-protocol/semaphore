@@ -107,16 +107,17 @@ describe("Semaphore", () => {
     it("Should create a group", async () => {
       await semaphore.setSigner(admin)
 
-      const transaction = semaphore.createGroup(
+      const transaction = await semaphore.createGroup(
         groupId,
         treeDepth,
         await admin.getAddress(),
         maxEdges1
       )
-
+      const group = semaphore.linkedGroups[groupId]
+      console.log("Group: ", group)
       await expect(transaction)
         .emit(semaphore.contract, "GroupCreated")
-        .withArgs(groupId, treeDepth, semaphore.linkedGroups[groupId].root)
+        .withArgs(groupId, treeDepth, group.root)
       await expect(transaction)
         .emit(semaphore.contract, "GroupAdminUpdated")
         .withArgs(groupId, constants.AddressZero, adminAddr)

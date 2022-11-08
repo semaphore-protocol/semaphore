@@ -222,7 +222,7 @@ describe("SemaphoreVoting", () => {
     })
 
     it("Should return the correct number of poll voters", async () => {
-      const size = await semaphore.getNumberVoters(pollIds[1])
+      const size = await semaphore.getNumberOfVoters(pollIds[1])
 
       expect(size).eq(1)
     })

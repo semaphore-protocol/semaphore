@@ -147,16 +147,7 @@ export class SemaphoreWhistleblowing extends SemaphoreBase {
     editorAddr: string,
     maxEdges: number
   ): Promise<ContractTransaction> {
-    if (entityId in this.linkedGroups) {
-      throw new Error(`Group ${entityId} has already been created`)
-    }
-    this.linkedGroups[entityId] = new LinkedGroup(
-      depth,
-      maxEdges,
-      this.zeroValue,
-      editorAddr
-    )
-    return this.contract.createEntity(entityId, depth, editorAddr, maxEdges)
+    return this._createGroup(entityId, depth, editorAddr, maxEdges, this.contract.createEntity)
   }
 
   public async addWhistleblowers(
@@ -173,41 +164,7 @@ export class SemaphoreWhistleblowing extends SemaphoreBase {
     entityId: number,
     leaf: BigNumberish
   ): Promise<ContractTransaction> {
-    if (!(entityId in this.linkedGroups)) {
-      throw new Error(`Group ${entityId} doesn't exist`)
-    }
-    this.linkedGroups[entityId].addMember(leaf)
-    return this.contract.addWhistleblower(entityId, leaf, {
-      gasLimit: "0x5B8D80"
-    })
-  }
-
-  public async updateEdge(
-    entityId: number,
-    root: string,
-    index: number,
-    typedChainId: number
-  ): Promise<ContractTransaction> {
-    const tx = await this.contract.updateEdge(
-      entityId,
-      root,
-      index,
-      toFixedHex(typedChainId),
-      { gasLimit: "0x5B8D80" }
-    )
-    this.linkedGroups[entityId].updateEdge(typedChainId, root)
-
-    return tx
-  }
-
-  public async verifyRoots(
-    entityId: number,
-    rootsBytes: string
-  ): Promise<boolean> {
-    const tx = await this.contract.verifyRoots(entityId, rootsBytes, {
-      gasLimit: "0x5B8D80"
-    })
-    return tx
+    return this._addMember(entityId, leaf, this.contract.addWhistleblower)
   }
 
   public async publishLeak(
@@ -219,38 +176,14 @@ export class SemaphoreWhistleblowing extends SemaphoreBase {
   ): Promise<{ transaction: ContractTransaction; fullProof: FullProof }> {
     const bytes32Leak = utils.formatBytes32String(leak)
 
-    let roots: string[]
-    if (externalGroup !== undefined) {
-      // if externalGroup is being provided we assume it's use
-      // on merkle proof generation.
-      // externalGroup should have updated roots.
-      externalGroup.updateEdge(
-        chainId,
-        this.linkedGroups[entityId].root.toString()
-      )
-      roots = externalGroup
-        .getRoots()
-        .map((bignum: BigNumber) => bignum.toString())
-    } else {
-      roots = this.linkedGroups[entityId]
-        .getRoots()
-        .map((bignum: BigNumber) => bignum.toString())
-    }
-    const zkComponent =
-      this.linkedGroups[entityId].maxEdges === 1
-        ? this.smallCircuitZkComponents
-        : this.largeCircuitZkComponents
-
-    const fullProof = await generateProof(
+    const { fullProof, solidityProof } = await this.setupTransaction(
       identity,
-      this.linkedGroups[entityId],
-      entityId,
       leak,
-      BigInt(chainId),
-      zkComponent,
-      roots
+      entityId,
+      chainId,
+      undefined,
+      externalGroup
     )
-    const solidityProof = packToSolidityProof(fullProof.proof)
 
     const transaction = await this.contract.publishLeak(
       bytes32Leak,
