@@ -156,12 +156,6 @@ describe("SemaphoreVoting", () => {
             solidityProof = packToSolidityProof(fullProof.proof)
         })
 
-        it("Should not cast a vote if the caller is not the coordinator", async () => {
-            const transaction = contract.castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[0], solidityProof)
-
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotThePollCoordinator()")
-        })
-
         it("Should not cast a vote if the poll is not ongoing", async () => {
             const transaction = contract
                 .connect(accounts[1])
