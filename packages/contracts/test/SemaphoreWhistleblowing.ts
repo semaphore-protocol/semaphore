@@ -103,7 +103,7 @@ describe("SemaphoreWhistleblowing", () => {
 
             group.addMember(commitment)
 
-            const { siblings, pathIndices } = group.generateProofOfMembership(0)
+            const { siblings, pathIndices } = group.generateMerkleProof(0)
 
             const transaction = contract.removeWhistleblower(entityIds[0], commitment, siblings, pathIndices)
 
@@ -116,7 +116,7 @@ describe("SemaphoreWhistleblowing", () => {
 
             group.addMember(commitment)
 
-            const { siblings, pathIndices } = group.generateProofOfMembership(0)
+            const { siblings, pathIndices } = group.generateMerkleProof(0)
 
             const transaction = contract
                 .connect(accounts[1])

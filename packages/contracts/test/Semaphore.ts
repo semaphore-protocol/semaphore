@@ -146,7 +146,7 @@ describe("Semaphore", () => {
             await contract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
             await contract.addMembers(groupId, members)
 
-            const { siblings, pathIndices, root } = group.generateProofOfMembership(0)
+            const { siblings, pathIndices, root } = group.generateMerkleProof(0)
 
             const transaction = contract.updateMember(groupId, BigInt(1), BigInt(4), siblings, pathIndices)
 
@@ -177,7 +177,7 @@ describe("Semaphore", () => {
             await contract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
             await contract.addMembers(groupId, members)
 
-            const { siblings, pathIndices, root } = group.generateProofOfMembership(2)
+            const { siblings, pathIndices, root } = group.generateMerkleProof(2)
 
             const transaction = contract.removeMember(groupId, BigInt(3), siblings, pathIndices)
 
