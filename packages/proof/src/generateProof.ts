@@ -1,11 +1,10 @@
 import { groth16 } from "snarkjs"
 import { BigNumber, BigNumberish } from "ethers"
-import { MerkleProof } from "@webb-tools/sdk-core"
+import { MerkleProof, toFixedHex } from "@webb-tools/sdk-core"
 import { ZkComponents } from "@webb-tools/utils"
 
 import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
-import { toFixedHex } from "@webb-tools/sdk-core"
 import { FullProof, SnarkArtifacts } from "./types"
 import generateSignalHash from "./generateSignalHash"
 // const assert = require("assert")

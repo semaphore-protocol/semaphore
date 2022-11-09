@@ -114,7 +114,6 @@ describe("Semaphore", () => {
         maxEdges1
       )
       const group = semaphore.linkedGroups[groupId]
-      console.log("Group: ", group)
       await expect(transaction)
         .emit(semaphore.contract, "GroupCreated")
         .withArgs(groupId, treeDepth, group.root)

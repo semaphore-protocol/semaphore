@@ -7,15 +7,12 @@ import {
   utils,
   ethers
 } from "ethers"
-import { toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
 import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
   FullProof,
-  generateProof,
-  packToSolidityProof,
   createRootsBytes
 } from "@webb-tools/semaphore-proof"
 import { Verifier } from "./verifier"
@@ -173,16 +170,15 @@ export class Semaphore extends SemaphoreBase {
         maxEdges,
         this.contract["createGroup(uint256,uint256,address,uint8)"]
       )
-    } else {
-      return this._createGroup(
-        groupId,
-        depth,
-        groupAdminAddr,
-        maxEdges,
-        this.contract["createGroup(uint256,uint256,address,uint8,uint256)"],
-        merkleRootDuration
-      )
     }
+    return this._createGroup(
+      groupId,
+      depth,
+      groupAdminAddr,
+      maxEdges,
+      this.contract["createGroup(uint256,uint256,address,uint8,uint256)"],
+      merkleRootDuration
+    )
   }
 
   public async addMembers(

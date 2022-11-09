@@ -6,16 +6,13 @@ import {
   utils,
   ethers
 } from "ethers"
-import { toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
 import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import {
   FullProof,
-  generateProof,
   createRootsBytes,
-  packToSolidityProof
 } from "@webb-tools/semaphore-proof"
 import { Verifier } from "./verifier"
 import { SemaphoreBase } from "./semaphoreBase"

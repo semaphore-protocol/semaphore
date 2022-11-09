@@ -1,7 +1,6 @@
 import {
   ContractTransaction,
   BigNumber,
-  utils,
   BigNumberish,
   Signer,
   ethers
@@ -121,7 +120,7 @@ export class SemaphoreBase {
   public async createResourceId(): Promise<string> {
     return toHex(
       this.contract.address +
-        toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
+      toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
       32
     )
   }
@@ -199,7 +198,7 @@ export class SemaphoreBase {
     if (!(groupId in this.linkedGroups)) {
       throw new Error(`Group ${groupId} doesn't exist`)
     }
-    let tx: ContractTransaction = await addMemberContractCall(groupId, leaf, {
+    const tx: ContractTransaction = await addMemberContractCall(groupId, leaf, {
       gasLimit: "0x5B8D80"
     })
     this.linkedGroups[groupId].addMember(leaf)
