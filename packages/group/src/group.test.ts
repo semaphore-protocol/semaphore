@@ -82,12 +82,12 @@ describe("Group", () => {
         })
     })
 
-    describe("# generateProofOfMembership", () => {
+    describe("# generateMerkleProof", () => {
         it("Should generate a proof of membership", () => {
             const group = new Group()
             group.addMembers([BigInt(1), BigInt(3)])
 
-            const proof = group.generateProofOfMembership(0)
+            const proof = group.generateMerkleProof(0)
 
             expect(proof.leaf).toBe(BigInt(1))
         })

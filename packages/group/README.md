@@ -120,8 +120,8 @@ group.removeMember(0)
 group.indexOf(commitment) // 0
 ```
 
-\# **generateProofOfMembership**(index: _number_): _MerkleProof_
+\# **generateMerkleProof**(index: _number_): _MerkleProof_
 
 ```typescript
-const proof = group.generateProofOfMembership(0)
+const proof = group.generateMerkleProof(0)
 ```
