@@ -87,7 +87,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         uint256 nullifierHash,
         uint256 pollId,
         uint256[8] calldata proof
-    ) public override onlyCoordinator(pollId) {
+    ) public override {
         Poll memory poll = polls[pollId];
 
         if (poll.state != PollState.Ongoing) {
