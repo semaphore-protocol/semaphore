@@ -21,7 +21,7 @@ export default async function generateProof(
             throw new Error("The identity is not part of the group")
         }
 
-        merkleProof = groupOrMerkleProof.generateProofOfMembership(index)
+        merkleProof = groupOrMerkleProof.generateMerkleProof(index)
     } else {
         merkleProof = groupOrMerkleProof
     }

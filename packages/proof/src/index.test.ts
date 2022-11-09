@@ -78,7 +78,7 @@ describe("Proof", () => {
 
             group.addMembers([BigInt(1), BigInt(2), identity.commitment])
 
-            fullProof = await generateProof(identity, group.generateProofOfMembership(2), externalNullifier, signal, {
+            fullProof = await generateProof(identity, group.generateMerkleProof(2), externalNullifier, signal, {
                 wasmFilePath,
                 zkeyFilePath
             })
