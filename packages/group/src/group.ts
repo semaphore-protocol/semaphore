@@ -3,7 +3,7 @@ import { poseidon } from "circomlibjs"
 import { Member } from "./types"
 
 export default class Group {
-    private _merkleTree: IncrementalMerkleTree
+    merkleTree: IncrementalMerkleTree
 
     /**
      * Initializes the group with the tree depth and the zero value.
@@ -15,7 +15,7 @@ export default class Group {
             throw new Error("The tree depth must be between 16 and 32")
         }
 
-        this._merkleTree = new IncrementalMerkleTree(poseidon, treeDepth, zeroValue, 2)
+        this.merkleTree = new IncrementalMerkleTree(poseidon, treeDepth, zeroValue, 2)
     }
 
     /**
@@ -23,7 +23,7 @@ export default class Group {
      * @returns Root hash.
      */
     get root(): Member {
-        return this._merkleTree.root
+        return this.merkleTree.root
     }
 
     /**
@@ -31,7 +31,7 @@ export default class Group {
      * @returns Tree depth.
      */
     get depth(): number {
-        return this._merkleTree.depth
+        return this.merkleTree.depth
     }
 
     /**
@@ -39,7 +39,7 @@ export default class Group {
      * @returns Tree zero value.
      */
     get zeroValue(): Member {
-        return this._merkleTree.zeroes[0]
+        return this.merkleTree.zeroes[0]
     }
 
     /**
@@ -47,7 +47,7 @@ export default class Group {
      * @returns List of members.
      */
     get members(): Member[] {
-        return this._merkleTree.leaves
+        return this.merkleTree.leaves
     }
 
     /**
@@ -56,34 +56,34 @@ export default class Group {
      * @returns Index of the member.
      */
     indexOf(member: Member): number {
-        return this._merkleTree.indexOf(member)
+        return this.merkleTree.indexOf(member)
     }
 
     /**
      * Adds a new member to the group.
-     * @param identityCommitment New member.
+     * @param member New member.
      */
-    addMember(identityCommitment: Member) {
-        this._merkleTree.insert(BigInt(identityCommitment))
+    addMember(member: Member) {
+        this.merkleTree.insert(BigInt(member))
     }
 
     /**
      * Adds new members to the group.
-     * @param identityCommitments New members.
+     * @param members New members.
      */
-    addMembers(identityCommitments: Member[]) {
-        for (const identityCommitment of identityCommitments) {
-            this.addMember(identityCommitment)
+    addMembers(members: Member[]) {
+        for (const member of members) {
+            this.addMember(member)
         }
     }
 
     /**
      * Updates a member in the group.
      * @param index Index of the member to be updated.
-     * @param identityCommitment New member value.
+     * @param member New member value.
      */
-    updateMember(index: number, identityCommitment: Member) {
-        this._merkleTree.update(index, identityCommitment)
+    updateMember(index: number, member: Member) {
+        this.merkleTree.update(index, member)
     }
 
     /**
@@ -91,7 +91,7 @@ export default class Group {
      * @param index Index of the member to be removed.
      */
     removeMember(index: number) {
-        this._merkleTree.delete(index)
+        this.merkleTree.delete(index)
     }
 
     /**
@@ -99,8 +99,8 @@ export default class Group {
      * @param index Index of the proof's member.
      * @returns Proof object.
      */
-    generateProofOfMembership(index: number): MerkleProof {
-        const merkleProof = this._merkleTree.createProof(index)
+    generateMerkleProof(index: number): MerkleProof {
+        const merkleProof = this.merkleTree.createProof(index)
 
         merkleProof.siblings = merkleProof.siblings.map((s) => s[0])
 
