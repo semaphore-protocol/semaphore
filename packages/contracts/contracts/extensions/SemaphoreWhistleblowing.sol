@@ -76,7 +76,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         uint256 nullifierHash,
         uint256 entityId,
         uint256[8] calldata proof
-    ) public override onlyEditor(entityId) {
+    ) public override {
         uint256 merkleTreeDepth = getMerkleTreeDepth(entityId);
         uint256 merkleTreeRoot = getMerkleTreeRoot(entityId);
 
