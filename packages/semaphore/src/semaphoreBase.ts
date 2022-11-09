@@ -120,7 +120,7 @@ export class SemaphoreBase {
   public async createResourceId(): Promise<string> {
     return toHex(
       this.contract.address +
-      toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
+        toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
       32
     )
   }

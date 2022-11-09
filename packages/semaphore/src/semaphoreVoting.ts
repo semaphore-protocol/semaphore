@@ -10,10 +10,7 @@ import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
 import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
-import {
-  FullProof,
-  createRootsBytes
-} from "@webb-tools/semaphore-proof"
+import { FullProof, createRootsBytes } from "@webb-tools/semaphore-proof"
 import { Verifier } from "./verifier"
 import { SemaphoreBase } from "./semaphoreBase"
 import {
