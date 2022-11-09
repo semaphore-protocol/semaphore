@@ -159,17 +159,6 @@ describe("SemaphoreWhistleblowing", () => {
             solidityProof = packToSolidityProof(fullProof.proof)
         })
 
-        it("Should not publish a leak if the caller is not the editor", async () => {
-            const transaction = contract.publishLeak(
-                bytes32Leak,
-                publicSignals.nullifierHash,
-                entityIds[0],
-                solidityProof
-            )
-
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheEditor()")
-        })
-
         it("Should not publish a leak if the proof is not valid", async () => {
             const nullifierHash = generateNullifierHash(entityIds[0], identity.getNullifier())
 
