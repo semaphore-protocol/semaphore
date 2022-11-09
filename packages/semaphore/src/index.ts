@@ -1,6 +1,5 @@
 export {
   SemaphoreBase,
-  createRootsBytes,
   SemaphoreContractInstance
 } from "./semaphoreBase"
 export { Semaphore } from "./semaphore"
