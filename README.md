@@ -48,7 +48,7 @@
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://discord.gg/6mSdGHnstH">
+        <a href="https://discord.gg/zvz9uWr5Me">
             🗣️ Chat &amp; Support
         </a>
     </h4>
@@ -72,86 +72,86 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/webb-tools/sem
     <tbody>
         <tr>
             <td>
-                <a href="/packages/contracts">
-                    @webb-tools/contracts
+                <a href="/packages/semaphore">
+                    @webb-tools/semaphore
                 </a>
             </td>
             <td>
                 <!-- NPM version -->
-                <a href="https://npmjs.org/package/@webb-tools/contracts">
-                    <img src="https://img.shields.io/npm/v/@webb-tools/contracts.svg?style=flat-square" alt="NPM version" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore">
+                    <img src="https://img.shields.io/npm/v/@webb-tools/semaphore.svg?style=flat-square" alt="NPM version" />
                 </a>
             </td>
             <td>
                 <!-- Downloads -->
-                <a href="https://npmjs.org/package/@webb-tools/contracts">
-                    <img src="https://img.shields.io/npm/dm/@webb-tools/contracts.svg?style=flat-square" alt="Downloads" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore">
+                    <img src="https://img.shields.io/npm/dm/@webb-tools/semaphore.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>
         <tr>
             <td>
                 <a href="/packages/identity">
-                    @webb-tools/identity
+                    @webb-tools/semaphore-identity
                 </a>
-                <a href="https://webb-tools.github.io/semaphore/identity">
+                <a href="https://webb-tools.github.io/semaphore-anchor/semaphore-identity">
                     (docs)
                 </a>
             </td>
             <td>
                 <!-- NPM version -->
-                <a href="https://npmjs.org/package/@webb-tools/identity">
-                    <img src="https://img.shields.io/npm/v/@webb-tools/identity.svg?style=flat-square" alt="NPM version" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-identity">
+                    <img src="https://img.shields.io/npm/v/@webb-tools/semaphore-identity.svg?style=flat-square" alt="NPM version" />
                 </a>
             </td>
             <td>
                 <!-- Downloads -->
-                <a href="https://npmjs.org/package/@webb-tools/identity">
-                    <img src="https://img.shields.io/npm/dm/@webb-tools/identity.svg?style=flat-square" alt="Downloads" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-identity">
+                    <img src="https://img.shields.io/npm/dm/@webb-tools/semaphore-identity.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>
         <tr>
             <td>
                 <a href="/packages/group">
-                    @webb-tools/group
+                    @webb-tools/semaphore-group
                 </a>
-                <a href="https://webb-tools.github.io/semaphore/group">
+                <a href="https://webb-tools.github.io/semaphore-anchor/semaphore-group">
                     (docs)
                 </a>
             </td>
             <td>
                 <!-- NPM version -->
-                <a href="https://npmjs.org/package/@webb-tools/group">
-                    <img src="https://img.shields.io/npm/v/@webb-tools/group.svg?style=flat-square" alt="NPM version" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-group">
+                    <img src="https://img.shields.io/npm/v/@webb-tools/semaphore-group.svg?style=flat-square" alt="NPM version" />
                 </a>
             </td>
             <td>
                 <!-- Downloads -->
-                <a href="https://npmjs.org/package/@webb-tools/group">
-                    <img src="https://img.shields.io/npm/dm/@webb-tools/group.svg?style=flat-square" alt="Downloads" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-group">
+                    <img src="https://img.shields.io/npm/dm/@webb-tools/semaphore-group.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>
         <tr>
             <td>
                 <a href="/packages/proof">
-                    @webb-tools/proof
+                    @webb-tools/semaphore-proof
                 </a>
-                <a href="https://webb-tools.github.io/semaphore/proof">
+                <a href="https://webb-tools.github.io/semaphore-anchor/semaphore-proof">
                     (docs)
                 </a>
             </td>
             <td>
                 <!-- NPM version -->
-                <a href="https://npmjs.org/package/@webb-tools/proof">
-                    <img src="https://img.shields.io/npm/v/@webb-tools/proof.svg?style=flat-square" alt="NPM version" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-proof">
+                    <img src="https://img.shields.io/npm/v/@webb-tools/semaphore-proof.svg?style=flat-square" alt="NPM version" />
                 </a>
             </td>
             <td>
                 <!-- Downloads -->
-                <a href="https://npmjs.org/package/@webb-tools/proof">
-                    <img src="https://img.shields.io/npm/dm/@webb-tools/proof.svg?style=flat-square" alt="Downloads" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-proof">
+                    <img src="https://img.shields.io/npm/dm/@webb-tools/semaphore-proof.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>
@@ -160,7 +160,7 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/webb-tools/sem
                 <a href="/packages/subgraph">
                     @webb-tools/subgraph
                 </a>
-                <a href="https://webb-tools.github.io/semaphore/subgraph">
+                <a href="https://webb-tools.github.io/semaphore-anchor/subgraph">
                     (docs)
                 </a>
             </td>

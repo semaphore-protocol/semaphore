@@ -12,12 +12,6 @@
     <a href="https://github.com/webb-tools/semaphore/blob/main/LICENSE">
         <img alt="Github license" src="https://img.shields.io/github/license/webb-tools/semaphore.svg?style=flat-square">
     </a>
-    <a href="https://www.npmjs.com/package/@webb-tools/semaphore-hardhat">
-        <img alt="NPM version" src="https://img.shields.io/npm/v/@webb-tools/semaphore-hardhat?style=flat-square" />
-    </a>
-    <a href="https://npmjs.org/package/@webb-tools/semaphore-hardhat">
-        <img alt="Downloads" src="https://img.shields.io/npm/dm/@webb-tools/semaphore-hardhat.svg?style=flat-square" />
-    </a>
     <a href="https://eslint.org/">
         <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint" />
     </a>
@@ -28,19 +22,19 @@
 
 <div align="center">
     <h4>
-        <a href="https://github.com/webb-tools/semaphore/blob/main/CONTRIBUTING.md">
+        <a href="https://github.com/webb-tools/semaphore-anchor/blob/develop/CONTRIBUTING.md">
             👥 Contributing
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/webb-tools/semaphore/blob/main/CODE_OF_CONDUCT.md">
+        <a href="https://github.com/webb-tools/semaphore-anchor/blob/develop/CODE_OF_CONDUCT.md">
             🤝 Code of conduct
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/webb-tools/semaphore/contribute">
+        <a href="https://github.com/webb-tools/semaphore-anchor/contribute">
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://discord.gg/6mSdGHnstH">
+        <a href="https://discord.gg/zvz9uWr5Me">
             🗣️ Chat &amp; Support
         </a>
     </h4>
