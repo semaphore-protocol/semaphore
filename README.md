@@ -287,13 +287,13 @@ yarn test
 Run [Rollup](https://www.rollupjs.org) to build all the packages:
 
 ```bash
-yarn build:libraries
+yarn build
 ```
 
 Compile the smart contracts with [Hardhat](https://hardhat.org/):
 
 ```bash
-yarn compile:contracts
+yarn compile
 ```
 
 ### Documentation (JS libraries)
