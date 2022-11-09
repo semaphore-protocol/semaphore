@@ -147,7 +147,13 @@ export class SemaphoreWhistleblowing extends SemaphoreBase {
     editorAddr: string,
     maxEdges: number
   ): Promise<ContractTransaction> {
-    return this._createGroup(entityId, depth, editorAddr, maxEdges, this.contract.createEntity)
+    return this._createGroup(
+      entityId,
+      depth,
+      editorAddr,
+      maxEdges,
+      this.contract.createEntity
+    )
   }
 
   public async addWhistleblowers(

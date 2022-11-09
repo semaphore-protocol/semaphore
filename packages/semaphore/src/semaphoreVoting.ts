@@ -145,7 +145,13 @@ export class SemaphoreVoting extends SemaphoreBase {
     groupAdminAddr: string,
     maxEdges: number
   ): Promise<ContractTransaction> {
-    return this._createGroup(groupId, depth, groupAdminAddr, maxEdges, this.contract.createPoll)
+    return this._createGroup(
+      groupId,
+      depth,
+      groupAdminAddr,
+      maxEdges,
+      this.contract.createPoll
+    )
   }
 
   public async getNumberOfVoters(pollId: BigNumberish): Promise<BigNumberish> {

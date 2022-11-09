@@ -6,17 +6,17 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/semaphore-protocol">
+    <a href="https://github.com/webb-tools">
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
-    <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
+    <a href="https://github.com/webb-tools/semaphore-anchor/blob/main/LICENSE">
         <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
     </a>
-    <a href="https://www.npmjs.com/package/@semaphore-protocol/proof">
-        <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/proof?style=flat-square" />
+    <a href="https://www.npmjs.com/package/@webb-tools/semaphore-proof">
+        <img alt="NPM version" src="https://img.shields.io/npm/v/@webb-tools/semaphore-proof?style=flat-square" />
     </a>
-    <a href="https://npmjs.org/package/@semaphore-protocol/proof">
-        <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/proof.svg?style=flat-square" />
+    <a href="https://npmjs.org/package/@webb-tools/semaphore-proof">
+        <img alt="Downloads" src="https://img.shields.io/npm/dm/@webb-tools/semaphore-proof.svg?style=flat-square" />
     </a>
     <a href="https://eslint.org/">
         <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint" />
@@ -28,12 +28,12 @@
 
 <div align="center">
     <h4>
-        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CONTRIBUTING.md">
+        <a href="https://github.com/webb-tools/semaphore-anchor/blob/develop/CONTRIBUTING.md">
             👥 Contributing
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CODE_OF_CONDUCT.md">
-        <a href="https://github.com/semaphore-protocol/semaphore/contribute">
+        <a href="https://github.com/webb-tools/semaphore-anchor/blob/develop/CODE_OF_CONDUCT.md">
+        <a href="https://github.com/webb-tools/semaphore-anchor/contribute">
             🔎 Issues
             🗣️ Chat &amp; Support
         </a>
@@ -47,16 +47,16 @@
 
 ### npm or yarn
 
-Install the `@semaphore-protocol/proof` package and its peer dependencies with npm:
+Install the `@webb-tools/semaphore-proof` package and its peer dependencies with npm:
 
 ```bash
-npm i @semaphore-protocol/identity @semaphore-protocol/group @semaphore-protocol/proof
+npm i @webb-tools/semaphore-identity @webb-tools/semaphore-group @webb-tools/semaphore-proof
 ```
 
 or yarn:
 
 ```bash
-yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-protocol/proof
+yarn add @webb-tools/semaphore-identity @webb-tools/semaphore-group @webb-tools/semaphore-proof
 ```
 
 ## 📜 Usage
@@ -64,9 +64,9 @@ yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-proto
 \# **generateProof**(identity: _Identity_, group: _Group_, externalNullifier: _BigNumberish_, signal: _string_, snarkArtifacts?: _SnarkArtifacts_): Promise\<_SemaphoreFullProof_>
 
 ```typescript
-import { Identity } from "@semaphore-protocol/identity"
-import { Group } from "@semaphore-protocol/group"
-import { generateProof } from "@semaphore-protocol/proof"
+import { Identity } from "@webb-tools/semaphore-identity"
+import { Group } from "@webb-tools/semaphore-group"
+import { generateProof } from "@webb-tools/semaphore-proof"
 
 const identity = new Identity()
 const group = new Group()
@@ -93,7 +93,7 @@ const fullProof = await generateProof(
 \# **verifyProof**(verificationKey: _any_, fullProof: _FullProof_): Promise\<_boolean_>
 
 ```typescript
-import { verifyProof } from "@semaphore-protocol/proof"
+import { verifyProof } from "@webb-tools/semaphore-proof"
 
 const verificationKey = JSON.parse(fs.readFileSync("/semaphore.json", "utf-8"))
 
@@ -103,7 +103,7 @@ await verifyProof(verificationKey, fullProof)
 \# **packToSolidityProof**(proof: _Proof_): _SolidityProof_
 
 ```typescript
-import { packToSolidityProof } from "@semaphore-protocol/proof"
+import { packToSolidityProof } from "@webb-tools/semaphore-proof"
 
 const solidityProof = packToSolidityProof(fullProof.proof)
 ```
@@ -111,7 +111,7 @@ const solidityProof = packToSolidityProof(fullProof.proof)
 \# **generateNullifierHash**(externalNullifier: _BigNumberish_, identityNullifier: _BigNumberish_): _bigint_
 
 ```typescript
-import { generateNullifierHash } from "@semaphore-protocol/proof"
+import { generateNullifierHash } from "@webb-tools/semaphore-proof"
 
 const nullifierHash = generateNullifierHash(
     externalNullifier,
@@ -122,7 +122,7 @@ const nullifierHash = generateNullifierHash(
 \# **generateSignalHash**(signal: _string_): _bigint_
 
 ```typescript
-import { generateSignalHash } from "@semaphore-protocol/proof"
+import { generateSignalHash } from "@webb-tools/semaphore-proof"
 
 const signalHash = generateSignalHash(signal)
 ```

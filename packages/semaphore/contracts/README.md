@@ -6,31 +6,31 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/semaphore-protocol">
+    <a href="https://github.com/webb-tools">
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
-    <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
+    <a href="https://github.com/webb-tools/semaphore-anchor/blob/develop/LICENSE">
         <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
     </a>
-    <a href="https://www.npmjs.com/package/@semaphore-protocol/contracts">
-        <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/contracts?style=flat-square" />
+    <a href="https://www.npmjs.com/package/@webb-tools/semaphore-contracts">
+        <img alt="NPM version" src="https://img.shields.io/npm/v/@webb-tools/semaphore-contracts?style=flat-square" />
     </a>
-    <a href="https://npmjs.org/package/@semaphore-protocol/contracts">
-        <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/contracts.svg?style=flat-square" />
+    <a href="https://npmjs.org/package/@webb-tools/semaphore-contracts">
+        <img alt="Downloads" src="https://img.shields.io/npm/dm/@webb-tools/semaphore-contracts.svg?style=flat-square" />
     </a>
 </p>
 
 <div align="center">
     <h4>
-        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CONTRIBUTING.md">
+        <a href="https://github.com/webb-tools/semaphore-anchor/blob/develop/CONTRIBUTING.md">
             👥 Contributing
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CODE_OF_CONDUCT.md">
+        <a href="https://github.com/webb-tools/semaphore-anchor/blob/develop/CODE_OF_CONDUCT.md">
             🤝 Code of conduct
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/semaphore-protocol/semaphore/contribute">
+        <a href="https://github.com/webb-tools/semaphore-anchor/contribute">
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
@@ -48,16 +48,16 @@ To learn more about contracts visit [semaphore.appliedzkp.org](https://semaphore
 
 ### npm or yarn
 
-Install the `@semaphore-protocol/contracts` package with npm:
+Install the `@webb-tools/semaphore-contracts` package with npm:
 
 ```bash
-npm i @semaphore-protocol/contracts
+npm i @webb-tools/semaphore-contracts
 ```
 
 or yarn:
 
 ```bash
-yarn add @semaphore-protocol/contracts
+yarn add @webb-tools/semaphore-contracts
 ```
 
 ## 📜 Usage

@@ -6,7 +6,8 @@ export declare type Leaf = {
   index: number
   commitment: BigNumberish
 }
-const DEFAULT_ZERO: BigNumberish = '21663839004416932945382355908790599225266501822907911457504978515578255421292';
+const DEFAULT_ZERO: BigNumberish =
+  "21663839004416932945382355908790599225266501822907911457504978515578255421292"
 
 export class Group {
   private _merkleTree: MerkleTree

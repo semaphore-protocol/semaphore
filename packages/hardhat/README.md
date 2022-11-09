@@ -6,17 +6,17 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/semaphore-protocol">
+    <a href="https://github.com/webb-tools">
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
-    <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+    <a href="https://github.com/webb-tools/semaphore/blob/main/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/webb-tools/semaphore.svg?style=flat-square">
     </a>
-    <a href="https://www.npmjs.com/package/@semaphore-protocol/hardhat">
-        <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/hardhat?style=flat-square" />
+    <a href="https://www.npmjs.com/package/@webb-tools/semaphore-hardhat">
+        <img alt="NPM version" src="https://img.shields.io/npm/v/@webb-tools/semaphore-hardhat?style=flat-square" />
     </a>
-    <a href="https://npmjs.org/package/@semaphore-protocol/hardhat">
-        <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/hardhat.svg?style=flat-square" />
+    <a href="https://npmjs.org/package/@webb-tools/semaphore-hardhat">
+        <img alt="Downloads" src="https://img.shields.io/npm/dm/@webb-tools/semaphore-hardhat.svg?style=flat-square" />
     </a>
     <a href="https://eslint.org/">
         <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint" />
@@ -28,15 +28,15 @@
 
 <div align="center">
     <h4>
-        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CONTRIBUTING.md">
+        <a href="https://github.com/webb-tools/semaphore/blob/main/CONTRIBUTING.md">
             👥 Contributing
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CODE_OF_CONDUCT.md">
+        <a href="https://github.com/webb-tools/semaphore/blob/main/CODE_OF_CONDUCT.md">
             🤝 Code of conduct
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/semaphore-protocol/semaphore/contribute">
+        <a href="https://github.com/webb-tools/semaphore/contribute">
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
@@ -53,16 +53,16 @@
 
 ### npm or yarn
 
-Install the `@semaphore-protocol/hardhat` package with npm:
+Install the `@webb-tools/semaphore-hardhat` package with npm:
 
 ```bash
-npm i @semaphore-protocol/hardhat
+npm i @webb-tools/semaphore-hardhat
 ```
 
 or yarn:
 
 ```bash
-yarn add @semaphore-protocol/hardhat
+yarn add @webb-tools/semaphore-hardhat
 ```
 
 ## 📜 Usage
@@ -70,7 +70,7 @@ yarn add @semaphore-protocol/hardhat
 Import the plugin in your `hardhat.config.ts` file:
 
 ```typescript
-import "@semaphore-protocol/hardhat"
+import "@webb-tools/semaphore-hardhat"
 import "./tasks/deploy"
 
 const hardhatConfig: HardhatUserConfig = {

@@ -58,11 +58,10 @@ library SemaphoreInputEncoder {
         @param _maxEdges The maximum # of edges supported by the underlying Semaphore Anchor
         @return (bytes, bytes) The public inputs and roots array separated
     */
-    function _encodeInputs(Proof memory _args, uint8 _maxEdges)
-        public
-        view
-        returns (bytes memory, bytes32[] memory)
-    {
+    function _encodeInputs(
+        Proof memory _args,
+        uint8 _maxEdges
+    ) public view returns (bytes memory, bytes32[] memory) {
         uint256 _chainId = getChainIdType();
         bytes32[] memory result = new bytes32[](_maxEdges + 1);
         bytes memory encodedInput;

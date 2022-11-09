@@ -166,9 +166,22 @@ export class Semaphore extends SemaphoreBase {
     merkleRootDuration?: BigNumberish
   ): Promise<ContractTransaction> {
     if (merkleRootDuration === undefined) {
-      return this._createGroup(groupId, depth, groupAdminAddr, maxEdges, this.contract["createGroup(uint256,uint256,address,uint8)"])
+      return this._createGroup(
+        groupId,
+        depth,
+        groupAdminAddr,
+        maxEdges,
+        this.contract["createGroup(uint256,uint256,address,uint8)"]
+      )
     } else {
-      return this._createGroup(groupId, depth, groupAdminAddr, maxEdges, this.contract["createGroup(uint256,uint256,address,uint8,uint256)"], merkleRootDuration)
+      return this._createGroup(
+        groupId,
+        depth,
+        groupAdminAddr,
+        maxEdges,
+        this.contract["createGroup(uint256,uint256,address,uint8,uint256)"],
+        merkleRootDuration
+      )
     }
   }
 
@@ -205,7 +218,7 @@ export class Semaphore extends SemaphoreBase {
       groupId,
       chainId,
       externalNullifier,
-      externalGroup,
+      externalGroup
     )
     const transaction = await this.contract.verifyProof(
       groupId,

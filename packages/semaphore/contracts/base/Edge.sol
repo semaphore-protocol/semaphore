@@ -14,4 +14,3 @@ struct Edge {
     uint256 latestLeafIndex;
     bytes32 srcResourceID;
 }
-

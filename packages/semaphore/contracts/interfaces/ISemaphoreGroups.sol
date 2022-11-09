@@ -58,10 +58,10 @@ interface ISemaphoreGroups {
         uint256 merkleTreeRoot
     );
 
-    function verifyRoots(uint256 groupId, bytes calldata roots)
-        external
-        view
-        returns (bool);
+    function verifyRoots(
+        uint256 groupId,
+        bytes calldata roots
+    ) external view returns (bool);
 
     // function _updateEdge(
     //     uint256 groupId,
@@ -74,10 +74,9 @@ interface ISemaphoreGroups {
     /// @dev Returns the last root hash of a group.
     /// @param groupId: Id of the group.
     /// @return Latests roots from each edge connected
-    function getLatestNeighborEdges(uint256 groupId)
-        external
-        view
-        returns (Edge[] memory);
+    function getLatestNeighborEdges(
+        uint256 groupId
+    ) external view returns (Edge[] memory);
 
     /// @dev Returns the last root hash of a group.
     /// @param groupId: Id of the group.
@@ -87,10 +86,9 @@ interface ISemaphoreGroups {
     /// @dev Returns the depth of the tree of a group.
     /// @param groupId: Id of the group.
     /// @return Depth of the group tree.
-    function getMerkleTreeDepth(uint256 groupId)
-        external
-        view
-        returns (uint256);
+    function getMerkleTreeDepth(
+        uint256 groupId
+    ) external view returns (uint256);
 
     /// @dev Returns the max edges of the linkable tree of a group.
     /// @param groupId: Id of the group.
@@ -100,8 +98,7 @@ interface ISemaphoreGroups {
     /// @dev Returns the number of tree leaves of a group.
     /// @param groupId: Id of the group.
     /// @return Number of tree leaves.
-    function getNumberOfMerkleTreeLeaves(uint256 groupId)
-        external
-        view
-        returns (uint256);
+    function getNumberOfMerkleTreeLeaves(
+        uint256 groupId
+    ) external view returns (uint256);
 }

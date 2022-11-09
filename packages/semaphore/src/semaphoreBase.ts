@@ -1,10 +1,21 @@
-import { ContractTransaction, BigNumber, utils, BigNumberish, Signer, ethers } from "ethers"
+import {
+  ContractTransaction,
+  BigNumber,
+  utils,
+  BigNumberish,
+  Signer,
+  ethers
+} from "ethers"
 import { toHex, toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import { Identity } from "@webb-tools/semaphore-identity"
-import { packToSolidityProof, FullProof, generateProof } from "@webb-tools/semaphore-proof"
+import {
+  packToSolidityProof,
+  FullProof,
+  generateProof
+} from "@webb-tools/semaphore-proof"
 import { Verifier } from "./verifier"
 import {
   Semaphore as SemaphoreContract,
@@ -110,7 +121,7 @@ export class SemaphoreBase {
   public async createResourceId(): Promise<string> {
     return toHex(
       this.contract.address +
-      toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
+        toHex(getChainIdType(await this.signer.getChainId()), 6).substr(2),
       32
     )
   }
@@ -153,7 +164,7 @@ export class SemaphoreBase {
     if (groupId in this.linkedGroups) {
       throw new Error(`Group ${groupId} has already been created`)
     }
-    let tx: ContractTransaction;
+    let tx: ContractTransaction
     if (merkleRootDuration === undefined) {
       tx = await createGroupContractCall(
         groupId,
@@ -188,11 +199,12 @@ export class SemaphoreBase {
     if (!(groupId in this.linkedGroups)) {
       throw new Error(`Group ${groupId} doesn't exist`)
     }
-    let tx: ContractTransaction = await addMemberContractCall(groupId, leaf, { gasLimit: "0x5B8D80" })
+    let tx: ContractTransaction = await addMemberContractCall(groupId, leaf, {
+      gasLimit: "0x5B8D80"
+    })
     this.linkedGroups[groupId].addMember(leaf)
-    return tx;
+    return tx
   }
-
 
   public async updateEdge(
     groupId: number,
@@ -228,14 +240,15 @@ export class SemaphoreBase {
     chainId: number,
     externalNullifier?: BigNumberish,
     externalGroup?: LinkedGroup
-  ): Promise<{ fullProof: FullProof, solidityProof: any }> {
-
+  ): Promise<{ fullProof: FullProof; solidityProof: any }> {
     let roots: string[]
     if (externalGroup !== undefined) {
       // if externalGroup is being provided we assume it's use
       // on merkle proof generation.
       // externalGroup should have updated roots.
-      if (!externalGroup.isValidRoot(this.linkedGroups[groupId].root.toString())) {
+      if (
+        !externalGroup.isValidRoot(this.linkedGroups[groupId].root.toString())
+      ) {
         externalGroup.updateEdge(
           chainId,
           this.linkedGroups[groupId].root.toString()
