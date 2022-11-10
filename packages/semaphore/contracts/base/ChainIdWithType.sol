@@ -41,11 +41,9 @@ abstract contract ChainIdWithType {
     /**
         Parses the typed chain ID out from a 32-byte resource ID
      */
-    function parseChainIdFromResourceId(bytes32 _resourceId)
-        public
-        pure
-        returns (uint64)
-    {
+    function parseChainIdFromResourceId(
+        bytes32 _resourceId
+    ) public pure returns (uint64) {
         return uint64(uint48(bytes6(_resourceId << (26 * 8))));
     }
 }

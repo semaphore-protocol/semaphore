@@ -83,15 +83,16 @@ library LinkableIncrementalBinaryTree {
     /// @dev Inserts a leaf in the tree.
     /// @param self: Tree data.
     /// @param leaf: Leaf to be inserted.
-    function insert(LinkableIncrementalTreeData storage self, uint256 leaf)
-        internal
-    {
+    function insert(
+        LinkableIncrementalTreeData storage self,
+        uint256 leaf
+    ) internal {
         require(
             leaf < SNARK_SCALAR_FIELD,
             "LinkableIncrementalBinaryTree: leaf must be < SNARK_SCALAR_FIELD"
         );
         require(
-            self.numberOfLeaves < 2**self.depth,
+            self.numberOfLeaves < 2 ** self.depth,
             "LinkableIncrementalBinaryTree: tree is full"
         );
 
@@ -270,11 +271,9 @@ library LinkableIncrementalBinaryTree {
     /**
         @dev Returns the last root
     */
-    function getLastRoot(LinkableIncrementalTreeData storage self)
-        public
-        view
-        returns (uint256)
-    {
+    function getLastRoot(
+        LinkableIncrementalTreeData storage self
+    ) public view returns (uint256) {
         return self.roots[self.currentRootIndex];
     }
 
@@ -450,11 +449,9 @@ library LinkableIncrementalBinaryTree {
         @notice Get the latest state of all neighbor edges
         @return Edge[] An array of all neighboring and potentially empty edges
         */
-    function getLatestNeighborEdges(LinkableIncrementalTreeData storage self)
-        public
-        view
-        returns (Edge[] memory)
-    {
+    function getLatestNeighborEdges(
+        LinkableIncrementalTreeData storage self
+    ) public view returns (Edge[] memory) {
         Edge[] memory edges = new Edge[](self.maxEdges);
         for (uint256 i = 0; i < self.maxEdges; i++) {
             if (self.edgeList.length >= i + 1) {
@@ -477,11 +474,9 @@ library LinkableIncrementalBinaryTree {
         @notice Get the latest merkle roots of all neighbor edges
         @return bytes32[] An array of merkle roots
      */
-    function getLatestNeighborRoots(LinkableIncrementalTreeData storage self)
-        public
-        view
-        returns (uint256[] memory)
-    {
+    function getLatestNeighborRoots(
+        LinkableIncrementalTreeData storage self
+    ) public view returns (uint256[] memory) {
         uint256[] memory roots = new uint256[](self.maxEdges);
         for (uint256 i = 0; i < self.maxEdges; i++) {
             if (self.edgeList.length >= i + 1) {
@@ -559,11 +554,10 @@ library LinkableIncrementalBinaryTree {
         return true;
     }
 
-    function hasEdge(LinkableIncrementalTreeData storage self, uint256 _chainID)
-        public
-        view
-        returns (bool)
-    {
+    function hasEdge(
+        LinkableIncrementalTreeData storage self,
+        uint256 _chainID
+    ) public view returns (bool) {
         return self.edgeExistsForChain[_chainID];
     }
 
@@ -613,11 +607,9 @@ library LinkableIncrementalBinaryTree {
     /**
         Parses the typed chain ID out from a 32-byte resource ID
      */
-    function parseChainIdFromResourceId(bytes32 _resourceId)
-        public
-        pure
-        returns (uint64)
-    {
+    function parseChainIdFromResourceId(
+        bytes32 _resourceId
+    ) public pure returns (uint64) {
         return uint64(uint48(bytes6(_resourceId << (26 * 8))));
     }
 }

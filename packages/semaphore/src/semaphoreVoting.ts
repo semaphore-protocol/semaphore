@@ -6,18 +6,13 @@ import {
   utils,
   ethers
 } from "ethers"
-import { toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
 import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
-import {
-  FullProof,
-  generateProof,
-  packToSolidityProof
-} from "@webb-tools/semaphore-proof"
+import { FullProof, createRootsBytes } from "@webb-tools/semaphore-proof"
 import { Verifier } from "./verifier"
-import { SemaphoreBase, createRootsBytes } from "./semaphoreBase"
+import { SemaphoreBase } from "./semaphoreBase"
 import {
   SemaphoreVoting as SemaphoreVotingContract,
   SemaphoreVoting__factory,
@@ -144,69 +139,34 @@ export class SemaphoreVoting extends SemaphoreBase {
     groupAdminAddr: string,
     maxEdges: number
   ): Promise<ContractTransaction> {
-    if (groupId in this.linkedGroups) {
-      throw new Error(`Group ${groupId} has already been created`)
-    }
-    const tx = await this.contract.createPoll(
+    return this._createGroup(
       groupId,
       depth,
       groupAdminAddr,
-      maxEdges
-    )
-    this.linkedGroups[groupId] = new LinkedGroup(
-      depth,
       maxEdges,
-      this.zeroValue,
-      groupAdminAddr
+      this.contract.createPoll
     )
-    return tx
   }
 
-  public async getNumberVoters(pollId: BigNumberish): Promise<BigNumberish> {
+  public async getNumberOfVoters(pollId: BigNumberish): Promise<BigNumberish> {
     return super.getNumberOfMerkleTreeLeaves(pollId)
   }
 
   public async addVoters(
-    groupId: number,
+    pollId: number,
     leafs: BigNumberish[]
   ): Promise<ContractTransaction[]> {
     const txs = []
     for (const leaf of leafs) {
-      txs.push(await this.addVoter(groupId, leaf))
+      txs.push(await this.addVoter(pollId, leaf))
     }
     return txs
   }
   public async addVoter(
-    groupId: number,
+    pollId: number,
     leaf: BigNumberish
   ): Promise<ContractTransaction> {
-    if (!(groupId in this.linkedGroups)) {
-      throw new Error(`Group ${groupId} doesn't exist`)
-    }
-    const tx = await this.contract.addVoter(groupId, leaf, {
-      gasLimit: "0x5B8D80"
-    })
-    this.linkedGroups[groupId].addMember(leaf)
-
-    return tx
-  }
-
-  public async updateEdge(
-    groupId: number,
-    root: string,
-    index: number,
-    typedChainId: number
-  ): Promise<ContractTransaction> {
-    const tx = await this.contract.updateEdge(
-      groupId,
-      root,
-      index,
-      toFixedHex(typedChainId),
-      { gasLimit: "0x5B8D80" }
-    )
-    this.linkedGroups[groupId].updateEdge(typedChainId, root)
-
-    return tx
+    return this._addMember(pollId, leaf, this.contract.addVoter)
   }
 
   public async startPoll(
@@ -234,38 +194,14 @@ export class SemaphoreVoting extends SemaphoreBase {
   ): Promise<{ transaction: ContractTransaction; fullProof: FullProof }> {
     const bytes32Vote = utils.formatBytes32String(signal)
 
-    let roots: string[]
-    if (externalGroup !== undefined) {
-      // if externalGroup is being provided we assume it's use
-      // on merkle proof generation.
-      // externalGroup should have updated roots.
-      externalGroup.updateEdge(
-        chainId,
-        this.linkedGroups[pollId].root.toString()
-      )
-      roots = externalGroup
-        .getRoots()
-        .map((bignum: BigNumber) => bignum.toString())
-    } else {
-      roots = this.linkedGroups[pollId]
-        .getRoots()
-        .map((bignum: BigNumber) => bignum.toString())
-    }
-    const zkComponent =
-      this.linkedGroups[pollId].maxEdges === 1
-        ? this.smallCircuitZkComponents
-        : this.largeCircuitZkComponents
-
-    const fullProof = await generateProof(
+    const { fullProof, solidityProof } = await this.setupTransaction(
       identity,
-      this.linkedGroups[pollId],
-      pollId,
       signal,
-      BigInt(chainId),
-      zkComponent,
-      roots
+      pollId,
+      chainId,
+      undefined,
+      externalGroup
     )
-    const solidityProof = packToSolidityProof(fullProof.proof)
 
     const transaction = await this.contract.castVote(
       bytes32Vote,

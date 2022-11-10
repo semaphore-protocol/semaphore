@@ -69,6 +69,7 @@ docs/*
 # Hardhat
 artifacts
 cache
+packages/semaphore/build/contracts
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test

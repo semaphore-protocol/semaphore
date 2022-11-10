@@ -79,11 +79,10 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphore-updateGroupAdmin}.
-    function updateGroupAdmin(uint256 groupId, address newAdmin)
-        external
-        override
-        onlyGroupAdmin(groupId)
-    {
+    function updateGroupAdmin(
+        uint256 groupId,
+        address newAdmin
+    ) external override onlyGroupAdmin(groupId) {
         groups[groupId].admin = newAdmin;
         emit GroupAdminUpdated(groupId, _msgSender(), newAdmin);
     }
@@ -129,11 +128,10 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphore-addMember}.
-    function addMember(uint256 groupId, uint256 identityCommitment)
-        external
-        override
-        onlyGroupAdmin(groupId)
-    {
+    function addMember(
+        uint256 groupId,
+        uint256 identityCommitment
+    ) external override onlyGroupAdmin(groupId) {
         _addMember(groupId, identityCommitment);
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
@@ -143,11 +141,10 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphore-addMembers}.
-    function addMembers(uint256 groupId, uint256[] calldata identityCommitments)
-        external
-        override
-        onlyGroupAdmin(groupId)
-    {
+    function addMembers(
+        uint256 groupId,
+        uint256[] calldata identityCommitments
+    ) external override onlyGroupAdmin(groupId) {
         for (uint8 i = 0; i < identityCommitments.length; ) {
             _addMember(groupId, identityCommitments[i]);
 
@@ -195,12 +192,9 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     }
 
     // Function exposed for testing purposes
-    function decodeRoots(bytes calldata roots)
-        external
-        pure
-        override
-        returns (bytes32[] memory rootsDecoded)
-    {
+    function decodeRoots(
+        bytes calldata roots
+    ) external pure override returns (bytes32[] memory rootsDecoded) {
         rootsDecoded = abi.decode(roots, (bytes32[]));
         return rootsDecoded;
     }

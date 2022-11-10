@@ -39,11 +39,11 @@ jobs:
       - name: fetch Fixtures
         run: cd solidity-fixtures && dvc pull && cd .. && mv solidity-fixtures packages/semaphore
 
-      - name: Compile contracts
-        run: yarn compile:contracts
-
       - name: Build libraries
-        run: yarn build:libraries
+        run: yarn build
+
+      - name: Compile contracts
+        run: yarn compile
 
       - name: Run Prettier
         run: yarn prettier
@@ -83,7 +83,10 @@ jobs:
         run: yarn
 
       - name: Build libraries
-        run: yarn build:libraries
+        run: yarn build
+
+      - name: Compile contracts
+        run: yarn compile
 
       - name: Test contracts and libraries
         run: yarn test:${{ matrix.type }}

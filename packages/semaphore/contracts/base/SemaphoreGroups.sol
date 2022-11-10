@@ -44,10 +44,10 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     /// @dev Adds an identity commitment to an existing group.
     /// @param groupId: Id of the group.
     /// @param identityCommitment: New identity commitment.
-    function _addMember(uint256 groupId, uint256 identityCommitment)
-        internal
-        virtual
-    {
+    function _addMember(
+        uint256 groupId,
+        uint256 identityCommitment
+    ) internal virtual {
         if (getMerkleTreeDepth(groupId) == 0) {
             revert Semaphore__GroupDoesNotExist();
         }
@@ -142,12 +142,10 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
 
     // TODO: Generalize this over maxEdges
     // // Function exposed for testing purposes
-    function verifyRoots(uint256 groupId, bytes calldata roots)
-        public
-        view
-        override
-        returns (bool)
-    {
+    function verifyRoots(
+        uint256 groupId,
+        bytes calldata roots
+    ) public view override returns (bool) {
         if (merkleTree[groupId].maxEdges == 1) {
             uint256[2] memory rootsDecoded = abi.decode(roots, (uint256[2]));
 
@@ -176,68 +174,46 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreGroups-getLatestNeighborEdges}.
-    function getLatestNeighborEdges(uint256 groupId)
-        public
-        view
-        virtual
-        override
-        returns (Edge[] memory)
-    {
+    function getLatestNeighborEdges(
+        uint256 groupId
+    ) public view virtual override returns (Edge[] memory) {
         return merkleTree[groupId].getLatestNeighborEdges();
     }
 
     /// @dev See {ISemaphoreGroups-getMerkleTreeRoot}.
-    function getMerkleTreeRoot(uint256 groupId)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function getMerkleTreeRoot(
+        uint256 groupId
+    ) public view virtual override returns (uint256) {
         return merkleTree[groupId].getLastRoot();
     }
 
     /// @dev See {ISemaphoreGroups-getMerkleTreeDepth}.
-    function getMerkleTreeDepth(uint256 groupId)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function getMerkleTreeDepth(
+        uint256 groupId
+    ) public view virtual override returns (uint256) {
         return merkleTree[groupId].depth;
     }
 
     /// @dev See {ISemaphoreGroups-getMaxEdges}.
-    function getMaxEdges(uint256 groupId)
-        public
-        view
-        virtual
-        override
-        returns (uint8)
-    {
+    function getMaxEdges(
+        uint256 groupId
+    ) public view virtual override returns (uint8) {
         return merkleTree[groupId].maxEdges;
     }
 
     /// @dev See {ISemaphoreGroups-getNumberOfMerkleTreeLeaves}.
-    function getNumberOfMerkleTreeLeaves(uint256 groupId)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function getNumberOfMerkleTreeLeaves(
+        uint256 groupId
+    ) public view virtual override returns (uint256) {
         return merkleTree[groupId].numberOfLeaves;
     }
 
     /// @dev Converts the path indices of a Merkle proof to the identity commitment index in the tree.
     /// @param proofPathIndices: Path of the proof of membership.
     /// @return Index of a group member.
-    function proofPathIndicesToMemberIndex(uint8[] calldata proofPathIndices)
-        private
-        pure
-        returns (uint256)
-    {
+    function proofPathIndicesToMemberIndex(
+        uint8[] calldata proofPathIndices
+    ) private pure returns (uint256) {
         uint256 memberIndex = 0;
 
         for (uint8 i = uint8(proofPathIndices.length); i > 0; ) {

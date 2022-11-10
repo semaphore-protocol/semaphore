@@ -6,6 +6,8 @@ export declare type Leaf = {
   index: number
   commitment: BigNumberish
 }
+const DEFAULT_ZERO: BigNumberish =
+  "21663839004416932945382355908790599225266501822907911457504978515578255421292"
 
 export class Group {
   private _merkleTree: MerkleTree
@@ -14,7 +16,7 @@ export class Group {
    * Initializes the group with the tree depth and the zero value.
    * @param treeDepth Tree depth.
    */
-  constructor(treeDepth = 20, zeroValue: BigNumberish = BigNumber.from(0)) {
+  constructor(treeDepth = 20, zeroValue: BigNumberish = DEFAULT_ZERO) {
     if (treeDepth < 16 || treeDepth > 32) {
       throw new Error("The tree depth must be between 16 and 32")
     }
@@ -122,28 +124,6 @@ export class Group {
   generateProofOfMembership(index: number): MerkleProof {
     const merkleProof = this._merkleTree.path(index)
     return merkleProof
-  }
-  getMerkleProof(index: number): MerkleProof {
-    let inputMerklePathIndices: number[]
-    let inputMerklePathElements: BigNumber[]
-    const commitment = this._merkleTree.elements()[index]
-
-    if (index < 0) {
-      throw new Error(`Input commitment for index ${index} was not found`)
-    } else {
-      const path = this._merkleTree.path(index)
-      inputMerklePathIndices = path.pathIndices
-      inputMerklePathElements = path.pathElements
-      inputMerklePathIndices = new Array(this._merkleTree.levels).fill(0)
-      inputMerklePathElements = new Array(this._merkleTree.levels).fill(0)
-    }
-
-    return {
-      element: BigNumber.from(commitment),
-      pathElements: inputMerklePathElements,
-      pathIndices: inputMerklePathIndices,
-      merkleRoot: this._merkleTree.root()
-    }
   }
 }
 

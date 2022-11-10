@@ -64,10 +64,9 @@ interface ISemaphore {
         uint256[8] calldata proof
     ) external;
 
-    function decodeRoots(bytes calldata roots)
-        external
-        view
-        returns (bytes32[] memory rootsDecoded);
+    function decodeRoots(
+        bytes calldata roots
+    ) external view returns (bytes32[] memory rootsDecoded);
 
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @param groupId: Id of the group.
@@ -108,8 +107,10 @@ interface ISemaphore {
     /// @dev Adds new members to an existing group.
     /// @param groupId: Id of the group.
     /// @param identityCommitments: New identity commitments.
-    function addMembers(uint256 groupId, uint256[] calldata identityCommitments)
-        external;
+    function addMembers(
+        uint256 groupId,
+        uint256[] calldata identityCommitments
+    ) external;
 
     /// @dev Updates an identity commitment of an existing group. A proof of membership is
     /// needed to check if the node to be updated is part of the tree.

@@ -1,26 +1,26 @@
 <p align="center">
     <h1 align="center">
       <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon-dark.svg">
-        <source media="(prefers-color-scheme: light)" srcset="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
-        <img width="40" alt="Semaphore icon." src="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
+        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/webb-tools/website/blob/main/static/img/semaphore-icon-dark.svg">
+        <source media="(prefers-color-scheme: light)" srcset="https://github.com/webb-tools/website/blob/main/static/img/semaphore-icon.svg">
+        <img width="40" alt="Semaphore icon." src="https://github.com/webb-tools/website/blob/main/static/img/semaphore-icon.svg">
       </picture>
       Semaphore
     </h1>
 </p>
 
 <p align="center">
-    <a href="https://github.com/semaphore-protocol" target="_blank">
+    <a href="https://github.com/webb-tools" target="_blank">
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
     <a href="/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+        <img alt="Github license" src="https://img.shields.io/github/license/webb-tools/semaphore-anchor.svg?style=flat-square">
     </a>
-    <a href="https://github.com/semaphore-protocol/semaphore/actions?query=workflow%3Aproduction">
-        <img alt="GitHub Workflow test" src="https://img.shields.io/github/workflow/status/semaphore-protocol/semaphore/production?label=test&style=flat-square&logo=github">
+    <a href="https://github.com/webb-tools/semaphore-anchor/actions?query=workflow%3Aproduction">
+        <img alt="GitHub Workflow test" src="https://img.shields.io/github/workflow/status/webb-tools/semaphore-anchor/production?label=test&style=flat-square&logo=github">
     </a>
-    <a href="https://coveralls.io/github/semaphore-protocol/semaphore">
-        <img alt="Coveralls" src="https://img.shields.io/coveralls/github/semaphore-protocol/semaphore?style=flat-square&logo=coveralls">
+    <a href="https://coveralls.io/github/webb-tools/semaphore-anchor">
+        <img alt="Coveralls" src="https://img.shields.io/coveralls/github/webb-tools/semaphore-anchor?style=flat-square&logo=coveralls">
     </a>
     <a href="https://deepscan.io/dashboard#view=project&tid=16502&pid=22324&bid=657461">
         <img src="https://deepscan.io/api/teams/16502/projects/22324/branches/657461/badge/grade.svg" alt="DeepScan grade">
@@ -31,7 +31,7 @@
     <a href="https://prettier.io/">
         <img alt="Code style prettier" src="https://img.shields.io/badge/code%20style-prettier-f8bc45?style=flat-square&logo=prettier">
     </a>
-    <img alt="Repository top language" src="https://img.shields.io/github/languages/top/semaphore-protocol/semaphore?style=flat-square">
+    <img alt="Repository top language" src="https://img.shields.io/github/languages/top/webb-tools/semaphore-anchor?style=flat-square">
 </p>
 
 <div align="center">
@@ -44,11 +44,11 @@
             🤝 Code of conduct
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/semaphore-protocol/semaphore/contribute">
+        <a href="https://github.com/webb-tools/semaphore-anchor/contribute">
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://discord.gg/6mSdGHnstH">
+        <a href="https://discord.gg/zvz9uWr5Me">
             🗣️ Chat &amp; Support
         </a>
     </h4>
@@ -57,9 +57,9 @@
 | Semaphore is a protocol, designed to be a simple and generic privacy layer for Ethereum DApps. Using zero knowledge, Ethereum users can prove their membership of a group and send signals such as votes or endorsements without revealing their original identity. |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/packages/contracts) (NPM: `@semaphore-protocol/contracts`) and JavaScript libraries to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit [semaphore.appliedzkp.org](https://semaphore.appliedzkp.org).
+The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/packages/contracts) (NPM: `@webb-tools/contracts`) and JavaScript libraries to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit [semaphore.appliedzkp.org](https://semaphore.appliedzkp.org).
 
-You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-protocol/semaphore/tree/version/1.0.0).
+You can find Semaphore V1 on [`version/1.0.0`](https://github.com/webb-tools/semaphore-anchor/tree/version/1.0.0).
 
 ---
 
@@ -72,127 +72,127 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
     <tbody>
         <tr>
             <td>
-                <a href="/packages/contracts">
-                    @semaphore-protocol/contracts
+                <a href="/packages/semaphore">
+                    @webb-tools/semaphore
                 </a>
             </td>
             <td>
                 <!-- NPM version -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/contracts">
-                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/contracts.svg?style=flat-square" alt="NPM version" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore">
+                    <img src="https://img.shields.io/npm/v/@webb-tools/semaphore.svg?style=flat-square" alt="NPM version" />
                 </a>
             </td>
             <td>
                 <!-- Downloads -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/contracts">
-                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/contracts.svg?style=flat-square" alt="Downloads" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore">
+                    <img src="https://img.shields.io/npm/dm/@webb-tools/semaphore.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>
         <tr>
             <td>
                 <a href="/packages/identity">
-                    @semaphore-protocol/identity
+                    @webb-tools/semaphore-identity
                 </a>
-                <a href="https://semaphore-protocol.github.io/semaphore/identity">
+                <a href="https://webb-tools.github.io/semaphore-anchor/semaphore-identity">
                     (docs)
                 </a>
             </td>
             <td>
                 <!-- NPM version -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/identity">
-                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/identity.svg?style=flat-square" alt="NPM version" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-identity">
+                    <img src="https://img.shields.io/npm/v/@webb-tools/semaphore-identity.svg?style=flat-square" alt="NPM version" />
                 </a>
             </td>
             <td>
                 <!-- Downloads -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/identity">
-                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/identity.svg?style=flat-square" alt="Downloads" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-identity">
+                    <img src="https://img.shields.io/npm/dm/@webb-tools/semaphore-identity.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>
         <tr>
             <td>
                 <a href="/packages/group">
-                    @semaphore-protocol/group
+                    @webb-tools/semaphore-group
                 </a>
-                <a href="https://semaphore-protocol.github.io/semaphore/group">
+                <a href="https://webb-tools.github.io/semaphore-anchor/semaphore-group">
                     (docs)
                 </a>
             </td>
             <td>
                 <!-- NPM version -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/group">
-                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/group.svg?style=flat-square" alt="NPM version" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-group">
+                    <img src="https://img.shields.io/npm/v/@webb-tools/semaphore-group.svg?style=flat-square" alt="NPM version" />
                 </a>
             </td>
             <td>
                 <!-- Downloads -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/group">
-                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/group.svg?style=flat-square" alt="Downloads" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-group">
+                    <img src="https://img.shields.io/npm/dm/@webb-tools/semaphore-group.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>
         <tr>
             <td>
                 <a href="/packages/proof">
-                    @semaphore-protocol/proof
+                    @webb-tools/semaphore-proof
                 </a>
-                <a href="https://semaphore-protocol.github.io/semaphore/proof">
+                <a href="https://webb-tools.github.io/semaphore-anchor/semaphore-proof">
                     (docs)
                 </a>
             </td>
             <td>
                 <!-- NPM version -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/proof">
-                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/proof.svg?style=flat-square" alt="NPM version" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-proof">
+                    <img src="https://img.shields.io/npm/v/@webb-tools/semaphore-proof.svg?style=flat-square" alt="NPM version" />
                 </a>
             </td>
             <td>
                 <!-- Downloads -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/proof">
-                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/proof.svg?style=flat-square" alt="Downloads" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-proof">
+                    <img src="https://img.shields.io/npm/dm/@webb-tools/semaphore-proof.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>
         <tr>
             <td>
                 <a href="/packages/subgraph">
-                    @semaphore-protocol/subgraph
+                    @webb-tools/subgraph
                 </a>
-                <a href="https://semaphore-protocol.github.io/semaphore/subgraph">
+                <a href="https://webb-tools.github.io/semaphore-anchor/subgraph">
                     (docs)
                 </a>
             </td>
             <td>
                 <!-- NPM version -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/subgraph">
-                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/subgraph.svg?style=flat-square" alt="NPM version" />
+                <a href="https://npmjs.org/package/@webb-tools/subgraph">
+                    <img src="https://img.shields.io/npm/v/@webb-tools/subgraph.svg?style=flat-square" alt="NPM version" />
                 </a>
             </td>
             <td>
                 <!-- Downloads -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/subgraph">
-                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/subgraph.svg?style=flat-square" alt="Downloads" />
+                <a href="https://npmjs.org/package/@webb-tools/subgraph">
+                    <img src="https://img.shields.io/npm/dm/@webb-tools/subgraph.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>
         <tr>
             <td>
                 <a href="/packages/hardhat">
-                    @semaphore-protocol/hardhat
+                    @webb-tools/semaphore-hardhat
                 </a>
             </td>
             <td>
                 <!-- NPM version -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/hardhat">
-                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/hardhat.svg?style=flat-square" alt="NPM version" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-hardhat">
+                    <img src="https://img.shields.io/npm/v/@webb-tools/semaphore-hardhat.svg?style=flat-square" alt="NPM version" />
                 </a>
             </td>
             <td>
                 <!-- Downloads -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/hardhat">
-                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/hardhat.svg?style=flat-square" alt="Downloads" />
+                <a href="https://npmjs.org/package/@webb-tools/semaphore-hardhat">
+                    <img src="https://img.shields.io/npm/dm/@webb-tools/semaphore-hardhat.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>
@@ -205,7 +205,7 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
 Clone this repository:
 
 ```bash
-git clone https://github.com/semaphore-protocol/semaphore.git
+git clone https://github.com/webb-tools/semaphore-anchor.git
 ```
 
 And install the dependencies:
@@ -287,13 +287,13 @@ yarn test
 Run [Rollup](https://www.rollupjs.org) to build all the packages:
 
 ```bash
-yarn build:libraries
+yarn build
 ```
 
 Compile the smart contracts with [Hardhat](https://hardhat.org/):
 
 ```bash
-yarn compile:contracts
+yarn compile
 ```
 
 ### Documentation (JS libraries)

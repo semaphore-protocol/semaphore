@@ -6,17 +6,17 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/semaphore-protocol">
+    <a href="https://github.com/webb-tools">
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
-    <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+    <a href="https://github.com/webb-tools/semaphore-anchor/blob/develop/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/webb-tools/semaphore-anchor.svg?style=flat-square">
     </a>
-    <a href="https://www.npmjs.com/package/@semaphore-protocol/group">
-        <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/group?style=flat-square" />
+    <a href="https://www.npmjs.com/package/@webb-tools/semaphore-group">
+        <img alt="NPM version" src="https://img.shields.io/npm/v/@webb-tools/semaphore-group?style=flat-square" />
     </a>
-    <a href="https://npmjs.org/package/@semaphore-protocol/group">
-        <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/group.svg?style=flat-square" />
+    <a href="https://npmjs.org/package/@webb-tools/semaphore-group">
+        <img alt="Downloads" src="https://img.shields.io/npm/dm/@webb-tools/semaphore-group.svg?style=flat-square" />
     </a>
     <a href="https://eslint.org/">
         <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint" />
@@ -28,19 +28,19 @@
 
 <div align="center">
     <h4>
-        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CONTRIBUTING.md">
+        <a href="https://github.com/webb-tools/semaphore-anchor/blob/develop/CONTRIBUTING.md">
             👥 Contributing
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CODE_OF_CONDUCT.md">
+        <a href="https://github.com/webb-tools/semaphore-anchor/blob/develop/CODE_OF_CONDUCT.md">
             🤝 Code of conduct
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/semaphore-protocol/semaphore/contribute">
+        <a href="https://github.com/webb-tools/semaphore-anchor/contribute">
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://discord.gg/6mSdGHnstH">
+        <a href="https://discord.gg/zvz9uWr5Me">
             🗣️ Chat &amp; Support
         </a>
     </h4>
@@ -53,16 +53,16 @@
 
 ### npm or yarn
 
-Install the `@semaphore-protocol/group` package with npm:
+Install the `@webb-tools/semaphore-group` package with npm:
 
 ```bash
-npm i @semaphore-protocol/group
+npm i @webb-tools/semaphore-group
 ```
 
 or yarn:
 
 ```bash
-yarn add @semaphore-protocol/group
+yarn add @webb-tools/semaphore-group
 ```
 
 ## 📜 Usage
@@ -70,7 +70,7 @@ yarn add @semaphore-protocol/group
 \# **new Group**(treeDepth = 20, zeroValue = BigInt(0)): _Group_
 
 ```typescript
-import { Group } from "@semaphore-protocol/group"
+import { Group } from "@webb-tools/semaphore-group"
 
 // Group with max 1048576 members (20^²).
 const group1 = new Group()
@@ -85,7 +85,7 @@ const group3 = new Group(24)
 \# **addMember**(identityCommitment: _Member_)
 
 ```typescript
-import { Identity } from "@semaphore-protocol/identity"
+import { Identity } from "@webb-tools/identity"
 
 const identity = new Identity()
 const commitment = identity.generateCommitment()

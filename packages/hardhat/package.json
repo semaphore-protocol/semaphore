@@ -1,5 +1,5 @@
 {
-  "name": "@semaphore-protocol/hardhat",
+  "name": "@webb-tools/semaphore-hardhat",
   "version": "0.1.0",
   "description": "A Semaphore Hardhat plugin to deploy verifiers and Semaphore contract.",
   "license": "MIT",

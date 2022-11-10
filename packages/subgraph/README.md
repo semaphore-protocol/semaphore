@@ -6,11 +6,11 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/semaphore-protocol">
+    <a href="https://github.com/webb-tools">
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
-    <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+    <a href="https://github.com/webb-tools/semaphore-anchor/blob/main/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/webb-tools/semaphore-anchor.svg?style=flat-square">
     </a>
     <a href="https://www.npmjs.com/package/@semaphore-protocol/subgraph">
         <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/subgraph?style=flat-square" />
@@ -28,19 +28,19 @@
 
 <div align="center">
     <h4>
-        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CONTRIBUTING.md">
+        <a href="https://github.com/webb-tools/semaphore-anchor/blob/develop/CONTRIBUTING.md">
             👥 Contributing
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CODE_OF_CONDUCT.md">
+        <a href="https://github.com/webb-tools/semaphore-anchor/blob/develop/CODE_OF_CONDUCT.md">
             🤝 Code of conduct
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://github.com/semaphore-protocol/semaphore/contribute">
+        <a href="https://github.com/webb-tools/semaphore-anchor/contribute">
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://discord.gg/6mSdGHnstH">
+        <a href="https://discord.gg/zvz9uWr5Me">
             🗣️ Chat &amp; Support
         </a>
     </h4>

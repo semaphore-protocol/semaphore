@@ -75,11 +75,10 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreVoting-addVoter}.
-    function addVoter(uint256 pollId, uint256 identityCommitment)
-        public
-        override
-        onlyCoordinator(pollId)
-    {
+    function addVoter(
+        uint256 pollId,
+        uint256 identityCommitment
+    ) public override onlyCoordinator(pollId) {
         if (polls[pollId].state != PollState.Created) {
             revert Semaphore__PollHasAlreadyBeenStarted();
         }
@@ -87,11 +86,10 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreVoting-addVoter}.
-    function startPoll(uint256 pollId, uint256 encryptionKey)
-        public
-        override
-        onlyCoordinator(pollId)
-    {
+    function startPoll(
+        uint256 pollId,
+        uint256 encryptionKey
+    ) public override onlyCoordinator(pollId) {
         if (polls[pollId].state != PollState.Created) {
             revert Semaphore__PollHasAlreadyBeenStarted();
         }
@@ -143,11 +141,10 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreVoting-publishDecryptionKey}.
-    function endPoll(uint256 pollId, uint256 decryptionKey)
-        public
-        override
-        onlyCoordinator(pollId)
-    {
+    function endPoll(
+        uint256 pollId,
+        uint256 decryptionKey
+    ) public override onlyCoordinator(pollId) {
         if (polls[pollId].state != PollState.Ongoing) {
             revert Semaphore__PollIsNotOngoing();
         }

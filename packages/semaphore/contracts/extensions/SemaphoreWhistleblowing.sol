@@ -73,11 +73,10 @@ contract SemaphoreWhistleblowing is
     }
 
     /// @dev See {ISemaphoreWhistleblowing-addWhistleblower}.
-    function addWhistleblower(uint256 entityId, uint256 identityCommitment)
-        public
-        override
-        onlyEditor(entityId)
-    {
+    function addWhistleblower(
+        uint256 entityId,
+        uint256 identityCommitment
+    ) public override onlyEditor(entityId) {
         _addMember(entityId, identityCommitment);
     }
 

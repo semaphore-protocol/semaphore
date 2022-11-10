@@ -54,8 +54,10 @@ interface ISemaphoreWhistleblowing {
     /// @dev Adds a whistleblower to an entity.
     /// @param entityId: Id of the entity.
     /// @param identityCommitment: Identity commitment of the group member.
-    function addWhistleblower(uint256 entityId, uint256 identityCommitment)
-        external;
+    function addWhistleblower(
+        uint256 entityId,
+        uint256 identityCommitment
+    ) external;
 
     /// @dev Removes a whistleblower from an entity.
     /// @param entityId: Id of the entity.

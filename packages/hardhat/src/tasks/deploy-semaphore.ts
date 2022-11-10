@@ -34,7 +34,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
     await linkableIncrementalBinaryTreeLib.deployed()
 
     if (logs) {
-      console.log(
+      console.info(
         `LinkableIncrementalBinaryTree library has been deployed to: ${linkableIncrementalBinaryTreeLib.address}`
       )
     }
@@ -48,7 +48,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
     await semaphoreInputEncoderLib.deployed()
 
     if (logs) {
-      console.log(
+      console.info(
         `SemaphoreInputEncoder library has been deployed to: ${semaphoreInputEncoderLib.address}`
       )
     }
@@ -70,7 +70,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
     await semaphoreContract.deployed()
 
     if (logs) {
-      console.log(
+      console.info(
         `Semaphore contract has been deployed to: ${semaphoreContract.address}`
       )
     }

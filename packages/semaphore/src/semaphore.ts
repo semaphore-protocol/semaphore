@@ -7,18 +7,13 @@ import {
   utils,
   ethers
 } from "ethers"
-import { toFixedHex } from "@webb-tools/sdk-core"
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { getChainIdType, ZkComponents } from "@webb-tools/utils"
 import { Identity } from "@webb-tools/semaphore-identity"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
-import {
-  FullProof,
-  generateProof,
-  packToSolidityProof
-} from "@webb-tools/semaphore-proof"
+import { FullProof, createRootsBytes } from "@webb-tools/semaphore-proof"
 import { Verifier } from "./verifier"
-import { SemaphoreBase, createRootsBytes } from "./semaphoreBase"
+import { SemaphoreBase } from "./semaphoreBase"
 import {
   Semaphore as SemaphoreContract,
   Semaphore__factory,
@@ -164,30 +159,22 @@ export class Semaphore extends SemaphoreBase {
     maxEdges: number,
     merkleRootDuration?: BigNumberish
   ): Promise<ContractTransaction> {
-    if (groupId in this.linkedGroups) {
-      throw new Error(`Group ${groupId} has already been created`)
-    }
-    this.linkedGroups[groupId] = new LinkedGroup(
-      depth,
-      maxEdges,
-      this.zeroValue,
-      groupAdminAddr
-    )
     if (merkleRootDuration === undefined) {
-      // return this.contract.createGroup(groupId, depth, groupAdminAddr, maxEdges)
-      return this.contract["createGroup(uint256,uint256,address,uint8)"](
+      return this._createGroup(
         groupId,
         depth,
         groupAdminAddr,
-        maxEdges
+        maxEdges,
+        this.contract["createGroup(uint256,uint256,address,uint8)"]
       )
     }
-    return this.contract["createGroup(uint256,uint256,address,uint8,uint256)"](
+    return this._createGroup(
       groupId,
       depth,
       groupAdminAddr,
       maxEdges,
-      merkleRootDuration.toString()
+      this.contract["createGroup(uint256,uint256,address,uint8,uint256)"],
+      merkleRootDuration
     )
   }
 
@@ -205,39 +192,7 @@ export class Semaphore extends SemaphoreBase {
     groupId: number,
     leaf: BigNumberish
   ): Promise<ContractTransaction> {
-    if (!(groupId in this.linkedGroups)) {
-      throw new Error(`Group ${groupId} doesn't exist`)
-    }
-    this.linkedGroups[groupId].addMember(leaf)
-    return this.contract.addMember(groupId, leaf, { gasLimit: "0x5B8D80" })
-  }
-
-  public async updateEdge(
-    groupId: number,
-    root: string,
-    index: number,
-    typedChainId: number
-  ): Promise<ContractTransaction> {
-    const tx = await this.contract.updateEdge(
-      groupId,
-      root,
-      index,
-      toFixedHex(typedChainId),
-      { gasLimit: "0x5B8D80" }
-    )
-    this.linkedGroups[groupId].updateEdge(typedChainId, root)
-
-    return tx
-  }
-
-  public async verifyRoots(
-    groupId: number,
-    rootsBytes: string
-  ): Promise<boolean> {
-    const tx = await this.contract.verifyRoots(groupId, rootsBytes, {
-      gasLimit: "0x5B8D80"
-    })
-    return tx
+    return this._addMember(groupId, leaf, this.contract.addMember)
   }
 
   public async verifyIdentity(
@@ -250,39 +205,14 @@ export class Semaphore extends SemaphoreBase {
   ): Promise<{ transaction: ContractTransaction; fullProof: FullProof }> {
     const bytes32Signal = utils.formatBytes32String(signal)
 
-    let roots: string[]
-    if (externalGroup !== undefined) {
-      // if externalGroup is being provided we assume it's use
-      // on merkle proof generation.
-      // externalGroup should have updated roots.
-      externalGroup.updateEdge(
-        chainId,
-        this.linkedGroups[groupId].root.toString()
-      )
-      roots = externalGroup
-        .getRoots()
-        .map((bignum: BigNumber) => bignum.toString())
-    } else {
-      roots = this.linkedGroups[groupId]
-        .getRoots()
-        .map((bignum: BigNumber) => bignum.toString())
-    }
-    const zkComponent =
-      this.linkedGroups[groupId].maxEdges === 1
-        ? this.smallCircuitZkComponents
-        : this.largeCircuitZkComponents
-
-    const fullProof = await generateProof(
+    const { fullProof, solidityProof } = await this.setupTransaction(
       identity,
-      this.linkedGroups[groupId],
-      externalNullifier,
       signal,
-      BigInt(chainId),
-      zkComponent,
-      roots
+      groupId,
+      chainId,
+      externalNullifier,
+      externalGroup
     )
-    const solidityProof = packToSolidityProof(fullProof.proof)
-
     const transaction = await this.contract.verifyProof(
       groupId,
       bytes32Signal,
