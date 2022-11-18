@@ -2,14 +2,12 @@
 pragma solidity 0.8.4;
 
 import "./interfaces/ISemaphore.sol";
-import "./interfaces/IVerifier.sol";
-import "./base/SemaphoreCore.sol";
+import "./interfaces/ISemaphoreVerifier.sol";
 import "./base/SemaphoreGroups.sol";
 
 /// @title Semaphore
-contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
-    /// @dev Gets a tree depth and returns its verifier address.
-    mapping(uint256 => IVerifier) public verifiers;
+contract Semaphore is ISemaphore, SemaphoreGroups {
+    ISemaphoreVerifier public verifier;
 
     /// @dev Gets a group id and returns the group parameters.
     mapping(uint256 => Group) public groups;
@@ -26,22 +24,16 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev Checks if there is a verifier for the given tree depth.
     /// @param merkleTreeDepth: Depth of the tree.
     modifier onlySupportedMerkleTreeDepth(uint256 merkleTreeDepth) {
-        if (address(verifiers[merkleTreeDepth]) == address(0)) {
+        if (merkleTreeDepth < 16 || merkleTreeDepth > 32) {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
         }
         _;
     }
 
-    /// @dev Initializes the Semaphore verifiers used to verify the user's ZK proofs.
-    /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
-    constructor(Verifier[] memory _verifiers) {
-        for (uint8 i = 0; i < _verifiers.length; ) {
-            verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(_verifiers[i].contractAddress);
-
-            unchecked {
-                ++i;
-            }
-        }
+    /// @dev Initializes the Semaphore verifier used to verify the user's ZK proofs.
+    /// @param _verifier: Semaphore verifier address.
+    constructor(ISemaphoreVerifier _verifier) {
+        verifier = _verifier;
     }
 
     /// @dev See {ISemaphore-createGroup}.
@@ -165,9 +157,7 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
 
         uint256 merkleTreeDepth = getMerkleTreeDepth(groupId);
 
-        IVerifier verifier = verifiers[merkleTreeDepth];
-
-        _verifyProof(signal, merkleTreeRoot, nullifierHash, externalNullifier, proof, verifier);
+        verifier.verifyProof(signal, merkleTreeRoot, nullifierHash, externalNullifier, proof, merkleTreeDepth);
 
         groups[groupId].nullifierHashes[nullifierHash] = true;
 

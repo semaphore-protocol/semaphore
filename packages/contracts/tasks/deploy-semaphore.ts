@@ -1,67 +1,118 @@
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { Contract } from "ethers"
 import { task, types } from "hardhat/config"
-import { getDeployedContracts, saveDeployedContracts, verifiersToSolidityArgument } from "../scripts/utils"
+import { saveDeployedContracts } from "../scripts/utils"
 
 task("deploy:semaphore", "Deploy a Semaphore contract")
+    .addOptionalParam<boolean>("pairing", "Pairing library address", undefined, types.string)
+    .addOptionalParam<boolean>("semaphoreVerifier", "SemaphoreVerifier contract address", undefined, types.string)
+    .addOptionalParam<boolean>("poseidon", "Poseidon library address", undefined, types.string)
+    .addOptionalParam<boolean>(
+        "incrementalBinaryTree",
+        "IncrementalBinaryTree library address",
+        undefined,
+        types.string
+    )
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
-    .addOptionalParam("verifiers", "Tree depths and verifier addresses", [], types.json)
-    .setAction(async ({ logs, verifiers }, { ethers, hardhatArguments }): Promise<Contract> => {
-        let deployedContracts: any
+    .setAction(
+        async (
+            {
+                logs,
+                pairing: pairingAddress,
+                semaphoreVerifier: semaphoreVerifierAddress,
+                poseidon: poseidonAddress,
+                incrementalBinaryTree: incrementalBinaryTreeAddress
+            },
+            { ethers, hardhatArguments }
+        ): Promise<Contract> => {
+            if (!semaphoreVerifierAddress) {
+                if (!pairingAddress) {
+                    const PairingFactory = await ethers.getContractFactory("Pairing")
+                    const pairing = await PairingFactory.deploy()
 
-        if (verifiers.length === 0) {
-            deployedContracts = getDeployedContracts(hardhatArguments.network)
-            verifiers = verifiersToSolidityArgument(deployedContracts)
-        }
+                    await pairing.deployed()
 
-        const poseidonABI = poseidonContract.generateABI(2)
-        const poseidonBytecode = poseidonContract.createCode(2)
+                    if (logs) {
+                        console.info(`Pairing library has been deployed to: ${pairing.address}`)
+                    }
 
-        const [signer] = await ethers.getSigners()
+                    pairingAddress = pairing.address
+                }
 
-        const PoseidonLibFactory = new ethers.ContractFactory(poseidonABI, poseidonBytecode, signer)
-        const poseidonLib = await PoseidonLibFactory.deploy()
+                const SemaphoreVerifierFactory = await ethers.getContractFactory("SemaphoreVerifier", {
+                    libraries: {
+                        Pairing: pairingAddress
+                    }
+                })
 
-        await poseidonLib.deployed()
+                const semaphoreVerifier = await SemaphoreVerifierFactory.deploy()
 
-        if (logs) {
-            console.info(`Poseidon library has been deployed to: ${poseidonLib.address}`)
-        }
+                await semaphoreVerifier.deployed()
 
-        const IncrementalBinaryTreeLibFactory = await ethers.getContractFactory("IncrementalBinaryTree", {
-            libraries: {
-                PoseidonT3: poseidonLib.address
+                if (logs) {
+                    console.info(`SemaphoreVerifier contract has been deployed to: ${semaphoreVerifier.address}`)
+                }
+
+                semaphoreVerifierAddress = semaphoreVerifier.address
             }
-        })
-        const incrementalBinaryTreeLib = await IncrementalBinaryTreeLibFactory.deploy()
 
-        await incrementalBinaryTreeLib.deployed()
+            if (!incrementalBinaryTreeAddress) {
+                if (!poseidonAddress) {
+                    const poseidonABI = poseidonContract.generateABI(2)
+                    const poseidonBytecode = poseidonContract.createCode(2)
 
-        if (logs) {
-            console.info(`IncrementalBinaryTree library has been deployed to: ${incrementalBinaryTreeLib.address}`)
-        }
+                    const [signer] = await ethers.getSigners()
 
-        const ContractFactory = await ethers.getContractFactory("Semaphore", {
-            libraries: {
-                IncrementalBinaryTree: incrementalBinaryTreeLib.address
+                    const PoseidonFactory = new ethers.ContractFactory(poseidonABI, poseidonBytecode, signer)
+                    const poseidon = await PoseidonFactory.deploy()
+
+                    await poseidon.deployed()
+
+                    if (logs) {
+                        console.info(`Poseidon library has been deployed to: ${poseidon.address}`)
+                    }
+
+                    poseidonAddress = poseidon.address
+                }
+
+                const IncrementalBinaryTreeFactory = await ethers.getContractFactory("IncrementalBinaryTree", {
+                    libraries: {
+                        PoseidonT3: poseidonAddress
+                    }
+                })
+                const incrementalBinaryTree = await IncrementalBinaryTreeFactory.deploy()
+
+                await incrementalBinaryTree.deployed()
+
+                if (logs) {
+                    console.info(`IncrementalBinaryTree library has been deployed to: ${incrementalBinaryTree.address}`)
+                }
+
+                incrementalBinaryTreeAddress = incrementalBinaryTree.address
             }
-        })
 
-        const contract = await ContractFactory.deploy(verifiers)
+            const SemaphoreFactory = await ethers.getContractFactory("Semaphore", {
+                libraries: {
+                    IncrementalBinaryTree: incrementalBinaryTreeAddress
+                }
+            })
 
-        await contract.deployed()
+            const semaphore = await SemaphoreFactory.deploy(semaphoreVerifierAddress)
 
-        if (logs) {
-            console.info(`Semaphore contract has been deployed to: ${contract.address}`)
+            await semaphore.deployed()
+
+            if (logs) {
+                console.info(`Semaphore contract has been deployed to: ${semaphore.address}`)
+            }
+
+            saveDeployedContracts(hardhatArguments.network, {
+                Pairing: pairingAddress,
+                SemaphoreVerifier: semaphoreVerifierAddress,
+                Poseidon: poseidonAddress,
+                IncrementalBinaryTree: incrementalBinaryTreeAddress,
+                Semaphore: semaphore.address
+            })
+
+            return semaphore
         }
-
-        if (deployedContracts) {
-            deployedContracts.PoseidonT3 = poseidonLib.address
-            deployedContracts.IncrementalBinaryTree = incrementalBinaryTreeLib.address
-            deployedContracts.Semaphore = contract.address
-
-            saveDeployedContracts(hardhatArguments.network, deployedContracts)
-        }
-
-        return contract
-    })
+    )
