@@ -10,6 +10,9 @@ coverage.json
 
 # hardhat
 cache
+packages/contracts/deployed-contracts/undefined.json
+packages/contracts/deployed-contracts/hardhat.json
+packages/contracts/deployed-contracts/localhost.json
 
 # types
 types
