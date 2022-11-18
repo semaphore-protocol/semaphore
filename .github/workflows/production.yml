@@ -5,6 +5,10 @@ on:
         branches:
             - main
 
+env:
+    TREE_DEPTH: 20
+    ALL_SNARK_ARTIFACTS: false
+
 jobs:
     style:
         runs-on: ubuntu-latest
