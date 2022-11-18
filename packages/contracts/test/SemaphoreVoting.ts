@@ -23,14 +23,12 @@ describe("SemaphoreVoting", () => {
     const encryptionKey = BigInt(0)
     const decryptionKey = BigInt(0)
 
-    const wasmFilePath = `../../snark-artifacts/semaphore.wasm`
-    const zkeyFilePath = `../../snark-artifacts/semaphore.zkey`
+    const wasmFilePath = `../../snark-artifacts/${treeDepth}/semaphore.wasm`
+    const zkeyFilePath = `../../snark-artifacts/${treeDepth}/semaphore.zkey`
 
     before(async () => {
-        const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth: treeDepth })
         contract = await run("deploy:semaphore-voting", {
-            logs: false,
-            verifiers: [{ merkleTreeDepth: treeDepth, contractAddress: verifierAddress }]
+            logs: false
         })
 
         accounts = await ethers.getSigners()
@@ -110,17 +108,13 @@ describe("SemaphoreVoting", () => {
 
         it("Should add a voter to an existing poll", async () => {
             const { commitment } = new Identity("test")
+            const group = new Group(treeDepth)
+
+            group.addMember(commitment)
 
             const transaction = contract.connect(accounts[1]).addVoter(pollIds[1], commitment)
 
-            await expect(transaction)
-                .to.emit(contract, "MemberAdded")
-                .withArgs(
-                    pollIds[1],
-                    0,
-                    commitment,
-                    "14787813191318312920980352979830075893203307366494541177071234930769373297362"
-                )
+            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(pollIds[1], 0, commitment, group.root)
         })
 
         it("Should return the correct number of poll voters", async () => {
@@ -171,7 +165,7 @@ describe("SemaphoreVoting", () => {
                 .connect(accounts[1])
                 .castVote(bytes32Vote, nullifierHash, pollIds[1], solidityProof)
 
-            await expect(transaction).to.be.revertedWith("InvalidProof()")
+            await expect(transaction).to.be.revertedWith("Semaphore__InvalidProof()")
         })
 
         it("Should cast a vote", async () => {
