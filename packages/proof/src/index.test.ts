@@ -16,9 +16,9 @@ describe("Proof", () => {
     const externalNullifier = "1"
     const signal = "0x111"
 
-    const wasmFilePath = `./snark-artifacts/semaphore.wasm`
-    const zkeyFilePath = `./snark-artifacts/semaphore.zkey`
-    const verificationKeyPath = `./snark-artifacts/semaphore.json`
+    const wasmFilePath = `./snark-artifacts/${treeDepth}/semaphore.wasm`
+    const zkeyFilePath = `./snark-artifacts/${treeDepth}/semaphore.zkey`
+    const verificationKeyPath = `./snark-artifacts/${treeDepth}/semaphore.json`
 
     const identity = new Identity()
 
