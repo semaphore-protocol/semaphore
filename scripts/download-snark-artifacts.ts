@@ -1,5 +1,5 @@
-import download from "download"
 import dotenv from "dotenv"
+import download from "download"
 
 dotenv.config()
 
@@ -13,11 +13,12 @@ async function main() {
             extract: true
         })
     } else {
-        const url = `https://www.trusted-setup-pse.org/semaphore/${process.env.TREE_DEPTH || 20}`
+        const treeDepth = process.env.TREE_DEPTH || 20
+        const url = `https://www.trusted-setup-pse.org/semaphore/${treeDepth}`
 
-        await download(`${url}/semaphore.wasm`, snarkArtifactsPath)
-        await download(`${url}/semaphore.zkey`, snarkArtifactsPath)
-        await download(`${url}/semaphore.json`, snarkArtifactsPath)
+        await download(`${url}/semaphore.wasm`, `${snarkArtifactsPath}/${treeDepth}`)
+        await download(`${url}/semaphore.zkey`, `${snarkArtifactsPath}/${treeDepth}`)
+        await download(`${url}/semaphore.json`, `${snarkArtifactsPath}/${treeDepth}`)
     }
 }
 
