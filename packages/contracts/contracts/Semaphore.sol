@@ -111,6 +111,10 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint8[] calldata proofPathIndices
     ) external override onlyGroupAdmin(groupId) {
         _updateMember(groupId, identityCommitment, newIdentityCommitment, proofSiblings, proofPathIndices);
+
+        uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
+
+        groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
     }
 
     /// @dev See {ISemaphore-removeMember}.
@@ -121,6 +125,10 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint8[] calldata proofPathIndices
     ) external override onlyGroupAdmin(groupId) {
         _removeMember(groupId, identityCommitment, proofSiblings, proofPathIndices);
+
+        uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
+
+        groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
     }
 
     /// @dev See {ISemaphore-verifyProof}.
