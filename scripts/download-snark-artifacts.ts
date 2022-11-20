@@ -1,18 +1,24 @@
+import dotenv from "dotenv"
 import download from "download"
-import fs from "fs"
+
+dotenv.config()
 
 async function main() {
     const snarkArtifactsPath = "./snark-artifacts"
-    const url = `https://www.trusted-setup-pse.org/semaphore/${process.env.TREE_DEPTH || 20}`
 
-    if (!fs.existsSync(snarkArtifactsPath)) {
-        fs.mkdirSync(snarkArtifactsPath, { recursive: true })
-    }
+    if (process.env.ALL_SNARK_ARTIFACTS === "true") {
+        const url = `https://www.trusted-setup-pse.org/semaphore/semaphore.zip`
 
-    if (!fs.existsSync(`${snarkArtifactsPath}/semaphore.zkey`)) {
-        await download(`${url}/semaphore.wasm`, snarkArtifactsPath)
-        await download(`${url}/semaphore.zkey`, snarkArtifactsPath)
-        await download(`${url}/semaphore.json`, snarkArtifactsPath)
+        await download(url, snarkArtifactsPath, {
+            extract: true
+        })
+    } else {
+        const treeDepth = process.env.TREE_DEPTH || 20
+        const url = `https://www.trusted-setup-pse.org/semaphore/${treeDepth}`
+
+        await download(`${url}/semaphore.wasm`, `${snarkArtifactsPath}/${treeDepth}`)
+        await download(`${url}/semaphore.zkey`, `${snarkArtifactsPath}/${treeDepth}`)
+        await download(`${url}/semaphore.json`, `${snarkArtifactsPath}/${treeDepth}`)
     }
 }
 

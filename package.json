@@ -9,7 +9,7 @@
     "scripts": {
         "build:libraries": "yarn workspaces foreach run build",
         "compile:contracts": "yarn workspace contracts compile",
-        "download:snark-artifacts": "ts-node scripts/download-snark-artifacts.ts",
+        "download:snark-artifacts": "rimraf snark-artifacts && ts-node scripts/download-snark-artifacts.ts",
         "test": "yarn test:libraries && yarn test:contracts",
         "test:libraries": "jest --coverage",
         "test:contracts": "yarn workspace contracts test:coverage",

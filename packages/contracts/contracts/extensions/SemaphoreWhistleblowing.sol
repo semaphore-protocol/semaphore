@@ -2,31 +2,18 @@
 pragma solidity 0.8.4;
 
 import "../interfaces/ISemaphoreWhistleblowing.sol";
-import "../base/SemaphoreCore.sol";
+import "../interfaces/ISemaphoreVerifier.sol";
 import "../base/SemaphoreGroups.sol";
 
 /// @title Semaphore whistleblowing contract.
 /// @dev The following code allows you to create entities for whistleblowers (e.g. non-profit
 /// organization, newspaper) and to allow them to publish news leaks anonymously.
 /// Leaks can be IPFS hashes, permanent links or other kinds of reference.
-contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, SemaphoreGroups {
-    /// @dev Gets a tree depth and returns its verifier address.
-    mapping(uint256 => IVerifier) internal verifiers;
+contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreGroups {
+    ISemaphoreVerifier public verifier;
 
     /// @dev Gets an editor address and return their entity.
     mapping(address => uint256) private entities;
-
-    /// @dev Initializes the Semaphore verifiers used to verify the user's ZK proofs.
-    /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
-    constructor(Verifier[] memory _verifiers) {
-        for (uint8 i = 0; i < _verifiers.length; ) {
-            verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(_verifiers[i].contractAddress);
-
-            unchecked {
-                ++i;
-            }
-        }
-    }
 
     /// @dev Checks if the editor is the transaction sender.
     /// @param entityId: Id of the entity.
@@ -38,13 +25,19 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         _;
     }
 
+    /// @dev Initializes the Semaphore verifier used to verify the user's ZK proofs.
+    /// @param _verifier: Semaphore verifier address.
+    constructor(ISemaphoreVerifier _verifier) {
+        verifier = _verifier;
+    }
+
     /// @dev See {ISemaphoreWhistleblowing-createEntity}.
     function createEntity(
         uint256 entityId,
         address editor,
         uint256 merkleTreeDepth
     ) public override {
-        if (address(verifiers[merkleTreeDepth]) == address(0)) {
+        if (merkleTreeDepth < 16 || merkleTreeDepth > 32) {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
         }
 
@@ -80,9 +73,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreCore, Sem
         uint256 merkleTreeDepth = getMerkleTreeDepth(entityId);
         uint256 merkleTreeRoot = getMerkleTreeRoot(entityId);
 
-        IVerifier verifier = verifiers[merkleTreeDepth];
-
-        _verifyProof(leak, merkleTreeRoot, nullifierHash, entityId, proof, verifier);
+        verifier.verifyProof(leak, merkleTreeRoot, nullifierHash, entityId, proof, merkleTreeDepth);
 
         emit LeakPublished(entityId, leak);
     }
