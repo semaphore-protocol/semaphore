@@ -18,14 +18,12 @@ describe("Semaphore", () => {
     const groupId = 1
     const members = createIdentityCommitments(3)
 
-    const wasmFilePath = `../../snark-artifacts/semaphore.wasm`
-    const zkeyFilePath = `../../snark-artifacts/semaphore.zkey`
+    const wasmFilePath = `../../snark-artifacts/${treeDepth}/semaphore.wasm`
+    const zkeyFilePath = `../../snark-artifacts/${treeDepth}/semaphore.zkey`
 
     before(async () => {
-        const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth: treeDepth })
         contract = await run("deploy:semaphore", {
-            logs: false,
-            verifiers: [{ merkleTreeDepth: treeDepth, contractAddress: verifierAddress }]
+            logs: false
         })
 
         signers = await run("accounts", { logs: false })
@@ -96,16 +94,13 @@ describe("Semaphore", () => {
         })
 
         it("Should add a new member in an existing group", async () => {
+            const group = new Group(treeDepth)
+
+            group.addMember(members[0])
+
             const transaction = contract.addMember(groupId, members[0])
 
-            await expect(transaction)
-                .to.emit(contract, "MemberAdded")
-                .withArgs(
-                    groupId,
-                    0,
-                    members[0],
-                    "18951329906296061785889394467312334959162736293275411745101070722914184798221"
-                )
+            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(groupId, 0, members[0], group.root)
         })
     })
 
@@ -228,7 +223,7 @@ describe("Semaphore", () => {
                 solidityProof
             )
 
-            await expect(transaction).to.be.revertedWith("InvalidProof()")
+            await expect(transaction).to.be.revertedWith("Semaphore__InvalidProof()")
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {

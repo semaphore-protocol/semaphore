@@ -21,14 +21,12 @@ describe("SemaphoreWhistleblowing", () => {
     const treeDepth = Number(process.env.TREE_DEPTH) || 20
     const entityIds = [BigInt(1), BigInt(2)]
 
-    const wasmFilePath = `../../snark-artifacts/semaphore.wasm`
-    const zkeyFilePath = `../../snark-artifacts/semaphore.zkey`
+    const wasmFilePath = `../../snark-artifacts/${treeDepth}/semaphore.wasm`
+    const zkeyFilePath = `../../snark-artifacts/${treeDepth}/semaphore.zkey`
 
     before(async () => {
-        const { address: verifierAddress } = await run("deploy:verifier", { logs: false, depth: treeDepth })
         contract = await run("deploy:semaphore-whistleblowing", {
-            logs: false,
-            verifiers: [{ merkleTreeDepth: treeDepth, contractAddress: verifierAddress }]
+            logs: false
         })
 
         accounts = await ethers.getSigners()
@@ -76,17 +74,13 @@ describe("SemaphoreWhistleblowing", () => {
 
         it("Should add a whistleblower to an existing entity", async () => {
             const { commitment } = new Identity("test")
+            const group = new Group(treeDepth)
+
+            group.addMember(commitment)
 
             const transaction = contract.connect(accounts[1]).addWhistleblower(entityIds[0], commitment)
 
-            await expect(transaction)
-                .to.emit(contract, "MemberAdded")
-                .withArgs(
-                    entityIds[0],
-                    0,
-                    commitment,
-                    "14787813191318312920980352979830075893203307366494541177071234930769373297362"
-                )
+            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(entityIds[0], 0, commitment, group.root)
         })
 
         it("Should return the correct number of whistleblowers of an entity", async () => {
@@ -118,18 +112,15 @@ describe("SemaphoreWhistleblowing", () => {
 
             const { siblings, pathIndices } = group.generateMerkleProof(0)
 
+            group.removeMember(0)
+
             const transaction = contract
                 .connect(accounts[1])
                 .removeWhistleblower(entityIds[0], commitment, siblings, pathIndices)
 
             await expect(transaction)
                 .to.emit(contract, "MemberRemoved")
-                .withArgs(
-                    entityIds[0],
-                    0,
-                    commitment,
-                    "15019797232609675441998260052101280400536945603062888308240081994073687793470"
-                )
+                .withArgs(entityIds[0], 0, commitment, group.root)
         })
     })
 
@@ -166,7 +157,7 @@ describe("SemaphoreWhistleblowing", () => {
                 .connect(accounts[1])
                 .publishLeak(bytes32Leak, nullifierHash, entityIds[1], solidityProof)
 
-            await expect(transaction).to.be.revertedWith("InvalidProof()")
+            await expect(transaction).to.be.revertedWith("Semaphore__InvalidProof()")
         })
 
         it("Should publish a leak", async () => {
