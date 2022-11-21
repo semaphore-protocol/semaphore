@@ -2,7 +2,6 @@ import { formatBytes32String } from "@ethersproject/strings"
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { getCurveFromName } from "ffjavascript"
-import fs from "fs"
 import generateNullifierHash from "./generateNullifierHash"
 import generateProof from "./generateProof"
 import generateSignalHash from "./generateSignalHash"
@@ -18,7 +17,6 @@ describe("Proof", () => {
 
     const wasmFilePath = `./snark-artifacts/${treeDepth}/semaphore.wasm`
     const zkeyFilePath = `./snark-artifacts/${treeDepth}/semaphore.zkey`
-    const verificationKeyPath = `./snark-artifacts/${treeDepth}/semaphore.json`
 
     const identity = new Identity()
 
@@ -89,6 +87,20 @@ describe("Proof", () => {
         }, 20000)
     })
 
+    describe("# verifyProof", () => {
+        it("Should not verify a proof if the tree depth is wrong", () => {
+            const fun = () => verifyProof(fullProof, 3)
+
+            expect(fun).toThrow("The tree depth must be a number between 16 and 32")
+        })
+
+        it("Should verify a Semaphore proof", async () => {
+            const response = await verifyProof(fullProof, treeDepth)
+
+            expect(response).toBe(true)
+        })
+    })
+
     describe("# generateSignalHash", () => {
         it("Should generate a valid signal hash", async () => {
             const signalHash = generateSignalHash(signal)
@@ -116,16 +128,6 @@ describe("Proof", () => {
             const solidityProof = packToSolidityProof(fullProof.proof)
 
             expect(solidityProof).toHaveLength(8)
-        })
-    })
-
-    describe("# verifyProof", () => {
-        it("Should generate and verify a Semaphore proof", async () => {
-            const verificationKey = JSON.parse(fs.readFileSync(verificationKeyPath, "utf-8"))
-
-            const response = await verifyProof(verificationKey, fullProof)
-
-            expect(response).toBe(true)
         })
     })
 })
