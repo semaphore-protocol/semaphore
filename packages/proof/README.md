@@ -67,7 +67,7 @@ yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-proto
 
 ## 📜 Usage
 
-\# **generateProof**(identity: _Identity_, group: _Group_, externalNullifier: _BigNumberish_, signal: _string_, snarkArtifacts?: _SnarkArtifacts_): Promise\<_SemaphoreFullProof_>
+\# **generateProof**(identity: _Identity_, group: _Group_ | _MerkleProof_, externalNullifier: _BigNumberish_, signal: _string_, snarkArtifacts?: _SnarkArtifacts_): Promise\<_SemaphoreFullProof_>
 
 ```typescript
 import { Identity } from "@semaphore-protocol/identity"
@@ -81,23 +81,21 @@ const signal = "Hello world"
 
 group.addMembers([...identityCommitments, identity.generateCommitment()])
 
-const fullProof = await generateProof(identity, merkleProof, externalNullifier, signal, {
+const fullProof = await generateProof(identity, group, externalNullifier, signal, {
     zkeyFilePath: "./semaphore.zkey",
     wasmFilePath: "./semaphore.wasm"
 })
 
-// You can also use the default zkey/wasm files (only for browsers!).
-// const fullProof = await generateProof(identity, merkleProof, externalNullifier, signal)
+// You can also use the default zkey/wasm files (it only works from browsers!).
+// const fullProof = await generateProof(identity, group, externalNullifier, signal)
 ```
 
-\# **verifyProof**(verificationKey: _any_, fullProof: _FullProof_): Promise\<_boolean_>
+\# **verifyProof**(fullProof: _FullProof_, treeDepth: _number_): Promise\<_boolean_>
 
 ```typescript
 import { verifyProof } from "@semaphore-protocol/proof"
 
-const verificationKey = JSON.parse(fs.readFileSync("/semaphore.json", "utf-8"))
-
-await verifyProof(verificationKey, fullProof)
+await verifyProof(fullProof, 20)
 ```
 
 \# **packToSolidityProof**(proof: _Proof_): _SolidityProof_
