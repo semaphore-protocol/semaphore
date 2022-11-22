@@ -65,7 +65,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreGroups {
 
     /// @dev See {ISemaphoreWhistleblowing-publishLeak}.
     function publishLeak(
-        bytes32 leak,
+        uint256 leak,
         uint256 nullifierHash,
         uint256 entityId,
         uint256[8] calldata proof
@@ -73,7 +73,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreGroups {
         uint256 merkleTreeDepth = getMerkleTreeDepth(entityId);
         uint256 merkleTreeRoot = getMerkleTreeRoot(entityId);
 
-        verifier.verifyProof(leak, merkleTreeRoot, nullifierHash, entityId, proof, merkleTreeDepth);
+        verifier.verifyProof(merkleTreeRoot, nullifierHash, leak, entityId, proof, merkleTreeDepth);
 
         emit LeakPublished(entityId, leak);
     }

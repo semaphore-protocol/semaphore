@@ -41,11 +41,11 @@
         "@semaphore-protocol/identity": "2.6.1"
     },
     "dependencies": {
+        "@ethersproject/bignumber": "^5.5.0",
         "@ethersproject/bytes": "^5.7.0",
-        "@ethersproject/solidity": "^5.5.0",
+        "@ethersproject/keccak256": "^5.7.0",
         "@ethersproject/strings": "^5.5.0",
         "@zk-kit/incremental-merkle-tree": "0.4.3",
-        "circomlibjs": "0.0.8",
         "snarkjs": "^0.4.13"
     }
 }

@@ -19,7 +19,7 @@ export type FullProof = {
 }
 
 export type PublicSignals = {
-    merkleRoot: BigNumberish
+    merkleTreeRoot: BigNumberish
     nullifierHash: BigNumberish
     signalHash: BigNumberish
     externalNullifier: BigNumberish

@@ -76,7 +76,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
 
     /// @dev See {ISemaphoreVoting-castVote}.
     function castVote(
-        bytes32 vote,
+        uint256 vote,
         uint256 nullifierHash,
         uint256 pollId,
         uint256[8] calldata proof
@@ -94,7 +94,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
         uint256 merkleTreeDepth = getMerkleTreeDepth(pollId);
         uint256 merkleTreeRoot = getMerkleTreeRoot(pollId);
 
-        verifier.verifyProof(vote, merkleTreeRoot, nullifierHash, pollId, proof, merkleTreeDepth);
+        verifier.verifyProof(merkleTreeRoot, nullifierHash, vote, pollId, proof, merkleTreeDepth);
 
         nullifierHashes[nullifierHash] = true;
 
