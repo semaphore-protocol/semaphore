@@ -4,7 +4,7 @@ import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
-import { constants, Signer, utils } from "ethers"
+import { constants, Signer } from "ethers"
 import { run } from "hardhat"
 import { Semaphore } from "../build/typechain"
 import { createIdentityCommitments } from "./utils"
@@ -181,7 +181,7 @@ describe("Semaphore", () => {
     })
 
     describe("# verifyProof", () => {
-        const signal = utils.formatBytes32String("Hello world")
+        const signal = 2
         const identity = new Identity("0")
 
         const group = new Group(treeDepth)
@@ -232,7 +232,7 @@ describe("Semaphore", () => {
                 group.root,
                 signal,
                 fullProof.publicSignals.nullifierHash,
-                fullProof.publicSignals.merkleRoot,
+                fullProof.publicSignals.merkleTreeRoot,
                 solidityProof
             )
 
@@ -242,7 +242,7 @@ describe("Semaphore", () => {
                     groupId,
                     group.root,
                     fullProof.publicSignals.nullifierHash,
-                    fullProof.publicSignals.externalNullifier,
+                    fullProof.publicSignals.merkleTreeRoot,
                     signal
                 )
         })
@@ -253,7 +253,7 @@ describe("Semaphore", () => {
                 group.root,
                 signal,
                 fullProof.publicSignals.nullifierHash,
-                fullProof.publicSignals.merkleRoot,
+                fullProof.publicSignals.merkleTreeRoot,
                 solidityProof
             )
 

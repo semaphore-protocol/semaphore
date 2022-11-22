@@ -19,23 +19,51 @@ contract SemaphoreVerifier is ISemaphoreVerifier {
 
     /// @dev See {ISemaphoreVerifier-verifyProof}.
     function verifyProof(
-        bytes32 signal,
-        uint256 root,
+        uint256 merkleTreeRoot,
         uint256 nullifierHash,
+        uint256 signal,
         uint256 externalNullifier,
         uint256[8] calldata proof,
         uint256 merkleTreeDepth
     ) external view override {
-        Proof memory p;
+        signal = _hash(signal);
+        externalNullifier = _hash(externalNullifier);
 
-        uint256 signalHash = _hashSignal(signal);
-        uint256 vkPointsIndex = merkleTreeDepth - 16;
+        Proof memory p;
 
         p.A = Pairing.G1Point(proof[0], proof[1]);
         p.B = Pairing.G2Point([proof[2], proof[3]], [proof[4], proof[5]]);
         p.C = Pairing.G1Point(proof[6], proof[7]);
 
-        VerifyingKey memory vk;
+        VerificationKey memory vk = _getVerificationKey(merkleTreeDepth - 16);
+
+        Pairing.G1Point memory vk_x = vk.IC[0];
+
+        vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[1], merkleTreeRoot));
+        vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[2], nullifierHash));
+        vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[3], signal));
+        vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[4], externalNullifier));
+
+        Pairing.G1Point[] memory p1 = new Pairing.G1Point[](4);
+        Pairing.G2Point[] memory p2 = new Pairing.G2Point[](4);
+
+        p1[0] = Pairing.negate(p.A);
+        p2[0] = p.B;
+        p1[1] = vk.alfa1;
+        p2[1] = vk.beta2;
+        p1[2] = vk_x;
+        p2[2] = vk.gamma2;
+        p1[3] = p.C;
+        p2[3] = vk.delta2;
+
+        Pairing.pairingCheck(p1, p2);
+    }
+
+    /// @dev Creates the verification key for a specific Merkle tree depth.
+    /// @param vkPointsIndex: Index of the verification key points.
+    /// @return Verification key.
+    function _getVerificationKey(uint256 vkPointsIndex) private view returns (VerificationKey memory) {
+        VerificationKey memory vk;
 
         vk.alfa1 = Pairing.G1Point(
             20491192805390485299153009773594534940189261866228447918068658471970481763042,
@@ -74,32 +102,13 @@ contract SemaphoreVerifier is ISemaphoreVerifier {
         vk.IC[3] = Pairing.G1Point(VK_POINTS[vkPointsIndex][5][0], VK_POINTS[vkPointsIndex][5][1]);
         vk.IC[4] = Pairing.G1Point(VK_POINTS[vkPointsIndex][6][0], VK_POINTS[vkPointsIndex][6][1]);
 
-        Pairing.G1Point memory vk_x = vk.IC[0];
-
-        vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[1], root));
-        vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[2], nullifierHash));
-        vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[3], signalHash));
-        vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[4], externalNullifier));
-
-        Pairing.G1Point[] memory p1 = new Pairing.G1Point[](4);
-        Pairing.G2Point[] memory p2 = new Pairing.G2Point[](4);
-
-        p1[0] = Pairing.negate(p.A);
-        p2[0] = p.B;
-        p1[1] = vk.alfa1;
-        p2[1] = vk.beta2;
-        p1[2] = vk_x;
-        p2[2] = vk.gamma2;
-        p1[3] = p.C;
-        p2[3] = vk.delta2;
-
-        Pairing.pairingCheck(p1, p2);
+        return vk;
     }
 
-    /// @dev Creates a keccak256 hash of the signal.
-    /// @param signal: Semaphore signal.
-    /// @return Hash of the signal.
-    function _hashSignal(bytes32 signal) private pure returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(signal))) >> 8;
+    /// @dev Creates a keccak256 hash of a message compatible with the SNARK scalar modulus.
+    /// @param message: Message to be hashed.
+    /// @return Message digest.
+    function _hash(uint256 message) private pure returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(message))) >> 8;
     }
 }

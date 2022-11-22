@@ -135,7 +135,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     function verifyProof(
         uint256 groupId,
         uint256 merkleTreeRoot,
-        bytes32 signal,
+        uint256 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
         uint256[8] calldata proof
@@ -165,7 +165,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
 
         uint256 merkleTreeDepth = getMerkleTreeDepth(groupId);
 
-        verifier.verifyProof(signal, merkleTreeRoot, nullifierHash, externalNullifier, proof, merkleTreeDepth);
+        verifier.verifyProof(merkleTreeRoot, nullifierHash, signal, externalNullifier, proof, merkleTreeDepth);
 
         groups[groupId].nullifierHashes[nullifierHash] = true;
 
