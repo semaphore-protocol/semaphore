@@ -1,10 +1,8 @@
-import { formatBytes32String } from "@ethersproject/strings"
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { getCurveFromName } from "ffjavascript"
-import generateNullifierHash from "./generateNullifierHash"
 import generateProof from "./generateProof"
-import generateSignalHash from "./generateSignalHash"
+import hash from "./hash"
 import packToSolidityProof from "./packToSolidityProof"
 import { FullProof } from "./types"
 import verifyProof from "./verifyProof"
@@ -12,8 +10,8 @@ import verifyProof from "./verifyProof"
 describe("Proof", () => {
     const treeDepth = Number(process.env.TREE_DEPTH) || 20
 
-    const externalNullifier = "1"
-    const signal = "0x111"
+    const externalNullifier = 1
+    const signal = 2
 
     const wasmFilePath = `./snark-artifacts/${treeDepth}/semaphore.wasm`
     const zkeyFilePath = `./snark-artifacts/${treeDepth}/semaphore.zkey`
@@ -67,11 +65,10 @@ describe("Proof", () => {
             })
 
             expect(typeof fullProof).toBe("object")
-            expect(fullProof.publicSignals.externalNullifier).toBe(externalNullifier)
-            expect(fullProof.publicSignals.merkleRoot).toBe(group.root.toString())
+            expect(fullProof.publicSignals.merkleTreeRoot).toBe(group.root.toString())
         }, 20000)
 
-        it("Should generate a Semaphore proof passing a Merkle proof as parametr", async () => {
+        it("Should generate a Semaphore proof passing a Merkle proof as parameter", async () => {
             const group = new Group(treeDepth)
 
             group.addMembers([BigInt(1), BigInt(2), identity.commitment])
@@ -82,8 +79,7 @@ describe("Proof", () => {
             })
 
             expect(typeof fullProof).toBe("object")
-            expect(fullProof.publicSignals.externalNullifier).toBe(externalNullifier)
-            expect(fullProof.publicSignals.merkleRoot).toBe(group.root.toString())
+            expect(fullProof.publicSignals.merkleTreeRoot).toBe(group.root.toString())
         }, 20000)
     })
 
@@ -101,25 +97,47 @@ describe("Proof", () => {
         })
     })
 
-    describe("# generateSignalHash", () => {
-        it("Should generate a valid signal hash", async () => {
-            const signalHash = generateSignalHash(signal)
+    describe("# hash", () => {
+        it("Should hash the signal value correctly", async () => {
+            const signalHash = hash(signal)
 
             expect(signalHash.toString()).toBe(fullProof.publicSignals.signalHash)
         })
 
-        it("Should generate a valid signal hash by passing a valid hex string", async () => {
-            const signalHash = generateSignalHash(formatBytes32String(signal))
+        it("Should hash the external nullifier value correctly", async () => {
+            const externalNullifierHash = hash(externalNullifier)
 
-            expect(signalHash.toString()).toBe(fullProof.publicSignals.signalHash)
+            expect(externalNullifierHash.toString()).toBe(fullProof.publicSignals.externalNullifier)
         })
-    })
 
-    describe("# generateNullifierHash", () => {
-        it("Should generate a valid nullifier hash", async () => {
-            const nullifierHash = generateNullifierHash(externalNullifier, identity.getNullifier())
+        it("Should hash a number", async () => {
+            expect(hash(2).toString()).toBe(
+                "113682330006535319932160121224458771213356533826860247409332700812532759386"
+            )
+        })
 
-            expect(nullifierHash.toString()).toBe(fullProof.publicSignals.nullifierHash)
+        it("Should hash a big number", async () => {
+            expect(hash(BigInt(2)).toString()).toBe(
+                "113682330006535319932160121224458771213356533826860247409332700812532759386"
+            )
+        })
+
+        it("Should hash an hex number", async () => {
+            expect(hash("0x2").toString()).toBe(
+                "113682330006535319932160121224458771213356533826860247409332700812532759386"
+            )
+        })
+
+        it("Should hash an string number", async () => {
+            expect(hash("2").toString()).toBe(
+                "113682330006535319932160121224458771213356533826860247409332700812532759386"
+            )
+        })
+
+        it("Should hash an array", async () => {
+            expect(hash([2]).toString()).toBe(
+                "113682330006535319932160121224458771213356533826860247409332700812532759386"
+            )
         })
     })
 

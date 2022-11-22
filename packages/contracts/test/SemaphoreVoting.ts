@@ -1,15 +1,9 @@
 /* eslint-disable jest/valid-expect */
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import {
-    generateNullifierHash,
-    generateProof,
-    packToSolidityProof,
-    PublicSignals,
-    SolidityProof
-} from "@semaphore-protocol/proof"
+import { generateProof, packToSolidityProof, PublicSignals, SolidityProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
-import { Signer, utils } from "ethers"
+import { Signer } from "ethers"
 import { ethers, run } from "hardhat"
 import { SemaphoreVoting } from "../build/typechain"
 
@@ -19,7 +13,7 @@ describe("SemaphoreVoting", () => {
     let coordinator: string
 
     const treeDepth = Number(process.env.TREE_DEPTH) || 20
-    const pollIds = [BigInt(1), BigInt(2), BigInt(3)]
+    const pollIds = [1, 2, 3]
     const encryptionKey = BigInt(0)
     const decryptionKey = BigInt(0)
 
@@ -126,8 +120,7 @@ describe("SemaphoreVoting", () => {
 
     describe("# castVote", () => {
         const identity = new Identity("test")
-        const vote = "1"
-        const bytes32Vote = utils.formatBytes32String(vote)
+        const vote = 1
 
         const group = new Group(treeDepth)
 
@@ -153,17 +146,13 @@ describe("SemaphoreVoting", () => {
         it("Should not cast a vote if the poll is not ongoing", async () => {
             const transaction = contract
                 .connect(accounts[1])
-                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[2], solidityProof)
+                .castVote(vote, publicSignals.nullifierHash, pollIds[2], solidityProof)
 
             await expect(transaction).to.be.revertedWith("Semaphore__PollIsNotOngoing()")
         })
 
         it("Should not cast a vote if the proof is not valid", async () => {
-            const nullifierHash = generateNullifierHash(pollIds[0], identity.getNullifier())
-
-            const transaction = contract
-                .connect(accounts[1])
-                .castVote(bytes32Vote, nullifierHash, pollIds[1], solidityProof)
+            const transaction = contract.connect(accounts[1]).castVote(vote, 0, pollIds[1], solidityProof)
 
             await expect(transaction).to.be.revertedWith("Semaphore__InvalidProof()")
         })
@@ -171,15 +160,15 @@ describe("SemaphoreVoting", () => {
         it("Should cast a vote", async () => {
             const transaction = contract
                 .connect(accounts[1])
-                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[1], solidityProof)
+                .castVote(vote, publicSignals.nullifierHash, pollIds[1], solidityProof)
 
-            await expect(transaction).to.emit(contract, "VoteAdded").withArgs(pollIds[1], bytes32Vote)
+            await expect(transaction).to.emit(contract, "VoteAdded").withArgs(pollIds[1], vote)
         })
 
         it("Should not cast a vote twice", async () => {
             const transaction = contract
                 .connect(accounts[1])
-                .castVote(bytes32Vote, publicSignals.nullifierHash, pollIds[1], solidityProof)
+                .castVote(vote, publicSignals.nullifierHash, pollIds[1], solidityProof)
 
             await expect(transaction).to.be.revertedWith("Semaphore__YouAreUsingTheSameNillifierTwice()")
         })

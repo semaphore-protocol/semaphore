@@ -1,13 +1,7 @@
 /* eslint-disable jest/valid-expect */
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import {
-    generateNullifierHash,
-    generateProof,
-    packToSolidityProof,
-    PublicSignals,
-    SolidityProof
-} from "@semaphore-protocol/proof"
+import { generateProof, packToSolidityProof, PublicSignals, SolidityProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { Signer, utils } from "ethers"
 import { ethers, run } from "hardhat"
@@ -19,7 +13,7 @@ describe("SemaphoreWhistleblowing", () => {
     let editor: string
 
     const treeDepth = Number(process.env.TREE_DEPTH) || 20
-    const entityIds = [BigInt(1), BigInt(2)]
+    const entityIds = [1, 2]
 
     const wasmFilePath = `../../snark-artifacts/${treeDepth}/semaphore.wasm`
     const zkeyFilePath = `../../snark-artifacts/${treeDepth}/semaphore.zkey`
@@ -126,8 +120,7 @@ describe("SemaphoreWhistleblowing", () => {
 
     describe("# publishLeak", () => {
         const identity = new Identity("test")
-        const leak = "leak"
-        const bytes32Leak = utils.formatBytes32String(leak)
+        const leak = utils.formatBytes32String("This is a leak")
 
         const group = new Group(treeDepth)
 
@@ -151,11 +144,7 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should not publish a leak if the proof is not valid", async () => {
-            const nullifierHash = generateNullifierHash(entityIds[0], identity.getNullifier())
-
-            const transaction = contract
-                .connect(accounts[1])
-                .publishLeak(bytes32Leak, nullifierHash, entityIds[1], solidityProof)
+            const transaction = contract.connect(accounts[1]).publishLeak(leak, 0, entityIds[1], solidityProof)
 
             await expect(transaction).to.be.revertedWith("Semaphore__InvalidProof()")
         })
@@ -163,9 +152,9 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should publish a leak", async () => {
             const transaction = contract
                 .connect(accounts[1])
-                .publishLeak(bytes32Leak, publicSignals.nullifierHash, entityIds[1], solidityProof)
+                .publishLeak(leak, publicSignals.nullifierHash, entityIds[1], solidityProof)
 
-            await expect(transaction).to.emit(contract, "LeakPublished").withArgs(entityIds[1], bytes32Leak)
+            await expect(transaction).to.emit(contract, "LeakPublished").withArgs(entityIds[1], leak)
         })
     })
 })

@@ -40,7 +40,7 @@ interface ISemaphore {
         uint256 merkleTreeRoot,
         uint256 externalNullifier,
         uint256 nullifierHash,
-        bytes32 signal
+        uint256 signal
     );
 
     /// @dev Saves the nullifier hash to avoid double signaling and emits an event
@@ -54,7 +54,7 @@ interface ISemaphore {
     function verifyProof(
         uint256 groupId,
         uint256 merkleTreeRoot,
-        bytes32 signal,
+        uint256 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
         uint256[8] calldata proof
