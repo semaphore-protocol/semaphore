@@ -6,7 +6,7 @@ import "../base/Pairing.sol";
 /// @title SemaphoreVerifier interface.
 /// @dev Interface of SemaphoreVerifier contract.
 interface ISemaphoreVerifier {
-    struct VerifyingKey {
+    struct VerificationKey {
         Pairing.G1Point alfa1;
         Pairing.G2Point beta2;
         Pairing.G2Point gamma2;
@@ -21,16 +21,16 @@ interface ISemaphoreVerifier {
     }
 
     /// @dev Verifies that the zero-knowledge proof is valid.
-    /// @param signal: Semaphore signal.
-    /// @param root: Root of the Merkle tree.
+    /// @param merkleTreeRoot: Root of the Merkle tree.
     /// @param nullifierHash: Nullifier hash.
+    /// @param signal: Semaphore signal.
     /// @param externalNullifier: External nullifier.
     /// @param proof: Zero-knowledge proof.
     /// @param merkleTreeDepth: Depth of the tree.
     function verifyProof(
-        bytes32 signal,
-        uint256 root,
+        uint256 merkleTreeRoot,
         uint256 nullifierHash,
+        uint256 signal,
         uint256 externalNullifier,
         uint256[8] calldata proof,
         uint256 merkleTreeDepth

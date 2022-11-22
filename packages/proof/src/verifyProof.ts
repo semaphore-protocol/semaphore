@@ -22,7 +22,7 @@ export default function verifyProof({ proof, publicSignals }: FullProof, treeDep
     return groth16.verify(
         verificationKey,
         [
-            publicSignals.merkleRoot,
+            publicSignals.merkleTreeRoot,
             publicSignals.nullifierHash,
             publicSignals.signalHash,
             publicSignals.externalNullifier

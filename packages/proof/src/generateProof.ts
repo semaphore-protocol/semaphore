@@ -1,15 +1,16 @@
+import { BytesLike, Hexable } from "@ethersproject/bytes"
 import { Group } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
 import { MerkleProof } from "@zk-kit/incremental-merkle-tree"
 import { groth16 } from "snarkjs"
-import generateSignalHash from "./generateSignalHash"
-import { BigNumberish, FullProof, SnarkArtifacts } from "./types"
+import hash from "./hash"
+import { FullProof, SnarkArtifacts } from "./types"
 
 export default async function generateProof(
     { trapdoor, nullifier, commitment }: Identity,
     groupOrMerkleProof: Group | MerkleProof,
-    externalNullifier: BigNumberish,
-    signal: string,
+    externalNullifier: BytesLike | Hexable | number | bigint,
+    signal: BytesLike | Hexable | number | bigint,
     snarkArtifacts?: SnarkArtifacts
 ): Promise<FullProof> {
     let merkleProof: MerkleProof
@@ -39,8 +40,8 @@ export default async function generateProof(
             identityNullifier: nullifier,
             treePathIndices: merkleProof.pathIndices,
             treeSiblings: merkleProof.siblings,
-            externalNullifier,
-            signalHash: generateSignalHash(signal)
+            externalNullifier: hash(externalNullifier),
+            signalHash: hash(signal)
         },
         snarkArtifacts.wasmFilePath,
         snarkArtifacts.zkeyFilePath
@@ -49,7 +50,7 @@ export default async function generateProof(
     return {
         proof,
         publicSignals: {
-            merkleRoot: publicSignals[0],
+            merkleTreeRoot: publicSignals[0],
             nullifierHash: publicSignals[1],
             signalHash: publicSignals[2],
             externalNullifier: publicSignals[3]
