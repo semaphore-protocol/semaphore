@@ -2,7 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber"
 import { randomBytes } from "@ethersproject/random"
 import { sha256 as _sha256 } from "@ethersproject/sha2"
 import { toUtf8Bytes } from "@ethersproject/strings"
-import { poseidon } from "circomlibjs"
+import poseidon from "poseidon-lite"
 
 /**
  * Returns an hexadecimal sha256 hash of the message passed as parameter.

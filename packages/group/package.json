@@ -36,6 +36,6 @@
     },
     "dependencies": {
         "@zk-kit/incremental-merkle-tree": "1.0.0",
-        "circomlibjs": "0.0.8"
+        "poseidon-lite": "^0.0.2"
     }
 }
