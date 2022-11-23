@@ -1,5 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber"
-import { poseidon } from "circomlibjs"
+import poseidon from "poseidon-lite"
 import checkParameter from "./checkParameter"
 import { generateCommitment, genRandomNumber, isJsonArray, sha256 } from "./utils"
 

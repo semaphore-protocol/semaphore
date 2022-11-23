@@ -1,5 +1,5 @@
 import { IncrementalMerkleTree, MerkleProof } from "@zk-kit/incremental-merkle-tree"
-import { poseidon } from "circomlibjs"
+import poseidon from "poseidon-lite"
 import { Member } from "./types"
 
 export default class Group {
