@@ -3021,7 +3021,7 @@ __metadata:
   resolution: "@semaphore-protocol/group@workspace:packages/group"
   dependencies:
     "@zk-kit/incremental-merkle-tree": 1.0.0
-    circomlibjs: 0.0.8
+    poseidon-lite: ^0.0.2
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
     typedoc: ^0.22.11
@@ -3053,7 +3053,7 @@ __metadata:
     "@ethersproject/random": ^5.5.1
     "@ethersproject/sha2": ^5.6.1
     "@ethersproject/strings": ^5.6.1
-    circomlibjs: 0.0.8
+    poseidon-lite: ^0.0.2
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
     typedoc: ^0.22.11
@@ -6498,7 +6498,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"circomlibjs@npm:0.0.8, circomlibjs@npm:^0.0.8":
+"circomlibjs@npm:^0.0.8":
   version: 0.0.8
   resolution: "circomlibjs@npm:0.0.8"
   dependencies:
@@ -15568,6 +15568,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"poseidon-lite@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "poseidon-lite@npm:0.0.2"
+  checksum: b10a29ec8b84caa75dcbb323e7586f220ed5e2d338864484cbc735ee871aafcae599b1c98c521aebd9b82798d5d354328d7750d7dd4bd0c51f7f6d0b79cbe00e
+  languageName: node
+  linkType: hard
+
 "posix-character-classes@npm:^0.1.0":
   version: 0.1.1
   resolution: "posix-character-classes@npm:0.1.1"
@@ -16956,7 +16963,6 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.9.1
     "@typescript-eslint/parser": ^5.9.1
     babel-jest: ^27.4.6
-    circomlibjs: ^0.0.8
     commitizen: ^4.2.4
     cz-conventional-changelog: ^3.3.0
     dotenv: ^16.0.2
