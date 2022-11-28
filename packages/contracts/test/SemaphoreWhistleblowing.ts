@@ -34,16 +34,6 @@ describe("SemaphoreWhistleblowing", () => {
             await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeDepthIsNotSupported()")
         })
 
-        it("Should not create an entity greater than the snark scalar field", async () => {
-            const transaction = contract.createEntity(
-                BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
-                editor,
-                treeDepth
-            )
-
-            await expect(transaction).to.be.revertedWith("Semaphore__GroupIdIsNotLessThanSnarkScalarField()")
-        })
-
         it("Should create an entity", async () => {
             const transaction = contract.createEntity(entityIds[0], editor, treeDepth)
 
