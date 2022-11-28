@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.4;
 
-import {SNARK_SCALAR_FIELD} from "./SemaphoreConstants.sol";
 import "../interfaces/ISemaphoreGroups.sol";
 import "@zk-kit/incremental-merkle-tree.sol/IncrementalBinaryTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
@@ -24,10 +23,6 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         uint256 merkleTreeDepth,
         uint256 zeroValue
     ) internal virtual {
-        if (groupId >= SNARK_SCALAR_FIELD) {
-            revert Semaphore__GroupIdIsNotLessThanSnarkScalarField();
-        }
-
         if (getMerkleTreeDepth(groupId) != 0) {
             revert Semaphore__GroupAlreadyExists();
         }

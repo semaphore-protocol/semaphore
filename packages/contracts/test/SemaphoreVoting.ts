@@ -36,16 +36,6 @@ describe("SemaphoreVoting", () => {
             await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeDepthIsNotSupported()")
         })
 
-        it("Should not create a poll greater than the snark scalar field", async () => {
-            const transaction = contract.createPoll(
-                BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495618"),
-                coordinator,
-                treeDepth
-            )
-
-            await expect(transaction).to.be.revertedWith("Semaphore__GroupIdIsNotLessThanSnarkScalarField()")
-        })
-
         it("Should create a poll", async () => {
             const transaction = contract.createPoll(pollIds[0], coordinator, treeDepth)
 

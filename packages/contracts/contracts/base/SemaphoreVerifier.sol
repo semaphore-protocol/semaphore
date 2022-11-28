@@ -2,7 +2,6 @@
 pragma solidity 0.8.4;
 
 import "../interfaces/ISemaphoreVerifier.sol";
-import "./SemaphoreConstants.sol";
 
 /// @title Semaphore verifier contract.
 /// @notice Minimal code to allow users to verify their Semaphore proofs.
