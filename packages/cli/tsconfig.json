@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "target": "es2020",
+        "module": "ESNext",
+        "moduleResolution": "Node16",
+        "allowSyntheticDefaultImports": true
+    },
+    "include": ["src", "rollup.config.ts"]
+}
