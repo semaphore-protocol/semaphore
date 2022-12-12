@@ -1,12 +1,12 @@
-/* eslint-disable no-console */
 import { Subgraph } from "@semaphore-protocol/subgraph"
 import chalk from "chalk"
 import { program } from "commander"
 import figlet from "figlet"
 import { readFileSync } from "fs"
-import ora from "ora"
+import logSymbols from "log-symbols"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
+import Spinner from "./spinner.js"
 
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
 const { version } = JSON.parse(readFileSync(`${packagePath}/package.json`, "utf8"))
@@ -28,37 +28,47 @@ program
     .option("--signals", "Show group signals.")
     .action(async (groupId, { network, members, signals }) => {
         const subgraph = new Subgraph(network)
+        const spinner = new Spinner(`Fetching group ${groupId}`)
 
-        const spinner = ora({
-            text: `Fetching group ${groupId}`,
-            indent: 1
-        }).start()
+        spinner.start()
 
-        const group = await subgraph.getGroup(groupId, { members, verifiedProofs: signals })
+        try {
+            const group = await subgraph.getGroup(groupId, { members, verifiedProofs: signals })
 
-        let content = `\n ${chalk.bold("Id")}: ${group.id}\n`
-        content += ` ${chalk.bold("Admin")}: ${group.admin}\n`
-        content += ` ${chalk.bold("Merkle tree")}:\n`
-        content += `   Root: ${group.merkleTree.root}\n`
-        content += `   Depth: ${group.merkleTree.depth}\n`
-        content += `   Zero value: ${group.merkleTree.zeroValue}\n`
-        content += `   Number of leaves: ${group.merkleTree.numberOfLeaves}`
+            spinner.stop()
 
-        if (members) {
-            content += `\n\n ${chalk.bold("Members")}: \n${group.members
-                .map((member: string, i: number) => `   ${i}. ${member}`)
-                .join("\n")}`
+            if (!group) {
+                console.info(` ${logSymbols.error}`, "The group does not exist!\n")
+
+                return
+            }
+
+            let content = ` ${chalk.bold("Id")}: ${group.id}\n`
+            content += ` ${chalk.bold("Admin")}: ${group.admin}\n`
+            content += ` ${chalk.bold("Merkle tree")}:\n`
+            content += `   Root: ${group.merkleTree.root}\n`
+            content += `   Depth: ${group.merkleTree.depth}\n`
+            content += `   Zero value: ${group.merkleTree.zeroValue}\n`
+            content += `   Number of leaves: ${group.merkleTree.numberOfLeaves}`
+
+            if (members) {
+                content += `\n\n ${chalk.bold("Members")}: \n${group.members
+                    .map((member: string, i: number) => `   ${i}. ${member}`)
+                    .join("\n")}`
+            }
+
+            if (signals) {
+                content += `\n\n ${chalk.bold("Signals")}: \n${group.verifiedProofs
+                    .map(({ signal }: any) => `   - ${signal}`)
+                    .join("\n")}`
+            }
+
+            console.info(`${content}\n`)
+        } catch (error) {
+            spinner.stop()
+
+            console.info(` ${logSymbols.error}`, "Unexpected error with the Semaphore subgraph!")
         }
-
-        if (signals) {
-            content += `\n\n ${chalk.bold("Signals")}: \n${group.verifiedProofs
-                .map(({ signal }: any) => `   - ${signal}`)
-                .join("\n")}`
-        }
-
-        spinner.stop()
-
-        console.log(`${content}\n`)
     })
 
 program
@@ -67,19 +77,28 @@ program
     .option("-n, --network <network-name>", "Supported Ethereum network.", "goerli")
     .action(async ({ network }) => {
         const subgraph = new Subgraph(network)
+        const spinner = new Spinner("Fetching groups")
 
-        const spinner = ora({
-            text: `Fetching groups`,
-            indent: 1
-        }).start()
+        spinner.start()
 
-        const groups = await subgraph.getGroups()
+        try {
+            const groups = await subgraph.getGroups()
 
-        const content = `\n${groups.map(({ id }: any) => ` - ${id}`).join("\n")}`
+            spinner.stop()
 
-        spinner.stop()
+            if (groups.length === 0) {
+                console.info(` ${logSymbols.error}`, "There are no groups in this network!\n")
+                return
+            }
 
-        console.log(`${content}\n`)
+            const content = `${groups.map(({ id }: any) => ` - ${id}`).join("\n")}`
+
+            console.info(`${content}\n`)
+        } catch (error) {
+            spinner.stop()
+
+            console.info(` ${logSymbols.error}`, "Unexpected error with the Semaphore subgraph!")
+        }
     })
 
 program.parse()

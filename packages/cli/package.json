@@ -40,9 +40,11 @@
     },
     "dependencies": {
         "@semaphore-protocol/subgraph": "2.6.1",
+        "@types/clear": "^0.1.2",
         "chalk": "^5.1.2",
         "commander": "^9.4.1",
         "figlet": "^1.5.2",
+        "log-symbols": "^5.1.0",
         "ora": "^6.1.2"
     }
 }
