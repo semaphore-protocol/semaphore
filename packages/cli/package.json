@@ -2,7 +2,7 @@
     "name": "@semaphore-protocol/cli",
     "type": "module",
     "version": "0.1.0",
-    "description": "A command line tool to set up a Semaphore project and query groups.",
+    "description": "A command line tool to set up your Semaphore project and query groups.",
     "license": "MIT",
     "bin": {
         "semaphore": "dist/index.js"

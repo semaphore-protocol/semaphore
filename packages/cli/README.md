@@ -2,7 +2,7 @@
     <h1 align="center">
         Semaphore CLI
     </h1>
-    <p align="center">A command line tool to set up a Semaphore project.</p>
+    <p align="center">A command line tool to set up your Semaphore project and query groups.</p>
 </p>
 
 <p align="center">
