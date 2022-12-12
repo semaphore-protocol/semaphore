@@ -13,11 +13,17 @@ const { version } = JSON.parse(readFileSync(`${packagePath}/package.json`, "utf8
 
 program
     .name("semaphore")
-    .description("A command line tool to set up a Semaphore project and query groups.")
+    .description("A command line tool to set up your Semaphore project and query groups.")
     .version(version, "-v, --version", "Show Semaphore CLI version.")
-    .addHelpText("before", `${figlet.textSync("Semaphore CLI")}\n`)
+    .addHelpText("before", `${figlet.textSync("Semaphore")}\n`)
+    .addHelpText("after", "\r")
     .helpOption(undefined, "Display this help.")
     .addHelpCommand("help [command]", "Display help for a specific command.")
+    .configureOutput({
+        outputError: (message) => {
+            console.info(`\n ${logSymbols.error}`, message)
+        }
+    })
 
 program
     .command("get-group")
@@ -38,7 +44,7 @@ program
             spinner.stop()
 
             if (!group) {
-                console.info(` ${logSymbols.error}`, "The group does not exist!\n")
+                console.info(` ${logSymbols.error}`, "error: the group does not exist\n")
 
                 return
             }
@@ -67,7 +73,7 @@ program
         } catch (error) {
             spinner.stop()
 
-            console.info(` ${logSymbols.error}`, "Unexpected error with the Semaphore subgraph!")
+            console.info(` ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
         }
     })
 
@@ -87,7 +93,7 @@ program
             spinner.stop()
 
             if (groups.length === 0) {
-                console.info(` ${logSymbols.error}`, "There are no groups in this network!\n")
+                console.info(` ${logSymbols.error}`, "error: there are no groups in this network\n")
                 return
             }
 
@@ -97,7 +103,7 @@ program
         } catch (error) {
             spinner.stop()
 
-            console.info(` ${logSymbols.error}`, "Unexpected error with the Semaphore subgraph!")
+            console.info(` ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
         }
     })
 
