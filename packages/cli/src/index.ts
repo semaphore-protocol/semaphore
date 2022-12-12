@@ -21,18 +21,17 @@ program
 
 program
     .command("get-group")
-    .description("Get group data from a supported network.")
+    .description("Get the data of a group from a supported network.")
     .argument("<group-id>", "Identifier of the group.")
     .option("-n, --network <network-name>", "Supported Ethereum network.", "goerli")
     .option("--members", "Show group members.")
     .option("--signals", "Show group signals.")
-    .usage("<group-id> [options]")
     .action(async (groupId, { network, members, signals }) => {
         const subgraph = new Subgraph(network)
 
         const spinner = ora({
             text: `Fetching group ${groupId}`,
-            spinner: "boxBounce"
+            indent: 1
         }).start()
 
         const group = await subgraph.getGroup(groupId, { members, verifiedProofs: signals })
@@ -47,15 +46,36 @@ program
 
         if (members) {
             content += `\n\n ${chalk.bold("Members")}: \n${group.members
-                .map((member: string, i: number) => `   [${i}] ${member}`)
+                .map((member: string, i: number) => `   ${i}. ${member}`)
                 .join("\n")}`
         }
 
         if (signals) {
             content += `\n\n ${chalk.bold("Signals")}: \n${group.verifiedProofs
-                .map(({ signal }: any, i: number) => `  [${i}] ${signal}`)
+                .map(({ signal }: any) => `   - ${signal}`)
                 .join("\n")}`
         }
+
+        spinner.stop()
+
+        console.log(`${content}\n`)
+    })
+
+program
+    .command("get-groups")
+    .description("Get the list of groups from a supported network.")
+    .option("-n, --network <network-name>", "Supported Ethereum network.", "goerli")
+    .action(async ({ network }) => {
+        const subgraph = new Subgraph(network)
+
+        const spinner = ora({
+            text: `Fetching groups`,
+            indent: 1
+        }).start()
+
+        const groups = await subgraph.getGroups()
+
+        const content = `\n${groups.map(({ id }: any) => ` - ${id}`).join("\n")}`
 
         spinner.stop()
 
