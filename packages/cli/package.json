@@ -1,7 +1,7 @@
 {
     "name": "@semaphore-protocol/cli",
     "type": "module",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "A command line tool to set up your Semaphore project and query groups.",
     "license": "MIT",
     "bin": {
@@ -43,6 +43,7 @@
         "@types/clear": "^0.1.2",
         "chalk": "^5.1.2",
         "commander": "^9.4.1",
+        "download": "^8.0.0",
         "figlet": "^1.5.2",
         "log-symbols": "^5.1.0",
         "ora": "^6.1.2"
