@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/cli-template-hardhat",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Semaphore Hardhat template.",
     "license": "Unlicense",
     "files": [
@@ -42,6 +42,7 @@
         "@types/mocha": "^9.1.0",
         "@types/node": ">=12.0.0",
         "chai": "^4.2.0",
+        "dotenv": "^16.0.3",
         "download": "^8.0.0",
         "ethers": "^5.4.7",
         "hardhat": "^2.11.0",
