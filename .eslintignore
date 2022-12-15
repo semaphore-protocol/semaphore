@@ -9,7 +9,9 @@ coverage
 coverage.json
 
 # hardhat
+artifacts
 cache
+typechain-types
 
 # types
 types
@@ -30,3 +32,6 @@ docs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# packages
+cli-template-*
