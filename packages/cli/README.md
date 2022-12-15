@@ -46,8 +46,8 @@
     </h4>
 </div>
 
-| Setting up a project, although not particularly complex, can be a lengthy process for some people. A command line to initialize a Semaphore project can reduce the set-up time from a few minutes to a few seconds. In addition, the Semaphore CLI can also be used to obtain on-chain group data. |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Setting up a project, although not particularly complex, can be a lengthy process for some people. The Semaphore CLI reduces the set-up time from a few minutes to a few seconds. In addition, it can also be used to obtain on-chain group data. |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## 🛠 Install
 
