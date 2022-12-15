@@ -10,11 +10,11 @@ import { fileURLToPath } from "url"
 import Spinner from "./spinner.js"
 
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
-const { version } = JSON.parse(readFileSync(`${packagePath}/package.json`, "utf8"))
+const { description, version } = JSON.parse(readFileSync(`${packagePath}/package.json`, "utf8"))
 
 program
     .name("semaphore")
-    .description("A command line tool to set up your Semaphore project and query groups.")
+    .description(description)
     .version(version, "-v, --version", "Show Semaphore CLI version.")
     .addHelpText("before", `${figlet.textSync("Semaphore")}\n`)
     .addHelpText("after", "\r")
@@ -32,8 +32,8 @@ program
     .argument("<project-directory>", "Directory of the project.")
     // .option("-t, --template <template-name>", "Supported Semaphore template.", "hardhat")
     .action(async (projectDirectory) => {
-        // const originalDirectory = process.cwd()
-        const spinner = new Spinner(`Creating '${projectDirectory}' project`)
+        const currentDirectory = process.cwd()
+        const spinner = new Spinner(`Creating your project in ${chalk.green(`./${projectDirectory}`)}`)
         const templateURL = `https://registry.npmjs.org/@semaphore-protocol/cli-template-hardhat/-/cli-template-hardhat-${version}.tgz`
 
         if (existsSync(projectDirectory)) {
@@ -43,13 +43,28 @@ program
 
         spinner.start()
 
-        await download(templateURL, "./", { extract: true })
+        await download(templateURL, currentDirectory, { extract: true })
 
-        renameSync("package", projectDirectory)
+        renameSync(`${currentDirectory}/package`, `${currentDirectory}/${projectDirectory}`)
 
         spinner.stop()
 
-        console.info(` ${logSymbols.success}`, `Your '${projectDirectory}' project is ready!\n`)
+        console.info(` ${logSymbols.success}`, `Your project is ready!\n`)
+        console.info(` Please, install your dependencies by running:\n`)
+        console.info(`   ${chalk.cyan("cd")} ${projectDirectory}`)
+        console.info(`   ${chalk.cyan("npm i")}\n`)
+
+        const { scripts } = JSON.parse(readFileSync(`${currentDirectory}/${projectDirectory}/package.json`, "utf8"))
+
+        if (scripts) {
+            console.info(` Available scripts:\n`)
+
+            console.info(
+                `${Object.keys(scripts)
+                    .map((s) => `   ${chalk.cyan(`npm run ${s}`)}`)
+                    .join("\n")}\n`
+            )
+        }
     })
 
 program
