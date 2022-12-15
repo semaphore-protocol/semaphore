@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/cli-template-hardhat",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Semaphore Hardhat template.",
     "license": "Unlicense",
     "files": [
