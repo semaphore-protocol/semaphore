@@ -65,7 +65,7 @@ npx @semaphore-protocol/cli init my-app
 
 ## 📜 Usage
 
-```bash
+```
 Usage: semaphore [options] [command]
 
 A command line tool to set up your Semaphore project and get group data.
