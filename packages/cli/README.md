@@ -2,7 +2,7 @@
     <h1 align="center">
         Semaphore CLI
     </h1>
-    <p align="center">A command line tool to set up your Semaphore project and query groups.</p>
+    <p align="center">A command line tool to set up your Semaphore project and get group data.</p>
 </p>
 
 <p align="center">
@@ -46,23 +46,37 @@
     </h4>
 </div>
 
-| ... |
-| --- |
+| Setting up a project, although not particularly complex, can be a lengthy process for some people. A command line to initialize a Semaphore project can reduce the set-up time from a few minutes to a few seconds. In addition, the Semaphore CLI can also be used to obtain on-chain group data. |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## 🛠 Install
 
-### npm or yarn
-
-Install the `@semaphore-protocol/cli` package with npm:
+Install the `@semaphore-protocol/cli` package globally:
 
 ```bash
-npm i @semaphore-protocol/cli
+npm i -g @semaphore-protocol/cli
 ```
 
-or yarn:
+or run specific commands with `npx`:
 
 ```bash
-yarn add @semaphore-protocol/cli
+npx @semaphore-protocol/cli init my-app
 ```
 
 ## 📜 Usage
+
+```bash
+Usage: semaphore [options] [command]
+
+A command line tool to set up your Semaphore project and get group data.
+
+Options:
+-v, --version Show Semaphore CLI version.
+-h, --help Display this help.
+
+Commands:
+init <project-directory> Initialize a Semaphore project with a supported template.
+get-groups [options] Get the list of groups from a supported network (Goerli or Arbitrum).
+get-group [options] <group-id> Get the data of a group from a supported network (Goerli or Arbitrum).
+help [command] Display help for a specific command.
+```
