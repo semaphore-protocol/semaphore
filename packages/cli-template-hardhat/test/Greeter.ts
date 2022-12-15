@@ -7,7 +7,7 @@ import { existsSync } from "fs"
 import { ethers, run } from "hardhat"
 import { Greeter } from "../typechain-types"
 
-describe("Greeter", function () {
+describe("Greeter", () => {
     let greeter: Greeter
 
     const snarkArtifactsURL = "https://www.trusted-setup-pse.org/semaphore/20"
@@ -41,7 +41,7 @@ describe("Greeter", function () {
 
     describe("# joinGroup", () => {
         it("Should allow users to join the group", async () => {
-            for (let i = 0; i < group.members.length; i++) {
+            for (let i = 0; i < group.members.length; i += 1) {
                 const transaction = greeter.joinGroup(group.members[i], users[i].username)
 
                 await expect(transaction).to.emit(greeter, "NewUser").withArgs(group.members[i], users[i].username)
