@@ -17,7 +17,10 @@
         <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
     </a>
     <a href="https://github.com/semaphore-protocol/semaphore/actions?query=workflow%3Aproduction">
-        <img alt="GitHub Workflow test" src="https://img.shields.io/github/workflow/status/semaphore-protocol/semaphore/production?label=test&style=flat-square&logo=github">
+        <img alt="GitHub Workflow test" src="https://img.shields.io/github/actions/workflow/status/semaphore-protocol/semaphore/production.yml?branch=main&label=test&style=flat-square&logo=github">
+    </a>
+    <a href="https://github.com/semaphore-protocol/semaphore/actions?query=workflow%3Astyle">
+        <img alt="GitHub Workflow style" src="https://img.shields.io/github/actions/workflow/status/semaphore-protocol/semaphore/style.yml?branch=main&label=style&style=flat-square&logo=github">
     </a>
     <a href="https://coveralls.io/github/semaphore-protocol/semaphore">
         <img alt="Coveralls" src="https://img.shields.io/coveralls/github/semaphore-protocol/semaphore?style=flat-square&logo=coveralls">
