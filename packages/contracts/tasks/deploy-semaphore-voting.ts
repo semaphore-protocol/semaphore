@@ -1,10 +1,9 @@
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
-import { Contract } from "ethers"
 import { task, types } from "hardhat/config"
 
 task("deploy:semaphore-voting", "Deploy a SemaphoreVoting contract")
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
-    .setAction(async ({ logs }, { ethers }): Promise<Contract> => {
+    .setAction(async ({ logs }, { ethers }): Promise<any> => {
         const PairingFactory = await ethers.getContractFactory("Pairing")
         const pairing = await PairingFactory.deploy()
 
@@ -69,5 +68,11 @@ task("deploy:semaphore-voting", "Deploy a SemaphoreVoting contract")
             console.info(`SemaphoreVoting contract has been deployed to: ${semaphoreVoting.address}`)
         }
 
-        return semaphoreVoting
+        return {
+            semaphoreVoting,
+            pairingAddress: pairing.address,
+            semaphoreVerifierAddress: semaphoreVerifier.address,
+            poseidonAddress: poseidon.address,
+            incrementalBinaryTreeAddress: incrementalBinaryTree.address
+        }
     })
