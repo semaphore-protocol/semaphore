@@ -1,5 +1,4 @@
 import { BigNumber } from "@ethersproject/bignumber"
-import poseidon from "poseidon-lite"
 import checkParameter from "./checkParameter"
 import hash from "./hash"
 import { generateCommitment, genRandomNumber, isJsonArray } from "./utils"
