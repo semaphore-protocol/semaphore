@@ -2017,7 +2017,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/sha2@npm:5.7.0, @ethersproject/sha2@npm:^5.6.1, @ethersproject/sha2@npm:^5.7.0":
+"@ethersproject/sha2@npm:5.7.0, @ethersproject/sha2@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/sha2@npm:5.7.0"
   dependencies:
@@ -3341,8 +3341,8 @@ __metadata:
   resolution: "@semaphore-protocol/identity@workspace:packages/identity"
   dependencies:
     "@ethersproject/bignumber": ^5.5.0
+    "@ethersproject/keccak256": ^5.7.0
     "@ethersproject/random": ^5.5.1
-    "@ethersproject/sha2": ^5.6.1
     "@ethersproject/strings": ^5.6.1
     poseidon-lite: ^0.0.2
     rollup-plugin-cleanup: ^3.2.1
