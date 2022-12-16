@@ -69,9 +69,14 @@ program
 
 program
     .command("get-groups")
-    .description("Get the list of groups from a supported network (Goerli or Arbitrum).")
+    .description("Get the list of groups from a supported network (goerli or arbitrum).")
     .option("-n, --network <network-name>", "Supported Ethereum network.", "goerli")
     .action(async ({ network }) => {
+        if (!["goerli", "arbitrum"].includes(network)) {
+            console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
+            return
+        }
+
         const subgraph = new Subgraph(network)
         const spinner = new Spinner("Fetching groups")
 
@@ -105,6 +110,11 @@ program
     .option("--members", "Show group members.")
     .option("--signals", "Show group signals.")
     .action(async (groupId, { network, members, signals }) => {
+        if (!["goerli", "arbitrum"].includes(network)) {
+            console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
+            return
+        }
+
         const subgraph = new Subgraph(network)
         const spinner = new Spinner(`Fetching group ${groupId}`)
 
