@@ -1,0 +1,51 @@
+{
+    "name": "@semaphore-protocol/cli",
+    "type": "module",
+    "version": "0.4.0",
+    "description": "A command line tool to set up your Semaphore project and get group data.",
+    "license": "MIT",
+    "bin": {
+        "semaphore": "dist/index.js"
+    },
+    "types": "dist/types/index.d.ts",
+    "files": [
+        "dist/",
+        "src/",
+        "LICENSE",
+        "README.md"
+    ],
+    "repository": "https://github.com/semaphore-protocol/semaphore",
+    "homepage": "https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli",
+    "bugs": {
+        "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
+    },
+    "engines": {
+        "node": ">=14.16"
+    },
+    "scripts": {
+        "start": "ts-node --esm src/index.ts",
+        "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
+        "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
+        "prepublishOnly": "yarn build"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "@types/clear": "^0.1.2",
+        "@types/figlet": "^1.5.5",
+        "rollup-plugin-cleanup": "^3.2.1",
+        "rollup-plugin-typescript2": "^0.31.2",
+        "ts-node": "^10.9.1",
+        "typedoc": "^0.22.11"
+    },
+    "dependencies": {
+        "@semaphore-protocol/subgraph": "2.6.1",
+        "chalk": "^5.1.2",
+        "commander": "^9.4.1",
+        "download": "^8.0.0",
+        "figlet": "^1.5.2",
+        "log-symbols": "^5.1.0",
+        "ora": "^6.1.2"
+    }
+}

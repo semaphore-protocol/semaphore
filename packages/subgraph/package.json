@@ -11,7 +11,7 @@
         "import": "./dist/index.mjs",
         "require": "./dist/index.node.js"
     },
-    "types": "dist/types/index.d.ts",
+    "types": "./dist/types/index.d.ts",
     "files": [
         "dist/",
         "src/",
