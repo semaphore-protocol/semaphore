@@ -1,35 +1,36 @@
 import Group from "./group"
+import hash from "./hash"
 
 describe("Group", () => {
     describe("# Group", () => {
         it("Should create a group", () => {
-            const group = new Group()
+            const group = new Group(1)
 
-            expect(group.root.toString()).toContain("150197")
+            expect(group.root.toString()).toContain("103543")
             expect(group.depth).toBe(20)
-            expect(group.zeroValue).toBe(BigInt(0))
+            expect(group.zeroValue).toBe(hash(1))
             expect(group.members).toHaveLength(0)
         })
 
         it("Should not create a group with a wrong tree depth", () => {
-            const fun = () => new Group(33)
+            const fun = () => new Group(1, 33)
 
             expect(fun).toThrow("The tree depth must be between 16 and 32")
         })
 
         it("Should create a group with different parameters", () => {
-            const group = new Group(32, BigInt(1))
+            const group = new Group(1, 32)
 
-            expect(group.root.toString()).toContain("640470")
+            expect(group.root.toString()).toContain("460373")
             expect(group.depth).toBe(32)
-            expect(group.zeroValue).toBe(BigInt(1))
+            expect(group.zeroValue).toBe(hash(1))
             expect(group.members).toHaveLength(0)
         })
     })
 
     describe("# addMember", () => {
         it("Should add a member to a group", () => {
-            const group = new Group()
+            const group = new Group(1)
 
             group.addMember(BigInt(3))
 
@@ -39,7 +40,7 @@ describe("Group", () => {
 
     describe("# addMembers", () => {
         it("Should add many members to a group", () => {
-            const group = new Group()
+            const group = new Group(1)
 
             group.addMembers([BigInt(1), BigInt(3)])
 
@@ -49,7 +50,7 @@ describe("Group", () => {
 
     describe("# indexOf", () => {
         it("Should return the index of a member in a group", () => {
-            const group = new Group()
+            const group = new Group(1)
             group.addMembers([BigInt(1), BigInt(3)])
 
             const index = group.indexOf(BigInt(3))
@@ -60,7 +61,7 @@ describe("Group", () => {
 
     describe("# updateMember", () => {
         it("Should update a member in a group", () => {
-            const group = new Group()
+            const group = new Group(1)
             group.addMembers([BigInt(1), BigInt(3)])
 
             group.updateMember(0, BigInt(1))
@@ -72,7 +73,7 @@ describe("Group", () => {
 
     describe("# removeMember", () => {
         it("Should remove a member from a group", () => {
-            const group = new Group()
+            const group = new Group(1)
             group.addMembers([BigInt(1), BigInt(3)])
 
             group.removeMember(0)
@@ -84,7 +85,7 @@ describe("Group", () => {
 
     describe("# generateMerkleProof", () => {
         it("Should generate a proof of membership", () => {
-            const group = new Group()
+            const group = new Group(1)
             group.addMembers([BigInt(1), BigInt(3)])
 
             const proof = group.generateMerkleProof(0)

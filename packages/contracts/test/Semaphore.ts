@@ -16,6 +16,7 @@ describe("Semaphore", () => {
 
     const treeDepth = Number(process.env.TREE_DEPTH) || 20
     const groupId = 1
+    const group = new Group(groupId, treeDepth)
     const members = createIdentityCommitments(3)
 
     const wasmFilePath = `../../snark-artifacts/${treeDepth}/semaphore.wasm`
@@ -32,7 +33,7 @@ describe("Semaphore", () => {
 
     describe("# createGroup", () => {
         it("Should not create a group if the tree depth is not supported", async () => {
-            const transaction = contract["createGroup(uint256,uint256,uint256,address)"](groupId, 10, 0, accounts[0])
+            const transaction = contract["createGroup(uint256,uint256,address)"](groupId, 10, accounts[0])
 
             await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeDepthIsNotSupported()")
         })
@@ -40,9 +41,9 @@ describe("Semaphore", () => {
         it("Should create a group", async () => {
             const transaction = contract
                 .connect(signers[1])
-                ["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[1])
+                ["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[1])
 
-            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth, 0)
+            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth, group.zeroValue)
             await expect(transaction)
                 .to.emit(contract, "GroupAdminUpdated")
                 .withArgs(groupId, constants.AddressZero, accounts[1])
@@ -50,20 +51,18 @@ describe("Semaphore", () => {
 
         it("Should create a group with a custom Merkle tree root expiration", async () => {
             const groupId = 2
-            const transaction = await contract
-                .connect(signers[1])
-                ["createGroup(uint256,uint256,uint256,address,uint256)"](
-                    groupId,
-                    treeDepth,
-                    0,
-                    accounts[0],
-                    5 // 5 seconds.
-                )
+            const group = new Group(2)
+            const transaction = await contract.connect(signers[1])["createGroup(uint256,uint256,address,uint256)"](
+                groupId,
+                treeDepth,
+                accounts[0],
+                5 // 5 seconds.
+            )
             await contract.addMember(groupId, members[0])
             await contract.addMember(groupId, members[1])
             await contract.addMember(groupId, members[2])
 
-            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth, 0)
+            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth, group.zeroValue)
             await expect(transaction)
                 .to.emit(contract, "GroupAdminUpdated")
                 .withArgs(groupId, constants.AddressZero, accounts[0])
@@ -94,7 +93,7 @@ describe("Semaphore", () => {
         })
 
         it("Should add a new member in an existing group", async () => {
-            const group = new Group(treeDepth)
+            const group = new Group(groupId, treeDepth)
 
             group.addMember(members[0])
 
@@ -108,11 +107,11 @@ describe("Semaphore", () => {
         it("Should add new members to an existing group", async () => {
             const groupId = 3
             const members = [BigInt(1), BigInt(2), BigInt(3)]
-            const group = new Group(treeDepth)
+            const group = new Group(groupId, treeDepth)
 
             group.addMembers(members)
 
-            await contract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
+            await contract["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[0])
 
             const transaction = contract.addMembers(groupId, members)
 
@@ -132,13 +131,13 @@ describe("Semaphore", () => {
         it("Should update a member from an existing group", async () => {
             const groupId = 4
             const members = [BigInt(1), BigInt(2), BigInt(3)]
-            const group = new Group(treeDepth)
+            const group = new Group(groupId, treeDepth)
 
             group.addMembers(members)
 
             group.updateMember(0, BigInt(4))
 
-            await contract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
+            await contract["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[0])
             await contract.addMembers(groupId, members)
 
             const { siblings, pathIndices, root } = group.generateMerkleProof(0)
@@ -163,13 +162,13 @@ describe("Semaphore", () => {
         it("Should remove a member from an existing group", async () => {
             const groupId = 5
             const members = [BigInt(1), BigInt(2), BigInt(3)]
-            const group = new Group(treeDepth)
+            const group = new Group(groupId, treeDepth)
 
             group.addMembers(members)
 
             group.removeMember(2)
 
-            await contract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
+            await contract["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[0])
             await contract.addMembers(groupId, members)
 
             const { siblings, pathIndices, root } = group.generateMerkleProof(2)
@@ -184,7 +183,7 @@ describe("Semaphore", () => {
         const signal = 2
         const identity = new Identity("0")
 
-        const group = new Group(treeDepth)
+        const group = new Group(groupId, treeDepth)
 
         group.addMembers(members)
 
@@ -262,7 +261,7 @@ describe("Semaphore", () => {
 
         it("Should not verify a proof if the Merkle tree root is expired", async () => {
             const groupId = 2
-            const group = new Group(treeDepth)
+            const group = new Group(groupId, treeDepth)
 
             group.addMembers([members[0], members[1]])
 

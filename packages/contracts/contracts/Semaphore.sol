@@ -40,10 +40,9 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     function createGroup(
         uint256 groupId,
         uint256 merkleTreeDepth,
-        uint256 zeroValue,
         address admin
     ) external override onlySupportedMerkleTreeDepth(merkleTreeDepth) {
-        _createGroup(groupId, merkleTreeDepth, zeroValue);
+        _createGroup(groupId, merkleTreeDepth);
 
         groups[groupId].admin = admin;
         groups[groupId].merkleRootDuration = 1 hours;
@@ -55,11 +54,10 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     function createGroup(
         uint256 groupId,
         uint256 merkleTreeDepth,
-        uint256 zeroValue,
         address admin,
         uint256 merkleTreeRootDuration
     ) external override onlySupportedMerkleTreeDepth(merkleTreeDepth) {
-        _createGroup(groupId, merkleTreeDepth, zeroValue);
+        _createGroup(groupId, merkleTreeDepth);
 
         groups[groupId].admin = admin;
         groups[groupId].merkleRootDuration = merkleTreeRootDuration;
