@@ -41,7 +41,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreGroups {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
         }
 
-        _createGroup(entityId, merkleTreeDepth, 0);
+        _createGroup(entityId, merkleTreeDepth);
 
         entities[editor] = entityId;
 

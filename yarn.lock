@@ -3311,6 +3311,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/group@workspace:packages/group"
   dependencies:
+    "@ethersproject/bignumber": ^5.7.0
+    "@ethersproject/bytes": ^5.7.0
+    "@ethersproject/keccak256": ^5.7.0
     "@zk-kit/incremental-merkle-tree": 1.0.0
     poseidon-lite: ^0.0.2
     rollup-plugin-cleanup: ^3.2.1

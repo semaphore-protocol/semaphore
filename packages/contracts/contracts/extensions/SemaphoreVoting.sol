@@ -43,7 +43,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
         }
 
-        _createGroup(pollId, merkleTreeDepth, 0);
+        _createGroup(pollId, merkleTreeDepth);
 
         Poll memory poll;
 
