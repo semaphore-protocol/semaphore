@@ -1,7 +1,8 @@
 import { BigNumber } from "@ethersproject/bignumber"
 import poseidon from "poseidon-lite"
 import checkParameter from "./checkParameter"
-import { generateCommitment, genRandomNumber, isJsonArray, sha256 } from "./utils"
+import hash from "./hash"
+import { generateCommitment, genRandomNumber, isJsonArray } from "./utils"
 
 export default class Identity {
     private _trapdoor: bigint
@@ -24,10 +25,10 @@ export default class Identity {
         checkParameter(identityOrMessage, "identityOrMessage", "string")
 
         if (!isJsonArray(identityOrMessage)) {
-            const messageHash = sha256(identityOrMessage).slice(2)
+            const messageHash = hash(identityOrMessage)
 
-            this._trapdoor = BigNumber.from(sha256(`${messageHash}identity_trapdoor`)).toBigInt()
-            this._nullifier = BigNumber.from(sha256(`${messageHash}identity_nullifier`)).toBigInt()
+            this._trapdoor = hash(`${messageHash}identity_trapdoor`)
+            this._nullifier = hash(`${messageHash}identity_nullifier`)
             this._commitment = generateCommitment(this._nullifier, this._trapdoor)
 
             return
@@ -86,15 +87,6 @@ export default class Identity {
      */
     public getCommitment(): bigint {
         return this._commitment
-    }
-
-    /**
-     * @deprecated since version 2.6.0
-     * Generates the identity commitment from trapdoor and nullifier.
-     * @returns identity commitment
-     */
-    public generateCommitment(): bigint {
-        return poseidon([poseidon([this._nullifier, this._trapdoor])])
     }
 
     /**
