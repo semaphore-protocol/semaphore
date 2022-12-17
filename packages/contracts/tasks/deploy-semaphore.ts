@@ -1,5 +1,4 @@
 import { poseidon_gencontract as poseidonContract } from "circomlibjs"
-import { Contract } from "ethers"
 import { task, types } from "hardhat/config"
 import { saveDeployedContracts } from "../scripts/utils"
 
@@ -24,7 +23,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
                 incrementalBinaryTree: incrementalBinaryTreeAddress
             },
             { ethers, hardhatArguments }
-        ): Promise<Contract> => {
+        ): Promise<any> => {
             if (!semaphoreVerifierAddress) {
                 if (!pairingAddress) {
                     const PairingFactory = await ethers.getContractFactory("Pairing")
@@ -113,6 +112,12 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
                 Semaphore: semaphore.address
             })
 
-            return semaphore
+            return {
+                semaphore,
+                pairingAddress,
+                semaphoreVerifierAddress,
+                poseidonAddress,
+                incrementalBinaryTreeAddress
+            }
         }
     )

@@ -5,10 +5,11 @@ import { generateProof, packToSolidityProof, PublicSignals, SolidityProof } from
 import { expect } from "chai"
 import { Signer, utils } from "ethers"
 import { ethers, run } from "hardhat"
-import { SemaphoreWhistleblowing } from "../build/typechain"
+import { Pairing, SemaphoreWhistleblowing } from "../build/typechain"
 
 describe("SemaphoreWhistleblowing", () => {
-    let contract: SemaphoreWhistleblowing
+    let semaphoreWhistleblowingContract: SemaphoreWhistleblowing
+    let pairingContract: Pairing
     let accounts: Signer[]
     let editor: string
 
@@ -19,9 +20,12 @@ describe("SemaphoreWhistleblowing", () => {
     const zkeyFilePath = `../../snark-artifacts/${treeDepth}/semaphore.zkey`
 
     before(async () => {
-        contract = await run("deploy:semaphore-whistleblowing", {
+        const { semaphoreWhistleblowing, pairingAddress } = await run("deploy:semaphore-whistleblowing", {
             logs: false
         })
+
+        semaphoreWhistleblowingContract = semaphoreWhistleblowing
+        pairingContract = await ethers.getContractAt("Pairing", pairingAddress)
 
         accounts = await ethers.getSigners()
         editor = await accounts[1].getAddress()
@@ -29,21 +33,29 @@ describe("SemaphoreWhistleblowing", () => {
 
     describe("# createEntity", () => {
         it("Should not create an entity with a wrong depth", async () => {
-            const transaction = contract.createEntity(entityIds[0], editor, 10)
+            const transaction = semaphoreWhistleblowingContract.createEntity(entityIds[0], editor, 10)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeDepthIsNotSupported()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreWhistleblowingContract,
+                "Semaphore__MerkleTreeDepthIsNotSupported"
+            )
         })
 
         it("Should create an entity", async () => {
-            const transaction = contract.createEntity(entityIds[0], editor, treeDepth)
+            const transaction = semaphoreWhistleblowingContract.createEntity(entityIds[0], editor, treeDepth)
 
-            await expect(transaction).to.emit(contract, "EntityCreated").withArgs(entityIds[0], editor)
+            await expect(transaction)
+                .to.emit(semaphoreWhistleblowingContract, "EntityCreated")
+                .withArgs(entityIds[0], editor)
         })
 
         it("Should not create a entity if it already exists", async () => {
-            const transaction = contract.createEntity(entityIds[0], editor, treeDepth)
+            const transaction = semaphoreWhistleblowingContract.createEntity(entityIds[0], editor, treeDepth)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__GroupAlreadyExists()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreWhistleblowingContract,
+                "Semaphore__GroupAlreadyExists"
+            )
         })
     })
 
@@ -51,9 +63,12 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should not add a whistleblower if the caller is not the editor", async () => {
             const { commitment } = new Identity()
 
-            const transaction = contract.addWhistleblower(entityIds[0], commitment)
+            const transaction = semaphoreWhistleblowingContract.addWhistleblower(entityIds[0], commitment)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheEditor()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreWhistleblowingContract,
+                "Semaphore__CallerIsNotTheEditor"
+            )
         })
 
         it("Should add a whistleblower to an existing entity", async () => {
@@ -62,13 +77,17 @@ describe("SemaphoreWhistleblowing", () => {
 
             group.addMember(commitment)
 
-            const transaction = contract.connect(accounts[1]).addWhistleblower(entityIds[0], commitment)
+            const transaction = semaphoreWhistleblowingContract
+                .connect(accounts[1])
+                .addWhistleblower(entityIds[0], commitment)
 
-            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(entityIds[0], 0, commitment, group.root)
+            await expect(transaction)
+                .to.emit(semaphoreWhistleblowingContract, "MemberAdded")
+                .withArgs(entityIds[0], 0, commitment, group.root)
         })
 
         it("Should return the correct number of whistleblowers of an entity", async () => {
-            const size = await contract.getNumberOfMerkleTreeLeaves(entityIds[0])
+            const size = await semaphoreWhistleblowingContract.getNumberOfMerkleTreeLeaves(entityIds[0])
 
             expect(size).to.be.eq(1)
         })
@@ -83,9 +102,17 @@ describe("SemaphoreWhistleblowing", () => {
 
             const { siblings, pathIndices } = group.generateMerkleProof(0)
 
-            const transaction = contract.removeWhistleblower(entityIds[0], commitment, siblings, pathIndices)
+            const transaction = semaphoreWhistleblowingContract.removeWhistleblower(
+                entityIds[0],
+                commitment,
+                siblings,
+                pathIndices
+            )
 
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheEditor()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreWhistleblowingContract,
+                "Semaphore__CallerIsNotTheEditor"
+            )
         })
 
         it("Should remove a whistleblower from an existing entity", async () => {
@@ -98,12 +125,12 @@ describe("SemaphoreWhistleblowing", () => {
 
             group.removeMember(0)
 
-            const transaction = contract
+            const transaction = semaphoreWhistleblowingContract
                 .connect(accounts[1])
                 .removeWhistleblower(entityIds[0], commitment, siblings, pathIndices)
 
             await expect(transaction)
-                .to.emit(contract, "MemberRemoved")
+                .to.emit(semaphoreWhistleblowingContract, "MemberRemoved")
                 .withArgs(entityIds[0], 0, commitment, group.root)
         })
     })
@@ -120,9 +147,11 @@ describe("SemaphoreWhistleblowing", () => {
         let publicSignals: PublicSignals
 
         before(async () => {
-            await contract.createEntity(entityIds[1], editor, treeDepth)
-            await contract.connect(accounts[1]).addWhistleblower(entityIds[1], identity.commitment)
-            await contract.connect(accounts[1]).addWhistleblower(entityIds[1], BigInt(1))
+            await semaphoreWhistleblowingContract.createEntity(entityIds[1], editor, treeDepth)
+            await semaphoreWhistleblowingContract
+                .connect(accounts[1])
+                .addWhistleblower(entityIds[1], identity.commitment)
+            await semaphoreWhistleblowingContract.connect(accounts[1]).addWhistleblower(entityIds[1], BigInt(1))
 
             const fullProof = await generateProof(identity, group, entityIds[1], leak, {
                 wasmFilePath,
@@ -134,17 +163,21 @@ describe("SemaphoreWhistleblowing", () => {
         })
 
         it("Should not publish a leak if the proof is not valid", async () => {
-            const transaction = contract.connect(accounts[1]).publishLeak(leak, 0, entityIds[1], solidityProof)
+            const transaction = semaphoreWhistleblowingContract
+                .connect(accounts[1])
+                .publishLeak(leak, 0, entityIds[1], solidityProof)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__InvalidProof()")
+            await expect(transaction).to.be.revertedWithCustomError(pairingContract, "Semaphore__InvalidProof")
         })
 
         it("Should publish a leak", async () => {
-            const transaction = contract
+            const transaction = semaphoreWhistleblowingContract
                 .connect(accounts[1])
                 .publishLeak(leak, publicSignals.nullifierHash, entityIds[1], solidityProof)
 
-            await expect(transaction).to.emit(contract, "LeakPublished").withArgs(entityIds[1], leak)
+            await expect(transaction)
+                .to.emit(semaphoreWhistleblowingContract, "LeakPublished")
+                .withArgs(entityIds[1], leak)
         })
     })
 })
