@@ -75,7 +75,11 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphore-updateGroupMerkleTreeDuration}.
-    function updateGroupMerkleTreeDuration(uint256 groupId, uint256 newMerkleTreeDuration) external override onlyGroupAdmin(groupId) {
+    function updateGroupMerkleTreeDuration(uint256 groupId, uint256 newMerkleTreeDuration)
+        external
+        override
+        onlyGroupAdmin(groupId)
+    {
         uint256 oldMerkleTreeDuration = groups[groupId].merkleTreeDuration;
 
         groups[groupId].merkleTreeDuration = newMerkleTreeDuration;
