@@ -89,7 +89,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         override
         onlyGroupAdmin(groupId)
     {
-        for (uint8 i = 0; i < identityCommitments.length; ) {
+        for (uint256 i = 0; i < identityCommitments.length; ) {
             _addMember(groupId, identityCommitments[i]);
 
             unchecked {
