@@ -46,7 +46,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         _createGroup(groupId, merkleTreeDepth, zeroValue);
 
         groups[groupId].admin = admin;
-        groups[groupId].merkleRootDuration = 1 hours;
+        groups[groupId].merkleTreeDuration = 1 hours;
 
         emit GroupAdminUpdated(groupId, address(0), admin);
     }
@@ -57,12 +57,12 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 merkleTreeDepth,
         uint256 zeroValue,
         address admin,
-        uint256 merkleTreeRootDuration
+        uint256 merkleTreeDuration
     ) external override onlySupportedMerkleTreeDepth(merkleTreeDepth) {
         _createGroup(groupId, merkleTreeDepth, zeroValue);
 
         groups[groupId].admin = admin;
-        groups[groupId].merkleRootDuration = merkleTreeRootDuration;
+        groups[groupId].merkleTreeDuration = merkleTreeDuration;
 
         emit GroupAdminUpdated(groupId, address(0), admin);
     }
@@ -72,6 +72,15 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         groups[groupId].admin = newAdmin;
 
         emit GroupAdminUpdated(groupId, _msgSender(), newAdmin);
+    }
+
+    /// @dev See {ISemaphore-updateGroupMerkleTreeDuration}.
+    function updateGroupMerkleTreeDuration(uint256 groupId, uint256 newMerkleTreeDuration) external override onlyGroupAdmin(groupId) {
+        uint256 oldMerkleTreeDuration = groups[groupId].merkleTreeDuration;
+
+        groups[groupId].merkleTreeDuration = newMerkleTreeDuration;
+
+        emit GroupMerkleTreeDurationUpdated(groupId, oldMerkleTreeDuration, newMerkleTreeDuration);
     }
 
     /// @dev See {ISemaphore-addMember}.
@@ -148,13 +157,13 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
 
         if (merkleTreeRoot != currentMerkleTreeRoot) {
             uint256 merkleRootCreationDate = groups[groupId].merkleRootCreationDates[merkleTreeRoot];
-            uint256 merkleRootDuration = groups[groupId].merkleRootDuration;
+            uint256 merkleTreeDuration = groups[groupId].merkleTreeDuration;
 
             if (merkleRootCreationDate == 0) {
                 revert Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
             }
 
-            if (block.timestamp > merkleRootCreationDate + merkleRootDuration) {
+            if (block.timestamp > merkleRootCreationDate + merkleTreeDuration) {
                 revert Semaphore__MerkleTreeRootIsExpired();
             }
         }
