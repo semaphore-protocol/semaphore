@@ -5,6 +5,7 @@ import {
   SemaphoreVerifier__factory,
   SemaphoreVerifier as SemaphoreVerifierContract
 } from "../build/typechain"
+import { Deployer } from "./deployer"
 
 export class Verifier {
   signer: Signer
@@ -15,6 +16,35 @@ export class Verifier {
     this.contract = contract
   }
 
+  public static async create2Verifier(
+    deployer: Deployer,
+    saltHex: string,
+    signer: ethers.Signer
+  ): Promise<Verifier> {
+    const { contract: v2 } = await deployer.deploy(
+      Verifier20_2__factory,
+      saltHex,
+      signer
+    )
+    const { contract: v8 } = await deployer.deploy(
+      Verifier20_8__factory,
+      saltHex,
+      signer
+    )
+
+    const argTypes = ["address", "address"]
+    const args = [v2.address, v8.address]
+    const { contract: verifier } = await deployer.deploy(
+      SemaphoreVerifier__factory,
+      saltHex,
+      signer,
+      undefined,
+      argTypes,
+      args
+    )
+    const createdVerifier = new Verifier(verifier, signer)
+    return createdVerifier
+  }
   // Deploys a Verifier contract and all auxiliary verifiers used by this verifier
   public static async createVerifier(signer: ethers.Signer) {
     const v2Factory = new Verifier20_2__factory(signer)

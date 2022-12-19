@@ -2,6 +2,7 @@ import { expect } from "chai"
 import { constants, Signer, utils, BigNumber } from "ethers"
 import { ethers } from "hardhat"
 import { Identity } from "@webb-tools/semaphore-identity"
+import { HARDHAT_ACCOUNTS } from "../../hardhatAccounts.js"
 import { LinkedGroup } from "@webb-tools/semaphore-group"
 import { fetchComponentsFromFilePaths, getChainIdType } from "@webb-tools/utils"
 import {
@@ -12,6 +13,8 @@ import {
 } from "@webb-tools/semaphore-proof"
 
 import { Semaphore } from "../../src"
+import { Deployer } from "../../src/deployer"
+import { DeterministicDeployFactory__factory } from "../../build/typechain"
 import {
   startGanacheServer,
   toFixedHex,
@@ -116,6 +119,10 @@ describe("2-sided CrossChain tests", () => {
           balance: "0x1000000000000000000000",
           secretKey:
             "0xc0d375903fd6f6ad3edafc2c5428900c0757ce1da10e5dd864fe387b32b91d7e"
+        },
+        {
+          balance: "0x1000000000000000000000",
+          secretKey: "0x" + HARDHAT_ACCOUNTS[0].privateKey
         }
       ]
     )
@@ -128,14 +135,76 @@ describe("2-sided CrossChain tests", () => {
     hardhatAdminAddr = accounts[0]
 
     hardhatAdmin = signers[0]
+    let ganacheDeployerWallet = new ethers.Wallet(
+      HARDHAT_ACCOUNTS[0].privateKey,
+      ganacheProvider2
+    )
 
     const zkComponents2_2 = await fetchComponentsFromFilePaths(
       wasmFilePath,
       witnessCalcPath,
       zkeyFilePath
     )
+    if (hardhatAdmin.provider === undefined) {
+      throw new Error("Hardhat provider is undefined")
+    }
+    console.log(hardhatAdmin.provider.getTransactionCount)
+    let hardhatNonce = await hardhatAdmin.provider.getTransactionCount(
+      await hardhatAdmin.getAddress(),
+      "latest"
+    )
+    let ganacheNonce = await ganacheDeployerWallet.provider.getTransactionCount(
+      ganacheDeployerWallet.address,
+      "latest"
+    )
+    while (ganacheNonce !== hardhatNonce) {
+      if (ganacheNonce < hardhatNonce) {
+        const Deployer2 = new DeterministicDeployFactory__factory(
+          ganacheDeployerWallet
+        )
+        let deployer2 = await Deployer2.deploy()
+        await deployer2.deployed()
+        console.log("WHILE Deployer2 deployed to ", deployer2.address)
+      } else {
+        const Deployer1 = new DeterministicDeployFactory__factory(hardhatAdmin)
+        let deployer1 = await Deployer1.deploy()
+        await deployer1.deployed()
+        console.log("WHILE Deployer1 deployed to ", deployer1.address)
+      }
 
-    semaphore1 = await Semaphore.createSemaphore(
+      hardhatNonce = await hardhatAdmin.provider.getTransactionCount(
+        await hardhatAdmin.getAddress(),
+        "latest"
+      )
+      ganacheNonce = await ganacheDeployerWallet.provider.getTransactionCount(
+        ganacheDeployerWallet.address,
+        "latest"
+      )
+      if (ganacheNonce === hardhatNonce) {
+        break
+      }
+    }
+    expect(ganacheNonce).eq(hardhatNonce)
+    console.log("hardhat addr ", await hardhatAdmin.getAddress())
+    console.log("ganache addr ", await ganacheDeployerWallet.getAddress())
+    const Deployer2 = new DeterministicDeployFactory__factory(
+      ganacheDeployerWallet
+    )
+    let deployer2Contract = await Deployer2.deploy()
+    await deployer2Contract.deployed()
+    let deployer2 = new Deployer(deployer2Contract)
+    console.log("Deployer2 deployed to ", deployer2Contract.address)
+
+    const Deployer1 = new DeterministicDeployFactory__factory(hardhatAdmin)
+    let deployer1Contract = await Deployer1.deploy()
+    await deployer1Contract.deployed()
+    let deployer1 = new Deployer(deployer1Contract)
+    console.log("Deployer1 deployed to ", deployer1.address)
+    const salt = "666"
+    const saltHex = ethers.utils.id(salt)
+    semaphore1 = await Semaphore.create2Semaphore(
+      deployer1,
+      saltHex,
       treeDepth,
       zkComponents2_2,
       zkComponents2_2,
@@ -150,7 +219,9 @@ describe("2-sided CrossChain tests", () => {
 
     await ganacheProvider2.ready
 
-    semaphore2 = await Semaphore.createSemaphore(
+    semaphore2 = await Semaphore.create2Semaphore(
+      deployer2,
+      saltHex,
       treeDepth,
       zkComponents2_2,
       zkComponents2_2,

@@ -3,6 +3,8 @@
 /* eslint-disable */
 import type * as base from "./base";
 export type { base };
+import type * as deployer from "./deployer";
+export type { deployer };
 import type * as extensions from "./extensions";
 export type { extensions };
 import type * as interfaces from "./interfaces";
@@ -29,6 +31,8 @@ export type { SemaphoreGroups } from "./base/SemaphoreGroups";
 export { SemaphoreGroups__factory } from "./factories/base/SemaphoreGroups__factory";
 export type { SemaphoreInputEncoder } from "./base/SemaphoreInputEncoder";
 export { SemaphoreInputEncoder__factory } from "./factories/base/SemaphoreInputEncoder__factory";
+export type { DeterministicDeployFactory } from "./deployer/DeterministicDeployFactory";
+export { DeterministicDeployFactory__factory } from "./factories/deployer/DeterministicDeployFactory__factory";
 export type { SemaphoreVoting } from "./extensions/SemaphoreVoting";
 export { SemaphoreVoting__factory } from "./factories/extensions/SemaphoreVoting__factory";
 export type { SemaphoreWhistleblowing } from "./extensions/SemaphoreWhistleblowing";

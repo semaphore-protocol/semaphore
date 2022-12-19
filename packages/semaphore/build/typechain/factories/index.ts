@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as base from "./base";
+export * as deployer from "./deployer";
 export * as extensions from "./extensions";
 export * as interfaces from "./interfaces";
 export * as verifiers from "./verifiers";

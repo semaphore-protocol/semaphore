@@ -41,18 +41,6 @@ export type EdgeStructOutput = [BigNumber, BigNumber, BigNumber, string] & {
   srcResourceID: string;
 };
 
-export declare namespace ISemaphore {
-  export type VerifierStruct = {
-    contractAddress: PromiseOrValue<string>;
-    merkleTreeDepth: PromiseOrValue<BigNumberish>;
-  };
-
-  export type VerifierStructOutput = [string, BigNumber] & {
-    contractAddress: string;
-    merkleTreeDepth: BigNumber;
-  };
-}
-
 export interface SemaphoreInterface extends utils.Interface {
   functions: {
     "EVM_CHAIN_ID_TYPE()": FunctionFragment;

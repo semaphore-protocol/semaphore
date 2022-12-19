@@ -22,9 +22,7 @@ contract SemaphoreVerifier {
         address _verifier8_2 // ISemaphoreVerifier8_16 _verifier_8_16
     ) {
         v2_2 = ISemaphoreVerifier2_2(_verifier2_2);
-        // v2_16 = _verifier_2_16;
         v8_2 = ISemaphoreVerifier8_2(_verifier8_2);
-        // v8_16 = _verifier_8_16;
     }
 
     function verifyProof(

@@ -35,12 +35,12 @@ contract Semaphore is ISemaphore, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev Initializes the Semaphore verifiers used to verify the user's ZK proofs.
-    /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
-    constructor(Verifier[] memory _verifiers) {
-        for (uint8 i = 0; i < _verifiers.length; ) {
-            verifiers[_verifiers[i].merkleTreeDepth] = SemaphoreVerifier(
-                _verifiers[i].contractAddress
-            );
+    /// @param _verifierAddresses: List of Semaphore verifier addresses
+    /// @param _merkleTreeDepths: List of related Merkle tree depths).
+    // constructor(Verifier[] memory _verifiers) {
+    constructor(address[] memory _verifierAddresses, uint256[] memory _merkleTreeDepths) {
+        for (uint8 i = 0; i < _verifierAddresses.length; ) {
+            verifiers[_merkleTreeDepths[i]] = SemaphoreVerifier(_verifierAddresses[i]);
             unchecked {
                 ++i;
             }

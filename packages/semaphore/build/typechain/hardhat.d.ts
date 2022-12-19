@@ -49,6 +49,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SemaphoreInputEncoder__factory>;
     getContractFactory(
+      name: "DeterministicDeployFactory",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DeterministicDeployFactory__factory>;
+    getContractFactory(
       name: "SemaphoreVoting",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SemaphoreVoting__factory>;
@@ -162,6 +166,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.SemaphoreInputEncoder>;
+    getContractAt(
+      name: "DeterministicDeployFactory",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DeterministicDeployFactory>;
     getContractAt(
       name: "SemaphoreVoting",
       address: string,

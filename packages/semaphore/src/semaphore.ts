@@ -20,6 +20,7 @@ import {
   SemaphoreInputEncoder__factory,
   LinkableIncrementalBinaryTree__factory
 } from "../build/typechain"
+import { Deployer } from "./deployer"
 
 // This convenience wrapper class is used in tests -
 // It represents a deployed contract throughout its life (e.g. maintains merkle tree state)
@@ -46,6 +47,69 @@ export class Semaphore extends SemaphoreBase {
     this.contract = contract
     // this.rootHistory = undefined;
     // this.largeCircuitZkComponents = largeCircuitZkComponents
+  }
+  public static async create2Semaphore(
+    deployer: Deployer,
+    saltHex: string,
+    levels: BigNumberish,
+    smallCircuitZkComponents: ZkComponents,
+    largeCircuitZkComponents: ZkComponents,
+    signer: Signer
+  ): Promise<Semaphore> {
+    const poseidonABI = poseidonContract.generateABI(2)
+    const poseidonBytecode = poseidonContract.createCode(2)
+    const poseidonInitCode = poseidonBytecode + Deployer.encode([], [])
+    const { address: poseidonLibAddr } = await deployer.deployInitCode(
+      saltHex,
+      signer,
+      poseidonInitCode
+    )
+
+    const { contract: encodeLibrary } = await deployer.deploy(
+      SemaphoreInputEncoder__factory,
+      saltHex,
+      signer
+    )
+
+    const LinkableIncrementalBinaryTreeLibs = {
+      ["contracts/base/Poseidon.sol:PoseidonT3Lib"]: poseidonLibAddr
+    }
+    const { contract: linkableIncrementalBinaryTree } = await deployer.deploy(
+      LinkableIncrementalBinaryTree__factory,
+      saltHex,
+      signer,
+      LinkableIncrementalBinaryTreeLibs
+    )
+
+    const chainId = getChainIdType(await signer.getChainId())
+
+    const verifier = await Verifier.create2Verifier(deployer, saltHex, signer)
+    const libraryAddresses = {
+      ["contracts/base/LinkableIncrementalBinaryTree.sol:LinkableIncrementalBinaryTree"]:
+        linkableIncrementalBinaryTree.address,
+      ["contracts/base/SemaphoreInputEncoder.sol:SemaphoreInputEncoder"]:
+        encodeLibrary.address,
+      ["contracts/base/Poseidon.sol:PoseidonT3Lib"]: poseidonLibAddr
+    }
+    const argTypes = ["address[]", "uint256[]"]
+    const args = [[verifier.contract.address], [levels]]
+    const { contract: semaphore, receipt } = await deployer.deploy(
+      Semaphore__factory,
+      saltHex,
+      signer,
+      libraryAddresses,
+      argTypes,
+      args
+    )
+    const createdSemaphore = new Semaphore(
+      semaphore,
+      signer,
+      chainId,
+      smallCircuitZkComponents,
+      largeCircuitZkComponents
+    )
+    return createdSemaphore
+    // createdSemaphore.latestSyncedBlock = semaphore.deployTransaction.blockNumber!;
   }
   public static async createSemaphore(
     levels: BigNumberish,
@@ -88,12 +152,11 @@ export class Semaphore extends SemaphoreBase {
       },
       signer
     )
-    const semaphore = await factory.deploy([
-      {
-        merkleTreeDepth: BigNumber.from(levels),
-        contractAddress: verifier.contract.address
-      }
-    ])
+    const semaphore = await factory.deploy(
+        [verifier.contract.address],
+        [BigNumber.from(levels)]
+    );
+
     await semaphore.deployed()
     const createdSemaphore = new Semaphore(
       semaphore,
