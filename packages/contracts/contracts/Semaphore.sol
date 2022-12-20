@@ -153,11 +153,11 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 externalNullifier,
         uint256[8] calldata proof
     ) external override {
-        uint256 currentMerkleTreeRoot = getMerkleTreeRoot(groupId);
-
-        if (currentMerkleTreeRoot == 0) {
+        if (getMerkleTreeDepth(groupId) == 0) {
             revert Semaphore__GroupDoesNotExist();
         }
+
+        uint256 currentMerkleTreeRoot = getMerkleTreeRoot(groupId);
 
         if (merkleTreeRoot != currentMerkleTreeRoot) {
             uint256 merkleRootCreationDate = groups[groupId].merkleRootCreationDates[merkleTreeRoot];
