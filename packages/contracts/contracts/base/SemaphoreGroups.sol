@@ -17,15 +17,15 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     /// @dev Creates a new group by initializing the associated tree.
     /// @param groupId: Id of the group.
     /// @param merkleTreeDepth: Depth of the tree.
-    /// @param zeroValue: Zero value of the tree.
-    function _createGroup(
-        uint256 groupId,
-        uint256 merkleTreeDepth,
-        uint256 zeroValue
-    ) internal virtual {
+    function _createGroup(uint256 groupId, uint256 merkleTreeDepth) internal virtual {
         if (getMerkleTreeDepth(groupId) != 0) {
             revert Semaphore__GroupAlreadyExists();
         }
+
+        // The zeroValue is in fact an implicit member of the group.
+        // Although there is a remote possibility that the preimage of
+        // the hash may be calculated, using this value minimizes the risk.
+        uint256 zeroValue = uint256(keccak256(abi.encodePacked(groupId))) >> 8;
 
         merkleTree[groupId].init(merkleTreeDepth, zeroValue);
 
