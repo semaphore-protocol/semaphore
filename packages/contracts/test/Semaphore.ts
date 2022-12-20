@@ -82,6 +82,25 @@ describe("Semaphore", () => {
         })
     })
 
+    describe("# updateGroupMerkleTreeDuration", () => {
+        it("Should not update a group Merkle tree duration if the caller is not the group admin", async () => {
+            const transaction = semaphoreContract.updateGroupMerkleTreeDuration(groupId, 300)
+
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__CallerIsNotTheGroupAdmin"
+            )
+        })
+
+        it("Should update the group Merkle tree duration", async () => {
+            const transaction = semaphoreContract.connect(signers[1]).updateGroupMerkleTreeDuration(groupId, 300)
+
+            await expect(transaction)
+                .to.emit(semaphoreContract, "GroupMerkleTreeDurationUpdated")
+                .withArgs(groupId, 3600, 300)
+        })
+    })
+
     describe("# updateGroupAdmin", () => {
         it("Should not update a group admin if the caller is not the group admin", async () => {
             const transaction = semaphoreContract.updateGroupAdmin(groupId, accounts[0])
