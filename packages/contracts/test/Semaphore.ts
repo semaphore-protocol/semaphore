@@ -17,6 +17,7 @@ describe("Semaphore", () => {
 
     const treeDepth = Number(process.env.TREE_DEPTH) || 20
     const groupId = 1
+    const group = new Group(groupId, treeDepth)
     const members = createIdentityCommitments(3)
 
     const wasmFilePath = `../../snark-artifacts/${treeDepth}/semaphore.wasm`
@@ -36,12 +37,7 @@ describe("Semaphore", () => {
 
     describe("# createGroup", () => {
         it("Should not create a group if the tree depth is not supported", async () => {
-            const transaction = semaphoreContract["createGroup(uint256,uint256,uint256,address)"](
-                groupId,
-                10,
-                0,
-                accounts[0]
-            )
+            const transaction = semaphoreContract["createGroup(uint256,uint256,address)"](groupId, 10, accounts[0])
 
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreContract,
@@ -52,9 +48,11 @@ describe("Semaphore", () => {
         it("Should create a group", async () => {
             const transaction = semaphoreContract
                 .connect(signers[1])
-                ["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[1])
+                ["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[1])
 
-            await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId, treeDepth, 0)
+            await expect(transaction)
+                .to.emit(semaphoreContract, "GroupCreated")
+                .withArgs(groupId, treeDepth, group.zeroValue)
             await expect(transaction)
                 .to.emit(semaphoreContract, "GroupAdminUpdated")
                 .withArgs(groupId, constants.AddressZero, accounts[1])
@@ -62,12 +60,12 @@ describe("Semaphore", () => {
 
         it("Should create a group with a custom Merkle tree root expiration", async () => {
             const groupId = 2
+            const group = new Group(2)
             const transaction = await semaphoreContract
                 .connect(signers[1])
-                ["createGroup(uint256,uint256,uint256,address,uint256)"](
+                ["createGroup(uint256,uint256,address,uint256)"](
                     groupId,
                     treeDepth,
-                    0,
                     accounts[0],
                     5 // 5 seconds.
                 )
@@ -75,7 +73,9 @@ describe("Semaphore", () => {
             await semaphoreContract.addMember(groupId, members[1])
             await semaphoreContract.addMember(groupId, members[2])
 
-            await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId, treeDepth, 0)
+            await expect(transaction)
+                .to.emit(semaphoreContract, "GroupCreated")
+                .withArgs(groupId, treeDepth, group.zeroValue)
             await expect(transaction)
                 .to.emit(semaphoreContract, "GroupAdminUpdated")
                 .withArgs(groupId, constants.AddressZero, accounts[0])
@@ -133,7 +133,7 @@ describe("Semaphore", () => {
         })
 
         it("Should add a new member in an existing group", async () => {
-            const group = new Group(treeDepth)
+            const group = new Group(groupId, treeDepth)
 
             group.addMember(members[0])
 
@@ -149,11 +149,11 @@ describe("Semaphore", () => {
         it("Should add new members to an existing group", async () => {
             const groupId = 3
             const members = [BigInt(1), BigInt(2), BigInt(3)]
-            const group = new Group(treeDepth)
+            const group = new Group(groupId, treeDepth)
 
             group.addMembers(members)
 
-            await semaphoreContract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
+            await semaphoreContract["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[0])
 
             const transaction = semaphoreContract.addMembers(groupId, members)
 
@@ -178,13 +178,13 @@ describe("Semaphore", () => {
         it("Should update a member from an existing group", async () => {
             const groupId = 4
             const members = [BigInt(1), BigInt(2), BigInt(3)]
-            const group = new Group(treeDepth)
+            const group = new Group(groupId, treeDepth)
 
             group.addMembers(members)
 
             group.updateMember(0, BigInt(4))
 
-            await semaphoreContract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
+            await semaphoreContract["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[0])
             await semaphoreContract.addMembers(groupId, members)
 
             const { siblings, pathIndices, root } = group.generateMerkleProof(0)
@@ -212,13 +212,13 @@ describe("Semaphore", () => {
         it("Should remove a member from an existing group", async () => {
             const groupId = 5
             const members = [BigInt(1), BigInt(2), BigInt(3)]
-            const group = new Group(treeDepth)
+            const group = new Group(groupId, treeDepth)
 
             group.addMembers(members)
 
             group.removeMember(2)
 
-            await semaphoreContract["createGroup(uint256,uint256,uint256,address)"](groupId, treeDepth, 0, accounts[0])
+            await semaphoreContract["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[0])
             await semaphoreContract.addMembers(groupId, members)
 
             const { siblings, pathIndices, root } = group.generateMerkleProof(2)
@@ -233,7 +233,7 @@ describe("Semaphore", () => {
         const signal = 2
         const identity = new Identity("0")
 
-        const group = new Group(treeDepth)
+        const group = new Group(groupId, treeDepth)
 
         group.addMembers(members)
 
@@ -317,7 +317,7 @@ describe("Semaphore", () => {
 
         it("Should not verify a proof if the Merkle tree root is expired", async () => {
             const groupId = 2
-            const group = new Group(treeDepth)
+            const group = new Group(groupId, treeDepth)
 
             group.addMembers([members[0], members[1]])
 

@@ -1,5 +1,6 @@
 import { IncrementalMerkleTree, MerkleProof } from "@zk-kit/incremental-merkle-tree"
 import poseidon from "poseidon-lite"
+import hash from "./hash"
 import { Member } from "./types"
 
 export default class Group {
@@ -7,15 +8,15 @@ export default class Group {
 
     /**
      * Initializes the group with the tree depth and the zero value.
+     * @param groupId Group identifier.
      * @param treeDepth Tree depth.
-     * @param zeroValue Zero values for zeroes.
      */
-    constructor(treeDepth = 20, zeroValue: Member = BigInt(0)) {
+    constructor(groupId: Member, treeDepth = 20) {
         if (treeDepth < 16 || treeDepth > 32) {
             throw new Error("The tree depth must be between 16 and 32")
         }
 
-        this.merkleTree = new IncrementalMerkleTree(poseidon, treeDepth, zeroValue, 2)
+        this.merkleTree = new IncrementalMerkleTree(poseidon, treeDepth, hash(groupId), 2)
     }
 
     /**

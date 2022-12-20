@@ -73,7 +73,7 @@ describe("SemaphoreWhistleblowing", () => {
 
         it("Should add a whistleblower to an existing entity", async () => {
             const { commitment } = new Identity("test")
-            const group = new Group(treeDepth)
+            const group = new Group(entityIds[0], treeDepth)
 
             group.addMember(commitment)
 
@@ -96,7 +96,7 @@ describe("SemaphoreWhistleblowing", () => {
     describe("# removeWhistleblower", () => {
         it("Should not remove a whistleblower if the caller is not the editor", async () => {
             const { commitment } = new Identity()
-            const group = new Group(treeDepth)
+            const group = new Group(entityIds[0], treeDepth)
 
             group.addMember(commitment)
 
@@ -117,7 +117,7 @@ describe("SemaphoreWhistleblowing", () => {
 
         it("Should remove a whistleblower from an existing entity", async () => {
             const { commitment } = new Identity("test")
-            const group = new Group(treeDepth)
+            const group = new Group(entityIds[0], treeDepth)
 
             group.addMember(commitment)
 
@@ -139,7 +139,7 @@ describe("SemaphoreWhistleblowing", () => {
         const identity = new Identity("test")
         const leak = utils.formatBytes32String("This is a leak")
 
-        const group = new Group(treeDepth)
+        const group = new Group(entityIds[1], treeDepth)
 
         group.addMembers([identity.commitment, BigInt(1)])
 

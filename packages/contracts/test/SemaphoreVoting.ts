@@ -116,7 +116,7 @@ describe("SemaphoreVoting", () => {
 
         it("Should add a voter to an existing poll", async () => {
             const { commitment } = new Identity("test")
-            const group = new Group(treeDepth)
+            const group = new Group(pollIds[1], treeDepth)
 
             group.addMember(commitment)
 
@@ -138,7 +138,7 @@ describe("SemaphoreVoting", () => {
         const identity = new Identity("test")
         const vote = 1
 
-        const group = new Group(treeDepth)
+        const group = new Group(pollIds[1], treeDepth)
 
         group.addMembers([identity.commitment, BigInt(1)])
 
