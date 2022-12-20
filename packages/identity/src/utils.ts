@@ -1,19 +1,6 @@
 import { BigNumber } from "@ethersproject/bignumber"
 import { randomBytes } from "@ethersproject/random"
-import { sha256 as _sha256 } from "@ethersproject/sha2"
-import { toUtf8Bytes } from "@ethersproject/strings"
 import poseidon from "poseidon-lite"
-
-/**
- * Returns an hexadecimal sha256 hash of the message passed as parameter.
- * @param message The string to hash.
- * @returns The hexadecimal hash of the message.
- */
-export function sha256(message: string): string {
-    const hash = _sha256(toUtf8Bytes(message))
-
-    return hash
-}
 
 /**
  * Generates a random big number.

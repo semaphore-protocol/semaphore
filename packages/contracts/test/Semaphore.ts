@@ -5,12 +5,13 @@ import { Identity } from "@semaphore-protocol/identity"
 import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { constants, Signer } from "ethers"
-import { run } from "hardhat"
-import { Semaphore } from "../build/typechain"
+import { ethers, run } from "hardhat"
+import { Pairing, Semaphore } from "../build/typechain"
 import { createIdentityCommitments } from "./utils"
 
 describe("Semaphore", () => {
-    let contract: Semaphore
+    let semaphoreContract: Semaphore
+    let pairingContract: Pairing
     let signers: Signer[]
     let accounts: string[]
 
@@ -23,9 +24,12 @@ describe("Semaphore", () => {
     const zkeyFilePath = `../../snark-artifacts/${treeDepth}/semaphore.zkey`
 
     before(async () => {
-        contract = await run("deploy:semaphore", {
+        const { semaphore, pairingAddress } = await run("deploy:semaphore", {
             logs: false
         })
+
+        semaphoreContract = semaphore
+        pairingContract = await ethers.getContractAt("Pairing", pairingAddress)
 
         signers = await run("accounts", { logs: false })
         accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
@@ -33,26 +37,29 @@ describe("Semaphore", () => {
 
     describe("# createGroup", () => {
         it("Should not create a group if the tree depth is not supported", async () => {
-            const transaction = contract["createGroup(uint256,uint256,address)"](groupId, 10, accounts[0])
+            const transaction = semaphoreContract["createGroup(uint256,uint256,address)"](groupId, 10, accounts[0])
 
-            await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeDepthIsNotSupported()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__MerkleTreeDepthIsNotSupported"
+            )
         })
 
         it("Should create a group", async () => {
-            const transaction = contract
+            const transaction = semaphoreContract
                 .connect(signers[1])
                 ["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[1])
 
-            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth, group.zeroValue)
+            await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId, treeDepth, group.zeroValue)
             await expect(transaction)
-                .to.emit(contract, "GroupAdminUpdated")
+                .to.emit(semaphoreContract, "GroupAdminUpdated")
                 .withArgs(groupId, constants.AddressZero, accounts[1])
         })
 
         it("Should create a group with a custom Merkle tree root expiration", async () => {
             const groupId = 2
             const group = new Group(2)
-            const transaction = await contract.connect(signers[1])["createGroup(uint256,uint256,address,uint256)"](
+            const transaction = await semaphoreContract.connect(signers[1])["createGroup(uint256,uint256,address,uint256)"](
                 groupId,
                 treeDepth,
                 accounts[0],
@@ -62,24 +69,48 @@ describe("Semaphore", () => {
             await contract.addMember(groupId, members[1])
             await contract.addMember(groupId, members[2])
 
-            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, treeDepth, group.zeroValue)
+            await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId, treeDepth, group.zeroValue)
             await expect(transaction)
-                .to.emit(contract, "GroupAdminUpdated")
+                .to.emit(semaphoreContract, "GroupAdminUpdated")
                 .withArgs(groupId, constants.AddressZero, accounts[0])
+        })
+    })
+
+    describe("# updateGroupMerkleTreeDuration", () => {
+        it("Should not update a group Merkle tree duration if the caller is not the group admin", async () => {
+            const transaction = semaphoreContract.updateGroupMerkleTreeDuration(groupId, 300)
+
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__CallerIsNotTheGroupAdmin"
+            )
+        })
+
+        it("Should update the group Merkle tree duration", async () => {
+            const transaction = semaphoreContract.connect(signers[1]).updateGroupMerkleTreeDuration(groupId, 300)
+
+            await expect(transaction)
+                .to.emit(semaphoreContract, "GroupMerkleTreeDurationUpdated")
+                .withArgs(groupId, 3600, 300)
         })
     })
 
     describe("# updateGroupAdmin", () => {
         it("Should not update a group admin if the caller is not the group admin", async () => {
-            const transaction = contract.updateGroupAdmin(groupId, accounts[0])
+            const transaction = semaphoreContract.updateGroupAdmin(groupId, accounts[0])
 
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__CallerIsNotTheGroupAdmin"
+            )
         })
 
         it("Should update the group admin", async () => {
-            const transaction = contract.connect(signers[1]).updateGroupAdmin(groupId, accounts[0])
+            const transaction = semaphoreContract.connect(signers[1]).updateGroupAdmin(groupId, accounts[0])
 
-            await expect(transaction).to.emit(contract, "GroupAdminUpdated").withArgs(groupId, accounts[1], accounts[0])
+            await expect(transaction)
+                .to.emit(semaphoreContract, "GroupAdminUpdated")
+                .withArgs(groupId, accounts[1], accounts[0])
         })
     })
 
@@ -87,9 +118,12 @@ describe("Semaphore", () => {
         it("Should not add a member if the caller is not the group admin", async () => {
             const member = BigInt(2)
 
-            const transaction = contract.connect(signers[1]).addMember(groupId, member)
+            const transaction = semaphoreContract.connect(signers[1]).addMember(groupId, member)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__CallerIsNotTheGroupAdmin"
+            )
         })
 
         it("Should add a new member in an existing group", async () => {
@@ -97,9 +131,11 @@ describe("Semaphore", () => {
 
             group.addMember(members[0])
 
-            const transaction = contract.addMember(groupId, members[0])
+            const transaction = semaphoreContract.addMember(groupId, members[0])
 
-            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(groupId, 0, members[0], group.root)
+            await expect(transaction)
+                .to.emit(semaphoreContract, "MemberAdded")
+                .withArgs(groupId, 0, members[0], group.root)
         })
     })
 
@@ -111,11 +147,13 @@ describe("Semaphore", () => {
 
             group.addMembers(members)
 
-            await contract["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[0])
+            await semaphoreContract["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[0])
 
-            const transaction = contract.addMembers(groupId, members)
+            const transaction = semaphoreContract.addMembers(groupId, members)
 
-            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(groupId, 2, BigInt(3), group.root)
+            await expect(transaction)
+                .to.emit(semaphoreContract, "MemberAdded")
+                .withArgs(groupId, 2, BigInt(3), group.root)
         })
     })
 
@@ -123,9 +161,12 @@ describe("Semaphore", () => {
         it("Should not update a member if the caller is not the group admin", async () => {
             const member = BigInt(2)
 
-            const transaction = contract.connect(signers[1]).updateMember(groupId, member, 1, [0, 1], [0, 1])
+            const transaction = semaphoreContract.connect(signers[1]).updateMember(groupId, member, 1, [0, 1], [0, 1])
 
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__CallerIsNotTheGroupAdmin"
+            )
         })
 
         it("Should update a member from an existing group", async () => {
@@ -137,15 +178,15 @@ describe("Semaphore", () => {
 
             group.updateMember(0, BigInt(4))
 
-            await contract["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[0])
-            await contract.addMembers(groupId, members)
+            await semaphoreContract["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[0])
+            await semaphoreContract.addMembers(groupId, members)
 
             const { siblings, pathIndices, root } = group.generateMerkleProof(0)
 
-            const transaction = contract.updateMember(groupId, BigInt(1), BigInt(4), siblings, pathIndices)
+            const transaction = semaphoreContract.updateMember(groupId, BigInt(1), BigInt(4), siblings, pathIndices)
 
             await expect(transaction)
-                .to.emit(contract, "MemberUpdated")
+                .to.emit(semaphoreContract, "MemberUpdated")
                 .withArgs(groupId, 0, BigInt(1), BigInt(4), root)
         })
     })
@@ -154,9 +195,12 @@ describe("Semaphore", () => {
         it("Should not remove a member if the caller is not the group admin", async () => {
             const member = BigInt(2)
 
-            const transaction = contract.connect(signers[1]).removeMember(groupId, member, [0, 1], [0, 1])
+            const transaction = semaphoreContract.connect(signers[1]).removeMember(groupId, member, [0, 1], [0, 1])
 
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotTheGroupAdmin()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__CallerIsNotTheGroupAdmin"
+            )
         })
 
         it("Should remove a member from an existing group", async () => {
@@ -168,14 +212,14 @@ describe("Semaphore", () => {
 
             group.removeMember(2)
 
-            await contract["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[0])
-            await contract.addMembers(groupId, members)
+            await semaphoreContract["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[0])
+            await semaphoreContract.addMembers(groupId, members)
 
             const { siblings, pathIndices, root } = group.generateMerkleProof(2)
 
-            const transaction = contract.removeMember(groupId, BigInt(3), siblings, pathIndices)
+            const transaction = semaphoreContract.removeMember(groupId, BigInt(3), siblings, pathIndices)
 
-            await expect(transaction).to.emit(contract, "MemberRemoved").withArgs(groupId, 2, BigInt(3), root)
+            await expect(transaction).to.emit(semaphoreContract, "MemberRemoved").withArgs(groupId, 2, BigInt(3), root)
         })
     })
 
@@ -191,7 +235,7 @@ describe("Semaphore", () => {
         let solidityProof: SolidityProof
 
         before(async () => {
-            await contract.addMembers(groupId, [members[1], members[2]])
+            await semaphoreContract.addMembers(groupId, [members[1], members[2]])
 
             fullProof = await generateProof(identity, group, group.root, signal, {
                 wasmFilePath,
@@ -201,19 +245,22 @@ describe("Semaphore", () => {
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
-            const transaction = contract.verifyProof(10, 1, signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
+            const transaction = semaphoreContract.verifyProof(10, 1, signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
 
-            await expect(transaction).to.be.revertedWith("Semaphore__GroupDoesNotExist()")
+            await expect(transaction).to.be.revertedWithCustomError(semaphoreContract, "Semaphore__GroupDoesNotExist")
         })
 
         it("Should not verify a proof if the Merkle tree root is not part of the group", async () => {
-            const transaction = contract.verifyProof(2, 1, signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
+            const transaction = semaphoreContract.verifyProof(2, 1, signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
 
-            await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeRootIsNotPartOfTheGroup()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__MerkleTreeRootIsNotPartOfTheGroup"
+            )
         })
 
         it("Should throw an exception if the proof is not valid", async () => {
-            const transaction = contract.verifyProof(
+            const transaction = semaphoreContract.verifyProof(
                 groupId,
                 group.root,
                 signal,
@@ -222,11 +269,11 @@ describe("Semaphore", () => {
                 solidityProof
             )
 
-            await expect(transaction).to.be.revertedWith("Semaphore__InvalidProof()")
+            await expect(transaction).to.be.revertedWithCustomError(pairingContract, "Semaphore__InvalidProof")
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
-            const transaction = contract.verifyProof(
+            const transaction = semaphoreContract.verifyProof(
                 groupId,
                 group.root,
                 signal,
@@ -236,7 +283,7 @@ describe("Semaphore", () => {
             )
 
             await expect(transaction)
-                .to.emit(contract, "ProofVerified")
+                .to.emit(semaphoreContract, "ProofVerified")
                 .withArgs(
                     groupId,
                     group.root,
@@ -247,7 +294,7 @@ describe("Semaphore", () => {
         })
 
         it("Should not verify the same proof for an onchain group twice", async () => {
-            const transaction = contract.verifyProof(
+            const transaction = semaphoreContract.verifyProof(
                 groupId,
                 group.root,
                 signal,
@@ -256,7 +303,10 @@ describe("Semaphore", () => {
                 solidityProof
             )
 
-            await expect(transaction).to.be.revertedWith("Semaphore__YouAreUsingTheSameNillifierTwice()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__YouAreUsingTheSameNillifierTwice"
+            )
         })
 
         it("Should not verify a proof if the Merkle tree root is expired", async () => {
@@ -271,7 +321,7 @@ describe("Semaphore", () => {
             })
             const solidityProof = packToSolidityProof(fullProof.proof)
 
-            const transaction = contract.verifyProof(
+            const transaction = semaphoreContract.verifyProof(
                 groupId,
                 group.root,
                 signal,
@@ -280,7 +330,10 @@ describe("Semaphore", () => {
                 solidityProof
             )
 
-            await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeRootIsExpired()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__MerkleTreeRootIsExpired"
+            )
         })
     })
 })

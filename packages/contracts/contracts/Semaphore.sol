@@ -45,7 +45,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         _createGroup(groupId, merkleTreeDepth);
 
         groups[groupId].admin = admin;
-        groups[groupId].merkleRootDuration = 1 hours;
+        groups[groupId].merkleTreeDuration = 1 hours;
 
         emit GroupAdminUpdated(groupId, address(0), admin);
     }
@@ -55,12 +55,12 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 groupId,
         uint256 merkleTreeDepth,
         address admin,
-        uint256 merkleTreeRootDuration
+        uint256 merkleTreeDuration
     ) external override onlySupportedMerkleTreeDepth(merkleTreeDepth) {
         _createGroup(groupId, merkleTreeDepth);
 
         groups[groupId].admin = admin;
-        groups[groupId].merkleRootDuration = merkleTreeRootDuration;
+        groups[groupId].merkleTreeDuration = merkleTreeDuration;
 
         emit GroupAdminUpdated(groupId, address(0), admin);
     }
@@ -70,6 +70,19 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         groups[groupId].admin = newAdmin;
 
         emit GroupAdminUpdated(groupId, _msgSender(), newAdmin);
+    }
+
+    /// @dev See {ISemaphore-updateGroupMerkleTreeDuration}.
+    function updateGroupMerkleTreeDuration(uint256 groupId, uint256 newMerkleTreeDuration)
+        external
+        override
+        onlyGroupAdmin(groupId)
+    {
+        uint256 oldMerkleTreeDuration = groups[groupId].merkleTreeDuration;
+
+        groups[groupId].merkleTreeDuration = newMerkleTreeDuration;
+
+        emit GroupMerkleTreeDurationUpdated(groupId, oldMerkleTreeDuration, newMerkleTreeDuration);
     }
 
     /// @dev See {ISemaphore-addMember}.
@@ -87,7 +100,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         override
         onlyGroupAdmin(groupId)
     {
-        for (uint8 i = 0; i < identityCommitments.length; ) {
+        for (uint256 i = 0; i < identityCommitments.length; ) {
             _addMember(groupId, identityCommitments[i]);
 
             unchecked {
@@ -138,21 +151,21 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 externalNullifier,
         uint256[8] calldata proof
     ) external override {
-        uint256 currentMerkleTreeRoot = getMerkleTreeRoot(groupId);
-
-        if (currentMerkleTreeRoot == 0) {
+        if (getMerkleTreeDepth(groupId) == 0) {
             revert Semaphore__GroupDoesNotExist();
         }
 
+        uint256 currentMerkleTreeRoot = getMerkleTreeRoot(groupId);
+
         if (merkleTreeRoot != currentMerkleTreeRoot) {
             uint256 merkleRootCreationDate = groups[groupId].merkleRootCreationDates[merkleTreeRoot];
-            uint256 merkleRootDuration = groups[groupId].merkleRootDuration;
+            uint256 merkleTreeDuration = groups[groupId].merkleTreeDuration;
 
             if (merkleRootCreationDate == 0) {
                 revert Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
             }
 
-            if (block.timestamp > merkleRootCreationDate + merkleRootDuration) {
+            if (block.timestamp > merkleRootCreationDate + merkleTreeDuration) {
                 revert Semaphore__MerkleTreeRootIsExpired();
             }
         }

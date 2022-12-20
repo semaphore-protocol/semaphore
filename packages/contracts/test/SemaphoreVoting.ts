@@ -5,10 +5,11 @@ import { generateProof, packToSolidityProof, PublicSignals, SolidityProof } from
 import { expect } from "chai"
 import { Signer } from "ethers"
 import { ethers, run } from "hardhat"
-import { SemaphoreVoting } from "../build/typechain"
+import { Pairing, SemaphoreVoting } from "../build/typechain"
 
 describe("SemaphoreVoting", () => {
-    let contract: SemaphoreVoting
+    let semaphoreVotingContract: SemaphoreVoting
+    let pairingContract: Pairing
     let accounts: Signer[]
     let coordinator: string
 
@@ -21,9 +22,12 @@ describe("SemaphoreVoting", () => {
     const zkeyFilePath = `../../snark-artifacts/${treeDepth}/semaphore.zkey`
 
     before(async () => {
-        contract = await run("deploy:semaphore-voting", {
+        const { semaphoreVoting, pairingAddress } = await run("deploy:semaphore-voting", {
             logs: false
         })
+
+        semaphoreVotingContract = semaphoreVoting
+        pairingContract = await ethers.getContractAt("Pairing", pairingAddress)
 
         accounts = await ethers.getSigners()
         coordinator = await accounts[1].getAddress()
@@ -31,63 +35,83 @@ describe("SemaphoreVoting", () => {
 
     describe("# createPoll", () => {
         it("Should not create a poll with a wrong depth", async () => {
-            const transaction = contract.createPoll(pollIds[0], coordinator, 10)
+            const transaction = semaphoreVotingContract.createPoll(pollIds[0], coordinator, 10)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__MerkleTreeDepthIsNotSupported()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreVotingContract,
+                "Semaphore__MerkleTreeDepthIsNotSupported"
+            )
         })
 
         it("Should create a poll", async () => {
-            const transaction = contract.createPoll(pollIds[0], coordinator, treeDepth)
+            const transaction = semaphoreVotingContract.createPoll(pollIds[0], coordinator, treeDepth)
 
-            await expect(transaction).to.emit(contract, "PollCreated").withArgs(pollIds[0], coordinator)
+            await expect(transaction).to.emit(semaphoreVotingContract, "PollCreated").withArgs(pollIds[0], coordinator)
         })
 
         it("Should not create a poll if it already exists", async () => {
-            const transaction = contract.createPoll(pollIds[0], coordinator, treeDepth)
+            const transaction = semaphoreVotingContract.createPoll(pollIds[0], coordinator, treeDepth)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__GroupAlreadyExists()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreVotingContract,
+                "Semaphore__GroupAlreadyExists"
+            )
         })
     })
 
     describe("# startPoll", () => {
         it("Should not start the poll if the caller is not the coordinator", async () => {
-            const transaction = contract.startPoll(pollIds[0], encryptionKey)
+            const transaction = semaphoreVotingContract.startPoll(pollIds[0], encryptionKey)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotThePollCoordinator()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreVotingContract,
+                "Semaphore__CallerIsNotThePollCoordinator"
+            )
         })
 
         it("Should start the poll", async () => {
-            const transaction = contract.connect(accounts[1]).startPoll(pollIds[0], encryptionKey)
+            const transaction = semaphoreVotingContract.connect(accounts[1]).startPoll(pollIds[0], encryptionKey)
 
-            await expect(transaction).to.emit(contract, "PollStarted").withArgs(pollIds[0], coordinator, encryptionKey)
+            await expect(transaction)
+                .to.emit(semaphoreVotingContract, "PollStarted")
+                .withArgs(pollIds[0], coordinator, encryptionKey)
         })
 
         it("Should not start a poll if it has already been started", async () => {
-            const transaction = contract.connect(accounts[1]).startPoll(pollIds[0], encryptionKey)
+            const transaction = semaphoreVotingContract.connect(accounts[1]).startPoll(pollIds[0], encryptionKey)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__PollHasAlreadyBeenStarted()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreVotingContract,
+                "Semaphore__PollHasAlreadyBeenStarted"
+            )
         })
     })
 
     describe("# addVoter", () => {
         before(async () => {
-            await contract.createPoll(pollIds[1], coordinator, treeDepth)
+            await semaphoreVotingContract.createPoll(pollIds[1], coordinator, treeDepth)
         })
 
         it("Should not add a voter if the caller is not the coordinator", async () => {
             const { commitment } = new Identity()
 
-            const transaction = contract.addVoter(pollIds[0], commitment)
+            const transaction = semaphoreVotingContract.addVoter(pollIds[0], commitment)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotThePollCoordinator()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreVotingContract,
+                "Semaphore__CallerIsNotThePollCoordinator"
+            )
         })
 
         it("Should not add a voter if the poll has already been started", async () => {
             const { commitment } = new Identity()
 
-            const transaction = contract.connect(accounts[1]).addVoter(pollIds[0], commitment)
+            const transaction = semaphoreVotingContract.connect(accounts[1]).addVoter(pollIds[0], commitment)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__PollHasAlreadyBeenStarted()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreVotingContract,
+                "Semaphore__PollHasAlreadyBeenStarted"
+            )
         })
 
         it("Should add a voter to an existing poll", async () => {
@@ -96,13 +120,15 @@ describe("SemaphoreVoting", () => {
 
             group.addMember(commitment)
 
-            const transaction = contract.connect(accounts[1]).addVoter(pollIds[1], commitment)
+            const transaction = semaphoreVotingContract.connect(accounts[1]).addVoter(pollIds[1], commitment)
 
-            await expect(transaction).to.emit(contract, "MemberAdded").withArgs(pollIds[1], 0, commitment, group.root)
+            await expect(transaction)
+                .to.emit(semaphoreVotingContract, "MemberAdded")
+                .withArgs(pollIds[1], 0, commitment, group.root)
         })
 
         it("Should return the correct number of poll voters", async () => {
-            const size = await contract.getNumberOfMerkleTreeLeaves(pollIds[1])
+            const size = await semaphoreVotingContract.getNumberOfMerkleTreeLeaves(pollIds[1])
 
             expect(size).to.be.eq(1)
         })
@@ -120,9 +146,9 @@ describe("SemaphoreVoting", () => {
         let publicSignals: PublicSignals
 
         before(async () => {
-            await contract.connect(accounts[1]).addVoter(pollIds[1], BigInt(1))
-            await contract.connect(accounts[1]).startPoll(pollIds[1], encryptionKey)
-            await contract.createPoll(pollIds[2], coordinator, treeDepth)
+            await semaphoreVotingContract.connect(accounts[1]).addVoter(pollIds[1], BigInt(1))
+            await semaphoreVotingContract.connect(accounts[1]).startPoll(pollIds[1], encryptionKey)
+            await semaphoreVotingContract.createPoll(pollIds[2], coordinator, treeDepth)
 
             const fullProof = await generateProof(identity, group, pollIds[1], vote, {
                 wasmFilePath,
@@ -134,53 +160,69 @@ describe("SemaphoreVoting", () => {
         })
 
         it("Should not cast a vote if the poll is not ongoing", async () => {
-            const transaction = contract
+            const transaction = semaphoreVotingContract
                 .connect(accounts[1])
                 .castVote(vote, publicSignals.nullifierHash, pollIds[2], solidityProof)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__PollIsNotOngoing()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreVotingContract,
+                "Semaphore__PollIsNotOngoing"
+            )
         })
 
         it("Should not cast a vote if the proof is not valid", async () => {
-            const transaction = contract.connect(accounts[1]).castVote(vote, 0, pollIds[1], solidityProof)
+            const transaction = semaphoreVotingContract
+                .connect(accounts[1])
+                .castVote(vote, 0, pollIds[1], solidityProof)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__InvalidProof()")
+            await expect(transaction).to.be.revertedWithCustomError(pairingContract, "Semaphore__InvalidProof")
         })
 
         it("Should cast a vote", async () => {
-            const transaction = contract
+            const transaction = semaphoreVotingContract
                 .connect(accounts[1])
                 .castVote(vote, publicSignals.nullifierHash, pollIds[1], solidityProof)
 
-            await expect(transaction).to.emit(contract, "VoteAdded").withArgs(pollIds[1], vote)
+            await expect(transaction).to.emit(semaphoreVotingContract, "VoteAdded").withArgs(pollIds[1], vote)
         })
 
         it("Should not cast a vote twice", async () => {
-            const transaction = contract
+            const transaction = semaphoreVotingContract
                 .connect(accounts[1])
                 .castVote(vote, publicSignals.nullifierHash, pollIds[1], solidityProof)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__YouAreUsingTheSameNillifierTwice()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreVotingContract,
+                "Semaphore__YouAreUsingTheSameNillifierTwice"
+            )
         })
     })
 
     describe("# endPoll", () => {
         it("Should not end the poll if the caller is not the coordinator", async () => {
-            const transaction = contract.endPoll(pollIds[1], decryptionKey)
+            const transaction = semaphoreVotingContract.endPoll(pollIds[1], decryptionKey)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__CallerIsNotThePollCoordinator()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreVotingContract,
+                "Semaphore__CallerIsNotThePollCoordinator"
+            )
         })
 
         it("Should end the poll", async () => {
-            const transaction = contract.connect(accounts[1]).endPoll(pollIds[1], encryptionKey)
+            const transaction = semaphoreVotingContract.connect(accounts[1]).endPoll(pollIds[1], encryptionKey)
 
-            await expect(transaction).to.emit(contract, "PollEnded").withArgs(pollIds[1], coordinator, decryptionKey)
+            await expect(transaction)
+                .to.emit(semaphoreVotingContract, "PollEnded")
+                .withArgs(pollIds[1], coordinator, decryptionKey)
         })
 
         it("Should not end a poll if it has already been ended", async () => {
-            const transaction = contract.connect(accounts[1]).endPoll(pollIds[1], encryptionKey)
+            const transaction = semaphoreVotingContract.connect(accounts[1]).endPoll(pollIds[1], encryptionKey)
 
-            await expect(transaction).to.be.revertedWith("Semaphore__PollIsNotOngoing()")
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreVotingContract,
+                "Semaphore__PollIsNotOngoing"
+            )
         })
     })
 })

@@ -10,15 +10,10 @@ interface ISemaphore {
     error Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
     error Semaphore__YouAreUsingTheSameNillifierTwice();
 
-    struct Verifier {
-        address contractAddress;
-        uint256 merkleTreeDepth;
-    }
-
     /// It defines all the group parameters, in addition to those in the Merkle tree.
     struct Group {
         address admin;
-        uint256 merkleRootDuration;
+        uint256 merkleTreeDuration;
         mapping(uint256 => uint256) merkleRootCreationDates;
         mapping(uint256 => bool) nullifierHashes;
     }
@@ -28,6 +23,16 @@ interface ISemaphore {
     /// @param oldAdmin: Old admin of the group.
     /// @param newAdmin: New admin of the group.
     event GroupAdminUpdated(uint256 indexed groupId, address indexed oldAdmin, address indexed newAdmin);
+
+    /// @dev Emitted when the Merkle tree duration of a group is updated.
+    /// @param groupId: Id of the group.
+    /// @param oldMerkleTreeDuration: Old Merkle tree duration of the group.
+    /// @param newMerkleTreeDuration: New Merkle tree duration of the group.
+    event GroupMerkleTreeDurationUpdated(
+        uint256 indexed groupId,
+        uint256 oldMerkleTreeDuration,
+        uint256 newMerkleTreeDuration
+    );
 
     /// @dev Emitted when a Semaphore proof is verified.
     /// @param groupId: Id of the group.
@@ -86,6 +91,11 @@ interface ISemaphore {
     /// @param groupId: Id of the group.
     /// @param newAdmin: New admin of the group.
     function updateGroupAdmin(uint256 groupId, address newAdmin) external;
+
+    /// @dev Updates the group Merkle tree duration.
+    /// @param groupId: Id of the group.
+    /// @param newMerkleTreeDuration: New Merkle tree duration.
+    function updateGroupMerkleTreeDuration(uint256 groupId, uint256 newMerkleTreeDuration) external;
 
     /// @dev Adds a new member to an existing group.
     /// @param groupId: Id of the group.
