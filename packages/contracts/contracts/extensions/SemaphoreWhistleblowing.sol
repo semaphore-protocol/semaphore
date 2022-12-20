@@ -12,13 +12,13 @@ import "../base/SemaphoreGroups.sol";
 contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreGroups {
     ISemaphoreVerifier public verifier;
 
-    /// @dev Gets an editor address and return their entity.
-    mapping(address => uint256) private entities;
+    /// @dev Gets an entity id and return its editor address.
+    mapping(uint256 => address) private entities;
 
     /// @dev Checks if the editor is the transaction sender.
     /// @param entityId: Id of the entity.
     modifier onlyEditor(uint256 entityId) {
-        if (entityId != entities[_msgSender()]) {
+        if (entities[entityId] != _msgSender()) {
             revert Semaphore__CallerIsNotTheEditor();
         }
 
@@ -43,7 +43,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreGroups {
 
         _createGroup(entityId, merkleTreeDepth);
 
-        entities[editor] = entityId;
+        entities[entityId] = editor;
 
         emit EntityCreated(entityId, editor);
     }

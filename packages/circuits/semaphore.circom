@@ -43,7 +43,7 @@ template CalculateNullifierHash() {
     out <== poseidon.out;
 }
 
-// nLevels must be < 32.
+// The current Semaphore smart contracts require nLevels <= 32 and nLevels >= 16.
 template Semaphore(nLevels) {
     signal input identityNullifier;
     signal input identityTrapdoor;

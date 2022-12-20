@@ -62,7 +62,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
     ) internal virtual {
-        if (getMerkleTreeRoot(groupId) == 0) {
+        if (getMerkleTreeDepth(groupId) == 0) {
             revert Semaphore__GroupDoesNotExist();
         }
 
@@ -86,7 +86,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
     ) internal virtual {
-        if (getMerkleTreeRoot(groupId) == 0) {
+        if (getMerkleTreeDepth(groupId) == 0) {
             revert Semaphore__GroupDoesNotExist();
         }
 
