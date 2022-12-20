@@ -50,7 +50,9 @@ describe("Semaphore", () => {
                 .connect(signers[1])
                 ["createGroup(uint256,uint256,address)"](groupId, treeDepth, accounts[1])
 
-            await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId, treeDepth, group.zeroValue)
+            await expect(transaction)
+                .to.emit(semaphoreContract, "GroupCreated")
+                .withArgs(groupId, treeDepth, group.zeroValue)
             await expect(transaction)
                 .to.emit(semaphoreContract, "GroupAdminUpdated")
                 .withArgs(groupId, constants.AddressZero, accounts[1])
@@ -59,17 +61,21 @@ describe("Semaphore", () => {
         it("Should create a group with a custom Merkle tree root expiration", async () => {
             const groupId = 2
             const group = new Group(2)
-            const transaction = await semaphoreContract.connect(signers[1])["createGroup(uint256,uint256,address,uint256)"](
-                groupId,
-                treeDepth,
-                accounts[0],
-                5 // 5 seconds.
-            )
-            await contract.addMember(groupId, members[0])
-            await contract.addMember(groupId, members[1])
-            await contract.addMember(groupId, members[2])
+            const transaction = await semaphoreContract
+                .connect(signers[1])
+                ["createGroup(uint256,uint256,address,uint256)"](
+                    groupId,
+                    treeDepth,
+                    accounts[0],
+                    5 // 5 seconds.
+                )
+            await semaphoreContract.addMember(groupId, members[0])
+            await semaphoreContract.addMember(groupId, members[1])
+            await semaphoreContract.addMember(groupId, members[2])
 
-            await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId, treeDepth, group.zeroValue)
+            await expect(transaction)
+                .to.emit(semaphoreContract, "GroupCreated")
+                .withArgs(groupId, treeDepth, group.zeroValue)
             await expect(transaction)
                 .to.emit(semaphoreContract, "GroupAdminUpdated")
                 .withArgs(groupId, constants.AddressZero, accounts[0])
