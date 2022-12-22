@@ -1,8 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.4;
 
-/// @title SemaphoreVoting interface.
-/// @dev Interface of SemaphoreVoting contract.
+/// @title SemaphoreVoting contract interface.
 interface ISemaphoreVoting {
     error Semaphore__CallerIsNotThePollCoordinator();
     error Semaphore__MerkleTreeDepthIsNotSupported();

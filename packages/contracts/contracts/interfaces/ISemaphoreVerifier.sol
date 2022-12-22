@@ -3,8 +3,7 @@ pragma solidity 0.8.4;
 
 import "../base/Pairing.sol";
 
-/// @title SemaphoreVerifier interface.
-/// @dev Interface of SemaphoreVerifier contract.
+/// @title SemaphoreVerifier contract interface.
 interface ISemaphoreVerifier {
     struct VerificationKey {
         Pairing.G1Point alfa1;
@@ -20,7 +19,7 @@ interface ISemaphoreVerifier {
         Pairing.G1Point C;
     }
 
-    /// @dev Verifies that the zero-knowledge proof is valid.
+    /// @dev Verifies whether a Semaphore proof is valid.
     /// @param merkleTreeRoot: Root of the Merkle tree.
     /// @param nullifierHash: Nullifier hash.
     /// @param signal: Semaphore signal.

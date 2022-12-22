@@ -6,6 +6,7 @@ import "../interfaces/ISemaphoreVerifier.sol";
 import "../base/SemaphoreGroups.sol";
 
 /// @title Semaphore voting contract.
+/// @notice It allows users to vote anonymously in a poll.
 /// @dev The following code allows you to create polls, add voters and allow them to vote anonymously.
 contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
     ISemaphoreVerifier public verifier;
