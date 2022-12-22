@@ -23,6 +23,7 @@ interface ISemaphoreVoting {
     struct Poll {
         address coordinator;
         PollState state;
+        mapping(uint256 => bool) nullifierHashes;
     }
 
     /// @dev Emitted when a new poll is created.
