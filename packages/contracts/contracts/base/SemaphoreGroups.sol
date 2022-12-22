@@ -6,13 +6,13 @@ import "@zk-kit/incremental-merkle-tree.sol/IncrementalBinaryTree.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 
 /// @title Semaphore groups contract.
-/// @dev The following code allows you to create groups, add and remove members.
+/// @dev This contract allows you to create groups, add, remove and update members.
 /// You can use getters to obtain informations about groups (root, depth, number of leaves).
 abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
     using IncrementalBinaryTree for IncrementalTreeData;
 
     /// @dev Gets a group id and returns the tree data.
-    mapping(uint256 => IncrementalTreeData) internal merkleTree;
+    mapping(uint256 => IncrementalTreeData) internal merkleTrees;
 
     /// @dev Creates a new group by initializing the associated tree.
     /// @param groupId: Id of the group.
@@ -22,12 +22,12 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
             revert Semaphore__GroupAlreadyExists();
         }
 
-        // The zeroValue is in fact an implicit member of the group.
+        // The zeroValue is an implicit member of the group, or an implicit leaf of the Merkle tree.
         // Although there is a remote possibility that the preimage of
-        // the hash may be calculated, using this value minimizes the risk.
+        // the hash may be calculated, using this value we aim to minimize the risk.
         uint256 zeroValue = uint256(keccak256(abi.encodePacked(groupId))) >> 8;
 
-        merkleTree[groupId].init(merkleTreeDepth, zeroValue);
+        merkleTrees[groupId].init(merkleTreeDepth, zeroValue);
 
         emit GroupCreated(groupId, merkleTreeDepth, zeroValue);
     }
@@ -40,7 +40,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
             revert Semaphore__GroupDoesNotExist();
         }
 
-        merkleTree[groupId].insert(identityCommitment);
+        merkleTrees[groupId].insert(identityCommitment);
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
         uint256 index = getNumberOfMerkleTreeLeaves(groupId) - 1;
@@ -66,7 +66,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
             revert Semaphore__GroupDoesNotExist();
         }
 
-        merkleTree[groupId].update(identityCommitment, newIdentityCommitment, proofSiblings, proofPathIndices);
+        merkleTrees[groupId].update(identityCommitment, newIdentityCommitment, proofSiblings, proofPathIndices);
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
         uint256 index = proofPathIndicesToMemberIndex(proofPathIndices);
@@ -90,7 +90,7 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
             revert Semaphore__GroupDoesNotExist();
         }
 
-        merkleTree[groupId].remove(identityCommitment, proofSiblings, proofPathIndices);
+        merkleTrees[groupId].remove(identityCommitment, proofSiblings, proofPathIndices);
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
         uint256 index = proofPathIndicesToMemberIndex(proofPathIndices);
@@ -100,17 +100,17 @@ abstract contract SemaphoreGroups is Context, ISemaphoreGroups {
 
     /// @dev See {ISemaphoreGroups-getMerkleTreeRoot}.
     function getMerkleTreeRoot(uint256 groupId) public view virtual override returns (uint256) {
-        return merkleTree[groupId].root;
+        return merkleTrees[groupId].root;
     }
 
     /// @dev See {ISemaphoreGroups-getMerkleTreeDepth}.
     function getMerkleTreeDepth(uint256 groupId) public view virtual override returns (uint256) {
-        return merkleTree[groupId].depth;
+        return merkleTrees[groupId].depth;
     }
 
     /// @dev See {ISemaphoreGroups-getNumberOfMerkleTreeLeaves}.
     function getNumberOfMerkleTreeLeaves(uint256 groupId) public view virtual override returns (uint256) {
-        return merkleTree[groupId].numberOfLeaves;
+        return merkleTrees[groupId].numberOfLeaves;
     }
 
     /// @dev Converts the path indices of a Merkle proof to the identity commitment index in the tree.

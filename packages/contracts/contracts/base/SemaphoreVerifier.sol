@@ -5,10 +5,10 @@ import "../interfaces/ISemaphoreVerifier.sol";
 
 /// @title Semaphore verifier contract.
 /// @notice Minimal code to allow users to verify their Semaphore proofs.
-/// @dev The following code verifies that the proof is correct and it is a
-/// modified version of the Verifier Groth16 template of SnarkJS
+/// @dev This contract allows you to verify whether a Semaphore proof is correct.
+/// It is a modified version of the Groth16 verifier template of SnarkJS
 /// (https://github.com/iden3/snarkjs) adapted to Semaphore. The Pairing library
-/// is extarnal.
+/// is external.
 contract SemaphoreVerifier is ISemaphoreVerifier {
     using Pairing for *;
 
