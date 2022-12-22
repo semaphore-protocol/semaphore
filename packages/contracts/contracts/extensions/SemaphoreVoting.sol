@@ -14,10 +14,6 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
     /// @dev Gets a poll id and returns the poll data.
     mapping(uint256 => Poll) internal polls;
 
-    /// @dev Gets a nullifier hash and returns true or false.
-    /// It is used to prevent double-voting.
-    mapping(uint256 => bool) internal nullifierHashes;
-
     /// @dev Checks if the poll coordinator is the transaction sender.
     /// @param pollId: Id of the poll.
     modifier onlyCoordinator(uint256 pollId) {
@@ -46,11 +42,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
 
         _createGroup(pollId, merkleTreeDepth);
 
-        Poll memory poll;
-
-        poll.coordinator = coordinator;
-
-        polls[pollId] = poll;
+        polls[pollId].coordinator = coordinator;
 
         emit PollCreated(pollId, coordinator);
     }
@@ -82,13 +74,11 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
         uint256 pollId,
         uint256[8] calldata proof
     ) public override {
-        Poll memory poll = polls[pollId];
-
-        if (poll.state != PollState.Ongoing) {
+        if (polls[pollId].state != PollState.Ongoing) {
             revert Semaphore__PollIsNotOngoing();
         }
 
-        if (nullifierHashes[nullifierHash]) {
+        if (polls[pollId].nullifierHashes[nullifierHash]) {
             revert Semaphore__YouAreUsingTheSameNillifierTwice();
         }
 
@@ -97,7 +87,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
 
         verifier.verifyProof(merkleTreeRoot, nullifierHash, vote, pollId, proof, merkleTreeDepth);
 
-        nullifierHashes[nullifierHash] = true;
+        polls[pollId].nullifierHashes[nullifierHash] = true;
 
         emit VoteAdded(pollId, vote);
     }
