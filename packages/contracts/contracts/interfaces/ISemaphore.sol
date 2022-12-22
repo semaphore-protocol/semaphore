@@ -1,8 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.4;
 
-/// @title Semaphore interface.
-/// @dev Interface of a Semaphore contract.
+/// @title Semaphore contract interface.
 interface ISemaphore {
     error Semaphore__CallerIsNotTheGroupAdmin();
     error Semaphore__MerkleTreeDepthIsNotSupported();

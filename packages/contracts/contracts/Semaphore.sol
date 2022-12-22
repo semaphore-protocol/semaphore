@@ -6,6 +6,12 @@ import "./interfaces/ISemaphoreVerifier.sol";
 import "./base/SemaphoreGroups.sol";
 
 /// @title Semaphore
+/// @dev This contract uses the Semaphore base contracts to provide a complete service
+/// to allow admins to create and manage groups and their members to generate Semaphore proofs
+/// and verify them. Group admins can add, update or remove group members, and can be
+/// an Ethereum account or a smart contract. This contract also assigns each new Merkle tree
+/// generated with a new root a duration (or an expiry) within which the proofs generated with that root
+/// can be validated.
 contract Semaphore is ISemaphore, SemaphoreGroups {
     ISemaphoreVerifier public verifier;
 
@@ -159,6 +165,8 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
 
         uint256 currentMerkleTreeRoot = getMerkleTreeRoot(groupId);
 
+        // A proof could have used an old Merkle tree root.
+        // https://github.com/semaphore-protocol/semaphore/issues/98
         if (merkleTreeRoot != currentMerkleTreeRoot) {
             uint256 merkleRootCreationDate = groups[groupId].merkleRootCreationDates[merkleTreeRoot];
             uint256 merkleTreeDuration = groups[groupId].merkleTreeDuration;
