@@ -151,7 +151,9 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 externalNullifier,
         uint256[8] calldata proof
     ) external override {
-        if (getMerkleTreeDepth(groupId) == 0) {
+        uint256 merkleTreeDepth = getMerkleTreeDepth(groupId);
+
+        if (merkleTreeDepth == 0) {
             revert Semaphore__GroupDoesNotExist();
         }
 
@@ -173,8 +175,6 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         if (groups[groupId].nullifierHashes[nullifierHash]) {
             revert Semaphore__YouAreUsingTheSameNillifierTwice();
         }
-
-        uint256 merkleTreeDepth = getMerkleTreeDepth(groupId);
 
         verifier.verifyProof(merkleTreeRoot, nullifierHash, signal, externalNullifier, proof, merkleTreeDepth);
 
