@@ -6,7 +6,6 @@ pragma solidity 0.8.4;
 interface ISemaphoreGroups {
     error Semaphore__GroupDoesNotExist();
     error Semaphore__GroupAlreadyExists();
-    error Semaphore__GroupIdIsNotLessThanSnarkScalarField();
 
     /// @dev Emitted when a new group is created.
     /// @param groupId: Id of the group.
