@@ -1,8 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.4;
 
-/// @title SemaphoreWhistleblowing interface.
-/// @dev Interface of SemaphoreWhistleblowing contract.
+/// @title SemaphoreWhistleblowing contract interface.
 interface ISemaphoreWhistleblowing {
     error Semaphore__CallerIsNotTheEditor();
     error Semaphore__MerkleTreeDepthIsNotSupported();

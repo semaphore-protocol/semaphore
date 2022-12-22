@@ -6,9 +6,10 @@ import "../interfaces/ISemaphoreVerifier.sol";
 import "../base/SemaphoreGroups.sol";
 
 /// @title Semaphore whistleblowing contract.
+/// @notice It allows users to leak information anonymously .
 /// @dev The following code allows you to create entities for whistleblowers (e.g. non-profit
-/// organization, newspaper) and to allow them to publish news leaks anonymously.
-/// Leaks can be IPFS hashes, permanent links or other kinds of reference.
+/// organization, newspaper) and allow them to leak anonymously.
+/// Leaks can be IPFS hashes, permanent links or other kinds of references.
 contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreGroups {
     ISemaphoreVerifier public verifier;
 
