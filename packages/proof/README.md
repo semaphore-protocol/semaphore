@@ -73,11 +73,12 @@ yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-proto
 import { Identity } from "@semaphore-protocol/identity"
 import { Group } from "@semaphore-protocol/group"
 import { generateProof } from "@semaphore-protocol/proof"
+import { formatBytes32String } from "ethers/lib/utils"
 
 const identity = new Identity()
 const group = new Group()
-const externalNullifier = BigInt(1)
-const signal = "Hello world"
+const externalNullifier = 1
+const signal = formatBytes32String("Hello world")
 
 group.addMembers([...identityCommitments, identity.generateCommitment()])
 
