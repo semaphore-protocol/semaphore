@@ -19,9 +19,6 @@
     <a href="https://github.com/semaphore-protocol/semaphore/actions?query=workflow%3Aproduction">
         <img alt="GitHub Workflow test" src="https://img.shields.io/github/actions/workflow/status/semaphore-protocol/semaphore/production.yml?branch=main&label=test&style=flat-square&logo=github">
     </a>
-    <a href="https://github.com/semaphore-protocol/semaphore/actions?query=workflow%3Astyle">
-        <img alt="GitHub Workflow style" src="https://img.shields.io/github/actions/workflow/status/semaphore-protocol/semaphore/style.yml?branch=main&label=style&style=flat-square&logo=github">
-    </a>
     <a href="https://coveralls.io/github/semaphore-protocol/semaphore">
         <img alt="Coveralls" src="https://img.shields.io/coveralls/github/semaphore-protocol/semaphore?style=flat-square&logo=coveralls">
     </a>
@@ -196,6 +193,25 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
                 <!-- Downloads -->
                 <a href="https://npmjs.org/package/@semaphore-protocol/hardhat">
                     <img src="https://img.shields.io/npm/dm/@semaphore-protocol/hardhat.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/packages/cli">
+                    @semaphore-protocol/cli
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/cli">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/cli.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/cli">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/cli.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>
