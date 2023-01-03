@@ -64,6 +64,8 @@ program
                     .map((s) => `   ${chalk.cyan(`npm run ${s}`)}`)
                     .join("\n")}\n`
             )
+
+            console.info(` See the README.md file to understand how to use them!\n`)
         }
     })
 
