@@ -6,19 +6,11 @@ task("deploy", "Deploy a Greeter contract")
     .addOptionalParam("logs", "Print the logs", true, types.boolean)
     .setAction(async ({ logs, semaphore: semaphoreAddress, group: groupId }, { ethers, run }) => {
         if (!semaphoreAddress) {
-            const { address: verifierAddress } = await run("deploy:verifier", { logs, merkleTreeDepth: 20 })
-
-            const { address } = await run("deploy:semaphore", {
-                logs,
-                verifiers: [
-                    {
-                        merkleTreeDepth: 20,
-                        contractAddress: verifierAddress
-                    }
-                ]
+            const { semaphore } = await run("deploy:semaphore", {
+                logs
             })
 
-            semaphoreAddress = address
+            semaphoreAddress = semaphore.address
         }
 
         const Greeter = await ethers.getContractFactory("Greeter")
