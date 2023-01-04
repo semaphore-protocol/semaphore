@@ -15,7 +15,7 @@ describe("Greeter", () => {
 
     const users: any[] = []
     const groupId = "42"
-    const group = new Group()
+    const group = new Group(groupId)
 
     before(async () => {
         if (!existsSync(`${snarkArtifactsPath}/semaphore.wasm`)) {
@@ -35,8 +35,8 @@ describe("Greeter", () => {
             username: ethers.utils.formatBytes32String("anon2")
         })
 
-        group.addMember(users[0].identity.generateCommitment())
-        group.addMember(users[1].identity.generateCommitment())
+        group.addMember(users[0].identity.commitment)
+        group.addMember(users[1].identity.commitment)
     })
 
     describe("# joinGroup", () => {
@@ -61,7 +61,7 @@ describe("Greeter", () => {
 
             const transaction = greeter.greet(
                 greeting,
-                fullProof.publicSignals.merkleRoot,
+                fullProof.publicSignals.merkleTreeRoot,
                 fullProof.publicSignals.nullifierHash,
                 solidityProof
             )

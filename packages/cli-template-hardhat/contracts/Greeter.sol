@@ -6,7 +6,7 @@ import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 /// @title Greeter contract.
 /// @dev The following code is just a example to show how Semaphore can be used.
 contract Greeter {
-    event NewGreeting(bytes32 greeting);
+    event NewGreeting(uint256 greeting);
     event NewUser(uint256 identityCommitment, bytes32 username);
 
     ISemaphore public semaphore;
@@ -18,7 +18,7 @@ contract Greeter {
         semaphore = ISemaphore(semaphoreAddress);
         groupId = _groupId;
 
-        semaphore.createGroup(groupId, 20, 0, address(this));
+        semaphore.createGroup(groupId, 20, address(this));
     }
 
     function joinGroup(uint256 identityCommitment, bytes32 username) external {
@@ -30,7 +30,7 @@ contract Greeter {
     }
 
     function greet(
-        bytes32 greeting,
+        uint256 greeting,
         uint256 merkleTreeRoot,
         uint256 nullifierHash,
         uint256[8] calldata proof
