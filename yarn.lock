@@ -3074,11 +3074,11 @@ __metadata:
     "@nomicfoundation/hardhat-toolbox": ^2.0.0
     "@nomiclabs/hardhat-ethers": ^2.0.0
     "@nomiclabs/hardhat-etherscan": ^3.0.0
-    "@semaphore-protocol/contracts": 3.0.0-beta.5
-    "@semaphore-protocol/group": 3.0.0-beta.5
-    "@semaphore-protocol/hardhat": 3.0.0-beta.5
-    "@semaphore-protocol/identity": 3.0.0-beta.5
-    "@semaphore-protocol/proof": 3.0.0-beta.5
+    "@semaphore-protocol/contracts": 3.0.0-beta.6
+    "@semaphore-protocol/group": 3.0.0-beta.6
+    "@semaphore-protocol/hardhat": 3.0.0-beta.6
+    "@semaphore-protocol/identity": 3.0.0-beta.6
+    "@semaphore-protocol/proof": 3.0.0-beta.6
     "@typechain/ethers-v5": ^10.1.0
     "@typechain/hardhat": ^6.1.2
     "@types/chai": ^4.2.0
@@ -3102,7 +3102,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/cli@workspace:packages/cli"
   dependencies:
-    "@semaphore-protocol/subgraph": 3.0.0-beta.5
+    "@semaphore-protocol/subgraph": 3.0.0-beta.6
     "@types/clear": ^0.1.2
     "@types/figlet": ^1.5.5
     chalk: ^5.1.2
@@ -3120,17 +3120,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/contracts@npm:3.0.0-beta.5":
-  version: 3.0.0-beta.5
-  resolution: "@semaphore-protocol/contracts@npm:3.0.0-beta.5"
+"@semaphore-protocol/contracts@npm:3.0.0-beta.6":
+  version: 3.0.0-beta.6
+  resolution: "@semaphore-protocol/contracts@npm:3.0.0-beta.6"
   dependencies:
     "@openzeppelin/contracts": 4.7.3
     "@zk-kit/incremental-merkle-tree.sol": 1.3.3
-  checksum: 54681c0c321ee1ca85471173ff252b3cf4beb13285f4378ba1124a0b1d7a725dca41c7090bd49c55e7f35931e575b5231234a3c337c018f8694e0a02775713bf
+  checksum: 55d1a61d72c919402610b395862f6eb5a086946c05fffa3dbc28ea1f23df7ae336a1eaa301ffa40b8373dd523beba161a448a020e102c85a4c103d9ecada8ffd
   languageName: node
   linkType: hard
 
-"@semaphore-protocol/group@3.0.0-beta.5, @semaphore-protocol/group@workspace:packages/group":
+"@semaphore-protocol/group@3.0.0-beta.6, @semaphore-protocol/group@workspace:packages/group":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/group@workspace:packages/group"
   dependencies:
@@ -3145,12 +3145,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/hardhat@3.0.0-beta.5, @semaphore-protocol/hardhat@workspace:packages/hardhat":
+"@semaphore-protocol/hardhat@3.0.0-beta.6, @semaphore-protocol/hardhat@workspace:packages/hardhat":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/hardhat@workspace:packages/hardhat"
   dependencies:
     "@nomiclabs/hardhat-ethers": ^2.1.1
-    "@semaphore-protocol/contracts": 3.0.0-beta.5
+    "@semaphore-protocol/contracts": 3.0.0-beta.6
     circomlibjs: ^0.0.8
     ethers: ^5.7.1
     hardhat: ^2.0.0
@@ -3162,7 +3162,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/identity@3.0.0-beta.5, @semaphore-protocol/identity@workspace:packages/identity":
+"@semaphore-protocol/identity@3.0.0-beta.6, @semaphore-protocol/identity@workspace:packages/identity":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/identity@workspace:packages/identity"
   dependencies:
@@ -3177,7 +3177,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/proof@3.0.0-beta.5, @semaphore-protocol/proof@workspace:packages/proof":
+"@semaphore-protocol/proof@3.0.0-beta.6, @semaphore-protocol/proof@workspace:packages/proof":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/proof@workspace:packages/proof"
   dependencies:
@@ -3193,12 +3193,12 @@ __metadata:
     snarkjs: ^0.4.13
     typedoc: ^0.22.11
   peerDependencies:
-    "@semaphore-protocol/group": 3.0.0-beta.5
-    "@semaphore-protocol/identity": 3.0.0-beta.5
+    "@semaphore-protocol/group": 3.0.0-beta.6
+    "@semaphore-protocol/identity": 3.0.0-beta.6
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/subgraph@3.0.0-beta.5, @semaphore-protocol/subgraph@workspace:packages/subgraph":
+"@semaphore-protocol/subgraph@3.0.0-beta.6, @semaphore-protocol/subgraph@workspace:packages/subgraph":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/subgraph@workspace:packages/subgraph"
   dependencies:
