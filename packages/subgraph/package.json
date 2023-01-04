@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/subgraph",
-    "version": "2.6.1",
+    "version": "3.0.0-beta.5",
     "description": "A library to query Semaphore contracts.",
     "license": "MIT",
     "iife": "dist/index.js",
