@@ -16,6 +16,11 @@ function getNetworks(): NetworksUserConfig {
                 url: process.env.ETHEREUM_URL,
                 chainId: 5,
                 accounts
+            },
+            arbitrum: {
+                url: process.env.ETHEREUM_URL,
+                chainId: 42161,
+                accounts
             }
         }
     }
