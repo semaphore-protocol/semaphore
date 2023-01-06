@@ -32,6 +32,10 @@
         <img alt="Code style prettier" src="https://img.shields.io/badge/code%20style-prettier-f8bc45?style=flat-square&logo=prettier">
     </a>
     <img alt="Repository top language" src="https://img.shields.io/github/languages/top/semaphore-protocol/semaphore?style=flat-square">
+    <a href="https://www.gitpoap.io/gh/semaphore-protocol/semaphore" target="_blank">
+        <img src="https://public-api.gitpoap.io/v1/repo/semaphore-protocol/semaphore/badge">
+    </a>
+
 </p>
 
 <div align="center">
