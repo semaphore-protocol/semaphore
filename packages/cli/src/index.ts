@@ -27,8 +27,8 @@ program
     })
 
 program
-    .command("init")
-    .description("Initialize a Semaphore project with a supported template.")
+    .command("create")
+    .description("Create a Semaphore project with a supported template.")
     .argument("<project-directory>", "Directory of the project.")
     // .option("-t, --template <template-name>", "Supported Semaphore template.", "hardhat")
     .action(async (projectDirectory) => {
