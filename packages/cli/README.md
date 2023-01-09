@@ -60,7 +60,7 @@ npm i -g @semaphore-protocol/cli
 or run specific commands with `npx`:
 
 ```bash
-npx @semaphore-protocol/cli init my-app
+npx @semaphore-protocol/cli create my-app
 ```
 
 ## 📜 Usage
@@ -75,7 +75,7 @@ Options:
 -h, --help Display this help.
 
 Commands:
-init <project-directory> Initialize a Semaphore project with a supported template.
+create <project-directory> Create a Semaphore project with a supported template.
 get-groups [options] Get the list of groups from a supported network (Goerli or Arbitrum).
 get-group [options] <group-id> Get the data of a group from a supported network (Goerli or Arbitrum).
 help [command] Display help for a specific command.
