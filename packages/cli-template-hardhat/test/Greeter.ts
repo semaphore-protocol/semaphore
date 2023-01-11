@@ -5,6 +5,7 @@ import { expect } from "chai"
 import download from "download"
 import { existsSync } from "fs"
 import { ethers, run } from "hardhat"
+// @ts-ignore: typechain-types folder will be generated after contracts compilation
 import { Greeter } from "../typechain-types"
 
 describe("Greeter", () => {
