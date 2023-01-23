@@ -73,12 +73,12 @@ yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-proto
 import { Identity } from "@semaphore-protocol/identity"
 import { Group } from "@semaphore-protocol/group"
 import { generateProof } from "@semaphore-protocol/proof"
-import { formatBytes32String } from "ethers/lib/utils"
+import { utils } from "ethers"
 
 const identity = new Identity()
 const group = new Group()
-const externalNullifier = 1
-const signal = formatBytes32String("Hello world")
+const externalNullifier = utils.formatBytes32String("Topic")
+const signal = utils.formatBytes32String("Hello world")
 
 group.addMembers([...identityCommitments, identity.generateCommitment()])
 
@@ -97,28 +97,4 @@ const fullProof = await generateProof(identity, group, externalNullifier, signal
 import { verifyProof } from "@semaphore-protocol/proof"
 
 await verifyProof(fullProof, 20)
-```
-
-\# **packToSolidityProof**(proof: _Proof_): _SolidityProof_
-
-```typescript
-import { packToSolidityProof } from "@semaphore-protocol/proof"
-
-const solidityProof = packToSolidityProof(fullProof.proof)
-```
-
-\# **generateNullifierHash**(externalNullifier: _BigNumberish_, identityNullifier: _BigNumberish_): _bigint_
-
-```typescript
-import { generateNullifierHash } from "@semaphore-protocol/proof"
-
-const nullifierHash = generateNullifierHash(externalNullifier, identity.getNullifier())
-```
-
-\# **generateSignalHash**(signal: _string_): _bigint_
-
-```typescript
-import { generateSignalHash } from "@semaphore-protocol/proof"
-
-const signalHash = generateSignalHash(signal)
 ```

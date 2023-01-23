@@ -1,17 +1,19 @@
+import { formatBytes32String } from "@ethersproject/strings"
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { getCurveFromName } from "ffjavascript"
 import generateProof from "./generateProof"
 import hash from "./hash"
-import packToSolidityProof from "./packToSolidityProof"
+import packProof from "./packProof"
 import { FullProof } from "./types"
+import unpackProof from "./unpackProof"
 import verifyProof from "./verifyProof"
 
 describe("Proof", () => {
     const treeDepth = Number(process.env.TREE_DEPTH) || 20
 
-    const externalNullifier = 1
-    const signal = 2
+    const externalNullifier = formatBytes32String("Topic")
+    const signal = formatBytes32String("Hello world")
 
     const wasmFilePath = `./snark-artifacts/${treeDepth}/semaphore.wasm`
     const zkeyFilePath = `./snark-artifacts/${treeDepth}/semaphore.zkey`
@@ -65,7 +67,7 @@ describe("Proof", () => {
             })
 
             expect(typeof fullProof).toBe("object")
-            expect(fullProof.publicSignals.merkleTreeRoot).toBe(group.root.toString())
+            expect(fullProof.merkleTreeRoot).toBe(group.root.toString())
         }, 20000)
 
         it("Should generate a Semaphore proof passing a Merkle proof as parameter", async () => {
@@ -79,7 +81,7 @@ describe("Proof", () => {
             })
 
             expect(typeof fullProof).toBe("object")
-            expect(fullProof.publicSignals.merkleTreeRoot).toBe(group.root.toString())
+            expect(fullProof.merkleTreeRoot).toBe(group.root.toString())
         }, 20000)
     })
 
@@ -101,13 +103,17 @@ describe("Proof", () => {
         it("Should hash the signal value correctly", async () => {
             const signalHash = hash(signal)
 
-            expect(signalHash.toString()).toBe(fullProof.publicSignals.signalHash)
+            expect(signalHash.toString()).toBe(
+                "8665846418922331996225934941481656421248110469944536651334918563951783029"
+            )
         })
 
         it("Should hash the external nullifier value correctly", async () => {
             const externalNullifierHash = hash(externalNullifier)
 
-            expect(externalNullifierHash.toString()).toBe(fullProof.publicSignals.externalNullifier)
+            expect(externalNullifierHash.toString()).toBe(
+                "244178201824278269437519042830883072613014992408751798420801126401127326826"
+            )
         })
 
         it("Should hash a number", async () => {
@@ -141,11 +147,12 @@ describe("Proof", () => {
         })
     })
 
-    describe("# packToSolidityProof", () => {
-        it("Should return a Solidity proof", async () => {
-            const solidityProof = packToSolidityProof(fullProof.proof)
+    describe("# packProof/unpackProof", () => {
+        it("Should return a packed proof", async () => {
+            const originalProof = unpackProof(fullProof.proof)
+            const proof = packProof(originalProof)
 
-            expect(solidityProof).toHaveLength(8)
+            expect(proof).toStrictEqual(fullProof.proof)
         })
     })
 })
