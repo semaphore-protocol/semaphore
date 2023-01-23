@@ -1,4 +1,4 @@
-export type Network = "goerli" // | "arbitrum"
+export type Network = "goerli" | "arbitrum"
 
 export type GroupOptions = {
     members?: boolean
