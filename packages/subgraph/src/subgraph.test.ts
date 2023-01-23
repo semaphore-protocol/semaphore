@@ -14,10 +14,10 @@ describe("Subgraph", () => {
     describe("# Subgraph", () => {
         it("Should instantiate a subgraph object", () => {
             subgraph = new Subgraph("goerli")
-            // const subgraph1 = new Subgraph()
+            const subgraph1 = new Subgraph()
 
             expect(subgraph.url).toContain("goerli")
-            // expect(subgraph1.url).toContain("arbitrum")
+            expect(subgraph1.url).toContain("arbitrum")
         })
 
         it("Should throw an error if there is a wrong network", () => {
