@@ -1,7 +1,7 @@
 /* eslint-disable jest/valid-expect */
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import { generateProof, packToSolidityProof, PublicSignals, SolidityProof } from "@semaphore-protocol/proof"
+import { FullProof, generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { Signer } from "ethers"
 import { ethers, run } from "hardhat"
@@ -142,27 +142,23 @@ describe("SemaphoreVoting", () => {
 
         group.addMembers([identity.commitment, BigInt(1)])
 
-        let solidityProof: SolidityProof
-        let publicSignals: PublicSignals
+        let fullProof: FullProof
 
         before(async () => {
             await semaphoreVotingContract.connect(accounts[1]).addVoter(pollIds[1], BigInt(1))
             await semaphoreVotingContract.connect(accounts[1]).startPoll(pollIds[1], encryptionKey)
             await semaphoreVotingContract.createPoll(pollIds[2], coordinator, treeDepth)
 
-            const fullProof = await generateProof(identity, group, pollIds[1], vote, {
+            fullProof = await generateProof(identity, group, pollIds[1], vote, {
                 wasmFilePath,
                 zkeyFilePath
             })
-
-            publicSignals = fullProof.publicSignals
-            solidityProof = packToSolidityProof(fullProof.proof)
         })
 
         it("Should not cast a vote if the poll is not ongoing", async () => {
             const transaction = semaphoreVotingContract
                 .connect(accounts[1])
-                .castVote(vote, publicSignals.nullifierHash, pollIds[2], solidityProof)
+                .castVote(vote, fullProof.nullifierHash, pollIds[2], fullProof.proof)
 
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreVotingContract,
@@ -173,7 +169,7 @@ describe("SemaphoreVoting", () => {
         it("Should not cast a vote if the proof is not valid", async () => {
             const transaction = semaphoreVotingContract
                 .connect(accounts[1])
-                .castVote(vote, 0, pollIds[1], solidityProof)
+                .castVote(vote, 0, pollIds[1], fullProof.proof)
 
             await expect(transaction).to.be.revertedWithCustomError(pairingContract, "Semaphore__InvalidProof")
         })
@@ -181,7 +177,7 @@ describe("SemaphoreVoting", () => {
         it("Should cast a vote", async () => {
             const transaction = semaphoreVotingContract
                 .connect(accounts[1])
-                .castVote(vote, publicSignals.nullifierHash, pollIds[1], solidityProof)
+                .castVote(vote, fullProof.nullifierHash, pollIds[1], fullProof.proof)
 
             await expect(transaction).to.emit(semaphoreVotingContract, "VoteAdded").withArgs(pollIds[1], vote)
         })
@@ -189,7 +185,7 @@ describe("SemaphoreVoting", () => {
         it("Should not cast a vote twice", async () => {
             const transaction = semaphoreVotingContract
                 .connect(accounts[1])
-                .castVote(vote, publicSignals.nullifierHash, pollIds[1], solidityProof)
+                .castVote(vote, fullProof.nullifierHash, pollIds[1], fullProof.proof)
 
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreVotingContract,

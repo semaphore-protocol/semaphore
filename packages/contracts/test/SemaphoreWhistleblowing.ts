@@ -1,7 +1,7 @@
 /* eslint-disable jest/valid-expect */
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import { generateProof, packToSolidityProof, PublicSignals, SolidityProof } from "@semaphore-protocol/proof"
+import { FullProof, generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { Signer, utils } from "ethers"
 import { ethers, run } from "hardhat"
@@ -143,8 +143,7 @@ describe("SemaphoreWhistleblowing", () => {
 
         group.addMembers([identity.commitment, BigInt(1)])
 
-        let solidityProof: SolidityProof
-        let publicSignals: PublicSignals
+        let fullProof: FullProof
 
         before(async () => {
             await semaphoreWhistleblowingContract.createEntity(entityIds[1], editor, treeDepth)
@@ -153,19 +152,16 @@ describe("SemaphoreWhistleblowing", () => {
                 .addWhistleblower(entityIds[1], identity.commitment)
             await semaphoreWhistleblowingContract.connect(accounts[1]).addWhistleblower(entityIds[1], BigInt(1))
 
-            const fullProof = await generateProof(identity, group, entityIds[1], leak, {
+            fullProof = await generateProof(identity, group, entityIds[1], leak, {
                 wasmFilePath,
                 zkeyFilePath
             })
-
-            publicSignals = fullProof.publicSignals
-            solidityProof = packToSolidityProof(fullProof.proof)
         })
 
         it("Should not publish a leak if the proof is not valid", async () => {
             const transaction = semaphoreWhistleblowingContract
                 .connect(accounts[1])
-                .publishLeak(leak, 0, entityIds[1], solidityProof)
+                .publishLeak(leak, 0, entityIds[1], fullProof.proof)
 
             await expect(transaction).to.be.revertedWithCustomError(pairingContract, "Semaphore__InvalidProof")
         })
@@ -173,7 +169,7 @@ describe("SemaphoreWhistleblowing", () => {
         it("Should publish a leak", async () => {
             const transaction = semaphoreWhistleblowingContract
                 .connect(accounts[1])
-                .publishLeak(leak, publicSignals.nullifierHash, entityIds[1], solidityProof)
+                .publishLeak(leak, fullProof.nullifierHash, entityIds[1], fullProof.proof)
 
             await expect(transaction)
                 .to.emit(semaphoreWhistleblowingContract, "LeakPublished")
