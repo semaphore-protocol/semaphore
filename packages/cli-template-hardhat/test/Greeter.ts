@@ -1,6 +1,6 @@
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import { generateProof, packToSolidityProof } from "@semaphore-protocol/proof"
+import { generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import download from "download"
 import { existsSync } from "fs"
@@ -58,13 +58,12 @@ describe("Greeter", () => {
                 wasmFilePath: `${snarkArtifactsPath}/semaphore.wasm`,
                 zkeyFilePath: `${snarkArtifactsPath}/semaphore.zkey`
             })
-            const solidityProof = packToSolidityProof(fullProof.proof)
 
             const transaction = greeter.greet(
                 greeting,
-                fullProof.publicSignals.merkleTreeRoot,
-                fullProof.publicSignals.nullifierHash,
-                solidityProof
+                fullProof.merkleTreeRoot,
+                fullProof.nullifierHash,
+                fullProof.proof
             )
 
             await expect(transaction).to.emit(greeter, "NewGreeting").withArgs(greeting)
