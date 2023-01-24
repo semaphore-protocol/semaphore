@@ -2,7 +2,7 @@
 /* eslint-disable jest/valid-expect */
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "@semaphore-protocol/proof"
+import { FullProof, generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { constants, Signer } from "ethers"
 import { ethers, run } from "hardhat"
@@ -238,7 +238,6 @@ describe("Semaphore", () => {
         group.addMembers(members)
 
         let fullProof: FullProof
-        let solidityProof: SolidityProof
 
         before(async () => {
             await semaphoreContract.addMembers(groupId, [members[1], members[2]])
@@ -247,7 +246,6 @@ describe("Semaphore", () => {
                 wasmFilePath,
                 zkeyFilePath
             })
-            solidityProof = packToSolidityProof(fullProof.proof)
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
@@ -268,11 +266,11 @@ describe("Semaphore", () => {
         it("Should throw an exception if the proof is not valid", async () => {
             const transaction = semaphoreContract.verifyProof(
                 groupId,
-                group.root,
-                signal,
-                fullProof.publicSignals.nullifierHash,
+                fullProof.merkleTreeRoot,
+                fullProof.signal,
+                fullProof.nullifierHash,
                 0,
-                solidityProof
+                fullProof.proof
             )
 
             await expect(transaction).to.be.revertedWithCustomError(pairingContract, "Semaphore__InvalidProof")
@@ -281,32 +279,32 @@ describe("Semaphore", () => {
         it("Should verify a proof for an onchain group correctly", async () => {
             const transaction = semaphoreContract.verifyProof(
                 groupId,
-                group.root,
-                signal,
-                fullProof.publicSignals.nullifierHash,
-                fullProof.publicSignals.merkleTreeRoot,
-                solidityProof
+                fullProof.merkleTreeRoot,
+                fullProof.signal,
+                fullProof.nullifierHash,
+                fullProof.merkleTreeRoot,
+                fullProof.proof
             )
 
             await expect(transaction)
                 .to.emit(semaphoreContract, "ProofVerified")
                 .withArgs(
                     groupId,
-                    group.root,
-                    fullProof.publicSignals.nullifierHash,
-                    fullProof.publicSignals.merkleTreeRoot,
-                    signal
+                    fullProof.merkleTreeRoot,
+                    fullProof.nullifierHash,
+                    fullProof.merkleTreeRoot,
+                    fullProof.signal
                 )
         })
 
         it("Should not verify the same proof for an onchain group twice", async () => {
             const transaction = semaphoreContract.verifyProof(
                 groupId,
-                group.root,
-                signal,
-                fullProof.publicSignals.nullifierHash,
-                fullProof.publicSignals.merkleTreeRoot,
-                solidityProof
+                fullProof.merkleTreeRoot,
+                fullProof.signal,
+                fullProof.nullifierHash,
+                fullProof.merkleTreeRoot,
+                fullProof.proof
             )
 
             await expect(transaction).to.be.revertedWithCustomError(
@@ -325,15 +323,14 @@ describe("Semaphore", () => {
                 wasmFilePath,
                 zkeyFilePath
             })
-            const solidityProof = packToSolidityProof(fullProof.proof)
 
             const transaction = semaphoreContract.verifyProof(
                 groupId,
-                group.root,
-                signal,
-                fullProof.publicSignals.nullifierHash,
-                0,
-                solidityProof
+                fullProof.merkleTreeRoot,
+                fullProof.signal,
+                fullProof.nullifierHash,
+                fullProof.merkleTreeRoot,
+                fullProof.proof
             )
 
             await expect(transaction).to.be.revertedWithCustomError(

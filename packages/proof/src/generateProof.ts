@@ -1,11 +1,22 @@
+import { BigNumber } from "@ethersproject/bignumber"
 import { BytesLike, Hexable } from "@ethersproject/bytes"
 import { Group } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
 import { MerkleProof } from "@zk-kit/incremental-merkle-tree"
 import { groth16 } from "snarkjs"
 import hash from "./hash"
+import packProof from "./packProof"
 import { FullProof, SnarkArtifacts } from "./types"
 
+/**
+ * Generates a Semaphore proof.
+ * @param identity The Semaphore identity.
+ * @param groupOrMerkleProof The Semaphore group or its Merkle proof.
+ * @param externalNullifier The external nullifier.
+ * @param signal The Semaphore signal.
+ * @param snarkArtifacts The SNARK artifacts.
+ * @returns The Semaphore proof ready to be verified.
+ */
 export default async function generateProof(
     { trapdoor, nullifier, commitment }: Identity,
     groupOrMerkleProof: Group | MerkleProof,
@@ -48,12 +59,10 @@ export default async function generateProof(
     )
 
     return {
-        proof,
-        publicSignals: {
-            merkleTreeRoot: publicSignals[0],
-            nullifierHash: publicSignals[1],
-            signalHash: publicSignals[2],
-            externalNullifier: publicSignals[3]
-        }
+        merkleTreeRoot: publicSignals[0],
+        nullifierHash: publicSignals[1],
+        signal: BigNumber.from(signal).toString(),
+        externalNullifier: BigNumber.from(externalNullifier).toString(),
+        proof: packProof(proof)
     }
 }
