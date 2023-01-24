@@ -1,14 +1,19 @@
 import { groth16 } from "snarkjs"
+import hash from "./hash"
 import { FullProof } from "./types"
+import unpackProof from "./unpackProof"
 import verificationKeys from "./verificationKeys.json"
 
 /**
- * Verifies a SnarkJS proof.
- * @param fullProof The SnarkJS full proof.
+ * Verifies a Semaphore proof.
+ * @param fullProof The SnarkJS Semaphore proof.
  * @param treeDepth The Merkle tree depth.
  * @returns True if the proof is valid, false otherwise.
  */
-export default function verifyProof({ proof, publicSignals }: FullProof, treeDepth: number): Promise<boolean> {
+export default function verifyProof(
+    { merkleTreeRoot, nullifierHash, externalNullifier, signal, proof }: FullProof,
+    treeDepth: number
+): Promise<boolean> {
     if (treeDepth < 16 || treeDepth > 32) {
         throw new TypeError("The tree depth must be a number between 16 and 32")
     }
@@ -21,12 +26,7 @@ export default function verifyProof({ proof, publicSignals }: FullProof, treeDep
 
     return groth16.verify(
         verificationKey,
-        [
-            publicSignals.merkleTreeRoot,
-            publicSignals.nullifierHash,
-            publicSignals.signalHash,
-            publicSignals.externalNullifier
-        ],
-        proof
+        [merkleTreeRoot, nullifierHash, hash(signal), hash(externalNullifier)],
+        unpackProof(proof)
     )
 }
