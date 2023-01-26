@@ -7,7 +7,7 @@ export default class Group {
     merkleTree: IncrementalMerkleTree
 
     /**
-     * Initializes the group with the tree depth and the zero value.
+     * Initializes the group with the group id and the tree depth.
      * @param groupId Group identifier.
      * @param treeDepth Tree depth.
      */
