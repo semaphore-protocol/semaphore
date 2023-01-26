@@ -17,7 +17,7 @@
         <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
     </a>
     <a href="https://github.com/semaphore-protocol/semaphore/actions?query=workflow%3Aproduction">
-        <img alt="GitHub Workflow test" src="https://img.shields.io/github/workflow/status/semaphore-protocol/semaphore/production?label=test&style=flat-square&logo=github">
+        <img alt="GitHub Workflow test" src="https://img.shields.io/github/actions/workflow/status/semaphore-protocol/semaphore/production.yml?branch=main&label=test&style=flat-square&logo=github">
     </a>
     <a href="https://coveralls.io/github/semaphore-protocol/semaphore">
         <img alt="Coveralls" src="https://img.shields.io/coveralls/github/semaphore-protocol/semaphore?style=flat-square&logo=coveralls">
@@ -61,9 +61,7 @@
 | Semaphore is a protocol, designed to be a simple and generic privacy layer for Ethereum DApps. Using zero knowledge, Ethereum users can prove their membership of a group and send signals such as votes or endorsements without revealing their original identity. |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/packages/contracts) (NPM: `@semaphore-protocol/contracts`) and JavaScript libraries to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit [semaphore.appliedzkp.org](https://semaphore.appliedzkp.org).
-
-You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-protocol/semaphore/tree/version/1.0.0).
+The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/packages/contracts) and JavaScript libraries to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit [semaphore.appliedzkp.org](https://semaphore.appliedzkp.org).
 
 ---
 
@@ -197,6 +195,25 @@ You can find Semaphore V1 on [`version/1.0.0`](https://github.com/semaphore-prot
                 <!-- Downloads -->
                 <a href="https://npmjs.org/package/@semaphore-protocol/hardhat">
                     <img src="https://img.shields.io/npm/dm/@semaphore-protocol/hardhat.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/packages/cli">
+                    @semaphore-protocol/cli
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/cli">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/cli.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/cli">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/cli.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>

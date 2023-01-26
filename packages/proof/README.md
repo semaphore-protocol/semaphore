@@ -67,59 +67,34 @@ yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-proto
 
 ## 📜 Usage
 
-\# **generateProof**(identity: _Identity_, group: _Group_, externalNullifier: _BigNumberish_, signal: _string_, snarkArtifacts?: _SnarkArtifacts_): Promise\<_SemaphoreFullProof_>
+\# **generateProof**(identity: _Identity_, group: _Group_ | _MerkleProof_, externalNullifier: _BigNumberish_, signal: _string_, snarkArtifacts?: _SnarkArtifacts_): Promise\<_SemaphoreFullProof_>
 
 ```typescript
 import { Identity } from "@semaphore-protocol/identity"
 import { Group } from "@semaphore-protocol/group"
 import { generateProof } from "@semaphore-protocol/proof"
+import { utils } from "ethers"
 
 const identity = new Identity()
 const group = new Group()
-const externalNullifier = BigInt(1)
-const signal = "Hello world"
+const externalNullifier = utils.formatBytes32String("Topic")
+const signal = utils.formatBytes32String("Hello world")
 
 group.addMembers([...identityCommitments, identity.generateCommitment()])
 
-const fullProof = await generateProof(identity, merkleProof, externalNullifier, signal, {
+const fullProof = await generateProof(identity, group, externalNullifier, signal, {
     zkeyFilePath: "./semaphore.zkey",
     wasmFilePath: "./semaphore.wasm"
 })
 
-// You can also use the default zkey/wasm files (only for browsers!).
-// const fullProof = await generateProof(identity, merkleProof, externalNullifier, signal)
+// You can also use the default zkey/wasm files (it only works from browsers!).
+// const fullProof = await generateProof(identity, group, externalNullifier, signal)
 ```
 
-\# **verifyProof**(verificationKey: _any_, fullProof: _FullProof_): Promise\<_boolean_>
+\# **verifyProof**(fullProof: _FullProof_, treeDepth: _number_): Promise\<_boolean_>
 
 ```typescript
 import { verifyProof } from "@semaphore-protocol/proof"
 
-const verificationKey = JSON.parse(fs.readFileSync("/semaphore.json", "utf-8"))
-
-await verifyProof(verificationKey, fullProof)
-```
-
-\# **packToSolidityProof**(proof: _Proof_): _SolidityProof_
-
-```typescript
-import { packToSolidityProof } from "@semaphore-protocol/proof"
-
-const solidityProof = packToSolidityProof(fullProof.proof)
-```
-
-\# **generateNullifierHash**(externalNullifier: _BigNumberish_, identityNullifier: _BigNumberish_): _bigint_
-
-```typescript
-import { generateNullifierHash } from "@semaphore-protocol/proof"
-
-const nullifierHash = generateNullifierHash(externalNullifier, identity.getNullifier())
-```
-
-\# **generateSignalHash**(signal: _string_): _bigint_
-
-```typescript
-import { generateSignalHash } from "@semaphore-protocol/proof"
-
-const signalHash = generateSignalHash(signal)
+await verifyProof(fullProof, 20)
 ```

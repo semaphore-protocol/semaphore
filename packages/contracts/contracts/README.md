@@ -92,29 +92,26 @@ yarn test:report-gas
 
 ### Deploy contracts
 
-Deploy a verifier contract with depth = 20:
+Deploy the `Semaphore.sol` contract without any parameter:
 
 ```bash
-yarn deploy:verifier --depth 20
+yarn deploy:semaphore
 ```
 
-Deploy the `Semaphore.sol` contract with one verifier:
+or deploy it by providing the addresses of the contracts/libraries on which it depends:
 
 ```bash
-yarn deploy:semaphore --verifiers '[{"merkleTreeDepth": 20, "contractAddress": "0x06bcD633988c1CE7Bd134DbE2C12119b6f3E4bD1"}]'
+yarn deploy:semaphore --semaphoreVerifier <address>
 ```
 
-Deploy all verifiers and Semaphore contract:
+> **Note**  
+> Run `yarn deploy:semaphore --help` to see the complete list.
+
+If you want to deploy your contract in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, goerli, arbitrum). Or you can specify it as an option:
 
 ```bash
-yarn deploy:all
-```
-
-If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, goerli, arbitrum). Or you can specify it as option:
-
-```bash
-yarn deploy:all --network goerli
-yarn deploy:all --network localhost
+yarn deploy:semaphore --network goerli
+yarn deploy:semaphore --network arbitrum
 ```
 
 If you want to deploy contracts on Goerli or Arbitrum, remember to provide a valid private key and an Infura API in your `.env` file.

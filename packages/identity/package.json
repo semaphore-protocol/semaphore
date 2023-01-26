@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/identity",
-    "version": "2.6.1",
+    "version": "3.0.0-beta.8",
     "description": "A library to create Semaphore identities.",
     "license": "MIT",
     "main": "dist/index.node.js",
@@ -36,9 +36,9 @@
     },
     "dependencies": {
         "@ethersproject/bignumber": "^5.5.0",
+        "@ethersproject/keccak256": "^5.7.0",
         "@ethersproject/random": "^5.5.1",
-        "@ethersproject/sha2": "^5.6.1",
         "@ethersproject/strings": "^5.6.1",
-        "circomlibjs": "0.0.8"
+        "poseidon-lite": "0.0.2"
     }
 }

@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/group",
-    "version": "2.6.1",
+    "version": "3.0.0-beta.8",
     "description": "A library to create and manage Semaphore groups.",
     "license": "MIT",
     "main": "dist/index.node.js",
@@ -35,7 +35,10 @@
         "typedoc": "^0.22.11"
     },
     "dependencies": {
+        "@ethersproject/bignumber": "^5.7.0",
+        "@ethersproject/bytes": "^5.7.0",
+        "@ethersproject/keccak256": "^5.7.0",
         "@zk-kit/incremental-merkle-tree": "1.0.0",
-        "circomlibjs": "0.0.8"
+        "poseidon-lite": "^0.0.2"
     }
 }

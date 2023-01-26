@@ -1,8 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.4;
 
-/// @title SemaphoreWhistleblowing interface.
-/// @dev Interface of SemaphoreWhistleblowing contract.
+/// @title SemaphoreWhistleblowing contract interface.
 interface ISemaphoreWhistleblowing {
     error Semaphore__CallerIsNotTheEditor();
     error Semaphore__MerkleTreeDepthIsNotSupported();
@@ -20,7 +19,7 @@ interface ISemaphoreWhistleblowing {
     /// @dev Emitted when a whistleblower publish a new leak.
     /// @param entityId: Id of the entity.
     /// @param leak: News leak.
-    event LeakPublished(uint256 indexed entityId, bytes32 leak);
+    event LeakPublished(uint256 indexed entityId, uint256 leak);
 
     /// @dev Creates an entity and the associated Merkle tree/group.
     /// @param entityId: Id of the entity.
@@ -55,7 +54,7 @@ interface ISemaphoreWhistleblowing {
     /// @param entityId: Id of the entity.
     /// @param proof: Private zk-proof parameters.
     function publishLeak(
-        bytes32 leak,
+        uint256 leak,
         uint256 nullifierHash,
         uint256 entityId,
         uint256[8] calldata proof

@@ -1,8 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.4;
 
-/// @title SemaphoreVoting interface.
-/// @dev Interface of SemaphoreVoting contract.
+/// @title SemaphoreVoting contract interface.
 interface ISemaphoreVoting {
     error Semaphore__CallerIsNotThePollCoordinator();
     error Semaphore__MerkleTreeDepthIsNotSupported();
@@ -24,6 +23,7 @@ interface ISemaphoreVoting {
     struct Poll {
         address coordinator;
         PollState state;
+        mapping(uint256 => bool) nullifierHashes;
     }
 
     /// @dev Emitted when a new poll is created.
@@ -40,7 +40,7 @@ interface ISemaphoreVoting {
     /// @dev Emitted when a user votes on a poll.
     /// @param pollId: Id of the poll.
     /// @param vote: User encrypted vote.
-    event VoteAdded(uint256 indexed pollId, bytes32 vote);
+    event VoteAdded(uint256 indexed pollId, uint256 vote);
 
     /// @dev Emitted when a poll is ended.
     /// @param pollId: Id of the poll.
@@ -74,7 +74,7 @@ interface ISemaphoreVoting {
     /// @param pollId: Id of the poll.
     /// @param proof: Private zk-proof parameters.
     function castVote(
-        bytes32 vote,
+        uint256 vote,
         uint256 nullifierHash,
         uint256 pollId,
         uint256[8] calldata proof

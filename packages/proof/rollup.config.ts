@@ -1,6 +1,7 @@
 import typescript from "rollup-plugin-typescript2"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
+import json from "@rollup/plugin-json"
 
 const pkg = JSON.parse(fs.readFileSync("./package.json", "utf-8"))
 const banner = `/**
@@ -24,6 +25,7 @@ export default {
             tsconfig: "./build.tsconfig.json",
             useTsconfigDeclarationDir: true
         }),
-        cleanup({ comments: "jsdoc" })
+        cleanup({ comments: "jsdoc" }),
+        json()
     ]
 }

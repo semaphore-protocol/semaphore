@@ -5,7 +5,7 @@ export type SnarkArtifacts = {
     zkeyFilePath: string
 }
 
-export type Proof = {
+export type SnarkJSProof = {
     pi_a: BigNumberish[]
     pi_b: BigNumberish[][]
     pi_c: BigNumberish[]
@@ -14,18 +14,14 @@ export type Proof = {
 }
 
 export type FullProof = {
-    proof: Proof
-    publicSignals: PublicSignals
-}
-
-export type PublicSignals = {
-    merkleRoot: BigNumberish
+    merkleTreeRoot: BigNumberish
+    signal: BigNumberish
     nullifierHash: BigNumberish
-    signalHash: BigNumberish
     externalNullifier: BigNumberish
+    proof: Proof
 }
 
-export type SolidityProof = [
+export type Proof = [
     BigNumberish,
     BigNumberish,
     BigNumberish,

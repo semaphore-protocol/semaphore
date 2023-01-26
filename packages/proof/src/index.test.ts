@@ -2,23 +2,21 @@ import { formatBytes32String } from "@ethersproject/strings"
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { getCurveFromName } from "ffjavascript"
-import fs from "fs"
-import generateNullifierHash from "./generateNullifierHash"
 import generateProof from "./generateProof"
-import generateSignalHash from "./generateSignalHash"
-import packToSolidityProof from "./packToSolidityProof"
+import hash from "./hash"
+import packProof from "./packProof"
 import { FullProof } from "./types"
+import unpackProof from "./unpackProof"
 import verifyProof from "./verifyProof"
 
 describe("Proof", () => {
     const treeDepth = Number(process.env.TREE_DEPTH) || 20
 
-    const externalNullifier = "1"
-    const signal = "0x111"
+    const externalNullifier = formatBytes32String("Topic")
+    const signal = formatBytes32String("Hello world")
 
-    const wasmFilePath = `./snark-artifacts/semaphore.wasm`
-    const zkeyFilePath = `./snark-artifacts/semaphore.zkey`
-    const verificationKeyPath = `./snark-artifacts/semaphore.json`
+    const wasmFilePath = `./snark-artifacts/${treeDepth}/semaphore.wasm`
+    const zkeyFilePath = `./snark-artifacts/${treeDepth}/semaphore.zkey`
 
     const identity = new Identity()
 
@@ -69,63 +67,92 @@ describe("Proof", () => {
             })
 
             expect(typeof fullProof).toBe("object")
-            expect(fullProof.publicSignals.externalNullifier).toBe(externalNullifier)
-            expect(fullProof.publicSignals.merkleRoot).toBe(group.root.toString())
+            expect(fullProof.merkleTreeRoot).toBe(group.root.toString())
         }, 20000)
 
-        it("Should generate a Semaphore proof passing a Merkle proof as parametr", async () => {
+        it("Should generate a Semaphore proof passing a Merkle proof as parameter", async () => {
             const group = new Group(treeDepth)
 
             group.addMembers([BigInt(1), BigInt(2), identity.commitment])
 
-            fullProof = await generateProof(identity, group.generateProofOfMembership(2), externalNullifier, signal, {
+            fullProof = await generateProof(identity, group.generateMerkleProof(2), externalNullifier, signal, {
                 wasmFilePath,
                 zkeyFilePath
             })
 
             expect(typeof fullProof).toBe("object")
-            expect(fullProof.publicSignals.externalNullifier).toBe(externalNullifier)
-            expect(fullProof.publicSignals.merkleRoot).toBe(group.root.toString())
+            expect(fullProof.merkleTreeRoot).toBe(group.root.toString())
         }, 20000)
     })
 
-    describe("# generateSignalHash", () => {
-        it("Should generate a valid signal hash", async () => {
-            const signalHash = generateSignalHash(signal)
-
-            expect(signalHash.toString()).toBe(fullProof.publicSignals.signalHash)
-        })
-
-        it("Should generate a valid signal hash by passing a valid hex string", async () => {
-            const signalHash = generateSignalHash(formatBytes32String(signal))
-
-            expect(signalHash.toString()).toBe(fullProof.publicSignals.signalHash)
-        })
-    })
-
-    describe("# generateNullifierHash", () => {
-        it("Should generate a valid nullifier hash", async () => {
-            const nullifierHash = generateNullifierHash(externalNullifier, identity.getNullifier())
-
-            expect(nullifierHash.toString()).toBe(fullProof.publicSignals.nullifierHash)
-        })
-    })
-
-    describe("# packToSolidityProof", () => {
-        it("Should return a Solidity proof", async () => {
-            const solidityProof = packToSolidityProof(fullProof.proof)
-
-            expect(solidityProof).toHaveLength(8)
-        })
-    })
-
     describe("# verifyProof", () => {
-        it("Should generate and verify a Semaphore proof", async () => {
-            const verificationKey = JSON.parse(fs.readFileSync(verificationKeyPath, "utf-8"))
+        it("Should not verify a proof if the tree depth is wrong", () => {
+            const fun = () => verifyProof(fullProof, 3)
 
-            const response = await verifyProof(verificationKey, fullProof)
+            expect(fun).toThrow("The tree depth must be a number between 16 and 32")
+        })
+
+        it("Should verify a Semaphore proof", async () => {
+            const response = await verifyProof(fullProof, treeDepth)
 
             expect(response).toBe(true)
+        })
+    })
+
+    describe("# hash", () => {
+        it("Should hash the signal value correctly", async () => {
+            const signalHash = hash(signal)
+
+            expect(signalHash.toString()).toBe(
+                "8665846418922331996225934941481656421248110469944536651334918563951783029"
+            )
+        })
+
+        it("Should hash the external nullifier value correctly", async () => {
+            const externalNullifierHash = hash(externalNullifier)
+
+            expect(externalNullifierHash.toString()).toBe(
+                "244178201824278269437519042830883072613014992408751798420801126401127326826"
+            )
+        })
+
+        it("Should hash a number", async () => {
+            expect(hash(2).toString()).toBe(
+                "113682330006535319932160121224458771213356533826860247409332700812532759386"
+            )
+        })
+
+        it("Should hash a big number", async () => {
+            expect(hash(BigInt(2)).toString()).toBe(
+                "113682330006535319932160121224458771213356533826860247409332700812532759386"
+            )
+        })
+
+        it("Should hash an hex number", async () => {
+            expect(hash("0x2").toString()).toBe(
+                "113682330006535319932160121224458771213356533826860247409332700812532759386"
+            )
+        })
+
+        it("Should hash an string number", async () => {
+            expect(hash("2").toString()).toBe(
+                "113682330006535319932160121224458771213356533826860247409332700812532759386"
+            )
+        })
+
+        it("Should hash an array", async () => {
+            expect(hash([2]).toString()).toBe(
+                "113682330006535319932160121224458771213356533826860247409332700812532759386"
+            )
+        })
+    })
+
+    describe("# packProof/unpackProof", () => {
+        it("Should return a packed proof", async () => {
+            const originalProof = unpackProof(fullProof.proof)
+            const proof = packProof(originalProof)
+
+            expect(proof).toStrictEqual(fullProof.proof)
         })
     })
 })

@@ -1,15 +1,27 @@
+import { BigNumber } from "@ethersproject/bignumber"
+import { BytesLike, Hexable } from "@ethersproject/bytes"
 import { Group } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
 import { MerkleProof } from "@zk-kit/incremental-merkle-tree"
 import { groth16 } from "snarkjs"
-import generateSignalHash from "./generateSignalHash"
-import { BigNumberish, FullProof, SnarkArtifacts } from "./types"
+import hash from "./hash"
+import packProof from "./packProof"
+import { FullProof, SnarkArtifacts } from "./types"
 
+/**
+ * Generates a Semaphore proof.
+ * @param identity The Semaphore identity.
+ * @param groupOrMerkleProof The Semaphore group or its Merkle proof.
+ * @param externalNullifier The external nullifier.
+ * @param signal The Semaphore signal.
+ * @param snarkArtifacts The SNARK artifacts.
+ * @returns The Semaphore proof ready to be verified.
+ */
 export default async function generateProof(
     { trapdoor, nullifier, commitment }: Identity,
     groupOrMerkleProof: Group | MerkleProof,
-    externalNullifier: BigNumberish,
-    signal: string,
+    externalNullifier: BytesLike | Hexable | number | bigint,
+    signal: BytesLike | Hexable | number | bigint,
     snarkArtifacts?: SnarkArtifacts
 ): Promise<FullProof> {
     let merkleProof: MerkleProof
@@ -21,7 +33,7 @@ export default async function generateProof(
             throw new Error("The identity is not part of the group")
         }
 
-        merkleProof = groupOrMerkleProof.generateProofOfMembership(index)
+        merkleProof = groupOrMerkleProof.generateMerkleProof(index)
     } else {
         merkleProof = groupOrMerkleProof
     }
@@ -39,20 +51,18 @@ export default async function generateProof(
             identityNullifier: nullifier,
             treePathIndices: merkleProof.pathIndices,
             treeSiblings: merkleProof.siblings,
-            externalNullifier,
-            signalHash: generateSignalHash(signal)
+            externalNullifier: hash(externalNullifier),
+            signalHash: hash(signal)
         },
         snarkArtifacts.wasmFilePath,
         snarkArtifacts.zkeyFilePath
     )
 
     return {
-        proof,
-        publicSignals: {
-            merkleRoot: publicSignals[0],
-            nullifierHash: publicSignals[1],
-            signalHash: publicSignals[2],
-            externalNullifier: publicSignals[3]
-        }
+        merkleTreeRoot: publicSignals[0],
+        nullifierHash: publicSignals[1],
+        signal: BigNumber.from(signal).toString(),
+        externalNullifier: BigNumber.from(externalNullifier).toString(),
+        proof: packProof(proof)
     }
 }

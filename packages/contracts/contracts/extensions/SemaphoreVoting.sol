@@ -2,33 +2,17 @@
 pragma solidity 0.8.4;
 
 import "../interfaces/ISemaphoreVoting.sol";
-import "../base/SemaphoreCore.sol";
+import "../interfaces/ISemaphoreVerifier.sol";
 import "../base/SemaphoreGroups.sol";
 
 /// @title Semaphore voting contract.
+/// @notice It allows users to vote anonymously in a poll.
 /// @dev The following code allows you to create polls, add voters and allow them to vote anonymously.
-contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
-    /// @dev Gets a tree depth and returns its verifier address.
-    mapping(uint256 => IVerifier) internal verifiers;
+contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
+    ISemaphoreVerifier public verifier;
 
     /// @dev Gets a poll id and returns the poll data.
     mapping(uint256 => Poll) internal polls;
-
-    /// @dev Gets a nullifier hash and returns true or false.
-    /// It is used to prevent double-voting.
-    mapping(uint256 => bool) internal nullifierHashes;
-
-    /// @dev Initializes the Semaphore verifiers used to verify the user's ZK proofs.
-    /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
-    constructor(Verifier[] memory _verifiers) {
-        for (uint8 i = 0; i < _verifiers.length; ) {
-            verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(_verifiers[i].contractAddress);
-
-            unchecked {
-                ++i;
-            }
-        }
-    }
 
     /// @dev Checks if the poll coordinator is the transaction sender.
     /// @param pollId: Id of the poll.
@@ -40,23 +24,25 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
         _;
     }
 
+    /// @dev Initializes the Semaphore verifier used to verify the user's ZK proofs.
+    /// @param _verifier: Semaphore verifier address.
+    constructor(ISemaphoreVerifier _verifier) {
+        verifier = _verifier;
+    }
+
     /// @dev See {ISemaphoreVoting-createPoll}.
     function createPoll(
         uint256 pollId,
         address coordinator,
         uint256 merkleTreeDepth
     ) public override {
-        if (address(verifiers[merkleTreeDepth]) == address(0)) {
+        if (merkleTreeDepth < 16 || merkleTreeDepth > 32) {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
         }
 
-        _createGroup(pollId, merkleTreeDepth, 0);
+        _createGroup(pollId, merkleTreeDepth);
 
-        Poll memory poll;
-
-        poll.coordinator = coordinator;
-
-        polls[pollId] = poll;
+        polls[pollId].coordinator = coordinator;
 
         emit PollCreated(pollId, coordinator);
     }
@@ -83,29 +69,25 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreCore, SemaphoreGroups {
 
     /// @dev See {ISemaphoreVoting-castVote}.
     function castVote(
-        bytes32 vote,
+        uint256 vote,
         uint256 nullifierHash,
         uint256 pollId,
         uint256[8] calldata proof
-    ) public override onlyCoordinator(pollId) {
-        Poll memory poll = polls[pollId];
-
-        if (poll.state != PollState.Ongoing) {
+    ) public override {
+        if (polls[pollId].state != PollState.Ongoing) {
             revert Semaphore__PollIsNotOngoing();
         }
 
-        if (nullifierHashes[nullifierHash]) {
+        if (polls[pollId].nullifierHashes[nullifierHash]) {
             revert Semaphore__YouAreUsingTheSameNillifierTwice();
         }
 
         uint256 merkleTreeDepth = getMerkleTreeDepth(pollId);
         uint256 merkleTreeRoot = getMerkleTreeRoot(pollId);
 
-        IVerifier verifier = verifiers[merkleTreeDepth];
+        verifier.verifyProof(merkleTreeRoot, nullifierHash, vote, pollId, proof, merkleTreeDepth);
 
-        _verifyProof(vote, merkleTreeRoot, nullifierHash, pollId, proof, verifier);
-
-        nullifierHashes[nullifierHash] = true;
+        polls[pollId].nullifierHashes[nullifierHash] = true;
 
         emit VoteAdded(pollId, vote);
     }

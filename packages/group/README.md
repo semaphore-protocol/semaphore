@@ -67,19 +67,19 @@ yarn add @semaphore-protocol/group
 
 ## 📜 Usage
 
-\# **new Group**(treeDepth = 20, zeroValue = BigInt(0)): _Group_
+\# **new Group**(groupId: _Member_, treeDepth = 20): _Group_
 
 ```typescript
 import { Group } from "@semaphore-protocol/group"
 
 // Group with max 1048576 members (20^²).
-const group1 = new Group()
+const group1 = new Group(1)
 
 // Group with max 65536 members (16^²).
-const group2 = new Group(16)
+const group2 = new Group(1, 16)
 
 // Group with max 16777216 members (24^²).
-const group3 = new Group(24)
+const group3 = new Group(1, 24)
 ```
 
 \# **addMember**(identityCommitment: _Member_)
@@ -120,8 +120,8 @@ group.removeMember(0)
 group.indexOf(commitment) // 0
 ```
 
-\# **generateProofOfMembership**(index: _number_): _MerkleProof_
+\# **generateMerkleProof**(index: _number_): _MerkleProof_
 
 ```typescript
-const proof = group.generateProofOfMembership(0)
+const proof = group.generateMerkleProof(0)
 ```
