@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "target": "es2020",
+        "module": "ESNext",
+        "allowSyntheticDefaultImports": true,
+        "paths": {
+            "@semaphore-protocol/subgraph": ["../subgraph/src/index.ts"]
+        }
+    },
+    "include": ["src"]
+}

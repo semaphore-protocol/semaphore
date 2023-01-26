@@ -1,6 +1,6 @@
+import "@nomicfoundation/hardhat-chai-matchers"
 import "@nomiclabs/hardhat-ethers"
 import "@nomiclabs/hardhat-etherscan"
-import "@nomiclabs/hardhat-waffle"
 import "@typechain/hardhat"
 import { config as dotenvConfig } from "dotenv"
 import "hardhat-gas-reporter"
@@ -13,7 +13,6 @@ import "./tasks/accounts"
 import "./tasks/deploy-semaphore"
 import "./tasks/deploy-semaphore-voting"
 import "./tasks/deploy-semaphore-whistleblowing"
-import "./tasks/deploy-verifier"
 
 dotenvConfig({ path: resolve(__dirname, "../../.env") })
 

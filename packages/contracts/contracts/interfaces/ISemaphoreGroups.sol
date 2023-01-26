@@ -1,12 +1,10 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.4;
 
-/// @title SemaphoreGroups interface.
-/// @dev Interface of a SemaphoreGroups contract.
+/// @title SemaphoreGroups contract interface.
 interface ISemaphoreGroups {
     error Semaphore__GroupDoesNotExist();
     error Semaphore__GroupAlreadyExists();
-    error Semaphore__GroupIdIsNotLessThanSnarkScalarField();
 
     /// @dev Emitted when a new group is created.
     /// @param groupId: Id of the group.

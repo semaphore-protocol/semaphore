@@ -46,8 +46,8 @@
     </h4>
 </div>
 
-| This library allows you to query the [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/contracts/Semaphore.sol) contract data (i.e. groups) using the [Semaphore subgraph](https://github.com/semaphore-protocol/subgraph) on Kovan, Goerli, and Arbitrum One. It can be used on Node.js and browsers. |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| This library allows you to query the [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/contracts/Semaphore.sol) contract data (i.e. groups) using the [Semaphore subgraph](https://github.com/semaphore-protocol/subgraph) on Goerli and Arbitrum One. It can be used on Node.js and browsers. |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 
 ## 🛠 Install
 
@@ -83,7 +83,7 @@ or [JSDelivr](https://www.jsdelivr.com/):
 
 ## 📜 Usage
 
-\# **new Subgraph**(network: _Network_ = "arbitrum" ): _Subgraph_
+\# **new Subgraph**(network: _Network_ = "goerli" ): _Subgraph_
 
 ```typescript
 import { Subgraph } from "@semaphore-protocol/subgraph"

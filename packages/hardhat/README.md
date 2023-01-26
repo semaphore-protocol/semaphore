@@ -88,21 +88,13 @@ import { task, types } from "hardhat/config"
 task("deploy", "Deploy a Greeter contract")
     .addOptionalParam("logs", "Print the logs", true, types.boolean)
     .setAction(async ({ logs }, { ethers, run }) => {
-        const { address: verifierAddress } = await run("deploy:verifier", { logs, merkleTreeDepth: 20 })
-
-        const { address: semaphoreAddress } = await run("deploy:semaphore", {
-            logs,
-            verifiers: [
-                {
-                    merkleTreeDepth: 20,
-                    contractAddress: verifierAddress
-                }
-            ]
+        const { semaphore } = await run("deploy:semaphore", {
+            logs
         })
 
         const Greeter = await ethers.getContractFactory("Greeter")
 
-        const greeter = await Greeter.deploy(semaphoreAddress)
+        const greeter = await Greeter.deploy(semaphore.address)
 
         await greeter.deployed()
 

@@ -1,18 +1,25 @@
 import { hardhatArguments, run } from "hardhat"
-import { getDeployedContracts, verifiersToSolidityArgument } from "./utils"
+import { getDeployedContracts } from "./utils"
+
+async function verify(address: string, constructorArguments?: any[]): Promise<void> {
+    try {
+        await run("verify:verify", {
+            address,
+            constructorArguments
+        })
+    } catch (error) {
+        console.error(error)
+    }
+}
 
 async function main() {
     const deployedContracts = getDeployedContracts(hardhatArguments.network)
 
     if (deployedContracts) {
-        await run("verify:verify", {
-            address: deployedContracts.Semaphore,
-            constructorArguments: [verifiersToSolidityArgument(deployedContracts)]
-        })
-
-        await run("verify:verify", {
-            address: deployedContracts.IncrementalBinaryTree
-        })
+        await verify(deployedContracts.IncrementalBinaryTree)
+        await verify(deployedContracts.Pairing)
+        await verify(deployedContracts.SemaphoreVerifier)
+        await verify(deployedContracts.Semaphore, [deployedContracts.SemaphoreVerifier])
     }
 }
 

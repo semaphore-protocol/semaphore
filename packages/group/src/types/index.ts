@@ -1,1 +1,1 @@
-export type Member = string | bigint
+export type Member = string | number | bigint

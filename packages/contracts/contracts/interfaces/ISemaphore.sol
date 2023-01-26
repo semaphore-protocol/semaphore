@@ -1,8 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.4;
 
-/// @title Semaphore interface.
-/// @dev Interface of a Semaphore contract.
+/// @title Semaphore contract interface.
 interface ISemaphore {
     error Semaphore__CallerIsNotTheGroupAdmin();
     error Semaphore__MerkleTreeDepthIsNotSupported();
@@ -10,15 +9,10 @@ interface ISemaphore {
     error Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
     error Semaphore__YouAreUsingTheSameNillifierTwice();
 
-    struct Verifier {
-        address contractAddress;
-        uint256 merkleTreeDepth;
-    }
-
     /// It defines all the group parameters, in addition to those in the Merkle tree.
     struct Group {
         address admin;
-        uint256 merkleRootDuration;
+        uint256 merkleTreeDuration;
         mapping(uint256 => uint256) merkleRootCreationDates;
         mapping(uint256 => bool) nullifierHashes;
     }
@@ -29,6 +23,16 @@ interface ISemaphore {
     /// @param newAdmin: New admin of the group.
     event GroupAdminUpdated(uint256 indexed groupId, address indexed oldAdmin, address indexed newAdmin);
 
+    /// @dev Emitted when the Merkle tree duration of a group is updated.
+    /// @param groupId: Id of the group.
+    /// @param oldMerkleTreeDuration: Old Merkle tree duration of the group.
+    /// @param newMerkleTreeDuration: New Merkle tree duration of the group.
+    event GroupMerkleTreeDurationUpdated(
+        uint256 indexed groupId,
+        uint256 oldMerkleTreeDuration,
+        uint256 newMerkleTreeDuration
+    );
+
     /// @dev Emitted when a Semaphore proof is verified.
     /// @param groupId: Id of the group.
     /// @param merkleTreeRoot: Root of the Merkle tree.
@@ -37,10 +41,10 @@ interface ISemaphore {
     /// @param signal: Semaphore signal.
     event ProofVerified(
         uint256 indexed groupId,
-        uint256 merkleTreeRoot,
-        uint256 externalNullifier,
+        uint256 indexed merkleTreeRoot,
+        uint256 indexed externalNullifier,
         uint256 nullifierHash,
-        bytes32 signal
+        uint256 signal
     );
 
     /// @dev Saves the nullifier hash to avoid double signaling and emits an event
@@ -54,7 +58,7 @@ interface ISemaphore {
     function verifyProof(
         uint256 groupId,
         uint256 merkleTreeRoot,
-        bytes32 signal,
+        uint256 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
         uint256[8] calldata proof
@@ -63,25 +67,21 @@ interface ISemaphore {
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.
-    /// @param zeroValue: Zero value of the tree.
     /// @param admin: Admin of the group.
     function createGroup(
         uint256 groupId,
         uint256 depth,
-        uint256 zeroValue,
         address admin
     ) external;
 
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.
-    /// @param zeroValue: Zero value of the tree.
     /// @param admin: Admin of the group.
     /// @param merkleTreeRootDuration: Time before the validity of a root expires.
     function createGroup(
         uint256 groupId,
         uint256 depth,
-        uint256 zeroValue,
         address admin,
         uint256 merkleTreeRootDuration
     ) external;
@@ -90,6 +90,11 @@ interface ISemaphore {
     /// @param groupId: Id of the group.
     /// @param newAdmin: New admin of the group.
     function updateGroupAdmin(uint256 groupId, address newAdmin) external;
+
+    /// @dev Updates the group Merkle tree duration.
+    /// @param groupId: Id of the group.
+    /// @param newMerkleTreeDuration: New Merkle tree duration.
+    function updateGroupMerkleTreeDuration(uint256 groupId, uint256 newMerkleTreeDuration) external;
 
     /// @dev Adds a new member to an existing group.
     /// @param groupId: Id of the group.
