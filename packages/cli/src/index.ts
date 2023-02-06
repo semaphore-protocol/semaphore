@@ -7,6 +7,10 @@ import { existsSync, readFileSync, renameSync } from "fs"
 import logSymbols from "log-symbols"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
+import boxen from "boxen"
+import axios from "axios"
+import { execSync } from "child_process"
+import { lt as semverLt } from "semver"
 import Spinner from "./spinner.js"
 
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
@@ -36,12 +40,52 @@ program
         const spinner = new Spinner(`Creating your project in ${chalk.green(`./${projectDirectory}`)}`)
         const templateURL = `https://registry.npmjs.org/@semaphore-protocol/cli-template-hardhat/-/cli-template-hardhat-${version}.tgz`
 
+        const cliRegistryURL = "https://registry.npmjs.org/-/package/@semaphore-protocol/cli/dist-tags"
+        let latestVersion
+
         if (existsSync(projectDirectory)) {
             console.info(`\n ${logSymbols.error}`, `error: the '${projectDirectory}' folder already exists\n`)
             return
         }
 
         spinner.start()
+
+        /** Checks the registry directly via the API, if that fails,
+         * tries the slower `npm view [package] version` command.
+         * This is important for users in environments where
+         * direct access to npm is blocked by a firewall, and packages are
+         * provided exclusively via a private registry.
+         */
+
+        try {
+            const { data } = await axios.get(cliRegistryURL)
+            latestVersion = data.latest
+        } catch {
+            try {
+                latestVersion = execSync("npm view @semaphore-protocol/cli version").toString().trim()
+            } catch {
+                latestVersion = null
+            }
+        }
+
+        if (latestVersion && semverLt(version, latestVersion)) {
+            console.info(`\n`)
+            console.info(
+                boxen(
+                    chalk.white(
+                        `Update available ${chalk.gray(version)} -> ${chalk.green(
+                            latestVersion
+                        )} \n\n You are currently using @semaphore-protocol/cli ${chalk.gray(
+                            version
+                        )} which is behind the latest release ${chalk.green(latestVersion)} \n\n Run ${chalk.cyan(
+                            "`npm install -g @semaphore-protocol/cli`"
+                        )} to get the latest version`
+                    ),
+                    { padding: 1, borderColor: "yellow", textAlignment: "center" }
+                )
+            )
+            console.info()
+        }
 
         await download(templateURL, currentDirectory, { extract: true })
 
