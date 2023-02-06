@@ -1,29 +1,40 @@
 import { IncrementalMerkleTree, MerkleProof } from "@zk-kit/incremental-merkle-tree"
 import poseidon from "poseidon-lite"
 import hash from "./hash"
-import { Member } from "./types"
+import { BigNumberish } from "./types"
 
 export default class Group {
+    private _id: BigNumberish
+
     merkleTree: IncrementalMerkleTree
 
     /**
      * Initializes the group with the group id and the tree depth.
-     * @param groupId Group identifier.
+     * @param id Group identifier.
      * @param treeDepth Tree depth.
      */
-    constructor(groupId: Member, treeDepth = 20) {
+    constructor(id: BigNumberish, treeDepth = 20) {
         if (treeDepth < 16 || treeDepth > 32) {
             throw new Error("The tree depth must be between 16 and 32")
         }
 
-        this.merkleTree = new IncrementalMerkleTree(poseidon, treeDepth, hash(groupId), 2)
+        this._id = id
+        this.merkleTree = new IncrementalMerkleTree(poseidon, treeDepth, hash(id), 2)
+    }
+
+    /**
+     * Returns the id of the group.
+     * @returns Group id.
+     */
+    get id(): BigNumberish {
+        return this._id
     }
 
     /**
      * Returns the root hash of the tree.
      * @returns Root hash.
      */
-    get root(): Member {
+    get root(): BigNumberish {
         return this.merkleTree.root
     }
 
@@ -39,7 +50,7 @@ export default class Group {
      * Returns the zero value of the tree.
      * @returns Tree zero value.
      */
-    get zeroValue(): Member {
+    get zeroValue(): BigNumberish {
         return this.merkleTree.zeroes[0]
     }
 
@@ -47,7 +58,7 @@ export default class Group {
      * Returns the members (i.e. identity commitments) of the group.
      * @returns List of members.
      */
-    get members(): Member[] {
+    get members(): BigNumberish[] {
         return this.merkleTree.leaves
     }
 
@@ -56,7 +67,7 @@ export default class Group {
      * @param member Group member.
      * @returns Index of the member.
      */
-    indexOf(member: Member): number {
+    indexOf(member: BigNumberish): number {
         return this.merkleTree.indexOf(member)
     }
 
@@ -64,7 +75,7 @@ export default class Group {
      * Adds a new member to the group.
      * @param member New member.
      */
-    addMember(member: Member) {
+    addMember(member: BigNumberish) {
         this.merkleTree.insert(BigInt(member))
     }
 
@@ -72,7 +83,7 @@ export default class Group {
      * Adds new members to the group.
      * @param members New members.
      */
-    addMembers(members: Member[]) {
+    addMembers(members: BigNumberish[]) {
         for (const member of members) {
             this.addMember(member)
         }
@@ -83,7 +94,7 @@ export default class Group {
      * @param index Index of the member to be updated.
      * @param member New member value.
      */
-    updateMember(index: number, member: Member) {
+    updateMember(index: number, member: BigNumberish) {
         this.merkleTree.update(index, member)
     }
 
