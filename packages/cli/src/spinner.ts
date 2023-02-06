@@ -20,6 +20,6 @@ export default class Spinner {
     stop() {
         this.ora.stop()
 
-        process.stdout.cursorTo(0)
+        process.stdout.moveCursor(0, -1)
     }
 }

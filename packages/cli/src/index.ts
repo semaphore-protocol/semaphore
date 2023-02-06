@@ -7,6 +7,7 @@ import { existsSync, readFileSync, renameSync } from "fs"
 import logSymbols from "log-symbols"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
+import checkLatestVersion from "./checkLatestVersion.js"
 import Spinner from "./spinner.js"
 
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
@@ -43,13 +44,15 @@ program
 
         spinner.start()
 
+        await checkLatestVersion(version)
+
         await download(templateURL, currentDirectory, { extract: true })
 
         renameSync(`${currentDirectory}/package`, `${currentDirectory}/${projectDirectory}`)
 
         spinner.stop()
 
-        console.info(` ${logSymbols.success}`, `Your project is ready!\n`)
+        console.info(`\n ${logSymbols.success}`, `Your project is ready!\n`)
         console.info(` Please, install your dependencies by running:\n`)
         console.info(`   ${chalk.cyan("cd")} ${projectDirectory}`)
         console.info(`   ${chalk.cyan("npm i")}\n`)
@@ -90,17 +93,17 @@ program
             spinner.stop()
 
             if (groups.length === 0) {
-                console.info(` ${logSymbols.error}`, "error: there are no groups in this network\n")
+                console.info(`\n ${logSymbols.error}`, "error: there are no groups in this network\n")
                 return
             }
 
-            const content = `${groups.map(({ id }: any) => ` - ${id}`).join("\n")}`
+            const content = `\n${groups.map(({ id }: any) => ` - ${id}`).join("\n")}`
 
             console.info(`${content}\n`)
         } catch (error) {
             spinner.stop()
 
-            console.info(` ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
+            console.info(`\n ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
         }
     })
 
@@ -128,7 +131,7 @@ program
             spinner.stop()
 
             if (!group) {
-                console.info(` ${logSymbols.error}`, "error: the group does not exist\n")
+                console.info(`\n ${logSymbols.error}`, "error: the group does not exist\n")
 
                 return
             }
@@ -153,11 +156,11 @@ program
                     .join("\n")}`
             }
 
-            console.info(`${content}\n`)
+            console.info(`\n${content}\n`)
         } catch (error) {
             spinner.stop()
 
-            console.info(` ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
+            console.info(`\n ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
         }
     })
 
