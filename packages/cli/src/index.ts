@@ -7,10 +7,7 @@ import { existsSync, readFileSync, renameSync } from "fs"
 import logSymbols from "log-symbols"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
-import boxen from "boxen"
-import axios from "axios"
-import { execSync } from "child_process"
-import { lt as semverLt } from "semver"
+import checkLatestVersion from "./checkLatestVersion.js"
 import Spinner from "./spinner.js"
 
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
@@ -40,9 +37,6 @@ program
         const spinner = new Spinner(`Creating your project in ${chalk.green(`./${projectDirectory}`)}`)
         const templateURL = `https://registry.npmjs.org/@semaphore-protocol/cli-template-hardhat/-/cli-template-hardhat-${version}.tgz`
 
-        const cliRegistryURL = "https://registry.npmjs.org/-/package/@semaphore-protocol/cli/dist-tags"
-        let latestVersion
-
         if (existsSync(projectDirectory)) {
             console.info(`\n ${logSymbols.error}`, `error: the '${projectDirectory}' folder already exists\n`)
             return
@@ -50,42 +44,7 @@ program
 
         spinner.start()
 
-        /** Checks the registry directly via the API, if that fails,
-         * tries the slower `npm view [package] version` command.
-         * This is important for users in environments where
-         * direct access to npm is blocked by a firewall, and packages are
-         * provided exclusively via a private registry.
-         */
-
-        try {
-            const { data } = await axios.get(cliRegistryURL)
-            latestVersion = data.latest
-        } catch {
-            try {
-                latestVersion = execSync("npm view @semaphore-protocol/cli version").toString().trim()
-            } catch {
-                latestVersion = null
-            }
-        }
-
-        if (latestVersion && semverLt(version, latestVersion)) {
-            console.info(`\n`)
-            console.info(
-                boxen(
-                    chalk.white(
-                        `Update available ${chalk.gray(version)} -> ${chalk.green(
-                            latestVersion
-                        )} \n\n You are currently using @semaphore-protocol/cli ${chalk.gray(
-                            version
-                        )} which is behind the latest release ${chalk.green(latestVersion)} \n\n Run ${chalk.cyan(
-                            "`npm install -g @semaphore-protocol/cli`"
-                        )} to get the latest version`
-                    ),
-                    { padding: 1, borderColor: "yellow", textAlignment: "center" }
-                )
-            )
-            console.info()
-        }
+        await checkLatestVersion(version)
 
         await download(templateURL, currentDirectory, { extract: true })
 
@@ -93,7 +52,7 @@ program
 
         spinner.stop()
 
-        console.info(` ${logSymbols.success}`, `Your project is ready!\n`)
+        console.info(`\n ${logSymbols.success}`, `Your project is ready!\n`)
         console.info(` Please, install your dependencies by running:\n`)
         console.info(`   ${chalk.cyan("cd")} ${projectDirectory}`)
         console.info(`   ${chalk.cyan("npm i")}\n`)
@@ -134,17 +93,17 @@ program
             spinner.stop()
 
             if (groups.length === 0) {
-                console.info(` ${logSymbols.error}`, "error: there are no groups in this network\n")
+                console.info(`\n ${logSymbols.error}`, "error: there are no groups in this network\n")
                 return
             }
 
-            const content = `${groups.map(({ id }: any) => ` - ${id}`).join("\n")}`
+            const content = `\n${groups.map(({ id }: any) => ` - ${id}`).join("\n")}`
 
             console.info(`${content}\n`)
         } catch (error) {
             spinner.stop()
 
-            console.info(` ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
+            console.info(`\n ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
         }
     })
 
@@ -172,7 +131,7 @@ program
             spinner.stop()
 
             if (!group) {
-                console.info(` ${logSymbols.error}`, "error: the group does not exist\n")
+                console.info(`\n ${logSymbols.error}`, "error: the group does not exist\n")
 
                 return
             }
@@ -197,11 +156,11 @@ program
                     .join("\n")}`
             }
 
-            console.info(`${content}\n`)
+            console.info(`\n${content}\n`)
         } catch (error) {
             spinner.stop()
 
-            console.info(` ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
+            console.info(`\n ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
         }
     })
 
