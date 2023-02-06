@@ -6,6 +6,7 @@ describe("Group", () => {
         it("Should create a group", () => {
             const group = new Group(1)
 
+            expect(group.id).toBe(1)
             expect(group.root.toString()).toContain("103543")
             expect(group.depth).toBe(20)
             expect(group.zeroValue).toBe(hash(1))
