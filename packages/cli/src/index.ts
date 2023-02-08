@@ -34,8 +34,6 @@ program
     .argument("[project-directory]", "Directory of the project.")
     // .option("-t, --template <template-name>", "Supported Semaphore template.", "hardhat")
     .action(async (projectDirectory) => {
-        let projectDir: string
-
         if (!projectDirectory) {
             const answers = await inquirer.prompt({
                 name: "project_name",
@@ -43,17 +41,15 @@ program
                 message: "Enter your project name:",
                 default: "my-app"
             })
-            projectDir = answers.project_name
-        } else {
-            projectDir = projectDirectory
+            projectDirectory = answers.project_name
         }
 
         const currentDirectory = process.cwd()
-        const spinner = new Spinner(`Creating your project in ${chalk.green(`./${projectDir}`)}`)
+        const spinner = new Spinner(`Creating your project in ${chalk.green(`./${projectDirectory}`)}`)
         const templateURL = `https://registry.npmjs.org/@semaphore-protocol/cli-template-hardhat/-/cli-template-hardhat-${version}.tgz`
 
-        if (existsSync(projectDir)) {
-            console.info(`\n ${logSymbols.error}`, `error: the '${projectDir}' folder already exists\n`)
+        if (existsSync(projectDirectory)) {
+            console.info(`\n ${logSymbols.error}`, `error: the '${projectDirectory}' folder already exists\n`)
             return
         }
 
@@ -63,16 +59,16 @@ program
 
         await download(templateURL, currentDirectory, { extract: true })
 
-        renameSync(`${currentDirectory}/package`, `${currentDirectory}/${projectDir}`)
+        renameSync(`${currentDirectory}/package`, `${currentDirectory}/${projectDirectory}`)
 
         spinner.stop()
 
         console.info(`\n ${logSymbols.success}`, `Your project is ready!\n`)
         console.info(` Please, install your dependencies by running:\n`)
-        console.info(`   ${chalk.cyan("cd")} ${projectDir}`)
+        console.info(`   ${chalk.cyan("cd")} ${projectDirectory}`)
         console.info(`   ${chalk.cyan("npm i")}\n`)
 
-        const { scripts } = JSON.parse(readFileSync(`${currentDirectory}/${projectDir}/package.json`, "utf8"))
+        const { scripts } = JSON.parse(readFileSync(`${currentDirectory}/${projectDirectory}/package.json`, "utf8"))
 
         if (scripts) {
             console.info(` Available scripts:\n`)
