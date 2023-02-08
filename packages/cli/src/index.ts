@@ -33,6 +33,7 @@ program
     .description("Create a Semaphore project with a supported template.")
     .argument("[project-directory]", "Directory of the project.")
     // .option("-t, --template <template-name>", "Supported Semaphore template.", "hardhat")
+    .allowExcessArguments(false)
     .action(async (projectDirectory) => {
         if (!projectDirectory) {
             const answers = await inquirer.prompt({
@@ -87,6 +88,7 @@ program
     .command("get-groups")
     .description("Get the list of groups from a supported network (goerli or arbitrum).")
     .option("-n, --network <network-name>", "Supported Ethereum network.", "goerli")
+    .allowExcessArguments(false)
     .action(async ({ network }) => {
         if (!["goerli", "arbitrum"].includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
@@ -125,6 +127,7 @@ program
     .option("-n, --network <network-name>", "Supported Ethereum network.", "goerli")
     .option("--members", "Show group members.")
     .option("--signals", "Show group signals.")
+    .allowExcessArguments(false)
     .action(async (groupId, { network, members, signals }) => {
         if (!["goerli", "arbitrum"].includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
@@ -175,4 +178,4 @@ program
         }
     })
 
-program.parse()
+program.parse(process.argv)
