@@ -7,6 +7,7 @@ import { existsSync, readFileSync, renameSync } from "fs"
 import logSymbols from "log-symbols"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
+import inquirer from "inquirer"
 import checkLatestVersion from "./checkLatestVersion.js"
 import Spinner from "./spinner.js"
 
@@ -30,9 +31,19 @@ program
 program
     .command("create")
     .description("Create a Semaphore project with a supported template.")
-    .argument("<project-directory>", "Directory of the project.")
+    .argument("[project-directory]", "Directory of the project.")
     // .option("-t, --template <template-name>", "Supported Semaphore template.", "hardhat")
     .action(async (projectDirectory) => {
+        if (!projectDirectory) {
+            const answers = await inquirer.prompt({
+                name: "project_name",
+                type: "input",
+                message: "Enter your project name:",
+                default: "my-app"
+            })
+            projectDirectory = answers.project_name
+        }
+
         const currentDirectory = process.cwd()
         const spinner = new Spinner(`Creating your project in ${chalk.green(`./${projectDirectory}`)}`)
         const templateURL = `https://registry.npmjs.org/@semaphore-protocol/cli-template-hardhat/-/cli-template-hardhat-${version}.tgz`
