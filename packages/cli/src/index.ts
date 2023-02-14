@@ -14,6 +14,8 @@ import Spinner from "./spinner.js"
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
 const { description, version } = JSON.parse(readFileSync(`${packagePath}/package.json`, "utf8"))
 
+const supportedNetworks = ["goerli", "arbitrum"]
+
 program
     .name("semaphore")
     .description(description)
@@ -87,10 +89,21 @@ program
 program
     .command("get-groups")
     .description("Get the list of groups from a supported network (goerli or arbitrum).")
-    .option("-n, --network <network-name>", "Supported Ethereum network.", "goerli")
+    .option("-n, --network <network-name>", "Supported Ethereum network.")
     .allowExcessArguments(false)
     .action(async ({ network }) => {
-        if (!["goerli", "arbitrum"].includes(network)) {
+        if (!network) {
+            const answer = await inquirer.prompt({
+                name: "network",
+                type: "list",
+                message: "What is the network?",
+                default: supportedNetworks[0],
+                choices: supportedNetworks
+            })
+            network = answer.network
+        }
+
+        if (!supportedNetworks.includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
             return
         }
@@ -129,7 +142,7 @@ program
     .option("--signals", "Show group signals.")
     .allowExcessArguments(false)
     .action(async (groupId, { network, members, signals }) => {
-        if (!["goerli", "arbitrum"].includes(network)) {
+        if (!supportedNetworks.includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
             return
         }
