@@ -36,13 +36,13 @@ program
     .allowExcessArguments(false)
     .action(async (projectDirectory) => {
         if (!projectDirectory) {
-            const answers = await inquirer.prompt({
+            const answer = await inquirer.prompt({
                 name: "project_name",
                 type: "input",
-                message: "Enter your project name:",
+                message: "What is your project name?",
                 default: "my-app"
             })
-            projectDirectory = answers.project_name
+            projectDirectory = answer.project_name
         }
 
         const currentDirectory = process.cwd()
@@ -106,7 +106,7 @@ program
             spinner.stop()
 
             if (groups.length === 0) {
-                console.info(`\n ${logSymbols.error}`, "error: there are no groups in this network\n")
+                console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
                 return
             }
 
