@@ -38,13 +38,13 @@ program
     .allowExcessArguments(false)
     .action(async (projectDirectory) => {
         if (!projectDirectory) {
-            const answer = await inquirer.prompt({
-                name: "project_name",
+            const { projectName } = await inquirer.prompt({
+                name: "projectName",
                 type: "input",
                 message: "What is your project name?",
                 default: "my-app"
             })
-            projectDirectory = answer.project_name
+            projectDirectory = projectName
         }
 
         const currentDirectory = process.cwd()
@@ -93,14 +93,14 @@ program
     .allowExcessArguments(false)
     .action(async ({ network }) => {
         if (!network) {
-            const answer = await inquirer.prompt({
-                name: "network",
+            const { selectedNetwork } = await inquirer.prompt({
+                name: "selectedNetwork",
                 type: "list",
                 message: "What is the network?",
                 default: supportedNetworks[0],
                 choices: supportedNetworks
             })
-            network = answer.network
+            network = selectedNetwork
         }
 
         if (!supportedNetworks.includes(network)) {
@@ -136,12 +136,73 @@ program
 program
     .command("get-group")
     .description("Get the data of a group from a supported network (Goerli or Arbitrum).")
-    .argument("<group-id>", "Identifier of the group.")
-    .option("-n, --network <network-name>", "Supported Ethereum network.", "goerli")
-    .option("--members", "Show group members.")
-    .option("--signals", "Show group signals.")
+    .argument("[group-id]", "Identifier of the group.")
+    .option("-n, --network <network-name>", "Supported Ethereum network.")
+    .option("-m, --members", "Show group members.")
+    .option("-s, --signals", "Show group signals.")
     .allowExcessArguments(false)
     .action(async (groupId, { network, members, signals }) => {
+        if (!network) {
+            const { selectedNetwork } = await inquirer.prompt({
+                name: "selectedNetwork",
+                type: "list",
+                message: "What is the network?",
+                default: supportedNetworks[0],
+                choices: supportedNetworks
+            })
+            network = selectedNetwork
+        }
+
+        if (!groupId) {
+            const subgraphGroups = new Subgraph(network)
+            const spinnerGroups = new Spinner("Fetching groups")
+            spinnerGroups.start()
+            try {
+                const groups = await subgraphGroups.getGroups()
+
+                spinnerGroups.stop()
+
+                if (groups.length === 0) {
+                    console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
+                    return
+                }
+
+                const groupIds = groups.map(({ id }: any) => id)
+
+                const { selectedGroupId } = await inquirer.prompt({
+                    name: "selectedGroupId",
+                    type: "list",
+                    message: "What is the group id?",
+                    choices: groupIds
+                })
+                groupId = selectedGroupId
+            } catch (error) {
+                spinnerGroups.stop()
+                console.info(`\n ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
+                return
+            }
+        }
+
+        if (!members && !signals) {
+            const { showMembers } = await inquirer.prompt({
+                name: "showMembers",
+                type: "confirm",
+                message: "Do you want to show members?",
+                default: false
+            })
+
+            members = showMembers
+
+            const { showSignals } = await inquirer.prompt({
+                name: "showSignals",
+                type: "confirm",
+                message: "Do you want to show signals?",
+                default: false
+            })
+
+            signals = showSignals
+        }
+
         if (!supportedNetworks.includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
             return
