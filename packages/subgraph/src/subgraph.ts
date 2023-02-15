@@ -2,7 +2,8 @@ import { AxiosRequestConfig } from "axios"
 import checkParameter from "./checkParameter"
 import getURL from "./getURL"
 import request from "./request"
-import { GroupOptions, Network } from "./types"
+import { GroupResponse, GroupOptions, Network } from "./types"
+import { jsDateToGraphqlDate } from "./utils"
 
 export default class Subgraph {
     private _url: string
@@ -11,10 +12,15 @@ export default class Subgraph {
      * Initializes the subgraph object with one of the supported networks.
      * @param network Supported Semaphore network.
      */
-    constructor(network: Network = "arbitrum") {
-        checkParameter(network, "network", "string")
+    constructor(networkOrSubgraphURL: Network | string = "arbitrum") {
+        checkParameter(networkOrSubgraphURL, "networkOrSubgraphURL", "string")
 
-        this._url = getURL(network)
+        if (networkOrSubgraphURL.startsWith("http")) {
+            this._url = networkOrSubgraphURL
+            return
+        }
+
+        this._url = getURL(networkOrSubgraphURL as Network)
     }
 
     /**
@@ -30,7 +36,7 @@ export default class Subgraph {
      * @param options Options to select the group parameters.
      * @returns List of groups.
      */
-    async getGroups(options: GroupOptions = {}): Promise<any[]> {
+    async getGroups(options: GroupOptions = {}): Promise<GroupResponse[]> {
         checkParameter(options, "options", "object")
 
         const { members = false, verifiedProofs = false } = options
@@ -38,11 +44,32 @@ export default class Subgraph {
         checkParameter(members, "members", "boolean")
         checkParameter(verifiedProofs, "verifiedProofs", "boolean")
 
+        let filtersQuery = ""
+        if (options.filters) {
+            const { admin, timestamp, timestampGte, timestampLte } = options.filters
+            const filterFragments = []
+
+            if (admin) {
+                filterFragments.push(`admin: "${admin}"`)
+            }
+            if (timestamp) {
+                filterFragments.push(`timestamp: "${jsDateToGraphqlDate(timestamp)}"`)
+            } else if (timestampGte) {
+                filterFragments.push(`timestamp_gte: "${jsDateToGraphqlDate(timestampGte)}"`)
+            } else if (timestampLte) {
+                filterFragments.push(`timestamp_lte: "${jsDateToGraphqlDate(timestampLte)}"`)
+            }
+
+            if (filterFragments.length > 0) {
+                filtersQuery = `(where: {${filterFragments.join(", ")}})`
+            }
+        }
+
         const config: AxiosRequestConfig = {
             method: "post",
             data: JSON.stringify({
                 query: `{
-                    groups {
+                    groups ${filtersQuery} {
                         id
                         merkleTree {
                             root
@@ -91,7 +118,7 @@ export default class Subgraph {
      * @param options Options to select the group parameters.
      * @returns Specific group.
      */
-    async getGroup(groupId: string, options: GroupOptions = {}): Promise<any> {
+    async getGroup(groupId: string, options: GroupOptions = {}): Promise<GroupResponse> {
         checkParameter(groupId, "groupId", "string")
         checkParameter(options, "options", "object")
 
