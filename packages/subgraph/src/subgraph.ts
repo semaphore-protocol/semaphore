@@ -10,7 +10,7 @@ export default class Subgraph {
 
     /**
      * Initializes the subgraph object with one of the supported networks.
-     * @param networkOrSubgraphURL Supported Semaphore network.
+     * @param networkOrSubgraphURL Supported Semaphore network or custom Subgraph URL.
      */
     constructor(networkOrSubgraphURL: Network | string = "arbitrum") {
         checkParameter(networkOrSubgraphURL, "networkOrSubgraphURL", "string")
