@@ -20,16 +20,23 @@ describe("Subgraph", () => {
             expect(subgraph1.url).toContain("arbitrum")
         })
 
+        it("Should instantiate a subgraph object using URL", () => {
+            const url = "https://api.thegraph.com/subgraphs/name/semaphore-protocol/goerli-89490c"
+            const subgraph1 = new Subgraph(url)
+
+            expect(subgraph1.url).toBe(url)
+        })
+
         it("Should throw an error if there is a wrong network", () => {
             const fun = () => new Subgraph("wrong" as any)
 
             expect(fun).toThrow("Network 'wrong' is not supported")
         })
 
-        it("Should throw an error if the network parameter type is wrong", () => {
+        it("Should throw an error if the networkOrSubgraphURL parameter type is wrong", () => {
             const fun = () => new Subgraph(33 as any)
 
-            expect(fun).toThrow("Parameter 'network' is not a string")
+            expect(fun).toThrow("Parameter 'networkOrSubgraphURL' is not a string")
         })
     })
 
