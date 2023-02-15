@@ -178,7 +178,9 @@ describe("Subgraph", () => {
             )
 
             const expectedValue = await subgraph.getGroups({
-                filters: { admin: "0x7bcd6f009471e9974a77086a69289d16eadba286" }
+                filters: {
+                    admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
+                }
             })
 
             expect(expectedValue).toBeDefined()

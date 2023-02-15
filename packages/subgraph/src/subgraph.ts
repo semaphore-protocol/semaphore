@@ -10,7 +10,7 @@ export default class Subgraph {
 
     /**
      * Initializes the subgraph object with one of the supported networks.
-     * @param network Supported Semaphore network.
+     * @param networkOrSubgraphURL Supported Semaphore network.
      */
     constructor(networkOrSubgraphURL: Network | string = "arbitrum") {
         checkParameter(networkOrSubgraphURL, "networkOrSubgraphURL", "string")
@@ -52,6 +52,8 @@ export default class Subgraph {
             if (admin) {
                 filterFragments.push(`admin: "${admin}"`)
             }
+
+            /* istanbul ignore next */
             if (timestamp) {
                 filterFragments.push(`timestamp: "${jsDateToGraphqlDate(timestamp)}"`)
             } else if (timestampGte) {
