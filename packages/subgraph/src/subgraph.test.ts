@@ -158,6 +158,42 @@ describe("Subgraph", () => {
                 ]
             })
         })
+
+        it("Should return groups by applying filters", async () => {
+            requestMocked.mockImplementationOnce(() =>
+                Promise.resolve({
+                    groups: [
+                        {
+                            id: "1",
+                            merkleTree: {
+                                depth: 20,
+                                zeroValue: 0,
+                                numberOfLeaves: 2,
+                                root: "2"
+                            },
+                            admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
+                        }
+                    ]
+                })
+            )
+
+            const expectedValue = await subgraph.getGroups({
+                filters: { admin: "0x7bcd6f009471e9974a77086a69289d16eadba286" }
+            })
+
+            expect(expectedValue).toBeDefined()
+            expect(Array.isArray(expectedValue)).toBeTruthy()
+            expect(expectedValue).toContainEqual({
+                id: "1",
+                merkleTree: {
+                    depth: 20,
+                    zeroValue: 0,
+                    numberOfLeaves: 2,
+                    root: "2"
+                },
+                admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
+            })
+        })
     })
 
     describe("# getGroup", () => {
