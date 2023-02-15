@@ -3,6 +3,26 @@ import checkParameter from "./checkParameter"
 import getURL from "./getURL"
 import request from "./request"
 import { GroupOptions, Network } from "./types"
+import { jsDateToGraphqlDate } from "./utils"
+
+type GetGroupsResponse = {
+    id: string
+    merkleTree: {
+        root: string
+        depth: number
+        zeroValue: string
+        numberOfLeaves: number
+    }
+    admin: string
+    members: string[]
+    verifiedProofs: {
+        signal: string
+        merkleTreeRoot: string
+        externalNullifier: string
+        nullifierHash: string
+        timestamp: string
+    }[]
+}
 
 export default class Subgraph {
     private _url: string
@@ -30,7 +50,7 @@ export default class Subgraph {
      * @param options Options to select the group parameters.
      * @returns List of groups.
      */
-    async getGroups(options: GroupOptions = {}): Promise<any[]> {
+    async getGroups(options: GroupOptions = {}): Promise<GetGroupsResponse[]> {
         checkParameter(options, "options", "object")
 
         const { members = false, verifiedProofs = false } = options
@@ -38,11 +58,32 @@ export default class Subgraph {
         checkParameter(members, "members", "boolean")
         checkParameter(verifiedProofs, "verifiedProofs", "boolean")
 
+        let filtersQuery = '';
+        if (options.filters) {
+            const { admin, timestamp, timestampGte, timestampLte } = options.filters;
+            const filterFragments = [];
+
+            if (admin) {
+                filterFragments.push(`admin: "${admin}"`);
+            }
+            if (timestamp) {
+                filterFragments.push(`timestamp: "${jsDateToGraphqlDate(timestamp)}"`);
+            } else if (timestampGte) {
+                filterFragments.push(`timestamp_gte: "${jsDateToGraphqlDate(timestampGte)}"`);
+            } else if (timestampLte) {
+                filterFragments.push(`timestamp_lte: "${jsDateToGraphqlDate(timestampLte)}"`);
+            }
+
+            if (filterFragments.length > 0) {
+                filtersQuery = `(where: {${filterFragments.join(', ')}})`
+            }
+        }
+
         const config: AxiosRequestConfig = {
             method: "post",
             data: JSON.stringify({
                 query: `{
-                    groups {
+                    groups ${filtersQuery} {
                         id
                         merkleTree {
                             root
