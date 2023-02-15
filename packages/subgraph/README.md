@@ -83,12 +83,18 @@ or [JSDelivr](https://www.jsdelivr.com/):
 
 ## 📜 Usage
 
-\# **new Subgraph**(network: _Network_ = "goerli" ): _Subgraph_
+\# **new Subgraph**(networkOrSubgraphURL: _Network_ = "goerli" ): _Subgraph_
 
 ```typescript
 import { Subgraph } from "@semaphore-protocol/subgraph"
 
 const subgraph = new Subgraph()
+
+// or:
+const subgraph = new Subgraph("arbitrum")
+
+// or:
+const subgraph2 = new Subgraph("https://api.thegraph.com/subgraphs/name/<your-subgraph>")
 ```
 
 \# **getGroups**(options?: _GroupOptions_)
