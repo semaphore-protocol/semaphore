@@ -96,7 +96,7 @@ program
             const { selectedNetwork } = await inquirer.prompt({
                 name: "selectedNetwork",
                 type: "list",
-                message: "What is the network?",
+                message: "Select one of our supported networks:",
                 default: supportedNetworks[0],
                 choices: supportedNetworks
             })
@@ -146,7 +146,7 @@ program
             const { selectedNetwork } = await inquirer.prompt({
                 name: "selectedNetwork",
                 type: "list",
-                message: "What is the network?",
+                message: "Select one of our supported networks:",
                 default: supportedNetworks[0],
                 choices: supportedNetworks
             })
@@ -172,7 +172,7 @@ program
                 const { selectedGroupId } = await inquirer.prompt({
                     name: "selectedGroupId",
                     type: "list",
-                    message: "What is the group id?",
+                    message: "Select one of the following existing group ids:",
                     choices: groupIds
                 })
                 groupId = selectedGroupId
