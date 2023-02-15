@@ -2,27 +2,8 @@ import { AxiosRequestConfig } from "axios"
 import checkParameter from "./checkParameter"
 import getURL from "./getURL"
 import request from "./request"
-import { GroupOptions, Network } from "./types"
+import { GroupResponse, GroupOptions, Network } from "./types"
 import { jsDateToGraphqlDate } from "./utils"
-
-type GetGroupsResponse = {
-    id: string
-    merkleTree: {
-        root: string
-        depth: number
-        zeroValue: string
-        numberOfLeaves: number
-    }
-    admin: string
-    members: string[]
-    verifiedProofs: {
-        signal: string
-        merkleTreeRoot: string
-        externalNullifier: string
-        nullifierHash: string
-        timestamp: string
-    }[]
-}
 
 export default class Subgraph {
     private _url: string
@@ -55,7 +36,7 @@ export default class Subgraph {
      * @param options Options to select the group parameters.
      * @returns List of groups.
      */
-    async getGroups(options: GroupOptions = {}): Promise<GetGroupsResponse[]> {
+    async getGroups(options: GroupOptions = {}): Promise<GroupResponse[]> {
         checkParameter(options, "options", "object")
 
         const { members = false, verifiedProofs = false } = options
@@ -137,7 +118,7 @@ export default class Subgraph {
      * @param options Options to select the group parameters.
      * @returns Specific group.
      */
-    async getGroup(groupId: string, options: GroupOptions = {}): Promise<any> {
+    async getGroup(groupId: string, options: GroupOptions = {}): Promise<GroupResponse> {
         checkParameter(groupId, "groupId", "string")
         checkParameter(options, "options", "object")
 

@@ -10,3 +10,22 @@ export type GroupOptions = {
         timestampLte?: Date
     }
 }
+
+export type GroupResponse = {
+    id: string
+    merkleTree: {
+        root: string
+        depth: number
+        zeroValue: string
+        numberOfLeaves: number
+    }
+    admin: string
+    members?: string[]
+    verifiedProofs?: {
+        signal: string
+        merkleTreeRoot: string
+        externalNullifier: string
+        nullifierHash: string
+        timestamp: string
+    }[]
+}
