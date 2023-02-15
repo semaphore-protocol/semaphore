@@ -14,6 +14,8 @@ import Spinner from "./spinner.js"
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
 const { description, version } = JSON.parse(readFileSync(`${packagePath}/package.json`, "utf8"))
 
+const supportedNetworks = ["goerli", "arbitrum"]
+
 program
     .name("semaphore")
     .description(description)
@@ -36,13 +38,13 @@ program
     .allowExcessArguments(false)
     .action(async (projectDirectory) => {
         if (!projectDirectory) {
-            const answers = await inquirer.prompt({
-                name: "project_name",
+            const { projectName } = await inquirer.prompt({
+                name: "projectName",
                 type: "input",
-                message: "Enter your project name:",
+                message: "What is your project name?",
                 default: "my-app"
             })
-            projectDirectory = answers.project_name
+            projectDirectory = projectName
         }
 
         const currentDirectory = process.cwd()
@@ -87,10 +89,21 @@ program
 program
     .command("get-groups")
     .description("Get the list of groups from a supported network (goerli or arbitrum).")
-    .option("-n, --network <network-name>", "Supported Ethereum network.", "goerli")
+    .option("-n, --network <network-name>", "Supported Ethereum network.")
     .allowExcessArguments(false)
     .action(async ({ network }) => {
-        if (!["goerli", "arbitrum"].includes(network)) {
+        if (!network) {
+            const { selectedNetwork } = await inquirer.prompt({
+                name: "selectedNetwork",
+                type: "list",
+                message: "Select one of our supported networks:",
+                default: supportedNetworks[0],
+                choices: supportedNetworks
+            })
+            network = selectedNetwork
+        }
+
+        if (!supportedNetworks.includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
             return
         }
@@ -106,7 +119,7 @@ program
             spinner.stop()
 
             if (groups.length === 0) {
-                console.info(`\n ${logSymbols.error}`, "error: there are no groups in this network\n")
+                console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
                 return
             }
 
@@ -123,13 +136,74 @@ program
 program
     .command("get-group")
     .description("Get the data of a group from a supported network (Goerli or Arbitrum).")
-    .argument("<group-id>", "Identifier of the group.")
-    .option("-n, --network <network-name>", "Supported Ethereum network.", "goerli")
-    .option("--members", "Show group members.")
-    .option("--signals", "Show group signals.")
+    .argument("[group-id]", "Identifier of the group.")
+    .option("-n, --network <network-name>", "Supported Ethereum network.")
+    .option("-m, --members", "Show group members.")
+    .option("-s, --signals", "Show group signals.")
     .allowExcessArguments(false)
     .action(async (groupId, { network, members, signals }) => {
-        if (!["goerli", "arbitrum"].includes(network)) {
+        if (!network) {
+            const { selectedNetwork } = await inquirer.prompt({
+                name: "selectedNetwork",
+                type: "list",
+                message: "Select one of our supported networks:",
+                default: supportedNetworks[0],
+                choices: supportedNetworks
+            })
+            network = selectedNetwork
+        }
+
+        if (!groupId) {
+            const subgraphGroups = new Subgraph(network)
+            const spinnerGroups = new Spinner("Fetching groups")
+            spinnerGroups.start()
+            try {
+                const groups = await subgraphGroups.getGroups()
+
+                spinnerGroups.stop()
+
+                if (groups.length === 0) {
+                    console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
+                    return
+                }
+
+                const groupIds = groups.map(({ id }: any) => id)
+
+                const { selectedGroupId } = await inquirer.prompt({
+                    name: "selectedGroupId",
+                    type: "list",
+                    message: "Select one of the following existing group ids:",
+                    choices: groupIds
+                })
+                groupId = selectedGroupId
+            } catch (error) {
+                spinnerGroups.stop()
+                console.info(`\n ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
+                return
+            }
+        }
+
+        if (!members && !signals) {
+            const { showMembers } = await inquirer.prompt({
+                name: "showMembers",
+                type: "confirm",
+                message: "Do you want to show members?",
+                default: false
+            })
+
+            members = showMembers
+
+            const { showSignals } = await inquirer.prompt({
+                name: "showSignals",
+                type: "confirm",
+                message: "Do you want to show signals?",
+                default: false
+            })
+
+            signals = showSignals
+        }
+
+        if (!supportedNetworks.includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
             return
         }
