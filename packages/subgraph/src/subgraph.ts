@@ -63,24 +63,24 @@ export default class Subgraph {
         checkParameter(members, "members", "boolean")
         checkParameter(verifiedProofs, "verifiedProofs", "boolean")
 
-        let filtersQuery = '';
+        let filtersQuery = ""
         if (options.filters) {
-            const { admin, timestamp, timestampGte, timestampLte } = options.filters;
-            const filterFragments = [];
+            const { admin, timestamp, timestampGte, timestampLte } = options.filters
+            const filterFragments = []
 
             if (admin) {
-                filterFragments.push(`admin: "${admin}"`);
+                filterFragments.push(`admin: "${admin}"`)
             }
             if (timestamp) {
-                filterFragments.push(`timestamp: "${jsDateToGraphqlDate(timestamp)}"`);
+                filterFragments.push(`timestamp: "${jsDateToGraphqlDate(timestamp)}"`)
             } else if (timestampGte) {
-                filterFragments.push(`timestamp_gte: "${jsDateToGraphqlDate(timestampGte)}"`);
+                filterFragments.push(`timestamp_gte: "${jsDateToGraphqlDate(timestampGte)}"`)
             } else if (timestampLte) {
-                filterFragments.push(`timestamp_lte: "${jsDateToGraphqlDate(timestampLte)}"`);
+                filterFragments.push(`timestamp_lte: "${jsDateToGraphqlDate(timestampLte)}"`)
             }
 
             if (filterFragments.length > 0) {
-                filtersQuery = `(where: {${filterFragments.join(', ')}})`
+                filtersQuery = `(where: {${filterFragments.join(", ")}})`
             }
         }
 
