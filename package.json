@@ -19,7 +19,8 @@
         "docs": "yarn workspaces foreach run docs",
         "commit": "cz",
         "precommit": "lint-staged",
-        "postinstall": "yarn download:snark-artifacts"
+        "postinstall": "yarn download:snark-artifacts",
+        "version:release": "changelogithub"
     },
     "keywords": [
         "ethereum",
@@ -53,6 +54,7 @@
         "@typescript-eslint/eslint-plugin": "^5.9.1",
         "@typescript-eslint/parser": "^5.9.1",
         "babel-jest": "^27.4.6",
+        "changelogithub": "0.12.7",
         "commitizen": "^4.2.4",
         "cz-conventional-changelog": "^3.3.0",
         "dotenv": "^16.0.2",
@@ -76,5 +78,8 @@
         "commitizen": {
             "path": "./node_modules/cz-conventional-changelog"
         }
+    },
+    "resolutions": {
+        "changelogithub@0.12.7": "patch:changelogithub@npm:0.12.7#.yarn/patches/changelogithub-npm-0.12.7-72f348805d.patch"
     }
 }
