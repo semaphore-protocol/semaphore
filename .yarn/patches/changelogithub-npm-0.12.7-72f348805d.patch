@@ -1,0 +1,23 @@
+diff --git a/dist/shared/changelogithub.821fab93.mjs b/dist/shared/changelogithub.821fab93.mjs
+index 5fc2100867613c20f7827eac8715a5fc28bdc39e..97bd8dff878b81c63d2220e496904f6f3933589a 100644
+--- a/dist/shared/changelogithub.821fab93.mjs
++++ b/dist/shared/changelogithub.821fab93.mjs
+@@ -181,7 +181,7 @@ function formatLine(commit, options) {
+ function formatTitle(name, options) {
+   if (!options.emoji)
+     name = name.replace(emojisRE, "");
+-  return `### &nbsp;&nbsp;&nbsp;${name.trim()}`;
++  return `## &nbsp;&nbsp;&nbsp;${name.trim()}`;
+ }
+ function formatSection(commits, sectionName, options) {
+   if (!commits.length)
+@@ -198,7 +198,8 @@ function formatSection(commits, sectionName, options) {
+   Object.keys(scopes).sort().forEach((scope) => {
+     let padding = "";
+     let prefix = "";
+-    const scopeText = `**${options.scopeMap[scope] || scope}**`;
++    const url = `https://github.com/${options.github}/tree/main/packages/${scope}`
++    const scopeText = `[**@${options.github.split("/")[0]}/${options.scopeMap[scope] || scope}**](${url})`    
+     if (scope && useScopeGroup) {
+       lines.push(`- ${scopeText}:`);
+       padding = "  ";
