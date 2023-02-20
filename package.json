@@ -17,10 +17,12 @@
         "prettier": "prettier -c .",
         "prettier:write": "prettier -w .",
         "docs": "yarn workspaces foreach run docs",
+        "version:bump": "yarn workspaces foreach --no-private version -d ${0} && yarn version apply --all && git commit -am \"chore: v${0}\" && git tag v${0}",
+        "version:publish": "yarn build:libraries && yarn workspaces foreach --no-private npm publish --tolerate-republish",
+        "version:release": "changelogithub",
         "commit": "cz",
         "precommit": "lint-staged",
-        "postinstall": "yarn download:snark-artifacts",
-        "version:release": "changelogithub"
+        "postinstall": "yarn download:snark-artifacts"
     },
     "keywords": [
         "ethereum",
