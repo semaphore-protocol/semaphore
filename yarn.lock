@@ -3142,15 +3142,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/contracts@npm:3.1.0":
-  version: 3.1.0
-  resolution: "@semaphore-protocol/contracts@npm:3.1.0"
+"@semaphore-protocol/contracts@3.1.0, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
+  version: 0.0.0-use.local
+  resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
     "@openzeppelin/contracts": 4.7.3
     "@zk-kit/incremental-merkle-tree.sol": 1.3.3
-  checksum: 50817369e0c148126d6bfe50d2b8d323f7413a52e24310804be270a31f405c99e3d8dbf751cbea2bf617becd603fc81f37b6444a9e64512da74d6077d50dd29d
-  languageName: node
-  linkType: hard
+  languageName: unknown
+  linkType: soft
 
 "@semaphore-protocol/group@3.1.0, @semaphore-protocol/group@workspace:packages/group":
   version: 0.0.0-use.local
