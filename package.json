@@ -36,7 +36,8 @@
         "monorepo"
     ],
     "workspaces": [
-        "packages/*"
+        "packages/*",
+        "packages/contracts/contracts"
     ],
     "packageManager": "yarn@3.2.1",
     "devDependencies": {
