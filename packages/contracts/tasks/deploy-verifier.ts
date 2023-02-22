@@ -1,4 +1,3 @@
-
 import { task, types } from "hardhat/config"
 import { saveVerifierDeployedContracts } from "../scripts/save-deployed-verifier-address"
 
@@ -8,11 +7,7 @@ task("deploy:verifier", "Deploy a Semaphore Verifier contract")
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
     .setAction(
         async (
-            {
-                logs,
-                pairing: pairingAddress,
-                semaphoreVerifier: semaphoreVerifierAddress
-            },
+            { logs, pairing: pairingAddress, semaphoreVerifier: semaphoreVerifierAddress },
             { ethers, hardhatArguments }
         ): Promise<any> => {
             if (!semaphoreVerifierAddress) {
