@@ -52,7 +52,7 @@
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://discord.gg/6mSdGHnstH">
+        <a href="https://semaphore.appliedzkp.org/discord">
             🗣️ Chat &amp; Support
         </a>
     </h4>
