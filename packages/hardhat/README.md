@@ -2,7 +2,7 @@
     <h1 align="center">
         Semaphore Hardhat plugin
     </h1>
-    <p align="center">A Semaphore Hardhat plugin to deploy verifiers and Semaphore contracts.</p>
+    <p align="center">A Semaphore Hardhat plugin to deploy Semaphore contracts.</p>
 </p>
 
 <p align="center">
@@ -46,7 +46,7 @@
     </h4>
 </div>
 
-| This Hardhat plugin provides two simple tasks that can be used to deploy verifiers and Semaphore contracts without any additional configuration. |
+| This Hardhat plugin provides two simple tasks that can be used to deploy Semaphore contracts without any additional configuration. |
 | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 
 ## 🛠 Install
