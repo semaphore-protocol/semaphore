@@ -1,14 +1,14 @@
-import { SemaphoreSubgraph, SemaphoreEthers, GroupResponse } from "@semaphore-protocol/data"
+import { GroupResponse, SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-protocol/data"
 import chalk from "chalk"
 import { program } from "commander"
-import download from "download"
 import figlet from "figlet"
-import { existsSync, readFileSync, renameSync } from "fs"
+import { existsSync, readFileSync } from "fs"
 import logSymbols from "log-symbols"
+import pacote from "pacote"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
 import checkLatestVersion from "./checkLatestVersion.js"
-import { getProjectName, getSupportedNetwork, getGroupId } from "./inquirerPrompts.js"
+import { getGroupId, getProjectName, getSupportedNetwork } from "./inquirerPrompts.js"
 import Spinner from "./spinner.js"
 
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
@@ -43,7 +43,6 @@ program
 
         const currentDirectory = process.cwd()
         const spinner = new Spinner(`Creating your project in ${chalk.green(`./${projectDirectory}`)}`)
-        const templateURL = `https://registry.npmjs.org/@semaphore-protocol/cli-template-hardhat/-/cli-template-hardhat-${version}.tgz`
 
         if (existsSync(projectDirectory)) {
             console.info(`\n ${logSymbols.error}`, `error: the '${projectDirectory}' folder already exists\n`)
@@ -54,9 +53,10 @@ program
 
         await checkLatestVersion(version)
 
-        await download(templateURL, currentDirectory, { extract: true })
-
-        renameSync(`${currentDirectory}/package`, `${currentDirectory}/${projectDirectory}`)
+        await pacote.extract(
+            `@semaphore-protocol/cli-template-hardhat@${version}`,
+            `${currentDirectory}/${projectDirectory}`
+        )
 
         spinner.stop()
 
