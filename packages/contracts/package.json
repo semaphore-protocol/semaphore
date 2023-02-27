@@ -7,7 +7,6 @@
         "deploy:semaphore": "hardhat deploy:semaphore",
         "deploy:semaphore-voting": "hardhat deploy:semaphore-voting",
         "deploy:semaphore-whistleblowing": "hardhat deploy:semaphore-whistleblowing",
-        "deploy:verifier": "hardhat deploy:verifier --network hardhat",
         "verify:contracts": "hardhat run scripts/verify-contracts.ts",
         "test": "hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",
