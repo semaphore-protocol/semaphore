@@ -47,7 +47,7 @@
 </div>
 
 | This Hardhat plugin provides two simple tasks that can be used to deploy Semaphore contracts without any additional configuration. |
-| ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ---------------------------------------------------------------------------------------------------------------------------------- |
 
 ## 🛠 Install
 
@@ -91,6 +91,11 @@ task("deploy", "Deploy a Greeter contract")
         const { semaphore } = await run("deploy:semaphore", {
             logs
         })
+
+        // Or:
+        // const { semaphoreVerifier } = await run("deploy:semaphore-verifier", {
+        //    logs
+        // })
 
         const Greeter = await ethers.getContractFactory("Greeter")
 
