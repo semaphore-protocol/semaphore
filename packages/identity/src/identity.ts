@@ -35,8 +35,8 @@ export default class Identity {
 
         const [trapdoor, nullifier] = JSON.parse(identityOrMessage)
 
-        this._trapdoor = BigNumber.from(`0x${trapdoor}`).toBigInt()
-        this._nullifier = BigNumber.from(`0x${nullifier}`).toBigInt()
+        this._trapdoor = BigNumber.from(trapdoor).toBigInt()
+        this._nullifier = BigNumber.from(nullifier).toBigInt()
         this._commitment = generateCommitment(this._nullifier, this._trapdoor)
     }
 
@@ -94,6 +94,6 @@ export default class Identity {
      * @returns The string representation of the identity.
      */
     public toString(): string {
-        return JSON.stringify([this._trapdoor.toString(16), this._nullifier.toString(16)])
+        return JSON.stringify([`0x${this._trapdoor.toString(16)}`, `0x${this._nullifier.toString(16)}`])
     }
 }
