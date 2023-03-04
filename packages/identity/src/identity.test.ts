@@ -45,7 +45,7 @@ describe("Identity", () => {
         it("Should not recreate an existing invalid identity", () => {
             const fun = () => new Identity('[true, "01323"]')
 
-            expect(fun).toThrow("invalid BigNumber string")
+            expect(fun).toThrow("invalid BigNumber value")
         })
 
         it("Should recreate an existing identity", () => {
@@ -102,8 +102,8 @@ describe("Identity", () => {
 
             const [trapdoor, nullifier] = JSON.parse(identity.toString())
 
-            expect(BigNumber.from(`0x${trapdoor}`).toBigInt()).toBe(identity.trapdoor)
-            expect(BigNumber.from(`0x${nullifier}`).toBigInt()).toBe(identity.nullifier)
+            expect(BigNumber.from(trapdoor).toBigInt()).toBe(identity.trapdoor)
+            expect(BigNumber.from(nullifier).toBigInt()).toBe(identity.nullifier)
         })
     })
 })
