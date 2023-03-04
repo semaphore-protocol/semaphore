@@ -64,7 +64,9 @@ describe("Identity", () => {
 
             const trapdoor = identity.getTrapdoor()
 
-            expect(trapdoor.toString()).toBe("11566083507498623434013707198824105161167204201250008419741119866456392774309")
+            expect(trapdoor.toString()).toBe(
+                "11566083507498623434013707198824105161167204201250008419741119866456392774309"
+            )
         })
     })
 
@@ -74,7 +76,9 @@ describe("Identity", () => {
 
             const nullifier = identity.getNullifier()
 
-            expect(nullifier.toString()).toBe("14070056666392584007908120012103355272369511035580155843212703537125048345255")
+            expect(nullifier.toString()).toBe(
+                "14070056666392584007908120012103355272369511035580155843212703537125048345255"
+            )
         })
     })
 
