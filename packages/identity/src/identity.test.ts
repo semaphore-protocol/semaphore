@@ -64,7 +64,7 @@ describe("Identity", () => {
 
             const trapdoor = identity.getTrapdoor()
 
-            expect(trapdoor).toBe(BigInt("211007102311354422986775462856672883657031335757695461477990303178796954863"))
+            expect(trapdoor.toString()).toBe("11566083507498623434013707198824105161167204201250008419741119866456392774309")
         })
     })
 
@@ -74,7 +74,7 @@ describe("Identity", () => {
 
             const nullifier = identity.getNullifier()
 
-            expect(nullifier).toBe(BigInt("10282208199720122340759039255952223220417076359839127631923809108800013776"))
+            expect(nullifier.toString()).toBe("14070056666392584007908120012103355272369511035580155843212703537125048345255")
         })
     })
 
@@ -82,8 +82,8 @@ describe("Identity", () => {
         it("Should generate an identity commitment", () => {
             const { commitment } = new Identity("message")
 
-            expect(commitment).toBe(
-                BigInt("13192222509545780880434144549342414064490325100975031303723930089730328393905")
+            expect(commitment.toString()).toBe(
+                "19361462367798001240039467285882167157718016385695743307694056771074972404368"
             )
         })
     })
