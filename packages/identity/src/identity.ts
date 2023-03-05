@@ -1,6 +1,6 @@
 import { BigNumber } from "@ethersproject/bignumber"
+import hash from "js-sha512"
 import checkParameter from "./checkParameter"
-import hash from "./hash"
 import { generateCommitment, genRandomNumber, isJsonArray } from "./utils"
 
 export default class Identity {
@@ -24,10 +24,10 @@ export default class Identity {
         checkParameter(identityOrMessage, "identityOrMessage", "string")
 
         if (!isJsonArray(identityOrMessage)) {
-            const messageHash = hash(identityOrMessage)
-
-            this._trapdoor = hash(`${messageHash}identity_trapdoor`)
-            this._nullifier = hash(`${messageHash}identity_nullifier`)
+            const h = hash.sha512(identityOrMessage).padStart(128, "0")
+            // alt_bn128 is 253.6 bits, so we can safely use 253 bits
+            this._trapdoor = BigInt(`0x${h.slice(64)}`) >> BigInt(3)
+            this._nullifier = BigInt(`0x${h.slice(0, 64)}`) >> BigInt(3)
             this._commitment = generateCommitment(this._nullifier, this._trapdoor)
 
             return
