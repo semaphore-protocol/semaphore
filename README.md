@@ -159,23 +159,23 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
         </tr>
         <tr>
             <td>
-                <a href="/packages/subgraph">
-                    @semaphore-protocol/subgraph
+                <a href="/packages/data">
+                    @semaphore-protocol/data
                 </a>
-                <a href="https://semaphore-protocol.github.io/semaphore/subgraph">
+                <a href="https://semaphore-protocol.github.io/semaphore/data">
                     (docs)
                 </a>
             </td>
             <td>
                 <!-- NPM version -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/subgraph">
-                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/subgraph.svg?style=flat-square" alt="NPM version" />
+                <a href="https://npmjs.org/package/@semaphore-protocol/data">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/data.svg?style=flat-square" alt="NPM version" />
                 </a>
             </td>
             <td>
                 <!-- Downloads -->
-                <a href="https://npmjs.org/package/@semaphore-protocol/subgraph">
-                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/subgraph.svg?style=flat-square" alt="Downloads" />
+                <a href="https://npmjs.org/package/@semaphore-protocol/data">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/data.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>
