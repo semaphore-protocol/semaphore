@@ -65,22 +65,6 @@ or yarn:
 yarn add @semaphore-protocol/data
 ```
 
-### CDN
-
-You can also load it using a `script` tag using [unpkg](https://unpkg.com/):
-
-```html
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://unpkg.com/@semaphore-protocol/data"></script>
-```
-
-or [JSDelivr](https://www.jsdelivr.com/):
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@semaphore-protocol/data"></script>
-```
-
 ## 📜 Usage
 
 \# **new Subgraph**(networkOrSubgraphURL: _Network_ = "goerli" ): _Subgraph_
