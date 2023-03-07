@@ -1,22 +1,41 @@
-import { Contract } from "@ethersproject/contracts"
 import SemaphoreEthers from "./ethers"
+import getEvents from "./getEvents"
+
+jest.mock("./getEvents", () => ({
+    __esModule: true,
+    default: jest.fn()
+}))
+
+jest.mock("@ethersproject/contracts", () => ({
+    __esModule: true,
+    Contract: jest.fn(
+        () =>
+            ({
+                getMerkleTreeRoot: () => "222",
+                getNumberOfMerkleTreeLeaves: () => ({
+                    toNumber: () => 2
+                })
+            } as any)
+    )
+}))
+
+const getEventsMocked = getEvents as jest.MockedFunction<typeof getEvents>
 
 describe("SemaphoreEthers", () => {
     let semaphore: SemaphoreEthers
 
     describe("# SemaphoreEthers", () => {
         it("Should instantiate a SemaphoreEthers object with different networks", () => {
-            semaphore = new SemaphoreEthers("goerli")
+            semaphore = new SemaphoreEthers()
             const semaphore1 = new SemaphoreEthers("arbitrum")
             const semaphore2 = new SemaphoreEthers("homestead", {
-                address: "0x0000000000000000000000000000000000000000"
+                address: "0x0000000000000000000000000000000000000000",
+                startBlock: 0
             })
 
-            expect(semaphore.contract).toBeInstanceOf(Contract)
             expect(semaphore.network).toBe("goerli")
-            expect(semaphore1.contract).toBeInstanceOf(Contract)
+            expect(semaphore.contract).toBeInstanceOf(Object)
             expect(semaphore1.network).toBe("arbitrum")
-            expect(semaphore2.contract).toBeInstanceOf(Contract)
             expect(semaphore2.network).toBe("homestead")
             expect(semaphore2.options.startBlock).toBe(0)
             expect(semaphore2.options.address).toContain("0x000000")
@@ -84,6 +103,8 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupIds", () => {
         it("Should return all the existing groups", async () => {
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([["32"], ["42"]]))
+
             const groupIds = await semaphore.getGroupIds()
 
             expect(groupIds).toContain("42")
@@ -92,13 +113,25 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroup", () => {
         it("Should return a specific group", async () => {
+            getEventsMocked.mockReturnValueOnce(
+                Promise.resolve([
+                    {
+                        merkleTreeDepth: "20",
+                        zeroValue: "111"
+                    }
+                ])
+            )
+
             const group = await semaphore.getGroup("42")
 
             expect(group.merkleTree.depth).toBe("20")
-            expect(group.merkleTree.zeroValue).toContain("33712832")
+            expect(group.merkleTree.root).toBe("222")
+            expect(group.merkleTree.zeroValue).toContain("111")
         })
 
         it("Should throw an error if the group does not exist", async () => {
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([]))
+
             const fun = () => semaphore.getGroup("666")
 
             await expect(fun).rejects.toThrow("Group '666' not found")
@@ -107,12 +140,22 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupAdmin", () => {
         it("Should return a group admin", async () => {
+            getEventsMocked.mockReturnValueOnce(
+                Promise.resolve([
+                    {
+                        newAdmin: "0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F"
+                    }
+                ])
+            )
+
             const admin = await semaphore.getGroupAdmin("42")
 
             expect(admin).toBe("0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F")
         })
 
         it("Should throw an error if the group does not exist", async () => {
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([]))
+
             const fun = () => semaphore.getGroupAdmin("666")
 
             await expect(fun).rejects.toThrow("Group '666' not found")
@@ -121,12 +164,83 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupMembers", () => {
         it("Should return a list of group members", async () => {
-            const [member] = await semaphore.getGroupMembers("42")
+            getEventsMocked.mockReturnValueOnce(
+                Promise.resolve([
+                    {
+                        merkleTreeDepth: "20",
+                        zeroValue: "0"
+                    }
+                ])
+            )
+            getEventsMocked.mockReturnValueOnce(
+                Promise.resolve([
+                    {
+                        index: "0",
+                        merkleTreeRoot: "223",
+                        blockNumber: 3
+                    },
+                    {
+                        index: "2",
+                        merkleTreeRoot: "224",
+                        blockNumber: 4
+                    }
+                ])
+            )
+            getEventsMocked.mockReturnValueOnce(
+                Promise.resolve([
+                    {
+                        index: "1",
+                        newIdentityCommitment: "113",
+                        merkleTreeRoot: "225",
+                        blockNumber: 3
+                    },
+                    {
+                        index: "2",
+                        newIdentityCommitment: "114",
+                        merkleTreeRoot: "226",
+                        blockNumber: 3
+                    }
+                ])
+            )
+            getEventsMocked.mockReturnValueOnce(
+                Promise.resolve([
+                    {
+                        index: "0",
+                        identityCommitment: "110",
+                        merkleTreeRoot: "220",
+                        blockNumber: 0
+                    },
+                    {
+                        index: "1",
+                        identityCommitment: "111",
+                        merkleTreeRoot: "221",
+                        blockNumber: 1
+                    },
+                    {
+                        index: "2",
+                        identityCommitment: "112",
+                        merkleTreeRoot: "222",
+                        blockNumber: 2
+                    },
+                    {
+                        index: "3",
+                        identityCommitment: "113",
+                        merkleTreeRoot: "223",
+                        blockNumber: 3
+                    }
+                ])
+            )
 
-            expect(member).toContain("20833604")
+            const members = await semaphore.getGroupMembers("42")
+
+            expect(members[0]).toBe("0")
+            expect(members[1]).toBe("113")
+            expect(members[2]).toBe("0")
         })
 
         it("Should throw an error if the group does not exist", async () => {
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([]))
+
             const fun = () => semaphore.getGroupMembers("666")
 
             await expect(fun).rejects.toThrow("Group '666' not found")
@@ -135,12 +249,25 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupVerifiedProofs", () => {
         it("Should return a list of group verified proofs", async () => {
+            getEventsMocked.mockReturnValueOnce(
+                Promise.resolve([
+                    {
+                        signal: "111",
+                        merkleTreeRoot: "112",
+                        externalNullifier: "113",
+                        nullifierHash: "114"
+                    }
+                ])
+            )
+
             const [verifiedProof] = await semaphore.getGroupVerifiedProofs("42")
 
-            expect(verifiedProof.signal).toContain("377211729")
+            expect(verifiedProof.signal).toContain("111")
         })
 
         it("Should throw an error if the group does not exist", async () => {
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([]))
+
             const fun = () => semaphore.getGroupVerifiedProofs("666")
 
             await expect(fun).rejects.toThrow("Group '666' not found")
