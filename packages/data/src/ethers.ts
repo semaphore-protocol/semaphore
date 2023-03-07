@@ -138,15 +138,16 @@ export default class SemaphoreEthers {
             throw new Error(`Group '${groupId}' not found`)
         }
 
-        const memberAddedEvents = await getEvents(this._contract, "MemberAdded", [groupId], this._options.startBlock)
+        const merkleTreeRoot = await this._contract.getMerkleTreeRoot(groupId)
+        const numberOfLeaves = await this._contract.getNumberOfMerkleTreeLeaves(groupId)
 
         const group: GroupResponse = {
             id: groupId,
             merkleTree: {
                 depth: groupCreatedEvent.merkleTreeDepth.toString(),
                 zeroValue: groupCreatedEvent.zeroValue.toString(),
-                numberOfLeaves: memberAddedEvents.length,
-                root: memberAddedEvents[memberAddedEvents.length - 1].merkleTreeRoot.toString()
+                numberOfLeaves: numberOfLeaves.toNumber(),
+                root: merkleTreeRoot.toString()
             }
         }
 
@@ -211,7 +212,7 @@ export default class SemaphoreEthers {
         for (const { blockNumber, index } of memberRemovedEvents) {
             const groupUpdate = groupUpdates.get(index.toString())
 
-            if (groupUpdate && groupUpdate[0] < blockNumber) {
+            if (!groupUpdate || (groupUpdate && groupUpdate[0] < blockNumber)) {
                 groupUpdates.set(index.toString(), [blockNumber, zeroValue])
             }
         }

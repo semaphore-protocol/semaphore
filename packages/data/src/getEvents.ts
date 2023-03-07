@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Contract } from "@ethersproject/contracts"
 
 /**
