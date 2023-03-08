@@ -5,14 +5,14 @@ import request from "./request"
 import { GroupResponse, GroupOptions, Network } from "./types"
 import { jsDateToGraphqlDate } from "./utils"
 
-export default class Subgraph {
+export default class SemaphoreSubgraph {
     private _url: string
 
     /**
-     * Initializes the subgraph object with one of the supported networks.
+     * Initializes the subgraph object with one of the supported networks or a custom URL.
      * @param networkOrSubgraphURL Supported Semaphore network or custom Subgraph URL.
      */
-    constructor(networkOrSubgraphURL: Network | string = "arbitrum") {
+    constructor(networkOrSubgraphURL: Network | string = "goerli") {
         checkParameter(networkOrSubgraphURL, "networkOrSubgraphURL", "string")
 
         if (networkOrSubgraphURL.startsWith("http")) {
@@ -32,6 +32,27 @@ export default class Subgraph {
     }
 
     /**
+     * Returns the list of group ids.
+     * @returns List of group ids.
+     */
+    async getGroupIds(): Promise<string[]> {
+        const config: AxiosRequestConfig = {
+            method: "post",
+            data: JSON.stringify({
+                query: `{
+                    groups {
+                        id
+                    }
+                }`
+            })
+        }
+
+        const { groups } = await request(this._url, config)
+
+        return groups.map((group: any) => group.id)
+    }
+
+    /**
      * Returns the list of groups.
      * @param options Options to select the group parameters.
      * @returns List of groups.
@@ -45,6 +66,7 @@ export default class Subgraph {
         checkParameter(verifiedProofs, "verifiedProofs", "boolean")
 
         let filtersQuery = ""
+
         if (options.filters) {
             const { admin, timestamp, timestampGte, timestampLte } = options.filters
             const filterFragments = []
@@ -120,7 +142,7 @@ export default class Subgraph {
      * @param options Options to select the group parameters.
      * @returns Specific group.
      */
-    async getGroup(groupId: string, options: GroupOptions = {}): Promise<GroupResponse> {
+    async getGroup(groupId: string, options: Omit<GroupOptions, "filters"> = {}): Promise<GroupResponse> {
         checkParameter(groupId, "groupId", "string")
         checkParameter(options, "options", "object")
 
