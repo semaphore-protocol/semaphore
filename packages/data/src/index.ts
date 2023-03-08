@@ -1,5 +1,5 @@
-import Subgraph from "./subgraph"
-import Ethers from "./ethers"
+import SemaphoreSubgraph from "./subgraph"
+import SemaphoreEthers from "./ethers"
 
-export { Subgraph, Ethers }
+export { SemaphoreSubgraph, SemaphoreEthers }
 export * from "./types"
