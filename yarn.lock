@@ -3123,7 +3123,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/cli@workspace:packages/cli"
   dependencies:
-    "@semaphore-protocol/subgraph": 3.1.0
+    "@semaphore-protocol/data": 3.1.0
     "@types/clear": ^0.1.2
     "@types/figlet": ^1.5.5
     "@types/semver": ^7.3.13
@@ -3155,7 +3155,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/data@workspace:packages/data":
+"@semaphore-protocol/data@3.1.0, @semaphore-protocol/data@workspace:packages/data":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/data@workspace:packages/data"
   dependencies:
@@ -3236,15 +3236,6 @@ __metadata:
     "@semaphore-protocol/identity": 3.1.0
   languageName: unknown
   linkType: soft
-
-"@semaphore-protocol/subgraph@npm:3.1.0":
-  version: 3.1.0
-  resolution: "@semaphore-protocol/subgraph@npm:3.1.0"
-  dependencies:
-    axios: ^0.27.2
-  checksum: 69ac3eaeb3cfb8ff89b3318494bce0d1d44084a0fb5d249e05cc52e871beecdeff8e8ba9fcd1005b31f75500b9ebd02ad14ea9aa98e0ede21b21b11334c29bcd
-  languageName: node
-  linkType: hard
 
 "@sentry/core@npm:5.30.0":
   version: 5.30.0
