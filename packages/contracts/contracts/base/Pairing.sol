@@ -9,7 +9,7 @@
 pragma solidity ^0.8.4;
 
 library Pairing {
-    error Semaphore__InvalidProof();
+    error InvalidProof();
 
     // The prime q in the base field F_q for G1
     uint256 constant BASE_MODULUS = 21888242871839275222246405745257275088696311157297823662689037894645226208583;
@@ -56,7 +56,7 @@ library Pairing {
 
         // Validate input or revert
         if (p.X >= BASE_MODULUS || p.Y >= BASE_MODULUS) {
-            revert Semaphore__InvalidProof();
+            revert InvalidProof();
         }
 
         // We know p.Y > 0 and p.Y < BASE_MODULUS.
@@ -82,7 +82,7 @@ library Pairing {
         }
 
         if (!success) {
-            revert Semaphore__InvalidProof();
+            revert InvalidProof();
         }
     }
 
@@ -92,7 +92,7 @@ library Pairing {
         // By EIP-196 the values p.X and p.Y are verified to less than the BASE_MODULUS and
         // form a valid point on the curve. But the scalar is not verified, so we do that explicitelly.
         if (s >= SCALAR_MODULUS) {
-            revert Semaphore__InvalidProof();
+            revert InvalidProof();
         }
 
         uint256[3] memory input;
@@ -109,7 +109,7 @@ library Pairing {
         }
 
         if (!success) {
-            revert Semaphore__InvalidProof();
+            revert InvalidProof();
         }
     }
 
@@ -120,7 +120,7 @@ library Pairing {
         // By EIP-197 all input is verified to be less than the BASE_MODULUS and form elements in their
         // respective groups of the right order.
         if (p1.length != p2.length) {
-            revert Semaphore__InvalidProof();
+            revert InvalidProof();
         }
 
         uint256 elements = p1.length;
@@ -145,7 +145,7 @@ library Pairing {
         }
 
         if (!success || out[0] != 1) {
-            revert Semaphore__InvalidProof();
+            revert InvalidProof();
         }
     }
 }
