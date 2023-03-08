@@ -67,42 +67,93 @@ yarn add @semaphore-protocol/data
 
 ## 📜 Usage
 
-\# **new Subgraph**(networkOrSubgraphURL: _Network_ = "goerli" ): _Subgraph_
+\# **new SemaphoreSubgraph**(networkOrSubgraphURL: _Network_ | _string_ = "goerli"): _SemaphoreSubgraph_
 
 ```typescript
-import { Subgraph } from "@semaphore-protocol/subgraph"
+import { SemaphoreSubgraph } from "@semaphore-protocol/data"
 
-const subgraph = new Subgraph()
+const semaphoreSubgraph = new SemaphoreSubgraph()
 
 // or:
-const subgraph = new Subgraph("arbitrum")
+const semaphoreSubgraph = new SemaphoreSubgraph("arbitrum")
 
 // or:
-const subgraph2 = new Subgraph("https://api.studio.thegraph.com/query/14377/<your-subgraph>/<your-version>")
+const semaphoreSubgraph = new SemaphoreSubgraph(
+    "https://api.studio.thegraph.com/query/14377/<your-subgraph>/<your-version>"
+)
 ```
 
-\# **getGroupIds**()
+\# **getGroupIds**(): _Promise<string\[]>_
 
 ```typescript
-const groups = subgraph.getGroupIds()
+const groupIds = semaphoreSubgraph.getGroupIds()
 ```
 
-\# **getGroups**(options?: _GroupOptions_)
+\# **getGroups**(options?: _GroupOptions_): _Promise<GroupResponse\[]>_
 
 ```typescript
-const groups = subgraph.getGroups()
+const groups = semaphoreSubgraph.getGroups()
 
 // or
 
-const groups = subgraph.getGroups({ members: true, verifiedProofs: true })
+const groups = semaphoreSubgraph.getGroups({ members: true, verifiedProofs: true })
 ```
 
-\# **getGroup**(groupId: _string_, options?: _GroupOptions_)
+\# **getGroup**(groupId: _string_, options?: _GroupOptions_): _Promise<GroupResponse>_
 
 ```typescript
-const group = subgraph.getGroup("1")
+const group = semaphoreSubgraph.getGroup("42")
 
 // or
 
-const { members, verifiedProofs } = subgraph.getGroup("1", { members: true, verifiedProofs: true })
+const { members, verifiedProofs } = semaphoreSubgraph.getGroup("42", { members: true, verifiedProofs: true })
+```
+
+\# **new Ethers**(networkOrEthereumURL: Network | string = "goerli", options: EthersOptions = {}): _SemaphoreEthers_
+
+```typescript
+import { SemaphoreEthers } from "@semaphore-protocol/data"
+
+const semaphoreEthers = new SemaphoreEthers()
+
+// or:
+const semaphoreEthers = new SemaphoreEthers("homestead", {
+    address: "semaphore-address",
+    startBlock: 0
+})
+
+// or:
+const semaphoreEthers = new SemaphoreEthers("http://localhost:8545", {
+    address: "semaphore-address"
+})
+```
+
+\# **getGroupIds**(): _Promise<string\[]>_
+
+```typescript
+const groupIds = semaphoreEthers.getGroupIds()
+```
+
+\# **getGroup**(groupId: _string_): _Promise<GroupResponse>_
+
+```typescript
+const group = semaphoreEthers.getGroup("42")
+```
+
+\# **getGroupAdmin**(groupId: _string_): _Promise<string>_
+
+```typescript
+const admin = semaphoreEthers.getGroupAdmin("42")
+```
+
+\# **getGroupMembers**(groupId: _string_): _Promise<string\[]>_
+
+```typescript
+const members = semaphoreEthers.getGroupMembers("42")
+```
+
+\# **getGroupVerifiedProofs**(groupId: _string_): _Promise<any\[]>_
+
+```typescript
+const verifiedProofs = semaphoreEthers.getGroupVerifiedProofs()
 ```
