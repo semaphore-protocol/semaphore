@@ -7,7 +7,7 @@
     "bugs": "https://github.com/semaphore-protocol/semaphore/issues",
     "private": true,
     "scripts": {
-        "build:libraries": "yarn workspaces foreach run build",
+        "build:libraries": "yarn workspaces foreach -t run build",
         "compile:contracts": "yarn workspace contracts compile",
         "download:snark-artifacts": "rimraf snark-artifacts && ts-node scripts/download-snark-artifacts.ts",
         "test": "yarn test:libraries && yarn test:contracts",
