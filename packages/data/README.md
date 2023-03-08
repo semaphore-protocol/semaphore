@@ -83,13 +83,13 @@ const semaphoreSubgraph = new SemaphoreSubgraph(
 )
 ```
 
-\# **getGroupIds**(): _Promise<string\[]>_
+\# **getGroupIds**(): _Promise\<string[]>_
 
 ```typescript
 const groupIds = await semaphoreSubgraph.getGroupIds()
 ```
 
-\# **getGroups**(options?: _GroupOptions_): _Promise<GroupResponse\[]>_
+\# **getGroups**(options?: _GroupOptions_): _Promise\<GroupResponse[]>_
 
 ```typescript
 const groups = await semaphoreSubgraph.getGroups()
@@ -99,7 +99,7 @@ const groups = await semaphoreSubgraph.getGroups()
 const groups = await semaphoreSubgraph.getGroups({ members: true, verifiedProofs: true })
 ```
 
-\# **getGroup**(groupId: _string_, options?: _GroupOptions_): _Promise<GroupResponse>_
+\# **getGroup**(groupId: _string_, options?: _GroupOptions_): _Promise\<GroupResponse>_
 
 ```typescript
 const group = await semaphoreSubgraph.getGroup("42")
@@ -128,31 +128,31 @@ const semaphoreEthers = new SemaphoreEthers("http://localhost:8545", {
 })
 ```
 
-\# **getGroupIds**(): _Promise<string\[]>_
+\# **getGroupIds**(): _Promise\<string[]>_
 
 ```typescript
 const groupIds = await semaphoreEthers.getGroupIds()
 ```
 
-\# **getGroup**(groupId: _string_): _Promise<GroupResponse>_
+\# **getGroup**(groupId: _string_): _Promise\<GroupResponse>_
 
 ```typescript
 const group = await semaphoreEthers.getGroup("42")
 ```
 
-\# **getGroupAdmin**(groupId: _string_): _Promise<string>_
+\# **getGroupAdmin**(groupId: _string_): _Promise\<string>_
 
 ```typescript
 const admin = await semaphoreEthers.getGroupAdmin("42")
 ```
 
-\# **getGroupMembers**(groupId: _string_): _Promise<string\[]>_
+\# **getGroupMembers**(groupId: _string_): _Promise\<string[]>_
 
 ```typescript
 const members = await semaphoreEthers.getGroupMembers("42")
 ```
 
-\# **getGroupVerifiedProofs**(groupId: _string_): _Promise<any\[]>_
+\# **getGroupVerifiedProofs**(groupId: _string_): _Promise\<any[]>_
 
 ```typescript
 const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs()
