@@ -1,4 +1,4 @@
-import { Subgraph } from "@semaphore-protocol/data"
+import { SemaphoreSubgraph } from "@semaphore-protocol/data"
 import chalk from "chalk"
 import { program } from "commander"
 import download from "download"
@@ -108,7 +108,7 @@ program
             return
         }
 
-        const subgraph = new Subgraph(network)
+        const subgraph = new SemaphoreSubgraph(network)
         const spinner = new Spinner("Fetching groups")
 
         spinner.start()
@@ -154,7 +154,7 @@ program
         }
 
         if (!groupId) {
-            const subgraphGroups = new Subgraph(network)
+            const subgraphGroups = new SemaphoreSubgraph(network)
             const spinnerGroups = new Spinner("Fetching groups")
             spinnerGroups.start()
             try {
@@ -208,7 +208,7 @@ program
             return
         }
 
-        const subgraph = new Subgraph(network)
+        const subgraph = new SemaphoreSubgraph(network)
         const spinner = new Spinner(`Fetching group ${groupId}`)
 
         spinner.start()
