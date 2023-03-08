@@ -86,23 +86,23 @@ const semaphoreSubgraph = new SemaphoreSubgraph(
 \# **getGroupIds**(): _Promise<string\[]>_
 
 ```typescript
-const groupIds = semaphoreSubgraph.getGroupIds()
+const groupIds = await semaphoreSubgraph.getGroupIds()
 ```
 
 \# **getGroups**(options?: _GroupOptions_): _Promise<GroupResponse\[]>_
 
 ```typescript
-const groups = semaphoreSubgraph.getGroups()
+const groups = await semaphoreSubgraph.getGroups()
 
 // or
 
-const groups = semaphoreSubgraph.getGroups({ members: true, verifiedProofs: true })
+const groups = await semaphoreSubgraph.getGroups({ members: true, verifiedProofs: true })
 ```
 
 \# **getGroup**(groupId: _string_, options?: _GroupOptions_): _Promise<GroupResponse>_
 
 ```typescript
-const group = semaphoreSubgraph.getGroup("42")
+const group = await semaphoreSubgraph.getGroup("42")
 
 // or
 
@@ -131,29 +131,29 @@ const semaphoreEthers = new SemaphoreEthers("http://localhost:8545", {
 \# **getGroupIds**(): _Promise<string\[]>_
 
 ```typescript
-const groupIds = semaphoreEthers.getGroupIds()
+const groupIds = await semaphoreEthers.getGroupIds()
 ```
 
 \# **getGroup**(groupId: _string_): _Promise<GroupResponse>_
 
 ```typescript
-const group = semaphoreEthers.getGroup("42")
+const group = await semaphoreEthers.getGroup("42")
 ```
 
 \# **getGroupAdmin**(groupId: _string_): _Promise<string>_
 
 ```typescript
-const admin = semaphoreEthers.getGroupAdmin("42")
+const admin = await semaphoreEthers.getGroupAdmin("42")
 ```
 
 \# **getGroupMembers**(groupId: _string_): _Promise<string\[]>_
 
 ```typescript
-const members = semaphoreEthers.getGroupMembers("42")
+const members = await semaphoreEthers.getGroupMembers("42")
 ```
 
 \# **getGroupVerifiedProofs**(groupId: _string_): _Promise<any\[]>_
 
 ```typescript
-const verifiedProofs = semaphoreEthers.getGroupVerifiedProofs()
+const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs()
 ```
