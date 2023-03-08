@@ -1,5 +1,5 @@
 import request from "./request"
-import Subgraph from "./subgraph"
+import SemaphoreSubgraph from "./subgraph"
 
 jest.mock("./request", () => ({
     __esModule: true,
@@ -8,35 +8,58 @@ jest.mock("./request", () => ({
 
 const requestMocked = request as jest.MockedFunction<typeof request>
 
-describe("Subgraph", () => {
-    let subgraph: Subgraph
+describe("SemaphoreSubgraph", () => {
+    let semaphore: SemaphoreSubgraph
 
-    describe("# Subgraph", () => {
-        it("Should instantiate a subgraph object", () => {
-            subgraph = new Subgraph("goerli")
-            const subgraph1 = new Subgraph()
+    describe("# SemaphoreSubgraph", () => {
+        it("Should instantiate a SemaphoreSubgraph object", () => {
+            semaphore = new SemaphoreSubgraph()
+            const semaphore1 = new SemaphoreSubgraph("arbitrum")
 
-            expect(subgraph.url).toContain("goerli")
-            expect(subgraph1.url).toContain("arbitrum")
+            expect(semaphore.url).toContain("goerli")
+            expect(semaphore1.url).toContain("arbitrum")
         })
 
-        it("Should instantiate a subgraph object using URL", () => {
-            const url = "https://api.thegraph.com/subgraphs/name/semaphore-protocol/goerli-89490c"
-            const subgraph1 = new Subgraph(url)
+        it("Should instantiate a SemaphoreSubgraph object using URL", () => {
+            const url = "https://api.studio.thegraph.com/query/14377/semaphore-arbitrum/v3.2.0"
+            const semaphore1 = new SemaphoreSubgraph(url)
 
-            expect(subgraph1.url).toBe(url)
+            expect(semaphore1.url).toBe(url)
         })
 
         it("Should throw an error if there is a wrong network", () => {
-            const fun = () => new Subgraph("wrong" as any)
+            const fun = () => new SemaphoreSubgraph("wrong" as any)
 
             expect(fun).toThrow("Network 'wrong' is not supported")
         })
 
         it("Should throw an error if the networkOrSubgraphURL parameter type is wrong", () => {
-            const fun = () => new Subgraph(33 as any)
+            const fun = () => new SemaphoreSubgraph(33 as any)
 
             expect(fun).toThrow("Parameter 'networkOrSubgraphURL' is not a string")
+        })
+    })
+
+    describe("# getGroupIds", () => {
+        it("Should return all the existing group ids", async () => {
+            requestMocked.mockImplementationOnce(() =>
+                Promise.resolve({
+                    groups: [
+                        {
+                            id: "1"
+                        },
+                        {
+                            id: "2"
+                        }
+                    ]
+                })
+            )
+
+            const expectedValue = await semaphore.getGroupIds()
+
+            expect(expectedValue).toBeDefined()
+            expect(Array.isArray(expectedValue)).toBeTruthy()
+            expect(expectedValue).toContainEqual("1")
         })
     })
 
@@ -59,7 +82,7 @@ describe("Subgraph", () => {
                 })
             )
 
-            const expectedValue = await subgraph.getGroups()
+            const expectedValue = await semaphore.getGroups()
 
             expect(expectedValue).toBeDefined()
             expect(Array.isArray(expectedValue)).toBeTruthy()
@@ -76,7 +99,7 @@ describe("Subgraph", () => {
         })
 
         it("Should throw an error if the options parameter type is wrong", async () => {
-            const fun = () => subgraph.getGroups(1 as any)
+            const fun = () => semaphore.getGroups(1 as any)
 
             await expect(fun).rejects.toThrow("Parameter 'options' is not an object")
         })
@@ -123,7 +146,7 @@ describe("Subgraph", () => {
                 })
             )
 
-            const expectedValue = await subgraph.getGroups({
+            const expectedValue = await semaphore.getGroups({
                 members: true,
                 verifiedProofs: true
             })
@@ -177,7 +200,7 @@ describe("Subgraph", () => {
                 })
             )
 
-            const expectedValue = await subgraph.getGroups({
+            const expectedValue = await semaphore.getGroups({
                 filters: {
                     admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
                 }
@@ -217,7 +240,7 @@ describe("Subgraph", () => {
                 })
             )
 
-            const expectedValue = await subgraph.getGroup("1")
+            const expectedValue = await semaphore.getGroup("1")
 
             expect(expectedValue).toBeDefined()
             expect(expectedValue).toEqual({
@@ -233,7 +256,7 @@ describe("Subgraph", () => {
         })
 
         it("Should throw an error if the options parameter type is wrong", async () => {
-            const fun = () => subgraph.getGroup("1", 1 as any)
+            const fun = () => semaphore.getGroup("1", 1 as any)
 
             await expect(fun).rejects.toThrow("Parameter 'options' is not an object")
         })
@@ -280,7 +303,7 @@ describe("Subgraph", () => {
                 })
             )
 
-            const expectedValue = await subgraph.getGroup("1", {
+            const expectedValue = await semaphore.getGroup("1", {
                 members: true,
                 verifiedProofs: true
             })

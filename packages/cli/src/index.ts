@@ -1,13 +1,13 @@
-import { Subgraph } from "@semaphore-protocol/subgraph"
+import { SemaphoreSubgraph } from "@semaphore-protocol/data"
 import chalk from "chalk"
 import { program } from "commander"
 import download from "download"
 import figlet from "figlet"
 import { existsSync, readFileSync, renameSync } from "fs"
+import inquirer from "inquirer"
 import logSymbols from "log-symbols"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
-import inquirer from "inquirer"
 import checkLatestVersion from "./checkLatestVersion.js"
 import Spinner from "./spinner.js"
 
@@ -108,22 +108,22 @@ program
             return
         }
 
-        const subgraph = new Subgraph(network)
+        const subgraph = new SemaphoreSubgraph(network)
         const spinner = new Spinner("Fetching groups")
 
         spinner.start()
 
         try {
-            const groups = await subgraph.getGroups()
+            const groupIds = await subgraph.getGroupIds()
 
             spinner.stop()
 
-            if (groups.length === 0) {
+            if (groupIds.length === 0) {
                 console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
                 return
             }
 
-            const content = `\n${groups.map(({ id }: any) => ` - ${id}`).join("\n")}`
+            const content = `\n${groupIds.map((id: any) => ` - ${id}`).join("\n")}`
 
             console.info(`${content}\n`)
         } catch (error) {
@@ -154,7 +154,7 @@ program
         }
 
         if (!groupId) {
-            const subgraphGroups = new Subgraph(network)
+            const subgraphGroups = new SemaphoreSubgraph(network)
             const spinnerGroups = new Spinner("Fetching groups")
             spinnerGroups.start()
             try {
@@ -208,7 +208,7 @@ program
             return
         }
 
-        const subgraph = new Subgraph(network)
+        const subgraph = new SemaphoreSubgraph(network)
         const spinner = new Spinner(`Fetching group ${groupId}`)
 
         spinner.start()
