@@ -1,5 +1,5 @@
 import { IncrementalMerkleTree, MerkleProof } from "@zk-kit/incremental-merkle-tree"
-import poseidon from "poseidon-lite"
+import { poseidon2 } from "poseidon-lite/poseidon2"
 import hash from "./hash"
 import { BigNumberish } from "./types"
 
@@ -19,7 +19,7 @@ export default class Group {
         }
 
         this._id = id
-        this.merkleTree = new IncrementalMerkleTree(poseidon, treeDepth, hash(id), 2)
+        this.merkleTree = new IncrementalMerkleTree(poseidon2, treeDepth, hash(id), 2)
     }
 
     /**

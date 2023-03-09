@@ -3177,7 +3177,7 @@ __metadata:
     "@ethersproject/bytes": ^5.7.0
     "@ethersproject/keccak256": ^5.7.0
     "@zk-kit/incremental-merkle-tree": 1.0.0
-    poseidon-lite: ^0.0.2
+    poseidon-lite: ^0.1.0
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
     typedoc: ^0.22.11
@@ -3210,7 +3210,7 @@ __metadata:
     "@ethersproject/random": ^5.5.1
     "@ethersproject/strings": ^5.6.1
     js-sha512: ^0.8.0
-    poseidon-lite: 0.0.2
+    poseidon-lite: ^0.1.0
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
     typedoc: ^0.22.11
@@ -13850,10 +13850,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"poseidon-lite@npm:0.0.2, poseidon-lite@npm:^0.0.2":
-  version: 0.0.2
-  resolution: "poseidon-lite@npm:0.0.2"
-  checksum: b10a29ec8b84caa75dcbb323e7586f220ed5e2d338864484cbc735ee871aafcae599b1c98c521aebd9b82798d5d354328d7750d7dd4bd0c51f7f6d0b79cbe00e
+"poseidon-lite@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "poseidon-lite@npm:0.1.0"
+  checksum: 947d339ef4a8ab61e0dc7ddf567514afa7c51f862bb40cb204389335d0b56cf0fc7d66baa4a93f57f9c939691579fd0f8da641d416a5335e30a64c43b1c95204
   languageName: node
   linkType: hard
 
