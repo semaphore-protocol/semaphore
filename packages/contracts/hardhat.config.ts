@@ -30,6 +30,11 @@ function getNetworks(): NetworksUserConfig {
             chainId: 5,
             accounts
         },
+        sepolia: {
+            url: `https://sepolia.infura.io/v3/${infuraApiKey}`,
+            chainId: 11155111,
+            accounts
+        },
         arbitrum: {
             url: "https://arb1.arbitrum.io/rpc",
             chainId: 42161,
