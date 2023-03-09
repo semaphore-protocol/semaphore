@@ -35,8 +35,13 @@ function getNetworks(): NetworksUserConfig {
             chainId: 11155111,
             accounts
         },
+        mumbai: {
+            url: `https://polygon-mumbai.infura.io/v3/${infuraApiKey}`,
+            chainId: 80001,
+            accounts
+        },
         arbitrum: {
-            url: "https://arb1.arbitrum.io/rpc",
+            url: `https://arbitrum-mainnet.infura.io/v3/${infuraApiKey}`,
             chainId: 42161,
             accounts
         }
