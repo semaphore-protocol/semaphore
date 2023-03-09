@@ -4,6 +4,7 @@ export type Network =
     | "goerli"
     | "arbitrum"
     | "maticmum"
+    | "mumbai"
     | "arbitrum-goerli"
     | "optimism"
     | "optimism-goerli"
