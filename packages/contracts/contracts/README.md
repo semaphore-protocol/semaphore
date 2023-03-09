@@ -111,6 +111,7 @@ If you want to deploy your contract in a specific network you can set up the `DE
 
 ```bash
 yarn deploy:semaphore --network goerli
+yarn deploy:semaphore --network sepolia
 yarn deploy:semaphore --network arbitrum
 ```
 
