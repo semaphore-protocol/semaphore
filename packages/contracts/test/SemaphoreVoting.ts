@@ -171,7 +171,7 @@ describe("SemaphoreVoting", () => {
                 .connect(accounts[1])
                 .castVote(vote, 0, pollIds[1], fullProof.proof)
 
-            await expect(transaction).to.be.revertedWithCustomError(pairingContract, "Semaphore__InvalidProof")
+            await expect(transaction).to.be.revertedWithCustomError(pairingContract, "InvalidProof")
         })
 
         it("Should cast a vote", async () => {

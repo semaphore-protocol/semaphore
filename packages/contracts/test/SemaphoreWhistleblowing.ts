@@ -163,7 +163,7 @@ describe("SemaphoreWhistleblowing", () => {
                 .connect(accounts[1])
                 .publishLeak(leak, 0, entityIds[1], fullProof.proof)
 
-            await expect(transaction).to.be.revertedWithCustomError(pairingContract, "Semaphore__InvalidProof")
+            await expect(transaction).to.be.revertedWithCustomError(pairingContract, "InvalidProof")
         })
 
         it("Should publish a leak", async () => {
