@@ -273,7 +273,7 @@ describe("Semaphore", () => {
                 fullProof.proof
             )
 
-            await expect(transaction).to.be.revertedWithCustomError(pairingContract, "Semaphore__InvalidProof")
+            await expect(transaction).to.be.revertedWithCustomError(pairingContract, "InvalidProof")
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
