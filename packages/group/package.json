@@ -39,6 +39,6 @@
         "@ethersproject/bytes": "^5.7.0",
         "@ethersproject/keccak256": "^5.7.0",
         "@zk-kit/incremental-merkle-tree": "1.0.0",
-        "poseidon-lite": "^0.0.2"
+        "poseidon-lite": "^0.1.0"
     }
 }
