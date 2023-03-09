@@ -40,6 +40,11 @@ function getNetworks(): NetworksUserConfig {
             chainId: 80001,
             accounts
         },
+        "optimism-goerli": {
+            url: `https://optimism-goerli.infura.io/v3/${infuraApiKey}`,
+            chainId: 420,
+            accounts
+        },
         arbitrum: {
             url: `https://arbitrum-mainnet.infura.io/v3/${infuraApiKey}`,
             chainId: 42161,
