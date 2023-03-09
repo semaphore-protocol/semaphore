@@ -40,6 +40,6 @@
         "@ethersproject/random": "^5.5.1",
         "@ethersproject/strings": "^5.6.1",
         "js-sha512": "^0.8.0",
-        "poseidon-lite": "0.0.2"
+        "poseidon-lite": "^0.1.0"
     }
 }

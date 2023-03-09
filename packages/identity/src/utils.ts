@@ -1,6 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber"
 import { randomBytes } from "@ethersproject/random"
-import poseidon from "poseidon-lite"
+import { poseidon1 } from "poseidon-lite/poseidon1"
+import { poseidon2 } from "poseidon-lite/poseidon2"
 
 /**
  * Generates a random big number.
@@ -18,7 +19,7 @@ export function genRandomNumber(numberOfBytes = 31): bigint {
  * @returns identity commitment
  */
 export function generateCommitment(nullifier: bigint, trapdoor: bigint): bigint {
-    return poseidon([poseidon([nullifier, trapdoor])])
+    return poseidon1([poseidon2([nullifier, trapdoor])])
 }
 
 /**
