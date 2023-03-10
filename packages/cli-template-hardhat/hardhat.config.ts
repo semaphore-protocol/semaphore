@@ -17,6 +17,21 @@ function getNetworks(): NetworksUserConfig {
                 chainId: 5,
                 accounts
             },
+            sepolia: {
+                url: process.env.ETHEREUM_URL,
+                chainId: 11155111,
+                accounts
+            },
+            mumbai: {
+                url: process.env.ETHEREUM_URL,
+                chainId: 80001,
+                accounts
+            },
+            "optimism-goerli": {
+                url: process.env.ETHEREUM_URL,
+                chainId: 420,
+                accounts
+            },
             arbitrum: {
                 url: process.env.ETHEREUM_URL,
                 chainId: 42161,
