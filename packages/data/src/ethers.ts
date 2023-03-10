@@ -37,10 +37,18 @@ export default class SemaphoreEthers {
             checkParameter(options.apiKey, "apiKey", "string")
         }
 
+        if (networkOrEthereumURL === "matic") {
+            networkOrEthereumURL = "maticmum"
+        }
+
         switch (networkOrEthereumURL) {
             case "arbitrum":
                 options.address = "0x72dca3c971136bf47BACF16A141f0fcfAC925aeC"
                 options.startBlock = 54934350
+                break
+            case "maticmum":
+                options.address = "0xF864ABa335073e01234c9a88888BfFfa965650bD"
+                options.startBlock = 32902215
                 break
             case "goerli":
                 options.address = "0x89490c95eD199D980Cdb4FF8Bac9977EDb41A7E7"

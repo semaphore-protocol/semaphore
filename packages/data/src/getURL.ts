@@ -9,6 +9,8 @@ export default function getURL(network: Network): string {
     switch (network) {
         case "goerli":
             return `https://api.studio.thegraph.com/query/14377/semaphore-goerli/v3.2.0`
+        case "mumbai":
+            return `https://api.studio.thegraph.com/query/14377/semaphore-mumbai/v3.2.0`
         case "arbitrum":
             return `https://api.studio.thegraph.com/query/14377/semaphore-arbitrum/v3.2.0`
         default:
