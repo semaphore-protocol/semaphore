@@ -28,7 +28,8 @@ describe("SemaphoreEthers", () => {
         it("Should instantiate a SemaphoreEthers object with different networks", () => {
             semaphore = new SemaphoreEthers()
             const semaphore1 = new SemaphoreEthers("arbitrum")
-            const semaphore2 = new SemaphoreEthers("homestead", {
+            const semaphore2 = new SemaphoreEthers("matic")
+            const semaphore3 = new SemaphoreEthers("homestead", {
                 address: "0x0000000000000000000000000000000000000000",
                 startBlock: 0
             })
@@ -36,9 +37,10 @@ describe("SemaphoreEthers", () => {
             expect(semaphore.network).toBe("goerli")
             expect(semaphore.contract).toBeInstanceOf(Object)
             expect(semaphore1.network).toBe("arbitrum")
-            expect(semaphore2.network).toBe("homestead")
-            expect(semaphore2.options.startBlock).toBe(0)
-            expect(semaphore2.options.address).toContain("0x000000")
+            expect(semaphore2.network).toBe("maticmum")
+            expect(semaphore3.network).toBe("homestead")
+            expect(semaphore3.options.startBlock).toBe(0)
+            expect(semaphore3.options.address).toContain("0x000000")
         })
 
         it("Should instantiate a SemaphoreEthers object with different providers", () => {
@@ -249,6 +251,14 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupVerifiedProofs", () => {
         it("Should return a list of group verified proofs", async () => {
+            getEventsMocked.mockReturnValueOnce(
+                Promise.resolve([
+                    {
+                        merkleTreeDepth: "20",
+                        zeroValue: "0"
+                    }
+                ])
+            )
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
                     {

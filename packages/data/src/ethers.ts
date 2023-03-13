@@ -246,16 +246,18 @@ export default class SemaphoreEthers {
     async getGroupVerifiedProofs(groupId: string): Promise<any> {
         checkParameter(groupId, "groupId", "string")
 
+        const [groupCreatedEvent] = await getEvents(this._contract, "GroupCreated", [groupId], this._options.startBlock)
+
+        if (!groupCreatedEvent) {
+            throw new Error(`Group '${groupId}' not found`)
+        }
+
         const proofVerifiedEvents = await getEvents(
             this._contract,
             "ProofVerified",
             [groupId],
             this._options.startBlock
         )
-
-        if (proofVerifiedEvents.length === 0) {
-            throw new Error(`Group '${groupId}' not found`)
-        }
 
         return proofVerifiedEvents.map((event) => ({
             signal: event.signal.toString(),
