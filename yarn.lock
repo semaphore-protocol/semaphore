@@ -3214,6 +3214,8 @@ __metadata:
     "@ethersproject/bignumber": ^5.7.0
     "@ethersproject/bytes": ^5.7.0
     "@ethersproject/keccak256": ^5.7.0
+    "@rollup/plugin-commonjs": ^24.0.1
+    "@rollup/plugin-node-resolve": ^15.0.1
     "@zk-kit/incremental-merkle-tree": 1.0.0
     poseidon-lite: ^0.1.0
     rollup-plugin-cleanup: ^3.2.1
