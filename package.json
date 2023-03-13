@@ -22,7 +22,7 @@
         "version:release": "changelogithub",
         "commit": "cz",
         "precommit": "lint-staged",
-        "postinstall": "yarn download:snark-artifacts"
+        "postinstall": "yarn download:snark-artifacts && husky install"
     },
     "keywords": [
         "ethereum",
@@ -67,6 +67,7 @@
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-import": "^2.25.2",
         "eslint-plugin-jest": "^25.7.0",
+        "husky": "^8.0.3",
         "jest": "^27.4.1",
         "jest-config": "^27.4.7",
         "lint-staged": "^12.1.7",
