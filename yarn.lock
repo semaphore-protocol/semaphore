@@ -3095,11 +3095,11 @@ __metadata:
     "@nomicfoundation/hardhat-toolbox": ^2.0.0
     "@nomiclabs/hardhat-ethers": ^2.0.0
     "@nomiclabs/hardhat-etherscan": ^3.0.0
-    "@semaphore-protocol/contracts": 3.2.1
-    "@semaphore-protocol/group": 3.2.1
-    "@semaphore-protocol/hardhat": 3.2.1
-    "@semaphore-protocol/identity": 3.2.1
-    "@semaphore-protocol/proof": 3.2.1
+    "@semaphore-protocol/contracts": 3.2.2
+    "@semaphore-protocol/group": 3.2.2
+    "@semaphore-protocol/hardhat": 3.2.2
+    "@semaphore-protocol/identity": 3.2.2
+    "@semaphore-protocol/proof": 3.2.2
     "@typechain/ethers-v5": ^10.1.0
     "@typechain/hardhat": ^6.1.2
     "@types/chai": ^4.2.0
@@ -3123,7 +3123,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/cli@workspace:packages/cli"
   dependencies:
-    "@semaphore-protocol/data": 3.2.1
+    "@semaphore-protocol/data": 3.2.2
     "@types/clear": ^0.1.2
     "@types/figlet": ^1.5.5
     "@types/semver": ^7.3.13
@@ -3146,7 +3146,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/contracts@3.2.1, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
+"@semaphore-protocol/contracts@3.2.2, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
@@ -3155,7 +3155,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/data@3.2.1, @semaphore-protocol/data@workspace:packages/data":
+"@semaphore-protocol/data@3.2.2, @semaphore-protocol/data@workspace:packages/data":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/data@workspace:packages/data"
   dependencies:
@@ -3169,7 +3169,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/group@3.2.1, @semaphore-protocol/group@workspace:packages/group":
+"@semaphore-protocol/group@3.2.2, @semaphore-protocol/group@workspace:packages/group":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/group@workspace:packages/group"
   dependencies:
@@ -3184,12 +3184,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/hardhat@3.2.1, @semaphore-protocol/hardhat@workspace:packages/hardhat":
+"@semaphore-protocol/hardhat@3.2.2, @semaphore-protocol/hardhat@workspace:packages/hardhat":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/hardhat@workspace:packages/hardhat"
   dependencies:
     "@nomiclabs/hardhat-ethers": ^2.1.1
-    "@semaphore-protocol/contracts": 3.2.1
+    "@semaphore-protocol/contracts": 3.2.2
     circomlibjs: ^0.0.8
     ethers: ^5.7.1
     hardhat: ^2.0.0
@@ -3201,7 +3201,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/identity@3.2.1, @semaphore-protocol/identity@workspace:packages/identity":
+"@semaphore-protocol/identity@3.2.2, @semaphore-protocol/identity@workspace:packages/identity":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/identity@workspace:packages/identity"
   dependencies:
@@ -3217,7 +3217,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/proof@3.2.1, @semaphore-protocol/proof@workspace:packages/proof":
+"@semaphore-protocol/proof@3.2.2, @semaphore-protocol/proof@workspace:packages/proof":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/proof@workspace:packages/proof"
   dependencies:
@@ -3233,8 +3233,8 @@ __metadata:
     snarkjs: 0.4.13
     typedoc: ^0.22.11
   peerDependencies:
-    "@semaphore-protocol/group": 3.2.1
-    "@semaphore-protocol/identity": 3.2.1
+    "@semaphore-protocol/group": 3.2.2
+    "@semaphore-protocol/identity": 3.2.2
   languageName: unknown
   linkType: soft
 
