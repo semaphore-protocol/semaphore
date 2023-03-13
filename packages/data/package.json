@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/data",
-    "version": "3.2.2",
+    "version": "3.2.3",
     "description": "A library to query Semaphore contracts.",
     "license": "MIT",
     "main": "dist/index.node.js",
