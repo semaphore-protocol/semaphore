@@ -1,6 +1,8 @@
-import typescript from "rollup-plugin-typescript2"
+import commonjs from "@rollup/plugin-commonjs"
+import { nodeResolve } from "@rollup/plugin-node-resolve"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
+import typescript from "rollup-plugin-typescript2"
 
 const pkg = JSON.parse(fs.readFileSync("./package.json", "utf-8"))
 const banner = `/**
@@ -24,6 +26,8 @@ export default {
             tsconfig: "./build.tsconfig.json",
             useTsconfigDeclarationDir: true
         }),
+        commonjs(),
+        nodeResolve(),
         cleanup({ comments: "jsdoc" })
     ]
 }
