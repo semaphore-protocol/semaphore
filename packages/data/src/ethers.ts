@@ -24,7 +24,7 @@ export default class SemaphoreEthers {
      * @param networkOrEthereumURL Ethereum network or custom URL.
      * @param options Ethers options.
      */
-    constructor(networkOrEthereumURL: Network | string = "goerli", options: EthersOptions = {}) {
+    constructor(networkOrEthereumURL: Network | string = "sepolia", options: EthersOptions = {}) {
         checkParameter(networkOrEthereumURL, "networkOrSubgraphURL", "string")
 
         if (options.provider) {
@@ -53,6 +53,14 @@ export default class SemaphoreEthers {
             case "goerli":
                 options.address = "0x89490c95eD199D980Cdb4FF8Bac9977EDb41A7E7"
                 options.startBlock = 8255063
+                break
+            case "sepolia":
+                options.address = "0x220fBdB6F996827b1Cf12f0C181E8d5e6de3a36F"
+                options.startBlock = 3053948
+                break
+            case "optimism-goerli":
+                options.address = "0x220fBdB6F996827b1Cf12f0C181E8d5e6de3a36F"
+                options.startBlock = 6477953
                 break
             default:
                 if (options.address === undefined) {
