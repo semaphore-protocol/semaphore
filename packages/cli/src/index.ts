@@ -88,7 +88,7 @@ program
 
 program
     .command("get-groups")
-    .description("Get the list of groups from a supported network (goerli or arbitrum).")
+    .description("Get the list of groups from a supported network (e.g. goerli or arbitrum).")
     .option("-n, --network <network-name>", "Supported Ethereum network.")
     .allowExcessArguments(false)
     .action(async ({ network }) => {
@@ -135,7 +135,7 @@ program
 
 program
     .command("get-group")
-    .description("Get the data of a group from a supported network (Goerli or Arbitrum).")
+    .description("Get the data of a group from a supported network (e.g. goerli or arbitrum).")
     .argument("[group-id]", "Identifier of the group.")
     .option("-n, --network <network-name>", "Supported Ethereum network.")
     .option("-m, --members", "Show group members.")
