@@ -163,34 +163,44 @@ program
             network = selectedNetwork
         }
 
+        if (!supportedNetworks.includes(network)) {
+            console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
+            return
+        }
+
         if (!groupId) {
-            const subgraphGroups = new SemaphoreSubgraph(network)
+            let groupIds
+
             const spinnerGroups = new Spinner("Fetching groups")
             spinnerGroups.start()
+
             try {
-                const groups = await subgraphGroups.getGroups()
-
+                const semaphoreSubgraphGroups = new SemaphoreSubgraph(network)
+                groupIds = await semaphoreSubgraphGroups.getGroupIds()
                 spinnerGroups.stop()
-
-                if (groups.length === 0) {
-                    console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
+            } catch (error) {
+                try {
+                    const semaphoreEthersGroups = new SemaphoreEthers(network)
+                    groupIds = await semaphoreEthersGroups.getGroupIds()
+                    spinnerGroups.stop()
+                } catch {
+                    spinnerGroups.stop()
+                    console.info(`\n ${logSymbols.error}`, "error: unexpected error with the SemaphoreEthers package")
                     return
                 }
-
-                const groupIds = groups.map(({ id }: any) => id)
-
-                const { selectedGroupId } = await inquirer.prompt({
-                    name: "selectedGroupId",
-                    type: "list",
-                    message: "Select one of the following existing group ids:",
-                    choices: groupIds
-                })
-                groupId = selectedGroupId
-            } catch (error) {
-                spinnerGroups.stop()
-                console.info(`\n ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
+            }
+            if (groupIds.length === 0) {
+                console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
                 return
             }
+
+            const { selectedGroupId } = await inquirer.prompt({
+                name: "selectedGroupId",
+                type: "list",
+                message: "Select one of the following existing group ids:",
+                choices: groupIds
+            })
+            groupId = selectedGroupId
         }
 
         if (!members && !signals) {
@@ -213,53 +223,54 @@ program
             signals = showSignals
         }
 
-        if (!supportedNetworks.includes(network)) {
-            console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
-            return
-        }
+        let group
 
-        const subgraph = new SemaphoreSubgraph(network)
         const spinner = new Spinner(`Fetching group ${groupId}`)
-
         spinner.start()
 
         try {
-            const group = await subgraph.getGroup(groupId, { members, verifiedProofs: signals })
-
+            const semaphoreSubgraph = new SemaphoreSubgraph(network)
+            group = await semaphoreSubgraph.getGroup(groupId, { members, verifiedProofs: signals })
             spinner.stop()
-
-            if (!group) {
+        } catch (error) {
+            try {
+                const semaphoreEthers = new SemaphoreEthers(network)
+                group = await semaphoreEthers.getGroup(groupId)
+                if (group && members) {
+                    group.members = await semaphoreEthers.getGroupMembers(groupId)
+                }
+                if (group && signals) {
+                    group.verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId)
+                }
+                spinner.stop()
+            } catch {
+                spinner.stop()
                 console.info(`\n ${logSymbols.error}`, "error: the group does not exist\n")
-
                 return
             }
-
-            let content = ` ${chalk.bold("Id")}: ${group.id}\n`
-            content += ` ${chalk.bold("Admin")}: ${group.admin}\n`
-            content += ` ${chalk.bold("Merkle tree")}:\n`
-            content += `   Root: ${group.merkleTree.root}\n`
-            content += `   Depth: ${group.merkleTree.depth}\n`
-            content += `   Zero value: ${group.merkleTree.zeroValue}\n`
-            content += `   Number of leaves: ${group.merkleTree.numberOfLeaves}`
-
-            if (members) {
-                content += `\n\n ${chalk.bold("Members")}: \n${group.members
-                    .map((member: string, i: number) => `   ${i}. ${member}`)
-                    .join("\n")}`
-            }
-
-            if (signals) {
-                content += `\n\n ${chalk.bold("Signals")}: \n${group.verifiedProofs
-                    .map(({ signal }: any) => `   - ${signal}`)
-                    .join("\n")}`
-            }
-
-            console.info(`\n${content}\n`)
-        } catch (error) {
-            spinner.stop()
-
-            console.info(`\n ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
         }
+
+        let content = ` ${chalk.bold("Id")}: ${group.id}\n`
+        content += ` ${chalk.bold("Admin")}: ${group.admin}\n`
+        content += ` ${chalk.bold("Merkle tree")}:\n`
+        content += `   Root: ${group.merkleTree.root}\n`
+        content += `   Depth: ${group.merkleTree.depth}\n`
+        content += `   Zero value: ${group.merkleTree.zeroValue}\n`
+        content += `   Number of leaves: ${group.merkleTree.numberOfLeaves}`
+
+        if (members) {
+            content += `\n\n ${chalk.bold("Members")}: \n${group.members
+                .map((member: string, i: number) => `   ${i}. ${member}`)
+                .join("\n")}`
+        }
+
+        if (signals) {
+            content += `\n\n ${chalk.bold("Signals")}: \n${group.verifiedProofs
+                .map(({ signal }: any) => `   - ${signal}`)
+                .join("\n")}`
+        }
+
+        console.info(`\n${content}\n`)
     })
 
 program.parse(process.argv)
