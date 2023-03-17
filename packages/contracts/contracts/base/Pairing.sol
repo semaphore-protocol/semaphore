@@ -14,7 +14,7 @@ library Pairing {
     // The prime q in the base field F_q for G1
     uint256 constant BASE_MODULUS = 21888242871839275222246405745257275088696311157297823662689037894645226208583;
 
-    // The prime moludus of the scalar field of G1.
+    // The prime modulus of the scalar field of G1.
     uint256 constant SCALAR_MODULUS = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
 
     struct G1Point {
