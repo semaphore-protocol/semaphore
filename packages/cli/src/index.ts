@@ -231,10 +231,10 @@ program
             try {
                 const semaphoreEthers = new SemaphoreEthers(network)
                 group = await semaphoreEthers.getGroup(groupId)
-                if (group && members) {
+                if (members) {
                     group.members = await semaphoreEthers.getGroupMembers(groupId)
                 }
-                if (group && signals) {
+                if (signals) {
                     group.verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId)
                 }
                 spinner.stop()
