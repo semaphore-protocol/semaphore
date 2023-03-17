@@ -117,7 +117,7 @@ program
             const semaphoreSubgraph = new SemaphoreSubgraph(network)
             groupIds = await semaphoreSubgraph.getGroupIds()
             spinner.stop()
-        } catch (error) {
+        } catch {
             try {
                 const semaphoreEthers = new SemaphoreEthers(network)
                 groupIds = await semaphoreEthers.getGroupIds()
@@ -173,7 +173,7 @@ program
                 const semaphoreSubgraphGroups = new SemaphoreSubgraph(network)
                 groupIds = await semaphoreSubgraphGroups.getGroupIds()
                 spinnerGroups.stop()
-            } catch (error) {
+            } catch {
                 try {
                     const semaphoreEthersGroups = new SemaphoreEthers(network)
                     groupIds = await semaphoreEthersGroups.getGroupIds()
@@ -227,7 +227,7 @@ program
             const semaphoreSubgraph = new SemaphoreSubgraph(network)
             group = await semaphoreSubgraph.getGroup(groupId, { members, verifiedProofs: signals })
             spinner.stop()
-        } catch (error) {
+        } catch {
             try {
                 const semaphoreEthers = new SemaphoreEthers(network)
                 group = await semaphoreEthers.getGroup(groupId)
