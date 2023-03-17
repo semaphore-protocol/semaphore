@@ -1,4 +1,4 @@
-import { SemaphoreSubgraph } from "@semaphore-protocol/data"
+import { SemaphoreSubgraph, SemaphoreEthers } from "@semaphore-protocol/data"
 import chalk from "chalk"
 import { program } from "commander"
 import download from "download"
@@ -14,7 +14,7 @@ import Spinner from "./spinner.js"
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
 const { description, version } = JSON.parse(readFileSync(`${packagePath}/package.json`, "utf8"))
 
-const supportedNetworks = ["goerli", "mumbai", "optimism-goerli", "arbitrum"]
+const supportedNetworks = ["sepolia", "goerli", "mumbai", "optimism-goerli", "arbitrum"]
 
 program
     .name("semaphore")
@@ -108,13 +108,12 @@ program
             return
         }
 
-        const subgraph = new SemaphoreSubgraph(network)
+        let queryData
+
         const spinner = new Spinner("Fetching groups")
 
-        spinner.start()
-
-        try {
-            const groupIds = await subgraph.getGroupIds()
+        const getGroupIds = async () => {
+            const groupIds = await queryData.getGroupIds()
 
             spinner.stop()
 
@@ -126,10 +125,21 @@ program
             const content = `\n${groupIds.map((id: any) => ` - ${id}`).join("\n")}`
 
             console.info(`${content}\n`)
-        } catch (error) {
-            spinner.stop()
+        }
 
-            console.info(`\n ${logSymbols.error}`, "error: unexpected error with the Semaphore subgraph")
+        spinner.start()
+
+        try {
+            queryData = new SemaphoreSubgraph(network)
+            await getGroupIds()
+        } catch (error) {
+            try {
+                queryData = new SemaphoreEthers(network)
+                await getGroupIds()
+            } catch {
+                spinner.stop()
+                console.info(`\n ${logSymbols.error}`, "error: unexpected error with the SemaphoreEthers package")
+            }
         }
     })
 
