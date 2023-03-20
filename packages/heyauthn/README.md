@@ -109,3 +109,10 @@ generateProof(identity, group, group.id, "42", {
     wasmFilePath: "./semaphore.wasm"
 })
 ```
+
+## Authors
+
+-   @vb7401
+-   @rrrliu
+-   @emmaguo13
+-   @sehyunc
