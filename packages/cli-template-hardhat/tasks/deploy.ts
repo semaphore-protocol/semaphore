@@ -1,6 +1,6 @@
 import { task, types } from "hardhat/config"
 
-task("deploy", "Deploy a Greeter contract")
+task("deploy", "Deploy a Feedback contract")
     .addOptionalParam("semaphore", "Semaphore contract address", undefined, types.string)
     .addOptionalParam("group", "Group id", "42", types.string)
     .addOptionalParam("logs", "Print the logs", true, types.boolean)
@@ -13,15 +13,19 @@ task("deploy", "Deploy a Greeter contract")
             semaphoreAddress = semaphore.address
         }
 
-        const Greeter = await ethers.getContractFactory("Greeter")
-
-        const greeter = await Greeter.deploy(semaphoreAddress, groupId)
-
-        await greeter.deployed()
-
-        if (logs) {
-            console.info(`Greeter contract has been deployed to: ${greeter.address}`)
+        if (!groupId) {
+            groupId = process.env.GROUP_ID
         }
 
-        return greeter
+        const FeedbackFactory = await ethers.getContractFactory("Feedback")
+
+        const feedbackContract = await FeedbackFactory.deploy(semaphoreAddress, groupId)
+
+        await feedbackContract.deployed()
+
+        if (logs) {
+            console.info(`Feedback contract has been deployed to: ${feedbackContract.address}`)
+        }
+
+        return feedbackContract
     })
