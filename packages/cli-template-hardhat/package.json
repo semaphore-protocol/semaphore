@@ -7,6 +7,7 @@
         ".gitignore",
         ".env.example",
         "contracts/",
+        "scripts/",
         "tasks/",
         "test/",
         "hardhat.config.ts",
@@ -18,12 +19,14 @@
         "access": "public"
     },
     "scripts": {
-        "start": "hardhat node",
+        "dev": "hardhat node & yarn compile && yarn deploy --network localhost",
         "compile": "hardhat compile",
-        "deploy": "hardhat deploy",
-        "test": "hardhat test",
+        "download:snark-artifacts": "hardhat run scripts/download-snark-artifacts.ts",
+        "deploy": "yarn compile && hardhat deploy",
+        "test": "hardhat run scripts/download-snark-artifacts.ts && hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",
-        "test:coverage": "hardhat coverage"
+        "test:coverage": "hardhat coverage",
+        "typechain": "hardhat typechain"
     },
     "devDependencies": {
         "@ethersproject/abi": "^5.4.7",
@@ -56,5 +59,20 @@
     },
     "dependencies": {
         "@semaphore-protocol/contracts": "3.2.3"
+    },
+    "config": {
+        "solidity": {
+            "version": "0.8.4"
+        },
+        "paths": {
+            "contracts": "./contracts",
+            "tests": "./test",
+            "cache": "./cache",
+            "build": {
+                "snark-artifacts": "./build/snark-artifacts",
+                "contracts": "./build/contracts",
+                "typechain": "./build/typechain"
+            }
+        }
     }
 }
