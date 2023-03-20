@@ -46,6 +46,10 @@ export default class SemaphoreEthers {
                 options.address = "0x72dca3c971136bf47BACF16A141f0fcfAC925aeC"
                 options.startBlock = 54934350
                 break
+            case "arbitrum-goerli":
+                options.address = "0xbE66454b0Fa9E6b3D53DC1b0f9D21978bb864531"
+                options.startBlock = 11902029
+                break
             case "maticmum":
                 options.address = "0xF864ABa335073e01234c9a88888BfFfa965650bD"
                 options.startBlock = 32902215
