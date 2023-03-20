@@ -10,6 +10,7 @@ export default function getURL(network: Network): string {
         case "goerli":
         case "mumbai":
         case "optimism-goerli":
+        case "arbitrum-goerli":
         case "arbitrum":
             return `https://api.studio.thegraph.com/query/14377/semaphore-${network}/v3.2.0`
         default:
