@@ -1,7 +1,7 @@
 import { Identity } from "@semaphore-protocol/identity"
 import {
-    GenerateRegistrationOptionsOpts as RegistrationOptions,
-    GenerateAuthenticationOptionsOpts as AuthenticationOptions
+    GenerateAuthenticationOptionsOpts as AuthenticationOptions,
+    GenerateRegistrationOptionsOpts as RegistrationOptions
 } from "@simplewebauthn/server"
 
 import HeyAuthn from "./heyAuthn"
