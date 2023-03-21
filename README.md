@@ -222,6 +222,9 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/heyauthn">
                     @semaphore-protocol/heyauthn
                 </a>
+                <a href="https://semaphore-protocol.github.io/semaphore/heyauthn">
+                    (docs)
+                </a>
             </td>
             <td>
                 <!-- NPM version -->
