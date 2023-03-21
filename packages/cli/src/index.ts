@@ -1,4 +1,4 @@
-import { SemaphoreSubgraph, SemaphoreEthers } from "@semaphore-protocol/data"
+import { SemaphoreSubgraph, SemaphoreEthers, GroupResponse } from "@semaphore-protocol/data"
 import chalk from "chalk"
 import { program } from "commander"
 import download from "download"
@@ -53,6 +53,7 @@ program
 
         if (existsSync(projectDirectory)) {
             console.info(`\n ${logSymbols.error}`, `error: the '${projectDirectory}' folder already exists\n`)
+
             return
         }
 
@@ -105,31 +106,40 @@ program
 
         if (!supportedNetworks.includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
+
             return
         }
 
-        let groupIds
+        let groupIds: string[]
 
         const spinner = new Spinner("Fetching groups")
+
         spinner.start()
 
         try {
             const semaphoreSubgraph = new SemaphoreSubgraph(network)
+
             groupIds = await semaphoreSubgraph.getGroupIds()
+
             spinner.stop()
         } catch {
             try {
                 const semaphoreEthers = new SemaphoreEthers(network)
+
                 groupIds = await semaphoreEthers.getGroupIds()
+
                 spinner.stop()
             } catch {
                 spinner.stop()
+
                 console.info(`\n ${logSymbols.error}`, "error: unexpected error with the SemaphoreEthers package")
+
                 return
             }
         }
         if (groupIds.length === 0) {
             console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
+
             return
         }
 
@@ -155,37 +165,48 @@ program
                 default: supportedNetworks[0],
                 choices: supportedNetworks
             })
+
             network = selectedNetwork
         }
 
         if (!supportedNetworks.includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
+
             return
         }
 
         if (!groupId) {
-            let groupIds
+            let groupIds: string[]
 
             const spinnerGroups = new Spinner("Fetching groups")
+
             spinnerGroups.start()
 
             try {
                 const semaphoreSubgraphGroups = new SemaphoreSubgraph(network)
+
                 groupIds = await semaphoreSubgraphGroups.getGroupIds()
+
                 spinnerGroups.stop()
             } catch {
                 try {
                     const semaphoreEthersGroups = new SemaphoreEthers(network)
+
                     groupIds = await semaphoreEthersGroups.getGroupIds()
+
                     spinnerGroups.stop()
                 } catch {
                     spinnerGroups.stop()
+
                     console.info(`\n ${logSymbols.error}`, "error: unexpected error with the SemaphoreEthers package")
+
                     return
                 }
             }
+
             if (groupIds.length === 0) {
                 console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
+
                 return
             }
 
@@ -195,6 +216,7 @@ program
                 message: "Select one of the following existing group ids:",
                 choices: groupIds
             })
+
             groupId = selectedGroupId
         }
 
@@ -218,30 +240,40 @@ program
             signals = showSignals
         }
 
-        let group
+        let group: GroupResponse
 
         const spinner = new Spinner(`Fetching group ${groupId}`)
+
         spinner.start()
 
         try {
             const semaphoreSubgraph = new SemaphoreSubgraph(network)
+
             group = await semaphoreSubgraph.getGroup(groupId, { members, verifiedProofs: signals })
+
             spinner.stop()
         } catch {
             try {
                 const semaphoreEthers = new SemaphoreEthers(network)
+
                 group = await semaphoreEthers.getGroup(groupId)
+
                 if (members) {
                     group.members = await semaphoreEthers.getGroupMembers(groupId)
                 }
+
                 if (signals) {
                     group.verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId)
                 }
+
                 group.admin = await semaphoreEthers.getGroupAdmin(groupId)
+
                 spinner.stop()
             } catch {
                 spinner.stop()
+
                 console.info(`\n ${logSymbols.error}`, "error: the group does not exist\n")
+
                 return
             }
         }
