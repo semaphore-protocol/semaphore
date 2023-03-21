@@ -14,7 +14,7 @@ import Spinner from "./spinner.js"
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
 const { description, version } = JSON.parse(readFileSync(`${packagePath}/package.json`, "utf8"))
 
-const supportedNetworks = ["sepolia", "goerli", "mumbai", "optimism-goerli", "arbitrum"]
+const supportedNetworks = ["sepolia", "goerli", "mumbai", "optimism-goerli", "arbitrum", "arbitrum-goerli"]
 
 program
     .name("semaphore")
