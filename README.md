@@ -217,6 +217,25 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 </a>
             </td>
         </tr>
+        <tr>
+            <td>
+                <a href="/packages/heyauthn">
+                    @semaphore-protocol/heyauthn
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/heyauthn">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/heyauthn.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/heyauthn">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/heyauthn.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
     <tbody>
 
 </table>
