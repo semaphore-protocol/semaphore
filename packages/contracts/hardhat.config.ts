@@ -45,8 +45,13 @@ function getNetworks(): NetworksUserConfig {
             chainId: 420,
             accounts
         },
+        "arbitrum-goerli": {
+            url: "https://goerli-rollup.arbitrum.io/rpc",
+            chainId: 421613,
+            accounts
+        },
         arbitrum: {
-            url: `https://arbitrum-mainnet.infura.io/v3/${infuraApiKey}`,
+            url: "https://arb1.arbitrum.io/rpc",
             chainId: 42161,
             accounts
         }
