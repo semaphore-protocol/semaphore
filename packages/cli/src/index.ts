@@ -237,6 +237,7 @@ program
                 if (signals) {
                     group.verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId)
                 }
+                group.admin = await semaphoreEthers.getGroupAdmin(groupId)
                 spinner.stop()
             } catch {
                 spinner.stop()
