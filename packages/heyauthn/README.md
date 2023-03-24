@@ -112,8 +112,8 @@ generateProof(identity, group, group.id, "42", {
 
 ## Authors
 
-- [Vivek Bhupatiraju](https://github.com/vb7401)
-- [Richard Liu](https://github.com/rrrliu)
-- [emma](https://github.com/emmaguo13)
-- [Sehyun Chung](https://github.com/sehyunc)
-- [Enrico Bottazzi](https://github.com/enricobottazzi)
+-   [Vivek Bhupatiraju](https://github.com/vb7401)
+-   [Richard Liu](https://github.com/rrrliu)
+-   [emma](https://github.com/emmaguo13)
+-   [Sehyun Chung](https://github.com/sehyunc)
+-   [Enrico Bottazzi](https://github.com/enricobottazzi)
