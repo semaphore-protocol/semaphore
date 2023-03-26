@@ -4,11 +4,11 @@ import { program } from "commander"
 import download from "download"
 import figlet from "figlet"
 import { existsSync, readFileSync, renameSync } from "fs"
-import inquirer from "inquirer"
 import logSymbols from "log-symbols"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
 import checkLatestVersion from "./checkLatestVersion.js"
+import { getProjectName, getSupportedNetwork, getGroupId } from "./inquirerPrompts.js"
 import Spinner from "./spinner.js"
 
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
@@ -38,13 +38,7 @@ program
     .allowExcessArguments(false)
     .action(async (projectDirectory) => {
         if (!projectDirectory) {
-            const { projectName } = await inquirer.prompt({
-                name: "projectName",
-                type: "input",
-                message: "What is your project name?",
-                default: "my-app"
-            })
-            projectDirectory = projectName
+            projectDirectory = await getProjectName()
         }
 
         const currentDirectory = process.cwd()
@@ -53,7 +47,6 @@ program
 
         if (existsSync(projectDirectory)) {
             console.info(`\n ${logSymbols.error}`, `error: the '${projectDirectory}' folder already exists\n`)
-
             return
         }
 
@@ -94,19 +87,11 @@ program
     .allowExcessArguments(false)
     .action(async ({ network }) => {
         if (!network) {
-            const { selectedNetwork } = await inquirer.prompt({
-                name: "selectedNetwork",
-                type: "list",
-                message: "Select one of our supported networks:",
-                default: supportedNetworks[0],
-                choices: supportedNetworks
-            })
-            network = selectedNetwork
+            network = await getSupportedNetwork(supportedNetworks)
         }
 
         if (!supportedNetworks.includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
-
             return
         }
 
@@ -139,7 +124,6 @@ program
         }
         if (groupIds.length === 0) {
             console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
-
             return
         }
 
@@ -156,20 +140,11 @@ program
     .allowExcessArguments(false)
     .action(async (groupId, { network }) => {
         if (!network) {
-            const { selectedNetwork } = await inquirer.prompt({
-                name: "selectedNetwork",
-                type: "list",
-                message: "Select one of our supported networks:",
-                default: supportedNetworks[0],
-                choices: supportedNetworks
-            })
-
-            network = selectedNetwork
+            network = await getSupportedNetwork(supportedNetworks)
         }
 
         if (!supportedNetworks.includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
-
             return
         }
 
@@ -204,18 +179,10 @@ program
 
             if (groupIds.length === 0) {
                 console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
-
                 return
             }
 
-            const { selectedGroupId } = await inquirer.prompt({
-                name: "selectedGroupId",
-                type: "list",
-                message: "Select one of the following existing group ids:",
-                choices: groupIds
-            })
-
-            groupId = selectedGroupId
+            groupId = await getGroupId(groupIds)
         }
 
         let group: GroupResponse
@@ -241,9 +208,7 @@ program
                 spinner.stop()
             } catch {
                 spinner.stop()
-
                 console.info(`\n ${logSymbols.error}`, "error: the group does not exist\n")
-
                 return
             }
         }
@@ -267,20 +232,11 @@ program
     .allowExcessArguments(false)
     .action(async (groupId, { network }) => {
         if (!network) {
-            const { selectedNetwork } = await inquirer.prompt({
-                name: "selectedNetwork",
-                type: "list",
-                message: "Select one of our supported networks:",
-                default: supportedNetworks[0],
-                choices: supportedNetworks
-            })
-
-            network = selectedNetwork
+            network = await getSupportedNetwork(supportedNetworks)
         }
 
         if (!supportedNetworks.includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
-
             return
         }
 
@@ -306,27 +262,17 @@ program
                     spinnerGroups.stop()
                 } catch {
                     spinnerGroups.stop()
-
                     console.info(`\n ${logSymbols.error}`, "error: unexpected error with the SemaphoreEthers package")
-
                     return
                 }
             }
 
             if (groupIds.length === 0) {
                 console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
-
                 return
             }
 
-            const { selectedGroupId } = await inquirer.prompt({
-                name: "selectedGroupId",
-                type: "list",
-                message: "Select one of the following existing group ids:",
-                choices: groupIds
-            })
-
-            groupId = selectedGroupId
+            groupId = await getGroupId(groupIds)
         }
 
         let group: GroupResponse
@@ -352,9 +298,7 @@ program
                 spinner.stop()
             } catch {
                 spinner.stop()
-
                 console.info(`\n ${logSymbols.error}`, "error: the group does not exist\n")
-
                 return
             }
         }
@@ -379,20 +323,11 @@ program
     .allowExcessArguments(false)
     .action(async (groupId, { network }) => {
         if (!network) {
-            const { selectedNetwork } = await inquirer.prompt({
-                name: "selectedNetwork",
-                type: "list",
-                message: "Select one of our supported networks:",
-                default: supportedNetworks[0],
-                choices: supportedNetworks
-            })
-
-            network = selectedNetwork
+            network = await getSupportedNetwork(supportedNetworks)
         }
 
         if (!supportedNetworks.includes(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
-
             return
         }
 
@@ -418,27 +353,17 @@ program
                     spinnerGroups.stop()
                 } catch {
                     spinnerGroups.stop()
-
                     console.info(`\n ${logSymbols.error}`, "error: unexpected error with the SemaphoreEthers package")
-
                     return
                 }
             }
 
             if (groupIds.length === 0) {
                 console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
-
                 return
             }
 
-            const { selectedGroupId } = await inquirer.prompt({
-                name: "selectedGroupId",
-                type: "list",
-                message: "Select one of the following existing group ids:",
-                choices: groupIds
-            })
-
-            groupId = selectedGroupId
+            groupId = await getGroupId(groupIds)
         }
 
         let group: GroupResponse
@@ -464,9 +389,7 @@ program
                 spinner.stop()
             } catch {
                 spinner.stop()
-
                 console.info(`\n ${logSymbols.error}`, "error: the group does not exist\n")
-
                 return
             }
         }
