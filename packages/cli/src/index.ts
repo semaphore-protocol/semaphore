@@ -255,7 +255,7 @@ program
             groupId = await getGroupId(groupIds)
         }
 
-        let group: GroupResponse
+        let verifiedProofs: any[]
 
         const spinner = new Spinner(`Fetching proofs of group ${groupId}`)
 
@@ -264,16 +264,15 @@ program
         try {
             const semaphoreSubgraph = new SemaphoreSubgraph(network)
 
-            group = await semaphoreSubgraph.getGroup(groupId, { verifiedProofs: true })
+            const group = await semaphoreSubgraph.getGroup(groupId, { verifiedProofs: true })
+            verifiedProofs = group.verifiedProofs
 
             spinner.stop()
         } catch {
             try {
                 const semaphoreEthers = new SemaphoreEthers(network)
 
-                group = await semaphoreEthers.getGroup(groupId)
-
-                group.verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId)
+                verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId)
 
                 spinner.stop()
             } catch {
@@ -283,12 +282,12 @@ program
             }
         }
 
-        if (group.verifiedProofs.length === 0) {
+        if (verifiedProofs.length === 0) {
             console.info(`\n ${logSymbols.info}`, "info: there are no proofs in this group\n")
             return
         }
 
-        const content = `${chalk.bold("Proofs")}: \n${group.verifiedProofs
+        const content = `${chalk.bold("Proofs")}: \n${verifiedProofs
             .map(
                 ({ signal, merkleTreeRoot, externalNullifier, nullifierHash }: any) =>
                     `  - signal: ${signal} \n    merkleTreeRoot: ${merkleTreeRoot} \n    externalNullifier: ${externalNullifier} \n    nullifierHash: ${nullifierHash}`
