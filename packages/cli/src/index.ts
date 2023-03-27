@@ -8,6 +8,7 @@ import pacote from "pacote"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
 import checkLatestVersion from "./checkLatestVersion.js"
+import getGroupIds from "./getGroupIds.js"
 import { getGroupId, getProjectName, getSupportedNetwork } from "./inquirerPrompts.js"
 import Spinner from "./spinner.js"
 
@@ -95,37 +96,9 @@ program
             return
         }
 
-        let groupIds: string[]
+        const groupIds = await getGroupIds(network)
 
-        const spinner = new Spinner("Fetching groups")
-
-        spinner.start()
-
-        try {
-            const semaphoreSubgraph = new SemaphoreSubgraph(network)
-
-            groupIds = await semaphoreSubgraph.getGroupIds()
-
-            spinner.stop()
-        } catch {
-            try {
-                const semaphoreEthers = new SemaphoreEthers(network)
-
-                groupIds = await semaphoreEthers.getGroupIds()
-
-                spinner.stop()
-            } catch {
-                spinner.stop()
-
-                console.info(`\n ${logSymbols.error}`, "error: unexpected error with the SemaphoreEthers package")
-
-                return
-            }
-        }
-        if (groupIds.length === 0) {
-            console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
-            return
-        }
+        if (groupIds === null) return
 
         const content = `\n${groupIds.map((id: any) => ` - ${id}`).join("\n")}`
 
@@ -149,38 +122,9 @@ program
         }
 
         if (!groupId) {
-            let groupIds: string[]
+            const groupIds = await getGroupIds(network)
 
-            const spinnerGroups = new Spinner("Fetching groups")
-
-            spinnerGroups.start()
-
-            try {
-                const semaphoreSubgraphGroups = new SemaphoreSubgraph(network)
-
-                groupIds = await semaphoreSubgraphGroups.getGroupIds()
-
-                spinnerGroups.stop()
-            } catch {
-                try {
-                    const semaphoreEthersGroups = new SemaphoreEthers(network)
-
-                    groupIds = await semaphoreEthersGroups.getGroupIds()
-
-                    spinnerGroups.stop()
-                } catch {
-                    spinnerGroups.stop()
-
-                    console.info(`\n ${logSymbols.error}`, "error: unexpected error with the SemaphoreEthers package")
-
-                    return
-                }
-            }
-
-            if (groupIds.length === 0) {
-                console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
-                return
-            }
+            if (groupIds === null) return
 
             groupId = await getGroupId(groupIds)
         }
@@ -241,36 +185,9 @@ program
         }
 
         if (!groupId) {
-            let groupIds: string[]
+            const groupIds = await getGroupIds(network)
 
-            const spinnerGroups = new Spinner("Fetching groups")
-
-            spinnerGroups.start()
-
-            try {
-                const semaphoreSubgraphGroups = new SemaphoreSubgraph(network)
-
-                groupIds = await semaphoreSubgraphGroups.getGroupIds()
-
-                spinnerGroups.stop()
-            } catch {
-                try {
-                    const semaphoreEthersGroups = new SemaphoreEthers(network)
-
-                    groupIds = await semaphoreEthersGroups.getGroupIds()
-
-                    spinnerGroups.stop()
-                } catch {
-                    spinnerGroups.stop()
-                    console.info(`\n ${logSymbols.error}`, "error: unexpected error with the SemaphoreEthers package")
-                    return
-                }
-            }
-
-            if (groupIds.length === 0) {
-                console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
-                return
-            }
+            if (groupIds === null) return
 
             groupId = await getGroupId(groupIds)
         }
@@ -332,36 +249,9 @@ program
         }
 
         if (!groupId) {
-            let groupIds: string[]
+            const groupIds = await getGroupIds(network)
 
-            const spinnerGroups = new Spinner("Fetching groups")
-
-            spinnerGroups.start()
-
-            try {
-                const semaphoreSubgraphGroups = new SemaphoreSubgraph(network)
-
-                groupIds = await semaphoreSubgraphGroups.getGroupIds()
-
-                spinnerGroups.stop()
-            } catch {
-                try {
-                    const semaphoreEthersGroups = new SemaphoreEthers(network)
-
-                    groupIds = await semaphoreEthersGroups.getGroupIds()
-
-                    spinnerGroups.stop()
-                } catch {
-                    spinnerGroups.stop()
-                    console.info(`\n ${logSymbols.error}`, "error: unexpected error with the SemaphoreEthers package")
-                    return
-                }
-            }
-
-            if (groupIds.length === 0) {
-                console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
-                return
-            }
+            if (groupIds === null) return
 
             groupId = await getGroupId(groupIds)
         }
