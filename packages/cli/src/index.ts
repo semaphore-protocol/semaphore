@@ -192,7 +192,7 @@ program
             groupId = await getGroupId(groupIds)
         }
 
-        let group: GroupResponse
+        let groupMembers: string[]
 
         const spinner = new Spinner(`Fetching members of group ${groupId}`)
 
@@ -201,16 +201,15 @@ program
         try {
             const semaphoreSubgraph = new SemaphoreSubgraph(network)
 
-            group = await semaphoreSubgraph.getGroup(groupId, { members: true })
+            const group = await semaphoreSubgraph.getGroup(groupId, { members: true })
+            groupMembers = group.members
 
             spinner.stop()
         } catch {
             try {
                 const semaphoreEthers = new SemaphoreEthers(network)
 
-                group = await semaphoreEthers.getGroup(groupId)
-
-                group.members = await semaphoreEthers.getGroupMembers(groupId)
+                groupMembers = await semaphoreEthers.getGroupMembers(groupId)
 
                 spinner.stop()
             } catch {
@@ -220,12 +219,12 @@ program
             }
         }
 
-        if (group.members.length === 0) {
+        if (groupMembers.length === 0) {
             console.info(`\n ${logSymbols.info}`, "info: there are no members in this group\n")
             return
         }
 
-        const content = `${chalk.bold("Members")}: \n${group.members
+        const content = `${chalk.bold("Members")}: \n${groupMembers
             .map((member: string, i: number) => `   ${i}. ${member}`)
             .join("\n")}`
 
