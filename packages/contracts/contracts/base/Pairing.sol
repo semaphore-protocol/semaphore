@@ -89,8 +89,8 @@ library Pairing {
     /// @return r the product of a point on G1 and a scalar, i.e.
     /// p == p.scalar_mul(1) and p.addition(p) == p.scalar_mul(2) for all points p.
     function scalar_mul(G1Point memory p, uint256 s) public view returns (G1Point memory r) {
-        // By EIP-196 the values p.X and p.Y are verified to less than the BASE_MODULUS and
-        // form a valid point on the curve. But the scalar is not verified, so we do that explicitelly.
+        // By EIP-196 the values p.X and p.Y are verified to be less than the BASE_MODULUS and
+        // form a valid point on the curve. But the scalar is not verified, so we do that explicitly.
         if (s >= SCALAR_MODULUS) {
             revert InvalidProof();
         }
