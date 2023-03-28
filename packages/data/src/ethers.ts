@@ -275,7 +275,7 @@ export default class SemaphoreEthers {
             signal: event.signal.toString(),
             merkleTreeRoot: event.merkleTreeRoot.toString(),
             externalNullifier: event.externalNullifier.toString(),
-            nullifierHash: event.externalNullifier.toString()
+            nullifierHash: event.nullifierHash.toString()
         }))
     }
 }
