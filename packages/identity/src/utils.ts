@@ -1,7 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber"
 import { randomBytes } from "@ethersproject/random"
-import { poseidon1 } from "poseidon-lite/poseidon1"
-import { poseidon2 } from "poseidon-lite/poseidon2"
 
 /**
  * Generates a random big number.
@@ -10,16 +8,6 @@ import { poseidon2 } from "poseidon-lite/poseidon2"
  */
 export function genRandomNumber(numberOfBytes = 31): bigint {
     return BigNumber.from(randomBytes(numberOfBytes)).toBigInt()
-}
-
-/**
- * Generates the identity commitment from trapdoor and nullifier.
- * @param nullifier The identity nullifier.
- * @param trapdoor The identity trapdoor.
- * @returns identity commitment
- */
-export function generateCommitment(nullifier: bigint, trapdoor: bigint): bigint {
-    return poseidon1([poseidon2([nullifier, trapdoor])])
 }
 
 /**
