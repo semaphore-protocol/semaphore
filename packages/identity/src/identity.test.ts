@@ -19,6 +19,7 @@ describe("Identity", () => {
 
             expect(identity1.trapdoor).not.toBe(identity2.getTrapdoor())
             expect(identity1.nullifier).not.toBe(identity2.getNullifier())
+            expect(identity1.secret).not.toBe(identity2.getSecret())
             expect(identity1.commitment).not.toBe(identity2.getCommitment())
         })
 
@@ -82,8 +83,18 @@ describe("Identity", () => {
         })
     })
 
-    describe("# generateCommitment", () => {
-        it("Should generate an identity commitment", () => {
+    describe("# getSecret", () => {
+        it("Should return an identity secret", () => {
+            const { secret } = new Identity("message")
+
+            expect(secret.toString()).toBe(
+                "17452394798940441025978193762953691632066258438336130543532009665042636950194"
+            )
+        })
+    })
+
+    describe("# getCommitment", () => {
+        it("Should return an identity commitment", () => {
             const { commitment } = new Identity("message")
 
             expect(commitment.toString()).toBe(
