@@ -1,11 +1,14 @@
 import { BigNumber } from "@ethersproject/bignumber"
 import hash from "js-sha512"
+import { poseidon1 } from "poseidon-lite/poseidon1"
+import { poseidon2 } from "poseidon-lite/poseidon2"
 import checkParameter from "./checkParameter"
-import { generateCommitment, genRandomNumber, isJsonArray } from "./utils"
+import { genRandomNumber, isJsonArray } from "./utils"
 
 export default class Identity {
     private _trapdoor: bigint
     private _nullifier: bigint
+    private _secret: bigint
     private _commitment: bigint
 
     /**
@@ -16,7 +19,8 @@ export default class Identity {
         if (identityOrMessage === undefined) {
             this._trapdoor = genRandomNumber()
             this._nullifier = genRandomNumber()
-            this._commitment = generateCommitment(this._nullifier, this._trapdoor)
+            this._secret = poseidon2([this._nullifier, this._trapdoor])
+            this._commitment = poseidon1([this._secret])
 
             return
         }
@@ -25,10 +29,11 @@ export default class Identity {
 
         if (!isJsonArray(identityOrMessage)) {
             const h = hash.sha512(identityOrMessage).padStart(128, "0")
-            // alt_bn128 is 253.6 bits, so we can safely use 253 bits
+            // alt_bn128 is 253.6 bits, so we can safely use 253 bits.
             this._trapdoor = BigInt(`0x${h.slice(64)}`) >> BigInt(3)
             this._nullifier = BigInt(`0x${h.slice(0, 64)}`) >> BigInt(3)
-            this._commitment = generateCommitment(this._nullifier, this._trapdoor)
+            this._secret = poseidon2([this._nullifier, this._trapdoor])
+            this._commitment = poseidon1([this._secret])
 
             return
         }
@@ -37,7 +42,8 @@ export default class Identity {
 
         this._trapdoor = BigNumber.from(trapdoor).toBigInt()
         this._nullifier = BigNumber.from(nullifier).toBigInt()
-        this._commitment = generateCommitment(this._nullifier, this._trapdoor)
+        this._secret = poseidon2([this._nullifier, this._trapdoor])
+        this._commitment = poseidon1([this._secret])
     }
 
     /**
@@ -70,6 +76,22 @@ export default class Identity {
      */
     public getNullifier(): bigint {
         return this._nullifier
+    }
+
+    /**
+     * Returns the identity secret.
+     * @returns The identity secret.
+     */
+    public get secret(): bigint {
+        return this._secret
+    }
+
+    /**
+     * Returns the identity secret.
+     * @returns The identity secret.
+     */
+    public getSecret(): bigint {
+        return this._secret
     }
 
     /**
