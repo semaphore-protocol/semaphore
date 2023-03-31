@@ -6,12 +6,11 @@ import { config as dotenvConfig } from "dotenv"
 import "hardhat-gas-reporter"
 import { HardhatUserConfig } from "hardhat/config"
 import { NetworksUserConfig } from "hardhat/types"
-import { resolve } from "path"
 import "solidity-coverage"
 import { config } from "./package.json"
 import "./tasks/deploy"
 
-dotenvConfig({ path: resolve(__dirname, "../../.env") })
+dotenvConfig()
 
 function getNetworks(): NetworksUserConfig {
     if (!process.env.INFURA_API_KEY || !process.env.ETHEREUM_PRIVATE_KEY) {
