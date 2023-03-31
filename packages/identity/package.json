@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/identity",
-    "version": "3.4.0",
+    "version": "3.5.0",
     "description": "A library to create Semaphore identities.",
     "license": "MIT",
     "main": "dist/index.node.js",
