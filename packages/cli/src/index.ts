@@ -289,8 +289,8 @@ program
 
         const content = `${chalk.bold("Proofs")}: \n${verifiedProofs
             .map(
-                ({ signal, merkleTreeRoot, externalNullifier, nullifierHash }: any) =>
-                    `  - signal: ${signal} \n    merkleTreeRoot: ${merkleTreeRoot} \n    externalNullifier: ${externalNullifier} \n    nullifierHash: ${nullifierHash}`
+                ({ signal, merkleTreeRoot, externalNullifier, nullifierHash }: any, i: number) =>
+                    `   ${i}. signal: ${signal} \n      merkleTreeRoot: ${merkleTreeRoot} \n      externalNullifier: ${externalNullifier} \n      nullifierHash: ${nullifierHash}`
             )
             .join("\n")}`
 
