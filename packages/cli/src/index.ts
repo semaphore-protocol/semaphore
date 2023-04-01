@@ -100,9 +100,11 @@ program
 
         if (groupIds === null) return
 
-        const content = `\n${groupIds.map((id: any) => ` - ${id}`).join("\n")}`
+        const content = `${chalk.bold("Groups")} (${groupIds.length}): \n${groupIds
+            .map((id: any) => ` - ${id}`)
+            .join("\n")}`
 
-        console.info(`${content}\n`)
+        console.info(`\n${content}\n`)
     })
 
 program
@@ -224,7 +226,7 @@ program
             return
         }
 
-        const content = `${chalk.bold("Members")}: \n${groupMembers
+        const content = `${chalk.bold("Members")} (${groupMembers.length}): \n${groupMembers
             .map((member: string, i: number) => `   ${i}. ${member}`)
             .join("\n")}`
 
@@ -287,7 +289,7 @@ program
             return
         }
 
-        const content = `${chalk.bold("Proofs")}: \n${verifiedProofs
+        const content = `${chalk.bold("Proofs")} (${verifiedProofs.length}): \n${verifiedProofs
             .map(
                 ({ signal, merkleTreeRoot, externalNullifier, nullifierHash }: any, i: number) =>
                     `   ${i}. signal: ${signal} \n      merkleTreeRoot: ${merkleTreeRoot} \n      externalNullifier: ${externalNullifier} \n      nullifierHash: ${nullifierHash}`
