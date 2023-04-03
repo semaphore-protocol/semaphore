@@ -33,11 +33,7 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreWhistleblowing-createEntity}.
-    function createEntity(
-        uint256 entityId,
-        address editor,
-        uint256 merkleTreeDepth
-    ) public override {
+    function createEntity(uint256 entityId, address editor, uint256 merkleTreeDepth) public override {
         if (merkleTreeDepth < 16 || merkleTreeDepth > 32) {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
         }

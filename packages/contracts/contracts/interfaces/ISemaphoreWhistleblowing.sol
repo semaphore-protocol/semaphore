@@ -25,11 +25,7 @@ interface ISemaphoreWhistleblowing {
     /// @param entityId: Id of the entity.
     /// @param editor: Editor of the entity.
     /// @param merkleTreeDepth: Depth of the tree.
-    function createEntity(
-        uint256 entityId,
-        address editor,
-        uint256 merkleTreeDepth
-    ) external;
+    function createEntity(uint256 entityId, address editor, uint256 merkleTreeDepth) external;
 
     /// @dev Adds a whistleblower to an entity.
     /// @param entityId: Id of the entity.
@@ -53,10 +49,5 @@ interface ISemaphoreWhistleblowing {
     /// @param nullifierHash: Nullifier hash.
     /// @param entityId: Id of the entity.
     /// @param proof: Private zk-proof parameters.
-    function publishLeak(
-        uint256 leak,
-        uint256 nullifierHash,
-        uint256 entityId,
-        uint256[8] calldata proof
-    ) external;
+    function publishLeak(uint256 leak, uint256 nullifierHash, uint256 entityId, uint256[8] calldata proof) external;
 }
