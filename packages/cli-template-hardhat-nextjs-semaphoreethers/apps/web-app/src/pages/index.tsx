@@ -3,7 +3,6 @@ import { useRouter } from "next/router"
 import { useCallback, useContext, useEffect, useState } from "react"
 import Stepper from "../components/Stepper"
 import LogsContext from "../context/LogsContext"
-import styles from "@/styles/Home.module.css"
 
 export default function IdentitiesPage() {
     const router = useRouter()
