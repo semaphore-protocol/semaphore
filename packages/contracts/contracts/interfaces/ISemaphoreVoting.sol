@@ -52,11 +52,7 @@ interface ISemaphoreVoting {
     /// @param pollId: Id of the poll.
     /// @param coordinator: Coordinator of the poll.
     /// @param merkleTreeDepth: Depth of the tree.
-    function createPoll(
-        uint256 pollId,
-        address coordinator,
-        uint256 merkleTreeDepth
-    ) external;
+    function createPoll(uint256 pollId, address coordinator, uint256 merkleTreeDepth) external;
 
     /// @dev Adds a voter to a poll.
     /// @param pollId: Id of the poll.
@@ -73,12 +69,7 @@ interface ISemaphoreVoting {
     /// @param nullifierHash: Nullifier hash.
     /// @param pollId: Id of the poll.
     /// @param proof: Private zk-proof parameters.
-    function castVote(
-        uint256 vote,
-        uint256 nullifierHash,
-        uint256 pollId,
-        uint256[8] calldata proof
-    ) external;
+    function castVote(uint256 vote, uint256 nullifierHash, uint256 pollId, uint256[8] calldata proof) external;
 
     /// @dev Ends a pull and publishes the key to decrypt the votes.
     /// @param pollId: Id of the poll.
