@@ -31,11 +31,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreVoting-createPoll}.
-    function createPoll(
-        uint256 pollId,
-        address coordinator,
-        uint256 merkleTreeDepth
-    ) public override {
+    function createPoll(uint256 pollId, address coordinator, uint256 merkleTreeDepth) public override {
         if (merkleTreeDepth < 16 || merkleTreeDepth > 32) {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
         }
@@ -68,12 +64,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreVoting-castVote}.
-    function castVote(
-        uint256 vote,
-        uint256 nullifierHash,
-        uint256 pollId,
-        uint256[8] calldata proof
-    ) public override {
+    function castVote(uint256 vote, uint256 nullifierHash, uint256 pollId, uint256[8] calldata proof) public override {
         if (polls[pollId].state != PollState.Ongoing) {
             revert Semaphore__PollIsNotOngoing();
         }

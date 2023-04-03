@@ -68,23 +68,14 @@ interface ISemaphore {
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.
     /// @param admin: Admin of the group.
-    function createGroup(
-        uint256 groupId,
-        uint256 depth,
-        address admin
-    ) external;
+    function createGroup(uint256 groupId, uint256 depth, address admin) external;
 
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.
     /// @param admin: Admin of the group.
     /// @param merkleTreeRootDuration: Time before the validity of a root expires.
-    function createGroup(
-        uint256 groupId,
-        uint256 depth,
-        address admin,
-        uint256 merkleTreeRootDuration
-    ) external;
+    function createGroup(uint256 groupId, uint256 depth, address admin, uint256 merkleTreeRootDuration) external;
 
     /// @dev Updates the group admin.
     /// @param groupId: Id of the group.
