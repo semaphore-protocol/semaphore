@@ -79,11 +79,10 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphore-updateGroupMerkleTreeDuration}.
-    function updateGroupMerkleTreeDuration(uint256 groupId, uint256 newMerkleTreeDuration)
-        external
-        override
-        onlyGroupAdmin(groupId)
-    {
+    function updateGroupMerkleTreeDuration(
+        uint256 groupId,
+        uint256 newMerkleTreeDuration
+    ) external override onlyGroupAdmin(groupId) {
         uint256 oldMerkleTreeDuration = groups[groupId].merkleTreeDuration;
 
         groups[groupId].merkleTreeDuration = newMerkleTreeDuration;
@@ -101,11 +100,10 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphore-addMembers}.
-    function addMembers(uint256 groupId, uint256[] calldata identityCommitments)
-        external
-        override
-        onlyGroupAdmin(groupId)
-    {
+    function addMembers(
+        uint256 groupId,
+        uint256[] calldata identityCommitments
+    ) external override onlyGroupAdmin(groupId) {
         for (uint256 i = 0; i < identityCommitments.length; ) {
             _addMember(groupId, identityCommitments[i]);
 
