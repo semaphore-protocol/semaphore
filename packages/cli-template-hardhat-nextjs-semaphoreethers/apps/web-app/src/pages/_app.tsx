@@ -1,5 +1,4 @@
 import "../styles/globals.css"
-import { Network } from "@semaphore-protocol/data"
 import type { AppProps } from "next/app"
 import Head from "next/head"
 import { useRouter } from "next/router"
@@ -20,22 +19,6 @@ export default function App({ Component, pageProps }: AppProps) {
         semaphore.refreshUsers()
         semaphore.refreshFeedback()
     }, [])
-
-    function shortenAddress(address: string) {
-        return `${address.slice(0, 6)}...${address.slice(-4)}`
-    }
-
-    function getExplorerLink(network: Network, address: string) {
-        switch (network) {
-            case "goerli":
-            case "sepolia":
-                return `https://${network}.etherscan.io/address/${address}`
-            case "arbitrum-goerli":
-                return `https://goerli.arbiscan.io/address/${address}`
-            default:
-                return ""
-        }
-    }
 
     return (
         <div className={inter.className}>
