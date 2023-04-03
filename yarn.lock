@@ -4222,6 +4222,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@semaphore-protocol/contracts@npm:3.4.0":
+  version: 3.4.0
+  resolution: "@semaphore-protocol/contracts@npm:3.4.0"
+  dependencies:
+    "@openzeppelin/contracts": 4.7.3
+    "@zk-kit/incremental-merkle-tree.sol": 1.3.3
+  checksum: 91b8c7575c6976f9b711f0a6f8f1fb03c40fecb3da8d6a735ada73618464cc6aaea79121821a1333128bb31ae31eadcb91bc1fc89d56b8df4dfaa790696825cd
+  languageName: node
+  linkType: hard
+
 "@semaphore-protocol/data@3.5.0, @semaphore-protocol/data@workspace:packages/data":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/data@workspace:packages/data"
@@ -4235,6 +4245,17 @@ __metadata:
     typedoc: ^0.22.11
   languageName: unknown
   linkType: soft
+
+"@semaphore-protocol/data@npm:3.4.0":
+  version: 3.4.0
+  resolution: "@semaphore-protocol/data@npm:3.4.0"
+  dependencies:
+    "@ethersproject/contracts": ^5.7.0
+    "@ethersproject/providers": ^5.7.0
+    axios: ^0.27.2
+  checksum: 9ac8323e7c184e68a9d70fe565b42f5bbb10912bdc37afaef6f0f1d154805ce9700d0564f3dec497c25bff968701c774fa1f99e27ec15eec22517425780109a6
+  languageName: node
+  linkType: hard
 
 "@semaphore-protocol/group@3.5.0, @semaphore-protocol/group@workspace:packages/group":
   version: 0.0.0-use.local
@@ -4253,6 +4274,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@semaphore-protocol/group@npm:3.4.0":
+  version: 3.4.0
+  resolution: "@semaphore-protocol/group@npm:3.4.0"
+  dependencies:
+    "@ethersproject/bignumber": ^5.7.0
+    "@ethersproject/bytes": ^5.7.0
+    "@ethersproject/keccak256": ^5.7.0
+    "@zk-kit/incremental-merkle-tree": 1.0.0
+  checksum: fd0e1ed1091df5b09e8248fd12737b6ddf292b467735f663f5ab5b7293e10a7ad7b3f8579d8d6a3c04b1d9603e55002ef7a075835fac61db6590e3c359bd62ad
+  languageName: node
+  linkType: hard
+
 "@semaphore-protocol/hardhat@3.5.0, @semaphore-protocol/hardhat@workspace:packages/hardhat":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/hardhat@workspace:packages/hardhat"
@@ -4269,6 +4302,21 @@ __metadata:
     hardhat: ^2.0.0
   languageName: unknown
   linkType: soft
+
+"@semaphore-protocol/hardhat@npm:3.4.0":
+  version: 3.4.0
+  resolution: "@semaphore-protocol/hardhat@npm:3.4.0"
+  dependencies:
+    "@nomiclabs/hardhat-ethers": ^2.1.1
+    "@semaphore-protocol/contracts": 3.4.0
+    circomlibjs: ^0.0.8
+    ethers: ^5.7.1
+    hardhat-dependency-compiler: ^1.1.3
+  peerDependencies:
+    hardhat: ^2.0.0
+  checksum: b73026c31d71815ebf0baba022a4d4336a9b13411d37eac15a9831d7aea50b1ca502dc7dd8bee41990a86c353d5320fc62b933b9ad94fbc981b9bc1e524ea3b2
+  languageName: node
+  linkType: hard
 
 "@semaphore-protocol/heyauthn@workspace:packages/heyauthn":
   version: 0.0.0-use.local
@@ -4301,6 +4349,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@semaphore-protocol/identity@npm:3.4.0":
+  version: 3.4.0
+  resolution: "@semaphore-protocol/identity@npm:3.4.0"
+  dependencies:
+    "@ethersproject/bignumber": ^5.5.0
+    "@ethersproject/keccak256": ^5.7.0
+    "@ethersproject/random": ^5.5.1
+    "@ethersproject/strings": ^5.6.1
+    js-sha512: ^0.8.0
+  checksum: ac1c621196d972f8698591cf5fb9e60146f3223a87f77208f2931fc56749e68a14fbc01b7bc2a6abb69bbe69192f579c17db971f55381ba5fa50a561e232c57b
+  languageName: node
+  linkType: hard
+
 "@semaphore-protocol/proof@3.5.0, @semaphore-protocol/proof@workspace:packages/proof":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/proof@workspace:packages/proof"
@@ -4321,6 +4382,23 @@ __metadata:
     "@semaphore-protocol/identity": 3.5.0
   languageName: unknown
   linkType: soft
+
+"@semaphore-protocol/proof@npm:3.4.0":
+  version: 3.4.0
+  resolution: "@semaphore-protocol/proof@npm:3.4.0"
+  dependencies:
+    "@ethersproject/bignumber": ^5.5.0
+    "@ethersproject/bytes": ^5.7.0
+    "@ethersproject/keccak256": ^5.7.0
+    "@ethersproject/strings": ^5.5.0
+    "@zk-kit/incremental-merkle-tree": 0.4.3
+    snarkjs: 0.4.13
+  peerDependencies:
+    "@semaphore-protocol/group": 3.4.0
+    "@semaphore-protocol/identity": 3.4.0
+  checksum: 111348e12783ece6a52fcca35e8f077d95168321ac984041ce2ffc0cd322d125ddde38e679c58ff813517eb3f31cb424f220f16eed513d9e95da9c22a37d34bb
+  languageName: node
+  linkType: hard
 
 "@sentry/core@npm:5.30.0":
   version: 5.30.0
