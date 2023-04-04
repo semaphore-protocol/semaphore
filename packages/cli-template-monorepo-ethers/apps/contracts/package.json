@@ -1,5 +1,5 @@
 {
-    "name": "hne-contracts",
+    "name": "monorepo-ethers-contracts",
     "version": "1.0.0",
     "private": true,
     "main": "index.js",

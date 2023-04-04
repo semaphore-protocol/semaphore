@@ -1,5 +1,5 @@
 {
-    "name": "hns-contracts",
+    "name": "monorepo-subgraph-contracts",
     "version": "1.0.0",
     "private": true,
     "main": "index.js",
