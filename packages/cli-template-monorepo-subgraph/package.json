@@ -1,9 +1,9 @@
 {
     "name": "@semaphore-protocol/cli-template-monorepo-subgraph",
     "version": "3.5.0",
+    "private": true,
     "description": "Semaphore Hardhat + Next.js + SemaphoreSubgraph template.",
     "license": "MIT",
-    "private": true,
     "scripts": {
         "dev": "yarn workspaces foreach -pi run dev",
         "dev:web-app": "yarn workspace web-app dev",
