@@ -3418,9 +3418,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/cli-template-hardhat-nextjs-semaphoreethers@workspace:packages/cli-template-hardhat-nextjs-semaphoreethers":
+"@semaphore-protocol/cli-template-hardhat-nextjs-semaphoresubgraph@workspace:packages/cli-template-hardhat-nextjs-semaphoresubgraph":
   version: 0.0.0-use.local
-  resolution: "@semaphore-protocol/cli-template-hardhat-nextjs-semaphoreethers@workspace:packages/cli-template-hardhat-nextjs-semaphoreethers"
+  resolution: "@semaphore-protocol/cli-template-hardhat-nextjs-semaphoresubgraph@workspace:packages/cli-template-hardhat-nextjs-semaphoresubgraph"
   dependencies:
     "@types/node": ^17.0.9
     "@typescript-eslint/eslint-plugin": ^5.9.1
@@ -3436,9 +3436,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/cli-template-hardhat-nextjs-semaphoresubgraph@workspace:packages/cli-template-hardhat-nextjs-semaphoresubgraph":
+"@semaphore-protocol/cli-template-monorepo-ethers@workspace:packages/cli-template-monorepo-ethers":
   version: 0.0.0-use.local
-  resolution: "@semaphore-protocol/cli-template-hardhat-nextjs-semaphoresubgraph@workspace:packages/cli-template-hardhat-nextjs-semaphoresubgraph"
+  resolution: "@semaphore-protocol/cli-template-monorepo-ethers@workspace:packages/cli-template-monorepo-ethers"
   dependencies:
     "@types/node": ^17.0.9
     "@typescript-eslint/eslint-plugin": ^5.9.1
@@ -10479,9 +10479,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hne-contracts@workspace:packages/cli-template-hardhat-nextjs-semaphoreethers/apps/contracts":
+"hne-contracts@workspace:packages/cli-template-monorepo-ethers/apps/contracts":
   version: 0.0.0-use.local
-  resolution: "hne-contracts@workspace:packages/cli-template-hardhat-nextjs-semaphoreethers/apps/contracts"
+  resolution: "hne-contracts@workspace:packages/cli-template-monorepo-ethers/apps/contracts"
   dependencies:
     "@nomicfoundation/hardhat-chai-matchers": ^1.0.5
     "@nomiclabs/hardhat-ethers": ^2.0.0
@@ -10510,9 +10510,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"hne-web-app@workspace:packages/cli-template-hardhat-nextjs-semaphoreethers/apps/web-app":
+"hne-web-app@workspace:packages/cli-template-monorepo-ethers/apps/web-app":
   version: 0.0.0-use.local
-  resolution: "hne-web-app@workspace:packages/cli-template-hardhat-nextjs-semaphoreethers/apps/web-app"
+  resolution: "hne-web-app@workspace:packages/cli-template-monorepo-ethers/apps/web-app"
   dependencies:
     "@next/font": 13.0.3
     "@semaphore-protocol/data": 3.4.0
