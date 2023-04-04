@@ -17,7 +17,20 @@ const { description, version } = JSON.parse(readFileSync(`${packagePath}/package
 
 const supportedNetworks = ["sepolia", "goerli", "mumbai", "optimism-goerli", "arbitrum", "arbitrum-goerli"]
 
-const supportedTemplates = ["hardhat", "hardhat-nextjs-semaphoreethers", "hardhat-nextjs-semaphoresubgraph"]
+const supportedTemplates = [
+    {
+        value: "contracts-hardhat",
+        name: "Hardhat"
+    },
+    {
+        value: "monorepo-ethers",
+        name: "Hardhat + Next.js + SemaphoreEthers"
+    },
+    {
+        value: "monorepo-subgraph",
+        name: "Hardhat + Next.js + SemaphoreSubgraph"
+    }
+]
 
 program
     .name("semaphore")
@@ -48,7 +61,7 @@ program
             template = await getSupportedTemplate(supportedTemplates)
         }
 
-        if (!supportedTemplates.includes(template)) {
+        if (!supportedTemplates.some((t) => t.value === template)) {
             console.info(`\n ${logSymbols.error}`, `error: the template '${template}' is not supported\n`)
             return
         }
