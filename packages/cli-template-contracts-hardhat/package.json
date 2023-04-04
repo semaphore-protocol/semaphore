@@ -1,5 +1,5 @@
 {
-    "name": "@semaphore-protocol/cli-template-hardhat",
+    "name": "@semaphore-protocol/cli-template-contracts-hardhat",
     "version": "3.5.0",
     "description": "Semaphore Hardhat template.",
     "license": "Unlicense",
