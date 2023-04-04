@@ -8,7 +8,7 @@ import { dirname } from "path"
 import { fileURLToPath } from "url"
 import pacote from "pacote"
 import checkLatestVersion from "./checkLatestVersion.js"
-import { getProjectName, getSupportedNetwork, getGroupId } from "./inquirerPrompts.js"
+import { getProjectName, getSupportedTemplate, getSupportedNetwork, getGroupId } from "./inquirerPrompts.js"
 import getGroupIds from "./getGroupIds.js"
 import Spinner from "./spinner.js"
 
@@ -16,6 +16,8 @@ const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
 const { description, version } = JSON.parse(readFileSync(`${packagePath}/package.json`, "utf8"))
 
 const supportedNetworks = ["sepolia", "goerli", "mumbai", "optimism-goerli", "arbitrum", "arbitrum-goerli"]
+
+const supportedTemplates = ["hardhat", "hardhat-nextjs-semaphoreethers", "hardhat-nextjs-semaphoresubgraph"]
 
 program
     .name("semaphore")
@@ -35,11 +37,20 @@ program
     .command("create")
     .description("Create a Semaphore project with a supported template.")
     .argument("[project-directory]", "Directory of the project.")
-    // .option("-t, --template <template-name>", "Supported Semaphore template.", "hardhat")
+    .option("-t, --template <template-name>", "Supported Semaphore template.")
     .allowExcessArguments(false)
-    .action(async (projectDirectory) => {
+    .action(async (projectDirectory, { template }) => {
         if (!projectDirectory) {
             projectDirectory = await getProjectName()
+        }
+
+        if (!template) {
+            template = await getSupportedTemplate(supportedTemplates)
+        }
+
+        if (!supportedTemplates.includes(template)) {
+            console.info(`\n ${logSymbols.error}`, `error: the template '${template}' is not supported\n`)
+            return
         }
 
         const currentDirectory = process.cwd()
@@ -55,7 +66,7 @@ program
         await checkLatestVersion(version)
 
         await pacote.extract(
-            `@semaphore-protocol/cli-template-hardhat@${version}`,
+            `@semaphore-protocol/cli-template-${template}@${version}`,
             `${currentDirectory}/${projectDirectory}`
         )
 
