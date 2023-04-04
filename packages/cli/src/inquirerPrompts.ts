@@ -10,13 +10,16 @@ export async function getProjectName() {
     return projectName
 }
 
-export async function getSupportedTemplate(supportedTemplates: string[]) {
+export async function getSupportedTemplate(supportedTemplates: { value: string; name: string }[]) {
     const { selectedTemplate } = await inquirer.prompt({
         name: "selectedTemplate",
         type: "list",
         message: "Select one of the supported templates:",
-        default: supportedTemplates[0],
-        choices: supportedTemplates
+        default: 0,
+        choices: supportedTemplates.map((template) => ({
+            value: template.value,
+            name: `${template.value} (${template.name})`
+        }))
     })
     return selectedTemplate
 }
@@ -26,7 +29,7 @@ export async function getSupportedNetwork(supportedNetworks: string[]) {
         name: "selectedNetwork",
         type: "list",
         message: "Select one of the supported networks:",
-        default: supportedNetworks[0],
+        default: 0,
         choices: supportedNetworks
     })
     return selectedNetwork
@@ -37,6 +40,7 @@ export async function getGroupId(groupIds: string[]) {
         name: "selectedGroupId",
         type: "list",
         message: "Select one of the following existing group ids:",
+        default: 0,
         choices: groupIds
     })
 
