@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/cli-template-contracts-hardhat",
-    "version": "3.5.0",
+    "version": "3.6.0-1",
     "description": "Semaphore Hardhat template.",
     "license": "Unlicense",
     "files": [
@@ -36,10 +36,10 @@
         "@nomicfoundation/hardhat-toolbox": "^2.0.0",
         "@nomiclabs/hardhat-ethers": "^2.0.0",
         "@nomiclabs/hardhat-etherscan": "^3.0.0",
-        "@semaphore-protocol/group": "3.5.0",
-        "@semaphore-protocol/hardhat": "3.5.0",
-        "@semaphore-protocol/identity": "3.5.0",
-        "@semaphore-protocol/proof": "3.5.0",
+        "@semaphore-protocol/group": "3.6.0-1",
+        "@semaphore-protocol/hardhat": "3.6.0-1",
+        "@semaphore-protocol/identity": "3.6.0-1",
+        "@semaphore-protocol/proof": "3.6.0-1",
         "@typechain/ethers-v5": "^10.1.0",
         "@typechain/hardhat": "^6.1.2",
         "@types/chai": "^4.2.0",
@@ -58,7 +58,7 @@
         "typescript": ">=4.5.0"
     },
     "dependencies": {
-        "@semaphore-protocol/contracts": "3.5.0"
+        "@semaphore-protocol/contracts": "3.6.0-1"
     },
     "config": {
         "solidity": {
@@ -74,5 +74,6 @@
                 "typechain": "./build/typechain"
             }
         }
-    }
+    },
+    "stableVersion": "3.5.0"
 }
