@@ -1,5 +1,6 @@
-import "@nomiclabs/hardhat-ethers"
 import "@nomicfoundation/hardhat-chai-matchers"
+import "@nomiclabs/hardhat-ethers"
+import "@nomiclabs/hardhat-etherscan"
 import "@semaphore-protocol/hardhat"
 import "@typechain/hardhat"
 import { config as dotenvConfig } from "dotenv"
@@ -42,8 +43,13 @@ function getNetworks(): NetworksUserConfig {
             chainId: 420,
             accounts
         },
+        "arbitrum-goerli": {
+            url: "https://goerli-rollup.arbitrum.io/rpc",
+            chainId: 421613,
+            accounts
+        },
         arbitrum: {
-            url: `https://arbitrum-mainnet.infura.io/v3/${infuraApiKey}`,
+            url: "https://arb1.arbitrum.io/rpc",
             chainId: 42161,
             accounts
         }
@@ -72,6 +78,9 @@ const hardhatConfig: HardhatUserConfig = {
     typechain: {
         outDir: config.paths.build.typechain,
         target: "ethers-v5"
+    },
+    etherscan: {
+        apiKey: process.env.ETHERSCAN_API_KEY
     }
 }
 
