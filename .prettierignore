@@ -41,3 +41,7 @@ yarn-error.log*
 
 # other
 snark-artifacts
+
+# Next.js
+.next/
+public
