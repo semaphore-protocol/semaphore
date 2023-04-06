@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/proof",
-    "version": "3.6.0-1",
+    "version": "3.6.0-beta.0",
     "description": "A library to generate and verify Semaphore proofs.",
     "license": "MIT",
     "main": "dist/index.node.js",
@@ -37,8 +37,8 @@
         "typedoc": "^0.22.11"
     },
     "peerDependencies": {
-        "@semaphore-protocol/group": "3.6.0-1",
-        "@semaphore-protocol/identity": "3.6.0-1"
+        "@semaphore-protocol/group": "3.6.0-beta.0",
+        "@semaphore-protocol/identity": "3.6.0-beta.0"
     },
     "dependencies": {
         "@ethersproject/bignumber": "^5.5.0",
