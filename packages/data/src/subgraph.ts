@@ -127,7 +127,7 @@ export default class SemaphoreSubgraph {
 
         const { groups } = await request(this._url, config)
 
-        if (members) {
+        if (groups && members) {
             for (const group of groups) {
                 group.members = group.members.map((member: any) => member.identityCommitment)
             }
@@ -189,7 +189,7 @@ export default class SemaphoreSubgraph {
 
         const { groups } = await request(this._url, config)
 
-        if (members) {
+        if (groups && members) {
             groups[0].members = groups[0].members.map((member: any) => member.identityCommitment)
         }
 
