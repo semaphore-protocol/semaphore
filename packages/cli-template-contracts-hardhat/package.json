@@ -4,15 +4,14 @@
     "description": "Semaphore Hardhat template.",
     "license": "Unlicense",
     "files": [
-        ".gitignore",
-        ".env.example",
+        "files.tgz",
         "contracts/",
         "scripts/",
         "tasks/",
         "test/",
+        ".env.example",
         "hardhat.config.ts",
         "tsconfig.json",
-        "LICENSE",
         "README.md"
     ],
     "publishConfig": {
@@ -26,7 +25,8 @@
         "test": "hardhat run scripts/download-snark-artifacts.ts && hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
-        "typechain": "hardhat typechain"
+        "typechain": "hardhat typechain",
+        "prepublish": "tar -czf files.tgz .gitignore"
     },
     "devDependencies": {
         "@ethersproject/abi": "^5.4.7",

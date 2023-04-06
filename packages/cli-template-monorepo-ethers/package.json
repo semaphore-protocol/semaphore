@@ -2,22 +2,18 @@
     "name": "@semaphore-protocol/cli-template-monorepo-ethers",
     "version": "3.6.0-beta.0",
     "description": "Semaphore Hardhat + Next.js + SemaphoreEthers template.",
-    "license": "MIT",
+    "license": "Unlicense",
     "files": [
-        ".yarn/",
-        "apps/",
+        "files.tgz",
         "scripts/",
         ".editorconfig",
         ".env.example",
         ".eslintignore",
         ".eslintrc.json",
-        ".gitignore",
         ".prettierignore",
         ".prettierrc.json",
-        ".yarnrc.yml",
-        "package.json",
-        "README.md",
-        "tsconfig.json"
+        "tsconfig.json",
+        "README.md"
     ],
     "scripts": {
         "dev": "yarn workspaces foreach -pi run dev",
@@ -26,7 +22,8 @@
         "lint": "eslint . --ext .js,.ts",
         "prettier": "prettier -c .",
         "prettier:write": "prettier -w .",
-        "copy:contract-artifacts": "ts-node scripts/copy-contract-artifacts.ts"
+        "copy:contract-artifacts": "ts-node scripts/copy-contract-artifacts.ts",
+        "prepublish": "tar -czf files.tgz .gitignore .yarn .yarnrc.yml apps"
     },
     "workspaces": [
         "apps/*"

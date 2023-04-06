@@ -61,10 +61,6 @@ out/
 # vercel
 .vercel
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
 # dotenv environment variable files
 .env
 .env.development.local
@@ -118,3 +114,6 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+# Others
+files.tgz
