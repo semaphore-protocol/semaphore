@@ -61,6 +61,9 @@ out/
 # vercel
 .vercel
 
+# typescript
+next-env.d.ts
+
 # dotenv environment variable files
 .env
 .env.development.local
