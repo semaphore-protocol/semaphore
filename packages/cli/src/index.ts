@@ -2,9 +2,10 @@ import { GroupResponse, SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-pr
 import chalk from "chalk"
 import { program } from "commander"
 import figlet from "figlet"
-import { existsSync, readFileSync } from "fs"
+import { existsSync, readFileSync, unlinkSync } from "fs"
 import logSymbols from "log-symbols"
 import pacote from "pacote"
+import decompress from "decompress"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
 import checkLatestVersion from "./checkLatestVersion.js"
@@ -82,6 +83,10 @@ program
             `@semaphore-protocol/cli-template-${template}@${version}`,
             `${currentDirectory}/${projectDirectory}`
         )
+
+        await decompress(`${currentDirectory}/${projectDirectory}/files.tgz`, `${currentDirectory}/${projectDirectory}`)
+
+        unlinkSync(`${currentDirectory}/${projectDirectory}/files.tgz`)
 
         spinner.stop()
 
