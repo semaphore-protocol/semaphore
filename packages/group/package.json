@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/group",
-    "version": "3.6.0-beta.2",
+    "version": "3.6.0-beta.3",
     "description": "A library to create and manage Semaphore groups.",
     "license": "MIT",
     "main": "dist/index.node.js",
@@ -43,5 +43,5 @@
         "@ethersproject/keccak256": "^5.7.0",
         "@zk-kit/incremental-merkle-tree": "1.0.0"
     },
-    "stableVersion": "3.6.0-beta.1"
+    "stableVersion": "3.6.0-beta.2"
 }
