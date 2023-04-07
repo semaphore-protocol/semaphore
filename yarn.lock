@@ -4354,6 +4354,7 @@ __metadata:
     boxen: ^7.0.1
     chalk: ^5.1.2
     commander: ^9.4.1
+    decompress: ^4.2.1
     figlet: ^1.5.2
     inquirer: ^9.1.4
     log-symbols: ^5.1.0
