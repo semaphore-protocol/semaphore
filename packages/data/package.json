@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/data",
-    "version": "3.6.0-beta.1",
+    "version": "3.6.0-beta.2",
     "description": "A library to query Semaphore contracts.",
     "license": "MIT",
     "main": "dist/index.node.js",
@@ -40,5 +40,5 @@
         "@ethersproject/providers": "^5.7.0",
         "axios": "^0.27.2"
     },
-    "stableVersion": "3.6.0-beta.0"
+    "stableVersion": "3.6.0-beta.1"
 }
