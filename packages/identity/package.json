@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/identity",
-    "version": "3.6.0-beta.3",
+    "version": "3.6.0-beta.4",
     "description": "A library to create Semaphore identities.",
     "license": "MIT",
     "main": "dist/index.node.js",
@@ -44,5 +44,5 @@
         "@ethersproject/strings": "^5.6.1",
         "js-sha512": "^0.8.0"
     },
-    "stableVersion": "3.6.0-beta.2"
+    "stableVersion": "3.6.0-beta.3"
 }
