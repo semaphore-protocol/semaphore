@@ -20,16 +20,16 @@ const supportedNetworks = ["sepolia", "goerli", "mumbai", "optimism-goerli", "ar
 
 const supportedTemplates = [
     {
-        value: "contracts-hardhat",
-        name: "Hardhat"
-    },
-    {
         value: "monorepo-ethers",
         name: "Hardhat + Next.js + SemaphoreEthers"
     },
     {
         value: "monorepo-subgraph",
         name: "Hardhat + Next.js + SemaphoreSubgraph"
+    },
+    {
+        value: "contracts-hardhat",
+        name: "Hardhat"
     }
 ]
 
