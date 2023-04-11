@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/hardhat",
-    "version": "3.6.0-beta.3",
+    "version": "3.6.0-beta.4",
     "description": "A Semaphore Hardhat plugin to deploy verifiers and Semaphore contract.",
     "license": "MIT",
     "main": "dist/index.node.js",
@@ -38,10 +38,10 @@
     },
     "dependencies": {
         "@nomiclabs/hardhat-ethers": "^2.1.1",
-        "@semaphore-protocol/contracts": "3.6.0-beta.3",
+        "@semaphore-protocol/contracts": "3.6.0-beta.4",
         "circomlibjs": "^0.0.8",
         "ethers": "^5.7.1",
         "hardhat-dependency-compiler": "^1.1.3"
     },
-    "stableVersion": "3.6.0-beta.2"
+    "stableVersion": "3.6.0-beta.3"
 }

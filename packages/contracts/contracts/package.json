@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/contracts",
-    "version": "3.6.0-beta.3",
+    "version": "3.6.0-beta.4",
     "description": "Semaphore contracts to manage groups and broadcast anonymous signals.",
     "license": "MIT",
     "files": [
@@ -33,5 +33,5 @@
         "@openzeppelin/contracts": "4.7.3",
         "@zk-kit/incremental-merkle-tree.sol": "1.3.3"
     },
-    "stableVersion": "3.6.0-beta.2"
+    "stableVersion": "3.6.0-beta.3"
 }
