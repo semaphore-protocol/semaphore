@@ -2,7 +2,7 @@ import { GroupResponse, SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-pr
 import chalk from "chalk"
 import { program } from "commander"
 import figlet from "figlet"
-import { existsSync, readFileSync, unlinkSync } from "fs"
+import { existsSync, readFileSync, unlinkSync, copyFileSync } from "fs"
 import logSymbols from "log-symbols"
 import pacote from "pacote"
 import decompress from "decompress"
@@ -87,6 +87,11 @@ program
         await decompress(`${currentDirectory}/${projectDirectory}/files.tgz`, `${currentDirectory}/${projectDirectory}`)
 
         unlinkSync(`${currentDirectory}/${projectDirectory}/files.tgz`)
+
+        copyFileSync(
+            `${currentDirectory}/${projectDirectory}/.env.example`,
+            `${currentDirectory}/${projectDirectory}/.env`
+        )
 
         spinner.stop()
 
