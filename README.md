@@ -63,8 +63,6 @@
 
 The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/packages/contracts) and JavaScript libraries to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit [semaphore.appliedzkp.org](https://semaphore.appliedzkp.org).
 
----
-
 ## 📦 Packages
 
 <table>
@@ -240,7 +238,115 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
             </td>
         </tr>
     <tbody>
+</table>
 
+## 💡 Projects
+
+The following are some of the internal and external projects that use Semaphore. If you want to include your project, open an [issue](https://github.com/semaphore-protocol/semaphore/issues/new?assignees=&labels=documentation++%F0%9F%93%96&template=----project.md&title=) or create a PR by adding the project information to the `projects.json` file.
+
+<table>
+    <th>Project</th>
+    <th>Description</th>
+    <th>Links</th>
+    <tbody>
+        <tr>
+            <td>
+                <a href="https://explorer.semaphore.appliedzkp.org">
+                    Semaphore Explorer
+                </a>
+            </td>
+            <td>
+                Semaphore explorer for on-chain groups.
+            </td>
+            <td>    
+                <a href="https://github.com/semaphore-protocol/explorer">
+                    Github
+                </a>|
+                <a href="https://semaphore.appliedzkp.org/discord">
+                    Discord
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://discord.com/api/oauth2/authorize?client_id=1082429985496772628&permissions=1024&scope=bot">
+                    Semaphore Discord Bot
+                </a>
+            </td>
+            <td>
+                A Discord bot for Semaphore.
+            </td>
+            <td>    
+                <a href="https://github.com/semaphore-protocol/discord-bot">
+                    Github
+                </a>|
+                <a href="https://semaphore.appliedzkp.org/discord">
+                    Discord
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://developer.unirep.io">
+                    Unirep
+                </a>
+            </td>
+            <td>
+                Private and nonrepudiable reputation system based on ZKP.
+            </td>
+            <td>    
+                <a href="https://github.com/Unirep">
+                    Github
+                </a>|
+                <a href="https://discord.gg/VzMMDJmYc5">
+                    Discord
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://zk-proof-of-humanity.vercel.app">
+                    ZK Proof of Humanity
+                </a>
+            </td>
+            <td>
+                A project to allows humans, registered in Proof of Humanity, to prove their humanity without doxing.
+            </td>
+            <td>    
+                <a href="https://github.com/elmol/zk-proof-of-humanity">
+                    Github
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Plurality
+            </td>
+            <td>
+                An Identity Lego Building Block for dapp creators that lets them identify their users without</br> using any third-party KYC provider or other middlemen, whilst preserving the privacy of users.
+            </td>
+            <td>    
+                <a href="https://github.com/Web3-Plurality">
+                    Github
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://zerotherapy.vercel.app">
+                    ZeroTherapy
+                </a>
+            </td>
+            <td>
+                AMA privacy application built with Semaphore.
+            </td>
+            <td>    
+                <a href="https://github.com/Pushpit07/ZeroTherapy">
+                    Github
+                </a>
+            </td>
+        </tr>
+    <tbody>
 </table>
 
 ## 🛠 Install
