@@ -13,6 +13,7 @@ A brief description of your project. In what way have you used Semaphore?
 **Other info**
 
 -   Name
+-   Tagline
 -   Icon
 
 **Links**
