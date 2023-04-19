@@ -1,0 +1,40 @@
+[
+    {
+        "name": "Semaphore Explorer",
+        "tagline": "Semaphore explorer for on-chain groups.",
+        "icon": "",
+        "links": {
+            "website": "https://community.semaphore.appliedzkp.org/semaphore-explorer/",
+            "github": "https://github.com/semaphore-protocol/community-projects/tree/main/apps/explorer",
+            "discord": "https://semaphore.appliedzkp.org/discord"
+        }
+    },
+    {
+        "name": "Unirep",
+        "tagline": "Private and nonrepudiable reputation system based on ZKP.",
+        "icon": "",
+        "links": {
+            "website": "https://developer.unirep.io/",
+            "github": "https://github.com/Unirep",
+            "discord": "https://discord.gg/VzMMDJmYc5"
+        }
+    },
+    {
+        "name": "ZK Proof of Humanity",
+        "tagline": "A project to allows humans, registered in Proof of Humanity, to prove their humanity without doxing.",
+        "icon": "",
+        "links": {
+            "website": "https://zk-proof-of-humanity.vercel.app",
+            "github": "https://github.com/elmol/zk-proof-of-humanity"
+        }
+    },
+    {
+        "name": "ZeroTherapy",
+        "tagline": "AMA privacy application built with Semaphore.",
+        "icon": "",
+        "links": {
+            "website": "https://zerotherapy.vercel.app/",
+            "github": "https://github.com/Pushpit07/ZeroTherapy"
+        }
+    }
+]
