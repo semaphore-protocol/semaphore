@@ -4403,7 +4403,7 @@ __metadata:
     "@rollup/plugin-commonjs": ^24.0.1
     "@rollup/plugin-node-resolve": ^15.0.1
     "@zk-kit/incremental-merkle-tree": 1.0.0
-    poseidon-lite: ^0.1.0
+    poseidon-lite: ^0.2.0
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
     typedoc: ^0.22.11
@@ -4451,7 +4451,7 @@ __metadata:
     "@rollup/plugin-commonjs": ^24.0.1
     "@rollup/plugin-node-resolve": ^15.0.1
     js-sha512: ^0.8.0
-    poseidon-lite: ^0.1.0
+    poseidon-lite: ^0.2.0
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
     typedoc: ^0.22.11
@@ -16183,10 +16183,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"poseidon-lite@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "poseidon-lite@npm:0.1.0"
-  checksum: 947d339ef4a8ab61e0dc7ddf567514afa7c51f862bb40cb204389335d0b56cf0fc7d66baa4a93f57f9c939691579fd0f8da641d416a5335e30a64c43b1c95204
+"poseidon-lite@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "poseidon-lite@npm:0.2.0"
+  checksum: c47c6fd0a29a78ca1f7cf6ccb8b0c4f4e72930d944e63425e36f60c15d37fb0aeca30b8a22a30640ed68d631142282c0b8308da83b1a2b2bb92b87f5a2432c93
   languageName: node
   linkType: hard
 
