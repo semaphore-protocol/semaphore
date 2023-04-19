@@ -4,8 +4,18 @@
         "tagline": "Semaphore explorer for on-chain groups.",
         "icon": "",
         "links": {
-            "website": "https://community.semaphore.appliedzkp.org/semaphore-explorer/",
-            "github": "https://github.com/semaphore-protocol/community-projects/tree/main/apps/explorer",
+            "website": "https://community.semaphore.appliedzkp.org/semaphore-explorer",
+            "github": "https://github.com/semaphore-protocol/explorer",
+            "discord": "https://semaphore.appliedzkp.org/discord"
+        }
+    },
+    {
+        "name": "Semaphore Discord Bot",
+        "tagline": "A Discord Bot for Semaphore",
+        "icon": "",
+        "links": {
+            "website": "https://discord.com/api/oauth2/authorize?client_id=1082429985496772628&permissions=1024&scope=bot",
+            "github": "https://github.com/semaphore-protocol/discord-bot",
             "discord": "https://semaphore.appliedzkp.org/discord"
         }
     },
@@ -14,9 +24,17 @@
         "tagline": "Private and nonrepudiable reputation system based on ZKP.",
         "icon": "",
         "links": {
-            "website": "https://developer.unirep.io/",
+            "website": "https://developer.unirep.io",
             "github": "https://github.com/Unirep",
             "discord": "https://discord.gg/VzMMDJmYc5"
+        }
+    },
+    {
+        "name": "Plurality",
+        "tagline": " An Identity Lego Building Block for dapp creators that lets them identify their users without using any third-party KYC provider or other middlemen, whilst preserving the privacy of users.",
+        "icon": "",
+        "links": {
+            "github": "https://github.com/Web3-Plurality"
         }
     },
     {
@@ -33,7 +51,7 @@
         "tagline": "AMA privacy application built with Semaphore.",
         "icon": "",
         "links": {
-            "website": "https://zerotherapy.vercel.app/",
+            "website": "https://zerotherapy.vercel.app",
             "github": "https://github.com/Pushpit07/ZeroTherapy"
         }
     }
