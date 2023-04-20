@@ -75,8 +75,10 @@ Options:
 -h, --help Display this help.
 
 Commands:
-create <project-directory> Create a Semaphore project with a supported template.
-get-groups [options] Get the list of groups from a supported network (Goerli or Arbitrum).
-get-group [options] <group-id> Get the data of a group from a supported network (Goerli or Arbitrum).
-help [command] Display help for a specific command.
+  create [options] [project-directory]  Create a Semaphore project with a supported template.
+  get-groups [options]                  Get the list of groups from a supported network (e.g. goerli or arbitrum).
+  get-group [options] [group-id]        Get the data of a group from a supported network (e.g. goerli or arbitrum).
+  get-members [options] [group-id]      Get the members of a group from a supported network (e.g. goerli or arbitrum).
+  get-proofs [options] [group-id]       Get the proofs from a supported network (e.g. goerli or arbitrum).
+  help [command]                        Display help for a specific command.
 ```
