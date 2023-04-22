@@ -67,7 +67,13 @@ yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-proto
 
 ## 📜 Usage
 
-\# **generateProof**(identity: _Identity_, group: _Group_ | _MerkleProof_, externalNullifier: _BigNumberish_, signal: _string_, snarkArtifacts?: _SnarkArtifacts_): Promise\<_SemaphoreFullProof_>
+\# **generateProof**(
+identity: _Identity_,
+group: _Group_ | _MerkleProof_,
+externalNullifier: _BytesLike | Hexable | number | bigint_,
+signal: _BytesLike | Hexable | number | bigint_,
+snarkArtifacts?: _SnarkArtifacts_
+): Promise\<_SemaphoreFullProof_>
 
 ```typescript
 import { Identity } from "@semaphore-protocol/identity"
@@ -97,4 +103,19 @@ const fullProof = await generateProof(identity, group, externalNullifier, signal
 import { verifyProof } from "@semaphore-protocol/proof"
 
 await verifyProof(fullProof, 20)
+```
+
+\# **calculateNullifierHash**(
+identityNullifier: _bigint | number | string_,
+externalNullifier: \__BytesLike | Hexable | number | bigint_
+): Promise\<_boolean_>
+
+```typescript
+import { Identity } from "@semaphore-protocol/identity"
+import { calculateNullifierHash } from "@semaphore-protocol/proof"
+
+const identity = new Identity()
+const externalNullifier = utils.formatBytes32String("Topic")
+
+const nullifierHash = calculateNullifierHash(identity.nullifier, externalNullifier)
 ```
