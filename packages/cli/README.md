@@ -79,6 +79,6 @@ Commands:
   get-groups [options]                  Get the list of groups from a supported network (e.g. goerli or arbitrum).
   get-group [options] [group-id]        Get the data of a group from a supported network (e.g. goerli or arbitrum).
   get-members [options] [group-id]      Get the members of a group from a supported network (e.g. goerli or arbitrum).
-  get-proofs [options] [group-id]       Get the proofs from a supported network (e.g. goerli or arbitrum).
+  get-proofs [options] [group-id]       Get the proofs of a group from a supported network (e.g. goerli or arbitrum).
   help [command]                        Display help for a specific command.
 ```
