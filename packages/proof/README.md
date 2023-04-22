@@ -108,7 +108,7 @@ await verifyProof(fullProof, 20)
 \# **calculateNullifierHash**(
 identityNullifier: _bigint | number | string_,
 externalNullifier: \__BytesLike | Hexable | number | bigint_
-): Promise\<_boolean_>
+): bigint
 
 ```typescript
 import { Identity } from "@semaphore-protocol/identity"
