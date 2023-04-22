@@ -269,7 +269,7 @@ program
 
 program
     .command("get-proofs")
-    .description("Get the proofs from a supported network (e.g. goerli or arbitrum).")
+    .description("Get the proofs of a group from a supported network (e.g. goerli or arbitrum).")
     .argument("[group-id]", "Identifier of the group.")
     .option("-n, --network <network-name>", "Supported Ethereum network.")
     .allowExcessArguments(false)
