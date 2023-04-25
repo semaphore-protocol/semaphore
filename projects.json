@@ -54,5 +54,14 @@
             "website": "https://zerotherapy.vercel.app",
             "github": "https://github.com/Pushpit07/ZeroTherapy"
         }
+    },
+    {
+        "name": "Block Qualified",
+        "tagline": "On-chain and privacy preserving education platform built on Semaphore.",
+        "icon": "",
+        "links": {
+            "website": "https://bq2.netlify.app/",
+            "github": "https://github.com/0xdeenz/bq2"
+        }
     }
 ]
