@@ -346,6 +346,21 @@ The following are some of the internal and external projects that use Semaphore.
                 </a>
             </td>
         </tr>
+        <tr>
+            <td>
+                <a href="https://bq2.netlify.app/">
+                    Block Qualified
+                </a>
+            </td>
+            <td>
+                On-chain and privacy preserving education platform built on Semaphore.
+            </td>
+            <td>    
+                <a href="https://github.com/0xdeenz/bq2">
+                    Github
+                </a>
+            </td>
+        </tr>
     <tbody>
 </table>
 
