@@ -41,5 +41,6 @@ jobs:
               with:
                   build_dir: docs
                   jekyll: false
+                  fqdn: js.semaphore.appliedzkp.org
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -18,6 +18,9 @@
     <a href="https://npmjs.org/package/@semaphore-protocol/group">
         <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/group.svg?style=flat-square" />
     </a>
+    <a href="https://js.semaphore.appliedzkp.org/group">
+        <img alt="Documentation typedoc" src="https://img.shields.io/badge/docs-typedoc-744C7C?style=flat-square">
+    </a>
     <a href="https://eslint.org/">
         <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint" />
     </a>

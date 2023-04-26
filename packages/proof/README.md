@@ -18,6 +18,9 @@
     <a href="https://npmjs.org/package/@semaphore-protocol/proof">
         <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/proof.svg?style=flat-square" />
     </a>
+    <a href="https://js.semaphore.appliedzkp.org/proof">
+        <img alt="Documentation typedoc" src="https://img.shields.io/badge/docs-typedoc-744C7C?style=flat-square">
+    </a>
     <a href="https://eslint.org/">
         <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint" />
     </a>
@@ -67,7 +70,13 @@ yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-proto
 
 ## 📜 Usage
 
-\# **generateProof**(identity: _Identity_, group: _Group_ | _MerkleProof_, externalNullifier: _BigNumberish_, signal: _string_, snarkArtifacts?: _SnarkArtifacts_): Promise\<_SemaphoreFullProof_>
+\# **generateProof**(
+identity: _Identity_,
+group: _Group_ | _MerkleProof_,
+externalNullifier: _BytesLike | Hexable | number | bigint_,
+signal: _BytesLike | Hexable | number | bigint_,
+snarkArtifacts?: _SnarkArtifacts_
+): Promise\<_SemaphoreFullProof_>
 
 ```typescript
 import { Identity } from "@semaphore-protocol/identity"
@@ -97,4 +106,19 @@ const fullProof = await generateProof(identity, group, externalNullifier, signal
 import { verifyProof } from "@semaphore-protocol/proof"
 
 await verifyProof(fullProof, 20)
+```
+
+\# **calculateNullifierHash**(
+identityNullifier: _bigint | number | string_,
+externalNullifier: \__BytesLike | Hexable | number | bigint_
+): bigint
+
+```typescript
+import { Identity } from "@semaphore-protocol/identity"
+import { calculateNullifierHash } from "@semaphore-protocol/proof"
+
+const identity = new Identity()
+const externalNullifier = utils.formatBytes32String("Topic")
+
+const nullifierHash = calculateNullifierHash(identity.nullifier, externalNullifier)
 ```
