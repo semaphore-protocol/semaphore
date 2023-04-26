@@ -2,6 +2,7 @@ import { formatBytes32String } from "@ethersproject/strings"
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { getCurveFromName } from "ffjavascript"
+import calculateNullifierHash from "./calculateNullifierHash"
 import generateProof from "./generateProof"
 import hash from "./hash"
 import packProof from "./packProof"
@@ -144,6 +145,14 @@ describe("Proof", () => {
             expect(hash([2]).toString()).toBe(
                 "113682330006535319932160121224458771213356533826860247409332700812532759386"
             )
+        })
+    })
+
+    describe("# calculateNullifierHash", () => {
+        it("Should calculate the nullifier hash correctly", async () => {
+            const nullifierHash = calculateNullifierHash(identity.nullifier, externalNullifier)
+
+            expect(fullProof.nullifierHash).toBe(nullifierHash.toString())
         })
     })
 

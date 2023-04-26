@@ -94,7 +94,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/identity">
                     @semaphore-protocol/identity
                 </a>
-                <a href="https://semaphore-protocol.github.io/semaphore/identity">
+                <a href="https://js.semaphore.appliedzkp.org/identity">
                     (docs)
                 </a>
             </td>
@@ -116,7 +116,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/group">
                     @semaphore-protocol/group
                 </a>
-                <a href="https://semaphore-protocol.github.io/semaphore/group">
+                <a href="https://js.semaphore.appliedzkp.org/group">
                     (docs)
                 </a>
             </td>
@@ -138,7 +138,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/proof">
                     @semaphore-protocol/proof
                 </a>
-                <a href="https://semaphore-protocol.github.io/semaphore/proof">
+                <a href="https://js.semaphore.appliedzkp.org/proof">
                     (docs)
                 </a>
             </td>
@@ -160,7 +160,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/data">
                     @semaphore-protocol/data
                 </a>
-                <a href="https://semaphore-protocol.github.io/semaphore/data">
+                <a href="https://js.semaphore.appliedzkp.org/data">
                     (docs)
                 </a>
             </td>
@@ -220,7 +220,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/heyauthn">
                     @semaphore-protocol/heyauthn
                 </a>
-                <a href="https://semaphore-protocol.github.io/semaphore/heyauthn">
+                <a href="https://js.semaphore.appliedzkp.org/heyauthn">
                     (docs)
                 </a>
             </td>
