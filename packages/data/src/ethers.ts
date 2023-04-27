@@ -12,10 +12,10 @@ import {
 import checkParameter from "./checkParameter"
 import getEvents from "./getEvents"
 import SemaphoreABI from "./semaphoreABI.json"
-import { EthersOptions, GroupResponse, Network } from "./types"
+import { EthersOptions, GroupResponse, EthersNetwork } from "./types"
 
 export default class SemaphoreEthers {
-    private _network: Network | string
+    private _network: EthersNetwork | string
     private _options: EthersOptions
     private _contract: Contract
 
@@ -24,7 +24,7 @@ export default class SemaphoreEthers {
      * @param networkOrEthereumURL Ethereum network or custom URL.
      * @param options Ethers options.
      */
-    constructor(networkOrEthereumURL: Network | string = "sepolia", options: EthersOptions = {}) {
+    constructor(networkOrEthereumURL: EthersNetwork | string = "sepolia", options: EthersOptions = {}) {
         checkParameter(networkOrEthereumURL, "networkOrSubgraphURL", "string")
 
         if (options.provider) {
@@ -114,7 +114,7 @@ export default class SemaphoreEthers {
      * Returns the Ethereum network or custom URL.
      * @returns Ethereum network or custom URL.
      */
-    get network(): Network | string {
+    get network(): EthersNetwork | string {
         return this._network
     }
 
