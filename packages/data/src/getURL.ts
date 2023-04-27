@@ -5,8 +5,9 @@ import { Network } from "./types"
  * @param network Semaphore supported network.
  * @returns Subgraph URL.
  */
-export default function getURL(network: Network): string {
-    switch (network) {
+export default function getURL(supportedNetwork: SupportedNetwork | string): string {
+    switch (supportedNetwork) {
+        case "sepolia":
         case "goerli":
         case "mumbai":
         case "optimism-goerli":
