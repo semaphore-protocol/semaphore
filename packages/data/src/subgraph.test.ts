@@ -16,7 +16,7 @@ describe("SemaphoreSubgraph", () => {
             semaphore = new SemaphoreSubgraph()
             const semaphore1 = new SemaphoreSubgraph("arbitrum")
 
-            expect(semaphore.url).toContain("goerli")
+            expect(semaphore.url).toContain("sepolia")
             expect(semaphore1.url).toContain("arbitrum")
         })
 
