@@ -1,5 +1,6 @@
-import SemaphoreSubgraph from "./subgraph"
 import SemaphoreEthers from "./ethers"
+import getSupportedNetworks from "./getSupportedNetworks"
+import SemaphoreSubgraph from "./subgraph"
 
-export { SemaphoreSubgraph, SemaphoreEthers }
 export * from "./types"
+export { SemaphoreSubgraph, SemaphoreEthers, getSupportedNetworks }

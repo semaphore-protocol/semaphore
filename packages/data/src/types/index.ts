@@ -1,4 +1,13 @@
-export type Network =
+export enum SupportedNetwork {
+    SEPOLIA = "sepolia",
+    GOERLI = "goerli",
+    MUMBAI = "mumbai",
+    OPTIMISM_GOERLI = "optimism-goerli",
+    ARBITRUM_GOERLI = "arbitrum-goerli",
+    ARBITRUM = "arbitrum"
+}
+
+export type EthersNetwork =
     | "homestead"
     | "matic"
     | "goerli"
