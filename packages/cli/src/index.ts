@@ -1,4 +1,4 @@
-import { GroupResponse, SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-protocol/data"
+import { GroupResponse, SemaphoreEthers, SemaphoreSubgraph, getSupportedNetworks } from "@semaphore-protocol/data"
 import chalk from "chalk"
 import { program } from "commander"
 import figlet from "figlet"
@@ -16,7 +16,7 @@ import Spinner from "./spinner.js"
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
 const { description, version } = JSON.parse(readFileSync(`${packagePath}/package.json`, "utf8"))
 
-const supportedNetworks = ["sepolia", "goerli", "mumbai", "optimism-goerli", "arbitrum", "arbitrum-goerli"]
+const supportedNetworks = getSupportedNetworks()
 
 const supportedTemplates = [
     {

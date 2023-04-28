@@ -70,7 +70,13 @@ yarn add @semaphore-protocol/data
 
 ## 📜 Usage
 
-\# **new SemaphoreSubgraph**(networkOrSubgraphURL: _Network_ | _string_ = "goerli"): _SemaphoreSubgraph_
+\# **getSupportedNetworks**(): _string[]_
+
+```typescript
+const supportedNetworks = getSupportedNetworks()
+```
+
+\# **new SemaphoreSubgraph**(networkOrSubgraphURL: SupportedNetwork | ValueOf\<SupportedNetwork> | string = "sepolia"): _SemaphoreSubgraph_
 
 ```typescript
 import { SemaphoreSubgraph } from "@semaphore-protocol/data"
