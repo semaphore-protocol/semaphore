@@ -49,8 +49,8 @@
     </h4>
 </div>
 
-| This library allows you to query the [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/contracts/Semaphore.sol) contract data (i.e. groups) using the [Semaphore subgraph](https://github.com/semaphore-protocol/subgraph) or Ethers. It can be used on Node.js and browsers. |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| This library allows you to query the [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol) contract data (i.e. groups) using the [Semaphore subgraph](https://github.com/semaphore-protocol/subgraph) or Ethers. It can be used on Node.js and browsers. |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## 🛠 Install
 
@@ -164,5 +164,5 @@ const members = await semaphoreEthers.getGroupMembers("42")
 \# **getGroupVerifiedProofs**(groupId: _string_): _Promise\<any[]>_
 
 ```typescript
-const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs()
+const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs("42")
 ```
