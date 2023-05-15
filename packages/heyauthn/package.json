@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/heyauthn",
-    "version": "3.9.0",
+    "version": "3.10.0",
     "description": "A library to allow developers to create and manage Semaphore identities using WebAuthn",
     "license": "MIT",
     "main": "dist/index.node.js",
@@ -35,7 +35,7 @@
         "typedoc": "^0.22.11"
     },
     "dependencies": {
-        "@semaphore-protocol/identity": "3.9.0",
+        "@semaphore-protocol/identity": "3.10.0",
         "@simplewebauthn/browser": "7.2.0",
         "@simplewebauthn/server": "7.2.0"
     }
