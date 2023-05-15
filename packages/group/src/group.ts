@@ -12,14 +12,15 @@ export default class Group {
      * Initializes the group with the group id and the tree depth.
      * @param id Group identifier.
      * @param treeDepth Tree depth.
+     * @param members List of group members.
      */
-    constructor(id: BigNumberish, treeDepth = 20) {
+    constructor(id: BigNumberish, treeDepth = 20, members: BigNumberish[] = []) {
         if (treeDepth < 16 || treeDepth > 32) {
             throw new Error("The tree depth must be between 16 and 32")
         }
 
         this._id = id
-        this.merkleTree = new IncrementalMerkleTree(poseidon2, treeDepth, hash(id), 2)
+        this.merkleTree = new IncrementalMerkleTree(poseidon2, treeDepth, hash(id), 2, members)
     }
 
     /**
@@ -82,6 +83,7 @@ export default class Group {
     /**
      * Adds new members to the group.
      * @param members New members.
+     * @deprecated Use the new class parameter to add a list of members.
      */
     addMembers(members: BigNumberish[]) {
         for (const member of members) {
