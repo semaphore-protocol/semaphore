@@ -19,13 +19,28 @@ describe("Group", () => {
             expect(fun).toThrow("The tree depth must be between 16 and 32")
         })
 
-        it("Should create a group with different parameters", () => {
+        it("Should create a group with a different tree depth", () => {
             const group = new Group(1, 32)
 
             expect(group.root.toString()).toContain("460373")
             expect(group.depth).toBe(32)
             expect(group.zeroValue).toBe(hash(1))
             expect(group.members).toHaveLength(0)
+        })
+
+        it("Should create a group with a list of members", () => {
+            const group = new Group(2, 20, [1, 2, 3])
+
+            const group2 = new Group(2, 20)
+
+            group2.addMember(1)
+            group2.addMember(2)
+            group2.addMember(3)
+
+            expect(group.root.toString()).toContain(group2.root.toString())
+            expect(group.depth).toBe(20)
+            expect(group.zeroValue).toBe(hash(2))
+            expect(group.members).toHaveLength(3)
         })
     })
 
