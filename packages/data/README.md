@@ -121,7 +121,10 @@ const { members, verifiedProofs } = semaphoreSubgraph.getGroup("42", { members: 
 \# **isGroupMember**(groupId: _string_, member: _string_): _Promise\<boolean>_
 
 ```typescript
-await semaphoreSubgraph.isGroupMember("42", "16948514235341957898454876473214737047419402240398321289450170535251226167324")
+await semaphoreSubgraph.isGroupMember(
+    "42",
+    "16948514235341957898454876473214737047419402240398321289450170535251226167324"
+)
 ```
 
 \# **new Ethers**(networkOrEthereumURL: Network | string = "goerli", options: EthersOptions = {}): _SemaphoreEthers_
