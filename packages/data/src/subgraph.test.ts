@@ -338,4 +338,31 @@ describe("SemaphoreSubgraph", () => {
             })
         })
     })
+
+    describe("# isGroupMember", () => {
+        it("Should throw an error if the member parameter type is wrong", async () => {
+            const fun = () => semaphore.isGroupMember("1", 1 as any)
+
+            await expect(fun).rejects.toThrow("Parameter 'member' is not a string")
+        })
+
+        it("Should return true if a group member exist", async () => {
+            requestMocked.mockImplementationOnce(() =>
+                Promise.resolve({
+                    groups: [
+                        {
+                            id: "1"
+                        }
+                    ]
+                })
+            )
+
+            const expectedValue = await semaphore.isGroupMember(
+                "1",
+                "19759682999141591121829027463339362582441675980174830329241909768001406603165"
+            )
+
+            expect(expectedValue).toBeTruthy()
+        })
+    })
 })
