@@ -74,6 +74,7 @@ yarn add @semaphore-protocol/group
 
 ```typescript
 import { Group } from "@semaphore-protocol/group"
+import { Identity } from "@semaphore-protocol/identity"
 
 // Group with max 1048576 members (20^²).
 const group1 = new Group(1)
@@ -83,6 +84,13 @@ const group2 = new Group(1, 16)
 
 // Group with max 16777216 members (24^²).
 const group3 = new Group(1, 24)
+
+// Group with a list of predefined members.
+const identity1 = new Identity()
+const identity2 = new Identity()
+const identity3 = new Identity()
+
+const group3 = new Group(1, 16, [identity1.commitment, identity2.commitment, identity3.commitment])
 ```
 
 \# **addMember**(identityCommitment: _Member_)
@@ -94,21 +102,6 @@ const identity = new Identity()
 const commitment = identity.generateCommitment()
 
 group.addMember(commitment)
-```
-
-\# **addMembers**(identityCommitments: _Member\[]_)
-
-```typescript
-let identityCommitments: bigint[]
-
-for (let i = 0; i < 10; i++) {
-    const identity = new Identity()
-    const commitment = identity.generateCommitment()
-
-    identityCommitments.push(commitment)
-}
-
-group.addMember(identityCommitments)
 ```
 
 \# **removeMember**(index: _number_)
