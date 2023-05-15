@@ -195,4 +195,30 @@ export default class SemaphoreSubgraph {
 
         return groups[0]
     }
+
+    /**
+     * Returns true if a member is part of group, and false otherwise.
+     * @param groupId Group id
+     * @param member Group member.
+     * @returns True if the member is part of the group, false otherwise.
+     */
+    async isGroupMember(groupId: string, member: string): Promise<boolean> {
+        checkParameter(groupId, "groupId", "string")
+        checkParameter(member, "member", "string")
+
+        const config: AxiosRequestConfig = {
+            method: "post",
+            data: JSON.stringify({
+                query: `{
+                    groups(where: { id: "${groupId}", members_: { identityCommitment: "${member}" } }) {
+                        id
+                    }
+                }`
+            })
+        }
+
+        const { groups } = await request(this._url, config)
+
+        return groups.length !== 0
+    }
 }
