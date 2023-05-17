@@ -20,7 +20,7 @@ export default class Group {
         }
 
         this._id = id
-        this.merkleTree = new IncrementalMerkleTree(poseidon2, treeDepth, hash(id), 2, members)
+        this.merkleTree = new IncrementalMerkleTree(poseidon2, treeDepth, hash(id), 2, members.map(BigInt))
     }
 
     /**
