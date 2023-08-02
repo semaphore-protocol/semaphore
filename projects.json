@@ -39,7 +39,7 @@
     },
     {
         "name": "ZK Proof of Humanity",
-        "tagline": "A project to allows humans, registered in Proof of Humanity, to prove their humanity without doxing.",
+        "tagline": "A project that allows humans, registered in Proof of Humanity, to prove their humanity without doxing.",
         "icon": "",
         "links": {
             "website": "https://zk-proof-of-humanity.vercel.app",
