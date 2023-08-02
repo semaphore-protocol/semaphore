@@ -31,7 +31,7 @@
     },
     {
         "name": "Plurality",
-        "tagline": " An Identity Lego Building Block for dapp creators that lets them identify their users without using any third-party KYC provider or other middlemen, whilst preserving the privacy of users.",
+        "tagline": "An Identity Lego Building Block for dapp creators that lets them identify their users without using any third-party KYC provider or other middlemen, whilst preserving the privacy of users.",
         "icon": "",
         "links": {
             "github": "https://github.com/Web3-Plurality"
