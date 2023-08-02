@@ -361,6 +361,21 @@ The following are some of the internal and external projects that use Semaphore.
                 </a>
             </td>
         </tr>
+        <tr>
+            <td>
+                <a href="https://stealthcomms.surge.sh/">
+                    StealthComms
+                </a>
+            </td>
+            <td>
+                A project that allows users to prove their membership in a group and send messages/signals without revealing their original identity.
+            </td>
+            <td>    
+                <a href="https://github.com/atomniketh/zk-app">
+                    Github
+                </a>
+            </td>
+        </tr>
     <tbody>
 </table>
 
