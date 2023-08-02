@@ -63,5 +63,14 @@
             "website": "https://bq2.netlify.app/",
             "github": "https://github.com/0xdeenz/bq2"
         }
+    },
+    {
+        "name": "StealthComms",
+        "tagline": "StealthComms allows users to prove their membership in a group and send messages/signals without revealing their original identity.",
+        "icon": "",
+        "links": {
+            "website": "https://stealthcomms.surge.sh/",
+            "github": "https://github.com/atomniketh/zk-app"
+        }
     }
 ]
