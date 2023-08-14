@@ -24,6 +24,7 @@ export type GroupOptions = {
     verifiedProofs?: boolean
     filters?: {
         admin?: string
+        identityCommitment?: string
         timestamp?: Date
         timestampGte?: Date
         timestampLte?: Date
