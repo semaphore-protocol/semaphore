@@ -74,6 +74,7 @@ export default class SemaphoreSubgraph {
             if (admin) {
                 filterFragments.push(`admin: "${admin}"`)
             }
+
             if (identityCommitment) {
                 filterFragments.push(`members_: { identityCommitment: "${identityCommitment}" }`)
             }
