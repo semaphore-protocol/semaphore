@@ -68,11 +68,14 @@ export default class SemaphoreSubgraph {
         let filtersQuery = ""
 
         if (options.filters) {
-            const { admin, timestamp, timestampGte, timestampLte } = options.filters
+            const { admin, identityCommitment, timestamp, timestampGte, timestampLte } = options.filters
             const filterFragments = []
 
             if (admin) {
                 filterFragments.push(`admin: "${admin}"`)
+            }
+            if (identityCommitment) {
+                filterFragments.push(`members_: { identityCommitment: "${identityCommitment}" }`)
             }
 
             /* istanbul ignore next */
