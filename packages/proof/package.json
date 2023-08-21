@@ -49,6 +49,6 @@
         "@ethersproject/keccak256": "^5.7.0",
         "@ethersproject/strings": "^5.5.0",
         "@zk-kit/incremental-merkle-tree": "0.4.3",
-        "snarkjs": "0.4.13"
+        "snarkjs": "0.4.16"
     }
 }

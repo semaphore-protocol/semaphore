@@ -2829,16 +2829,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iden3/binfileutils@npm:0.0.11":
-  version: 0.0.11
-  resolution: "@iden3/binfileutils@npm:0.0.11"
-  dependencies:
-    fastfile: 0.0.20
-    ffjavascript: ^0.2.48
-  checksum: ca61db1325c7e038c6bd723c856eff5f2c82c76394db09d3350ef4f5b7525e3c9ab1f7429900ff5d3e9d26c5970bf5900e6126ccb5c5caa597c16a47336a6be8
-  languageName: node
-  linkType: hard
-
 "@istanbuljs/load-nyc-config@npm:^1.0.0":
   version: 1.1.0
   resolution: "@istanbuljs/load-nyc-config@npm:1.1.0"
@@ -4512,7 +4502,7 @@ __metadata:
     poseidon-lite: ^0.2.0
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
-    snarkjs: 0.4.13
+    snarkjs: 0.4.16
     typedoc: ^0.22.11
   peerDependencies:
     "@semaphore-protocol/group": 3.10.1
@@ -6521,18 +6511,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bfj@npm:^7.0.2":
-  version: 7.0.2
-  resolution: "bfj@npm:7.0.2"
-  dependencies:
-    bluebird: ^3.5.5
-    check-types: ^11.1.1
-    hoopy: ^0.1.4
-    tryer: ^1.0.1
-  checksum: 0ca673234170eb3dcf00fb1d867ba274729ab05779dd19b35628c49da7adc32472b5f0bca0554ffdca15b094f9b36f16f2a8992ba8884ebd1d351d7f27abee7b
-  languageName: node
-  linkType: hard
-
 "big-integer@npm:^1.6.42, big-integer@npm:^1.6.48":
   version: 1.6.51
   resolution: "big-integer@npm:1.6.51"
@@ -6648,7 +6626,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bluebird@npm:^3.5.0, bluebird@npm:^3.5.5":
+"bluebird@npm:^3.5.0":
   version: 3.7.2
   resolution: "bluebird@npm:3.7.2"
   checksum: 869417503c722e7dc54ca46715f70e15f4d9c602a423a02c825570862d12935be59ed9c7ba34a9b31f186c017c23cac6b54e35446f8353059c101da73eac22ef
@@ -7447,13 +7425,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"check-types@npm:^11.1.1":
-  version: 11.2.2
-  resolution: "check-types@npm:11.2.2"
-  checksum: 61ed60d59e3397c8cf694f20edf73d0061cd6a905754efdec2ccdceafbd390cb09717bab855f9eba921d36278f84c86fe20f7e731a384e9803bc469c09153831
-  languageName: node
-  linkType: hard
-
 "chokidar@npm:3.3.0":
   version: 3.3.0
   resolution: "chokidar@npm:3.3.0"
@@ -7551,17 +7522,6 @@ __metadata:
   bin:
     calcwit: calcwit.js
   checksum: 595fc0cc3a62ba5daf8d849feae41c48805c0df43965f85dde4dc434efb607e455fa7801d41c1feacfe0c3c71952a45cd3985abf26fde40c54138392891afd8c
-  languageName: node
-  linkType: hard
-
-"circom_runtime@npm:0.1.20":
-  version: 0.1.20
-  resolution: "circom_runtime@npm:0.1.20"
-  dependencies:
-    ffjavascript: 0.2.55
-  bin:
-    calcwit: calcwit.js
-  checksum: eea406509ee8b3615a38e3f14d9601906045938d6e227d8f025fc29157b3b0b64901db10f8f0e8758e809f4271132a267c4783c063d235892b67d09ff125b756
   languageName: node
   linkType: hard
 
@@ -8074,7 +8034,6 @@ __metadata:
     js-logger: ^1.6.1
     prettier-plugin-solidity: ^1.0.0-beta.19
     rimraf: ^3.0.2
-    snarkjs: ^0.4.13
     solhint: ^3.3.6
     solhint-plugin-prettier: ^0.0.5
     solidity-coverage: ^0.7.21
@@ -10094,13 +10053,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastfile@npm:0.0.20":
-  version: 0.0.20
-  resolution: "fastfile@npm:0.0.20"
-  checksum: e5d6e5f57a9b58c9534202e477cbffbca2182c407171950695ddb5c3e6b89554bc8561fbb6e370c99e371a8f23486a23fbaca527827886cec4897d481cbd03b6
-  languageName: node
-  linkType: hard
-
 "fastq@npm:^1.6.0":
   version: 1.15.0
   resolution: "fastq@npm:1.15.0"
@@ -10147,18 +10099,6 @@ __metadata:
     wasmcurves: 0.1.0
     web-worker: ^1.2.0
   checksum: 68beae9a4f642c06656685353b84fd7655020ca0e628ea046e94452ab779587953cc45cde106d74b68be7177b49c8f19b105d6552c4a1d715e784ae9e7c9ed34
-  languageName: node
-  linkType: hard
-
-"ffjavascript@npm:0.2.55":
-  version: 0.2.55
-  resolution: "ffjavascript@npm:0.2.55"
-  dependencies:
-    big-integer: ^1.6.48
-    wasmbuilder: ^0.0.12
-    wasmcurves: 0.1.0
-    web-worker: ^1.2.0
-  checksum: 660ba556140fc56d7d7b258c026f18ed7f462034585b2ada49baa345901d759c583a2b57f7d93376d2dbdf71e0cddb59d8fa17a3c704bf563b298cef4607fd5c
   languageName: node
   linkType: hard
 
@@ -11706,13 +11646,6 @@ __metadata:
   dependencies:
     parse-passwd: ^1.0.0
   checksum: 18dd4db87052c6a2179d1813adea0c4bfcfa4f9996f0e226fefb29eb3d548e564350fa28ec46b0bf1fbc0a1d2d6922ceceb80093115ea45ff8842a4990139250
-  languageName: node
-  linkType: hard
-
-"hoopy@npm:^0.1.4":
-  version: 0.1.4
-  resolution: "hoopy@npm:0.1.4"
-  checksum: cfa60c7684c5e1ee4efe26e167bc54b73f839ffb59d1d44a5c4bf891e26b4f5bcc666555219a98fec95508fea4eda3a79540c53c05cc79afc1f66f9a238f4d9e
   languageName: node
   linkType: hard
 
@@ -16530,18 +16463,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"r1csfile@npm:0.0.40":
-  version: 0.0.40
-  resolution: "r1csfile@npm:0.0.40"
-  dependencies:
-    "@iden3/bigarray": 0.0.2
-    "@iden3/binfileutils": 0.0.11
-    fastfile: 0.0.20
-    ffjavascript: 0.2.55
-  checksum: 24035139a072f54e4ecde2e7f1f713bff42d54221e3bfa881b3e4191db570a7e489a7ccd1831308ad01672c111e90d9b37eefccd4ef31844cf3f09b2c67d12ce
-  languageName: node
-  linkType: hard
-
 "randombytes@npm:^2.0.0, randombytes@npm:^2.0.1, randombytes@npm:^2.0.5, randombytes@npm:^2.1.0":
   version: 2.1.0
   resolution: "randombytes@npm:2.1.0"
@@ -17823,9 +17744,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"snarkjs@npm:0.4.13":
-  version: 0.4.13
-  resolution: "snarkjs@npm:0.4.13"
+"snarkjs@npm:0.4.16":
+  version: 0.4.16
+  resolution: "snarkjs@npm:0.4.16"
   dependencies:
     "@iden3/binfileutils": 0.0.10
     blake2b-wasm: ^2.4.0
@@ -17839,27 +17760,7 @@ __metadata:
     readline: ^1.3.0
   bin:
     snarkjs: build/cli.cjs
-  checksum: c8267ca8d6f6c0cf1c025d625832ba6c6f511d4c613f80c80762d11b43913c8d053074e2e6225fca7a137baa3a7d72a08ba520777899c6071167074f65e89ab4
-  languageName: node
-  linkType: hard
-
-"snarkjs@npm:^0.4.13":
-  version: 0.4.27
-  resolution: "snarkjs@npm:0.4.27"
-  dependencies:
-    "@iden3/binfileutils": 0.0.11
-    bfj: ^7.0.2
-    blake2b-wasm: ^2.4.0
-    circom_runtime: 0.1.20
-    ejs: ^3.1.6
-    fastfile: 0.0.20
-    ffjavascript: 0.2.55
-    js-sha3: ^0.8.0
-    logplease: ^1.2.15
-    r1csfile: 0.0.40
-  bin:
-    snarkjs: build/cli.cjs
-  checksum: 5898ee988f3e2dfeb9cd25454fce3b185b8f596ae56bbe2faaf0bc6db4e7e6049f296b4e9bddf425fd804775a9d2d7b228d08363452229f57e92cf334156cd01
+  checksum: e26c907493fe7bc78563a918391602ca4166060667c1936cf65fba09ca39a5019288acb1c6d695ff5a0c6cf300a97a8bfb613e84df268b4e2108e2e2c28db274
   languageName: node
   linkType: hard
 
@@ -19001,13 +18902,6 @@ __metadata:
   dependencies:
     escape-string-regexp: ^1.0.2
   checksum: e25c235305b82c43f1d64a67a71226c406b00281755e4c2c4f3b1d0b09c687a535dd3c4483327f949f28bb89dc400a0bc5e5b749054f4b99f49ebfe48ba36496
-  languageName: node
-  linkType: hard
-
-"tryer@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "tryer@npm:1.0.1"
-  checksum: 1cf14d7f67c79613f054b569bfc9a89c7020d331573a812dfcf7437244e8f8e6eb6893b210cbd9cc217f67c1d72617f89793df231e4fe7d53634ed91cf3a89d1
   languageName: node
   linkType: hard
 
