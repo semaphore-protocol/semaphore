@@ -84,7 +84,7 @@ export default function GroupsPage() {
             <p>
                 Semaphore{" "}
                 <a
-                    href="https://semaphore.appliedzkp.org/docs/guides/groups"
+                    href="https://semaphore.pse.dev/docs/guides/groups"
                     target="_blank"
                     rel="noreferrer noopener nofollow"
                 >

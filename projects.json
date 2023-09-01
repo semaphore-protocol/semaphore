@@ -4,9 +4,9 @@
         "tagline": "Semaphore explorer for on-chain groups.",
         "icon": "",
         "links": {
-            "website": "https://community.semaphore.appliedzkp.org/semaphore-explorer",
+            "website": "https://community.semaphore.pse.dev/semaphore-explorer",
             "github": "https://github.com/semaphore-protocol/explorer",
-            "discord": "https://semaphore.appliedzkp.org/discord"
+            "discord": "https://semaphore.pse.dev/discord"
         }
     },
     {
@@ -16,7 +16,7 @@
         "links": {
             "website": "https://discord.com/api/oauth2/authorize?client_id=1082429985496772628&permissions=1024&scope=bot",
             "github": "https://github.com/semaphore-protocol/discord-bot",
-            "discord": "https://semaphore.appliedzkp.org/discord"
+            "discord": "https://semaphore.pse.dev/discord"
         }
     },
     {
