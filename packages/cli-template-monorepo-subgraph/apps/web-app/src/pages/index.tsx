@@ -40,7 +40,7 @@ export default function IdentitiesPage() {
             <p>
                 Users interact with the protocol using a Semaphore{" "}
                 <a
-                    href="https://semaphore.appliedzkp.org/docs/guides/identities"
+                    href="https://semaphore.pse.dev/docs/guides/identities"
                     target="_blank"
                     rel="noreferrer noopener nofollow"
                 >

@@ -33,7 +33,7 @@ yarn deploy --semaphore <semaphore-address> --group <group-id> --network arbitru
 3. Copy your contract artifacts from `apps/contracts/build/contracts/contracts` folder to `apps/web-app/contract-artifacts` folders manually. Or run `yarn copy:contract-artifacts` in the project root to do it automatically.
 
 > **Note**  
-> Check the Semaphore contract addresses [here](https://semaphore.appliedzkp.org/docs/deployed-contracts).
+> Check the Semaphore contract addresses [here](https://semaphore.pse.dev/docs/deployed-contracts).
 
 > **Warning**  
 > The group id is a number!
