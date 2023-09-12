@@ -40,8 +40,6 @@ describe("SemaphoreEthers", () => {
                 startBlock: 0
             })
 
-            console.log(semaphore5)
-
             expect(semaphore.network).toBe("sepolia")
             expect(semaphore.contract).toBeInstanceOf(Object)
             expect(semaphore1.network).toBe("arbitrum")
