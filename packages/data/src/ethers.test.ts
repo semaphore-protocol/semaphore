@@ -31,10 +31,16 @@ describe("SemaphoreEthers", () => {
             const semaphore2 = new SemaphoreEthers("matic")
             const semaphore3 = new SemaphoreEthers("optimism-goerli")
             const semaphore4 = new SemaphoreEthers("arbitrum-goerli")
-            const semaphore5 = new SemaphoreEthers("homestead", {
+            const semaphore5 = new SemaphoreEthers("arbitrum-goerli", {
                 address: "0x0000000000000000000000000000000000000000",
                 startBlock: 0
             })
+            const semaphore6 = new SemaphoreEthers("homestead", {
+                address: "0x0000000000000000000000000000000000000000",
+                startBlock: 0
+            })
+
+            console.log(semaphore5)
 
             expect(semaphore.network).toBe("sepolia")
             expect(semaphore.contract).toBeInstanceOf(Object)
@@ -42,9 +48,10 @@ describe("SemaphoreEthers", () => {
             expect(semaphore2.network).toBe("maticmum")
             expect(semaphore3.network).toBe("optimism-goerli")
             expect(semaphore4.network).toBe("arbitrum-goerli")
-            expect(semaphore5.network).toBe("homestead")
-            expect(semaphore5.options.startBlock).toBe(0)
             expect(semaphore5.options.address).toContain("0x000000")
+            expect(semaphore6.network).toBe("homestead")
+            expect(semaphore6.options.startBlock).toBe(0)
+            expect(semaphore6.options.address).toContain("0x000000")
         })
 
         it("Should instantiate a SemaphoreEthers object with different providers", () => {
