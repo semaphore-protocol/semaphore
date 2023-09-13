@@ -3,7 +3,7 @@
       <picture>
         <source media="(prefers-color-scheme: dark)" srcset="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon-dark.svg">
         <source media="(prefers-color-scheme: light)" srcset="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
-        <img width="40" alt="Semaphore icon." src="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
+        <img width="40" alt="Semaphore icon" src="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
       </picture>
       Semaphore
     </h1>
@@ -94,7 +94,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/identity">
                     @semaphore-protocol/identity
                 </a>
-                <a href="https://js.semaphore.pse.dev/identity">
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_identity">
                     (docs)
                 </a>
             </td>
@@ -116,7 +116,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/group">
                     @semaphore-protocol/group
                 </a>
-                <a href="https://js.semaphore.pse.dev/group">
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_group">
                     (docs)
                 </a>
             </td>
@@ -138,7 +138,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/proof">
                     @semaphore-protocol/proof
                 </a>
-                <a href="https://js.semaphore.pse.dev/proof">
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_proof">
                     (docs)
                 </a>
             </td>
@@ -160,7 +160,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/data">
                     @semaphore-protocol/data
                 </a>
-                <a href="https://js.semaphore.pse.dev/data">
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_data">
                     (docs)
                 </a>
             </td>
@@ -220,7 +220,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/heyauthn">
                     @semaphore-protocol/heyauthn
                 </a>
-                <a href="https://js.semaphore.pse.dev/heyauthn">
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_heyauthn">
                     (docs)
                 </a>
             </td>
