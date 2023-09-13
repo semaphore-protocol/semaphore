@@ -4392,7 +4392,6 @@ __metadata:
     rollup-plugin-typescript2: ^0.31.2
     semver: ^7.3.8
     ts-node: ^10.9.1
-    typedoc: ^0.22.11
   bin:
     semaphore: dist/index.js
   languageName: unknown
@@ -4417,7 +4416,6 @@ __metadata:
     axios: ^0.27.2
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
-    typedoc: ^0.22.11
   languageName: unknown
   linkType: soft
 
@@ -4434,7 +4432,6 @@ __metadata:
     poseidon-lite: ^0.2.0
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
-    typedoc: ^0.22.11
   languageName: unknown
   linkType: soft
 
@@ -4464,7 +4461,6 @@ __metadata:
     "@simplewebauthn/server": 7.2.0
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
-    typedoc: ^0.22.11
   languageName: unknown
   linkType: soft
 
@@ -4482,7 +4478,6 @@ __metadata:
     poseidon-lite: ^0.2.0
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
-    typedoc: ^0.22.11
   languageName: unknown
   linkType: soft
 
@@ -4503,7 +4498,6 @@ __metadata:
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
     snarkjs: 0.4.16
-    typedoc: ^0.22.11
   peerDependencies:
     "@semaphore-protocol/group": 3.11.0
     "@semaphore-protocol/identity": 3.11.0
@@ -13405,7 +13399,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonc-parser@npm:^3.0.0, jsonc-parser@npm:^3.2.0":
+"jsonc-parser@npm:^3.2.0":
   version: 3.2.0
   resolution: "jsonc-parser@npm:3.2.0"
   checksum: 946dd9a5f326b745aa326d48a7257e3f4a4b62c5e98ec8e49fa2bdd8d96cef7e6febf1399f5c7016114fd1f68a1c62c6138826d5d90bc650448e3cf0951c53c7
@@ -14072,7 +14066,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:^4.0.16, marked@npm:^4.3.0":
+"marked@npm:^4.3.0":
   version: 4.3.0
   resolution: "marked@npm:4.3.0"
   bin:
@@ -14310,7 +14304,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^5.0.1, minimatch@npm:^5.1.0":
+"minimatch@npm:^5.0.1":
   version: 5.1.6
   resolution: "minimatch@npm:5.1.6"
   dependencies:
@@ -17641,17 +17635,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shiki@npm:^0.10.1":
-  version: 0.10.1
-  resolution: "shiki@npm:0.10.1"
-  dependencies:
-    jsonc-parser: ^3.0.0
-    vscode-oniguruma: ^1.6.1
-    vscode-textmate: 5.2.0
-  checksum: fb746f3cb3de7e545e3b10a6cb658d3938f840e4ccc9a3c90ceb7e69a8f89dbb432171faac1e9f02a03f103684dad88ee5e54b5c4964fa6b579fca6e8e26424d
-  languageName: node
-  linkType: hard
-
 "shiki@npm:^0.14.1":
   version: 0.14.4
   resolution: "shiki@npm:0.14.4"
@@ -19241,23 +19224,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc@npm:^0.22.11":
-  version: 0.22.18
-  resolution: "typedoc@npm:0.22.18"
-  dependencies:
-    glob: ^8.0.3
-    lunr: ^2.3.9
-    marked: ^4.0.16
-    minimatch: ^5.1.0
-    shiki: ^0.10.1
-  peerDependencies:
-    typescript: 4.0.x || 4.1.x || 4.2.x || 4.3.x || 4.4.x || 4.5.x || 4.6.x || 4.7.x
-  bin:
-    typedoc: bin/typedoc
-  checksum: b813d8129682f6ed5a4e96bacaf019e4da1d2744ca89fef850d6bb4c034616567ce67e6a7f5cfc5f00aac573f0b45d44b1427aafa262ab88dce6b460cb9e744c
-  languageName: node
-  linkType: hard
-
 "typedoc@npm:^0.25.1":
   version: 0.25.1
   resolution: "typedoc@npm:0.25.1"
@@ -19778,17 +19744,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vscode-oniguruma@npm:^1.6.1, vscode-oniguruma@npm:^1.7.0":
+"vscode-oniguruma@npm:^1.7.0":
   version: 1.7.0
   resolution: "vscode-oniguruma@npm:1.7.0"
   checksum: 53519d91d90593e6fb080260892e87d447e9b200c4964d766772b5053f5699066539d92100f77f1302c91e8fc5d9c772fbe40fe4c90f3d411a96d5a9b1e63f42
-  languageName: node
-  linkType: hard
-
-"vscode-textmate@npm:5.2.0":
-  version: 5.2.0
-  resolution: "vscode-textmate@npm:5.2.0"
-  checksum: 5449b42d451080f6f3649b66948f4b5ee4643c4e88cfe3558a3b31c84c78060cfdd288c4958c1690eaa5cd65d09992fa6b7c3bef9d4aa72b3651054a04624d20
   languageName: node
   linkType: hard
 
