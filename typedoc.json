@@ -1,0 +1,6 @@
+{
+    "entryPoints": ["packages/*"],
+    "name": "Semaphore SDK",
+    "entryPointStrategy": "packages",
+    "exclude": ["**/cli-template*", "**/circuits", "**/contracts", "**/hardhat", "**/cli"]
+}
