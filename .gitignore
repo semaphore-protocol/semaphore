@@ -63,9 +63,7 @@ node_modules/
 # Production
 build
 dist
-docs/*
-!docs/CNAME
-!docs/index.html
+docs
 
 # Hardhat
 artifacts
