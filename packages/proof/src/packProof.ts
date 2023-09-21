@@ -1,19 +1,20 @@
-import { SnarkJSProof, Proof } from "./types"
+import { Groth16Proof } from "snarkjs"
+import { PackedProof } from "./types"
 
 /**
  * Packs a proof into a format compatible with Semaphore.
- * @param originalProof The proof generated with SnarkJS.
+ * @param proof The Groth16 proof generated with SnarkJS.
  * @returns The proof compatible with Semaphore.
  */
-export default function packProof(originalProof: SnarkJSProof): Proof {
+export default function packProof(proof: Groth16Proof): PackedProof {
     return [
-        originalProof.pi_a[0],
-        originalProof.pi_a[1],
-        originalProof.pi_b[0][1],
-        originalProof.pi_b[0][0],
-        originalProof.pi_b[1][1],
-        originalProof.pi_b[1][0],
-        originalProof.pi_c[0],
-        originalProof.pi_c[1]
+        proof.pi_a[0],
+        proof.pi_a[1],
+        proof.pi_b[0][1],
+        proof.pi_b[0][0],
+        proof.pi_b[1][1],
+        proof.pi_b[1][0],
+        proof.pi_c[0],
+        proof.pi_c[1]
     ]
 }
