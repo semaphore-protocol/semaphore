@@ -251,6 +251,24 @@ The following are some of the internal and external projects that use Semaphore.
     <tbody>
         <tr>
             <td>
+                <a href="https://bandada.pse.dev">
+                    Bandada
+                </a>
+            </td>
+            <td>
+                An open-source system for managing privacy-preserving groups of anonymous individuals. Create and manage onchain and offchain Semaphore groups using UI or API.
+            </td>
+            <td>    
+                <a href="https://github.com/privacy-scaling-explorations/bandada">
+                    Github
+                </a>|
+                <a href="https://discord.com/invite/sF5CT5rzrR">
+                    Discord
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <a href="https://explorer.semaphore.pse.dev">
                     Semaphore Explorer
                 </a>
