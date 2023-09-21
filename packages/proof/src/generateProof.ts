@@ -3,10 +3,10 @@ import { BytesLike, Hexable } from "@ethersproject/bytes"
 import { Group } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
 import { MerkleProof } from "@zk-kit/incremental-merkle-tree"
-import { groth16 } from "snarkjs"
+import { groth16, NumericString } from "snarkjs"
 import hash from "./hash"
 import packProof from "./packProof"
-import { FullProof, SnarkArtifacts } from "./types"
+import { SemaphoreProof, SnarkArtifacts } from "./types"
 
 /**
  * Generates a Semaphore proof.
@@ -23,7 +23,7 @@ export default async function generateProof(
     externalNullifier: BytesLike | Hexable | number | bigint,
     signal: BytesLike | Hexable | number | bigint,
     snarkArtifacts?: SnarkArtifacts
-): Promise<FullProof> {
+): Promise<SemaphoreProof> {
     let merkleProof: MerkleProof
 
     if ("depth" in groupOrMerkleProof) {
@@ -61,8 +61,8 @@ export default async function generateProof(
     return {
         merkleTreeRoot: publicSignals[0],
         nullifierHash: publicSignals[1],
-        signal: BigNumber.from(signal).toString(),
-        externalNullifier: BigNumber.from(externalNullifier).toString(),
+        signal: BigNumber.from(signal).toString() as NumericString,
+        externalNullifier: BigNumber.from(externalNullifier).toString() as NumericString,
         proof: packProof(proof)
     }
 }

@@ -1,4 +1,4 @@
-import { poseidon_gencontract as poseidonContract } from "circomlibjs"
+import { poseidonContract } from "circomlibjs"
 import { task, types } from "hardhat/config"
 import { saveDeployedContracts } from "../scripts/utils"
 
