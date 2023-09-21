@@ -6,7 +6,7 @@ import calculateNullifierHash from "./calculateNullifierHash"
 import generateProof from "./generateProof"
 import hash from "./hash"
 import packProof from "./packProof"
-import { FullProof } from "./types"
+import { SemaphoreProof } from "./types"
 import unpackProof from "./unpackProof"
 import verifyProof from "./verifyProof"
 
@@ -21,7 +21,7 @@ describe("Proof", () => {
 
     const identity = new Identity()
 
-    let fullProof: FullProof
+    let fullProof: SemaphoreProof
     let curve: any
 
     beforeAll(async () => {
@@ -34,9 +34,7 @@ describe("Proof", () => {
 
     describe("# generateProof", () => {
         it("Should not generate Semaphore proofs if the identity is not part of the group", async () => {
-            const group = new Group(treeDepth)
-
-            group.addMembers([BigInt(1), BigInt(2)])
+            const group = new Group(treeDepth, 20, [BigInt(1), BigInt(2)])
 
             const fun = () =>
                 generateProof(identity, group, externalNullifier, signal, {
@@ -48,9 +46,7 @@ describe("Proof", () => {
         })
 
         it("Should not generate a Semaphore proof with default snark artifacts with Node.js", async () => {
-            const group = new Group(treeDepth)
-
-            group.addMembers([BigInt(1), BigInt(2), identity.commitment])
+            const group = new Group(treeDepth, 20, [BigInt(1), BigInt(2), identity.commitment])
 
             const fun = () => generateProof(identity, group, externalNullifier, signal)
 
@@ -58,9 +54,7 @@ describe("Proof", () => {
         })
 
         it("Should generate a Semaphore proof passing a group as parameter", async () => {
-            const group = new Group(treeDepth)
-
-            group.addMembers([BigInt(1), BigInt(2), identity.commitment])
+            const group = new Group(treeDepth, 20, [BigInt(1), BigInt(2), identity.commitment])
 
             fullProof = await generateProof(identity, group, externalNullifier, signal, {
                 wasmFilePath,
@@ -72,9 +66,7 @@ describe("Proof", () => {
         }, 20000)
 
         it("Should generate a Semaphore proof passing a Merkle proof as parameter", async () => {
-            const group = new Group(treeDepth)
-
-            group.addMembers([BigInt(1), BigInt(2), identity.commitment])
+            const group = new Group(treeDepth, 20, [BigInt(1), BigInt(2), identity.commitment])
 
             fullProof = await generateProof(identity, group.generateMerkleProof(2), externalNullifier, signal, {
                 wasmFilePath,
@@ -104,47 +96,35 @@ describe("Proof", () => {
         it("Should hash the signal value correctly", async () => {
             const signalHash = hash(signal)
 
-            expect(signalHash.toString()).toBe(
-                "8665846418922331996225934941481656421248110469944536651334918563951783029"
-            )
+            expect(signalHash).toBe("8665846418922331996225934941481656421248110469944536651334918563951783029")
         })
 
         it("Should hash the external nullifier value correctly", async () => {
             const externalNullifierHash = hash(externalNullifier)
 
-            expect(externalNullifierHash.toString()).toBe(
+            expect(externalNullifierHash).toBe(
                 "244178201824278269437519042830883072613014992408751798420801126401127326826"
             )
         })
 
         it("Should hash a number", async () => {
-            expect(hash(2).toString()).toBe(
-                "113682330006535319932160121224458771213356533826860247409332700812532759386"
-            )
+            expect(hash(2)).toBe("113682330006535319932160121224458771213356533826860247409332700812532759386")
         })
 
         it("Should hash a big number", async () => {
-            expect(hash(BigInt(2)).toString()).toBe(
-                "113682330006535319932160121224458771213356533826860247409332700812532759386"
-            )
+            expect(hash(BigInt(2))).toBe("113682330006535319932160121224458771213356533826860247409332700812532759386")
         })
 
         it("Should hash an hex number", async () => {
-            expect(hash("0x2").toString()).toBe(
-                "113682330006535319932160121224458771213356533826860247409332700812532759386"
-            )
+            expect(hash("0x2")).toBe("113682330006535319932160121224458771213356533826860247409332700812532759386")
         })
 
         it("Should hash an string number", async () => {
-            expect(hash("2").toString()).toBe(
-                "113682330006535319932160121224458771213356533826860247409332700812532759386"
-            )
+            expect(hash("2")).toBe("113682330006535319932160121224458771213356533826860247409332700812532759386")
         })
 
         it("Should hash an array", async () => {
-            expect(hash([2]).toString()).toBe(
-                "113682330006535319932160121224458771213356533826860247409332700812532759386"
-            )
+            expect(hash([2])).toBe("113682330006535319932160121224458771213356533826860247409332700812532759386")
         })
     })
 

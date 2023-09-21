@@ -1,6 +1,6 @@
 import { groth16 } from "snarkjs"
 import hash from "./hash"
-import { FullProof } from "./types"
+import { SemaphoreProof } from "./types"
 import unpackProof from "./unpackProof"
 import verificationKeys from "./verificationKeys.json"
 
@@ -11,7 +11,7 @@ import verificationKeys from "./verificationKeys.json"
  * @returns True if the proof is valid, false otherwise.
  */
 export default function verifyProof(
-    { merkleTreeRoot, nullifierHash, externalNullifier, signal, proof }: FullProof,
+    { merkleTreeRoot, nullifierHash, externalNullifier, signal, proof }: SemaphoreProof,
     treeDepth: number
 ): Promise<boolean> {
     if (treeDepth < 16 || treeDepth > 32) {
