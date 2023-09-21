@@ -112,7 +112,7 @@ export default function ProofsPage() {
             <p>
                 Semaphore members can anonymously{" "}
                 <a
-                    href="https://semaphore.appliedzkp.org/docs/guides/proofs"
+                    href="https://semaphore.pse.dev/docs/guides/proofs"
                     target="_blank"
                     rel="noreferrer noopener nofollow"
                 >

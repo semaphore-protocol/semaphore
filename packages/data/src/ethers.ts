@@ -43,37 +43,35 @@ export default class SemaphoreEthers {
 
         switch (networkOrEthereumURL) {
             case "arbitrum":
-                options.address = "0xc60E0Ee1a2770d5F619858C641f14FC4a6401520"
-                options.startBlock = 77278430
+                options.address ??= "0xc60E0Ee1a2770d5F619858C641f14FC4a6401520"
+                options.startBlock ??= 77278430
                 break
             case "arbitrum-goerli":
-                options.address = "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
-                options.startBlock = 15174410
+                options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
+                options.startBlock ??= 15174410
                 break
             case "maticmum":
-                options.address = "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
-                options.startBlock = 33995010
+                options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
+                options.startBlock ??= 33995010
                 break
             case "goerli":
-                options.address = "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
-                options.startBlock = 8777695
+                options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
+                options.startBlock ??= 8777695
                 break
             case "sepolia":
-                options.address = "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
-                options.startBlock = 3231111
+                options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
+                options.startBlock ??= 3231111
                 break
             case "optimism-goerli":
-                options.address = "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
-                options.startBlock = 7632846
+                options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
+                options.startBlock ??= 7632846
                 break
             default:
                 if (options.address === undefined) {
                     throw new Error(`You should provide a Semaphore contract address for this network`)
                 }
 
-                if (options.startBlock === undefined) {
-                    options.startBlock = 0
-                }
+                options.startBlock ??= 0
         }
 
         let provider: Provider

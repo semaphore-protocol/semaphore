@@ -18,7 +18,7 @@
     <a href="https://npmjs.org/package/@semaphore-protocol/heyauthn">
         <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/heyauthn.svg?style=flat-square" />
     </a>
-    <a href="https://js.semaphore.appliedzkp.org/heyauthn">
+    <a href="https://js.semaphore.pse.dev/heyauthn">
         <img alt="Documentation typedoc" src="https://img.shields.io/badge/docs-typedoc-744C7C?style=flat-square">
     </a>
     <a href="https://eslint.org/">
@@ -43,7 +43,7 @@
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://semaphore.appliedzkp.org/discord">
+        <a href="https://semaphore.pse.dev/discord">
             🗣️ Chat &amp; Support
         </a>
     </h4>
