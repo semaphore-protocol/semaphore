@@ -17,7 +17,7 @@
         "lint": "eslint . --ext .js,.ts && yarn workspace contracts lint",
         "prettier": "prettier -c .",
         "prettier:write": "prettier -w .",
-        "docs": "yarn workspaces foreach --no-private run docs",
+        "docs": "typedoc --cname js.semaphore.pse.dev --githubPages true",
         "version:bump": "yarn workspaces foreach --no-private version -d ${0} && yarn version apply --all && git commit -am \"chore: v${0}\" && git tag v${0}",
         "version:publish": "yarn build:libraries && yarn remove:template-files && yarn workspaces foreach --no-private npm publish --tolerate-republish --access public",
         "version:release": "changelogithub",
@@ -77,6 +77,7 @@
         "rollup": "^2.64.0",
         "ts-node": "^10.4.0",
         "tslib": "^2.3.1",
+        "typedoc": "^0.25.1",
         "typescript": "^4.7.0"
     },
     "config": {

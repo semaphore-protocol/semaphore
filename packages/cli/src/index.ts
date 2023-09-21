@@ -132,7 +132,10 @@ program
 
         const groupIds = await getGroupIds(network)
 
-        if (groupIds === null) return
+        if (groupIds === null) {
+            console.info(`\n ${logSymbols.info}`, `info: there are no groups on the '${network}' network\n`)
+            return
+        }
 
         const content = `${chalk.bold("Groups")} (${groupIds.length}): \n${groupIds
             .map((id: any) => ` - ${id}`)
@@ -160,7 +163,10 @@ program
         if (!groupId) {
             const groupIds = await getGroupIds(network)
 
-            if (groupIds === null) return
+            if (groupIds === null) {
+                console.info(`\n ${logSymbols.info}`, `info: there are no groups on the '${network}' network\n`)
+                return
+            }
 
             groupId = await getGroupId(groupIds)
         }
@@ -193,6 +199,11 @@ program
             }
         }
 
+        if (!group) {
+            console.info(`\n ${logSymbols.error}`, "error: the group does not exist\n")
+            return
+        }
+
         let content = ` ${chalk.bold("Id")}: ${group.id}\n`
         content += ` ${chalk.bold("Admin")}: ${group.admin}\n`
         content += ` ${chalk.bold("Merkle tree")}:\n`
@@ -223,7 +234,10 @@ program
         if (!groupId) {
             const groupIds = await getGroupIds(network)
 
-            if (groupIds === null) return
+            if (groupIds === null) {
+                console.info(`\n ${logSymbols.info}`, `info: there are no groups on the '${network}' network\n`)
+                return
+            }
 
             groupId = await getGroupId(groupIds)
         }
@@ -286,7 +300,10 @@ program
         if (!groupId) {
             const groupIds = await getGroupIds(network)
 
-            if (groupIds === null) return
+            if (groupIds === null) {
+                console.info(`\n ${logSymbols.info}`, `info: there are no groups on the '${network}' network\n`)
+                return
+            }
 
             groupId = await getGroupId(groupIds)
         }

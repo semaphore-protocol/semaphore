@@ -1,7 +1,7 @@
 {
     "name": "@semaphore-protocol/cli",
     "type": "module",
-    "version": "3.11.0",
+    "version": "3.11.1",
     "description": "A command line tool to set up your Semaphore project and get group data.",
     "license": "MIT",
     "bin": {
@@ -39,11 +39,10 @@
         "@types/semver": "^7.3.13",
         "rollup-plugin-cleanup": "^3.2.1",
         "rollup-plugin-typescript2": "^0.31.2",
-        "ts-node": "^10.9.1",
-        "typedoc": "^0.22.11"
+        "ts-node": "^10.9.1"
     },
     "dependencies": {
-        "@semaphore-protocol/data": "3.11.0",
+        "@semaphore-protocol/data": "3.11.1",
         "axios": "^1.3.2",
         "boxen": "^7.0.1",
         "chalk": "^5.1.2",

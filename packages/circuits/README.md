@@ -28,10 +28,10 @@
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://semaphore.appliedzkp.org/discord">
+        <a href="https://semaphore.pse.dev/discord">
             🗣️ Chat &amp; Support
         </a>
     </h4>
 </div>
 
-To learn more about circuits visit [semaphore.appliedzkp.org](https://semaphore.appliedzkp.org/docs/technical-reference/circuits).
+To learn more about circuits visit [semaphore.pse.dev](https://semaphore.pse.dev/docs/technical-reference/circuits).

@@ -3,7 +3,7 @@
       <picture>
         <source media="(prefers-color-scheme: dark)" srcset="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon-dark.svg">
         <source media="(prefers-color-scheme: light)" srcset="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
-        <img width="40" alt="Semaphore icon." src="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
+        <img width="40" alt="Semaphore icon" src="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
       </picture>
       Semaphore
     </h1>
@@ -52,7 +52,7 @@
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://semaphore.appliedzkp.org/discord">
+        <a href="https://semaphore.pse.dev/discord">
             🗣️ Chat &amp; Support
         </a>
     </h4>
@@ -61,7 +61,7 @@
 | Semaphore is a protocol, designed to be a simple and generic privacy layer for Ethereum DApps. Using zero knowledge, Ethereum users can prove their membership of a group and send signals such as votes or endorsements without revealing their original identity. |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/packages/contracts) and JavaScript libraries to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit [semaphore.appliedzkp.org](https://semaphore.appliedzkp.org).
+The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/scheme.png). However Semaphore also provides [Solidity contracts](/packages/contracts) and JavaScript libraries to make the steps for offchain proof creation and onchain verification easier. To learn more about Semaphore visit [semaphore.pse.dev](https://semaphore.pse.dev).
 
 ## 📦 Packages
 
@@ -94,7 +94,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/identity">
                     @semaphore-protocol/identity
                 </a>
-                <a href="https://js.semaphore.appliedzkp.org/identity">
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_identity">
                     (docs)
                 </a>
             </td>
@@ -116,7 +116,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/group">
                     @semaphore-protocol/group
                 </a>
-                <a href="https://js.semaphore.appliedzkp.org/group">
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_group">
                     (docs)
                 </a>
             </td>
@@ -138,7 +138,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/proof">
                     @semaphore-protocol/proof
                 </a>
-                <a href="https://js.semaphore.appliedzkp.org/proof">
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_proof">
                     (docs)
                 </a>
             </td>
@@ -160,7 +160,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/data">
                     @semaphore-protocol/data
                 </a>
-                <a href="https://js.semaphore.appliedzkp.org/data">
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_data">
                     (docs)
                 </a>
             </td>
@@ -220,7 +220,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <a href="/packages/heyauthn">
                     @semaphore-protocol/heyauthn
                 </a>
-                <a href="https://js.semaphore.appliedzkp.org/heyauthn">
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_heyauthn">
                     (docs)
                 </a>
             </td>
@@ -269,7 +269,7 @@ The following are some of the internal and external projects that use Semaphore.
         </tr>
         <tr>
             <td>
-                <a href="https://explorer.semaphore.appliedzkp.org">
+                <a href="https://explorer.semaphore.pse.dev">
                     Semaphore Explorer
                 </a>
             </td>
@@ -280,7 +280,7 @@ The following are some of the internal and external projects that use Semaphore.
                 <a href="https://github.com/semaphore-protocol/explorer">
                     Github
                 </a>|
-                <a href="https://semaphore.appliedzkp.org/discord">
+                <a href="https://semaphore.pse.dev/discord">
                     Discord
                 </a>
             </td>
@@ -298,7 +298,7 @@ The following are some of the internal and external projects that use Semaphore.
                 <a href="https://github.com/semaphore-protocol/discord-bot">
                     Github
                 </a>|
-                <a href="https://semaphore.appliedzkp.org/discord">
+                <a href="https://semaphore.pse.dev/discord">
                     Discord
                 </a>
             </td>
