@@ -11,7 +11,7 @@ import {
 } from "@ethersproject/providers"
 import checkParameter from "./checkParameter"
 import getEvents from "./getEvents"
-import SemaphoreABI from "./semaphoreABI.json"
+import SemaphoreABI from "./semaphoreABI"
 import { EthersOptions, GroupResponse, EthersNetwork } from "./types"
 
 export default class SemaphoreEthers {
