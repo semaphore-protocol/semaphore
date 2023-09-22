@@ -15,8 +15,9 @@ export default class SemaphoreViem {
      * @param options Viem options.
      */
     constructor(network: Chain = sepolia, options: ViemOptions = {}) {
-        if (options.rpcURL && !options.rpcURL.startsWith("http")) {
-            checkParameter(options.rpcURL, "networkOrSubgraphURL", "url string")
+        if (options.rpcURL) {
+            checkParameter(options.rpcURL, "rpcURL", "string")
+            if (!options.rpcURL.startsWith("http")) throw new Error(`Invalid rpcURL '${options.rpcURL}'`)
         }
         const transport = http(options.rpcURL)
         const client = createPublicClient({ chain: network, transport })
