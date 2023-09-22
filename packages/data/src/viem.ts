@@ -14,7 +14,7 @@ export default class SemaphoreViem {
      * @param network Chain object of viem.
      * @param options Viem options.
      */
-    constructor(network: Chain, options: ViemOptions) {
+    constructor(network: Chain, options: ViemOptions = {}) {
         if (options.rpcURL && !options.rpcURL.startsWith("http")) {
             checkParameter(options.rpcURL, "networkOrSubgraphURL", "url string")
         }
@@ -59,6 +59,34 @@ export default class SemaphoreViem {
         this._contract = getContract({ address: options.address, abi: SemaphoreABI, publicClient: client })
     }
 
+    /**
+     * Returns the viem public client.
+     * @returns viem public client.
+     */
+    get client(): PublicClient {
+        return this._client
+    }
+
+    /**
+     * Returns the Viem options.
+     * @returns Viem options.
+     */
+    get options(): ViemOptions {
+        return this._options
+    }
+
+    /**
+     * Returns the Semaphore contract.
+     * @returns Semaphore contract.
+     */
+    get contract(): GetContractReturnType<typeof SemaphoreABI, PublicClient> {
+        return this._contract
+    }
+
+    /**
+     * Returns the Semaphore contract address.
+     * @returns Semaphore contract address.
+     */
     async getGroupIds(): Promise<string[]> {
         const groups = await this._contract.getEvents.GroupCreated(
             {},
@@ -67,6 +95,10 @@ export default class SemaphoreViem {
         return groups.map((group) => String(group.args.groupId))
     }
 
+    /**
+     * Returns the list of group ids.
+     * @returns List of group ids.
+     */
     async getGroup(groupId: string): Promise<GroupResponse> {
         checkParameter(groupId, "groupId", "string")
 
@@ -96,6 +128,11 @@ export default class SemaphoreViem {
         return group
     }
 
+    /**
+     * Returns a specific group.
+     * @param groupId Group id.
+     * @returns Specific group.
+     */
     async getGroupAdmin(groupId: string): Promise<string> {
         checkParameter(groupId, "groupId", "string")
 
@@ -111,6 +148,11 @@ export default class SemaphoreViem {
         return groupAdminUpdatedEvents[groupAdminUpdatedEvents.length - 1].args.newAdmin?.toString() as string
     }
 
+    /**
+     * Returns a group admin.
+     * @param groupId Group id.
+     * @returns Group admin.
+     */
     async getGroupMembers(groupId: string): Promise<string[]> {
         checkParameter(groupId, "groupId", "string")
 
@@ -165,6 +207,11 @@ export default class SemaphoreViem {
         return members
     }
 
+    /**
+     * Returns a list of group members.
+     * @param groupId Group id.
+     * @returns Group members.
+     */
     async getGroupVerifiedProofs(groupId: string) {
         checkParameter(groupId, "groupId", "string")
 
