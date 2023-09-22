@@ -1,4 +1,4 @@
-import { Chain, PublicClient, http, createPublicClient, getContract, GetContractReturnType, Transport } from "viem"
+import { Chain, PublicClient, http, createPublicClient, getContract, GetContractReturnType } from "viem"
 import { arbitrum, arbitrumGoerli, polygon, goerli, sepolia, optimismGoerli } from "viem/chains"
 import SemaphoreABI from "./semaphoreABI"
 import { GroupResponse, ViemOptions } from "./types"
