@@ -36,6 +36,7 @@
     "dependencies": {
         "@ethersproject/contracts": "^5.7.0",
         "@ethersproject/providers": "^5.7.0",
-        "axios": "^0.27.2"
+        "axios": "^0.27.2",
+        "viem": "^1.12.1"
     }
 }
