@@ -56,3 +56,9 @@ export type EthersOptions = {
     provider?: "etherscan" | "infura" | "alchemy" | "cloudflare" | "pocket" | "ankr"
     apiKey?: string
 }
+
+export type ViemOptions = {
+    address?: `0x${string}`
+    startBlock?: number
+    rpcURL?: string
+}
