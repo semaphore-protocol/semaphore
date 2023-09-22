@@ -102,9 +102,9 @@ export default class SemaphoreViem {
     async getGroup(groupId: string): Promise<GroupResponse> {
         checkParameter(groupId, "groupId", "string")
 
-        const _groupId = BigInt(groupId)
+        const groupIdBigint = BigInt(groupId)
         const [groupCreatedEvent] = await this._contract.getEvents.GroupCreated(
-            { groupId: _groupId },
+            { groupId: groupIdBigint },
             { fromBlock: BigInt(this._options.startBlock!), toBlock: "latest" }
         )
 
@@ -112,8 +112,8 @@ export default class SemaphoreViem {
             throw new Error(`Group '${groupId}' not found`)
         }
 
-        const merkleTreeRoot = await this._contract.read.getMerkleTreeRoot([_groupId])
-        const numberOfLeaves = await this._contract.read.getNumberOfMerkleTreeLeaves([_groupId])
+        const merkleTreeRoot = await this._contract.read.getMerkleTreeRoot([groupIdBigint])
+        const numberOfLeaves = await this._contract.read.getNumberOfMerkleTreeLeaves([groupIdBigint])
 
         const group: GroupResponse = {
             id: groupId,
@@ -156,9 +156,9 @@ export default class SemaphoreViem {
     async getGroupMembers(groupId: string): Promise<string[]> {
         checkParameter(groupId, "groupId", "string")
 
-        const _groupId = BigInt(groupId)
+        const groupIdBigint = BigInt(groupId)
         const [groupCreatedEvent] = await this._contract.getEvents.GroupCreated(
-            { groupId: _groupId },
+            { groupId: groupIdBigint },
             { fromBlock: BigInt(this._options.startBlock!), toBlock: "latest" }
         )
 
@@ -168,11 +168,11 @@ export default class SemaphoreViem {
 
         const zeroValue = groupCreatedEvent.args.zeroValue?.toString() as string
         const memberRemovedEvents = await this._contract.getEvents.MemberRemoved(
-            { groupId: _groupId },
+            { groupId: groupIdBigint },
             { fromBlock: BigInt(this._options.startBlock!), toBlock: "latest" }
         )
         const memberUpdatedEvents = await this._contract.getEvents.MemberUpdated(
-            { groupId: _groupId },
+            { groupId: groupIdBigint },
             { fromBlock: BigInt(this._options.startBlock!), toBlock: "latest" }
         )
 
@@ -191,7 +191,7 @@ export default class SemaphoreViem {
         }
 
         const memberAddedEvents = await this._contract.getEvents.MemberAdded(
-            { groupId: _groupId },
+            { groupId: groupIdBigint },
             { fromBlock: BigInt(this._options.startBlock!), toBlock: "latest" }
         )
         const members: string[] = []
@@ -215,9 +215,9 @@ export default class SemaphoreViem {
     async getGroupVerifiedProofs(groupId: string) {
         checkParameter(groupId, "groupId", "string")
 
-        const _groupId = BigInt(groupId)
+        const groupIdBigint = BigInt(groupId)
         const [groupCreatedEvent] = await this._contract.getEvents.GroupCreated(
-            { groupId: _groupId },
+            { groupId: groupIdBigint },
             { fromBlock: BigInt(this._options.startBlock!), toBlock: "latest" }
         )
 
@@ -226,7 +226,7 @@ export default class SemaphoreViem {
         }
 
         const proofVerifiedEvents = await this._contract.getEvents.ProofVerified(
-            { groupId: _groupId },
+            { groupId: groupIdBigint },
             { fromBlock: BigInt(this._options.startBlock!), toBlock: "latest" }
         )
 
