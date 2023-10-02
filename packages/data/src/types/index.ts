@@ -50,6 +50,13 @@ export type GroupResponse = {
     }[]
 }
 
+export type GroupVerifiedProofsResponse = {
+    signal: string
+    merkleTreeRoot: string
+    externalNullifier: string
+    nullifierHash: string
+}
+
 export type EthersOptions = {
     address?: string
     startBlock?: number

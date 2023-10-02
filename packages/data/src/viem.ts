@@ -1,7 +1,7 @@
 import { Chain, PublicClient, http, createPublicClient, getContract, GetContractReturnType } from "viem"
 import { arbitrum, arbitrumGoerli, polygon, goerli, sepolia, optimismGoerli } from "viem/chains"
 import SemaphoreABI from "./semaphoreABI"
-import { GroupResponse, ViemOptions } from "./types"
+import { GroupResponse, GroupVerifiedProofsResponse, ViemOptions } from "./types"
 import checkParameter from "./checkParameter"
 
 export default class SemaphoreViem {
@@ -214,7 +214,7 @@ export default class SemaphoreViem {
      * @param groupId Group id.
      * @returns Group members.
      */
-    async getGroupVerifiedProofs(groupId: string) {
+    async getGroupVerifiedProofs(groupId: string): Promise<GroupVerifiedProofsResponse[]> {
         checkParameter(groupId, "groupId", "string")
 
         const groupIdBigint = BigInt(groupId)
