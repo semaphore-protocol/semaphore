@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/proof",
-    "version": "3.12.2",
+    "version": "3.12.3",
     "description": "A library to generate and verify Semaphore proofs.",
     "license": "MIT",
     "main": "dist/index.node.js",
@@ -49,8 +49,8 @@
         "snarkjs": "0.7.1"
     },
     "peerDependencies": {
-        "@semaphore-protocol/group": "3.12.2",
-        "@semaphore-protocol/identity": "3.12.2"
+        "@semaphore-protocol/group": "3.12.3",
+        "@semaphore-protocol/identity": "3.12.3"
     },
     "dependencies": {
         "@ethersproject/bignumber": "^5.5.0",
