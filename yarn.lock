@@ -4960,10 +4960,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/circomlibjs@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@types/circomlibjs@npm:0.1.1"
-  checksum: 81485e8c5a8c81cef5f5f837d5890bafd8fe0d507251295fb72a0d03c4450fe0614764071137b8f58800dc4743851effd544eb35f345e4910b88e6afb5a2e257
+"@types/circomlibjs@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "@types/circomlibjs@npm:0.1.4"
+  checksum: 43e69a0b19c5fccb8feae31890dda44f300f2674b52990c7ba844ea09a66228da6c5ede2942db916b9320130d41bb76794edb13ad96f3ea05bd36a310685b593
   languageName: node
   linkType: hard
 
@@ -5422,10 +5422,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/snarkjs@npm:^0.7.2":
-  version: 0.7.2
-  resolution: "@types/snarkjs@npm:0.7.2"
-  checksum: 4b675e43a495306e7d1b69dc07496fe3775390c1fe1ca151d54b3e9a111f9336534cc1a5322a95b3e5c6b024e9cd83411b48dcbabe3673c997d5cbb1586de330
+"@types/snarkjs@npm:^0.7.5":
+  version: 0.7.5
+  resolution: "@types/snarkjs@npm:0.7.5"
+  checksum: 5c2adfde23b49c6411d2b28b51d0e061cdb63e7dce6137afd8297571c0d8c7496ef4512194f2bf56f310569cd707a11d894cc2c4c2e38ab3248b34c08a9b4644
   languageName: node
   linkType: hard
 
@@ -17489,13 +17489,13 @@ __metadata:
     "@commitlint/cli": ^16.0.2
     "@commitlint/config-conventional": ^16.0.0
     "@rollup/plugin-typescript": ^8.3.0
-    "@types/circomlibjs": ^0.1.1
+    "@types/circomlibjs": ^0.1.4
     "@types/download": ^8.0.1
     "@types/glob": ^7.2.0
     "@types/jest": ^27.4.0
     "@types/node": ^17.0.9
     "@types/rimraf": ^3.0.2
-    "@types/snarkjs": ^0.7.2
+    "@types/snarkjs": ^0.7.5
     "@typescript-eslint/eslint-plugin": ^5.9.1
     "@typescript-eslint/parser": ^5.9.1
     babel-jest: ^27.4.6
