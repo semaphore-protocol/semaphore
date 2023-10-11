@@ -1,4 +1,4 @@
-export type NumericString = `${number}`
+import type { NumericString } from "snarkjs"
 
 export type SnarkArtifacts = {
     wasmFilePath: string
