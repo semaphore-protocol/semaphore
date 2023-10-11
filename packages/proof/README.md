@@ -76,7 +76,7 @@ group: _Group_ | _MerkleProof_,
 externalNullifier: _BytesLike | Hexable | number | bigint_,
 signal: _BytesLike | Hexable | number | bigint_,
 snarkArtifacts?: _SnarkArtifacts_
-): Promise\<_SemaphoreFullProof_>
+): Promise\<_SemaphoreProof_>
 
 ```typescript
 import { Identity } from "@semaphore-protocol/identity"
@@ -100,7 +100,7 @@ const fullProof = await generateProof(identity, group, externalNullifier, signal
 // const fullProof = await generateProof(identity, group, externalNullifier, signal)
 ```
 
-\# **verifyProof**(fullProof: _FullProof_, treeDepth: _number_): Promise\<_boolean_>
+\# **verifyProof**(semaphoreProof: _SemaphoreProof_, treeDepth: _number_): Promise\<_boolean_>
 
 ```typescript
 import { verifyProof } from "@semaphore-protocol/proof"
