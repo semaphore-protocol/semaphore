@@ -5,8 +5,12 @@
     "license": "MIT",
     "main": "dist/index.node.js",
     "exports": {
-        "import": "./dist/index.mjs",
-        "require": "./dist/index.node.js"
+        "node": {
+            "import": "./dist/index.node.mjs",
+            "require": "./dist/index.node.js"
+        },
+        "browser": "./dist/index.browser.mjs",
+        "default": "./dist/index.browser.mjs"
     },
     "types": "dist/types/index.d.ts",
     "files": [
@@ -22,7 +26,9 @@
     },
     "scripts": {
         "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
-        "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
+        "build": "rimraf dist && yarn build:browser && yarn build:node",
+        "build:browser": "rollup -c rollup.browser.config.ts --configPlugin typescript",
+        "build:node": "rollup -c rollup.node.config.ts --configPlugin typescript",
         "prepublishOnly": "yarn build"
     },
     "publishConfig": {
@@ -32,10 +38,15 @@
         "@rollup/plugin-commonjs": "^24.1.0",
         "@rollup/plugin-json": "^5.0.1",
         "@rollup/plugin-node-resolve": "^15.0.2",
+        "@rollup/plugin-replace": "^5.0.3",
+        "@rollup/plugin-virtual": "^3.0.2",
         "ffjavascript": "^0.2.54",
         "poseidon-lite": "^0.2.0",
+        "rimraf": "^5.0.5",
+        "rollup": "^4.0.2",
         "rollup-plugin-cleanup": "^3.2.1",
-        "rollup-plugin-typescript2": "^0.31.2"
+        "rollup-plugin-typescript2": "^0.31.2",
+        "snarkjs": "0.7.1"
     },
     "peerDependencies": {
         "@semaphore-protocol/group": "3.12.2",
@@ -46,7 +57,6 @@
         "@ethersproject/bytes": "^5.7.0",
         "@ethersproject/keccak256": "^5.7.0",
         "@ethersproject/strings": "^5.5.0",
-        "@zk-kit/incremental-merkle-tree": "0.4.3",
-        "snarkjs": "0.7.1"
+        "@zk-kit/incremental-merkle-tree": "0.4.3"
     }
 }
