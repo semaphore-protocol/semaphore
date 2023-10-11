@@ -39,7 +39,7 @@
     "dependencies": {
         "@nomiclabs/hardhat-ethers": "^2.1.1",
         "@semaphore-protocol/contracts": "3.12.1",
-        "circomlibjs": "^0.0.8",
+        "circomlibjs": "^0.1.7",
         "ethers": "^5.7.1",
         "hardhat-dependency-compiler": "^1.1.3"
     }
