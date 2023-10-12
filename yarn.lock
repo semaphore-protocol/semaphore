@@ -4580,7 +4580,7 @@ __metadata:
     "@rollup/plugin-commonjs": ^24.1.0
     "@rollup/plugin-json": ^5.0.1
     "@rollup/plugin-node-resolve": ^15.0.2
-    "@zk-kit/groth16": 0.1.0
+    "@zk-kit/groth16": 0.3.0
     "@zk-kit/incremental-merkle-tree": 0.4.3
     poseidon-lite: ^0.2.0
     rimraf: ^5.0.5
@@ -5716,13 +5716,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/groth16@npm:0.1.0":
-  version: 0.1.0
-  resolution: "@zk-kit/groth16@npm:0.1.0"
+"@zk-kit/groth16@npm:0.3.0":
+  version: 0.3.0
+  resolution: "@zk-kit/groth16@npm:0.3.0"
   dependencies:
     circom_runtime: 0.1.24
     ffjavascript: 0.2.60
-  checksum: ee3b7ef6dbcd1c4a2a0df23c6204878a8b331ff38b38bef7a939c397fdd68381d8d4a3e6fd259ffe1f724027ddee13a3f8f1b6e83ee944fb70478f591aefd205
+  checksum: f177fffd7e28c1f6617a67758c017bb962bde8829a6b90bea8053c0c164386b73b58cfe26c2481435bbc0de0c14d8301c23818e4a0450979bceb525f64e9db51
   languageName: node
   linkType: hard
 
