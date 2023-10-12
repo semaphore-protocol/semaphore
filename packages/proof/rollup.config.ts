@@ -19,13 +19,13 @@ export default {
     input: "src/index.ts",
     output: [
         {
-            file: pkg.exports.node.require,
+            file: pkg.exports.require,
             format: "cjs",
             banner,
             exports: "auto"
         },
         {
-            file: pkg.exports.node.import,
+            file: pkg.exports.import,
             format: "es",
             banner
         }
