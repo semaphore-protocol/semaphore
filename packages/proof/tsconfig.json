@@ -1,4 +1,7 @@
 {
     "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "allowJs": true
+    },
     "include": ["src", "rollup.config.ts"]
 }

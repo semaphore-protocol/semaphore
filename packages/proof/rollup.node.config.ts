@@ -37,7 +37,9 @@ export default {
             useTsconfigDeclarationDir: true
         }),
         nodeResolve(),
-        commonjs(),
+        commonjs({
+            esmExternals: true
+        }),
         cleanup({ comments: "jsdoc" }),
         json()
     ]

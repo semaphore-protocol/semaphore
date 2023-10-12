@@ -1,7 +1,6 @@
 import commonjs from "@rollup/plugin-commonjs"
 import json from "@rollup/plugin-json"
 import { nodeResolve } from "@rollup/plugin-node-resolve"
-import replace from "@rollup/plugin-replace"
 import virtual from "@rollup/plugin-virtual"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
@@ -47,24 +46,11 @@ export default {
         }),
         virtual({
             fs: empty,
-            os: empty,
-            crypto: empty,
-            readline: empty,
-            ejs: empty,
-            events: empty,
-            stream: empty,
-            util: empty,
             constants
         }),
-        nodeResolve({
-            browser: true,
-            preferBuiltins: false,
-            exportConditions: ["browser", "default", "module", "require"]
-        }),
-        commonjs(),
-        replace({
-            preventAssignment: false,
-            "process.browser": true
+        nodeResolve(),
+        commonjs({
+            esmExternals: true
         }),
         cleanup({ comments: "jsdoc" }),
         json()
