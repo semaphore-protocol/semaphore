@@ -1,5 +1,5 @@
 import { BytesLike, Hexable } from "@ethersproject/bytes"
-import { poseidon2 } from "poseidon-lite/poseidon2"
+import { poseidon2 } from "poseidon-lite"
 import hash from "./hash"
 
 /**

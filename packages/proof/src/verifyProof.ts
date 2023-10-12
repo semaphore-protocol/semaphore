@@ -1,8 +1,8 @@
-import { groth16 } from "snarkjs"
 import hash from "./hash"
 import { SemaphoreProof } from "./types"
 import unpackProof from "./unpackProof"
 import verificationKeys from "./verificationKeys.json"
+import groth16Verify from "./groth16/verify"
 
 /**
  * Verifies a Semaphore proof.
@@ -24,7 +24,7 @@ export default function verifyProof(
         IC: verificationKeys.IC[treeDepth - 16]
     }
 
-    return groth16.verify(
+    return groth16Verify(
         verificationKey,
         [merkleTreeRoot, nullifierHash, hash(signal), hash(externalNullifier)],
         unpackProof(proof)
