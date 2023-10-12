@@ -1,8 +1,8 @@
+import { verify } from "@zk-kit/groth16"
 import hash from "./hash"
 import { SemaphoreProof } from "./types"
 import unpackProof from "./unpackProof"
 import verificationKeys from "./verificationKeys.json"
-import groth16Verify from "./groth16/verify"
 
 /**
  * Verifies a Semaphore proof.
@@ -24,9 +24,8 @@ export default function verifyProof(
         IC: verificationKeys.IC[treeDepth - 16]
     }
 
-    return groth16Verify(
-        verificationKey,
-        [merkleTreeRoot, nullifierHash, hash(signal), hash(externalNullifier)],
-        unpackProof(proof)
-    )
+    return verify(verificationKey, {
+        publicSignals: [merkleTreeRoot, nullifierHash, hash(signal), hash(externalNullifier)],
+        proof: unpackProof(proof)
+    })
 }
