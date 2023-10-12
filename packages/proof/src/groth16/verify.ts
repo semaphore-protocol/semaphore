@@ -27,7 +27,8 @@ export default async function groth16Verify(_vk_verifier: any, _publicSignals: a
     const proof = unstringifyBigInts(_proof)
     const publicSignals = unstringifyBigInts(_publicSignals)
 
-    const curve = await buildBn128(undefined, undefined)
+    // @ts-ignore
+    const curve = globalThis.curve_bn128 ?? (await buildBn128(undefined, undefined))
 
     const IC0 = curve.G1.fromObject(vk_verifier.IC[0])
     const IC = new Uint8Array(curve.G1.F.n8 * 2 * publicSignals.length)

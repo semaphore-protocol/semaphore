@@ -31,7 +31,10 @@ async function readHeaderGroth16(fd: any, sections: any, toObject: any) {
     const n8r = await fd.readULE32()
     zkey.n8r = n8r
     zkey.r = await binFileUtils.readBigInt(fd, n8r)
-    zkey.curve = await buildBn128(undefined, undefined)
+
+    // @ts-ignore
+    zkey.curve = globalThis.curve_bn128 ?? (await buildBn128(undefined, undefined))
+
     zkey.nVars = await fd.readULE32()
     zkey.nPublic = await fd.readULE32()
     zkey.domainSize = await fd.readULE32()
