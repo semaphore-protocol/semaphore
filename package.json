@@ -39,6 +39,7 @@
         "monorepo"
     ],
     "workspaces": [
+        "apps/*",
         "packages/*",
         "packages/contracts/contracts"
     ],
