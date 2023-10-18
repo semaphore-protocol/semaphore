@@ -1,7 +1,7 @@
 /* eslint-disable jest/valid-expect */
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import { FullProof, generateProof } from "@semaphore-protocol/proof"
+import { SemaphoreProof, generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { Signer } from "ethers"
 import { ethers, run } from "hardhat"
@@ -142,7 +142,7 @@ describe("SemaphoreVoting", () => {
 
         group.addMembers([identity.commitment, BigInt(1)])
 
-        let fullProof: FullProof
+        let fullProof: SemaphoreProof
 
         before(async () => {
             await semaphoreVotingContract.connect(accounts[1]).addVoter(pollIds[1], BigInt(1))
