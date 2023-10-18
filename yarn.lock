@@ -2467,6 +2467,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chakra-ui/next-js@npm:^2.1.5":
+  version: 2.1.5
+  resolution: "@chakra-ui/next-js@npm:2.1.5"
+  dependencies:
+    "@emotion/cache": ^11.11.0
+  peerDependencies:
+    "@chakra-ui/react": ">=2.4.0"
+    "@emotion/react": ">=11"
+    next: ">=13"
+    react: ">=18"
+  checksum: 8996a41f3d69663279749367cdc815398efe3c4b22f03832bab4e393cda386784be1cfe6de79c3736f0879a9476931b0e61346734ce8866c9c6e0ffa6aeb227b
+  languageName: node
+  linkType: hard
+
 "@chakra-ui/number-input@npm:2.1.1":
   version: 2.1.1
   resolution: "@chakra-ui/number-input@npm:2.1.1"
@@ -4576,13 +4590,6 @@ __metadata:
   version: 13.0.3
   resolution: "@next/font@npm:13.0.3"
   checksum: 1e703a93b14129e147121589cdb3b6b19c2e473077b9fe611676d1913f5302333346cd5e7dcb1b9068aa899cb8386aa31259f58e52ee48ed5c6566ef04de0fec
-  languageName: node
-  linkType: hard
-
-"@next/font@npm:^13.5.5":
-  version: 13.5.5
-  resolution: "@next/font@npm:13.5.5"
-  checksum: 1f25e0286b090fc36e614ddec9ff4d4f26fd198fbea3d3c0a89cfcfbb3a660186a45c9049491ab362c8d048d7cd4691dc923afcf888eee1f28e6d3f5eb94c190
   languageName: node
   linkType: hard
 
@@ -8879,9 +8886,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001406, caniuse-lite@npm:^1.0.30001449":
-  version: 1.0.30001473
-  resolution: "caniuse-lite@npm:1.0.30001473"
-  checksum: 007ad17463612d38080fc59b5fa115ccb1016a1aff8daab92199a7cf8eb91cf987e85e7015cb0bca830ee2ef45f252a016c29a98a6497b334cceb038526b73f1
+  version: 1.0.30001550
+  resolution: "caniuse-lite@npm:1.0.30001550"
+  checksum: b48d5a0bd25d634d61f410e0130c5e6c328724285c3c6065644eb41f86a227f5db0eb77da25d0fe3c6c9b04bbd040c9c164bf8dc50dd75cb30fc578aaae562f1
   languageName: node
   linkType: hard
 
@@ -19501,12 +19508,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "semaphore-website@workspace:apps/website"
   dependencies:
+    "@chakra-ui/next-js": ^2.1.5
     "@chakra-ui/react": ^2.8.1
     "@chakra-ui/theme": ^3.3.0
     "@chakra-ui/theme-tools": ^2.1.1
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
-    "@next/font": ^13.5.5
     "@types/node": ^20
     "@types/react": ^18
     "@types/react-dom": ^18
