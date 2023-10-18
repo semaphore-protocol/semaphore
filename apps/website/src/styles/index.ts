@@ -1,15 +1,15 @@
 import { extendTheme } from "@chakra-ui/react"
-import { Inter } from "@next/font/google"
+import { Outfit } from "next/font/google"
 import styles from "./styles"
 import colors from "./colors"
 import components from "./components"
 
-const inter = Inter({ subsets: ["latin"] })
+const outfit = Outfit({ subsets: ["latin"] })
 
 const config = {
     fonts: {
-        heading: inter.style.fontFamily,
-        body: inter.style.fontFamily
+        heading: outfit.style.fontFamily,
+        body: outfit.style.fontFamily
     },
     colors,
     styles,
