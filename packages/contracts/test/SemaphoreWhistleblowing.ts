@@ -1,7 +1,7 @@
 /* eslint-disable jest/valid-expect */
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import { FullProof, generateProof } from "@semaphore-protocol/proof"
+import { SemaphoreProof, generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { Signer, utils } from "ethers"
 import { ethers, run } from "hardhat"
@@ -143,7 +143,7 @@ describe("SemaphoreWhistleblowing", () => {
 
         group.addMembers([identity.commitment, BigInt(1)])
 
-        let fullProof: FullProof
+        let fullProof: SemaphoreProof
 
         before(async () => {
             await semaphoreWhistleblowingContract.createEntity(entityIds[1], editor, treeDepth)
