@@ -2,7 +2,7 @@
 /* eslint-disable jest/valid-expect */
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import { FullProof, generateProof } from "@semaphore-protocol/proof"
+import { SemaphoreProof, generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { constants, Signer } from "ethers"
 import { ethers, run } from "hardhat"
@@ -237,7 +237,7 @@ describe("Semaphore", () => {
 
         group.addMembers(members)
 
-        let fullProof: FullProof
+        let fullProof: SemaphoreProof
 
         before(async () => {
             await semaphoreContract.addMembers(groupId, [members[1], members[2]])
