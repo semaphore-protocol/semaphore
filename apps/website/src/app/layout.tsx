@@ -1,4 +1,7 @@
+import { Container } from "@chakra-ui/react"
 import type { Metadata } from "next"
+import Footer from "../components/Footer"
+import Navbar from "../components/Navbar"
 import Providers from "./providers"
 
 export const metadata: Metadata = {
@@ -10,7 +13,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" suppressHydrationWarning={true}>
             <body suppressHydrationWarning={true}>
-                <Providers>{children}</Providers>
+                <Providers>
+                    <Container maxW="1440px" px="20">
+                        <Navbar />
+                        {children}
+                        <Footer />
+                    </Container>
+                </Providers>
             </body>
         </html>
     )

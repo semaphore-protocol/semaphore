@@ -38,6 +38,14 @@ export default function Footer() {
                         <IconArrowUpRight width="10px" mb={1} />
                     </HStack>
                 </Link>
+                <Link href="" isExternal>
+                    <HStack spacing="3">
+                        <Heading fontSize="18px" fontWeight="normal">
+                            Brand Resources
+                        </Heading>
+                        <IconArrowUpRight width="10px" mb={1} />
+                    </HStack>
+                </Link>
             </HStack>
 
             <Divider />
