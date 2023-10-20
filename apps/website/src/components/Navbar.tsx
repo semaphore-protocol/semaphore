@@ -32,11 +32,11 @@ export default function Navbar() {
                 >
                     Build
                 </Link>
-                <Link href="https://docs.semaphore.pse.dev" isExternal>
+                <Link href="https://docs.semaphore.pse.dev" variant="navlink" isExternal>
                     Documentation
                     <IconArrowUpRight width="10px" ml={3} mb={1} />
                 </Link>
-                <Link href="https://github.com/semaphore-protocol" isExternal>
+                <Link href="https://github.com/semaphore-protocol" variant="navlink" isExternal>
                     Github
                     <IconArrowUpRight width="10px" ml={3} mb={1} />
                 </Link>
