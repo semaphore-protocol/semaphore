@@ -9,7 +9,7 @@ const outfit = Outfit({ subsets: ["latin"] })
 const config = {
     fonts: {
         heading: outfit.style.fontFamily,
-        body: outfit.style.fontFamily
+        body: "DM Sans, sans-serif"
     },
     colors,
     styles,
