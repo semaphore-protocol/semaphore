@@ -1,15 +1,9 @@
-import { Icon } from "@chakra-ui/react"
+import { Icon, IconProps } from "@chakra-ui/react"
 import React from "react"
 
-export type IconEyeProps = {
-    width?: number
-    height?: number
-    color?: string
-}
-
-export default function IconEye({ width, height, color }: IconEyeProps): JSX.Element {
+export default function IconEye(props: IconProps): JSX.Element {
     return (
-        <Icon viewBox="0 0 111 110" width={width} height={height} color={color}>
+        <Icon viewBox="0 0 111 110" {...props}>
             <path
                 fillRule="evenodd"
                 clipRule="evenodd"

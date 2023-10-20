@@ -1,15 +1,9 @@
-import { Icon } from "@chakra-ui/react"
+import { Icon, IconProps } from "@chakra-ui/react"
 import React from "react"
 
-export type IconPSEProps = {
-    width?: number
-    height?: number
-    color?: string
-}
-
-export default function IconPSE({ width, height, color }: IconPSEProps): JSX.Element {
+export default function IconPSE(props: IconProps): JSX.Element {
     return (
-        <Icon viewBox="0 0 332 333" width={width} height={height} color={color}>
+        <Icon viewBox="0 0 332 333" {...props}>
             <path
                 d="M165.992 332.092C121.655 332.092 79.979 314.827 48.6259 283.481C17.2797 252.127 0.0141602 210.444 0.0141602 166.114C0.0141602 121.784 17.2797 80.1006 48.6259 48.7475C79.9721 17.3943 121.655 0.135742 165.992 0.135742C210.33 0.135742 252.006 17.4013 283.359 48.7475C314.706 80.0936 331.971 121.777 331.971 166.114C331.971 210.452 314.706 252.127 283.359 283.481C252.012 314.827 210.33 332.092 165.992 332.092ZM165.992 8.51707C123.897 8.51707 84.3233 24.9095 54.5556 54.6772C24.7879 84.4449 8.39548 124.019 8.39548 166.114C8.39548 208.209 24.7879 247.784 54.5556 277.55C84.3233 307.318 123.897 323.71 165.992 323.71C208.088 323.71 247.662 307.318 277.429 277.55C307.197 247.784 323.589 208.209 323.589 166.114C323.589 124.019 307.197 84.4449 277.429 54.6772C247.662 24.9095 208.088 8.51707 165.992 8.51707Z"
                 fill="currentColor"
