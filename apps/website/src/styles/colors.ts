@@ -1,4 +1,9 @@
 const colors = {
+    albaster: "#26262B",
+    darkBlue: "#0E101B",
+    darkBlue1: "#00020D",
+    ceruleanBlue: "#3555DF",
+    semaphore: "linear-gradient(92.32deg, #4771EA -33.31%, #2735A6 112.52%)",
     primary: {
         50: "#f0f4fe",
         100: "#dde6fc",
