@@ -1,15 +1,9 @@
-import { Icon } from "@chakra-ui/react"
+import { Icon, IconProps } from "@chakra-ui/react"
 import React from "react"
 
-export type IconSemaphoreLogoProps = {
-    width?: number
-    height?: number
-    color?: string
-}
-
-export default function IconSemaphoreLogo({ width, height, color }: IconSemaphoreLogoProps): JSX.Element {
+export default function IconSemaphoreLogo(props: IconProps): JSX.Element {
     return (
-        <Icon viewBox="0 0 149 40" width={width} height={height} color={color}>
+        <Icon viewBox="0 0 149 40" {...props}>
             <path
                 fillRule="evenodd"
                 clipRule="evenodd"
