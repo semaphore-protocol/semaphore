@@ -1,44 +1,28 @@
-"use client"
-
-import { Heading, HStack, Image, Link } from "@chakra-ui/react"
-import { usePathname } from "next/navigation"
+import { Divider, Heading, HStack, Image, Link, Text, VStack } from "@chakra-ui/react"
 import IconArrowUpRight from "../icons/IconArrowUpRight"
+import IconDiscord from "../icons/IconDiscord"
 
-export default function Navbar() {
-    const pathname = usePathname()
-
+export default function Footer() {
     return (
-        <HStack py="7" justify="space-between">
-            <Image htmlWidth="148px" src="./semaphore-logo.svg" alt="Semaphore logo" />
+        <VStack py="7" justify="space-between" h="611px" pt="28" pb="10">
+            <Image htmlWidth="79px" src="./semaphore-icon.svg" alt="Semaphore logo" />
             <HStack fontSize="18px" spacing="10">
-                <Link
-                    href="/projects"
-                    variant="navlink"
-                    borderBottomColor={pathname === "/projects" ? "ceruleanBlue" : "transparent"}
-                >
+                <Link href="/projects">
                     <Heading fontSize="18px" fontWeight="normal">
                         Projects
                     </Heading>
                 </Link>
-                <Link
-                    href="/learn"
-                    variant="navlink"
-                    borderBottomColor={pathname === "/learn" ? "ceruleanBlue" : "transparent"}
-                >
+                <Link href="/learn">
                     <Heading fontSize="18px" fontWeight="normal">
                         Learn
                     </Heading>
                 </Link>
-                <Link
-                    href="/build"
-                    variant="navlink"
-                    borderBottomColor={pathname === "/build" ? "ceruleanBlue" : "transparent"}
-                >
+                <Link href="/build">
                     <Heading fontSize="18px" fontWeight="normal">
                         Build
                     </Heading>
                 </Link>
-                <Link href="https://docs.semaphore.pse.dev" variant="navlink" isExternal>
+                <Link href="https://docs.semaphore.pse.dev" isExternal>
                     <HStack spacing="3">
                         <Heading fontSize="18px" fontWeight="normal">
                             Documentation
@@ -46,7 +30,7 @@ export default function Navbar() {
                         <IconArrowUpRight width="10px" mb={1} />
                     </HStack>
                 </Link>
-                <Link href="https://github.com/semaphore-protocol" variant="navlink" isExternal>
+                <Link href="https://github.com/semaphore-protocol" isExternal>
                     <HStack spacing="3">
                         <Heading fontSize="18px" fontWeight="normal">
                             Github
@@ -55,6 +39,21 @@ export default function Navbar() {
                     </HStack>
                 </Link>
             </HStack>
-        </HStack>
+
+            <Divider />
+
+            <Link href="https://semaphore.pse.dev/discord" isExternal>
+                <HStack>
+                    <IconDiscord width="24px" />
+                    <Heading fontSize="18px" fontWeight="normal">
+                        Discord
+                    </Heading>
+                </HStack>
+            </Link>
+
+            <Text fontSize="14px" color="text.500">
+                Copyright © 2023 Ethereum Foundation
+            </Text>
+        </VStack>
     )
 }
