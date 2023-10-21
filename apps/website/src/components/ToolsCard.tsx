@@ -28,14 +28,14 @@ export default function ToolsCard({ icon, title, subtitle, details }: ToolsCardP
             borderRadius={"16px"}
             color={"white"}
             border={"1px"}
-            borderColor={"albaster"}
+            borderColor={"alabaster.950"}
             padding={"32px"}
             width={{ base: "full", sm: "348px" }}
             height={"501px"}
         >
             <HStack mb={"2rem"}>{icon}</HStack>
             <CardBody padding={0}>
-                <VStack divider={<StackDivider borderColor={"albaster"} />} spacing={"24px"} align="stretch">
+                <VStack divider={<StackDivider borderColor={"alabaster.950"} />} spacing={"24px"} align="stretch">
                     <Box>
                         <Heading fontSize={"40px"} fontWeight={"normal"}>
                             {title}
