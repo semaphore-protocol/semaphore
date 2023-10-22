@@ -13,7 +13,7 @@ export default function ProjectCard({ tags, title, description }: ProjectCardPro
             borderRadius={"18px"}
             color={"white"}
             border={"1px"}
-            borderColor={"albaster"}
+            borderColor={"alabaster.950"}
             padding={"55px 34px 55px 34px"}
             width={{ base: "full", sm: "404px" }}
             height={"284.86px"}
