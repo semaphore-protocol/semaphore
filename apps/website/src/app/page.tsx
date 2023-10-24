@@ -5,6 +5,7 @@ import { Sora } from "next/font/google"
 import ProjectCard from "../components/ProjectCard"
 import IconArrowLeft from "../icons/IconArrowLeft"
 import IconArrowRight from "../icons/IconArrowRight"
+import IconDiscord from "../icons/IconDiscord"
 
 const sora = Sora({
     subsets: ["latin"]
@@ -13,19 +14,19 @@ const sora = Sora({
 export default function Home() {
     return (
         <VStack>
-            <Box
-                zIndex="-1"
-                left="0"
-                w="100%"
-                h="724"
-                pos="absolute"
-                bgImg="url('./section-1.png')"
-                bgSize="100%"
-                bgPos="center"
-                bgRepeat="no-repeat"
-            />
-
             <VStack h="724" justify="center" spacing="40">
+                <Box
+                    zIndex="-1"
+                    left="0"
+                    w="100%"
+                    h="724"
+                    pos="absolute"
+                    bgImg="url('./section-1.png')"
+                    bgSize="100%"
+                    bgPos="center"
+                    bgRepeat="no-repeat"
+                />
+
                 <VStack>
                     <Heading fontSize="72px" textAlign="center">
                         Anonymous interactions
@@ -194,6 +195,74 @@ export default function Home() {
                     </VStack>
                 </CardBody>
             </Card>
+
+            <VStack h="759" justify="center" spacing="40" py="32">
+                <Box
+                    zIndex="-1"
+                    left="0"
+                    w="100%"
+                    h="759"
+                    pos="absolute"
+                    bgImg="url('./section-2.png')"
+                    bgSize="100%"
+                    bgRepeat="no-repeat"
+                />
+
+                <HStack spacing="32">
+                    <VStack maxW="450" align="left" spacing="8">
+                        <Heading fontSize="44px">Join the Semaphore community</Heading>
+                        <Text fontSize="18px">
+                            Ask questions, suggest ideas, stay up-to-date, and meet other people building privacy
+                            applications with Zero Knowledge.
+                        </Text>
+                        <Link href="https://semaphore.pse.dev/discord" target="_blank">
+                            <Button leftIcon={<IconDiscord />} size="lg">
+                                Discord
+                            </Button>
+                        </Link>
+                    </VStack>
+
+                    <Card
+                        bg="inherit"
+                        color="white"
+                        backdropFilter="blur(4px)"
+                        borderRadius="18px"
+                        border="1px"
+                        borderColor="white"
+                        padding="50px"
+                    >
+                        <CardBody padding="0">
+                            <Heading fontSize="30px" mb="50px">
+                                Upcoming Events
+                            </Heading>
+
+                            <VStack align="left" spacing="10">
+                                <VStack align="left">
+                                    <Heading fontSize="24px">Oct 06-07, 2023 | ETH Rome</Heading>
+                                    <Text fontSize="16px">
+                                        Semaphore team will attend Progcrypto and deliver workshops on how to build
+                                        applications with Semaphore.
+                                    </Text>
+                                </VStack>
+                                <VStack align="left">
+                                    <Heading fontSize="24px">Nov 16-17, 2023 | Devconnect</Heading>
+                                    <Text fontSize="16px">
+                                        Semaphore team will attend Progcrypto and deliver workshops on how to build
+                                        applications with Semaphore.
+                                    </Text>
+                                </VStack>
+                                <VStack align="left">
+                                    <Heading fontSize="24px">Nov 16-17, 2023 | Devconnect</Heading>
+                                    <Text fontSize="16px">
+                                        Semaphore team will attend Progcrypto and deliver workshops on how to build
+                                        applications with Semaphore.
+                                    </Text>
+                                </VStack>
+                            </VStack>
+                        </CardBody>
+                    </Card>
+                </HStack>
+            </VStack>
         </VStack>
     )
 }
