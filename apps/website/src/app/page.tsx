@@ -1,13 +1,18 @@
 "use client"
 
-import { Box, Button, Heading, HStack, IconButton, Link, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Card, CardBody, Heading, HStack, IconButton, Link, Text, VStack } from "@chakra-ui/react"
+import { Sora } from "next/font/google"
 import ProjectCard from "../components/ProjectCard"
 import IconArrowLeft from "../icons/IconArrowLeft"
 import IconArrowRight from "../icons/IconArrowRight"
 
+const sora = Sora({
+    subsets: ["latin"]
+})
+
 export default function Home() {
     return (
-        <>
+        <VStack>
             <Box
                 zIndex="-1"
                 left="0"
@@ -19,6 +24,7 @@ export default function Home() {
                 bgPos="center"
                 bgRepeat="no-repeat"
             />
+
             <VStack h="724" justify="center" spacing="40">
                 <VStack>
                     <Heading fontSize="72px" textAlign="center">
@@ -102,6 +108,92 @@ export default function Home() {
                     </HStack>
                 </HStack>
             </VStack>
-        </>
+
+            <Card
+                bg="darkBlue"
+                color="white"
+                borderRadius="18px"
+                padding="80px 60px 80px 60px"
+                width={{ base: "full", sm: "1110px" }}
+                height="680px"
+            >
+                <CardBody padding="0">
+                    <VStack pb="90px">
+                        <Heading fontSize="44px" textAlign="center">
+                            Semaphore Features
+                        </Heading>
+                        <Text fontSize="20px" color="alabaster.400" align="center">
+                            Duis rhoncus, urna sit amet tristique commodo, turpis justo ullamcorper nisi,
+                            <br /> nec dapibus augue nibh sed enim. Nam ultricies finibus fermentum.
+                        </Text>
+                    </VStack>
+
+                    <VStack spacing="12">
+                        <HStack align="top" justify="space-between" spacing="16">
+                            <HStack flex="1" align="top" spacing="6">
+                                <Heading fontSize="38px" color="#1E46F2" fontFamily={sora.style.fontFamily}>
+                                    1
+                                </Heading>
+                                <VStack align="left">
+                                    <Text fontSize="20px" fontFamily={sora.style.fontFamily}>
+                                        Simplify privacy
+                                    </Text>
+                                    <Text color="alabaster.400" fontSize="14px">
+                                        Semaphore streamlines privacy-centric app development. It empowers developers to
+                                        effortlessly incorporate robust privacy features.
+                                    </Text>
+                                </VStack>
+                            </HStack>
+                            <HStack flex="1" align="top" spacing="6">
+                                <Heading fontSize="38px" color="#1E46F2" fontFamily={sora.style.fontFamily}>
+                                    3
+                                </Heading>
+                                <VStack align="left">
+                                    <Text fontSize="20px" fontFamily={sora.style.fontFamily}>
+                                        Universal integrations
+                                    </Text>
+                                    <Text color="alabaster.400" fontSize="14px">
+                                        Semaphore is a protocol for Web2 and Web3. It integrates into any front-end
+                                        framework or pure HTML/CSS/JS. It is cross-chain compatible with EVM, L2s, and
+                                        alt-blockchains.
+                                    </Text>
+                                </VStack>
+                            </HStack>
+                        </HStack>
+                        <HStack align="top" justify="space-between" spacing="16">
+                            <HStack flex="1" align="top" spacing="6">
+                                <Heading fontSize="38px" color="#1E46F2" fontFamily={sora.style.fontFamily}>
+                                    2
+                                </Heading>
+                                <VStack align="left">
+                                    <Text fontSize="20px" fontFamily={sora.style.fontFamily}>
+                                        Leverage Zero Knowledge
+                                    </Text>
+                                    <Text color="alabaster.400" fontSize="14px">
+                                        Semaphore leverages Zero Knowledge, allowing us to verify information without
+                                        revealing any underlying data. This powerful primitive allows one to prove
+                                        membership and signal anonymously.
+                                    </Text>
+                                </VStack>
+                            </HStack>
+                            <HStack flex="1" align="top" spacing="6">
+                                <Heading fontSize="38px" color="#1E46F2" fontFamily={sora.style.fontFamily}>
+                                    4
+                                </Heading>
+                                <VStack align="left">
+                                    <Text fontSize="20px" fontFamily={sora.style.fontFamily}>
+                                        Free open source software
+                                    </Text>
+                                    <Text color="alabaster.400" fontSize="14px">
+                                        Semaphore is a Public Good. This means it will never seek to profit, it is owned
+                                        by the community and will always remain open source.
+                                    </Text>
+                                </VStack>
+                            </HStack>
+                        </HStack>
+                    </VStack>
+                </CardBody>
+            </Card>
+        </VStack>
     )
 }
