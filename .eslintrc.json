@@ -12,6 +12,7 @@
     },
     "plugins": ["@typescript-eslint", "jest"],
     "rules": {
+        "import/prefer-default-export": "off",
         "import/extensions": "off",
         "no-underscore-dangle": "off",
         "import/no-extraneous-dependencies": "off",
