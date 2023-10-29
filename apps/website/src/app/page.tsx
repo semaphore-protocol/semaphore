@@ -1,36 +1,16 @@
 "use client"
 
-import { Box, Button, Card, CardBody, Heading, HStack, IconButton, Link, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Card, CardBody, Heading, HStack, Link, Text, VStack } from "@chakra-ui/react"
 import { Sora } from "next/font/google"
-import { useCallback, useEffect, useState } from "react"
-import ProjectCard from "../components/ProjectCard"
+import ProjectsCarousel from "../components/ProjectsCarousel"
 import events from "../data/events.json"
-import projects from "../data/projects.json"
-import IconArrowLeft from "../icons/IconArrowLeft"
-import IconArrowRight from "../icons/IconArrowRight"
 import IconDiscord from "../icons/IconDiscord"
-import { circularSlice } from "../utils/circularSlice"
 
 const sora = Sora({
     subsets: ["latin"]
 })
 
 export default function Home() {
-    const [carouselProjects, setCarouselProjects] = useState<typeof projects>(projects.slice(0, 3))
-    const [carouselIndex, setCarouselIndex] = useState<number>(0)
-
-    useEffect(() => {
-        setCarouselProjects(circularSlice(projects, carouselIndex, 3))
-    }, [carouselIndex])
-
-    const nextProject = useCallback(() => {
-        setCarouselIndex((i) => (i + 1) % projects.length)
-    }, [carouselIndex])
-
-    const previousProject = useCallback(() => {
-        setCarouselIndex((i) => (i === 0 ? projects.length - 1 : i - 1))
-    }, [carouselIndex])
-
     return (
         <VStack>
             <VStack h="724" justify="center" spacing="40">
@@ -73,45 +53,7 @@ export default function Home() {
                     Explore projects built with Semaphore
                 </Heading>
 
-                <HStack spacing="8">
-                    {carouselProjects.map((project) => (
-                        <Link key={project.name} href={project.links.github} target="_blank">
-                            <ProjectCard title={project.name} description={project.tagline} tags={project.tags} />
-                        </Link>
-                    ))}
-                </HStack>
-
-                <HStack w="100%">
-                    <Box flex="1" />
-
-                    <HStack flex="1" justify="center">
-                        <IconButton
-                            onClick={nextProject}
-                            variant="link"
-                            aria-label="Arrow left"
-                            icon={<IconArrowLeft />}
-                        />
-                        <IconButton
-                            onClick={previousProject}
-                            variant="link"
-                            aria-label="Arrow right"
-                            icon={<IconArrowRight />}
-                        />
-                    </HStack>
-
-                    <HStack flex="1" justify="right" fontSize="12px">
-                        <Link
-                            href="/projects"
-                            textTransform="uppercase"
-                            textDecoration="underline"
-                            _hover={{
-                                textDecoration: "underline"
-                            }}
-                        >
-                            View more
-                        </Link>
-                    </HStack>
-                </HStack>
+                <ProjectsCarousel />
             </VStack>
 
             <Card
