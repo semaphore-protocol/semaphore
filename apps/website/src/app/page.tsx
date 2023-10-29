@@ -57,20 +57,12 @@ export default function Home() {
                 </VStack>
 
                 <HStack spacing="8">
+                    <Link href="https://semaphore.pse.dev/docs/quick-setup" target="_blank">
+                        <Button size="lg">Get Started</Button>
+                    </Link>
                     <Link href="https://demo.semaphore.pse.dev" target="_blank">
-                        <Button size="lg">Try the Demo</Button>
-                    </Link>
-                    <Link
-                        href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli#--------semaphore-cli----"
-                        target="_blank"
-                    >
                         <Button size="lg" variant="outline">
-                            Build with CLI
-                        </Button>
-                    </Link>
-                    <Link href="https://github.com/semaphore-protocol/boilerplate" target="_blank">
-                        <Button size="lg" variant="outline">
-                            Build with Boilerplate
+                            Try the Demo
                         </Button>
                     </Link>
                 </HStack>
