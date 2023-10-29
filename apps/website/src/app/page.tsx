@@ -101,8 +101,7 @@ export default function Home() {
 
                     <HStack flex="1" justify="right" fontSize="12px">
                         <Link
-                            href=""
-                            target="_blank"
+                            href="/projects"
                             textTransform="uppercase"
                             textDecoration="underline"
                             _hover={{
