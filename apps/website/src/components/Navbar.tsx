@@ -1,6 +1,7 @@
 "use client"
 
 import { Heading, HStack, Link } from "@chakra-ui/react"
+import NextLink from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 import IconArrowUpRight from "../icons/IconArrowUpRight"
@@ -13,6 +14,7 @@ export default function Navbar() {
             <Image width="148" height="40" src="./semaphore-logo.svg" alt="Semaphore logo" />
             <HStack fontSize="18px" spacing="10">
                 <Link
+                    as={NextLink}
                     href="/projects"
                     variant="navlink"
                     borderBottomColor={pathname === "/projects" ? "ceruleanBlue" : "transparent"}
@@ -22,6 +24,7 @@ export default function Navbar() {
                     </Heading>
                 </Link>
                 <Link
+                    as={NextLink}
                     href="/learn"
                     variant="navlink"
                     borderBottomColor={pathname === "/learn" ? "ceruleanBlue" : "transparent"}
@@ -31,6 +34,7 @@ export default function Navbar() {
                     </Heading>
                 </Link>
                 <Link
+                    as={NextLink}
                     href="/build"
                     variant="navlink"
                     borderBottomColor={pathname === "/build" ? "ceruleanBlue" : "transparent"}

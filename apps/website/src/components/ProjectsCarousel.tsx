@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react"
 import { Box, HStack, IconButton, Link } from "@chakra-ui/react"
+import NextLink from "next/link"
 import allProjects from "../data/projects.json"
 import IconArrowLeft from "../icons/IconArrowLeft"
 import IconArrowRight from "../icons/IconArrowRight"
@@ -48,6 +49,7 @@ export default function ProjectsCarousel() {
 
                 <HStack flex="1" justify="right" fontSize="12px">
                     <Link
+                        as={NextLink}
                         href="/projects"
                         textTransform="uppercase"
                         textDecoration="underline"
