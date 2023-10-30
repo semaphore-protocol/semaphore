@@ -2,6 +2,7 @@
     {
         "name": "Semaphore Explorer",
         "tagline": "Semaphore explorer for on-chain groups.",
+        "tags": ["Tag", "Tag", "Tag"],
         "icon": "",
         "links": {
             "website": "https://community.semaphore.pse.dev/semaphore-explorer",
@@ -12,6 +13,7 @@
     {
         "name": "Semaphore Discord Bot",
         "tagline": "A Discord Bot for Semaphore",
+        "tags": ["Tag", "Tag", "Tag"],
         "icon": "",
         "links": {
             "website": "https://discord.com/api/oauth2/authorize?client_id=1082429985496772628&permissions=1024&scope=bot",
@@ -22,6 +24,7 @@
     {
         "name": "Unirep",
         "tagline": "Private and nonrepudiable reputation system based on ZKP.",
+        "tags": ["Tag", "Tag", "Tag"],
         "icon": "",
         "links": {
             "website": "https://developer.unirep.io",
@@ -31,7 +34,8 @@
     },
     {
         "name": "Plurality",
-        "tagline": "An Identity Lego Building Block for dapp creators that lets them identify their users without using any third-party KYC provider or other middlemen, whilst preserving the privacy of users.",
+        "tagline": "An Identity Lego Building Block for DApp creators that lets them identify their users without using any third-party KYC provider or other middlemen, whilst preserving the privacy of users.",
+        "tags": ["Tag", "Tag", "Tag"],
         "icon": "",
         "links": {
             "github": "https://github.com/Web3-Plurality"
@@ -40,6 +44,7 @@
     {
         "name": "ZK Proof of Humanity",
         "tagline": "A project that allows humans, registered in Proof of Humanity, to prove their humanity without doxing.",
+        "tags": ["Tag", "Tag", "Tag"],
         "icon": "",
         "links": {
             "website": "https://zk-proof-of-humanity.vercel.app",
@@ -49,6 +54,7 @@
     {
         "name": "ZeroTherapy",
         "tagline": "AMA privacy application built with Semaphore.",
+        "tags": ["Tag", "Tag", "Tag"],
         "icon": "",
         "links": {
             "website": "https://zerotherapy.vercel.app",
@@ -58,6 +64,7 @@
     {
         "name": "Block Qualified",
         "tagline": "On-chain and privacy preserving education platform built on Semaphore.",
+        "tags": ["Tag", "Tag", "Tag"],
         "icon": "",
         "links": {
             "website": "https://bq2.netlify.app/",
@@ -67,6 +74,7 @@
     {
         "name": "StealthComms",
         "tagline": "A project that allows users to prove their membership in a group and send messages/signals without revealing their original identity.",
+        "tags": ["Tag", "Tag", "Tag"],
         "icon": "",
         "links": {
             "website": "https://stealthcomms.surge.sh/",

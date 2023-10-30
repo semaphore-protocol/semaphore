@@ -41,7 +41,7 @@ export default function Footer() {
                 <Link href="" isExternal>
                     <HStack spacing="3">
                         <Heading fontSize="18px" fontWeight="normal">
-                            Brand Resources
+                            Design Kit
                         </Heading>
                         <IconArrowUpRight width="10px" mb={1} />
                     </HStack>
