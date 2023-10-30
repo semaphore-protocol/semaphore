@@ -2,6 +2,9 @@ const colors = {
     darkBlue: "#0E101B",
     darkBlueBg: "#00020D",
     ceruleanBlue: "#3555DF",
+    // TODO: This can be replaced by using the 'bgGradient' Chakra property.
+    // and the existing primary color scheme.
+    // The value is: "linear(to-r, primary.500, primary.800)"
     semaphore: "linear-gradient(92.32deg, #4771EA -33.31%, #2735A6 112.52%)",
     alabaster: {
         300: "#B8B9C1",
