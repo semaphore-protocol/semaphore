@@ -4,6 +4,7 @@ const colors = {
     ceruleanBlue: "#3555DF",
     semaphore: "linear-gradient(92.32deg, #4771EA -33.31%, #2735A6 112.52%)",
     alabaster: {
+        300: "#B8B9C1",
         400: "#92939E",
         950: "#26262B"
     },
