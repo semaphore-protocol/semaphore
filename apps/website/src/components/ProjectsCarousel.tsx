@@ -1,3 +1,5 @@
+"use client"
+
 import { useCallback, useEffect, useState } from "react"
 import { Box, HStack, IconButton, Link } from "@chakra-ui/react"
 import allProjects from "../data/projects.json"
