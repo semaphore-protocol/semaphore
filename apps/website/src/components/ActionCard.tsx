@@ -12,11 +12,11 @@ export default function ActionCard({ title, description, buttonText }: ActionCar
             bg={"white"}
             textColor={"darkBlue1"}
             borderRadius={"24px"}
-            padding={{ base: "30px 50px", sm: "40px 60px", md: "50px 70px", lg: "60px 80px" }}
             width={{ base: "full", xl: "1110px" }}
+            height={{ base: "full", xl: "244px" }}
             direction={{ base: "column", dm: "row" }}
         >
-            <CardBody padding={0}>
+            <CardBody padding={0} m={"41px 80px"}>
                 <Flex
                     justifyContent={"space-between"}
                     alignItems={"center"}
