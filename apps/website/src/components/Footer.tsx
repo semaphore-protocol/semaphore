@@ -1,5 +1,6 @@
 import { Divider, Heading, HStack, Link, Text, VStack } from "@chakra-ui/react"
 import Image from "next/image"
+import NextLink from "next/link"
 import IconArrowUpRight from "../icons/IconArrowUpRight"
 import IconDiscord from "../icons/IconDiscord"
 
