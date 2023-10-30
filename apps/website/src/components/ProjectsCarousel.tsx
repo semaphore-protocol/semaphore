@@ -3,6 +3,7 @@ import { Box, HStack, IconButton, Link } from "@chakra-ui/react"
 import allProjects from "../data/projects.json"
 import IconArrowLeft from "../icons/IconArrowLeft"
 import IconArrowRight from "../icons/IconArrowRight"
+import NextLink from "next/link"
 import { circularSlice } from "../utils/circularSlice"
 import ProjectCard from "./ProjectCard"
 
@@ -26,7 +27,7 @@ export default function ProjectsCarousel() {
         <>
             <HStack spacing="8">
                 {projects.map((project) => (
-                    <Link key={project.name} href={project.links.github} target="_blank">
+                    <Link as={NextLink} key={project.name} href={project.links.github} target="_blank">
                         <ProjectCard title={project.name} description={project.tagline} tags={project.tags} />
                     </Link>
                 ))}
@@ -46,6 +47,7 @@ export default function ProjectsCarousel() {
 
                 <HStack flex="1" justify="right" fontSize="12px">
                     <Link
+                        as={NextLink}
                         href="/projects"
                         textTransform="uppercase"
                         textDecoration="underline"
