@@ -1,7 +1,6 @@
 "use client"
 
 import { Box, Button, Card, CardBody, Heading, HStack, Link, Text, VStack } from "@chakra-ui/react"
-import NextLink from "next/link"
 import { Sora } from "next/font/google"
 import ProjectsCarousel from "../components/ProjectsCarousel"
 import events from "../data/events.json"
@@ -38,10 +37,10 @@ export default function Home() {
                 </VStack>
 
                 <HStack spacing="8">
-                    <Link as={NextLink} href="https://semaphore.pse.dev/docs/quick-setup" target="_blank">
+                    <Link href="https://semaphore.pse.dev/docs/quick-setup" target="_blank">
                         <Button size="lg">Get Started</Button>
                     </Link>
-                    <Link as={NextLink} href="https://demo.semaphore.pse.dev" target="_blank">
+                    <Link href="https://demo.semaphore.pse.dev" target="_blank">
                         <Button size="lg" variant="outline">
                             Try the Demo
                         </Button>
@@ -163,7 +162,7 @@ export default function Home() {
                             Ask questions, suggest ideas, stay up-to-date, and meet other people building privacy
                             applications with Zero Knowledge.
                         </Text>
-                        <Link as={NextLink} href="https://semaphore.pse.dev/discord" target="_blank">
+                        <Link href="https://semaphore.pse.dev/discord" target="_blank">
                             <Button leftIcon={<IconDiscord />} size="lg">
                                 Discord
                             </Button>

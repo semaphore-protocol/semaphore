@@ -42,7 +42,7 @@ export default function Navbar() {
                         Build
                     </Heading>
                 </Link>
-                <Link as={NextLink} href="https://docs.semaphore.pse.dev" variant="navlink" isExternal>
+                <Link href="https://docs.semaphore.pse.dev" variant="navlink" isExternal>
                     <HStack spacing="3">
                         <Heading fontSize="18px" fontWeight="normal">
                             Documentation
@@ -50,7 +50,7 @@ export default function Navbar() {
                         <IconArrowUpRight width="10px" mb={1} />
                     </HStack>
                 </Link>
-                <Link as={NextLink} href="https://github.com/semaphore-protocol" variant="navlink" isExternal>
+                <Link href="https://github.com/semaphore-protocol" variant="navlink" isExternal>
                     <HStack spacing="3">
                         <Heading fontSize="18px" fontWeight="normal">
                             Github
