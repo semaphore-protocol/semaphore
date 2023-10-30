@@ -1,10 +1,11 @@
-import { Text, VStack, Flex, Link, Image } from "@chakra-ui/react"
+import { Text, VStack, Flex, Link } from "@chakra-ui/react"
 import IconCli from "@/icons/IconCli"
 import IconBook from "@/icons/IconBook"
 import IconBox from "@/icons/IconBox"
 import ToolsCard from "@/components/ToolsCard"
 import IconArrowRight from "@/icons/IconArrowRight"
 import ActionCard from "@/components/ActionCard"
+import Image from "next/image"
 
 export default function Build() {
     const toolCardInfo = [
@@ -128,7 +129,13 @@ export default function Build() {
                         </VStack>
                     </VStack>
                 </Flex>
-                <Image src="/flowerShadow.png" width={727} height={630} alt="Flower Shadow" />
+                <Image
+                    src="/flowerShadow.png"
+                    width={727}
+                    height={630}
+                    style={{ maxHeight: "630px" }}
+                    alt="Flower Shadow"
+                />
             </Flex>
             <VStack my={"128"}>
                 <ActionCard
