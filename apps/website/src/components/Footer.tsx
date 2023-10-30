@@ -8,17 +8,17 @@ export default function Footer() {
         <VStack py="7" justify="space-between" h="611px" pt="28" pb="10">
             <Image width="79" height="158" src="./semaphore-icon.svg" alt="Semaphore logo" />
             <HStack fontSize="18px" spacing="10">
-                <Link href="/projects">
+                <Link as={NextLink} href="/projects">
                     <Heading fontSize="18px" fontWeight="normal">
                         Projects
                     </Heading>
                 </Link>
-                <Link href="/learn">
+                <Link as={NextLink} href="/learn">
                     <Heading fontSize="18px" fontWeight="normal">
                         Learn
                     </Heading>
                 </Link>
-                <Link href="/build">
+                <Link as={NextLink} href="/build">
                     <Heading fontSize="18px" fontWeight="normal">
                         Build
                     </Heading>
