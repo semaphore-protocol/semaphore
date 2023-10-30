@@ -45,3 +45,5 @@ snark-artifacts
 # Next.js
 .next/
 public
+
+!apps/website/src/app/build
