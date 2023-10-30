@@ -7,6 +7,7 @@ const colors = {
     // The value is: "linear(to-r, primary.500, primary.800)"
     semaphore: "linear-gradient(92.32deg, #4771EA -33.31%, #2735A6 112.52%)",
     alabaster: {
+        300: "#B8B9C1",
         400: "#92939E",
         950: "#26262B"
     },
