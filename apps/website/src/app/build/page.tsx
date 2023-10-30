@@ -8,7 +8,7 @@ import IconBox from "../../icons/IconBox"
 import IconCli from "../../icons/IconCli"
 
 export default function Build() {
-    const toolCardInfo = [
+    const toolCardsInfo = [
         {
             icon: <IconCli width={8} height={8} color="ceruleanBlue" />,
             title: "CLI",
@@ -64,7 +64,7 @@ export default function Build() {
                 </Text>
                 <VStack mt={"64px"}>
                     <Flex gap={"33px"} wrap={"wrap"} justifyContent={"center"}>
-                        {toolCardInfo.map((toolCardInfo, i) => (
+                        {toolCardsInfo.map((toolCardInfo, i) => (
                             <ToolsCard
                                 key={i}
                                 title={toolCardInfo.title}
