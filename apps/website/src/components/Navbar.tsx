@@ -1,8 +1,9 @@
 "use client"
 
-import { Heading, HStack, Image, Link } from "@chakra-ui/react"
+import { Heading, HStack, Link } from "@chakra-ui/react"
 import NextLink from "next/link"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
 import IconArrowUpRight from "../icons/IconArrowUpRight"
 
 export default function Navbar() {
@@ -10,7 +11,7 @@ export default function Navbar() {
 
     return (
         <HStack py="7" justify="space-between">
-            <Image htmlWidth="148px" src="./semaphore-logo.svg" alt="Semaphore logo" />
+            <Image width="148" height="40" src="./semaphore-logo.svg" alt="Semaphore logo" />
             <HStack fontSize="18px" spacing="10">
                 <Link
                     as={NextLink}
