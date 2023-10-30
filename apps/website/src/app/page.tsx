@@ -1,5 +1,3 @@
-"use client"
-
 import { Box, Button, Card, CardBody, Heading, HStack, Link, Text, VStack } from "@chakra-ui/react"
 import { Sora } from "next/font/google"
 import ProjectsCarousel from "../components/ProjectsCarousel"

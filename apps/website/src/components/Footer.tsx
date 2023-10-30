@@ -1,12 +1,12 @@
-import { Divider, Heading, HStack, Image, Link, Text, VStack } from "@chakra-ui/react"
-import NextLink from "next/link"
+import { Divider, Heading, HStack, Link, Text, VStack } from "@chakra-ui/react"
+import Image from "next/image"
 import IconArrowUpRight from "../icons/IconArrowUpRight"
 import IconDiscord from "../icons/IconDiscord"
 
 export default function Footer() {
     return (
         <VStack py="7" justify="space-between" h="611px" pt="28" pb="10">
-            <Image htmlWidth="79px" src="./semaphore-icon.svg" alt="Semaphore logo" />
+            <Image width="79" height="158" src="./semaphore-icon.svg" alt="Semaphore logo" />
             <HStack fontSize="18px" spacing="10">
                 <Link as={NextLink} href="/projects">
                     <Heading fontSize="18px" fontWeight="normal">
