@@ -1,11 +1,11 @@
-import { Text, VStack, Flex, Link } from "@chakra-ui/react"
-import IconCli from "@/icons/IconCli"
-import IconBook from "@/icons/IconBook"
-import IconBox from "@/icons/IconBox"
-import ToolsCard from "@/components/ToolsCard"
-import IconArrowRight from "@/icons/IconArrowRight"
-import ActionCard from "@/components/ActionCard"
+import { Flex, Link, Text, VStack } from "@chakra-ui/react"
 import Image from "next/image"
+import ActionCard from "../../components/ActionCard"
+import ToolsCard from "../../components/ToolsCard"
+import IconArrowRight from "../../icons/IconArrowRight"
+import IconBook from "../../icons/IconBook"
+import IconBox from "../../icons/IconBox"
+import IconCli from "../../icons/IconCli"
 
 export default function Build() {
     const toolCardInfo = [
