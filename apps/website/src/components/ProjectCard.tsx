@@ -21,7 +21,9 @@ export default function ProjectCard({ tags, title, description }: ProjectCardPro
         >
             <HStack gap={"8px"} mb={"2rem"}>
                 {tags.map((tag, i) => (
-                    <Tag key={i}>{tag}</Tag>
+                    <Tag variant="outline" key={i}>
+                        {tag}
+                    </Tag>
                 ))}
             </HStack>
             <CardBody padding={0}>

@@ -7,7 +7,10 @@ const Button = {
             boxShadow: "none"
         },
         borderRadius: "100px",
-        fontFamily: font.style.fontFamily
+        fontFamily: font.style.fontFamily,
+        fontWeight: "400",
+        paddingLeft: "18px !important",
+        paddingRight: "18px !important"
     },
     defaultProps: {
         colorScheme: "white"
@@ -17,19 +20,20 @@ const Button = {
             const { colorScheme: c } = props
 
             if (c === "primary") {
-                const bg = "linear(to-r, primary.500, primary.800)"
+                // const bgGradient = "linear(to-r, primary.500, primary.800)"
+                const bg = `${c}.500`
                 const color = "white"
 
                 return {
-                    bgGradient: bg,
+                    bg,
                     color,
                     _hover: {
-                        bg: "ceruleanBlue",
+                        bg: `${c}.800`,
                         _disabled: {
                             bg
                         }
                     },
-                    _active: { bg: `${c}.700` }
+                    _active: { bg: `${c}.800` }
                 }
             }
 

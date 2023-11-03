@@ -10,19 +10,19 @@ import { circularSlice } from "../utils/circularSlice"
 import ProjectCard from "./ProjectCard"
 
 export default function ProjectsCarousel() {
-    const [projects, setCarouselProjects] = useState<typeof allProjects>(allProjects.slice(0, 3))
-    const [index, setCarouselIndex] = useState<number>(0)
+    const [projects, setProjects] = useState<typeof allProjects>(allProjects.slice(0, 3))
+    const [index, setIndex] = useState<number>(0)
 
     useEffect(() => {
-        setCarouselProjects(circularSlice(projects, index, 3))
+        setProjects(circularSlice(projects, index, 3))
     }, [index])
 
     const nextProject = useCallback(() => {
-        setCarouselIndex((i) => (i + 1) % projects.length)
+        setIndex((i) => (i + 1) % projects.length)
     }, [index])
 
     const previousProject = useCallback(() => {
-        setCarouselIndex((i) => (i === 0 ? projects.length - 1 : i - 1))
+        setIndex((i) => (i === 0 ? projects.length - 1 : i - 1))
     }, [index])
 
     return (
