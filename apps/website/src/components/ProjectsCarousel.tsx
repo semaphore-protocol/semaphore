@@ -29,7 +29,7 @@ export default function ProjectsCarousel() {
         <>
             <HStack spacing="8">
                 {projects.map((project) => (
-                    <Link key={project.name} href={project.links.github} target="_blank">
+                    <Link key={project.name} href={project.links.github} isExternal>
                         <ProjectCard title={project.name} description={project.tagline} tags={project.tags} />
                     </Link>
                 ))}
