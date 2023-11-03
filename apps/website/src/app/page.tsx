@@ -35,10 +35,10 @@ export default function Home() {
                 </VStack>
 
                 <HStack spacing="8">
-                    <Link href="https://semaphore.pse.dev/docs/quick-setup" target="_blank">
+                    <Link href="https://semaphore.pse.dev/docs/quick-setup" isExternal>
                         <Button size="lg">Get Started</Button>
                     </Link>
-                    <Link href="https://demo.semaphore.pse.dev" target="_blank">
+                    <Link href="https://demo.semaphore.pse.dev" isExternal>
                         <Button size="lg" variant="outline">
                             Try the Demo
                         </Button>
@@ -160,7 +160,7 @@ export default function Home() {
                             Ask questions, suggest ideas, stay up-to-date, and meet other people building privacy
                             applications with Zero Knowledge.
                         </Text>
-                        <Link href="https://semaphore.pse.dev/discord" target="_blank">
+                        <Link href="https://semaphore.pse.dev/discord" isExternal>
                             <Button leftIcon={<IconDiscord />} size="lg">
                                 Discord
                             </Button>
