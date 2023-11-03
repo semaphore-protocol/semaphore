@@ -24,7 +24,7 @@ export default function Home() {
                     bgRepeat="no-repeat"
                 />
 
-                <VStack>
+                <VStack spacing="4">
                     <Heading fontSize="72px" textAlign="center">
                         Anonymous interactions
                     </Heading>
