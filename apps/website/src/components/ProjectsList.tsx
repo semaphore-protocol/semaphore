@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Grid, GridItem, HStack, IconButton, Link, Text, VStack } from "@chakra-ui/react"
+import { Button, Grid, GridItem, HStack, IconButton, Link, Stack, Text, VStack } from "@chakra-ui/react"
 import { useCallback, useEffect, useState } from "react"
 import ProjectCard from "../components/ProjectCard"
 import allProjects from "../data/projects.json"
@@ -20,13 +20,13 @@ export default function ProjectsList(props: any) {
         let filteredProjects = allProjects
 
         if (selectedTag) {
-            filteredProjects = allProjects.filter((project) => project.tags.includes(selectedTag))
+            filteredProjects = filteredProjects.filter((project) => project.tags.includes(selectedTag))
         }
 
         if (onlyPSE === true) {
-            filteredProjects = allProjects.filter((project) => project.pse)
+            filteredProjects = filteredProjects.filter((project) => project.pse)
         } else if (onlyPSE === false) {
-            filteredProjects = allProjects.filter((project) => !project.pse)
+            filteredProjects = filteredProjects.filter((project) => !project.pse)
         }
 
         setProjects(chunkArray(filteredProjects))
@@ -41,7 +41,7 @@ export default function ProjectsList(props: any) {
             <VStack align="left" spacing="6">
                 <Text fontSize="20">Projects created by</Text>
 
-                <HStack spacing="4">
+                <HStack spacing="4" flexWrap="wrap">
                     <Button
                         size="lg"
                         variant={onlyPSE === true ? "solid" : "outline"}
@@ -62,10 +62,10 @@ export default function ProjectsList(props: any) {
                 </HStack>
             </VStack>
 
-            <HStack spacing="5">
+            <Stack direction={{ base: "column", md: "row" }} spacing="5" align="start">
                 <Text fontSize="20">Category</Text>
 
-                <HStack spacing="3">
+                <HStack spacing="3" flexWrap="wrap">
                     {getProjectTags(allProjects).map((tag) => (
                         <Button
                             key={tag}
@@ -78,9 +78,9 @@ export default function ProjectsList(props: any) {
                         </Button>
                     ))}
                 </HStack>
-            </HStack>
+            </Stack>
 
-            <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+            <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={6}>
                 {projects[index].map((project, i) => (
                     <GridItem key={project.name + i}>
                         <Link href={project.links.github} target="_blank">

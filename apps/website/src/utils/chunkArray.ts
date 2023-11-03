@@ -14,5 +14,5 @@ export function chunkArray(array: any[], size = 15): any[] {
         result.push(chunk)
     }
 
-    return result
+    return result.length === 0 ? [[]] : result
 }

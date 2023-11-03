@@ -5,12 +5,12 @@ import ProjectsList from "@/components/ProjectsList"
 export default function Projects() {
     return (
         <VStack>
-            <VStack h="393" w="100%" justify="end" align="left" spacing="40">
+            <VStack h={{ base: "442", sm: "420", md: "393" }} w="100%" justify="end" align="left" spacing="40">
                 <Box
                     zIndex="-1"
                     left="0"
                     w="100%"
-                    h="393"
+                    h={{ base: "442", sm: "420", md: "393" }}
                     pos="absolute"
                     bgImg="url('./section-3.png')"
                     bgSize="100%"
@@ -19,8 +19,9 @@ export default function Projects() {
                 />
 
                 <VStack align="left" spacing="4" pb="16">
-                    <Heading fontSize="72px">Built with Semaphore</Heading>
-                    <Text fontSize="20px">
+                    <Heading fontSize={{ base: "40px", sm: "46px", md: "72px" }}>Built with Semaphore</Heading>
+
+                    <Text fontSize={{ base: "16px", sm: "18px", md: "20px" }}>
                         Discover a curated showcase of innovative projects <br /> and applications developed using the
                         Semaphore Protocol.
                     </Text>
