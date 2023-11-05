@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Grid, GridItem, HStack, IconButton, Link, Stack, Text, VStack } from "@chakra-ui/react"
+import { Button, Grid, GridItem, HStack, IconButton, Link, Text, VStack } from "@chakra-ui/react"
 import { useCallback, useEffect, useState } from "react"
 import ProjectCard from "../components/ProjectCard"
 import allProjects from "../data/projects.json"
@@ -62,7 +62,7 @@ export default function ProjectsList(props: any) {
                 </HStack>
             </VStack>
 
-            <Stack direction={{ base: "column", md: "row" }} spacing="5" align="start">
+            <VStack align="left" spacing="6">
                 <Text fontSize="20">Category</Text>
 
                 <HStack spacing="3" flexWrap="wrap">
@@ -78,7 +78,7 @@ export default function ProjectsList(props: any) {
                         </Button>
                     ))}
                 </HStack>
-            </Stack>
+            </VStack>
 
             <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={6}>
                 {projects[index].map((project, i) => (
