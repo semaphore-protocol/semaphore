@@ -12,7 +12,7 @@ export default function Projects() {
                     w="100%"
                     h={{ base: "442", sm: "420", md: "393" }}
                     pos="absolute"
-                    bgImg="url('./section-3.png')"
+                    bgImg="url('https://semaphore.cedoor.dev/section-3.png')"
                     bgSize="100%"
                     bgPos="center"
                     bgRepeat="no-repeat"
