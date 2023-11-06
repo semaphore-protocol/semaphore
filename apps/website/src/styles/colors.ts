@@ -9,6 +9,8 @@ const colors = {
     alabaster: {
         300: "#B8B9C1",
         400: "#92939E",
+        600: "#5E5F6B",
+        800: "#42424A",
         950: "#26262B"
     },
     primary: {
