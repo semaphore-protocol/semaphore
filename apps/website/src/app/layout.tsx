@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en" suppressHydrationWarning={true}>
             <body suppressHydrationWarning={true}>
                 <Providers>
-                    <Container maxW="1440px" px="20">
+                    <Container maxW="1440px" px="10">
                         <Navbar />
                         {children}
                         <Footer />
