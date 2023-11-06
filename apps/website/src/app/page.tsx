@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardBody, Heading, HStack, Link, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Card, CardBody, Heading, HStack, Link, Stack, Text, VStack } from "@chakra-ui/react"
 import { Sora } from "next/font/google"
 import ProjectsCarousel from "../components/ProjectsCarousel"
 import events from "../data/events.json"
@@ -11,77 +11,78 @@ const sora = Sora({
 export default function Home() {
     return (
         <VStack>
-            <VStack h="724" justify="center" spacing="40">
+            <VStack h={{ base: "718", sm: "734", md: "724" }} justify="center" spacing="40">
                 <Box
                     zIndex="-1"
                     left="0"
                     w="100%"
-                    h="724"
+                    h={{ base: "718", sm: "734", md: "724" }}
                     pos="absolute"
                     bgImg="url('https://semaphore.cedoor.dev/section-1.png')"
-                    bgSize="100%"
+                    bgSize="cover"
                     bgPos="center"
                     bgRepeat="no-repeat"
                 />
 
                 <VStack spacing="4">
-                    <Heading fontSize="72px" textAlign="center">
+                    <Heading fontSize={{ base: "40px", sm: "46px", md: "72px" }} textAlign="center">
                         Anonymous interactions
                     </Heading>
-                    <Text fontSize="20px" align="center">
-                        Using zero knowledge, users can prove their group membership and send <br /> signals such as
-                        votes or endorsements without revealing their original identity.
+                    <Text fontSize={{ base: "16px", sm: "18px", md: "20px" }} align="center" maxW="800px">
+                        Using zero knowledge, users can prove their group membership and send signals such as votes or
+                        endorsements without revealing their original identity.
                     </Text>
                 </VStack>
 
-                <HStack spacing="8">
+                <Stack direction={{ base: "column", sm: "row" }} spacing="6" align="center">
                     <Link href="https://semaphore.pse.dev/docs/quick-setup" isExternal>
-                        <Button size="lg">Get Started</Button>
+                        <Button size={{ base: "md", md: "lg" }}>Get Started</Button>
                     </Link>
                     <Link href="https://demo.semaphore.pse.dev" isExternal>
-                        <Button size="lg" variant="outline">
+                        <Button size={{ base: "md", md: "lg" }} variant="outline">
                             Try the Demo
                         </Button>
                     </Link>
-                </HStack>
+                </Stack>
             </VStack>
 
             <VStack py="32" spacing="16">
-                <Heading fontSize="44px" textAlign="center">
+                <Heading fontSize={{ base: "30px", md: "44px" }} textAlign="center">
                     Explore projects built with Semaphore
                 </Heading>
 
                 <ProjectsCarousel />
             </VStack>
 
-            <Card
-                bg="darkBlue"
-                color="white"
-                borderRadius="18px"
-                padding="80px 60px 80px 60px"
-                width={{ base: "full", sm: "1110px" }}
-                height="680px"
-                my="28"
-            >
+            <Card bg="darkBlue" color="white" borderRadius="18px" padding="80px 60px 80px 60px" maxW="1110px" my="28">
                 <CardBody padding="0">
                     <VStack pb="90px">
-                        <Heading fontSize="44px" textAlign="center">
+                        <Heading fontSize={{ base: "30px", md: "44px" }} textAlign="center">
                             Semaphore Features
                         </Heading>
-                        <Text fontSize="20px" color="alabaster.400" align="center">
+                        <Text fontSize={{ base: "16px", md: "20px" }} color="alabaster.400" align="center">
                             Duis rhoncus, urna sit amet tristique commodo, turpis justo ullamcorper nisi,
                             <br /> nec dapibus augue nibh sed enim. Nam ultricies finibus fermentum.
                         </Text>
                     </VStack>
 
-                    <VStack spacing="12">
-                        <HStack align="top" justify="space-between" spacing="16">
+                    <VStack spacing="16">
+                        <Stack
+                            direction={{ base: "column", md: "row" }}
+                            align="top"
+                            justify="space-between"
+                            spacing="16"
+                        >
                             <HStack flex="1" align="top" spacing="6">
-                                <Heading fontSize="38px" color="#1E46F2" fontFamily={sora.style.fontFamily}>
+                                <Heading
+                                    fontSize={{ base: "30px", md: "38px" }}
+                                    color="#1E46F2"
+                                    fontFamily={sora.style.fontFamily}
+                                >
                                     1
                                 </Heading>
                                 <VStack align="left">
-                                    <Text fontSize="20px" fontFamily={sora.style.fontFamily}>
+                                    <Text fontSize={{ base: "18px", md: "20px" }} fontFamily={sora.style.fontFamily}>
                                         Simplify privacy
                                     </Text>
                                     <Text color="alabaster.400" fontSize="14px">
@@ -91,11 +92,15 @@ export default function Home() {
                                 </VStack>
                             </HStack>
                             <HStack flex="1" align="top" spacing="6">
-                                <Heading fontSize="38px" color="#1E46F2" fontFamily={sora.style.fontFamily}>
+                                <Heading
+                                    fontSize={{ base: "30px", md: "38px" }}
+                                    color="#1E46F2"
+                                    fontFamily={sora.style.fontFamily}
+                                >
                                     3
                                 </Heading>
                                 <VStack align="left">
-                                    <Text fontSize="20px" fontFamily={sora.style.fontFamily}>
+                                    <Text fontSize={{ base: "18px", md: "20px" }} fontFamily={sora.style.fontFamily}>
                                         Universal integrations
                                     </Text>
                                     <Text color="alabaster.400" fontSize="14px">
@@ -105,14 +110,23 @@ export default function Home() {
                                     </Text>
                                 </VStack>
                             </HStack>
-                        </HStack>
-                        <HStack align="top" justify="space-between" spacing="16">
+                        </Stack>
+                        <Stack
+                            direction={{ base: "column", md: "row" }}
+                            align="top"
+                            justify="space-between"
+                            spacing="16"
+                        >
                             <HStack flex="1" align="top" spacing="6">
-                                <Heading fontSize="38px" color="#1E46F2" fontFamily={sora.style.fontFamily}>
+                                <Heading
+                                    fontSize={{ base: "30px", md: "38px" }}
+                                    color="#1E46F2"
+                                    fontFamily={sora.style.fontFamily}
+                                >
                                     2
                                 </Heading>
                                 <VStack align="left">
-                                    <Text fontSize="20px" fontFamily={sora.style.fontFamily}>
+                                    <Text fontSize={{ base: "18px", md: "20px" }} fontFamily={sora.style.fontFamily}>
                                         Leverage Zero Knowledge
                                     </Text>
                                     <Text color="alabaster.400" fontSize="14px">
@@ -123,11 +137,15 @@ export default function Home() {
                                 </VStack>
                             </HStack>
                             <HStack flex="1" align="top" spacing="6">
-                                <Heading fontSize="38px" color="#1E46F2" fontFamily={sora.style.fontFamily}>
+                                <Heading
+                                    fontSize={{ base: "30px", md: "38px" }}
+                                    color="#1E46F2"
+                                    fontFamily={sora.style.fontFamily}
+                                >
                                     4
                                 </Heading>
                                 <VStack align="left">
-                                    <Text fontSize="20px" fontFamily={sora.style.fontFamily}>
+                                    <Text fontSize={{ base: "18px", md: "20px" }} fontFamily={sora.style.fontFamily}>
                                         Free open source software
                                     </Text>
                                     <Text color="alabaster.400" fontSize="14px">
@@ -136,27 +154,28 @@ export default function Home() {
                                     </Text>
                                 </VStack>
                             </HStack>
-                        </HStack>
+                        </Stack>
                     </VStack>
                 </CardBody>
             </Card>
 
-            <VStack h="759" justify="center" spacing="40" py="32">
+            <VStack justify="center" spacing="40" py="32" position="relative">
                 <Box
                     zIndex="-1"
-                    left="0"
-                    w="100%"
-                    h="759"
+                    left="50%"
+                    transform="translateX(-50%)"
+                    w="100vw"
+                    h="100%"
                     pos="absolute"
                     bgImg="url('https://semaphore.cedoor.dev/section-2.png')"
-                    bgSize="100%"
+                    bgSize="cover"
                     bgRepeat="no-repeat"
                 />
 
-                <HStack spacing="32">
+                <Stack direction={{ base: "column", md: "row" }} px={{ base: "0", md: "12" }} spacing="32">
                     <VStack maxW="450" align="left" spacing="8">
-                        <Heading fontSize="44px">Join the Semaphore community</Heading>
-                        <Text fontSize="18px">
+                        <Heading fontSize={{ base: "30px", md: "44px" }}>Join the Semaphore community</Heading>
+                        <Text fontSize={{ base: "16px", md: "18px" }}>
                             Ask questions, suggest ideas, stay up-to-date, and meet other people building privacy
                             applications with Zero Knowledge.
                         </Text>
@@ -181,10 +200,10 @@ export default function Home() {
                                 Upcoming Events
                             </Heading>
 
-                            <VStack align="left" spacing="10" maxH="500" overflowY="auto">
+                            <VStack align="left" spacing="10" maxH="600" overflowY="auto">
                                 {events.map((event) => (
                                     <VStack key={event.name} align="left">
-                                        <Heading fontSize="24px">
+                                        <Heading fontSize={{ base: "20px", md: "24px" }}>
                                             {event.date} | {event.name}
                                         </Heading>
                                         <Text fontSize="16px">{event.description}</Text>
@@ -193,7 +212,7 @@ export default function Home() {
                             </VStack>
                         </CardBody>
                     </Card>
-                </HStack>
+                </Stack>
             </VStack>
         </VStack>
     )
