@@ -266,9 +266,8 @@ await verifyProof(verificationKey, fullProof)`,
             </VStack>
             <VStack p={"128px 80px"}>
                 {sectionBlockTexts.map((sectionBlockText, i) => (
-                    <VStack>
+                    <VStack key={i}>
                         <SectionBlock
-                            key={i}
                             title={sectionBlockText.title}
                             description={sectionBlockText.description}
                             linkText={sectionBlockText.linkText}
