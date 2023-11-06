@@ -15,13 +15,15 @@ export default function ProjectCard({ tags, title, description }: ProjectCardPro
             border={"1px"}
             borderColor={"alabaster.950"}
             padding={"55px 34px 55px 34px"}
-            width={{ base: "full", sm: "404px" }}
+            width="full"
             height={"284.86px"}
             _hover={{ borderColor: "ceruleanBlue" }}
         >
             <HStack gap={"8px"} mb={"2rem"}>
                 {tags.map((tag, i) => (
-                    <Tag key={i}>{tag}</Tag>
+                    <Tag variant="outline" key={i}>
+                        {tag}
+                    </Tag>
                 ))}
             </HStack>
             <CardBody padding={0}>

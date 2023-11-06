@@ -11,7 +11,9 @@ export default function Navbar() {
 
     return (
         <HStack py="7" justify="space-between">
-            <Image width="148" height="40" src="./semaphore-logo.svg" alt="Semaphore logo" />
+            <Link as={NextLink} href="/">
+                <Image width="148" height="40" src="./semaphore-logo.svg" alt="Semaphore logo" />
+            </Link>
             <HStack fontSize="18px" spacing="10">
                 <Link
                     as={NextLink}
