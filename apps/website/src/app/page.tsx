@@ -46,7 +46,7 @@ export default function Home() {
                 </Stack>
             </VStack>
 
-            <VStack py="32" spacing="16">
+            <VStack py="32" spacing="16" w="full">
                 <Heading fontSize={{ base: "30px", md: "44px" }} textAlign="center">
                     Explore projects built with Semaphore
                 </Heading>
@@ -54,7 +54,15 @@ export default function Home() {
                 <ProjectsCarousel />
             </VStack>
 
-            <Card bg="darkBlue" color="white" borderRadius="18px" padding="80px 60px 80px 60px" maxW="1110px" my="28">
+            <Card
+                bg="darkBlue"
+                color="white"
+                borderRadius="18px"
+                padding="80px 60px 80px 60px"
+                maxW="1110px"
+                mt="20"
+                mb="28"
+            >
                 <CardBody padding="0">
                     <VStack pb="90px">
                         <Heading fontSize={{ base: "30px", md: "44px" }} textAlign="center">
