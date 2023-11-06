@@ -1,4 +1,4 @@
-import type Projects from "../data/projects-mock.json"
+import type Projects from "../data/projects.json"
 
 /**
  * Iterates over a list of project objects, each with its own collection of tags,
