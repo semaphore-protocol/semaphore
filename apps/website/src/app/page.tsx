@@ -18,7 +18,7 @@ export default function Home() {
                     w="100%"
                     h="724"
                     pos="absolute"
-                    bgImg="url('./section-1.png')"
+                    bgImg="url('https://semaphore.cedoor.dev/section-1.png')"
                     bgSize="100%"
                     bgPos="center"
                     bgRepeat="no-repeat"
@@ -148,7 +148,7 @@ export default function Home() {
                     w="100%"
                     h="759"
                     pos="absolute"
-                    bgImg="url('./section-2.png')"
+                    bgImg="url('https://semaphore.cedoor.dev/section-2.png')"
                     bgSize="100%"
                     bgRepeat="no-repeat"
                 />
