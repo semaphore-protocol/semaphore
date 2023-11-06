@@ -30,7 +30,7 @@ export default function Projects() {
 
             <ProjectsList w="100%" align="left" pt="16" spacing="14" />
 
-            <VStack my={"128"}>
+            <VStack my="128px">
                 <ActionCard
                     title="Show what you have built"
                     description="We are missing your project! Add your project to this page and show your awesomeness to the world."
