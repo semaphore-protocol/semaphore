@@ -1,0 +1,37 @@
+[
+    {
+        "title": "To Mixers and Beyond: presenting Semaphore, a privacy gadget built on Ethereum",
+        "minRead": 8,
+        "date": "Sep 2, 2019",
+        "authors": ["Koh Wei Jie"],
+        "url": "https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b"
+    },
+    {
+        "title": "Community Proposal: Semaphore: Zero-Knowledge Signaling on Ethereum (Whitepaper v1)",
+        "minRead": 60,
+        "date": "February 2, 2020",
+        "authors": ["Barry Whitehat", "Kobi Gurkan", "Koh Wei Jie"],
+        "url": "https://semaphore.pse.dev/whitepaper-v1.pdf"
+    },
+    {
+        "title": "Release announcement: Semaphore, a zero-knowledge gadget for Ethereum",
+        "minRead": 4,
+        "date": "Mar 3, 2020",
+        "authors": ["Koh Wei Jie"],
+        "url": "https://weijiek.medium.com/release-announcement-semaphore-a-zero-knowledge-gadget-for-ethereum-5b671cd360d4"
+    },
+    {
+        "title": "Semaphore v3 Announcement",
+        "minRead": 4,
+        "date": "Feb 8, 2023",
+        "authors": ["PSE"],
+        "url": "https://mirror.xyz/privacy-scaling-explorations.eth/Yi4muh-vzDZmIqJIcM9Mawu2e7jw8MRnwxvhFcyfns8"
+    },
+    {
+        "title": "Brief Introduction of Semaphore, a Zero-knowledge Group Membership Protocol",
+        "minRead": 7,
+        "date": "Oct 30th 2023",
+        "authors": ["Laszlo Fazekas"],
+        "url": "https://hackernoon.com/brief-introduction-of-semaphore-a-zero-knowledge-group-membership-protocol"
+    }
+]
