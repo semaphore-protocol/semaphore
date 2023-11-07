@@ -73,7 +73,10 @@ export default function Navbar() {
                                 </HStack>
                             </Link>
 
-                            <Link href="" isExternal>
+                            <Link
+                                href="https://github.com/semaphore-protocol/semaphore/discussions/categories/website"
+                                isExternal
+                            >
                                 <HStack>
                                     <IconThumbsUp boxSize="16px" />
                                     <Heading fontSize="14px" fontWeight="normal">
