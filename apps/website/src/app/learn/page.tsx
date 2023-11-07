@@ -279,11 +279,13 @@ await verifyProof(verificationKey, fullProof)`,
                     </VStack>
                 ))}
             </VStack>
-            <VStack backgroundColor={"darkBlue"} w={"100vw"}>
-                <VStack mt={"128px"}>
+
+            <VStack backgroundColor={"darkBlue"}>
+                <VStack mt={"128px"} w="full">
                     <MediaCarousel />
                 </VStack>
-                <VStack mt={"96px"} mb={"66px"}>
+
+                <VStack mt={"96px"} mb={"66px"} w={"full"}>
                     <ArticlesCarousel />
                 </VStack>
             </VStack>
