@@ -64,15 +64,9 @@ export default function Home() {
                 mb="28"
             >
                 <CardBody padding="0">
-                    <VStack pb="90px">
-                        <Heading fontSize={{ base: "30px", md: "44px" }} textAlign="center">
-                            Semaphore Features
-                        </Heading>
-                        <Text fontSize={{ base: "16px", md: "20px" }} color="alabaster.400" align="center">
-                            Duis rhoncus, urna sit amet tristique commodo, turpis justo ullamcorper nisi,
-                            <br /> nec dapibus augue nibh sed enim. Nam ultricies finibus fermentum.
-                        </Text>
-                    </VStack>
+                    <Heading fontSize={{ base: "30px", md: "44px" }} textAlign="center" pb="90px">
+                        Semaphore Features
+                    </Heading>
 
                     <VStack spacing="16">
                         <Stack
