@@ -1,14 +1,16 @@
-import { Divider, Heading, HStack, Link, Text, VStack } from "@chakra-ui/react"
+import { Divider, Heading, HStack, Link, Stack, Text, VStack } from "@chakra-ui/react"
 import Image from "next/image"
 import NextLink from "next/link"
 import IconArrowUpRight from "../icons/IconArrowUpRight"
 import IconDiscord from "../icons/IconDiscord"
+import IconThumbsUp from "../icons/IconThumbsUp"
 
 export default function Footer() {
     return (
-        <VStack py="7" justify="space-between" h="611px" pt="28" pb="10">
-            <Image width="79" height="158" src="./semaphore-icon.svg" alt="Semaphore logo" />
-            <HStack fontSize="18px" spacing="10">
+        <VStack py="7" justify="space-between" pt="28" pb="10" spacing="14">
+            <Image width="75" height="158" src="./semaphore-icon.svg" alt="Semaphore logo" />
+
+            <Stack direction={{ base: "column", md: "row" }} align="center" fontSize="18px" spacing="10">
                 <Link as={NextLink} href="/projects">
                     <Heading fontSize="18px" fontWeight="normal">
                         Projects
@@ -48,22 +50,33 @@ export default function Footer() {
                         <IconArrowUpRight width="10px" mb={1} />
                     </HStack>
                 </Link>
-            </HStack>
+            </Stack>
 
             <Divider />
 
-            <Link href="https://semaphore.pse.dev/discord" isExternal>
-                <HStack>
-                    <IconDiscord width="24px" />
-                    <Heading fontSize="18px" fontWeight="normal">
-                        Discord
-                    </Heading>
-                </HStack>
-            </Link>
+            <VStack spacing="5">
+                <Link href="https://semaphore.pse.dev/discord" isExternal>
+                    <HStack>
+                        <IconDiscord boxSize={{ base: "16px", md: "24px" }} />
+                        <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
+                            Discord
+                        </Heading>
+                    </HStack>
+                </Link>
 
-            <Text fontSize="14px" color="text.500">
-                Copyright © 2023 Ethereum Foundation
-            </Text>
+                <Link href="" isExternal>
+                    <HStack>
+                        <IconThumbsUp boxSize={{ base: "16px", md: "24px" }} />
+                        <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
+                            Give feedback about the website
+                        </Heading>
+                    </HStack>
+                </Link>
+
+                <Text fontSize={{ base: "12px", md: "14px" }} color="text.500" pt="2">
+                    Copyright © 2023 Ethereum Foundation
+                </Text>
+            </VStack>
         </VStack>
     )
 }
