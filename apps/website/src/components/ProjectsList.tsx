@@ -7,6 +7,7 @@ import allProjects from "../data/projects.json"
 import IconChevronLeft from "../icons/IconChevronLeft"
 import IconChevronRight from "../icons/IconChevronRight"
 import IconCommunity from "../icons/IconCommunity"
+import IconPSE from "../icons/IconPSE"
 import { chunkArray } from "../utils/chunkArray"
 import { getProjectTags } from "../utils/getProjectTags"
 
@@ -44,6 +45,7 @@ export default function ProjectsList(props: any) {
                 <HStack spacing="4" flexWrap="wrap">
                     <Button
                         size="lg"
+                        leftIcon={<IconPSE />}
                         variant={onlyPSE === true ? "solid" : "outline"}
                         colorScheme={onlyPSE === true ? "primary" : "inherit"}
                         onClick={() => setOnlyPSE(onlyPSE === true ? null : true)}
