@@ -1,5 +1,3 @@
-"use client"
-
 import { Flex, useClipboard, Button } from "@chakra-ui/react"
 import { CodeBlock, ocean } from "react-code-blocks"
 

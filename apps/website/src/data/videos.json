@@ -3,7 +3,7 @@
         "title": "Snarks for mixing, signaling and scaling",
         "eventName": "Devcon4",
         "date": "Dec 10, 2018",
-        "speakerss": ["Barry Whitehat"],
+        "speakers": ["Barry Whitehat"],
         "url": "https://youtu.be/lv6iK9qezBY",
         "embeddedUrl": "https://www.youtube.com/embed/lv6iK9qezBY?si=3HDxcxjELRCjrLJo"
     },
@@ -11,7 +11,7 @@
         "title": "Succinct Proofs in Ethereum",
         "eventName": "2nd ZKProof Workshop",
         "date": "Apr 30, 2019",
-        "speakerss": ["Barry Whitehat"],
+        "speakers": ["Barry Whitehat"],
         "url": "https://youtu.be/TtsDNneTDDY",
         "embeddedUrl": "https://www.youtube.com/embed/TtsDNneTDDY?si=UmRq7i4B0gm7bvfx"
     },
