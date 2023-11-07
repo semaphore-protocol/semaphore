@@ -9,8 +9,8 @@ export type ActionCardProps = {
 export default function ActionCard({ title, description, buttonText }: ActionCardProps) {
     return (
         <Card
-            bg={"white"}
-            textColor={"darkBlue1"}
+            bg={"darkBlue"}
+            textColor={"white"}
             borderRadius={"24px"}
             width={{ base: "full", xl: "1110px" }}
             height={{ base: "full", xl: "244px" }}
@@ -24,7 +24,7 @@ export default function ActionCard({ title, description, buttonText }: ActionCar
                     gap={{ base: "2rem", md: "0" }}
                 >
                     <Stack width={{ base: "full", md: "522px" }}>
-                        <Heading fontSize={"40px"} lineHeight={"44px"} fontWeight={"normal"} textColor={"darkBlueBg"}>
+                        <Heading fontSize={"40px"} lineHeight={"44px"} fontWeight={"normal"} textColor={"white"}>
                             {title}
                         </Heading>
                         <Text
