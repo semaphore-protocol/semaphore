@@ -1,53 +1,70 @@
 "use client"
 
-import { Box, HStack, IconButton, Link, Stack, useBreakpointValue } from "@chakra-ui/react"
+import { Box, HStack, IconButton, Link, VStack, useBreakpointValue } from "@chakra-ui/react"
 import NextLink from "next/link"
-import { useCallback, useEffect, useState } from "react"
-import allProjects from "../data/projects.json"
+import { useCallback, useState } from "react"
+import projects from "../data/projects.json"
 import IconArrowLeft from "../icons/IconArrowLeft"
 import IconArrowRight from "../icons/IconArrowRight"
-import { circularSlice } from "../utils/circularSlice"
 import ProjectCard from "./ProjectCard"
 
 export default function ProjectsCarousel() {
-    const variant = useBreakpointValue(
-        {
-            base: 3,
-            sm: 3,
-            md: 2,
-            lg: 3
-        },
-        {
-            fallback: "md"
-        }
-    )
-
-    const [projects, setProjects] = useState<typeof allProjects>()
     const [index, setIndex] = useState<number>(0)
-
-    useEffect(() => {
-        setProjects(circularSlice(allProjects, index, variant!))
-    }, [index, variant])
+    const numberOfItems = useBreakpointValue({
+        md: 2,
+        lg: 3
+    })
 
     const nextProject = useCallback(() => {
-        setIndex((i) => (i + 1) % allProjects.length)
-    }, [index])
+        if (index + 1 === Math.ceil(projects.length / numberOfItems!)) {
+            setIndex(0)
+        } else {
+            setIndex((prevIndex) => prevIndex + 1)
+        }
+    }, [index, numberOfItems])
 
     const previousProject = useCallback(() => {
-        setIndex((i) => (i === 0 ? allProjects.length - 1 : i - 1))
+        if (index === 0) {
+            setIndex(Math.ceil(projects.length / numberOfItems!) - 1)
+        } else {
+            setIndex((prevIndex) => prevIndex - 1)
+        }
     }, [index])
 
     return (
         <>
-            <Stack direction={{ base: "column", md: "row" }} spacing="8">
-                {projects &&
-                    projects.map((project) => (
-                        <Link flex="1" key={project.name} href={project.links.github} isExternal>
-                            <ProjectCard title={project.name} description={project.tagline} tags={project.tags} />
+            <HStack display={{ base: "none", md: "flex" }} w="full" overflow="hidden">
+                <HStack
+                    w="full"
+                    transition="transform 0.4s ease-in-out"
+                    transform={`translateX(-${index * 100}%)`}
+                    py="1"
+                    spacing="0"
+                >
+                    {projects.map((project) => (
+                        <Link
+                            minW={{ md: `${100 / 2}%`, lg: `${100 / 3}%` }}
+                            key={project.name}
+                            href={project.links.github}
+                            isExternal
+                        >
+                            <Box px="3">
+                                <ProjectCard title={project.name} description={project.tagline} tags={project.tags} />
+                            </Box>
                         </Link>
                     ))}
-            </Stack>
-            <HStack display={{ base: "none", md: "block" }} w="100%">
+                </HStack>
+            </HStack>
+
+            <VStack display={{ base: "flex", md: "none" }} spacing="3">
+                {projects.slice(0, 3).map((project) => (
+                    <Link w="full" key={project.name} href={project.links.github} isExternal>
+                        <ProjectCard title={project.name} description={project.tagline} tags={project.tags} />
+                    </Link>
+                ))}
+            </VStack>
+
+            <HStack display={{ base: "none", md: "flex" }} w="100%">
                 <Box flex="1" />
 
                 <HStack flex="1" justify="center">
