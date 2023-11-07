@@ -6,7 +6,21 @@ import Providers from "./providers"
 
 export const metadata: Metadata = {
     title: "Semaphore",
-    description: "A zero-knowledge protocol for anonymous signaling on Ethereum."
+    description: "A zero-knowledge protocol for anonymous signaling on Ethereum.",
+    icons: { icon: "/icon.svg", apple: "/apple-icon.png" },
+    openGraph: {
+        type: "website",
+        url: "semaphore.pse.dev",
+        title: "Semaphore",
+        description: "A zero-knowledge protocol for anonymous signaling on Ethereum.",
+        siteName: "Semaphore",
+        images: [
+            {
+                url: "/social-media.png"
+            }
+        ]
+    },
+    twitter: { card: "summary_large_image", images: "/social-media.png" }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
