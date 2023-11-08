@@ -130,7 +130,7 @@ export default function Build() {
                     </VStack>
                 </Flex>
                 <Image
-                    src="https://semaphore.cedoor.dev/flower-shadow.png"
+                    src="https://semaphore.cedoor.dev/flower-shadow.jpg"
                     width={727}
                     height={630}
                     style={{ maxHeight: "630px" }}
