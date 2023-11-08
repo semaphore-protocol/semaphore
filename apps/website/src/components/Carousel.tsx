@@ -8,6 +8,7 @@ import projects from "../data/projects.json"
 import videos from "../data/videos.json"
 import IconArrowLeft from "../icons/IconArrowLeft"
 import IconArrowRight from "../icons/IconArrowRight"
+import { getDataLength } from "../utils/getDataLength"
 import ArticleCard from "./ArticleCard"
 import ProjectCard from "./ProjectCard"
 import VideoCard from "./VideoCard"
@@ -28,7 +29,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
     const size = useBreakpointValue<number>(sizes)
 
     const nextProject = useCallback(() => {
-        if (index + 1 === Math.ceil(projects.length / size!)) {
+        if (index + 1 === Math.ceil(getDataLength(type) / size!)) {
             setIndex(0)
         } else {
             setIndex((prevIndex) => prevIndex + 1)
@@ -37,7 +38,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
 
     const previousProject = useCallback(() => {
         if (index === 0) {
-            setIndex(Math.ceil(projects.length / size!) - 1)
+            setIndex(Math.ceil(getDataLength(type) / size!) - 1)
         } else {
             setIndex((prevIndex) => prevIndex - 1)
         }
