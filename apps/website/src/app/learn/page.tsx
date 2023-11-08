@@ -25,6 +25,10 @@ import IconBadge from "@/icons/IconBadge"
 import IconCheck from "@/icons/IconCheck"
 import IconFlag from "@/icons/IconFlag"
 import Carousel from "@/components/Carousel"
+import videos from "../../data/videos.json"
+import VideoCard from "../../components/VideoCard"
+import articles from "../../data/articles.json"
+import ArticleCard from "../../components/ArticleCard"
 
 export default function Learn() {
     const infoCardTexts: InfoBlock[][] = [
@@ -305,7 +309,6 @@ await verifyProof(verificationKey, fullProof)`,
                 </Tabs>
             </VStack>
 
-
             <VStack p={{ base: "128px 20px", md: "128px 80px" }}>
                 {sectionBlockTexts.map((sectionBlockText, i) => (
                     <VStack key={i}>
@@ -333,7 +336,7 @@ await verifyProof(verificationKey, fullProof)`,
                     pos="absolute"
                 ></Box>
 
-                <VStack p="100px 40px" w="full" spacing="20">
+                <VStack display={{ base: "none", xl: "block" }} p="100px 40px" w="full" spacing="20">
                     <Carousel
                         title="Videos"
                         sizes={{
@@ -354,6 +357,28 @@ await verifyProof(verificationKey, fullProof)`,
                         type="articles"
                     />
                 </VStack>
+                <Text display={{ base: "flex", xl: "none" }} flex="1" alignSelf={"start"} fontSize="44px" fontWeight={"500"} mt={"100px"}>
+                    Videos
+                </Text>
+                <Flex display={{ base: "flex", xl: "none" }} w={"100%"} overflowX={"auto"}>
+                    {videos.map((video, i) => (
+                        <VStack key={i}>
+                            <Box px="3">
+                                <VideoCard key={i} title={video.title} embeddedVideoUrl={video.embeddedUrl} />
+                            </Box>
+                        </VStack>
+                    ))}
+                </Flex>
+                <Text display={{ base: "flex", xl: "none" }} flex="1" alignSelf={"start"} fontSize="44px" fontWeight={"500"} mt={"96px"}>
+                    Articles
+                </Text>
+                <Flex display={{ base: "flex", xl: "none" }} w={"100%"} overflowX={"auto"} mb={"66px"}>
+                    {articles.map((article, i) => (
+                        <VStack key={i}>
+                            <ArticleCard key={i} title={article.title} minRead={article.minRead} url={article.url} />
+                        </VStack>
+                    ))}
+                </Flex>
             </VStack>
         </VStack>
     )
