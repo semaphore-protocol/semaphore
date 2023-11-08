@@ -175,7 +175,7 @@ await verifyProof(verificationKey, fullProof)`,
 
     const renderTabBlockSemaphore = () => (
         <VStack>
-            <VStack w={"720px"}>
+            <VStack w={{ base: "auto", md: "720px" }}>
                 <Text fontSize={"44px"} fontWeight={"500"}>
                     Semaphore: Anonymous interactions
                 </Text>
@@ -186,7 +186,7 @@ await verifyProof(verificationKey, fullProof)`,
                 </Text>
             </VStack>
             <VStack mt={"40px"}>
-                <Flex gap={"32px"}>
+                <Flex wrap={{ base: "wrap", lg: "nowrap" }} justify={"center"} alignItems={"center"} gap={"32px"}>
                     <VStack>
                         <Text fontSize={"30px"} fontWeight={"500"}>
                             Principles
@@ -206,7 +206,7 @@ await verifyProof(verificationKey, fullProof)`,
 
     const renderTabBlockZeroKnowledge = () => (
         <VStack>
-            <VStack w={"720px"}>
+            <VStack w={{ base: "auto", md: "720px" }}>
                 <Text fontSize={"44px"} fontWeight={"500"}>
                     Zero Knowledge: new cryptography
                 </Text>
@@ -240,8 +240,16 @@ await verifyProof(verificationKey, fullProof)`,
 
     return (
         <VStack>
-            <VStack h="1300px" position="relative">
-                <Box zIndex="-1" left="50%" transform="translateX(-50%)" w="100vw" h="100%" pos="absolute">
+            <VStack h={{ base: "2100px", md: "1800px", lg: "1300px" }} position="relative">
+                <Box
+                    display={{ base: "none", md: "block" }}
+                    zIndex="-1"
+                    left={"50%"}
+                    transform="translateX(-50%)"
+                    w="100vw"
+                    h="100%"
+                    pos="absolute"
+                >
                     <Image
                         alt="Guy shadow image"
                         src="https://semaphore.cedoor.dev/guy-shadow-horizontal.png"
@@ -254,7 +262,34 @@ await verifyProof(verificationKey, fullProof)`,
                     />
                 </Box>
 
-                <Tabs position="relative" variant="unstyled" align={"center"} mt={"170px"}>
+                <Box
+                    display={{ base: "block", lg: "none" }}
+                    zIndex="-1"
+                    left={"50%"}
+                    transform="translateX(-50%)"
+                    w="100vw"
+                    h="100%"
+                    pos="absolute"
+                >
+                    <Image
+                        alt="Guy shadow image"
+                        src="https://semaphore.cedoor.dev/guy-shadow.png"
+                        quality="100"
+                        sizes="100vw"
+                        fill
+                        style={{
+                            objectFit: "cover"
+                        }}
+                    />
+                </Box>
+
+                <Tabs
+                    position="relative"
+                    variant="unstyled"
+                    align={"center"}
+                    mt={{ base: "100px", md: "170px" }}
+                    mb={{ base: "50px", md: "112px" }}
+                >
                     <TabList gap={"40px"}>
                         <Tab px={0} fontSize={"24px"}>
                             About Semaphore
@@ -270,7 +305,8 @@ await verifyProof(verificationKey, fullProof)`,
                     </TabPanels>
                 </Tabs>
             </VStack>
-            <VStack p={"128px 80px"}>
+
+            <VStack p={{ base: "128px 20px", md: "128px 80px" }}>
                 {sectionBlockTexts.map((sectionBlockText, i) => (
                     <VStack key={i}>
                         <SectionBlock
@@ -286,12 +322,13 @@ await verifyProof(verificationKey, fullProof)`,
                 ))}
             </VStack>
 
-            <VStack backgroundColor={"darkBlue"} w={"100vw"}>
-                <VStack mt={"128px"} w="full" px={"80px"}>
+            <VStack w={"100%"}>
+                <Box zIndex={"-1"} backgroundColor={"darkBlue"} w={"100vw"} h={"1090px"} position={"absolute"}/>
+                <VStack mt={"128px"} w="full" px={{base:"20px", md: "80px"}}>
                     <MediaCarousel />
                 </VStack>
 
-                <VStack mt={"96px"} mb={"66px"} w={"full"} px={"80px"}>
+                <VStack mt={"96px"} mb={"66px"} w={"full"} px={{base:"20px", md: "80px"}}>
                     <ArticlesCarousel />
                 </VStack>
             </VStack>

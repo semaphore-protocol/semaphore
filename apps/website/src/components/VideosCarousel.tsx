@@ -61,7 +61,7 @@ export default function VideosCarousel() {
                     transition="transform 0.4s ease-in-out"
                     transform={`translateX(-${index * 100}%)`}
                     py="1"
-                    spacing="0"
+                    spacing="30px"
                 >
                     {videos.map((video, i) => (
                         <VStack key={i} minW={{ base: `${100 / 1}%`, md: `${100 / 2}%`, lg: `${100 / 4}%` }}>

@@ -22,10 +22,10 @@ export type SectionBlockProps = {
 export default function SectionBlock({ title, description, linkText, linkUrl, codeText, itemList }: SectionBlockProps) {
     return (
         <VStack>
-            <Flex justify={"space-around"} gap={"52px"}>
-                <VStack alignItems={"start"} gap={"32px"}>
+            <Flex justify={{ base: "start", xl: "space-around" }} wrap={{ base: "wrap", xl: "nowrap" }} gap={"52px"}>
+                <VStack w={{ base: "auto", lg: "602px" }} alignItems={{ base: "start", xl: "center" }} gap={"32px"}>
                     <Text fontSize={"44px"}>{title}</Text>
-                    <Text w={"602px"} fontSize={"18px"} textColor={"alabaster.400"}>
+                    <Text fontSize={"18px"} textColor={"alabaster.400"}>
                         {description}
                     </Text>
                     <Link
@@ -48,9 +48,16 @@ export default function SectionBlock({ title, description, linkText, linkUrl, co
                         <IconArrowRight width="14px" />
                     </Link>
                 </VStack>
+
                 <CodekBlock text={codeText} />
             </Flex>
-            <Flex mt={"80px"} gap={"40px"} justify={"start"} alignItems={"center"}>
+            <Flex
+                mt={"80px"}
+                gap={"40px"}
+                justify={"start"}
+                alignItems={"center"}
+                wrap={{ base: "wrap", xl: "nowrap" }}
+            >
                 {itemList.map((item, i) => (
                     <VStack key={i} alignItems={"start"}>
                         <VStack>{item.icon}</VStack>
@@ -61,7 +68,6 @@ export default function SectionBlock({ title, description, linkText, linkUrl, co
                     </VStack>
                 ))}
             </Flex>
-            <VStack></VStack>
         </VStack>
     )
 }
