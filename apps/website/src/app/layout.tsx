@@ -8,9 +8,10 @@ export const metadata: Metadata = {
     title: "Semaphore",
     description: "A zero-knowledge protocol for anonymous signaling on Ethereum.",
     icons: { icon: "/icon.svg", apple: "/apple-icon.png" },
+    metadataBase: new URL("https://website.semaphore.pse.dev"),
     openGraph: {
         type: "website",
-        url: "semaphore.pse.dev",
+        url: "https://website.semaphore.pse.dev",
         title: "Semaphore",
         description: "A zero-knowledge protocol for anonymous signaling on Ethereum.",
         siteName: "Semaphore",
