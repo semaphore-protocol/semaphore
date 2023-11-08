@@ -15,7 +15,6 @@ import {
 import Image from "next/image"
 import InfoCard, { InfoBlock } from "../../components/InfoCard"
 import SectionBlock, { SectionBlockProps } from "../../components/SectionBlock"
-import MediaCarousel from "../../components/VideosCarousel"
 import IconEyelash from "@/icons/IconEyelash"
 import IconEye from "@/icons/IconEye"
 import IconUser from "@/icons/IconUser"
@@ -25,7 +24,7 @@ import IconGroup from "@/icons/IconGroup"
 import IconBadge from "@/icons/IconBadge"
 import IconCheck from "@/icons/IconCheck"
 import IconFlag from "@/icons/IconFlag"
-import ArticlesCarousel from "@/components/ArticlesCarousel"
+import Carousel from "@/components/Carousel"
 
 export default function Learn() {
     const infoCardTexts: InfoBlock[][] = [
@@ -270,6 +269,7 @@ await verifyProof(verificationKey, fullProof)`,
                     </TabPanels>
                 </Tabs>
             </VStack>
+
             <VStack p={"128px 80px"}>
                 {sectionBlockTexts.map((sectionBlockText, i) => (
                     <VStack key={i}>
@@ -286,13 +286,37 @@ await verifyProof(verificationKey, fullProof)`,
                 ))}
             </VStack>
 
-            <VStack backgroundColor={"darkBlue"} w={"100vw"}>
-                <VStack mt={"128px"} w="full" px={"80px"}>
-                    <MediaCarousel />
-                </VStack>
+            <VStack w="full" position="relative">
+                <Box
+                    backgroundColor="darkBlue"
+                    zIndex="-1"
+                    left="50%"
+                    transform="translateX(-50%)"
+                    w="100vw"
+                    h="100%"
+                    pos="absolute"
+                ></Box>
 
-                <VStack mt={"96px"} mb={"66px"} w={"full"} px={"80px"}>
-                    <ArticlesCarousel />
+                <VStack p="100px 40px" w="full" spacing="20">
+                    <Carousel
+                        title="Videos"
+                        sizes={{
+                            base: 1,
+                            md: 2,
+                            lg: 4
+                        }}
+                        type="videos"
+                    />
+
+                    <Carousel
+                        title="Articles"
+                        sizes={{
+                            base: 1,
+                            md: 2,
+                            lg: 4
+                        }}
+                        type="articles"
+                    />
                 </VStack>
             </VStack>
         </VStack>
