@@ -14,17 +14,15 @@ export default function CodekBlock({ text }: CodekBlockProps) {
         showLineNumbers: false,
         wrapLines: true,
         theme: ocean,
-        customStyle: { background: "transparent", overflow: "auto", paddingRight: "70px" }
+        customStyle: { background: "transparent", overflow: "auto", padding: "24px", paddingRight: "120px", paddingTop: "40px" }
     }
     return (
         <Flex
             overflow={"auto"}
             gap={"200px"}
             justify={"space-around"}
-            w={"602px"}
-            h={"auto"}
+            w={{base: "300px", md: "602px"}}
             position={"relative"}
-            p={"24px"}
             borderRadius={"8px"}
             backgroundColor={"darkBlue"}
         >
