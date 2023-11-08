@@ -5,12 +5,17 @@ import NextLink from "next/link"
 import { usePathname } from "next/navigation"
 import IconArrowUpRight from "../icons/IconArrowUpRight"
 
-export default function NavbarLinks() {
+export type NavbarProps = {
+    onClick?: () => void
+}
+
+export default function NavbarLinks({ onClick }: NavbarProps) {
     const pathname = usePathname()
 
     return (
         <>
             <Link
+                onClick={onClick}
                 as={NextLink}
                 href="/projects"
                 variant="navlink"
@@ -21,6 +26,7 @@ export default function NavbarLinks() {
                 </Heading>
             </Link>
             <Link
+                onClick={onClick}
                 as={NextLink}
                 href="/learn"
                 variant="navlink"
@@ -31,6 +37,7 @@ export default function NavbarLinks() {
                 </Heading>
             </Link>
             <Link
+                onClick={onClick}
                 as={NextLink}
                 href="/build"
                 variant="navlink"
