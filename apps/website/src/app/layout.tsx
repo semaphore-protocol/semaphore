@@ -17,11 +17,11 @@ export const metadata: Metadata = {
         siteName: "Semaphore",
         images: [
             {
-                url: "/social-media.png"
+                url: "https://website.semaphore.pse.dev/social-media.png"
             }
         ]
     },
-    twitter: { card: "summary_large_image", images: "/social-media.png" }
+    twitter: { card: "summary_large_image", images: "https://website.semaphore.pse.dev/social-media.png" }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
