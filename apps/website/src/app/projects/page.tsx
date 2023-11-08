@@ -1,22 +1,31 @@
 import { Box, Heading, Text, VStack } from "@chakra-ui/react"
+import Image from "next/image"
 import ActionCard from "../../components/ActionCard"
-import ProjectsList from "@/components/ProjectsList"
+import ProjectsList from "../../components/ProjectsList"
 
 export default function Projects() {
     return (
         <VStack>
-            <VStack h={{ base: "442", sm: "420", md: "393" }} w="100%" justify="end" align="left" spacing="40">
-                <Box
-                    zIndex="-1"
-                    left="0"
-                    w="100%"
-                    h={{ base: "442", sm: "420", md: "393" }}
-                    pos="absolute"
-                    bgImg="url('https://semaphore.cedoor.dev/section-3.png')"
-                    bgSize="100%"
-                    bgPos="center"
-                    bgRepeat="no-repeat"
-                />
+            <VStack
+                h={{ base: "442", sm: "420", md: "393" }}
+                w="100%"
+                justify="end"
+                align="left"
+                spacing="40"
+                position="relative"
+            >
+                <Box zIndex="-1" left="50%" transform="translateX(-50%)" w="100vw" h="100%" pos="absolute">
+                    <Image
+                        alt="Blue texture image"
+                        src="https://semaphore.cedoor.dev/blue-texture.png"
+                        quality="100"
+                        sizes="100vw"
+                        fill
+                        style={{
+                            objectFit: "cover"
+                        }}
+                    />
+                </Box>
 
                 <VStack align="left" spacing="4" pb="16">
                     <Heading fontSize={{ base: "40px", sm: "46px", md: "72px" }}>Built with Semaphore</Heading>

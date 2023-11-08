@@ -1,5 +1,6 @@
 import { Box, Button, Card, CardBody, Heading, HStack, Link, Stack, Text, VStack } from "@chakra-ui/react"
 import { Sora } from "next/font/google"
+import Image from "next/image"
 import ProjectsCarousel from "../components/ProjectsCarousel"
 import events from "../data/events.json"
 import IconDiscord from "../icons/IconDiscord"
@@ -11,18 +12,19 @@ const sora = Sora({
 export default function Home() {
     return (
         <VStack>
-            <VStack h={{ base: "718", sm: "734", md: "724" }} justify="center" spacing="40">
-                <Box
-                    zIndex="-1"
-                    left="0"
-                    w="100%"
-                    h={{ base: "718", sm: "734", md: "724" }}
-                    pos="absolute"
-                    bgImg="url('https://semaphore.cedoor.dev/section-1.png')"
-                    bgSize="cover"
-                    bgPos="center"
-                    bgRepeat="no-repeat"
-                />
+            <VStack h={{ base: "718", sm: "734", md: "724" }} justify="center" spacing="40" position="relative">
+                <Box zIndex="-1" left="50%" transform="translateX(-50%)" w="100vw" h="100%" pos="absolute">
+                    <Image
+                        alt="Midnight whispers image"
+                        src="https://semaphore.cedoor.dev/midnight-whispers.png"
+                        quality="100"
+                        sizes="100vw"
+                        fill
+                        style={{
+                            objectFit: "cover"
+                        }}
+                    />
+                </Box>
 
                 <VStack spacing="4">
                     <Heading fontSize={{ base: "40px", sm: "46px", md: "72px" }} textAlign="center">
@@ -162,17 +164,18 @@ export default function Home() {
             </Card>
 
             <VStack justify="center" spacing="40" py="32" position="relative">
-                <Box
-                    zIndex="-1"
-                    left="50%"
-                    transform="translateX(-50%)"
-                    w="100vw"
-                    h="100%"
-                    pos="absolute"
-                    bgImg="url('https://semaphore.cedoor.dev/section-2.png')"
-                    bgSize="cover"
-                    bgRepeat="no-repeat"
-                />
+                <Box zIndex="-1" left="50%" transform="translateX(-50%)" w="100vw" h="100%" pos="absolute">
+                    <Image
+                        alt="Fluttering shadow image"
+                        src="https://semaphore.cedoor.dev/shadow-flutter.png"
+                        quality="100"
+                        sizes="100vw"
+                        fill
+                        style={{
+                            objectFit: "cover"
+                        }}
+                    />
+                </Box>
 
                 <Stack direction={{ base: "column", md: "row" }} px={{ base: "0", md: "12" }} spacing="32">
                     <VStack maxW="450" align="left" spacing="8">
