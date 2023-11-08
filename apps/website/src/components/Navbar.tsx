@@ -56,7 +56,7 @@ export default function Navbar() {
 
                     <DrawerBody>
                         <VStack spacing="8" mt="20">
-                            <NavbarLinks />
+                            <NavbarLinks onClick={onClose} />
                         </VStack>
                     </DrawerBody>
 
