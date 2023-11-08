@@ -9,7 +9,8 @@ import {
     Tab,
     TabPanel,
     TabIndicator,
-    Divider
+    Divider,
+    Box
 } from "@chakra-ui/react"
 import Image from "next/image"
 import InfoCard, { InfoBlock } from "../../components/InfoCard"
@@ -82,7 +83,7 @@ export default function Learn() {
             codeText: `import { Identity } from "@semaphore-protocol/identity"
 
 const identity = new Identity()
-        
+
 const trapdoor = identity.getTrapdoor()
 const nullifier = identity.getNullifier()
 const commitment = identity.generateCommitment()`,
@@ -113,7 +114,7 @@ const commitment = identity.generateCommitment()`,
             codeText: `import { Group } from "@semaphore-protocol/group"
 
 const group = new Group()
-            
+
 group.addMember(commitment)`,
             itemList: [
                 {
@@ -143,14 +144,14 @@ group.addMember(commitment)`,
 
 const externalNullifier = BigInt(1)
 const signal = "Hello world"
-            
+
 const fullProof = await generateProof(identity, group, externalNullifier, signal, {
     zkeyFilePath: "./semaphore.zkey",
     wasmFilePath: "./semaphore.wasm"
 })
-            
+
 const verificationKey = JSON.parse(fs.readFileSync("./semaphore.json", "utf-8"))
-            
+
 await verifyProof(verificationKey, fullProof)`,
             itemList: [
                 {
@@ -239,15 +240,20 @@ await verifyProof(verificationKey, fullProof)`,
 
     return (
         <VStack>
-            <VStack h="1187px">
-                <Image
-                    src="https://semaphore.cedoor.dev/guy-shadow-horizontal.png"
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    style={{ width: "auto", height: "1187px", zIndex: "-1", position: "absolute" }}
-                    alt="Shadow of a person"
-                />
+            <VStack h="1300px" position="relative">
+                <Box zIndex="-1" left="50%" transform="translateX(-50%)" w="100vw" h="100%" pos="absolute">
+                    <Image
+                        alt="Guy shadow image"
+                        src="https://semaphore.cedoor.dev/guy-shadow-horizontal.png"
+                        quality="100"
+                        sizes="100vw"
+                        fill
+                        style={{
+                            objectFit: "cover"
+                        }}
+                    />
+                </Box>
+
                 <Tabs position="relative" variant="unstyled" align={"center"} mt={"170px"}>
                     <TabList gap={"40px"}>
                         <Tab px={0} fontSize={"24px"}>
