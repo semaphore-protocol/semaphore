@@ -243,7 +243,7 @@ await verifyProof(verificationKey, fullProof)`,
                 <Box zIndex="-1" left="50%" transform="translateX(-50%)" w="100vw" h="100%" pos="absolute">
                     <Image
                         alt="Guy shadow image"
-                        src="https://semaphore.cedoor.dev/guy-shadow-horizontal.png"
+                        src="https://semaphore.cedoor.dev/guy-shadow-horizontal.jpg"
                         quality="100"
                         sizes="100vw"
                         fill
