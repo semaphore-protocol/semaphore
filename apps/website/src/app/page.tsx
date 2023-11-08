@@ -1,8 +1,10 @@
 import { Box, Button, Card, CardBody, Heading, HStack, Link, Stack, Text, VStack } from "@chakra-ui/react"
 import { Sora } from "next/font/google"
 import Image from "next/image"
-import ProjectsCarousel from "../components/ProjectsCarousel"
+import Carousel from "../components/Carousel"
+import ProjectCard from "../components/ProjectCard"
 import events from "../data/events.json"
+import projects from "../data/projects.json"
 import IconDiscord from "../icons/IconDiscord"
 
 const sora = Sora({
@@ -49,11 +51,26 @@ export default function Home() {
             </VStack>
 
             <VStack py="32" spacing="16" w="full">
-                <Heading fontSize={{ base: "30px", md: "44px" }} textAlign="center">
-                    Explore projects built with Semaphore
-                </Heading>
+                <Carousel
+                    display={{ base: "none", md: "flex" }}
+                    title="Explore projects built with Semaphore"
+                    sizes={{ md: 2, lg: 3 }}
+                    type="projects"
+                />
 
-                <ProjectsCarousel />
+                <VStack display={{ base: "flex", md: "none" }} spacing="16">
+                    <Heading fontSize={{ base: "30px", md: "44px" }} textAlign="center">
+                        Explore projects built with Semaphore
+                    </Heading>
+
+                    <VStack spacing="3">
+                        {projects.slice(0, 3).map((project) => (
+                            <Link w="full" key={project.name} href={project.links.github} isExternal>
+                                <ProjectCard title={project.name} description={project.tagline} tags={project.tags} />
+                            </Link>
+                        ))}
+                    </VStack>
+                </VStack>
             </VStack>
 
             <Card
