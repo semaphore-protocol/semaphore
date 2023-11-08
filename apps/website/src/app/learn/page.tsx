@@ -323,12 +323,12 @@ await verifyProof(verificationKey, fullProof)`,
             </VStack>
 
             <VStack w={"100%"}>
-                <Box zIndex={"-1"} backgroundColor={"darkBlue"} w={"100vw"} h={"1090px"} position={"absolute"}/>
-                <VStack mt={"128px"} w="full" px={{base:"20px", md: "80px"}}>
+                <Box zIndex={"-1"} backgroundColor={"darkBlue"} w={"100vw"} h={"1090px"} position={"absolute"} />
+                <VStack mt={"128px"} w="full" px={{ base: "20px", md: "80px" }}>
                     <MediaCarousel />
                 </VStack>
 
-                <VStack mt={"96px"} mb={"66px"} w={"full"} px={{base:"20px", md: "80px"}}>
+                <VStack mt={"96px"} mb={"66px"} w={"full"} px={{ base: "20px", md: "80px" }}>
                     <ArticlesCarousel />
                 </VStack>
             </VStack>
