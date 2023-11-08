@@ -357,7 +357,14 @@ await verifyProof(verificationKey, fullProof)`,
                         type="articles"
                     />
                 </VStack>
-                <Text display={{ base: "flex", xl: "none" }} flex="1" alignSelf={"start"} fontSize="44px" fontWeight={"500"} mt={"100px"}>
+                <Text
+                    display={{ base: "flex", xl: "none" }}
+                    flex="1"
+                    alignSelf={"start"}
+                    fontSize="44px"
+                    fontWeight={"500"}
+                    mt={"100px"}
+                >
                     Videos
                 </Text>
                 <Flex display={{ base: "flex", xl: "none" }} w={"100%"} overflowX={"auto"}>
@@ -369,7 +376,14 @@ await verifyProof(verificationKey, fullProof)`,
                         </VStack>
                     ))}
                 </Flex>
-                <Text display={{ base: "flex", xl: "none" }} flex="1" alignSelf={"start"} fontSize="44px" fontWeight={"500"} mt={"96px"}>
+                <Text
+                    display={{ base: "flex", xl: "none" }}
+                    flex="1"
+                    alignSelf={"start"}
+                    fontSize="44px"
+                    fontWeight={"500"}
+                    mt={"96px"}
+                >
                     Articles
                 </Text>
                 <Flex display={{ base: "flex", xl: "none" }} w={"100%"} overflowX={"auto"} mb={"66px"}>
