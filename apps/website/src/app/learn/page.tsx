@@ -251,7 +251,7 @@ await verifyProof(verificationKey, fullProof)`,
                 >
                     <Image
                         alt="Guy shadow image"
-                        src="https://semaphore.cedoor.dev/guy-shadow-horizontal.png"
+                        src="https://semaphore.cedoor.dev/guy-shadow-horizontal.jpg"
                         quality="100"
                         sizes="100vw"
                         fill
