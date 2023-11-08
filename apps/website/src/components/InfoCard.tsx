@@ -19,8 +19,8 @@ export default function InfoCard({ texts }: InfoCardProps) {
             border="1px"
             borderColor="white"
             padding="30px"
-            width={{base:"350px", md:"410px"}}
-            height={{base:"auto", md:"474px"}}
+            width={{ base: "350px", md: "410px" }}
+            height={{ base: "auto", md: "474px" }}
         >
             <CardBody padding="0">
                 <VStack align="left" spacing="10" maxH="500" overflowY="auto">
