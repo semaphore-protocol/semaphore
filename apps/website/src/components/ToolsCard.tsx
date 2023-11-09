@@ -31,7 +31,7 @@ export default function ToolsCard({ icon, title, subtitle, details }: ToolsCardP
             borderColor={"alabaster.950"}
             padding={"32px"}
             width={{ base: "full", lg: "348px" }}
-            height={"501px"}
+            height={{ base: "auto", lg: "501px" }}
         >
             <HStack mb={"2rem"}>{icon}</HStack>
             <CardBody padding={0}>
