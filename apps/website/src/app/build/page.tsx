@@ -48,11 +48,11 @@ export default function Build() {
         },
         {
             title: "Enhance the protocol",
-            href: ""
+            href: "https://github.com/semaphore-protocol/semaphore/discussions/new?category=ideas"
         },
         {
             title: "Give feedback about the website",
-            href: ""
+            href: "https://github.com/semaphore-protocol/semaphore/discussions/new?category=website"
         }
     ]
     return (

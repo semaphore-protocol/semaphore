@@ -64,7 +64,10 @@ export default function Footer() {
                     </HStack>
                 </Link>
 
-                <Link href="https://github.com/semaphore-protocol/semaphore/discussions/categories/website" isExternal>
+                <Link
+                    href="https://github.com/semaphore-protocol/semaphore/discussions/new?category=website"
+                    isExternal
+                >
                     <HStack>
                         <IconThumbsUp boxSize={{ base: "16px", md: "24px" }} />
                         <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
