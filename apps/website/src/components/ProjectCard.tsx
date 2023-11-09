@@ -1,12 +1,12 @@
 import { Heading, Text, HStack, Tag, Card, CardBody } from "@chakra-ui/react"
 
 export type ProjectCardProps = {
-    tags: string[]
+    categories: string[]
     title: string
     description: string
 }
 
-export default function ProjectCard({ tags, title, description }: ProjectCardProps) {
+export default function ProjectCard({ categories, title, description }: ProjectCardProps) {
     return (
         <Card
             bg={"darkBlue"}
@@ -20,9 +20,9 @@ export default function ProjectCard({ tags, title, description }: ProjectCardPro
             _hover={{ borderColor: "ceruleanBlue" }}
         >
             <HStack gap={"8px"} mb={"2rem"}>
-                {tags.map((tag, i) => (
+                {categories.map((category, i) => (
                     <Tag variant="outline" key={i}>
-                        {tag}
+                        {category}
                     </Tag>
                 ))}
             </HStack>
