@@ -19,7 +19,7 @@ export default function CodekBlock({ text }: CodekBlockProps) {
             overflow: "auto",
             padding: "24px",
             paddingRight: "120px",
-            paddingTop: "40px"
+            paddingTop: "60px"
         }
     }
     return (
@@ -45,6 +45,7 @@ export default function CodekBlock({ text }: CodekBlockProps) {
                 onClick={onCopy}
                 position={"absolute"}
                 right={"24px"}
+                top={"24px"}
             >
                 {hasCopied ? "copied!" : "copy"}
             </Button>
