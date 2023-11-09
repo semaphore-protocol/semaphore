@@ -7,7 +7,7 @@ export const font = Outfit({ subsets: ["latin"] })
 const styles: Styles = {
     global: (): SystemStyleObject => ({
         body: {
-            bg: "#00020D",
+            bg: "darkBlueBg",
             color: "white"
         },
         "body, #__next": {
