@@ -43,9 +43,10 @@ export default function ActionCard({ title, description, buttonText }: ActionCar
                             {description}
                         </Text>
                     </Stack>
-                    <Stack>
+                    <Stack width={{ base: "full", md: "auto" }}>
                         <Button
                             bg={"semaphore"}
+                            w={"fit-content"}
                             lineHeight={"24px"}
                             fontSize={{ base: "14px", md: "18px", lg: "20px" }}
                             textColor={"white"}
