@@ -301,7 +301,6 @@ await verifyProof(verificationKey, fullProof)`,
                     <Carousel
                         title="Videos"
                         sizes={{
-                            base: 1,
                             md: 2,
                             lg: 4
                         }}
@@ -311,7 +310,6 @@ await verifyProof(verificationKey, fullProof)`,
                     <Carousel
                         title="Articles"
                         sizes={{
-                            base: 1,
                             md: 2,
                             lg: 4
                         }}
