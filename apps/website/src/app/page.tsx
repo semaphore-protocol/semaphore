@@ -66,7 +66,11 @@ export default function Home() {
                     <VStack spacing="3">
                         {projects.slice(0, 3).map((project) => (
                             <Link w="full" key={project.name} href={project.links.github} isExternal>
-                                <ProjectCard title={project.name} description={project.tagline} tags={project.tags} />
+                                <ProjectCard
+                                    title={project.name}
+                                    description={project.tagline}
+                                    categories={project.categories}
+                                />
                             </Link>
                         ))}
                     </VStack>
