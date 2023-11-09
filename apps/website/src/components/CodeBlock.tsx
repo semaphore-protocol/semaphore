@@ -35,7 +35,7 @@ export default function CodekBlock({ text }: CodekBlockProps) {
             <CodeBlock {...copyBlockProps} />
             <Button
                 textColor={"alabaster.300"}
-                fontSize={"18px"}
+                fontSize={{ base: "16px", md: "18px" }}
                 fontWeight={"400"}
                 borderColor={"alabaster.800"}
                 backgroundColor={"darkBlue"}

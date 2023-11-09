@@ -22,7 +22,7 @@ export default function VideoCard({ embeddedVideoUrl, title }: VideoCardProps) {
                     </AspectRatio>
                 </HStack>
                 <CardBody padding={"0px 20px 20px 20px"}>
-                    <Heading fontSize={"20px"} lineHeight={"28px"} fontWeight={"normal"}>
+                    <Heading fontSize={{ base: "18px", md: "20px" }} lineHeight={"28px"} fontWeight={"normal"}>
                         {title}
                     </Heading>
                 </CardBody>

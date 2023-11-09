@@ -179,10 +179,10 @@ await verifyProof(verificationKey, fullProof)`,
     const renderTabBlockSemaphore = () => (
         <VStack>
             <VStack w={{ base: "auto", md: "720px" }}>
-                <Text fontSize={"44px"} fontWeight={"500"}>
+                <Text fontSize={{ base: "40px", md: "44px" }} fontWeight={{ base: "400", md: "500" }}>
                     Semaphore: Anonymous interactions
                 </Text>
-                <Text fontSize={"20px"} mt={"24px"} lineHeight={"32px"}>
+                <Text fontSize={{ base: "16px", md: "20px" }} mt={"24px"} lineHeight={"32px"}>
                     Using zero knowledge, Semaphore allows users to prove their membership of a group and send signals
                     such as votes or endorsements without revealing their original identity. The goal is to make
                     Semaphore a standard for anonymous signaling and group membership proving.
@@ -191,13 +191,13 @@ await verifyProof(verificationKey, fullProof)`,
             <VStack mt={"40px"}>
                 <Flex wrap={{ base: "wrap", lg: "nowrap" }} justify={"center"} alignItems={"center"} gap={"32px"}>
                     <VStack>
-                        <Text fontSize={"30px"} fontWeight={"500"}>
+                        <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
                             Principles
                         </Text>
                         <InfoCard texts={infoCardTexts[0]} />
                     </VStack>
                     <VStack>
-                        <Text fontSize={"30px"} fontWeight={"500"}>
+                        <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
                             Main focus
                         </Text>
                         <InfoCard texts={infoCardTexts[1]} />
@@ -210,10 +210,10 @@ await verifyProof(verificationKey, fullProof)`,
     const renderTabBlockZeroKnowledge = () => (
         <VStack>
             <VStack w={{ base: "auto", md: "720px" }}>
-                <Text fontSize={"44px"} fontWeight={"500"}>
+                <Text fontSize={{ base: "40px", md: "44px" }} fontWeight={{ base: "400", md: "500" }}>
                     Zero Knowledge: new cryptography
                 </Text>
-                <Text fontSize={"20px"} mt={"24px"} lineHeight={"32px"}>
+                <Text fontSize={{ base: "16px", md: "20px" }} mt={"24px"} lineHeight={"32px"}>
                     Zero-knowledge is a new field in cryptography that allows developers to build apps that allow users
                     to share information with each other without revealing their identities or the contents of the
                     information being shared.
@@ -223,7 +223,7 @@ await verifyProof(verificationKey, fullProof)`,
                         borderBottomWidth={"1px"}
                         borderBottomColor={"white"}
                         _hover={{ borderBottomColor: "transparent" }}
-                        fontSize="20px"
+                        fontSize={{ base: "16px", md: "20px" }}
                         fontWeight="normal"
                     >
                         Learn more
@@ -232,7 +232,7 @@ await verifyProof(verificationKey, fullProof)`,
             </VStack>
             <VStack mt={"40px"}>
                 <VStack>
-                    <Text fontSize={"30px"} fontWeight={"500"}>
+                    <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
                         Characteristics
                     </Text>
                     <InfoCard texts={infoCardTexts[0]} />
@@ -361,7 +361,7 @@ await verifyProof(verificationKey, fullProof)`,
                     display={{ base: "flex", xl: "none" }}
                     flex="1"
                     alignSelf={"start"}
-                    fontSize="44px"
+                    fontSize={{ base: "40px", md: "44px" }}
                     fontWeight={"500"}
                     mt={"100px"}
                 >
