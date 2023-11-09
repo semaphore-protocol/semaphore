@@ -99,7 +99,14 @@ export default function ProjectsList(props: any) {
             {projects.length > 1 && (
                 <HStack w="100%">
                     <HStack flex="1" justify="center">
-                        {index > 0 && <IconButton variant="link" aria-label="Arrow left" icon={<IconChevronLeft />} />}
+                        {index > 0 && (
+                            <IconButton
+                                onClick={() => setIndex((i) => i - 1)}
+                                variant="link"
+                                aria-label="Arrow left"
+                                icon={<IconChevronLeft />}
+                            />
+                        )}
 
                         <HStack spacing="5">
                             {projects.map((_, i) => (
@@ -115,7 +122,12 @@ export default function ProjectsList(props: any) {
                         </HStack>
 
                         {index < projects.length - 1 && (
-                            <IconButton variant="link" aria-label="Arrow right" icon={<IconChevronRight />} />
+                            <IconButton
+                                onClick={() => setIndex((i) => i + 1)}
+                                variant="link"
+                                aria-label="Arrow right"
+                                icon={<IconChevronRight />}
+                            />
                         )}
                     </HStack>
                 </HStack>
