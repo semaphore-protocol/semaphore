@@ -26,8 +26,12 @@ export default function InfoCard({ texts }: InfoCardProps) {
                 <VStack align="left" spacing="10" maxH="500" overflowY="auto">
                     {texts.map((text, i) => (
                         <VStack key={i} align="left">
-                            <Heading fontSize="24px">{text.title}</Heading>
-                            <Text fontSize="16px">{text.body}</Text>
+                            <Heading textAlign={"left"} fontSize={{ base: "20px", md: "24px" }}>
+                                {text.title}
+                            </Heading>
+                            <Text textAlign={"left"} fontSize={{ base: "14px", md: "16px" }}>
+                                {text.body}
+                            </Text>
                         </VStack>
                     ))}
                 </VStack>
