@@ -89,11 +89,11 @@ export default function Build() {
                 <Flex
                     justify={"center"}
                     alignItems={"center"}
-                    mt={"125px"}
-                    ml={"80px"}
-                    mr={"188px"}
-                    mb={"109px"}
-                    w={"445px"}
+                    mt={{ base: "120px", xl: "125px" }}
+                    ml={{ base: "32px", xl: "80px" }}
+                    mr={{ base: "32px", xl: "188px" }}
+                    mb={{ base: "120px", xl: "109px" }}
+                    w={{ base: "auto", xl: "445px" }}
                 >
                     <VStack alignItems={"left"}>
                         <Text fontSize={"44px"} fontWeight={"500"}>
