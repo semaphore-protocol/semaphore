@@ -15,8 +15,9 @@ export default function ActionCard({ title, description, buttonText }: ActionCar
             width={{ base: "full", xl: "1110px" }}
             height={{ base: "full", xl: "244px" }}
             direction={{ base: "column", xl: "row" }}
+            p={{ base: "64px 32px", xl: "41px 80px" }}
         >
-            <CardBody padding={0} m={{ base: "64px 32px", xl: "41px 80px" }}>
+            <CardBody padding={0}>
                 <Flex
                     justifyContent={"space-between"}
                     alignItems={"center"}
