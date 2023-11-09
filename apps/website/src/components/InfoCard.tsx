@@ -19,15 +19,19 @@ export default function InfoCard({ texts }: InfoCardProps) {
             border="1px"
             borderColor="white"
             padding="30px"
-            width={"410px"}
-            height={"474px"}
+            width={{ base: "350px", md: "410px" }}
+            height={{ base: "auto", md: "474px" }}
         >
             <CardBody padding="0">
                 <VStack align="left" spacing="10" maxH="500" overflowY="auto">
                     {texts.map((text, i) => (
                         <VStack key={i} align="left">
-                            <Heading fontSize="24px">{text.title}</Heading>
-                            <Text fontSize="16px">{text.body}</Text>
+                            <Heading textAlign={"left"} fontSize={{ base: "20px", md: "24px" }}>
+                                {text.title}
+                            </Heading>
+                            <Text textAlign={"left"} fontSize={{ base: "14px", md: "16px" }}>
+                                {text.body}
+                            </Text>
                         </VStack>
                     ))}
                 </VStack>
