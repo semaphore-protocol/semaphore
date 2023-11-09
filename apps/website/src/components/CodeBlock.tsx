@@ -14,24 +14,28 @@ export default function CodekBlock({ text }: CodekBlockProps) {
         showLineNumbers: false,
         wrapLines: true,
         theme: ocean,
-        customStyle: { background: "transparent", overflow: "auto", paddingRight: "70px" }
+        customStyle: {
+            background: "transparent",
+            overflow: "auto",
+            padding: "24px",
+            paddingRight: "120px",
+            paddingTop: "60px"
+        }
     }
     return (
         <Flex
             overflow={"auto"}
             gap={"200px"}
             justify={"space-around"}
-            w={"602px"}
-            h={"auto"}
+            w={{ base: "300px", md: "602px" }}
             position={"relative"}
-            p={"24px"}
             borderRadius={"8px"}
             backgroundColor={"darkBlue"}
         >
             <CodeBlock {...copyBlockProps} />
             <Button
                 textColor={"alabaster.300"}
-                fontSize={"18px"}
+                fontSize={{ base: "16px", md: "18px" }}
                 fontWeight={"400"}
                 borderColor={"alabaster.800"}
                 backgroundColor={"darkBlue"}
@@ -41,6 +45,7 @@ export default function CodekBlock({ text }: CodekBlockProps) {
                 onClick={onCopy}
                 position={"absolute"}
                 right={"24px"}
+                top={"24px"}
             >
                 {hasCopied ? "copied!" : "copy"}
             </Button>

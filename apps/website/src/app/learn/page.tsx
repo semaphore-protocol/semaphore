@@ -25,6 +25,10 @@ import IconBadge from "@/icons/IconBadge"
 import IconCheck from "@/icons/IconCheck"
 import IconFlag from "@/icons/IconFlag"
 import Carousel from "@/components/Carousel"
+import videos from "../../data/videos.json"
+import VideoCard from "../../components/VideoCard"
+import articles from "../../data/articles.json"
+import ArticleCard from "../../components/ArticleCard"
 
 export default function Learn() {
     const infoCardTexts: InfoBlock[][] = [
@@ -174,26 +178,26 @@ await verifyProof(verificationKey, fullProof)`,
 
     const renderTabBlockSemaphore = () => (
         <VStack>
-            <VStack w={"720px"}>
-                <Text fontSize={"44px"} fontWeight={"500"}>
+            <VStack w={{ base: "auto", md: "720px" }}>
+                <Text fontSize={{ base: "40px", md: "44px" }} fontWeight={{ base: "400", md: "500" }}>
                     Semaphore: Anonymous interactions
                 </Text>
-                <Text fontSize={"20px"} mt={"24px"} lineHeight={"32px"}>
+                <Text fontSize={{ base: "16px", md: "20px" }} mt={"24px"} lineHeight={"32px"}>
                     Using zero knowledge, Semaphore allows users to prove their membership of a group and send signals
                     such as votes or endorsements without revealing their original identity. The goal is to make
                     Semaphore a standard for anonymous signaling and group membership proving.
                 </Text>
             </VStack>
             <VStack mt={"40px"}>
-                <Flex gap={"32px"}>
+                <Flex wrap={{ base: "wrap", lg: "nowrap" }} justify={"center"} alignItems={"center"} gap={"32px"}>
                     <VStack>
-                        <Text fontSize={"30px"} fontWeight={"500"}>
+                        <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
                             Principles
                         </Text>
                         <InfoCard texts={infoCardTexts[0]} />
                     </VStack>
                     <VStack>
-                        <Text fontSize={"30px"} fontWeight={"500"}>
+                        <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
                             Main focus
                         </Text>
                         <InfoCard texts={infoCardTexts[1]} />
@@ -205,11 +209,11 @@ await verifyProof(verificationKey, fullProof)`,
 
     const renderTabBlockZeroKnowledge = () => (
         <VStack>
-            <VStack w={"720px"}>
-                <Text fontSize={"44px"} fontWeight={"500"}>
+            <VStack w={{ base: "auto", md: "720px" }}>
+                <Text fontSize={{ base: "40px", md: "44px" }} fontWeight={{ base: "400", md: "500" }}>
                     Zero Knowledge: new cryptography
                 </Text>
-                <Text fontSize={"20px"} mt={"24px"} lineHeight={"32px"}>
+                <Text fontSize={{ base: "16px", md: "20px" }} mt={"24px"} lineHeight={"32px"}>
                     Zero-knowledge is a new field in cryptography that allows developers to build apps that allow users
                     to share information with each other without revealing their identities or the contents of the
                     information being shared.
@@ -219,7 +223,7 @@ await verifyProof(verificationKey, fullProof)`,
                         borderBottomWidth={"1px"}
                         borderBottomColor={"white"}
                         _hover={{ borderBottomColor: "transparent" }}
-                        fontSize="20px"
+                        fontSize={{ base: "16px", md: "20px" }}
                         fontWeight="normal"
                     >
                         Learn more
@@ -228,7 +232,7 @@ await verifyProof(verificationKey, fullProof)`,
             </VStack>
             <VStack mt={"40px"}>
                 <VStack>
-                    <Text fontSize={"30px"} fontWeight={"500"}>
+                    <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
                         Characteristics
                     </Text>
                     <InfoCard texts={infoCardTexts[0]} />
@@ -239,8 +243,16 @@ await verifyProof(verificationKey, fullProof)`,
 
     return (
         <VStack>
-            <VStack h="1300px" position="relative">
-                <Box zIndex="-1" left="50%" transform="translateX(-50%)" w="100vw" h="100%" pos="absolute">
+            <VStack h={{ base: "2100px", md: "1800px", lg: "1300px" }} position="relative">
+                <Box
+                    display={{ base: "none", md: "block" }}
+                    zIndex="-1"
+                    left={"50%"}
+                    transform="translateX(-50%)"
+                    w="100vw"
+                    h="100%"
+                    pos="absolute"
+                >
                     <Image
                         alt="Guy shadow image"
                         src="https://semaphore.cedoor.dev/guy-shadow-horizontal.jpg"
@@ -253,7 +265,34 @@ await verifyProof(verificationKey, fullProof)`,
                     />
                 </Box>
 
-                <Tabs position="relative" variant="unstyled" align={"center"} mt={"170px"}>
+                <Box
+                    display={{ base: "block", lg: "none" }}
+                    zIndex="-1"
+                    left={"50%"}
+                    transform="translateX(-50%)"
+                    w="100vw"
+                    h="100%"
+                    pos="absolute"
+                >
+                    <Image
+                        alt="Guy shadow image"
+                        src="https://semaphore.cedoor.dev/guy-shadow.png"
+                        quality="100"
+                        sizes="100vw"
+                        fill
+                        style={{
+                            objectFit: "cover"
+                        }}
+                    />
+                </Box>
+
+                <Tabs
+                    position="relative"
+                    variant="unstyled"
+                    align={"center"}
+                    mt={{ base: "100px", md: "170px" }}
+                    mb={{ base: "50px", md: "112px" }}
+                >
                     <TabList gap={"40px"}>
                         <Tab px={0} fontSize={"24px"}>
                             About Semaphore
@@ -270,7 +309,7 @@ await verifyProof(verificationKey, fullProof)`,
                 </Tabs>
             </VStack>
 
-            <VStack p={"128px 80px"}>
+            <VStack p={{ base: "128px 20px", md: "128px 80px" }}>
                 {sectionBlockTexts.map((sectionBlockText, i) => (
                     <VStack key={i}>
                         <SectionBlock
@@ -297,7 +336,7 @@ await verifyProof(verificationKey, fullProof)`,
                     pos="absolute"
                 ></Box>
 
-                <VStack p="100px 40px" w="full" spacing="20">
+                <VStack display={{ base: "none", xl: "block" }} p="100px 40px" w="full" spacing="20">
                     <Carousel
                         title="Videos"
                         sizes={{
@@ -316,6 +355,42 @@ await verifyProof(verificationKey, fullProof)`,
                         type="articles"
                     />
                 </VStack>
+                <Text
+                    display={{ base: "flex", xl: "none" }}
+                    flex="1"
+                    alignSelf={"start"}
+                    fontSize={{ base: "40px", md: "44px" }}
+                    fontWeight={"500"}
+                    mt={"100px"}
+                >
+                    Videos
+                </Text>
+                <Flex display={{ base: "flex", xl: "none" }} w={"100%"} overflowX={"auto"}>
+                    {videos.map((video, i) => (
+                        <VStack key={i}>
+                            <Box px="3">
+                                <VideoCard key={i} title={video.title} embeddedVideoUrl={video.embeddedUrl} />
+                            </Box>
+                        </VStack>
+                    ))}
+                </Flex>
+                <Text
+                    display={{ base: "flex", xl: "none" }}
+                    flex="1"
+                    alignSelf={"start"}
+                    fontSize="44px"
+                    fontWeight={"500"}
+                    mt={"96px"}
+                >
+                    Articles
+                </Text>
+                <Flex display={{ base: "flex", xl: "none" }} w={"100%"} overflowX={"auto"} mb={"66px"}>
+                    {articles.map((article, i) => (
+                        <VStack key={i}>
+                            <ArticleCard key={i} title={article.title} minRead={article.minRead} url={article.url} />
+                        </VStack>
+                    ))}
+                </Flex>
             </VStack>
         </VStack>
     )
