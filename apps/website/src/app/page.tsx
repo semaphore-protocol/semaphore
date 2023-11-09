@@ -224,12 +224,14 @@ export default function Home() {
 
                             <VStack align="left" spacing="10" maxH="600" overflowY="auto">
                                 {events.map((event) => (
-                                    <VStack key={event.name} align="left">
-                                        <Heading fontSize={{ base: "20px", md: "24px" }}>
-                                            {event.date} | {event.name}
-                                        </Heading>
-                                        <Text fontSize="16px">{event.description}</Text>
-                                    </VStack>
+                                    <Link href={event.link} key={event.name} isExternal>
+                                        <VStack align="left">
+                                            <Heading fontSize={{ base: "20px", md: "24px" }}>
+                                                {event.date} | {event.name}
+                                            </Heading>
+                                            <Text fontSize="16px">{event.description}</Text>
+                                        </VStack>
+                                    </Link>
                                 ))}
                             </VStack>
                         </CardBody>
