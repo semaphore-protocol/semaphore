@@ -25,13 +25,18 @@ export default function ActionCard({ title, description, buttonText }: ActionCar
                     gap={{ base: "2rem", md: "0" }}
                 >
                     <Stack width={{ base: "full", md: "522px" }}>
-                        <Heading fontSize={"40px"} lineHeight={"44px"} fontWeight={"normal"} textColor={"white"}>
+                        <Heading
+                            fontSize={{ base: "30px", md: "40px" }}
+                            lineHeight={"44px"}
+                            fontWeight={"normal"}
+                            textColor={"white"}
+                        >
                             {title}
                         </Heading>
                         <Text
                             mt={"1rem"}
-                            fontSize={"20px"}
-                            lineHeight={"32px"}
+                            fontSize={{ base: "16px", md: "20px" }}
+                            lineHeight={{ base: "25px", md: "32px" }}
                             fontWeight={"normal"}
                             textColor={"alabaster.400"}
                         >
@@ -42,7 +47,7 @@ export default function ActionCard({ title, description, buttonText }: ActionCar
                         <Button
                             bg={"semaphore"}
                             lineHeight={"24px"}
-                            fontSize={"20px"}
+                            fontSize={{ base: "14px", md: "18px", lg: "20px" }}
                             textColor={"white"}
                             padding={"1.5rem 2rem"}
                             _hover={{ opacity: "85%" }}
