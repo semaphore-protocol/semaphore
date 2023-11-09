@@ -42,7 +42,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
         } else {
             setIndex((prevIndex) => prevIndex - 1)
         }
-    }, [index])
+    }, [index, size])
 
     return (
         <VStack align="left" w="full" {...props} spacing="12">
