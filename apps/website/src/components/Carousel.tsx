@@ -52,7 +52,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                 </Heading>
 
                 {type !== "projects" && (
-                    <HStack justify="center">
+                    <HStack visibility={!size ? "hidden" : "visible"}>
                         <IconButton
                             onClick={previousProject}
                             variant="link"
@@ -84,6 +84,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                                 key={project.name + i}
                                 href={project.links.github}
                                 isExternal
+                                visibility={!size ? "hidden" : "visible"}
                             >
                                 <Box px="3">
                                     <ProjectCard
@@ -97,7 +98,12 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
 
                     {type === "articles" &&
                         articles.map((article, i) => (
-                            <Box px="3" minW={`${100 / size!}%`} key={article.title + i}>
+                            <Box
+                                visibility={!size ? "hidden" : "visible"}
+                                px="3"
+                                minW={`${100 / size!}%`}
+                                key={article.title + i}
+                            >
                                 <ArticleCard
                                     key={i}
                                     title={article.title}
@@ -109,7 +115,12 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
 
                     {type === "videos" &&
                         videos.map((video, i) => (
-                            <Box px="3" minW={`${100 / size!}%`} key={video.title + i}>
+                            <Box
+                                visibility={!size ? "hidden" : "visible"}
+                                px="3"
+                                minW={`${100 / size!}%`}
+                                key={video.title + i}
+                            >
                                 <VideoCard key={i} title={video.title} embeddedVideoUrl={video.embeddedUrl} />
                             </Box>
                         ))}
@@ -120,7 +131,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                 <HStack w="100%">
                     <Box flex="1" />
 
-                    <HStack flex="1" justify="center">
+                    <HStack flex="1" justify="center" visibility={!size ? "hidden" : "visible"}>
                         <IconButton
                             onClick={previousProject}
                             variant="link"
