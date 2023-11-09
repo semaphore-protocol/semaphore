@@ -1,4 +1,4 @@
-import { Flex, Link, Text, VStack } from "@chakra-ui/react"
+import { Flex, Link, Text, VStack, Box } from "@chakra-ui/react"
 import Image from "next/image"
 import ActionCard from "../../components/ActionCard"
 import ToolsCard from "../../components/ToolsCard"
@@ -58,8 +58,10 @@ export default function Build() {
     return (
         <VStack justify="center">
             <VStack mt={"90px"}>
-                <Text fontSize={"72px"}>Let’s build something new</Text>
-                <Text color={"alabaster.400"} mt={"14px"}>
+                <Text textAlign={"center"} fontSize={{ base: "40px", md: "72px" }}>
+                    Let’s build something new
+                </Text>
+                <Text textAlign={"center"} fontSize={{ base: "16px", md: "20px" }} color={"alabaster.400"} mt={"14px"}>
                     Jumpstart your app development process with these building tools.
                 </Text>
                 <VStack mt={"64px"}>
@@ -83,23 +85,24 @@ export default function Build() {
                 backgroundColor={"darkBlue"}
                 p={"0"}
                 w={"100vw"}
+                maxW={"1440px"}
                 h={"auto"}
-                wrap={"wrap"}
+                wrap={{ base: "wrap", xl: "nowrap" }}
             >
                 <Flex
                     justify={"center"}
                     alignItems={"center"}
-                    mt={"125px"}
-                    ml={"80px"}
-                    mr={"188px"}
-                    mb={"109px"}
-                    w={"445px"}
+                    mt={{ base: "120px", xl: "125px" }}
+                    ml={{ base: "32px", xl: "80px" }}
+                    mr={{ base: "32px", xl: "188px" }}
+                    mb={{ base: "120px", xl: "109px" }}
+                    w={{ base: "auto", xl: "445px" }}
                 >
                     <VStack alignItems={"left"}>
-                        <Text fontSize={"44px"} fontWeight={"500"}>
+                        <Text fontSize={{ base: "30px", md: "44px" }} fontWeight={"500"}>
                             Contribute to Semaphore
                         </Text>
-                        <Text color={"alabaster.300"} mt={"16px"}>
+                        <Text fontSize={{ base: "16px", md: "18px" }} color={"alabaster.300"} mt={"16px"}>
                             Semaphore is open source with dozens of community contributors. You can propose improvements
                             to the protocol or take good first issues to get started.
                         </Text>
@@ -129,13 +132,17 @@ export default function Build() {
                         </VStack>
                     </VStack>
                 </Flex>
-                <Image
-                    src="https://semaphore.cedoor.dev/flower-shadow.jpg"
-                    width={727}
-                    height={630}
-                    style={{ maxHeight: "630px" }}
-                    alt="Flower Shadow"
-                />
+                <Box position={"relative"} w={{ base: "full", xl: "727px" }} h={"630"}>
+                    <Image
+                        src="https://semaphore.cedoor.dev/flower-shadow.jpg"
+                        alt="Flower Shadow"
+                        fill
+                        quality="100"
+                        style={{
+                            objectFit: "cover"
+                        }}
+                    />
+                </Box>
             </Flex>
             <VStack my={"128"}>
                 <ActionCard
