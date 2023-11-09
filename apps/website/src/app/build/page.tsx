@@ -58,8 +58,10 @@ export default function Build() {
     return (
         <VStack justify="center">
             <VStack mt={"90px"}>
-                <Text fontSize={"72px"}>Let’s build something new</Text>
-                <Text color={"alabaster.400"} mt={"14px"}>
+                <Text textAlign={"center"} fontSize={{ base: "40px", md: "72px" }}>
+                    Let’s build something new
+                </Text>
+                <Text textAlign={"center"} fontSize={{ base: "16px", md: "20px" }} color={"alabaster.400"} mt={"14px"}>
                     Jumpstart your app development process with these building tools.
                 </Text>
                 <VStack mt={"64px"}>
@@ -97,10 +99,10 @@ export default function Build() {
                     w={{ base: "auto", xl: "445px" }}
                 >
                     <VStack alignItems={"left"}>
-                        <Text fontSize={"44px"} fontWeight={"500"}>
+                        <Text fontSize={{ base: "30px", md: "44px" }} fontWeight={"500"}>
                             Contribute to Semaphore
                         </Text>
-                        <Text color={"alabaster.300"} mt={"16px"}>
+                        <Text fontSize={{ base: "16px", md: "18px" }} color={"alabaster.300"} mt={"16px"}>
                             Semaphore is open source with dozens of community contributors. You can propose improvements
                             to the protocol or take good first issues to get started.
                         </Text>
