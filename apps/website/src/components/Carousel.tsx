@@ -90,7 +90,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                                     <ProjectCard
                                         title={project.name}
                                         description={project.tagline}
-                                        tags={project.tags}
+                                        categories={project.categories}
                                     />
                                 </Box>
                             </Link>
