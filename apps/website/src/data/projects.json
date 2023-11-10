@@ -144,20 +144,20 @@
         }
     },
     {
-        "name": "n-per-epoch - Privacy Preserving Smart Contract Rate Limiting",
+        "name": "n-per-epoch",
         "categories": ["Data", "Infra"],
-        "tagline": "",
+        "tagline": "Simple contract modifier to add the ability to rate limit humans on any smart contract function call.",
         "pse": false,
         "icon": "",
         "links": {
-            "github": "https://github.com/rsproule/n-per-epoch#rate-limiting",
+            "github": "https://github.com/rsproule/n-per-epoch",
             "website": "https://blockchain.capital/privacy-preserving-smart-contract-rate-limiting"
         }
     },
     {
         "name": "Clique",
         "categories": ["Data", "Identity", "Infra"],
-        "tagline": "",
+        "tagline": "Clique proves arbitrary user data that's accessible with TLS sessions with ZKPs, TEE, and MPC.",
         "pse": false,
         "icon": "",
         "links": {
@@ -166,9 +166,20 @@
         }
     },
     {
+        "name": "Bandada",
+        "categories": ["Infra", "Data"],
+        "tagline": "An open-source system for managing privacy-preserving groups of anonymous individuals.",
+        "pse": true,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/privacy-scaling-explorations/bandada",
+            "website": "https://bandada.pse.dev"
+        }
+    },
+    {
         "name": "Interep",
         "categories": ["Identity"],
-        "tagline": "",
+        "tagline": "A system that allows DApps or services to verify users' reputation without exposing their identities.",
         "pse": false,
         "icon": "",
         "links": {
@@ -178,7 +189,7 @@
     {
         "name": "Ballotbox",
         "categories": ["Voting"],
-        "tagline": "",
+        "tagline": "Exploiting ZKP technology and IPFS to make the future of data by the user, for the user.",
         "pse": false,
         "icon": "",
         "links": {
@@ -186,19 +197,19 @@
         }
     },
     {
-        "name": "TAZ Temporary Anonymous Zone",
+        "name": "TAZ",
         "categories": ["Identity"],
-        "tagline": "",
+        "tagline": "No-labels zone where Devcon VI attendees can learn through experience about privacy and anonymity.",
         "pse": false,
         "icon": "",
         "links": {
-            "website": "https://taz.appliedzkp.org"
+            "github": "https://github.com/privacy-scaling-explorations/taz-apps"
         }
     },
     {
         "name": "DERP",
         "categories": ["Authenticity", "Trust"],
-        "tagline": "",
+        "tagline": "An anonymous research peer-review-system.",
         "pse": false,
         "icon": "",
         "links": {
@@ -209,7 +220,7 @@
     {
         "name": "zmorph",
         "categories": ["Identity", "IoT", "NFT"],
-        "tagline": "",
+        "tagline": "Pseudonymous, seamless zk-based token-gating solution.",
         "pse": false,
         "icon": "",
         "links": {
@@ -220,7 +231,7 @@
     {
         "name": "Zktokenproof",
         "categories": ["NFT", "Ticketing"],
-        "tagline": "",
+        "tagline": "Decentralized private ZK based ticketing.",
         "pse": false,
         "icon": "",
         "links": {
@@ -231,7 +242,7 @@
     {
         "name": "heyanoun",
         "categories": ["Coordination", "Identity"],
-        "tagline": "",
+        "tagline": "Credible pseudonymous messages for noun governance prop discussion.",
         "pse": false,
         "icon": "",
         "links": {
@@ -242,7 +253,7 @@
     {
         "name": "Iris-Bound Tokens",
         "categories": ["Identity"],
-        "tagline": "",
+        "tagline": "A non-transferrable token that is bound to a person's Iris.",
         "pse": false,
         "icon": "",
         "links": {
@@ -251,30 +262,19 @@
         }
     },
     {
-        "name": "Ethereum Social Contract",
-        "categories": ["Trust"],
-        "tagline": "",
-        "pse": false,
-        "icon": "",
-        "links": {
-            "github": "https://github.com/Ethereum-Social-Contract",
-            "website": "https://ethereumsocialcontract.org"
-        }
-    },
-    {
         "name": "ClubSpace",
         "categories": ["Social"],
-        "tagline": "",
+        "tagline": "A live listening party for creators to share their curated music NFTs with their Lens frens.",
         "pse": false,
         "icon": "",
         "links": {
-            "website": "https://www.joinclubspace.xyz"
+            "website": "https://ethglobal.com/showcase/clubspace-cwzqx"
         }
     },
     {
         "name": "Truth",
         "categories": ["Authenticity"],
-        "tagline": "",
+        "tagline": "A photo-sharing app using ZKP for secure, accessible content verification.",
         "pse": false,
         "icon": "",
         "links": {
@@ -285,7 +285,7 @@
     {
         "name": "Terrarium",
         "categories": ["NFT"],
-        "tagline": "",
+        "tagline": "Protecting endangered species from poachers and enabling wildlife conservation.",
         "pse": false,
         "icon": "",
         "links": {
@@ -293,9 +293,9 @@
         }
     },
     {
-        "name": "zkVoice - Fighting Plutocrat DAO Communities",
+        "name": "zkVoice",
         "categories": ["Coordination"],
-        "tagline": "",
+        "tagline": "A coordination tool that allows community members with less voting power to secretly signal their disapproval.",
         "pse": false,
         "icon": "",
         "links": {
@@ -306,7 +306,7 @@
     {
         "name": "Menshen",
         "categories": ["Identity"],
-        "tagline": "",
+        "tagline": "An app that turns selfies into private, secure NFTs without needing IDs, accessible to most people worldwide.",
         "pse": false,
         "icon": "",
         "links": {
@@ -317,18 +317,17 @@
     {
         "name": "Chain Statements",
         "categories": ["Identity"],
-        "tagline": "",
+        "tagline": "A way to generate Statements for your crypto funds using ZK , privately and permissionlessly.",
         "pse": false,
         "icon": "",
         "links": {
-            "github": "https://github.com/Chain-Statements/frontend",
             "website": "https://ethglobal.com/showcase/chain-statements-kdurw"
         }
     },
     {
         "name": "Mina World ID",
         "categories": ["Identity"],
-        "tagline": "",
+        "tagline": "Bringing Worldcoins World ID to Mina zero-knowledge apps.",
         "pse": false,
         "icon": "",
         "links": {
