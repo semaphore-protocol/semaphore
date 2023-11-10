@@ -78,10 +78,10 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                     spacing="0"
                 >
                     {type === "projects" &&
-                        projects.map((project, i) => (
+                        projects.map((project) => (
                             <Link
                                 minW={`${100 / size!}%`}
-                                key={project.name + i}
+                                key={project.name}
                                 href={project.links.github}
                                 isExternal
                                 visibility={!size ? "hidden" : "visible"}
@@ -97,31 +97,26 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                         ))}
 
                     {type === "articles" &&
-                        articles.map((article, i) => (
+                        articles.map((article) => (
                             <Box
                                 visibility={!size ? "hidden" : "visible"}
                                 px="3"
                                 minW={`${100 / size!}%`}
-                                key={article.title + i}
+                                key={article.title + article.url}
                             >
-                                <ArticleCard
-                                    key={i}
-                                    title={article.title}
-                                    minRead={article.minRead}
-                                    url={article.url}
-                                />
+                                <ArticleCard title={article.title} minRead={article.minRead} url={article.url} />
                             </Box>
                         ))}
 
                     {type === "videos" &&
-                        videos.map((video, i) => (
+                        videos.map((video) => (
                             <Box
                                 visibility={!size ? "hidden" : "visible"}
                                 px="3"
                                 minW={`${100 / size!}%`}
-                                key={video.title + i}
+                                key={video.title + video.url}
                             >
-                                <VideoCard key={i} title={video.title} embeddedVideoUrl={video.embeddedUrl} />
+                                <VideoCard title={video.title} embeddedVideoUrl={video.embeddedUrl} />
                             </Box>
                         ))}
                 </HStack>
