@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Grid, GridItem, HStack, IconButton, Link, Text, VStack } from "@chakra-ui/react"
+import { Button, Grid, GridItem, HStack, IconButton, Text, VStack } from "@chakra-ui/react"
 import { useCallback, useEffect, useState } from "react"
 import ProjectCard from "../components/ProjectCard"
 import allProjects from "../data/projects.json"
@@ -85,13 +85,12 @@ export default function ProjectsList(props: any) {
             <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={6}>
                 {projects[index].map((project) => (
                     <GridItem key={project.name}>
-                        <Link href={project.links.website || project.links.github} target="_blank">
-                            <ProjectCard
-                                title={project.name}
-                                description={project.tagline}
-                                categories={project.categories}
-                            />
-                        </Link>
+                        <ProjectCard
+                            title={project.name}
+                            description={project.tagline}
+                            categories={project.categories}
+                            url={project.links.website || project.links.github}
+                        />
                     </GridItem>
                 ))}
             </Grid>

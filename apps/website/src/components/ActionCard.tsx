@@ -13,9 +13,8 @@ export default function ActionCard({ title, description, buttonText }: ActionCar
             textColor="white"
             borderRadius="24px"
             width={{ base: "full", xl: "1110px" }}
-            height={{ base: "full", xl: "244px" }}
-            direction={{ base: "column", xl: "row" }}
-            p={{ base: "64px 32px", xl: "41px 80px" }}
+            direction={{ base: "column", lg: "row" }}
+            p={{ base: "64px 32px", lg: "41px 80px" }}
         >
             <CardBody padding={0}>
                 <Flex
