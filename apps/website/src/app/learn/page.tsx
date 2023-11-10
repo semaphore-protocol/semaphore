@@ -92,17 +92,17 @@ const nullifier = identity.getNullifier()
 const commitment = identity.generateCommitment()`,
             itemList: [
                 {
-                    icon: <IconEyelash w={"24px"} h={"24px"} color={"ceruleanBlue"} />,
+                    icon: <IconEyelash w="24px" h="24px" color="ceruleanBlue" />,
                     heading: "Private values",
                     body: "Trapdoor and nullifier values are the private values of the Semaphore identity. To avoid fraud, the owner must keep both values secret."
                 },
                 {
-                    icon: <IconEye w={"24px"} h={"24px"} color={"ceruleanBlue"} />,
-                    heading: "Private values",
-                    body: "Trapdoor and nullifier values are the private values of the Semaphore identity. To avoid fraud, the owner must keep both values secret."
+                    icon: <IconEye w="24px" h="24px" color="ceruleanBlue" />,
+                    heading: "Public values",
+                    body: "Semaphore uses the Poseidon hash function to create the identity commitment from the identity private values. Identity commitments can be made public, similarly to Ethereum addresses."
                 },
                 {
-                    icon: <IconUser w={"24px"} h={"24px"} color={"ceruleanBlue"} />,
+                    icon: <IconUser w="24px" h="24px" color="ceruleanBlue" />,
                     heading: "Generate identities",
                     body: "Semaphore identities can be generated deterministically or randomly. Deterministic identities can be generated from the hash of a secret message."
                 }
@@ -121,17 +121,17 @@ const group = new Group()
 group.addMember(commitment)`,
             itemList: [
                 {
-                    icon: <IconTree w={"24px"} h={"24px"} color={"ceruleanBlue"} />,
+                    icon: <IconTree w="24px" h="24px" color="ceruleanBlue" />,
                     heading: "Merkle trees",
                     body: "Each leaf contains an identity commitment for a user. The identity commitment proves that the user is a group member without revealing the private identity of the user."
                 },
                 {
-                    icon: <IconGroup w={"24px"} h={"24px"} color={"ceruleanBlue"} />,
+                    icon: <IconGroup w="24px" h="24px" color="ceruleanBlue" />,
                     heading: "Types of groups",
                     body: "Groups can be created and managed in a decentralized fashion with Semaphore contracts or off-chain with our JavaScript libraries."
                 },
                 {
-                    icon: <IconManageUsers w={"24px"} h={"24px"} color={"ceruleanBlue"} />,
+                    icon: <IconManageUsers w="24px" h="24px" color="ceruleanBlue" />,
                     heading: "Group management",
                     body: "Users can join and leave groups by themselves, or an admin can add and remove them. Admins can be centralized authorities, Ethereum accounts, multi-sig wallets or smart contracts."
                 }
@@ -158,17 +158,17 @@ const verificationKey = JSON.parse(fs.readFileSync("./semaphore.json", "utf-8"))
 await verifyProof(verificationKey, fullProof)`,
             itemList: [
                 {
-                    icon: <IconBadge w={"24px"} h={"24px"} color={"ceruleanBlue"} />,
+                    icon: <IconBadge w="24px" h="24px" color="ceruleanBlue" />,
                     heading: "Membership",
                     body: "Only users who are part of a group can generate a valid proof for that group."
                 },
                 {
-                    icon: <IconFlag w={"24px"} h={"24px"} color={"ceruleanBlue"} />,
+                    icon: <IconFlag w="24px" h="24px" color="ceruleanBlue" />,
                     heading: "Signals",
                     body: "Group users can anonymously broadcast signals such as votes or endorsements without revealing their original identity."
                 },
                 {
-                    icon: <IconCheck w={"24px"} h={"24px"} color={"ceruleanBlue"} />,
+                    icon: <IconCheck w="24px" h="24px" color="ceruleanBlue" />,
                     heading: "Verifiers",
                     body: "Semaphore proofs can be verified with our contracts or off-chain with our JavaScript libraries."
                 }
@@ -182,14 +182,14 @@ await verifyProof(verificationKey, fullProof)`,
                 <Text fontSize={{ base: "40px", md: "44px" }} fontWeight={{ base: "400", md: "500" }}>
                     Semaphore: Anonymous interactions
                 </Text>
-                <Text fontSize={{ base: "16px", md: "20px" }} mt={"24px"} lineHeight={"32px"}>
+                <Text fontSize={{ base: "16px", md: "20px" }} mt="24px" lineHeight="32px">
                     Using zero knowledge, Semaphore allows users to prove their membership of a group and send signals
                     such as votes or endorsements without revealing their original identity. The goal is to make
                     Semaphore a standard for anonymous signaling and group membership proving.
                 </Text>
             </VStack>
-            <VStack mt={"40px"}>
-                <Flex wrap={{ base: "wrap", lg: "nowrap" }} justify={"center"} alignItems={"center"} gap={"32px"}>
+            <VStack mt="40px">
+                <Flex wrap={{ base: "wrap", lg: "nowrap" }} justify="center" alignItems="center" gap="32px">
                     <VStack>
                         <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
                             Principles
@@ -213,15 +213,15 @@ await verifyProof(verificationKey, fullProof)`,
                 <Text fontSize={{ base: "40px", md: "44px" }} fontWeight={{ base: "400", md: "500" }}>
                     Zero Knowledge: new cryptography
                 </Text>
-                <Text fontSize={{ base: "16px", md: "20px" }} mt={"24px"} lineHeight={"32px"}>
+                <Text fontSize={{ base: "16px", md: "20px" }} mt="24px" lineHeight="32px">
                     Zero-knowledge is a new field in cryptography that allows developers to build apps that allow users
                     to share information with each other without revealing their identities or the contents of the
                     information being shared.
                 </Text>
                 <Link href="https://pse.dev/resources" isExternal>
                     <Text
-                        borderBottomWidth={"1px"}
-                        borderBottomColor={"white"}
+                        borderBottomWidth="1px"
+                        borderBottomColor="white"
                         _hover={{ borderBottomColor: "transparent" }}
                         fontSize={{ base: "16px", md: "20px" }}
                         fontWeight="normal"
@@ -230,7 +230,7 @@ await verifyProof(verificationKey, fullProof)`,
                     </Text>
                 </Link>
             </VStack>
-            <VStack mt={"40px"}>
+            <VStack mt="40px">
                 <VStack>
                     <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
                         Characteristics
@@ -247,7 +247,7 @@ await verifyProof(verificationKey, fullProof)`,
                 <Box
                     display={{ base: "none", md: "block" }}
                     zIndex="-1"
-                    left={"50%"}
+                    left="50%"
                     transform="translateX(-50%)"
                     w="100vw"
                     h="100%"
@@ -268,7 +268,7 @@ await verifyProof(verificationKey, fullProof)`,
                 <Box
                     display={{ base: "block", lg: "none" }}
                     zIndex="-1"
-                    left={"50%"}
+                    left="50%"
                     transform="translateX(-50%)"
                     w="100vw"
                     h="100%"
@@ -289,20 +289,20 @@ await verifyProof(verificationKey, fullProof)`,
                 <Tabs
                     position="relative"
                     variant="unstyled"
-                    align={"center"}
+                    align="center"
                     mt={{ base: "100px", md: "170px" }}
                     mb={{ base: "50px", md: "112px" }}
                 >
-                    <TabList gap={"40px"}>
-                        <Tab px={0} fontSize={"24px"}>
+                    <TabList gap="40px">
+                        <Tab px={0} fontSize="24px">
                             About Semaphore
                         </Tab>
-                        <Tab px={0} fontSize={"24px"}>
+                        <Tab px={0} fontSize="24px">
                             About Zero Knowledge
                         </Tab>
                     </TabList>
                     <TabIndicator mt="-1.5px" height="2px" bg="white" borderRadius="1px" />
-                    <TabPanels mt={"80px"}>
+                    <TabPanels mt="80px">
                         <TabPanel>{renderTabBlockSemaphore()}</TabPanel>
                         <TabPanel>{renderTabBlockZeroKnowledge()}</TabPanel>
                     </TabPanels>
@@ -311,7 +311,7 @@ await verifyProof(verificationKey, fullProof)`,
 
             <VStack p={{ base: "128px 20px", md: "128px 80px" }}>
                 {sectionBlockTexts.map((sectionBlockText, i) => (
-                    <VStack key={i}>
+                    <VStack key={sectionBlockText.title}>
                         <SectionBlock
                             title={sectionBlockText.title}
                             description={sectionBlockText.description}
@@ -320,7 +320,7 @@ await verifyProof(verificationKey, fullProof)`,
                             codeText={sectionBlockText.codeText}
                             itemList={sectionBlockText.itemList}
                         />
-                        {i !== sectionBlockTexts.length - 1 && <Divider my={"68px"} borderColor={"alabaster.600"} />}
+                        {i !== sectionBlockTexts.length - 1 && <Divider my="68px" borderColor="alabaster.600" />}
                     </VStack>
                 ))}
             </VStack>
@@ -334,7 +334,7 @@ await verifyProof(verificationKey, fullProof)`,
                     w="100vw"
                     h="100%"
                     pos="absolute"
-                ></Box>
+                />
 
                 <VStack display={{ base: "none", xl: "block" }} p="100px 40px" w="full" spacing="20">
                     <Carousel
@@ -358,18 +358,18 @@ await verifyProof(verificationKey, fullProof)`,
                 <Text
                     display={{ base: "flex", xl: "none" }}
                     flex="1"
-                    alignSelf={"start"}
+                    alignSelf="start"
                     fontSize={{ base: "40px", md: "44px" }}
-                    fontWeight={"500"}
-                    mt={"100px"}
+                    fontWeight="500"
+                    mt="100px"
                 >
                     Videos
                 </Text>
-                <Flex display={{ base: "flex", xl: "none" }} w={"100%"} overflowX={"auto"}>
-                    {videos.map((video, i) => (
-                        <VStack key={i}>
+                <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto">
+                    {videos.map((video) => (
+                        <VStack key={video.url}>
                             <Box px="3">
-                                <VideoCard key={i} title={video.title} embeddedVideoUrl={video.embeddedUrl} />
+                                <VideoCard title={video.title} embeddedVideoUrl={video.embeddedUrl} />
                             </Box>
                         </VStack>
                     ))}
@@ -377,17 +377,17 @@ await verifyProof(verificationKey, fullProof)`,
                 <Text
                     display={{ base: "flex", xl: "none" }}
                     flex="1"
-                    alignSelf={"start"}
+                    alignSelf="start"
                     fontSize="44px"
-                    fontWeight={"500"}
-                    mt={"96px"}
+                    fontWeight="500"
+                    mt="96px"
                 >
                     Articles
                 </Text>
-                <Flex display={{ base: "flex", xl: "none" }} w={"100%"} overflowX={"auto"} mb={"66px"}>
-                    {articles.map((article, i) => (
-                        <VStack key={i}>
-                            <ArticleCard key={i} title={article.title} minRead={article.minRead} url={article.url} />
+                <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto" mb="66px">
+                    {articles.map((article) => (
+                        <VStack key={article.url}>
+                            <ArticleCard title={article.title} minRead={article.minRead} url={article.url} />
                         </VStack>
                     ))}
                 </Flex>
