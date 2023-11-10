@@ -1,4 +1,4 @@
-import { Container } from "@chakra-ui/react"
+import { Box, Container } from "@chakra-ui/react"
 import type { Metadata } from "next"
 import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
@@ -31,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Providers>
                     <Navbar />
                     <Container maxW="1440px" px={{ base: "5", md: "10" }}>
+                        <Box h="96px" />
                         {children}
                         <Footer />
                     </Container>

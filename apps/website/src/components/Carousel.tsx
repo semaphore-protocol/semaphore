@@ -76,24 +76,23 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                     transform={`translateX(-${index * 100}%)`}
                     py="1"
                     spacing="0"
+                    align="stretch"
                 >
                     {type === "projects" &&
                         projects.map((project) => (
-                            <Link
+                            <Box
+                                visibility={!size ? "hidden" : "visible"}
+                                px="3"
                                 minW={`${100 / size!}%`}
                                 key={project.name}
-                                href={project.links.github}
-                                isExternal
-                                visibility={!size ? "hidden" : "visible"}
                             >
-                                <Box px="3">
-                                    <ProjectCard
-                                        title={project.name}
-                                        description={project.tagline}
-                                        categories={project.categories}
-                                    />
-                                </Box>
-                            </Link>
+                                <ProjectCard
+                                    title={project.name}
+                                    description={project.tagline}
+                                    categories={project.categories}
+                                    url={project.links.website || project.links.github}
+                                />
+                            </Box>
                         ))}
 
                     {type === "articles" &&
