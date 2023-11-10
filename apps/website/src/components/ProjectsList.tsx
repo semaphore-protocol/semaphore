@@ -9,19 +9,19 @@ import IconChevronRight from "../icons/IconChevronRight"
 import IconCommunity from "../icons/IconCommunity"
 import IconPSE from "../icons/IconPSE"
 import { chunkArray } from "../utils/chunkArray"
-import { getProjectTags } from "../utils/getProjectTags"
+import { getProjectCategories } from "../utils/getProjectCategories"
 
 export default function ProjectsList(props: any) {
     const [projects, setProjects] = useState<(typeof allProjects)[]>(chunkArray(allProjects))
     const [index, setIndex] = useState<number>(0)
-    const [selectedTag, setSelectedTag] = useState<string | null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
     const [onlyPSE, setOnlyPSE] = useState<boolean | null>(null)
 
     const filterProjects = useCallback(() => {
         let filteredProjects = allProjects
 
-        if (selectedTag) {
-            filteredProjects = filteredProjects.filter((project) => project.tags.includes(selectedTag))
+        if (selectedCategory) {
+            filteredProjects = filteredProjects.filter((project) => project.categories.includes(selectedCategory))
         }
 
         if (onlyPSE === true) {
@@ -31,11 +31,11 @@ export default function ProjectsList(props: any) {
         }
 
         setProjects(chunkArray(filteredProjects))
-    }, [selectedTag, onlyPSE])
+    }, [selectedCategory, onlyPSE])
 
     useEffect(() => {
         filterProjects()
-    }, [selectedTag, onlyPSE])
+    }, [selectedCategory, onlyPSE])
 
     return (
         <VStack {...props}>
@@ -68,15 +68,15 @@ export default function ProjectsList(props: any) {
                 <Text fontSize="20">Category</Text>
 
                 <HStack spacing="3" flexWrap="wrap">
-                    {getProjectTags(allProjects).map((tag) => (
+                    {getProjectCategories(allProjects).map((category) => (
                         <Button
-                            key={tag}
+                            key={category}
                             size="sm"
-                            variant={tag === selectedTag ? "solid" : "outline"}
-                            colorScheme={tag === selectedTag ? "primary" : "inherit"}
-                            onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
+                            variant={category === selectedCategory ? "solid" : "outline"}
+                            colorScheme={category === selectedCategory ? "primary" : "inherit"}
+                            onClick={() => setSelectedCategory(category === selectedCategory ? null : category)}
                         >
-                            {tag}
+                            {category}
                         </Button>
                     ))}
                 </HStack>
@@ -85,8 +85,12 @@ export default function ProjectsList(props: any) {
             <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={6}>
                 {projects[index].map((project, i) => (
                     <GridItem key={project.name + i}>
-                        <Link href={project.links.github} target="_blank">
-                            <ProjectCard title={project.name} description={project.tagline} tags={project.tags} />
+                        <Link href={project.links.website || project.links.github} target="_blank">
+                            <ProjectCard
+                                title={project.name}
+                                description={project.tagline}
+                                categories={project.categories}
+                            />
                         </Link>
                     </GridItem>
                 ))}
@@ -95,7 +99,13 @@ export default function ProjectsList(props: any) {
             {projects.length > 1 && (
                 <HStack w="100%">
                     <HStack flex="1" justify="center">
-                        {index > 0 && <IconButton variant="link" aria-label="Arrow left" icon={<IconChevronLeft />} />}
+                        <IconButton
+                            visibility={index > 0 ? "visible" : "hidden"}
+                            onClick={() => setIndex((i) => i - 1)}
+                            variant="link"
+                            aria-label="Arrow left"
+                            icon={<IconChevronLeft />}
+                        />
 
                         <HStack spacing="5">
                             {projects.map((_, i) => (
@@ -110,9 +120,13 @@ export default function ProjectsList(props: any) {
                             ))}
                         </HStack>
 
-                        {index < projects.length - 1 && (
-                            <IconButton variant="link" aria-label="Arrow right" icon={<IconChevronRight />} />
-                        )}
+                        <IconButton
+                            visibility={index < projects.length - 1 ? "visible" : "hidden"}
+                            onClick={() => setIndex((i) => i + 1)}
+                            variant="link"
+                            aria-label="Arrow right"
+                            icon={<IconChevronRight />}
+                        />
                     </HStack>
                 </HStack>
             )}
