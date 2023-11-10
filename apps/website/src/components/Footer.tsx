@@ -42,7 +42,10 @@ export default function Footer() {
                         <IconArrowUpRight width="10px" mb={1} />
                     </HStack>
                 </Link>
-                <Link href="" isExternal>
+                <Link
+                    href="https://www.notion.so/pse-team/Semaphore-Identity-Kit-ebbfe6ac0a824fb0a65e8783caf9b330"
+                    isExternal
+                >
                     <HStack spacing="3">
                         <Heading fontSize="18px" fontWeight="normal">
                             Design Kit

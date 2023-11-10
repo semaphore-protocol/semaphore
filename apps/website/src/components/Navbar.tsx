@@ -57,7 +57,7 @@ export default function Navbar() {
                     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
                         <DrawerOverlay />
                         <DrawerContent bgColor="darkBlueBg">
-                            <DrawerCloseButton mt={"25px"} mr={"21px"} />
+                            <DrawerCloseButton mt="25px" mr="21px" />
 
                             <DrawerBody>
                                 <VStack spacing="8" mt="20">
