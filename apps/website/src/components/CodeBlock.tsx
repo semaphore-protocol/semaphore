@@ -24,28 +24,28 @@ export default function CodekBlock({ text }: CodekBlockProps) {
     }
     return (
         <Flex
-            overflow={"auto"}
-            gap={"200px"}
-            justify={"space-around"}
+            overflow="auto"
+            gap="200px"
+            justify="space-around"
             w={{ base: "300px", md: "602px" }}
-            position={"relative"}
-            borderRadius={"8px"}
-            backgroundColor={"darkBlue"}
+            position="relative"
+            borderRadius="8px"
+            backgroundColor="darkBlue"
         >
             <CodeBlock {...copyBlockProps} />
             <Button
-                textColor={"alabaster.300"}
+                textColor="alabaster.300"
                 fontSize={{ base: "16px", md: "18px" }}
-                fontWeight={"400"}
-                borderColor={"alabaster.800"}
-                backgroundColor={"darkBlue"}
-                padding={"5px 8px"}
-                border={"1px"}
-                borderRadius={"4px"}
+                fontWeight="400"
+                borderColor="alabaster.800"
+                backgroundColor="darkBlue"
+                padding="5px 8px"
+                border="1px"
+                borderRadius="4px"
                 onClick={onCopy}
-                position={"absolute"}
-                right={"24px"}
-                top={"24px"}
+                position="absolute"
+                right="24px"
+                top="24px"
             >
                 {hasCopied ? "copied!" : "copy"}
             </Button>

@@ -83,8 +83,8 @@ export default function ProjectsList(props: any) {
             </VStack>
 
             <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={6}>
-                {projects[index].map((project, i) => (
-                    <GridItem key={project.name + i}>
+                {projects[index].map((project) => (
+                    <GridItem key={project.name}>
                         <Link href={project.links.website || project.links.github} target="_blank">
                             <ProjectCard
                                 title={project.name}
@@ -110,6 +110,7 @@ export default function ProjectsList(props: any) {
                         <HStack spacing="5">
                             {projects.map((_, i) => (
                                 <Text
+                                    // eslint-disable-next-line react/no-array-index-key
                                     key={i}
                                     onClick={() => setIndex(i)}
                                     cursor="pointer"

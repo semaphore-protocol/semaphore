@@ -57,18 +57,18 @@ export default function Build() {
     ]
     return (
         <VStack justify="center">
-            <VStack mt={"90px"}>
-                <Text textAlign={"center"} fontSize={{ base: "40px", md: "72px" }}>
+            <VStack mt="90px">
+                <Text textAlign="center" fontSize={{ base: "40px", md: "72px" }}>
                     Let’s build something new
                 </Text>
-                <Text textAlign={"center"} fontSize={{ base: "16px", md: "20px" }} color={"alabaster.400"} mt={"14px"}>
+                <Text textAlign="center" fontSize={{ base: "16px", md: "20px" }} color="alabaster.400" mt="14px">
                     Jumpstart your app development process with these building tools.
                 </Text>
-                <VStack mt={"64px"}>
-                    <Flex gap={"33px"} wrap={"wrap"} justifyContent={"center"}>
-                        {toolCardsInfo.map((toolCardInfo, i) => (
+                <VStack mt="64px">
+                    <Flex gap="33px" wrap="wrap" justifyContent="center">
+                        {toolCardsInfo.map((toolCardInfo) => (
                             <ToolsCard
-                                key={i}
+                                key={toolCardInfo.title}
                                 title={toolCardInfo.title}
                                 subtitle={toolCardInfo.subtitle}
                                 icon={toolCardInfo.icon}
@@ -79,47 +79,47 @@ export default function Build() {
                 </VStack>
             </VStack>
             <Flex
-                justifyContent={"space-between"}
-                mt={"128px"}
-                direction={"row"}
-                backgroundColor={"darkBlue"}
-                p={"0"}
-                w={"100vw"}
-                maxW={"1440px"}
-                h={"auto"}
+                justifyContent="space-between"
+                mt="128px"
+                direction="row"
+                backgroundColor="darkBlue"
+                p="0"
+                w="100vw"
+                maxW="1440px"
+                h="auto"
                 wrap={{ base: "wrap", xl: "nowrap" }}
             >
                 <Flex
-                    justify={"center"}
-                    alignItems={"center"}
+                    justify="center"
+                    alignItems="center"
                     mt={{ base: "120px", xl: "125px" }}
                     ml={{ base: "32px", xl: "80px" }}
                     mr={{ base: "32px", xl: "188px" }}
                     mb={{ base: "120px", xl: "109px" }}
                     w={{ base: "auto", xl: "445px" }}
                 >
-                    <VStack alignItems={"left"}>
-                        <Text fontSize={{ base: "30px", md: "44px" }} fontWeight={"500"}>
+                    <VStack alignItems="left">
+                        <Text fontSize={{ base: "30px", md: "44px" }} fontWeight="500">
                             Contribute to Semaphore
                         </Text>
-                        <Text fontSize={{ base: "16px", md: "18px" }} color={"alabaster.300"} mt={"16px"}>
+                        <Text fontSize={{ base: "16px", md: "18px" }} color="alabaster.300" mt="16px">
                             Semaphore is open source with dozens of community contributors. You can propose improvements
                             to the protocol or take good first issues to get started.
                         </Text>
-                        <VStack mt={"40px"} alignItems={"left"}>
-                            {linksInfo.map((linkInfo, i) => (
+                        <VStack mt="40px" alignItems="left">
+                            {linksInfo.map((linkInfo) => (
                                 <Link
-                                    display={"flex"}
-                                    alignItems={"center"}
-                                    gap={"10px"}
-                                    justifyItems={"center"}
+                                    display="flex"
+                                    alignItems="center"
+                                    gap="10px"
+                                    justifyItems="center"
                                     href={linkInfo.href}
                                     isExternal
-                                    key={i}
+                                    key={linkInfo.title}
                                 >
                                     <Text
-                                        borderBottomWidth={"1px"}
-                                        borderBottomColor={"white"}
+                                        borderBottomWidth="1px"
+                                        borderBottomColor="white"
                                         _hover={{ borderBottomColor: "transparent" }}
                                         fontSize="18px"
                                         fontWeight="normal"
@@ -132,7 +132,7 @@ export default function Build() {
                         </VStack>
                     </VStack>
                 </Flex>
-                <Box position={"relative"} w={{ base: "full", xl: "727px" }} h={"630"}>
+                <Box position="relative" w={{ base: "full", xl: "727px" }} h="630">
                     <Image
                         src="https://semaphore.cedoor.dev/flower-shadow.jpg"
                         alt="Flower Shadow"
@@ -144,7 +144,7 @@ export default function Build() {
                     />
                 </Box>
             </Flex>
-            <VStack my={"128"}>
+            <VStack my="128">
                 <ActionCard
                     title="Project ideas to explore with Semaphore"
                     description="The team has created this list of project ideas to build with Semaphore, but there are many more to be discovered."
