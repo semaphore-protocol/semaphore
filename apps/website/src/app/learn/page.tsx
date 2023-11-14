@@ -242,8 +242,8 @@ await verifyProof(verificationKey, fullProof)`,
     )
 
     return (
-        <VStack>
-            <VStack h={{ base: "2100px", md: "1800px", lg: "1300px" }} position="relative">
+        <VStack w="full">
+            <VStack position="relative">
                 <Box
                     display={{ base: "none", md: "block" }}
                     zIndex="-1"
@@ -309,9 +309,9 @@ await verifyProof(verificationKey, fullProof)`,
                 </Tabs>
             </VStack>
 
-            <VStack p={{ base: "128px 20px", md: "128px 80px" }}>
+            <VStack w="full" pt="24" pb="28">
                 {sectionBlockTexts.map((sectionBlockText, i) => (
-                    <VStack key={sectionBlockText.title}>
+                    <VStack w="full" key={sectionBlockText.title}>
                         <SectionBlock
                             title={sectionBlockText.title}
                             description={sectionBlockText.description}
