@@ -243,7 +243,7 @@ await verifyProof(verificationKey, fullProof)`,
 
     return (
         <VStack>
-            <VStack h={{ base: "2100px", md: "1800px", lg: "1300px" }} position="relative">
+            <VStack position="relative">
                 <Box
                     display={{ base: "none", md: "block" }}
                     zIndex="-1"
@@ -287,20 +287,22 @@ await verifyProof(verificationKey, fullProof)`,
                 </Box>
 
                 <Tabs
-                    position="relative"
+                    maxWidth="100vw"
                     variant="unstyled"
                     align="center"
                     mt={{ base: "100px", md: "170px" }}
                     mb={{ base: "50px", md: "112px" }}
                 >
-                    <TabList gap="40px">
-                        <Tab px={0} fontSize="24px">
-                            About Semaphore
-                        </Tab>
-                        <Tab px={0} fontSize="24px">
-                            About Zero Knowledge
-                        </Tab>
-                    </TabList>
+                    <Box overflow="auto" mx="3">
+                        <TabList gap="40px" w="max-content" whiteSpace="nowrap">
+                            <Tab px={0} fontSize="24px">
+                                About Semaphore
+                            </Tab>
+                            <Tab px={0} fontSize="24px">
+                                About Zero Knowledge
+                            </Tab>
+                        </TabList>
+                    </Box>
                     <TabIndicator mt="-1.5px" height="2px" bg="white" borderRadius="1px" />
                     <TabPanels mt="80px">
                         <TabPanel>{renderTabBlockSemaphore()}</TabPanel>
