@@ -21,9 +21,9 @@ export type SectionBlockProps = {
 
 export default function SectionBlock({ title, description, linkText, linkUrl, codeText, itemList }: SectionBlockProps) {
     return (
-        <VStack>
-            <Flex justify={{ base: "start", xl: "space-around" }} wrap={{ base: "wrap", xl: "nowrap" }} gap="52px">
-                <VStack w={{ base: "auto", lg: "602px" }} alignItems={{ base: "start", xl: "center" }} gap="32px">
+        <VStack w="full">
+            <Flex flexDir={{ base: "column", lg: "row" }} gap="52px" w="full">
+                <VStack align="left" gap="32px" flex="1">
                     <Text fontSize={{ base: "40px", md: "44px" }} fontWeight={{ base: "400", md: "500" }}>
                         {title}
                     </Text>
