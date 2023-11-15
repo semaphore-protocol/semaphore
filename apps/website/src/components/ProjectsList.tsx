@@ -30,6 +30,8 @@ export default function ProjectsList(props: any) {
             filteredProjects = filteredProjects.filter((project) => !project.pse)
         }
 
+        filteredProjects = filteredProjects.sort((a, b) => a.name.localeCompare(b.name))
+
         setProjects(chunkArray(filteredProjects))
     }, [selectedCategory, onlyPSE])
 
