@@ -175,3 +175,49 @@ const members = await semaphoreEthers.getGroupMembers("42")
 ```typescript
 const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs("42")
 ```
+
+\# **new Viem**(network: Chain, options: ViemOptions = {}): _SemaphoreViem_
+
+```typescript
+import { SemaphoreViem } from "@semaphore-protocol/data"
+
+const semaphoreViem = new SemaphoreViem()
+
+// or:
+import { localhost } from "viem/chains"
+const semaphoreViem = new SemaphoreViem(localhost, {
+    address: "semaphore-address",
+    startBlock: 0,
+    rpcUrl: "http://localhost:8545"
+})
+```
+
+\# **getGroupIds**(): _Promise\<string[]>_
+
+```typescript
+const groupIds = await semaphoreViem.getGroupIds()
+```
+
+\# **getGroup**(groupId: _string_): _Promise\<GroupResponse>_
+
+```typescript
+const group = await semaphoreViem.getGroup("42")
+```
+
+\# **getGroupAdmin**(groupId: _string_): _Promise\<string>_
+
+```typescript
+const admin = await semaphoreViem.getGroupAdmin("42")
+```
+
+\# **getGroupMembers**(groupId: _string_): _Promise\<string[]>_
+
+```typescript
+const members = await semaphoreViem.getGroupMembers("42")
+```
+
+\# **getGroupVerifiedProofs**(groupId: _string_): _Promise\<any[]>_
+
+```typescript
+const verifiedProofs = await semaphoreViem.getGroupVerifiedProofs("42")
+```

@@ -50,9 +50,22 @@ export type GroupResponse = {
     }[]
 }
 
+export type GroupVerifiedProofsResponse = {
+    signal: string
+    merkleTreeRoot: string
+    externalNullifier: string
+    nullifierHash: string
+}
+
 export type EthersOptions = {
     address?: string
     startBlock?: number
     provider?: "etherscan" | "infura" | "alchemy" | "cloudflare" | "pocket" | "ankr"
     apiKey?: string
+}
+
+export type ViemOptions = {
+    address?: `0x${string}`
+    startBlock?: number
+    rpcURL?: string
 }
