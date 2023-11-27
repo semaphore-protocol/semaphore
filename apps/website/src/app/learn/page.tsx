@@ -10,9 +10,9 @@ import {
     TabPanel,
     TabIndicator,
     Divider,
-    Box
+    Box,
+    Image
 } from "@chakra-ui/react"
-import Image from "next/image"
 import InfoCard, { InfoBlock } from "../../components/InfoCard"
 import SectionBlock, { SectionBlockProps } from "../../components/SectionBlock"
 import IconEyelash from "@/icons/IconEyelash"
@@ -252,16 +252,14 @@ await verifyProof(verificationKey, fullProof)`,
                     w="100vw"
                     h="100%"
                     pos="absolute"
+                    overflow="hidden"
                 >
                     <Image
                         alt="Guy shadow image"
                         src="https://semaphore.cedoor.dev/guy-shadow-horizontal.jpg"
-                        quality="100"
-                        sizes="100vw"
-                        fill
-                        style={{
-                            objectFit: "cover"
-                        }}
+                        objectFit="cover"
+                        w="full"
+                        h="full"
                     />
                 </Box>
 
@@ -273,16 +271,14 @@ await verifyProof(verificationKey, fullProof)`,
                     w="100vw"
                     h="100%"
                     pos="absolute"
+                    overflow="hidden"
                 >
                     <Image
                         alt="Guy shadow image"
-                        src="https://semaphore.cedoor.dev/guy-shadow.png"
-                        quality="100"
-                        sizes="100vw"
-                        fill
-                        style={{
-                            objectFit: "cover"
-                        }}
+                        src="https://semaphore.cedoor.dev/guy-shadow.jpg"
+                        objectFit="cover"
+                        w="full"
+                        h="full"
                     />
                 </Box>
 
