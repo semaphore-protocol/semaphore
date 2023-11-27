@@ -1,5 +1,4 @@
 import { Box, Heading, Text, VStack, Image } from "@chakra-ui/react"
-// import Image from "next/image"
 import ActionCard from "../../components/ActionCard"
 import ProjectsList from "../../components/ProjectsList"
 
@@ -27,6 +26,8 @@ export default function Projects() {
                         alt="Blue texture image"
                         src="https://semaphore.cedoor.dev/blue-texture.jpg"
                         objectFit="cover"
+                        w="full"
+                        h="full"
                     />
                 </Box>
 

@@ -1,6 +1,5 @@
-import { Box, Button, Card, CardBody, Heading, HStack, Link, Stack, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Card, CardBody, Heading, HStack, Link, Stack, Text, VStack, Image } from "@chakra-ui/react"
 import { Sora } from "next/font/google"
-import Image from "next/image"
 import Carousel from "../components/Carousel"
 import ProjectCard from "../components/ProjectCard"
 import events from "../data/events.json"
@@ -15,16 +14,21 @@ export default function Home() {
     return (
         <VStack>
             <VStack h={{ base: "718", sm: "734", md: "724" }} justify="center" spacing="40" position="relative">
-                <Box zIndex="-1" left="50%" transform="translateX(-50%)" w="100vw" h="100%" pos="absolute">
+                <Box
+                    zIndex="-1"
+                    left="50%"
+                    transform="translateX(-50%)"
+                    w="100vw"
+                    h="100%"
+                    pos="absolute"
+                    overflow="hidden"
+                >
                     <Image
                         alt="Midnight whispers image"
                         src="https://semaphore.cedoor.dev/midnight-whispers.jpg"
-                        quality="100"
-                        sizes="100vw"
-                        fill
-                        style={{
-                            objectFit: "cover"
-                        }}
+                        objectFit="cover"
+                        w="full"
+                        h="full"
                     />
                 </Box>
 
@@ -185,16 +189,21 @@ export default function Home() {
             </Card>
 
             <VStack justify="center" spacing="40" py="32" position="relative">
-                <Box zIndex="-1" left="50%" transform="translateX(-50%)" w="100vw" h="100%" pos="absolute">
+                <Box
+                    zIndex="-1"
+                    left="50%"
+                    transform="translateX(-50%)"
+                    w="100vw"
+                    h="100%"
+                    pos="absolute"
+                    overflow="hidden"
+                >
                     <Image
                         alt="Fluttering shadow image"
                         src="https://semaphore.cedoor.dev/shadow-flutter.jpg"
-                        quality="100"
-                        sizes="100vw"
-                        fill
-                        style={{
-                            objectFit: "cover"
-                        }}
+                        objectFit="cover"
+                        w="full"
+                        h="full"
                     />
                 </Box>
 

@@ -1,5 +1,4 @@
-import { Flex, Link, Text, VStack, Box } from "@chakra-ui/react"
-import Image from "next/image"
+import { Flex, Link, Text, VStack, Box, Image } from "@chakra-ui/react"
 import ActionCard from "../../components/ActionCard"
 import ToolsCard from "../../components/ToolsCard"
 import IconArrowRight from "../../icons/IconArrowRight"
@@ -133,15 +132,13 @@ export default function Build() {
                     </VStack>
                 </Flex>
 
-                <Box position="relative" w={{ base: "full", xl: "727px" }} h="630">
+                <Box position="relative" w={{ base: "full", xl: "727px" }} h="630" overflow="hidden">
                     <Image
                         src="https://semaphore.cedoor.dev/flower-shadow.jpg"
                         alt="Flower Shadow"
-                        fill
-                        quality="100"
-                        style={{
-                            objectFit: "cover"
-                        }}
+                        objectFit="cover"
+                        w="full"
+                        h="full"
                     />
                 </Box>
             </Flex>
