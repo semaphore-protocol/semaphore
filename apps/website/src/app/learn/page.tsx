@@ -365,9 +365,9 @@ await verifyProof(verificationKey, fullProof)`,
                 </Text>
                 <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto">
                     {videos.map((video) => (
-                        <VStack key={video.url}>
+                        <VStack key={video.youtubeId}>
                             <Box px="3">
-                                <VideoCard title={video.title} embeddedVideoUrl={video.embeddedUrl} />
+                                <VideoCard title={video.title} youtubeId={video.youtubeId} />
                             </Box>
                         </VStack>
                     ))}

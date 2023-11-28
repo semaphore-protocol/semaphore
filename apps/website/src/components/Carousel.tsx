@@ -113,9 +113,9 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                                 visibility={!size ? "hidden" : "visible"}
                                 px="3"
                                 minW={`${100 / size!}%`}
-                                key={video.title + video.url}
+                                key={video.title + video.youtubeId}
                             >
-                                <VideoCard title={video.title} embeddedVideoUrl={video.embeddedUrl} />
+                                <VideoCard title={video.title} youtubeId={video.youtubeId} />
                             </Box>
                         ))}
                 </HStack>
