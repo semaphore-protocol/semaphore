@@ -9,7 +9,7 @@ import {
     VStack,
     StackDivider,
     Box,
-    Button,
+    Link,
     Flex
 } from "@chakra-ui/react"
 import IconChevronRight from "@/icons/IconChevronRight"
@@ -19,9 +19,10 @@ export type ToolsCardProps = {
     title: string
     subtitle: string
     details: string[]
+    url: string
 }
 
-export default function ToolsCard({ icon, title, subtitle, details }: ToolsCardProps) {
+export default function ToolsCard({ icon, title, subtitle, details, url }: ToolsCardProps) {
     return (
         <Card
             bg="darkBlue"
@@ -40,17 +41,23 @@ export default function ToolsCard({ icon, title, subtitle, details }: ToolsCardP
                         <Heading fontSize="40px" fontWeight="normal">
                             {title}
                         </Heading>
-                        <Button
+                        <Link
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            href={url}
+                            isExternal
+                            variant="buttonlink"
+                            py="10px"
                             mt="24px"
                             w="full"
                             bg="semaphore"
                             color="white"
                             fontSize="18px"
-                            fontWeight="medium"
                             _hover={{ bg: "semaphore", opacity: "85%" }}
                         >
                             Select tool
-                        </Button>
+                        </Link>
                     </Box>
                     <Box>
                         <Text fontSize="12px" textTransform="uppercase" fontWeight="semibold">
