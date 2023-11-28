@@ -367,7 +367,7 @@ await verifyProof(verificationKey, fullProof)`,
                     {videos.map((video) => (
                         <VStack key={video.url}>
                             <Box px="3">
-                                <VideoCard title={video.title} embeddedVideoUrl={video.embeddedUrl} />
+                                <VideoCard title={video.title} thumbnail={video.thumbnail} url={video.url} />
                             </Box>
                         </VStack>
                     ))}
