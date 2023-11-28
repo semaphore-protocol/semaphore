@@ -115,7 +115,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                                 minW={`${100 / size!}%`}
                                 key={video.title + video.url}
                             >
-                                <VideoCard title={video.title} embeddedVideoUrl={video.embeddedUrl} />
+                                <VideoCard title={video.title} thumbnail={video.thumbnail} url={video.url} />
                             </Box>
                         ))}
                 </HStack>

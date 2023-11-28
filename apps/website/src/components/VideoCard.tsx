@@ -1,13 +1,14 @@
-import { Heading, Card, CardBody, AspectRatio, HStack, Link } from "@chakra-ui/react"
+import { Heading, Card, CardBody, Image, AspectRatio, HStack, Link } from "@chakra-ui/react"
 
 export type VideoCardProps = {
-    embeddedVideoUrl: string
+    thumbnail: string
+    url: string
     title: string
 }
 
-export default function VideoCard({ embeddedVideoUrl, title }: VideoCardProps) {
+export default function VideoCard({ thumbnail, url, title }: VideoCardProps) {
     return (
-        <Link href={embeddedVideoUrl}>
+        <Link href={url} isExternal>
             <Card
                 bg="transparent"
                 borderRadius="10px"
@@ -18,7 +19,7 @@ export default function VideoCard({ embeddedVideoUrl, title }: VideoCardProps) {
             >
                 <HStack borderRadius="10px 10px 0px 0px">
                     <AspectRatio width="297px" height="215px" borderRadius="10px" overflow="hidden">
-                        <iframe title={title} src={embeddedVideoUrl} allowFullScreen />
+                        <Image alt="Youtube thumbnail" src={thumbnail} />
                     </AspectRatio>
                 </HStack>
                 <CardBody padding="0px 20px 20px 20px">
