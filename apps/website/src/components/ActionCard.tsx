@@ -1,12 +1,13 @@
-import { Heading, Text, Card, CardBody, Stack, Button, Flex } from "@chakra-ui/react"
+import { Heading, Text, Card, CardBody, Stack, Flex, Link } from "@chakra-ui/react"
 
 export type ActionCardProps = {
     title: string
     description: string
     buttonText: string
+    buttonUrl: string
 }
 
-export default function ActionCard({ title, description, buttonText }: ActionCardProps) {
+export default function ActionCard({ title, description, buttonText, buttonUrl }: ActionCardProps) {
     return (
         <Card
             bg="darkBlue"
@@ -43,17 +44,20 @@ export default function ActionCard({ title, description, buttonText }: ActionCar
                         </Text>
                     </Stack>
                     <Stack width={{ base: "full", md: "auto" }}>
-                        <Button
+                        <Link
+                            href={buttonUrl}
+                            isExternal
+                            variant="buttonlink"
                             bg="semaphore"
                             w="fit-content"
                             lineHeight="24px"
                             fontSize={{ base: "14px", md: "18px", lg: "20px" }}
                             textColor="white"
-                            padding="1.5rem 2rem"
+                            padding="14px 16px"
                             _hover={{ opacity: "85%" }}
                         >
                             {buttonText}
-                        </Button>
+                        </Link>
                     </Stack>
                 </Flex>
             </CardBody>
