@@ -4,83 +4,95 @@
         "eventName": "Devcon4",
         "date": "Dec 10, 2018",
         "speakers": ["Barry Whitehat"],
-        "youtubeId": "lv6iK9qezBY"
+        "url": "https://youtu.be/lv6iK9qezBY",
+        "thumbnail": "https://img.youtube.com/vi/lv6iK9qezBY/0.jpg"
     },
     {
         "title": "Succinct Proofs in Ethereum",
         "eventName": "2nd ZKProof Workshop",
         "date": "Apr 30, 2019",
         "speakers": ["Barry Whitehat"],
-        "youtubeId": "TtsDNneTDDY"
+        "url": "https://youtu.be/TtsDNneTDDY",
+        "thumbnail": "https://img.youtube.com/vi/TtsDNneTDDY/0.jpg"
     },
     {
         "title": "Privacy in Ethereum",
         "eventName": "Taipei Ethereum Meetup",
         "date": "May 21, 2019",
         "speakers": ["Barry Whitehat"],
-        "youtubeId": "maDHYyj30kg"
+        "url": "https://youtu.be/TtsDNneTDDY",
+        "thumbnail": "https://img.youtube.com/vi/TtsDNneTDDY/0.jpg"
     },
     {
         "title": "Semaphore Roadmap for Ethereum",
         "eventName": "Zcon1",
         "date": "Jun 23, 2019",
         "speakers": ["Barry Whitehat"],
-        "youtubeId": "gOub903iWFs"
+        "url": "https://youtu.be/gOub903iWFs",
+        "thumbnail": "https://img.youtube.com/vi/gOub903iWFs/0.jpg"
     },
     {
         "title": "Privacy in Ethereum",
         "eventName": "Devcon5",
         "date": "Dec 7, 2019",
         "speakers": ["Barry Whitehat"],
-        "youtubeId": "zBUo7G95wYE"
+        "url": "https://youtu.be/zBUo7G95wYE",
+        "thumbnail": "https://img.youtube.com/vi/zBUo7G95wYE/0.jpg"
     },
     {
         "title": "Hands-on Applications of Zero-Knowledge Signaling",
         "eventName": "Devcon5",
         "date": "Dec 26, 2019",
         "speakers": ["Wei Jie Koh"],
-        "youtubeId": "7wd2aAN2jXI"
+        "url": "https://youtu.be/7wd2aAN2jXI",
+        "thumbnail": "https://img.youtube.com/vi/7wd2aAN2jXI/0.jpg"
     },
     {
         "title": "A trustless Ethereum mixer using zero-knowledge signalling",
         "eventName": "Devcon5",
         "date": "Dec 31, 2019",
         "speakers": ["Wei Jie Koh", "Barry WhiteHat"],
-        "youtubeId": "GzVT16lFOHU"
+        "url": "https://youtu.be/GzVT16lFOHU",
+        "thumbnail": "https://img.youtube.com/vi/GzVT16lFOHU/0.jpg"
     },
     {
         "title": "Proposal: Semaphore - Zero-Knowledge Signaling on Ethereum",
         "eventName": "ZKProof Home Edition",
         "date": "May 25, 2020",
         "speakers": ["Kobi Gurkan", "Koh Wei Jie"],
-        "youtubeId": "y5uV9eRb3-w"
+        "url": "https://youtu.be/y5uV9eRb3-w",
+        "thumbnail": "https://img.youtube.com/vi/y5uV9eRb3-w/0.jpg"
     },
     {
         "title": "Anonymous Signalling on Ethereum",
         "eventName": "Devcon Bogota",
         "date": "Oct 18, 2022",
         "speakers": ["Cedoor"],
-        "youtubeId": "dxAfL91Sbw4"
+        "url": "https://youtu.be/dxAfL91Sbw4",
+        "thumbnail": "https://img.youtube.com/vi/dxAfL91Sbw4/0.jpg"
     },
     {
         "title": "Old & New Primitives",
         "eventName": "EDCON 2023",
         "date": "Jun 25, 2023",
         "speakers": ["Barry Whitehat"],
-        "youtubeId": "cbyTXVm9NPI"
+        "url": "https://youtu.be/cbyTXVm9NPI",
+        "thumbnail": "https://img.youtube.com/vi/cbyTXVm9NPI/0.jpg"
     },
     {
         "title": "Building zero-knowledge applications using Semaphore",
         "eventName": "ETHShangai",
         "date": "Jul 19, 2023",
         "speakers": ["Vivian Plasencia"],
-        "youtubeId": "_isrY1pXJpY"
+        "url": "https://youtu.be/_isrY1pXJpY",
+        "thumbnail": "https://img.youtube.com/vi/_isrY1pXJpY/0.jpg"
     },
     {
         "title": "Semaphore",
         "eventName": "zkMonth",
         "date": "Oct 31, 2023",
         "speakers": ["Vivian Plasencia"],
-        "youtubeId": "h4iVFKhAI8g"
+        "url": "https://youtu.be/h4iVFKhAI8g",
+        "thumbnail": "https://img.youtube.com/vi/h4iVFKhAI8g/0.jpg"
     }
 ]
