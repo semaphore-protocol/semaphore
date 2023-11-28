@@ -364,7 +364,7 @@ await verifyProof(verificationKey, fullProof)`,
                     Videos
                 </Text>
                 <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto">
-                    {videos.map((video) => (
+                    {videos.toReversed().map((video) => (
                         <VStack key={video.url}>
                             <Box px="3">
                                 <VideoCard title={video.title} embeddedVideoUrl={video.embeddedUrl} />
@@ -383,7 +383,7 @@ await verifyProof(verificationKey, fullProof)`,
                     Articles
                 </Text>
                 <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto" mb="66px">
-                    {articles.map((article) => (
+                    {articles.toReversed().map((article) => (
                         <VStack key={article.url}>
                             <ArticleCard title={article.title} minRead={article.minRead} url={article.url} />
                         </VStack>

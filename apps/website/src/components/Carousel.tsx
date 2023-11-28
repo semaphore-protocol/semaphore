@@ -96,7 +96,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                         ))}
 
                     {type === "articles" &&
-                        articles.map((article) => (
+                        articles.toReversed().map((article) => (
                             <Box
                                 visibility={!size ? "hidden" : "visible"}
                                 px="3"
@@ -108,7 +108,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                         ))}
 
                     {type === "videos" &&
-                        videos.map((video) => (
+                        videos.toReversed().map((video) => (
                             <Box
                                 visibility={!size ? "hidden" : "visible"}
                                 px="3"
