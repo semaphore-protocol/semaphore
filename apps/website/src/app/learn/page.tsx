@@ -116,7 +116,7 @@ const commitment = identity.generateCommitment()`,
             linkUrl: "https://semaphore.pse.dev/docs/guides/groups",
             codeText: `import { Group } from "@semaphore-protocol/group"
 
-const group = new Group()
+const group = new Group(1)
 
 group.addMember(commitment)`,
             itemList: [
