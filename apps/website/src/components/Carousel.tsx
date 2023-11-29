@@ -12,6 +12,7 @@ import { getDataLength } from "../utils/getDataLength"
 import ArticleCard from "./ArticleCard"
 import ProjectCard from "./ProjectCard"
 import VideoCard from "./VideoCard"
+import { sortByDate } from "@/utils/sortByDate"
 
 export type CarouselProps = {
     title: string
@@ -96,7 +97,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                         ))}
 
                     {type === "articles" &&
-                        articles.toReversed().map((article) => (
+                        sortByDate(articles).map((article) => (
                             <Box
                                 visibility={!size ? "hidden" : "visible"}
                                 px="3"
@@ -108,7 +109,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                         ))}
 
                     {type === "videos" &&
-                        videos.toReversed().map((video) => (
+                        sortByDate(videos).map((video) => (
                             <Box
                                 visibility={!size ? "hidden" : "visible"}
                                 px="3"
