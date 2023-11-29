@@ -112,7 +112,7 @@ export default function Home() {
                                 </Heading>
                                 <VStack align="left">
                                     <Text fontSize={{ base: "18px", md: "20px" }} fontFamily={sora.style.fontFamily}>
-                                        Simplify privacy
+                                        Simplified privacy
                                     </Text>
                                     <Text color="alabaster.400" fontSize="14px">
                                         Semaphore streamlines privacy-centric app development. It empowers developers to
