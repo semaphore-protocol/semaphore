@@ -29,6 +29,7 @@ import videos from "../../data/videos.json"
 import VideoCard from "../../components/VideoCard"
 import articles from "../../data/articles.json"
 import ArticleCard from "../../components/ArticleCard"
+import { sortByDate } from "@/utils/sortByDate"
 
 export default function Learn() {
     const infoCardTexts: InfoBlock[][] = [
@@ -364,7 +365,7 @@ await verifyProof(verificationKey, fullProof)`,
                     Videos
                 </Text>
                 <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto">
-                    {videos.map((video) => (
+                    {sortByDate(videos).map((video) => (
                         <VStack key={video.url}>
                             <Box px="3">
                                 <VideoCard title={video.title} thumbnail={video.thumbnail} url={video.url} />
@@ -383,7 +384,7 @@ await verifyProof(verificationKey, fullProof)`,
                     Articles
                 </Text>
                 <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto" mb="66px">
-                    {articles.map((article) => (
+                    {sortByDate(articles).map((article) => (
                         <VStack key={article.url}>
                             <ArticleCard title={article.title} minRead={article.minRead} url={article.url} />
                         </VStack>
