@@ -151,7 +151,7 @@ export default function Build() {
                     title="Project ideas to explore with Semaphore"
                     description="The team has created this list of project ideas to build with Semaphore, but there are many more to be discovered."
                     buttonText="Get inspired"
-                    buttonUrl=""
+                    buttonUrl="https://github.com/orgs/semaphore-protocol/discussions/463"
                 />
             </VStack>
         </VStack>
