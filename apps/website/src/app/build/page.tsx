@@ -12,6 +12,7 @@ export default function Build() {
             icon: <IconCli width={8} height={8} color="ceruleanBlue" />,
             title: "CLI",
             subtitle: "INTEGRATE TO YOUR PROJECT",
+            url: "https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli#readme",
             details: [
                 "Streamline setting up a new Semaphore project",
                 "Interact with group, members & proofs data easily",
@@ -22,6 +23,7 @@ export default function Build() {
             icon: <IconBook width={8} height={8} color="ceruleanBlue" />,
             title: "Boilerplate",
             subtitle: "START FROM TEMPLATE",
+            url: "https://github.com/semaphore-protocol/boilerplate",
             details: [
                 "Begin your projects with a ready-to-use example template",
                 "Create identity, join group, send anonmous feedback",
@@ -32,6 +34,7 @@ export default function Build() {
             icon: <IconBox width={8} height={8} color="ceruleanBlue" />,
             title: "Packages",
             subtitle: "LEVERAGE DEVELOPED LIBRARIES",
+            url: "https://github.com/semaphore-protocol/semaphore/tree/main/packages",
             details: [
                 "Curated libraries to enhance your development process",
                 "Preconfigured deployments with Hardhat plugin",
@@ -72,6 +75,7 @@ export default function Build() {
                                 subtitle={toolCardInfo.subtitle}
                                 icon={toolCardInfo.icon}
                                 details={toolCardInfo.details}
+                                url={toolCardInfo.url}
                             />
                         ))}
                     </Flex>
@@ -147,6 +151,7 @@ export default function Build() {
                     title="Project ideas to explore with Semaphore"
                     description="The team has created this list of project ideas to build with Semaphore, but there are many more to be discovered."
                     buttonText="Get inspired"
+                    buttonUrl="https://github.com/orgs/semaphore-protocol/discussions/463"
                 />
             </VStack>
         </VStack>

@@ -48,6 +48,7 @@ export default function Projects() {
                     title="Show what you have built"
                     description="We are missing your project! Add your project to this page and show your awesomeness to the world."
                     buttonText="Submit your project"
+                    buttonUrl="https://github.com/semaphore-protocol/semaphore/issues/new?assignees=&labels=documentation++%F0%9F%93%96&projects=&template=----project.md&title="
                 />
             </VStack>
         </VStack>
