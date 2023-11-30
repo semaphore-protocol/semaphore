@@ -14,6 +14,10 @@ const Link = {
             pb: "5px",
             pt: "6px",
             _hover: { borderBottomColor: "ceruleanBlue" }
+        }),
+        buttonlink: (): SystemStyleObject => ({
+            borderRadius: "100px",
+            fontWeight: "500"
         })
     }
 }
