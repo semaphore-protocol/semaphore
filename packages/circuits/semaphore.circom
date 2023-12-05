@@ -1,90 +1,25 @@
-pragma circom 2.0.0;
+pragma circom 2.1.5;
 
-include "../node_modules/circomlib/circuits/poseidon.circom";
-include "./tree.circom";
+include "babyjub.circom";
+include "poseidon.circom";
+include "binary-merkle-root.circom";
 
-template CalculateSecret() {
-    signal input identityNullifier;
-    signal input identityTrapdoor;
+template Semaphore(MAX_DEPTH) {
+    signal input privateKey;
+    signal input treeDepth, treeIndices[MAX_DEPTH], treeSiblings[MAX_DEPTH];
+    signal input message;
+    signal input scope;
 
-    signal output out;
+    signal output treeRoot, nullifier;
 
-    component poseidon = Poseidon(2);
+    var Ax, Ay;
+    (Ax, Ay) = BabyPbk()(privateKey);
 
-    poseidon.inputs[0] <== identityNullifier;
-    poseidon.inputs[1] <== identityTrapdoor;
+    var treeLeaf = Poseidon(2)([Ax, Ay]);
 
-    out <== poseidon.out;
+    treeRoot <== BinaryMerkleRoot(MAX_DEPTH)(treeLeaf, treeDepth, treeIndices, treeSiblings);
+    nullifier <== Poseidon(2)([scope, privateKey]);
+
+    // Dummy constraint to prevent compiler from optimizing it.
+    signal dummySquare <== message * message;
 }
-
-template CalculateIdentityCommitment() {
-    signal input secret;
-
-    signal output out;
-
-    component poseidon = Poseidon(1);
-
-    poseidon.inputs[0] <== secret;
-
-    out <== poseidon.out;
-}
-
-template CalculateNullifierHash() {
-    signal input externalNullifier;
-    signal input identityNullifier;
-
-    signal output out;
-
-    component poseidon = Poseidon(2);
-
-    poseidon.inputs[0] <== externalNullifier;
-    poseidon.inputs[1] <== identityNullifier;
-
-    out <== poseidon.out;
-}
-
-// The current Semaphore smart contracts require nLevels <= 32 and nLevels >= 16.
-template Semaphore(nLevels) {
-    signal input identityNullifier;
-    signal input identityTrapdoor;
-    signal input treePathIndices[nLevels];
-    signal input treeSiblings[nLevels];
-
-    signal input signalHash;
-    signal input externalNullifier;
-
-    signal output root;
-    signal output nullifierHash;
-
-    component calculateSecret = CalculateSecret();
-    calculateSecret.identityNullifier <== identityNullifier;
-    calculateSecret.identityTrapdoor <== identityTrapdoor;
-
-    signal secret;
-    secret <== calculateSecret.out;
-
-    component calculateIdentityCommitment = CalculateIdentityCommitment();
-    calculateIdentityCommitment.secret <== secret;
-
-    component calculateNullifierHash = CalculateNullifierHash();
-    calculateNullifierHash.externalNullifier <== externalNullifier;
-    calculateNullifierHash.identityNullifier <== identityNullifier;
-
-    component inclusionProof = MerkleTreeInclusionProof(nLevels);
-    inclusionProof.leaf <== calculateIdentityCommitment.out;
-
-    for (var i = 0; i < nLevels; i++) {
-        inclusionProof.siblings[i] <== treeSiblings[i];
-        inclusionProof.pathIndices[i] <== treePathIndices[i];
-    }
-
-    root <== inclusionProof.root;
-
-    // Dummy square to prevent tampering signalHash.
-    signal signalHashSquared;
-    signalHashSquared <== signalHash * signalHash;
-
-    nullifierHash <== calculateNullifierHash.out;
-}
-
-component main {public [signalHash, externalNullifier]} = Semaphore(20);
