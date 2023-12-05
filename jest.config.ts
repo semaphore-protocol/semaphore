@@ -1,9 +1,12 @@
 import fs from "fs"
 import type { Config } from "@jest/types"
 
+const exclude = ["circuits", "contracts"]
+
 const projects: any = fs
     .readdirSync("./packages", { withFileTypes: true })
     .filter((directory) => directory.isDirectory())
+    .filter((directory) => !exclude.includes(directory.name))
     .map(({ name }) => ({
         rootDir: `packages/${name}`,
         displayName: name,
