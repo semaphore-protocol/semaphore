@@ -1,0 +1,7 @@
+{
+    "semaphore": {
+        "file": "semaphore",
+        "template": "Semaphore",
+        "params": [4]
+    }
+}
