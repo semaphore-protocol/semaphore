@@ -14,6 +14,7 @@
         "test": "yarn test:libraries && yarn test:contracts",
         "test:libraries": "jest --coverage",
         "test:contracts": "yarn workspace contracts test:coverage",
+        "test:circuits": "yarn workspace @semaphore-protocol/circuits test",
         "lint": "eslint . --ext .js,.ts,.tsx && yarn workspace contracts lint",
         "prettier": "prettier -c .",
         "prettier:write": "prettier -w .",
