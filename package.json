@@ -16,6 +16,7 @@
         "test:libraries": "jest --coverage",
         "test:subgraph": "yarn workspace semaphore-subgraph test",
         "test:contracts": "yarn workspace semaphore-contracts test:coverage",
+        "test:circuits": "yarn workspace @semaphore-protocol/circuits test",
         "lint": "eslint . --ext .js,.ts,.tsx && yarn workspace semaphore-contracts lint",
         "prettier": "prettier -c .",
         "prettier:write": "prettier -w .",

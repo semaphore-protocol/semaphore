@@ -1,7 +1,38 @@
 {
-    "name": "circuits",
-    "private": true,
+    "name": "@semaphore-protocol/circuits",
+    "version": "3.15.1",
+    "description": "Semaphore Circom circuits to generate zero-knowledge proofs.",
+    "license": "MIT",
+    "files": [
+        "**/*.circom",
+        "!main",
+        "!test",
+        "LICENSE",
+        "README.md"
+    ],
+    "repository": "https://github.com/semaphore-protocol/semaphore",
+    "homepage": "https://github.com/semaphore-protocol/semaphore/tree/main/packages/data",
+    "bugs": {
+        "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
+    },
+    "scripts": {
+        "compile": "circomkit compile semaphore",
+        "setup": "circomkit setup semaphore",
+        "test": "mocha"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
     "dependencies": {
-        "circomlib": "^2.0.2"
+        "@zk-kit/circuits": "0.2.3",
+        "circomlib": "2.0.5"
+    },
+    "devDependencies": {
+        "@types/mocha": "^10.0.6",
+        "@zk-kit/eddsa-poseidon": "0.3.1",
+        "@zk-kit/imt": "^2.0.0-beta",
+        "circomkit": "^0.0.19",
+        "mocha": "^10.2.0",
+        "poseidon-lite": "^0.2.0"
     }
 }
