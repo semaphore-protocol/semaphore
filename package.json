@@ -12,7 +12,7 @@
         "compile:contracts": "yarn workspace semaphore-contracts compile",
         "download:snark-artifacts": "rimraf snark-artifacts && ts-node scripts/download-snark-artifacts.ts",
         "remove:template-files": "ts-node scripts/remove-template-files.ts",
-        "test": "yarn test:libraries && yarn test:contracts && yarn test:subgraph",
+        "test": "yarn test:libraries && yarn test:contracts && yarn test:circuits && yarn test:subgraph",
         "test:libraries": "jest --coverage",
         "test:subgraph": "yarn workspace semaphore-subgraph test",
         "test:contracts": "yarn workspace semaphore-contracts test:coverage",
