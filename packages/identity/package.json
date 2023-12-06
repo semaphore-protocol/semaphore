@@ -36,6 +36,7 @@
         "rollup-plugin-typescript2": "^0.31.2"
     },
     "dependencies": {
-        "@zk-kit/eddsa-poseidon": "0.4.1"
+        "@zk-kit/eddsa-poseidon": "0.4.1",
+        "poseidon-lite": "^0.2.0"
     }
 }

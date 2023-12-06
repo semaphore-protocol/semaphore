@@ -1,22 +1,20 @@
 import {
-    BigNumber,
     BigNumberish,
     Point,
     Signature,
     derivePublicKey,
     deriveSecretScalar,
-    packPublicKey,
     signMessage,
-    unpackPublicKey,
     verifySignature
 } from "@zk-kit/eddsa-poseidon"
 import { randomBytes } from "crypto"
+import { poseidon2 } from "poseidon-lite/poseidon2"
 
 export default class Identity {
     private _privateKey: BigNumberish
     private _secretScalar: string
-    private _unpackedPublicKey: Point<string>
-    private _publicKey: string
+    private _publicKey: Point<string>
+    private _identityCommitment: string
 
     /**
      * Initializes the class attributes based on the parameters.
@@ -26,9 +24,9 @@ export default class Identity {
         this._privateKey = privateKey
         this._secretScalar = deriveSecretScalar(privateKey)
 
-        this._unpackedPublicKey = derivePublicKey(privateKey)
+        this._publicKey = derivePublicKey(privateKey)
 
-        this._publicKey = packPublicKey(this._unpackedPublicKey) as string
+        this._identityCommitment = poseidon2(this._publicKey).toString()
     }
 
     /**
@@ -51,16 +49,16 @@ export default class Identity {
      * Returns the public key.
      * @returns The public key.
      */
-    public get publicKey(): string {
+    public get publicKey(): Point<string> {
         return this._publicKey
     }
 
     /**
-     * Returns the unpacked public key.
-     * @returns The unpacked public key.
+     * Returns the identity commitment.
+     * @returns The identity commitment.
      */
-    public get unpackedPublicKey(): Point<string> {
-        return this._unpackedPublicKey
+    public get identityCommitment(): string {
+        return this._identityCommitment
     }
 
     public signMessage(message: BigNumberish): Signature<string> {
@@ -68,14 +66,10 @@ export default class Identity {
     }
 
     public verifySignature(message: BigNumberish, signature: Signature): boolean {
-        return verifySignature(message, signature, this._unpackedPublicKey)
+        return verifySignature(message, signature, this._publicKey)
     }
 
-    static verifySignature(message: BigNumberish, signature: Signature, publicKey: BigNumber | Point): boolean {
-        if (typeof publicKey === "string" || typeof publicKey === "bigint") {
-            publicKey = unpackPublicKey(publicKey)
-        }
-
+    static verifySignature(message: BigNumberish, signature: Signature, publicKey: Point): boolean {
         return verifySignature(message, signature, publicKey)
     }
 }
