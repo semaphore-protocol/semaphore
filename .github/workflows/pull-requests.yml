@@ -17,7 +17,7 @@ jobs:
             - name: Install Node.js
               uses: actions/setup-node@v1
               with:
-                  node-version: 16.x
+                  node-version: "18"
 
             - name: Get yarn cache directory path
               id: yarn-cache-dir-path
@@ -59,7 +59,14 @@ jobs:
             - name: Install Node.js
               uses: actions/setup-node@v1
               with:
-                  node-version: 16.x
+                  node-version: "18"
+
+            # https://github.com/iden3/circuits/blob/8fffb6609ecad0b7bcda19bb908bdb544bdb3cf7/.github/workflows/main.yml#L18-L22
+            - name: Setup Circom deps
+              run: sudo apt-get update && sudo apt-get install -y wget nlohmann-json3-dev libgmp-dev nasm g++ build-essential
+
+            - name: Setup Circom
+              run: wget https://github.com/iden3/circom/releases/latest/download/circom-linux-amd64 && sudo mv ./circom-linux-amd64 /usr/bin/circom && sudo chmod +x /usr/bin/circom
 
             - name: Get yarn cache directory path
               id: yarn-cache-dir-path
@@ -83,5 +90,5 @@ jobs:
             - name: Build subgraph
               run: yarn build:subgraph
 
-            - name: Test contracts, libraries and subgraph
+            - name: Test contracts, libraries, circuits and subgraph
               run: yarn test
