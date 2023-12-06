@@ -2,6 +2,6 @@
     "semaphore": {
         "file": "semaphore",
         "template": "Semaphore",
-        "params": [4]
+        "params": [10]
     }
 }
