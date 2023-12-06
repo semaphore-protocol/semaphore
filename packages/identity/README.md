@@ -76,7 +76,7 @@ yarn add @semaphore-protocol/identity
 import { Identity } from "@semaphore-protocol/identity"
 
 // The identity will be generated randomly.
-const { privateKey, publicKey } = new Identity()
+const { privateKey, publicKey, identityCommitment } = new Identity()
 
 // Alternatively, you can pass your private key.
 const identity = new Identity("your-private-key")
@@ -106,7 +106,7 @@ const signature = identity.signMessage(message)
 identity.verifySignature(message, signature)
 ```
 
-\# **Identity.verifySignature**(message: _BigNumberish_, signature: _Signature_, publicKey: _BigNumber_ | _Point_): _boolean_
+\# **Identity.verifySignature**(message: _BigNumberish_, signature: _Signature_, publicKey: _Point_): _boolean_
 
 ```typescript
 import { Identity } from "@semaphore-protocol/identity"
