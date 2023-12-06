@@ -70,20 +70,51 @@ yarn add @semaphore-protocol/identity
 
 ## 📜 Usage
 
-\# **new Identity**(identityOrMessage?: _string_): _Identity_
+\# **new Identity**(privateKey?: _BigNumberish_): _Identity_
 
 ```typescript
 import { Identity } from "@semaphore-protocol/identity"
 
-// The identity can be generated randomly.
-const identity1 = new Identity()
+// The identity will be generated randomly.
+const { privateKey, publicKey } = new Identity()
 
-// Deterministically from a secret message.
-const identity2 = new Identity("secret-message")
+// Alternatively, you can pass your private key.
+const identity = new Identity("your-private-key")
+```
 
-// Or it can be retrieved from an existing identity.
-const identity3 = new Identity(identity1.toString())
+\# **identity.signMessage**(message: _BigNumberish_): _Signature\<string>_
 
-// Trapdoor, nullifier and commitment are the attributes (e.g. JS getters).
-const { trapdoor, nullifier, commitment } = identity1
+```typescript
+import { Identity } from "@semaphore-protocol/identity"
+
+const message = "message"
+const identity = new Identity()
+
+const signature = identity.signMessage(message)
+```
+
+\# **identity.verifySignature**(message: _BigNumberish_, signature: _Signature_): _boolean_
+
+```typescript
+import { Identity } from "@semaphore-protocol/identity"
+
+const message = "message"
+const identity = new Identity()
+
+const signature = identity.signMessage(message)
+
+identity.verifySignature(message, signature)
+```
+
+\# **Identity.verifySignature**(message: _BigNumberish_, signature: _Signature_, publicKey: _BigNumber_ | _Point_): _boolean_
+
+```typescript
+import { Identity } from "@semaphore-protocol/identity"
+
+const message = "message"
+const identity = new Identity()
+
+const signature = identity.signMessage("message", signature)
+
+Identity.verifySignature(message, signature, identity.publicKey)
 ```
