@@ -2626,7 +2626,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/random@npm:5.7.0, @ethersproject/random@npm:^5.5.1, @ethersproject/random@npm:^5.7.0":
+"@ethersproject/random@npm:5.7.0, @ethersproject/random@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/random@npm:5.7.0"
   dependencies:
@@ -2685,7 +2685,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/strings@npm:5.7.0, @ethersproject/strings@npm:^5.5.0, @ethersproject/strings@npm:^5.6.1, @ethersproject/strings@npm:^5.7.0":
+"@ethersproject/strings@npm:5.7.0, @ethersproject/strings@npm:^5.5.0, @ethersproject/strings@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/strings@npm:5.7.0"
   dependencies:
@@ -4588,14 +4588,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/identity@workspace:packages/identity"
   dependencies:
-    "@ethersproject/bignumber": ^5.5.0
-    "@ethersproject/keccak256": ^5.7.0
-    "@ethersproject/random": ^5.5.1
-    "@ethersproject/strings": ^5.6.1
     "@rollup/plugin-commonjs": ^24.0.1
     "@rollup/plugin-node-resolve": ^15.0.1
-    js-sha512: ^0.8.0
-    poseidon-lite: ^0.2.0
+    "@zk-kit/eddsa-poseidon": 0.4.1
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
   languageName: unknown
@@ -5768,6 +5763,13 @@ __metadata:
   version: 0.3.1
   resolution: "@zk-kit/eddsa-poseidon@npm:0.3.1"
   checksum: 5c3a9274908907d4d988c19bebf0d97c961e6a500c2e063a7aa8ecc33f95dace9549f442f8bbf1fa94542b687cf761ba7f77cf7d64165ccd28aad22c3caecd29
+  languageName: node
+  linkType: hard
+
+"@zk-kit/eddsa-poseidon@npm:0.4.1":
+  version: 0.4.1
+  resolution: "@zk-kit/eddsa-poseidon@npm:0.4.1"
+  checksum: 82dcb0f45066a2899ae93c59fbe8246eaf28b3ab3078e909f4156534b1f998da0e480d3ab7f9044d12becc9546e02ea89d08305c64d60544f26aaa34ef1072f5
   languageName: node
   linkType: hard
 
@@ -13539,13 +13541,6 @@ __metadata:
   version: 0.8.0
   resolution: "js-sha3@npm:0.8.0"
   checksum: 75df77c1fc266973f06cce8309ce010e9e9f07ec35ab12022ed29b7f0d9c8757f5a73e1b35aa24840dced0dea7059085aa143d817aea9e188e2a80d569d9adce
-  languageName: node
-  linkType: hard
-
-"js-sha512@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "js-sha512@npm:0.8.0"
-  checksum: 32ca371ebd14c6c5c83360fd8b036cad2211537bef546b199ac8b901917299cab4c68f7f7c26ae72f836bbce0349cb463df9a62cdb4c90e38090fdb4db89ee87
   languageName: node
   linkType: hard
 
