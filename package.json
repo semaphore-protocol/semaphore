@@ -11,7 +11,7 @@
         "compile:contracts": "yarn workspace contracts compile",
         "download:snark-artifacts": "rimraf snark-artifacts && ts-node scripts/download-snark-artifacts.ts",
         "remove:template-files": "ts-node scripts/remove-template-files.ts",
-        "test": "yarn test:libraries && yarn test:contracts",
+        "test": "yarn test:libraries && yarn test:contracts && yarn test:circuits",
         "test:libraries": "jest --coverage",
         "test:contracts": "yarn workspace contracts test:coverage",
         "test:circuits": "yarn workspace @semaphore-protocol/circuits test",
