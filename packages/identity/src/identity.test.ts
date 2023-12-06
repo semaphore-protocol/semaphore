@@ -8,19 +8,18 @@ describe("Identity", () => {
             const identity = new Identity()
 
             expect(Buffer.isBuffer(identity.privateKey)).toBeTruthy()
-            expect(typeof identity.publicKey).toBe("string")
             expect(typeof identity.secretScalar).toBe("string")
-            expect(identity.unpackedPublicKey).toHaveLength(2)
+            expect(identity.publicKey).toHaveLength(2)
+            expect(typeof identity.identityCommitment).toBe("string")
         })
 
         it("Should create deterministic identities from a secret (private key)", () => {
             const identity = new Identity(privateKey)
 
             expect(typeof identity.privateKey).toBe("string")
-            expect(typeof identity.publicKey).toBe("string")
             expect(typeof identity.secretScalar).toBe("string")
-            expect(identity.unpackedPublicKey).toHaveLength(2)
-            expect(typeof identity.unpackedPublicKey[0]).toBe("string")
+            expect(identity.publicKey).toHaveLength(2)
+            expect(typeof identity.identityCommitment).toBe("string")
         })
     })
 
@@ -51,7 +50,6 @@ describe("Identity", () => {
             const signature = identity.signMessage("message")
 
             expect(Identity.verifySignature("message", signature, identity.publicKey)).toBeTruthy()
-            expect(Identity.verifySignature("message", signature, BigInt(identity.publicKey))).toBeTruthy()
         })
 
         it("Should verify an external signature with an unpacked public key", () => {
@@ -59,7 +57,7 @@ describe("Identity", () => {
 
             const signature = identity.signMessage("message")
 
-            expect(Identity.verifySignature("message", signature, identity.unpackedPublicKey)).toBeTruthy()
+            expect(Identity.verifySignature("message", signature, identity.publicKey)).toBeTruthy()
         })
     })
 })
