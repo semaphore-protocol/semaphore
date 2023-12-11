@@ -27,7 +27,8 @@ export default function Home() {
                         alt="Midnight whispers image"
                         src="https://semaphore.cedoor.dev/midnight-whispers.jpg"
                         objectFit="cover"
-                        w="full"
+                        minWidth="100%"
+                        maxWidth="100%"
                         h="full"
                     />
                 </Box>
@@ -202,7 +203,8 @@ export default function Home() {
                         alt="Fluttering shadow image"
                         src="https://semaphore.cedoor.dev/shadow-flutter.jpg"
                         objectFit="cover"
-                        w="full"
+                        minWidth="100%"
+                        maxWidth="100%"
                         h="full"
                     />
                 </Box>
