@@ -1,7 +1,7 @@
 "use client"
 
 import { Button, Grid, GridItem, HStack, IconButton, Text, VStack } from "@chakra-ui/react"
-import { useCallback, useEffect, useState } from "react"
+import { useState } from "react"
 import ProjectCard from "../components/ProjectCard"
 import allProjects from "../data/projects.json"
 import IconChevronLeft from "../icons/IconChevronLeft"
@@ -12,32 +12,18 @@ import { chunkArray } from "../utils/chunkArray"
 import { getProjectCategories } from "../utils/getProjectCategories"
 
 export default function ProjectsList(props: any) {
-    const [projects, setProjects] = useState<(typeof allProjects)[]>(chunkArray(allProjects))
+    const [projects] = useState<(typeof allProjects)[]>(chunkArray(allProjects))
     const [index, setIndex] = useState<number>(0)
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
     const [onlyPSE, setOnlyPSE] = useState<boolean | null>(null)
+    const [selectedCategories, setSelectedCategories] = useState<Array<string>>([])
 
-    const filterProjects = useCallback(() => {
-        let filteredProjects = allProjects
-
-        if (selectedCategory) {
-            filteredProjects = filteredProjects.filter((project) => project.categories.includes(selectedCategory))
+    const toggleCategory = (category: any) => {
+        if (selectedCategories.includes(category)) {
+            setSelectedCategories(selectedCategories.filter((c) => c !== category))
+        } else {
+            setSelectedCategories([...selectedCategories, category])
         }
-
-        if (onlyPSE === true) {
-            filteredProjects = filteredProjects.filter((project) => project.pse)
-        } else if (onlyPSE === false) {
-            filteredProjects = filteredProjects.filter((project) => !project.pse)
-        }
-
-        filteredProjects = filteredProjects.sort((a, b) => a.name.localeCompare(b.name))
-
-        setProjects(chunkArray(filteredProjects))
-    }, [selectedCategory, onlyPSE])
-
-    useEffect(() => {
-        filterProjects()
-    }, [selectedCategory, onlyPSE])
+    }
 
     return (
         <VStack {...props}>
@@ -74,9 +60,9 @@ export default function ProjectsList(props: any) {
                         <Button
                             key={category}
                             size="sm"
-                            variant={category === selectedCategory ? "solid" : "outline"}
-                            colorScheme={category === selectedCategory ? "primary" : "inherit"}
-                            onClick={() => setSelectedCategory(category === selectedCategory ? null : category)}
+                            variant={selectedCategories.includes(category) ? "solid" : "outline"}
+                            colorScheme={selectedCategories.includes(category) ? "primary" : "inherit"}
+                            onClick={() => toggleCategory(category)}
                         >
                             {category}
                         </Button>
@@ -85,16 +71,20 @@ export default function ProjectsList(props: any) {
             </VStack>
 
             <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={6}>
-                {projects[index].map((project) => (
-                    <GridItem key={project.name}>
-                        <ProjectCard
-                            title={project.name}
-                            description={project.tagline}
-                            categories={project.categories}
-                            url={project.links.website || project.links.github}
-                        />
-                    </GridItem>
-                ))}
+                {projects[index]
+                    .filter((project) => {
+                        return selectedCategories.every((category) => project.categories.includes(category))
+                    })
+                    .map((project) => (
+                        <GridItem key={project.name}>
+                            <ProjectCard
+                                title={project.name}
+                                description={project.tagline}
+                                categories={project.categories}
+                                url={project.links.website || project.links.github}
+                            />
+                        </GridItem>
+                    ))}
             </Grid>
 
             {projects.length > 1 && (
