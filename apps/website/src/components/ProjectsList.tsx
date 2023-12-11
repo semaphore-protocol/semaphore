@@ -84,9 +84,14 @@ export default function ProjectsList(props: any) {
                 </HStack>
             </VStack>
 
-            <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={6}>
+            <Grid
+                templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }}
+                gap={4}
+                h="50vh"
+                overflowY="auto"
+            >
                 {projects[index].map((project) => (
-                    <GridItem key={project.name}>
+                    <GridItem key={project.name} maxHeight="25vh">
                         <ProjectCard
                             title={project.name}
                             description={project.tagline}
