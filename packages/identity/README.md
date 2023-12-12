@@ -49,8 +49,8 @@
     </h4>
 </div>
 
-| This library provides a class that can be used to create identities compatible with the Semaphore [circuits](https://github.com/semaphore-protocol/semaphore/tree/main/circuits). Each identity contains two secret values: _trapdoor_ and _nullifier_, and one public value: _commitment_. The Poseidon hash of the secret values is the identity secret, and its hash is the identity commitment. |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| This library provides a class that can be used to create identities compatible with the Semaphore [circuits](https://github.com/semaphore-protocol/semaphore/tree/main/circuits). Each identity contains an EdDSA private key, its public key, and the identity commitment, which is the Poseidon hash of the public key. |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## 🛠 Install
 
@@ -76,7 +76,7 @@ yarn add @semaphore-protocol/identity
 import { Identity } from "@semaphore-protocol/identity"
 
 // The identity will be generated randomly.
-const { privateKey, publicKey, identityCommitment } = new Identity()
+const { privateKey, publicKey, commitment } = new Identity()
 
 // Alternatively, you can pass your private key.
 const identity = new Identity("your-private-key")
