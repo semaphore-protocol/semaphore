@@ -68,25 +68,28 @@ export default function ProjectsList(props: any) {
                 </HStack>
             </VStack>
 
-            <HStack spacing="3" flexWrap="wrap">
-                {getProjectCategories(allProjects).map((category) => (
-                    <Button
-                        key={category}
-                        size="sm"
-                        variant={selectedCategories.includes(category) ? "solid" : "outline"}
-                        colorScheme={selectedCategories.includes(category) ? "primary" : "inherit"}
-                        onClick={() => {
-                            const newCategories = selectedCategories.includes(category)
-                                ? selectedCategories.filter((c) => c !== category)
-                                : [...selectedCategories, category]
+            <VStack align="left" spacing="6">
+                <Text fontSize="20">Category</Text>
+                <HStack spacing="3" flexWrap="wrap">
+                    {getProjectCategories(allProjects).map((category) => (
+                        <Button
+                            key={category}
+                            size="sm"
+                            variant={selectedCategories.includes(category) ? "solid" : "outline"}
+                            colorScheme={selectedCategories.includes(category) ? "primary" : "inherit"}
+                            onClick={() => {
+                                const newCategories = selectedCategories.includes(category)
+                                    ? selectedCategories.filter((c) => c !== category)
+                                    : [...selectedCategories, category]
 
-                            setSelectedCategories(newCategories)
-                        }}
-                    >
-                        {category}
-                    </Button>
-                ))}
-            </HStack>
+                                setSelectedCategories(newCategories)
+                            }}
+                        >
+                            {category}
+                        </Button>
+                    ))}
+                </HStack>
+            </VStack>
 
             <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={6}>
                 {projects[index].map((project) => (
