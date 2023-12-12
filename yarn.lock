@@ -8253,13 +8253,16 @@ __metadata:
     "@rollup/plugin-commonjs": ^24.1.0
     "@rollup/plugin-json": ^5.0.1
     "@rollup/plugin-node-resolve": ^15.0.2
+    "@types/download": ^8.0.5
+    "@types/tmp": ^0.2.6
     "@zk-kit/groth16": 0.3.0
-    "@zk-kit/incremental-merkle-tree": 0.4.3
+    download: ^8.0.0
     poseidon-lite: ^0.2.0
     rimraf: ^5.0.5
     rollup: ^4.0.2
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
+    tmp: ^0.2.1
   peerDependencies:
     "@semaphore-protocol/group": 3.15.2
     "@semaphore-protocol/identity": 3.15.2
@@ -9163,6 +9166,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/download@npm:^8.0.5":
+  version: 8.0.5
+  resolution: "@types/download@npm:8.0.5"
+  dependencies:
+    "@types/decompress": "*"
+    "@types/got": ^9
+    "@types/node": "*"
+  checksum: 10e807e9e4a6dc21918ff3ec302c41db529ba5488c7b296cd6ee7d5cefc872b35f0078d6f47671eb5dd40661d5128eab552c1882982c69fb4825b8a4943f30c9
+  languageName: node
+  linkType: hard
+
 "@types/eslint-scope@npm:^3.7.3":
   version: 3.7.7
   resolution: "@types/eslint-scope@npm:3.7.7"
@@ -9930,6 +9944,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/tmp@npm:^0.2.6":
+  version: 0.2.6
+  resolution: "@types/tmp@npm:0.2.6"
+  checksum: 0b24bb6040cc289440a609e10ec99a704978c890a5828ff151576489090b2257ce2e2570b0f320ace9c8099c3642ea6221fbdf6d8f2e22b7cd1f4fbf6e989e3e
+  languageName: node
+  linkType: hard
+
 "@types/tough-cookie@npm:*":
   version: 4.0.2
   resolution: "@types/tough-cookie@npm:4.0.2"
@@ -10367,13 +10388,6 @@ __metadata:
   version: 1.3.3
   resolution: "@zk-kit/incremental-merkle-tree.sol@npm:1.3.3"
   checksum: ebb1fbbddda64ab47e5bd19e0aa89004c110a27c910ba6f7d541e388ccc63154cad93e0a60e91f428d9a83f11108ca6fcf5bed3074172956efc0e445ce28e261
-  languageName: node
-  linkType: hard
-
-"@zk-kit/incremental-merkle-tree@npm:0.4.3":
-  version: 0.4.3
-  resolution: "@zk-kit/incremental-merkle-tree@npm:0.4.3"
-  checksum: 582ef97bd2b1b9638ce7c8a941200a5cf0ab86975f767de233905e8af0ff72d31b44f2497595f0ff585e45c7491481cf4e027ee6486a136cd64498d4b16b3e29
   languageName: node
   linkType: hard
 
@@ -28802,7 +28816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tmp@npm:^0.2.0":
+"tmp@npm:^0.2.0, tmp@npm:^0.2.1":
   version: 0.2.1
   resolution: "tmp@npm:0.2.1"
   dependencies:
