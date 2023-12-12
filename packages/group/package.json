@@ -37,9 +37,6 @@
         "rollup-plugin-typescript2": "^0.31.2"
     },
     "dependencies": {
-        "@ethersproject/bignumber": "^5.7.0",
-        "@ethersproject/bytes": "^5.7.0",
-        "@ethersproject/keccak256": "^5.7.0",
-        "@zk-kit/incremental-merkle-tree": "1.1.0"
+        "@zk-kit/imt": "^2.0.0-beta"
     }
 }
