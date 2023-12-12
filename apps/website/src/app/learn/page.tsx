@@ -8,7 +8,6 @@ import {
     TabPanels,
     Tab,
     TabPanel,
-    TabIndicator,
     Divider,
     Box,
     Image
@@ -290,8 +289,8 @@ await verifyProof(verificationKey, fullProof)`,
                     mt={{ base: "100px", md: "170px" }}
                     mb={{ base: "50px", md: "112px" }}
                 >
-                    <Box mx="3" overflowX={{ base: "auto", md: "hidden" }}>
-                        <TabList gap="40px" w={{ base: "150%", md: "max-content" }} whiteSpace="nowrap" pl="4">
+                    <Box overflow="auto" mx="3">
+                        <TabList gap="40px" w="max-content" whiteSpace="nowrap">
                             <Tab px={0} fontSize="24px" _selected={{ borderBottom: "2px solid white" }}>
                                 About Semaphore
                             </Tab>
