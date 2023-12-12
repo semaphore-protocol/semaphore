@@ -14,14 +14,16 @@ import { getProjectCategories } from "../utils/getProjectCategories"
 export default function ProjectsList(props: any) {
     const [projects, setProjects] = useState<(typeof allProjects)[]>(chunkArray(allProjects))
     const [index, setIndex] = useState<number>(0)
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([])
     const [onlyPSE, setOnlyPSE] = useState<boolean | null>(null)
 
     const filterProjects = useCallback(() => {
         let filteredProjects = allProjects
 
-        if (selectedCategory) {
-            filteredProjects = filteredProjects.filter((project) => project.categories.includes(selectedCategory))
+        if (selectedCategories.length > 0) {
+            filteredProjects = filteredProjects.filter((project) =>
+                selectedCategories.every((category) => project.categories.includes(category))
+            )
         }
 
         if (onlyPSE === true) {
@@ -33,11 +35,11 @@ export default function ProjectsList(props: any) {
         filteredProjects = filteredProjects.sort((a, b) => a.name.localeCompare(b.name))
 
         setProjects(chunkArray(filteredProjects))
-    }, [selectedCategory, onlyPSE])
+    }, [selectedCategories, onlyPSE])
 
     useEffect(() => {
         filterProjects()
-    }, [selectedCategory, onlyPSE])
+    }, [selectedCategories, onlyPSE])
 
     return (
         <VStack {...props}>
@@ -68,15 +70,20 @@ export default function ProjectsList(props: any) {
 
             <VStack align="left" spacing="6">
                 <Text fontSize="20">Category</Text>
-
                 <HStack spacing="3" flexWrap="wrap">
                     {getProjectCategories(allProjects).map((category) => (
                         <Button
                             key={category}
                             size="sm"
-                            variant={category === selectedCategory ? "solid" : "outline"}
-                            colorScheme={category === selectedCategory ? "primary" : "inherit"}
-                            onClick={() => setSelectedCategory(category === selectedCategory ? null : category)}
+                            variant={selectedCategories.includes(category) ? "solid" : "outline"}
+                            colorScheme={selectedCategories.includes(category) ? "primary" : "inherit"}
+                            onClick={() => {
+                                const newCategories = selectedCategories.includes(category)
+                                    ? selectedCategories.filter((c) => c !== category)
+                                    : [...selectedCategories, category]
+
+                                setSelectedCategories(newCategories)
+                            }}
                         >
                             {category}
                         </Button>
