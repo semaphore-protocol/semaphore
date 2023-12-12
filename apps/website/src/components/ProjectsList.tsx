@@ -87,11 +87,11 @@ export default function ProjectsList(props: any) {
             <Grid
                 templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }}
                 gap={4}
-                h="50vh"
+                h="35vh"
                 overflowY="auto"
             >
                 {projects[index].map((project) => (
-                    <GridItem key={project.name} maxHeight="25vh">
+                    <GridItem key={project.name}>
                         <ProjectCard
                             title={project.name}
                             description={project.tagline}
