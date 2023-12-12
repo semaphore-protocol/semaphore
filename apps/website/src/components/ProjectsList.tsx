@@ -1,7 +1,7 @@
 "use client"
 
 import { Button, Grid, GridItem, HStack, IconButton, Text, VStack } from "@chakra-ui/react"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import ProjectCard from "../components/ProjectCard"
 import allProjects from "../data/projects.json"
 import IconChevronLeft from "../icons/IconChevronLeft"
@@ -16,6 +16,7 @@ export default function ProjectsList(props: any) {
     const [index, setIndex] = useState<number>(0)
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
     const [onlyPSE, setOnlyPSE] = useState<boolean | null>(null)
+    const viewToScrollRef = useRef<HTMLDivElement>(null)
 
     const filterProjects = useCallback(() => {
         let filteredProjects = allProjects
@@ -38,6 +39,12 @@ export default function ProjectsList(props: any) {
     useEffect(() => {
         filterProjects()
     }, [selectedCategory, onlyPSE])
+
+    useEffect(() => {
+        if (viewToScrollRef.current) {
+            viewToScrollRef.current.scrollIntoView({ behavior: "smooth" })
+        }
+    }, [index])
 
     return (
         <VStack {...props}>
@@ -66,9 +73,8 @@ export default function ProjectsList(props: any) {
                 </HStack>
             </VStack>
 
-            <VStack align="left" spacing="6">
+            <VStack align="left" spacing="6" ref={viewToScrollRef}>
                 <Text fontSize="20">Category</Text>
-
                 <HStack spacing="3" flexWrap="wrap">
                     {getProjectCategories(allProjects).map((category) => (
                         <Button
@@ -84,12 +90,7 @@ export default function ProjectsList(props: any) {
                 </HStack>
             </VStack>
 
-            <Grid
-                templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }}
-                gap={4}
-                h="35vh"
-                overflowY="auto"
-            >
+            <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={6}>
                 {projects[index].map((project) => (
                     <GridItem key={project.name}>
                         <ProjectCard
