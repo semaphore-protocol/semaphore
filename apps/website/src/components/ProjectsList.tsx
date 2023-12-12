@@ -72,9 +72,7 @@ export default function ProjectsList(props: any) {
 
             <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={6}>
                 {projects[index]
-                    .filter((project) => {
-                        return selectedCategories.every((category) => project.categories.includes(category))
-                    })
+                    .filter((project) => selectedCategories.every((category) => project.categories.includes(category)))
                     .map((project) => (
                         <GridItem key={project.name}>
                             <ProjectCard
