@@ -92,8 +92,8 @@ export default class Group {
      * @param index Index of the proof's member.
      * @returns Proof object.
      */
-    generateMerkleProof(index: number): MerkleProof {
-        const { leaf, root, siblings } = this.leanIMT.generateProof(index)
+    generateMerkleProof(_index: number): MerkleProof {
+        const { index, leaf, root, siblings } = this.leanIMT.generateProof(_index)
 
         return {
             index,
