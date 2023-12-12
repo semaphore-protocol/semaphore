@@ -9,7 +9,6 @@
     "scripts": {
         "build:libraries": "yarn workspaces foreach -t --no-private run build",
         "compile:contracts": "yarn workspace contracts compile",
-        "download:snark-artifacts": "rimraf snark-artifacts && ts-node scripts/download-snark-artifacts.ts",
         "remove:template-files": "ts-node scripts/remove-template-files.ts",
         "test": "yarn test:libraries && yarn test:contracts && yarn test:circuits",
         "test:libraries": "jest --coverage",
@@ -24,7 +23,7 @@
         "version:release": "changelogithub",
         "commit": "cz",
         "precommit": "lint-staged",
-        "postinstall": "yarn download:snark-artifacts && husky install"
+        "postinstall": "husky install"
     },
     "keywords": [
         "ethereum",

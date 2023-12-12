@@ -33,6 +33,8 @@
         "@rollup/plugin-commonjs": "^24.1.0",
         "@rollup/plugin-json": "^5.0.1",
         "@rollup/plugin-node-resolve": "^15.0.2",
+        "@types/download": "^8.0.5",
+        "@types/tmp": "^0.2.6",
         "poseidon-lite": "^0.2.0",
         "rimraf": "^5.0.5",
         "rollup": "^4.0.2",
@@ -49,6 +51,7 @@
         "@ethersproject/keccak256": "^5.7.0",
         "@ethersproject/strings": "^5.5.0",
         "@zk-kit/groth16": "0.3.0",
-        "@zk-kit/incremental-merkle-tree": "0.4.3"
+        "download": "^8.0.0",
+        "tmp": "^0.2.1"
     }
 }
