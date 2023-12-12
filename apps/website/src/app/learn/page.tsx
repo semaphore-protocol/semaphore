@@ -8,7 +8,6 @@ import {
     TabPanels,
     Tab,
     TabPanel,
-    TabIndicator,
     Divider,
     Box,
     Image
@@ -292,15 +291,14 @@ await verifyProof(verificationKey, fullProof)`,
                 >
                     <Box overflow="auto" mx="3">
                         <TabList gap="40px" w="max-content" whiteSpace="nowrap">
-                            <Tab px={0} fontSize="24px">
+                            <Tab px={0} fontSize="24px" _selected={{ borderBottom: "2px solid white" }}>
                                 About Semaphore
                             </Tab>
-                            <Tab px={0} fontSize="24px">
+                            <Tab px={0} fontSize="24px" _selected={{ borderBottom: "2px solid white" }}>
                                 About Zero Knowledge
                             </Tab>
                         </TabList>
                     </Box>
-                    <TabIndicator mt="-1.5px" height="2px" bg="white" borderRadius="1px" />
                     <TabPanels mt="80px">
                         <TabPanel>{renderTabBlockSemaphore()}</TabPanel>
                         <TabPanel>{renderTabBlockZeroKnowledge()}</TabPanel>
