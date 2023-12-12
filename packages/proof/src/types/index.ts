@@ -1,4 +1,4 @@
-import type { NumericString } from "snarkjs"
+import type { NumericString } from "@zk-kit/groth16"
 
 export type SnarkArtifacts = {
     wasmFilePath: string
@@ -6,10 +6,10 @@ export type SnarkArtifacts = {
 }
 
 export type SemaphoreProof = {
-    merkleTreeRoot: NumericString
-    signal: NumericString
-    nullifierHash: NumericString
-    externalNullifier: NumericString
+    treeRoot: NumericString
+    message: NumericString
+    nullifier: NumericString
+    scope: NumericString
     proof: PackedProof
 }
 
