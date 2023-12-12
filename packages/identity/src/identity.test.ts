@@ -10,7 +10,7 @@ describe("Identity", () => {
             expect(Buffer.isBuffer(identity.privateKey)).toBeTruthy()
             expect(typeof identity.secretScalar).toBe("string")
             expect(identity.publicKey).toHaveLength(2)
-            expect(typeof identity.identityCommitment).toBe("string")
+            expect(typeof identity.commitment).toBe("string")
         })
 
         it("Should create deterministic identities from a secret (private key)", () => {
@@ -19,7 +19,7 @@ describe("Identity", () => {
             expect(typeof identity.privateKey).toBe("string")
             expect(typeof identity.secretScalar).toBe("string")
             expect(identity.publicKey).toHaveLength(2)
-            expect(typeof identity.identityCommitment).toBe("string")
+            expect(typeof identity.commitment).toBe("string")
         })
     })
 
