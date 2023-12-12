@@ -14,7 +14,7 @@ export default class Identity {
     private _privateKey: BigNumberish
     private _secretScalar: string
     private _publicKey: Point<string>
-    private _identityCommitment: string
+    private _commitment: string
 
     /**
      * Initializes the class attributes based on the parameters.
@@ -26,7 +26,7 @@ export default class Identity {
 
         this._publicKey = derivePublicKey(privateKey)
 
-        this._identityCommitment = poseidon2(this._publicKey).toString()
+        this._commitment = poseidon2(this._publicKey).toString()
     }
 
     /**
@@ -57,8 +57,8 @@ export default class Identity {
      * Returns the identity commitment.
      * @returns The identity commitment.
      */
-    public get identityCommitment(): string {
-        return this._identityCommitment
+    public get commitment(): string {
+        return this._commitment
     }
 
     public signMessage(message: BigNumberish): Signature<string> {
