@@ -10,7 +10,6 @@
         "build:libraries": "yarn workspaces foreach -t --no-private run build",
         "build:subgraph": "yarn workspace semaphore-subgraph codegen goerli && yarn workspace semaphore-subgraph build",
         "compile:contracts": "yarn workspace semaphore-contracts compile",
-        "download:snark-artifacts": "rimraf snark-artifacts && ts-node scripts/download-snark-artifacts.ts",
         "remove:template-files": "ts-node scripts/remove-template-files.ts",
         "test": "yarn test:libraries && yarn test:contracts && yarn test:circuits && yarn test:subgraph",
         "test:libraries": "jest --coverage",
@@ -26,7 +25,7 @@
         "version:release": "changelogithub",
         "commit": "cz",
         "precommit": "lint-staged",
-        "postinstall": "yarn download:snark-artifacts && husky install"
+        "postinstall": "husky install"
     },
     "keywords": [
         "ethereum",
