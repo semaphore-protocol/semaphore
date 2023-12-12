@@ -1,42 +1,24 @@
-import { IncrementalMerkleTree, MerkleProof } from "@zk-kit/incremental-merkle-tree"
+import { LeanIMT } from "@zk-kit/imt"
 import { poseidon2 } from "poseidon-lite/poseidon2"
-import hash from "./hash"
-import { BigNumberish } from "./types"
+import { BigNumberish, MerkleProof } from "./types"
 
 export default class Group {
-    private _id: BigNumberish
-
-    merkleTree: IncrementalMerkleTree
+    leanIMT: LeanIMT
 
     /**
      * Initializes the group with the group id and the tree depth.
-     * @param id Group identifier.
-     * @param treeDepth Tree depth.
      * @param members List of group members.
      */
-    constructor(id: BigNumberish, treeDepth = 20, members: BigNumberish[] = []) {
-        if (treeDepth < 16 || treeDepth > 32) {
-            throw new Error("The tree depth must be between 16 and 32")
-        }
-
-        this._id = id
-        this.merkleTree = new IncrementalMerkleTree(poseidon2, treeDepth, hash(id), 2, members.map(BigInt))
-    }
-
-    /**
-     * Returns the id of the group.
-     * @returns Group id.
-     */
-    get id(): BigNumberish {
-        return this._id
+    constructor(members: BigNumberish[] = []) {
+        this.leanIMT = new LeanIMT((a, b) => poseidon2([a, b]), members.map(BigInt))
     }
 
     /**
      * Returns the root hash of the tree.
      * @returns Root hash.
      */
-    get root(): BigNumberish {
-        return this.merkleTree.root
+    get root(): string | undefined {
+        return this.leanIMT.root?.toString()
     }
 
     /**
@@ -44,23 +26,23 @@ export default class Group {
      * @returns Tree depth.
      */
     get depth(): number {
-        return this.merkleTree.depth
+        return this.leanIMT.depth
     }
 
     /**
-     * Returns the zero value of the tree.
-     * @returns Tree zero value.
+     * Returns the size of the tree (i.e. number of leaves).
+     * @returns Tree depth.
      */
-    get zeroValue(): BigNumberish {
-        return this.merkleTree.zeroes[0]
+    get size(): number {
+        return this.leanIMT.size
     }
 
     /**
      * Returns the members (i.e. identity commitments) of the group.
      * @returns List of members.
      */
-    get members(): BigNumberish[] {
-        return this.merkleTree.leaves
+    get members(): string[] {
+        return this.leanIMT.leaves.map(String)
     }
 
     /**
@@ -69,7 +51,7 @@ export default class Group {
      * @returns Index of the member.
      */
     indexOf(member: BigNumberish): number {
-        return this.merkleTree.indexOf(member)
+        return this.leanIMT.indexOf(BigInt(member))
     }
 
     /**
@@ -77,18 +59,15 @@ export default class Group {
      * @param member New member.
      */
     addMember(member: BigNumberish) {
-        this.merkleTree.insert(BigInt(member))
+        this.leanIMT.insert(BigInt(member))
     }
 
     /**
      * Adds new members to the group.
      * @param members New members.
-     * @deprecated Use the new class parameter to add a list of members.
      */
     addMembers(members: BigNumberish[]) {
-        for (const member of members) {
-            this.addMember(member)
-        }
+        this.leanIMT.insertMany(members.map(BigInt))
     }
 
     /**
@@ -97,7 +76,7 @@ export default class Group {
      * @param member New member value.
      */
     updateMember(index: number, member: BigNumberish) {
-        this.merkleTree.update(index, member)
+        this.leanIMT.update(index, BigInt(member))
     }
 
     /**
@@ -105,7 +84,7 @@ export default class Group {
      * @param index Index of the member to be removed.
      */
     removeMember(index: number) {
-        this.merkleTree.delete(index)
+        this.leanIMT.update(index, BigInt(0))
     }
 
     /**
@@ -114,10 +93,13 @@ export default class Group {
      * @returns Proof object.
      */
     generateMerkleProof(index: number): MerkleProof {
-        const merkleProof = this.merkleTree.createProof(index)
+        const { leaf, root, siblings } = this.leanIMT.generateProof(index)
 
-        merkleProof.siblings = merkleProof.siblings.map((s) => s[0])
-
-        return merkleProof
+        return {
+            index,
+            leaf: leaf.toString(),
+            root: root.toString(),
+            siblings: siblings.map(String)
+        }
     }
 }
