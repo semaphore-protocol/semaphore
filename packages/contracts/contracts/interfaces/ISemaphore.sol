@@ -3,6 +3,9 @@ pragma solidity 0.8.4;
 
 /// @title Semaphore contract interface.
 interface ISemaphore {
+    error Semaphore__GroupDoesNotExist();
+    error Semaphore__GroupAlreadyExists();
+    error Semaphore__GroupHasNoMembers();
     error Semaphore__CallerIsNotTheGroupAdmin();
     error Semaphore__MerkleTreeDepthIsNotSupported();
     error Semaphore__MerkleTreeRootIsExpired();
@@ -14,8 +17,12 @@ interface ISemaphore {
         address admin;
         uint256 merkleTreeDuration;
         mapping(uint256 => uint256) merkleRootCreationDates;
-        mapping(uint256 => bool) nullifierHashes;
+        mapping(uint256 => bool) nullifiers;
     }
+
+    /// @dev Emitted when a new group is created.
+    /// @param groupId: Id of the group.
+    event GroupCreated(uint256 indexed groupId);
 
     /// @dev Emitted when an admin is assigned to a group.
     /// @param groupId: Id of the group.
@@ -36,46 +43,46 @@ interface ISemaphore {
     /// @dev Emitted when a Semaphore proof is verified.
     /// @param groupId: Id of the group.
     /// @param merkleTreeRoot: Root of the Merkle tree.
-    /// @param nullifierHash: Nullifier hash.
-    /// @param externalNullifier: External nullifier.
-    /// @param signal: Semaphore signal.
+    /// @param nullifier: Nullifier.
+    /// @param scope: Scope.
+    /// @param message: Semaphore message.
+    /// @param proof: Zero-knowledge proof.
     event ProofVerified(
         uint256 indexed groupId,
         uint256 indexed merkleTreeRoot,
-        uint256 nullifierHash,
-        uint256 indexed externalNullifier,
-        uint256 signal
+        uint256 nullifier,
+        uint256 indexed scope,
+        uint256 message,
+        uint256[8] proof
     );
 
     /// @dev Saves the nullifier hash to avoid double signaling and emits an event
     /// if the zero-knowledge proof is valid.
     /// @param groupId: Id of the group.
     /// @param merkleTreeRoot: Root of the Merkle tree.
-    /// @param signal: Semaphore signal.
-    /// @param nullifierHash: Nullifier hash.
-    /// @param externalNullifier: External nullifier.
+    /// @param message: Semaphore message.
+    /// @param nullifier: Nullifier.
+    /// @param scope: Scope.
     /// @param proof: Zero-knowledge proof.
     function verifyProof(
         uint256 groupId,
         uint256 merkleTreeRoot,
-        uint256 signal,
-        uint256 nullifierHash,
-        uint256 externalNullifier,
+        uint256 message,
+        uint256 nullifier,
+        uint256 scope,
         uint256[8] calldata proof
     ) external;
 
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @param groupId: Id of the group.
-    /// @param depth: Depth of the tree.
     /// @param admin: Admin of the group.
-    function createGroup(uint256 groupId, uint256 depth, address admin) external;
+    function createGroup(uint256 groupId, address admin) external;
 
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @param groupId: Id of the group.
-    /// @param depth: Depth of the tree.
     /// @param admin: Admin of the group.
     /// @param merkleTreeRootDuration: Time before the validity of a root expires.
-    function createGroup(uint256 groupId, uint256 depth, address admin, uint256 merkleTreeRootDuration) external;
+    function createGroup(uint256 groupId, address admin, uint256 merkleTreeRootDuration) external;
 
     /// @dev Updates the group admin.
     /// @param groupId: Id of the group.
@@ -100,28 +107,20 @@ interface ISemaphore {
     /// @dev Updates an identity commitment of an existing group. A proof of membership is
     /// needed to check if the node to be updated is part of the tree.
     /// @param groupId: Id of the group.
-    /// @param identityCommitment: Existing identity commitment to be updated.
+    /// @param oldIdentityCommitment: Existing identity commitment to be updated.
     /// @param newIdentityCommitment: New identity commitment.
-    /// @param proofSiblings: Array of the sibling nodes of the proof of membership.
-    /// @param proofPathIndices: Path of the proof of membership.
+    /// @param merkleProofSiblings: Array of the sibling nodes of the proof of membership.
     function updateMember(
         uint256 groupId,
-        uint256 identityCommitment,
+        uint256 oldIdentityCommitment,
         uint256 newIdentityCommitment,
-        uint256[] calldata proofSiblings,
-        uint8[] calldata proofPathIndices
+        uint256[] calldata merkleProofSiblings
     ) external;
 
     /// @dev Removes a member from an existing group. A proof of membership is
     /// needed to check if the node to be removed is part of the tree.
     /// @param groupId: Id of the group.
     /// @param identityCommitment: Identity commitment to be removed.
-    /// @param proofSiblings: Array of the sibling nodes of the proof of membership.
-    /// @param proofPathIndices: Path of the proof of membership.
-    function removeMember(
-        uint256 groupId,
-        uint256 identityCommitment,
-        uint256[] calldata proofSiblings,
-        uint8[] calldata proofPathIndices
-    ) external;
+    /// @param merkleProofSiblings: Array of the sibling nodes of the proof of membership.
+    function removeMember(uint256 groupId, uint256 identityCommitment, uint256[] calldata merkleProofSiblings) external;
 }
