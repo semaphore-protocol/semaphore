@@ -1,4 +1,3 @@
-import { poseidonContract } from "circomlibjs"
 import { task, types } from "hardhat/config"
 import { saveDeployedContracts } from "../scripts/utils"
 
@@ -6,22 +5,10 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
     .addOptionalParam<boolean>("pairing", "Pairing library address", undefined, types.string)
     .addOptionalParam<boolean>("semaphoreVerifier", "SemaphoreVerifier contract address", undefined, types.string)
     .addOptionalParam<boolean>("poseidon", "Poseidon library address", undefined, types.string)
-    .addOptionalParam<boolean>(
-        "incrementalBinaryTree",
-        "IncrementalBinaryTree library address",
-        undefined,
-        types.string
-    )
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
     .setAction(
         async (
-            {
-                logs,
-                pairing: pairingAddress,
-                semaphoreVerifier: semaphoreVerifierAddress,
-                poseidon: poseidonAddress,
-                incrementalBinaryTree: incrementalBinaryTreeAddress
-            },
+            { logs, pairing: pairingAddress, semaphoreVerifier: semaphoreVerifierAddress, poseidon: poseidonAddress },
             { ethers, hardhatArguments }
         ): Promise<any> => {
             if (!semaphoreVerifierAddress) {
@@ -55,44 +42,22 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
                 semaphoreVerifierAddress = semaphoreVerifier.address
             }
 
-            if (!incrementalBinaryTreeAddress) {
-                if (!poseidonAddress) {
-                    const poseidonABI = poseidonContract.generateABI(2)
-                    const poseidonBytecode = poseidonContract.createCode(2)
+            if (!poseidonAddress) {
+                const PoseidonT3Factory = await ethers.getContractFactory("PoseidonT3")
+                const poseidonT3 = await PoseidonT3Factory.deploy()
 
-                    const [signer] = await ethers.getSigners()
-
-                    const PoseidonFactory = new ethers.ContractFactory(poseidonABI, poseidonBytecode, signer)
-                    const poseidon = await PoseidonFactory.deploy()
-
-                    await poseidon.deployed()
-
-                    if (logs) {
-                        console.info(`Poseidon library has been deployed to: ${poseidon.address}`)
-                    }
-
-                    poseidonAddress = poseidon.address
-                }
-
-                const IncrementalBinaryTreeFactory = await ethers.getContractFactory("IncrementalBinaryTree", {
-                    libraries: {
-                        PoseidonT3: poseidonAddress
-                    }
-                })
-                const incrementalBinaryTree = await IncrementalBinaryTreeFactory.deploy()
-
-                await incrementalBinaryTree.deployed()
+                await poseidonT3.deployed()
 
                 if (logs) {
-                    console.info(`IncrementalBinaryTree library has been deployed to: ${incrementalBinaryTree.address}`)
+                    console.info(`Poseidon library has been deployed to: ${poseidonT3.address}`)
                 }
 
-                incrementalBinaryTreeAddress = incrementalBinaryTree.address
+                poseidonAddress = poseidonT3.address
             }
 
             const SemaphoreFactory = await ethers.getContractFactory("Semaphore", {
                 libraries: {
-                    IncrementalBinaryTree: incrementalBinaryTreeAddress
+                    PoseidonT3: poseidonAddress
                 }
             })
 
@@ -108,7 +73,6 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
                 Pairing: pairingAddress,
                 SemaphoreVerifier: semaphoreVerifierAddress,
                 Poseidon: poseidonAddress,
-                IncrementalBinaryTree: incrementalBinaryTreeAddress,
                 Semaphore: semaphore.address
             })
 
@@ -116,8 +80,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
                 semaphore,
                 pairingAddress,
                 semaphoreVerifierAddress,
-                poseidonAddress,
-                incrementalBinaryTreeAddress
+                poseidonAddress
             }
         }
     )
