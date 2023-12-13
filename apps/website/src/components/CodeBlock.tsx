@@ -26,11 +26,8 @@ export default function CodekBlock({ text }: CodekBlockProps) {
         <Flex flex="1" overflow="auto" position="relative" borderRadius="8px" backgroundColor="darkBlue">
             <CodeBlock {...copyBlockProps} />
             <Button
-                textColor="alabaster.300"
+                variant="outline"
                 fontSize={{ base: "16px", md: "18px" }}
-                fontWeight="400"
-                borderColor="alabaster.800"
-                backgroundColor="darkBlue"
                 padding="5px 8px"
                 border="1px"
                 borderRadius="4px"

@@ -1,5 +1,6 @@
 import { StyleFunctionProps, SystemStyleObject } from "@chakra-ui/theme-tools"
 import { font } from "../styles"
+import colors from "../colors"
 
 const Button = {
     baseStyle: {
@@ -13,42 +14,38 @@ const Button = {
         paddingRight: "18px !important"
     },
     defaultProps: {
-        colorScheme: "white"
+        colorScheme: "#FFFFFF"
     },
     variants: {
         solid: (props: StyleFunctionProps): SystemStyleObject => {
             const { colorScheme: c } = props
 
-            if (c === "primary") {
-                // const bgGradient = "linear(to-r, primary.500, primary.800)"
-                const bg = `${c}.500`
-                const color = "white"
-
-                return {
-                    bg,
-                    color,
-                    _hover: {
-                        bg: `${c}.800`,
-                        _disabled: {
-                            bg
-                        }
-                    },
-                    _active: { bg: `${c}.800` }
+            return {
+                bg: c,
+                color: colors.darkBlueBg,
+                _hover: {
+                    color: c,
+                    bgGradient: colors.semaphore,
+                    _disabled: {
+                        bg: c
+                    }
                 }
             }
-
-            const bg = c
+        },
+        outline: (props: StyleFunctionProps): SystemStyleObject => {
+            const { colorScheme: c } = props
 
             return {
-                bg,
-                color: `darkBlue`,
+                color: c,
+                border: `1.2px solid ${c}`,
                 _hover: {
-                    bg: `${c}.300`,
+                    bg: colors.darkBlueBg,
+                    color: c,
+                    border: `1.2px solid ${colors.primary["600"]}`,
                     _disabled: {
-                        bg
+                        bg: c
                     }
-                },
-                _active: { bg: `${c}.400` }
+                }
             }
         }
     }
