@@ -4,7 +4,6 @@ type DeployedContracts = {
     Pairing: string
     SemaphoreVerifier: string
     Poseidon: string
-    IncrementalBinaryTree: string
     Semaphore: string
 }
 

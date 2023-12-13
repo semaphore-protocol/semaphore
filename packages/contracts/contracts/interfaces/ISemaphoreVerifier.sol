@@ -25,13 +25,11 @@ interface ISemaphoreVerifier {
     /// @param signal: Semaphore signal.
     /// @param externalNullifier: External nullifier.
     /// @param proof: Zero-knowledge proof.
-    /// @param merkleTreeDepth: Depth of the tree.
     function verifyProof(
         uint256 merkleTreeRoot,
         uint256 nullifierHash,
         uint256 signal,
         uint256 externalNullifier,
-        uint256[8] calldata proof,
-        uint256 merkleTreeDepth
+        uint256[8] calldata proof
     ) external view;
 }
