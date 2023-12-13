@@ -6,8 +6,7 @@ on:
             - main
 
 env:
-    TREE_DEPTH: 20
-    ALL_SNARK_ARTIFACTS: false
+    TREE_DEPTH: 10
 
 jobs:
     style:
