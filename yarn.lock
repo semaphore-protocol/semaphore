@@ -4522,7 +4522,7 @@ __metadata:
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
     "@openzeppelin/contracts": 4.7.3
-    "@zk-kit/incremental-merkle-tree.sol": 1.3.3
+    "@zk-kit/imt.sol": 2.0.0-beta.1
   languageName: unknown
   linkType: soft
 
@@ -5802,17 +5802,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@zk-kit/imt.sol@npm:2.0.0-beta.1":
+  version: 2.0.0-beta.1
+  resolution: "@zk-kit/imt.sol@npm:2.0.0-beta.1"
+  dependencies:
+    poseidon-solidity: 0.0.5
+  checksum: d64e31fd735219b4ba43d830b7fb9c47794753e6703f6184180c6e075fbd53cc0e945e6e33ae131ae6a2bc8cd14d983132dd244bc0bb890bfabb1f027a2fe459
+  languageName: node
+  linkType: hard
+
 "@zk-kit/imt@npm:^2.0.0-beta":
   version: 2.0.0-beta
   resolution: "@zk-kit/imt@npm:2.0.0-beta"
   checksum: e4fdde4c171df9ab2c0b02f38ba480418231239aebf362098186a59537c19e24d7985ff11ff9e908f23d54ca620e81edfecf82d52b2c881677f89cd8654cdb80
-  languageName: node
-  linkType: hard
-
-"@zk-kit/incremental-merkle-tree.sol@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@zk-kit/incremental-merkle-tree.sol@npm:1.3.3"
-  checksum: ebb1fbbddda64ab47e5bd19e0aa89004c110a27c910ba6f7d541e388ccc63154cad93e0a60e91f428d9a83f11108ca6fcf5bed3074172956efc0e445ce28e261
   languageName: node
   linkType: hard
 
@@ -8282,7 +8284,7 @@ __metadata:
     "@types/mocha": ^9.1.0
     "@types/node": ^17.0.12
     "@types/rimraf": ^3.0.2
-    "@zk-kit/incremental-merkle-tree.sol": 1.3.3
+    "@zk-kit/imt.sol": 2.0.0-beta.1
     chai: ^4.3.5
     circomlib: ^2.0.2
     circomlibjs: ^0.1.7
@@ -16571,6 +16573,13 @@ __metadata:
   version: 0.2.0
   resolution: "poseidon-lite@npm:0.2.0"
   checksum: c47c6fd0a29a78ca1f7cf6ccb8b0c4f4e72930d944e63425e36f60c15d37fb0aeca30b8a22a30640ed68d631142282c0b8308da83b1a2b2bb92b87f5a2432c93
+  languageName: node
+  linkType: hard
+
+"poseidon-solidity@npm:0.0.5":
+  version: 0.0.5
+  resolution: "poseidon-solidity@npm:0.0.5"
+  checksum: eb2d84962505a3c8a5756752c8e571ad32f90f4d95fafaffbd03552abfa040553945990d96d0243ddd993d6c2e456a816435c97739610a4f6aabb9249ebf47d7
   languageName: node
   linkType: hard
 
