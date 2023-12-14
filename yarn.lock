@@ -8504,7 +8504,7 @@ __metadata:
     "@rollup/plugin-node-resolve": ^15.0.2
     "@types/download": ^8.0.5
     "@types/tmp": ^0.2.6
-    "@zk-kit/groth16": 0.3.0
+    "@zk-kit/groth16": 0.5.0
     download: ^8.0.0
     poseidon-lite: ^0.2.0
     rimraf: ^5.0.5
@@ -10690,13 +10690,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/groth16@npm:0.3.0":
-  version: 0.3.0
-  resolution: "@zk-kit/groth16@npm:0.3.0"
+"@zk-kit/groth16@npm:0.5.0":
+  version: 0.5.0
+  resolution: "@zk-kit/groth16@npm:0.5.0"
   dependencies:
     circom_runtime: 0.1.24
-    ffjavascript: 0.2.60
-  checksum: f177fffd7e28c1f6617a67758c017bb962bde8829a6b90bea8053c0c164386b73b58cfe26c2481435bbc0de0c14d8301c23818e4a0450979bceb525f64e9db51
+    ffjavascript: 0.2.62
+  checksum: f2aac26e9e04f7a709a4cb05a9dc6b45a5880288359867dfb5ef6efe289b980c1c9e0f204d107af27b44ab0d8d0d790f2af6ab085b65370037b6afa83c58f3b6
   languageName: node
   linkType: hard
 
