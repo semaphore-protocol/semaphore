@@ -2,34 +2,16 @@ import { task, types } from "hardhat/config"
 import { saveDeployedContracts } from "../scripts/utils"
 
 task("deploy:semaphore", "Deploy a Semaphore contract")
-    .addOptionalParam<boolean>("pairing", "Pairing library address", undefined, types.string)
     .addOptionalParam<boolean>("semaphoreVerifier", "SemaphoreVerifier contract address", undefined, types.string)
     .addOptionalParam<boolean>("poseidon", "Poseidon library address", undefined, types.string)
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
     .setAction(
         async (
-            { logs, pairing: pairingAddress, semaphoreVerifier: semaphoreVerifierAddress, poseidon: poseidonAddress },
+            { logs, semaphoreVerifier: semaphoreVerifierAddress, poseidon: poseidonAddress },
             { ethers, hardhatArguments }
         ): Promise<any> => {
             if (!semaphoreVerifierAddress) {
-                if (!pairingAddress) {
-                    const PairingFactory = await ethers.getContractFactory("Pairing")
-                    const pairing = await PairingFactory.deploy()
-
-                    await pairing.deployed()
-
-                    if (logs) {
-                        console.info(`Pairing library has been deployed to: ${pairing.address}`)
-                    }
-
-                    pairingAddress = pairing.address
-                }
-
-                const SemaphoreVerifierFactory = await ethers.getContractFactory("SemaphoreVerifier", {
-                    libraries: {
-                        Pairing: pairingAddress
-                    }
-                })
+                const SemaphoreVerifierFactory = await ethers.getContractFactory("SemaphoreVerifier")
 
                 const semaphoreVerifier = await SemaphoreVerifierFactory.deploy()
 
@@ -70,7 +52,6 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
             }
 
             saveDeployedContracts(hardhatArguments.network, {
-                Pairing: pairingAddress,
                 SemaphoreVerifier: semaphoreVerifierAddress,
                 Poseidon: poseidonAddress,
                 Semaphore: semaphore.address
@@ -78,7 +59,6 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
 
             return {
                 semaphore,
-                pairingAddress,
                 semaphoreVerifierAddress,
                 poseidonAddress
             }

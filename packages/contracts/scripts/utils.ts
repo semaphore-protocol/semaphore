@@ -1,7 +1,6 @@
 import { readFileSync, writeFileSync } from "fs"
 
 type DeployedContracts = {
-    Pairing: string
     SemaphoreVerifier: string
     Poseidon: string
     Semaphore: string
