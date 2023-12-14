@@ -2,7 +2,7 @@
 /* eslint-disable jest/valid-expect */
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import { SemaphoreProof, generateProof, verifyProof } from "@semaphore-protocol/proof"
+import { SemaphoreProof, generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { Signer, constants } from "ethers"
 import { run } from "hardhat"
@@ -250,8 +250,6 @@ describe("Semaphore", () => {
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
-            console.log(await verifyProof(fullProof), fullProof)
-
             const transaction = semaphoreContract.verifyProof(
                 groupId,
                 fullProof.treeRoot,
