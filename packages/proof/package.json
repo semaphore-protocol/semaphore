@@ -46,7 +46,7 @@
         "@semaphore-protocol/identity": "3.15.1"
     },
     "dependencies": {
-        "@zk-kit/groth16": "0.3.0",
+        "@zk-kit/groth16": "0.5.0",
         "download": "^8.0.0",
         "tmp": "^0.2.1"
     }
