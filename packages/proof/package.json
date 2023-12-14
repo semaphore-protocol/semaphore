@@ -46,10 +46,6 @@
         "@semaphore-protocol/identity": "3.15.1"
     },
     "dependencies": {
-        "@ethersproject/bignumber": "^5.5.0",
-        "@ethersproject/bytes": "^5.7.0",
-        "@ethersproject/keccak256": "^5.7.0",
-        "@ethersproject/strings": "^5.5.0",
         "@zk-kit/groth16": "0.3.0",
         "download": "^8.0.0",
         "tmp": "^0.2.1"

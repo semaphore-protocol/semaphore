@@ -31,6 +31,6 @@
     },
     "dependencies": {
         "@openzeppelin/contracts": "4.7.3",
-        "@zk-kit/imt.sol": "2.0.0-beta.1"
+        "@zk-kit/imt.sol": "2.0.0-beta.3"
     }
 }
