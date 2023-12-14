@@ -1,5 +1,4 @@
 import { verify } from "@zk-kit/groth16"
-import hash from "./hash"
 import { SemaphoreProof } from "./types"
 import unpackProof from "./unpack-proof"
 import verificationKeys from "./verification-keys.json"
@@ -9,7 +8,7 @@ import verificationKeys from "./verification-keys.json"
  * @param fullProof The SnarkJS Semaphore proof.
  * @returns True if the proof is valid, false otherwise.
  */
-export default function verifyProof({ treeRoot, nullifier, scope, message, proof }: SemaphoreProof): Promise<boolean> {
+export default function verifyProof({ treeRoot, nullifier, message, scope, proof }: SemaphoreProof): Promise<boolean> {
     // TODO: support all tree depths after trusted-setup.
     // if (treeDepth < 1 || treeDepth > 32) {
     // throw new TypeError("The tree depth must be a number between 1 and 32")
@@ -22,7 +21,7 @@ export default function verifyProof({ treeRoot, nullifier, scope, message, proof
     }
 
     return verify(verificationKey, {
-        publicSignals: [treeRoot, nullifier, hash(message), hash(scope)],
+        publicSignals: [treeRoot, nullifier, message, scope],
         proof: unpackProof(proof)
     })
 }
