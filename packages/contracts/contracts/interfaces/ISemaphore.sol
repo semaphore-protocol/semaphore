@@ -11,6 +11,7 @@ interface ISemaphore {
     error Semaphore__MerkleTreeRootIsExpired();
     error Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
     error Semaphore__YouAreUsingTheSameNillifierTwice();
+    error Semaphore__InvalidProof();
 
     /// It defines all the group parameters, in addition to those in the Merkle tree.
     struct Group {
@@ -44,15 +45,15 @@ interface ISemaphore {
     /// @param groupId: Id of the group.
     /// @param merkleTreeRoot: Root of the Merkle tree.
     /// @param nullifier: Nullifier.
-    /// @param scope: Scope.
     /// @param message: Semaphore message.
+    /// @param scope: Scope.
     /// @param proof: Zero-knowledge proof.
     event ProofVerified(
         uint256 indexed groupId,
         uint256 indexed merkleTreeRoot,
         uint256 nullifier,
-        uint256 indexed scope,
         uint256 message,
+        uint256 indexed scope,
         uint256[8] proof
     );
 
@@ -60,15 +61,15 @@ interface ISemaphore {
     /// if the zero-knowledge proof is valid.
     /// @param groupId: Id of the group.
     /// @param merkleTreeRoot: Root of the Merkle tree.
-    /// @param message: Semaphore message.
     /// @param nullifier: Nullifier.
+    /// @param message: Semaphore message.
     /// @param scope: Scope.
     /// @param proof: Zero-knowledge proof.
     function verifyProof(
         uint256 groupId,
         uint256 merkleTreeRoot,
-        uint256 message,
         uint256 nullifier,
+        uint256 message,
         uint256 scope,
         uint256[8] calldata proof
     ) external;

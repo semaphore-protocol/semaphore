@@ -2,16 +2,15 @@
 /* eslint-disable jest/valid-expect */
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import { SemaphoreProof, generateProof } from "@semaphore-protocol/proof"
+import { SemaphoreProof, generateProof, verifyProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { Signer, constants } from "ethers"
-import { ethers, run } from "hardhat"
-import { Pairing, Semaphore } from "../build/typechain"
+import { run } from "hardhat"
+import { Semaphore } from "../build/typechain"
 import { createIdentityCommitments } from "./utils"
 
 describe("Semaphore", () => {
     let semaphoreContract: Semaphore
-    let pairingContract: Pairing
     let signers: Signer[]
     let accounts: string[]
 
@@ -19,12 +18,11 @@ describe("Semaphore", () => {
     const members = createIdentityCommitments(3)
 
     before(async () => {
-        const { semaphore, pairingAddress } = await run("deploy:semaphore", {
+        const { semaphore } = await run("deploy:semaphore", {
             logs: false
         })
 
         semaphoreContract = semaphore
-        pairingContract = await ethers.getContractAt("Pairing", pairingAddress)
 
         signers = await run("accounts", { logs: false })
         accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
@@ -208,7 +206,7 @@ describe("Semaphore", () => {
     })
 
     describe("# verifyProof", () => {
-        const signal = 2
+        const message = 2
         const identity = new Identity("0")
 
         const group = new Group()
@@ -220,17 +218,17 @@ describe("Semaphore", () => {
         before(async () => {
             await semaphoreContract.addMembers(groupId, [members[1], members[2]])
 
-            fullProof = await generateProof(identity, group, group.root as string, signal, 10)
+            fullProof = await generateProof(identity, group, message, group.root as string, 10)
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
-            const transaction = semaphoreContract.verifyProof(10, 1, signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
+            const transaction = semaphoreContract.verifyProof(10, 1, 0, message, 0, [0, 0, 0, 0, 0, 0, 0, 0])
 
             await expect(transaction).to.be.revertedWithCustomError(semaphoreContract, "Semaphore__GroupDoesNotExist")
         })
 
         it("Should not verify a proof if the Merkle tree root is not part of the group", async () => {
-            const transaction = semaphoreContract.verifyProof(2, 1, signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
+            const transaction = semaphoreContract.verifyProof(2, 1, 0, message, 0, [0, 0, 0, 0, 0, 0, 0, 0])
 
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreContract,
@@ -242,36 +240,45 @@ describe("Semaphore", () => {
             const transaction = semaphoreContract.verifyProof(
                 groupId,
                 fullProof.treeRoot,
-                fullProof.message,
                 fullProof.nullifier,
+                fullProof.message,
                 0,
                 fullProof.proof
             )
 
-            await expect(transaction).to.be.revertedWithCustomError(pairingContract, "InvalidProof")
+            await expect(transaction).to.be.revertedWithCustomError(semaphoreContract, "Semaphore__InvalidProof")
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
+            console.log(await verifyProof(fullProof), fullProof)
+
             const transaction = semaphoreContract.verifyProof(
                 groupId,
                 fullProof.treeRoot,
-                fullProof.message,
                 fullProof.nullifier,
+                fullProof.message,
                 fullProof.treeRoot,
                 fullProof.proof
             )
 
             await expect(transaction)
                 .to.emit(semaphoreContract, "ProofVerified")
-                .withArgs(groupId, fullProof.treeRoot, fullProof.nullifier, fullProof.treeRoot, fullProof.message)
+                .withArgs(
+                    groupId,
+                    fullProof.treeRoot,
+                    fullProof.nullifier,
+                    fullProof.message,
+                    fullProof.treeRoot,
+                    fullProof.proof
+                )
         })
 
         it("Should not verify the same proof for an onchain group twice", async () => {
             const transaction = semaphoreContract.verifyProof(
                 groupId,
                 fullProof.treeRoot,
-                fullProof.message,
                 fullProof.nullifier,
+                fullProof.message,
                 fullProof.treeRoot,
                 fullProof.proof
             )
@@ -288,13 +295,13 @@ describe("Semaphore", () => {
 
             group.addMembers([members[0], members[1]])
 
-            const fullProof = await generateProof(identity, group, group.root as string, signal, 10)
+            const fullProof = await generateProof(identity, group, message, group.root as string, 10)
 
             const transaction = semaphoreContract.verifyProof(
                 groupId,
                 fullProof.treeRoot,
-                fullProof.message,
                 fullProof.nullifier,
+                fullProof.message,
                 fullProof.treeRoot,
                 fullProof.proof
             )

@@ -6269,7 +6269,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/bignumber@npm:5.7.0, @ethersproject/bignumber@npm:^5.0.7, @ethersproject/bignumber@npm:^5.5.0, @ethersproject/bignumber@npm:^5.7.0":
+"@ethersproject/bignumber@npm:5.7.0, @ethersproject/bignumber@npm:^5.0.7, @ethersproject/bignumber@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/bignumber@npm:5.7.0"
   dependencies:
@@ -6534,7 +6534,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/strings@npm:5.7.0, @ethersproject/strings@npm:^5.0.4, @ethersproject/strings@npm:^5.5.0, @ethersproject/strings@npm:^5.7.0":
+"@ethersproject/strings@npm:5.7.0, @ethersproject/strings@npm:^5.0.4, @ethersproject/strings@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/strings@npm:5.7.0"
   dependencies:
@@ -8841,7 +8841,7 @@ __metadata:
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
     "@openzeppelin/contracts": 4.7.3
-    "@zk-kit/imt.sol": 2.0.0-beta.1
+    "@zk-kit/imt.sol": 2.0.0-beta.3
   languageName: unknown
   linkType: soft
 
@@ -8917,10 +8917,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/proof@workspace:packages/proof"
   dependencies:
-    "@ethersproject/bignumber": ^5.5.0
-    "@ethersproject/bytes": ^5.7.0
-    "@ethersproject/keccak256": ^5.7.0
-    "@ethersproject/strings": ^5.5.0
     "@rollup/plugin-commonjs": ^24.1.0
     "@rollup/plugin-json": ^5.0.1
     "@rollup/plugin-node-resolve": ^15.0.2
@@ -10672,13 +10668,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/snarkjs@npm:^0.7.5":
-  version: 0.7.5
-  resolution: "@types/snarkjs@npm:0.7.5"
-  checksum: 5c2adfde23b49c6411d2b28b51d0e061cdb63e7dce6137afd8297571c0d8c7496ef4512194f2bf56f310569cd707a11d894cc2c4c2e38ab3248b34c08a9b4644
-  languageName: node
-  linkType: hard
-
 "@types/sockjs@npm:^0.3.33":
   version: 0.3.36
   resolution: "@types/sockjs@npm:0.3.36"
@@ -11209,12 +11198,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/imt.sol@npm:2.0.0-beta.1":
-  version: 2.0.0-beta.1
-  resolution: "@zk-kit/imt.sol@npm:2.0.0-beta.1"
+"@zk-kit/imt.sol@npm:2.0.0-beta.3":
+  version: 2.0.0-beta.3
+  resolution: "@zk-kit/imt.sol@npm:2.0.0-beta.3"
   dependencies:
     poseidon-solidity: 0.0.5
-  checksum: d64e31fd735219b4ba43d830b7fb9c47794753e6703f6184180c6e075fbd53cc0e945e6e33ae131ae6a2bc8cd14d983132dd244bc0bb890bfabb1f027a2fe459
+  checksum: 53d0096ceb622eadd18a3e5f59d6e0802ee6f5292b3287aa8eaa975a99921403c89f19d1cf276746c0e07e07559c27bc7d277ff680bbdc850a82daffa3d48dea
   languageName: node
   linkType: hard
 
@@ -29886,7 +29875,7 @@ __metadata:
     "@types/mocha": ^9.1.0
     "@types/node": ^17.0.12
     "@types/rimraf": ^3.0.2
-    "@zk-kit/imt.sol": 2.0.0-beta.1
+    "@zk-kit/imt.sol": 2.0.0-beta.3
     chai: ^4.3.5
     circomlib: ^2.0.2
     circomlibjs: ^0.1.7
@@ -29944,7 +29933,6 @@ __metadata:
     "@types/jest": ^27.4.0
     "@types/node": ^17.0.9
     "@types/rimraf": ^3.0.2
-    "@types/snarkjs": ^0.7.5
     "@typescript-eslint/eslint-plugin": ^5.9.1
     "@typescript-eslint/parser": ^5.9.1
     babel-jest: ^27.4.6
@@ -29968,6 +29956,7 @@ __metadata:
     prettier: ^2.5.1
     rimraf: ^3.0.2
     rollup: ^2.64.0
+    snarkjs: ^0.7.2
     ts-node: ^10.4.0
     tslib: ^2.3.1
     typedoc: ^0.25.1
@@ -30525,7 +30514,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"snarkjs@npm:^0.7.0":
+"snarkjs@npm:^0.7.0, snarkjs@npm:^0.7.2":
   version: 0.7.2
   resolution: "snarkjs@npm:0.7.2"
   dependencies:
