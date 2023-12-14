@@ -187,7 +187,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         if (
             !verifier.verifyProof(
                 [proof[0], proof[1]],
-                [[proof[3], proof[2]], [proof[5], proof[4]]],
+                [[proof[2], proof[3]], [proof[4], proof[5]]],
                 [proof[6], proof[7]],
                 [merkleTreeRoot, nullifier, message, scope]
             )
