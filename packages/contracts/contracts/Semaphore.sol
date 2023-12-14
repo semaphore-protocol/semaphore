@@ -152,8 +152,8 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     function verifyProof(
         uint256 groupId,
         uint256 merkleTreeRoot,
-        uint256 message,
         uint256 nullifier,
+        uint256 message,
         uint256 scope,
         uint256[8] calldata proof
     ) external override onlyExistingGroup(groupId) {
@@ -184,10 +184,19 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
             revert Semaphore__YouAreUsingTheSameNillifierTwice();
         }
 
-        verifier.verifyProof(merkleTreeRoot, nullifier, message, scope, proof);
+        if (
+            !verifier.verifyProof(
+                [proof[0], proof[1]],
+                [[proof[3], proof[2]], [proof[5], proof[4]]],
+                [proof[6], proof[7]],
+                [merkleTreeRoot, nullifier, message, scope]
+            )
+        ) {
+            revert Semaphore__InvalidProof();
+        }
 
         groups[groupId].nullifiers[nullifier] = true;
 
-        emit ProofVerified(groupId, merkleTreeRoot, nullifier, scope, message, proof);
+        emit ProofVerified(groupId, merkleTreeRoot, nullifier, message, scope, proof);
     }
 }
