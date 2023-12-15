@@ -3,6 +3,20 @@ pragma solidity 0.8.4;
 
 /// @title SemaphoreGroups contract interface.
 interface ISemaphoreGroups {
+    error Semaphore__GroupDoesNotExist();
+    error Semaphore__GroupAlreadyExists();
+    error Semaphore__CallerIsNotTheGroupAdmin();
+
+    /// @dev Emitted when a new group is created.
+    /// @param groupId: Id of the group.
+    event GroupCreated(uint256 indexed groupId);
+
+    /// @dev Emitted when an admin is assigned to a group.
+    /// @param groupId: Id of the group.
+    /// @param oldAdmin: Old admin of the group.
+    /// @param newAdmin: New admin of the group.
+    event GroupAdminUpdated(uint256 indexed groupId, address indexed oldAdmin, address indexed newAdmin);
+
     /// @dev Emitted when a new identity commitment is added.
     /// @param groupId: Group id of the group.
     /// @param leafIndex: Merkle tree leaf index.
