@@ -48,7 +48,7 @@ export default function ActionCard({ title, description, buttonText, buttonUrl }
                             href={buttonUrl}
                             isExternal
                             variant="buttonlink"
-                            bg="semaphore"
+                            bgGradient="semaphore"
                             w="fit-content"
                             lineHeight="24px"
                             fontSize={{ base: "14px", md: "18px", lg: "20px" }}

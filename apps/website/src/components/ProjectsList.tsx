@@ -58,7 +58,6 @@ export default function ProjectsList(props: any) {
                         size="lg"
                         leftIcon={<IconPSE />}
                         variant={onlyPSE === true ? "solid" : "outline"}
-                        colorScheme={onlyPSE === true ? "primary" : "inherit"}
                         onClick={() => setOnlyPSE(onlyPSE === true ? null : true)}
                     >
                         PSE
@@ -67,7 +66,6 @@ export default function ProjectsList(props: any) {
                         size="lg"
                         leftIcon={<IconCommunity />}
                         variant={onlyPSE === false ? "solid" : "outline"}
-                        colorScheme={onlyPSE === false ? "primary" : "inherit"}
                         onClick={() => setOnlyPSE(onlyPSE === false ? null : false)}
                     >
                         Community
@@ -83,7 +81,6 @@ export default function ProjectsList(props: any) {
                             key={category}
                             size="sm"
                             variant={selectedCategories.includes(category) ? "solid" : "outline"}
-                            colorScheme={selectedCategories.includes(category) ? "primary" : "inherit"}
                             onClick={() => {
                                 const newCategories = selectedCategories.includes(category)
                                     ? selectedCategories.filter((c) => c !== category)
