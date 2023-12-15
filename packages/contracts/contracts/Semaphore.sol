@@ -18,65 +18,29 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     /// @dev Gets a group id and returns the group parameters.
     mapping(uint256 => Group) public groups;
 
-    /// @dev Checks if the group admin is the transaction sender.
-    /// @param groupId: Id of the group.
-    modifier onlyGroupAdmin(uint256 groupId) {
-        if (groups[groupId].admin != _msgSender()) {
-            revert Semaphore__CallerIsNotTheGroupAdmin();
-        }
-        _;
-    }
-
-    /// @dev Checks if the group exists.
-    /// @param groupId: Id of the group.
-    modifier onlyExistingGroup(uint256 groupId) {
-        if (groups[groupId].admin == address(0)) {
-            revert Semaphore__GroupDoesNotExist();
-        }
-
-        _;
-    }
-
     /// @dev Initializes the Semaphore verifier used to verify the user's ZK proofs.
     /// @param _verifier: Semaphore verifier address.
     constructor(ISemaphoreVerifier _verifier) {
         verifier = _verifier;
     }
 
-    /// @dev See {ISemaphore-createGroup}.
+    /// @dev See {SemaphoreGroups-_createGroup}.
     function createGroup(uint256 groupId, address admin) external override {
-        if (groups[groupId].admin != address(0)) {
-            revert Semaphore__GroupAlreadyExists();
-        }
+        _createGroup(groupId, admin);
 
-        groups[groupId].admin = admin;
         groups[groupId].merkleTreeDuration = 1 hours;
-
-        emit GroupCreated(groupId);
-        emit GroupAdminUpdated(groupId, address(0), admin);
     }
 
     /// @dev See {ISemaphore-createGroup}.
     function createGroup(uint256 groupId, address admin, uint256 merkleTreeDuration) external override {
-        if (groups[groupId].admin != address(0)) {
-            revert Semaphore__GroupAlreadyExists();
-        }
+        _createGroup(groupId, admin);
 
-        groups[groupId].admin = admin;
         groups[groupId].merkleTreeDuration = merkleTreeDuration;
-
-        emit GroupCreated(groupId);
-        emit GroupAdminUpdated(groupId, address(0), admin);
     }
 
-    /// @dev See {ISemaphore-updateGroupAdmin}.
-    function updateGroupAdmin(
-        uint256 groupId,
-        address newAdmin
-    ) external override onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
-        groups[groupId].admin = newAdmin;
-
-        emit GroupAdminUpdated(groupId, _msgSender(), newAdmin);
+    /// @dev See {SemaphoreGroups-_updateGroupAdmin}.
+    function updateGroupAdmin(uint256 groupId, address newAdmin) external override {
+        _updateGroupAdmin(groupId, newAdmin);
     }
 
     /// @dev See {ISemaphore-updateGroupMerkleTreeDuration}.
@@ -91,11 +55,8 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         emit GroupMerkleTreeDurationUpdated(groupId, oldMerkleTreeDuration, newMerkleTreeDuration);
     }
 
-    /// @dev See {ISemaphore-addMember}.
-    function addMember(
-        uint256 groupId,
-        uint256 identityCommitment
-    ) external override onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
+    /// @dev See {SemaphoreGroups-_addMember}.
+    function addMember(uint256 groupId, uint256 identityCommitment) external override {
         _addMember(groupId, identityCommitment);
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
@@ -103,31 +64,22 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
     }
 
-    /// @dev See {ISemaphore-addMembers}.
-    function addMembers(
-        uint256 groupId,
-        uint256[] calldata identityCommitments
-    ) external override onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
-        for (uint256 i = 0; i < identityCommitments.length; ) {
-            _addMember(groupId, identityCommitments[i]);
-
-            unchecked {
-                ++i;
-            }
-        }
+    /// @dev See {SemaphoreGroups-_addMembers}.
+    function addMembers(uint256 groupId, uint256[] calldata identityCommitments) external override {
+        _addMembers(groupId, identityCommitments);
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
 
         groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
     }
 
-    /// @dev See {ISemaphore-updateMember}.
+    /// @dev See {SemaphoreGroups-_updateMember}.
     function updateMember(
         uint256 groupId,
         uint256 identityCommitment,
         uint256 newIdentityCommitment,
         uint256[] calldata merkleProofSiblings
-    ) external override onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
+    ) external override {
         _updateMember(groupId, identityCommitment, newIdentityCommitment, merkleProofSiblings);
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
@@ -135,12 +87,12 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
     }
 
-    /// @dev See {ISemaphore-removeMember}.
+    /// @dev See {SemaphoreGroups-_removeMember}.
     function removeMember(
         uint256 groupId,
         uint256 identityCommitment,
         uint256[] calldata merkleProofSiblings
-    ) external override onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
+    ) external override {
         _removeMember(groupId, identityCommitment, merkleProofSiblings);
 
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
