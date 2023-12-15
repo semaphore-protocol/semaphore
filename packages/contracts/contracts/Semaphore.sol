@@ -3,7 +3,7 @@ pragma solidity 0.8.4;
 
 import "./interfaces/ISemaphore.sol";
 import "./interfaces/ISemaphoreVerifier.sol";
-import "./base/SemaphoreGroups.sol";
+import {SemaphoreGroups} from "./base/SemaphoreGroups.sol";
 
 /// @title Semaphore
 /// @dev This contract uses the Semaphore base contracts to provide a complete service
@@ -189,7 +189,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
                 [proof[0], proof[1]],
                 [[proof[2], proof[3]], [proof[4], proof[5]]],
                 [proof[6], proof[7]],
-                [merkleTreeRoot, nullifier, message, scope]
+                [merkleTreeRoot, nullifier, _hash(message), _hash(scope)]
             )
         ) {
             revert Semaphore__InvalidProof();
@@ -198,5 +198,12 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         groups[groupId].nullifiers[nullifier] = true;
 
         emit ProofVerified(groupId, merkleTreeRoot, nullifier, message, scope, proof);
+    }
+
+    /// @dev Creates a keccak256 hash of a message compatible with the SNARK scalar modulus.
+    /// @param message: Message to be hashed.
+    /// @return Message digest.
+    function _hash(uint256 message) private pure returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(message))) >> 8;
     }
 }
