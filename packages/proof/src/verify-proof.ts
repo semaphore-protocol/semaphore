@@ -2,6 +2,7 @@ import { verify } from "@zk-kit/groth16"
 import { SemaphoreProof } from "./types"
 import unpackProof from "./unpack-proof"
 import verificationKeys from "./verification-keys.json"
+import hash from "./hash"
 
 /**
  * Verifies a Semaphore proof.
@@ -21,7 +22,7 @@ export default function verifyProof({ treeRoot, nullifier, message, scope, proof
     }
 
     return verify(verificationKey, {
-        publicSignals: [treeRoot, nullifier, message, scope],
+        publicSignals: [treeRoot, nullifier, hash(message), hash(scope)],
         proof: unpackProof(proof)
     })
 }
