@@ -1,6 +1,4 @@
-import commonjs from "@rollup/plugin-commonjs"
 import json from "@rollup/plugin-json"
-import { nodeResolve } from "@rollup/plugin-node-resolve"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
 import typescript from "rollup-plugin-typescript2"
@@ -19,13 +17,13 @@ export default {
     input: "src/index.ts",
     output: [
         {
-            file: pkg.exports.require,
+            file: pkg.exports.node.require,
             format: "cjs",
             banner,
             exports: "auto"
         },
         {
-            file: pkg.exports.import,
+            file: pkg.exports.node.import,
             format: "es",
             banner
         }
@@ -35,10 +33,6 @@ export default {
         typescript({
             tsconfig: "./build.tsconfig.json",
             useTsconfigDeclarationDir: true
-        }),
-        nodeResolve(),
-        commonjs({
-            esmExternals: true
         }),
         cleanup({ comments: "jsdoc" }),
         json()
