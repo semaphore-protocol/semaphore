@@ -1,4 +1,4 @@
-import Group from "./group"
+import { Group } from "../src"
 
 describe("Group", () => {
     describe("# Group", () => {
@@ -87,8 +87,6 @@ describe("Group", () => {
             group.addMembers([1, 3])
 
             const proof = group.generateMerkleProof(0)
-
-            console.log(proof)
 
             expect(proof.leaf).toBe("1")
         })
