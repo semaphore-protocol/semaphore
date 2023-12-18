@@ -101,16 +101,13 @@ import { Group } from "@semaphore-protocol/group"
 import { generateProof } from "@semaphore-protocol/proof"
 import { utils } from "ethers"
 
-const group = new Group("42")
+const group = new Group()
 
 group.addMembers(memberList)
 
-const signal = utils.formatBytes32String("Hey anon!")
+const message = utils.formatBytes32String("Hey anon!")
 
-generateProof(identity, group, group.id, "42", {
-    zkeyFilePath: "./semaphore.zkey",
-    wasmFilePath: "./semaphore.wasm"
-})
+generateProof(identity, group, message, group.root)
 ```
 
 ## Authors
