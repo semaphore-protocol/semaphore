@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.4;
 
-import "./interfaces/ISemaphore.sol";
-import "./interfaces/ISemaphoreVerifier.sol";
+import {ISemaphore} from "./interfaces/ISemaphore.sol";
+import {ISemaphoreVerifier} from "./interfaces/ISemaphoreVerifier.sol";
 import {SemaphoreGroups} from "./base/SemaphoreGroups.sol";
 
 /// @title Semaphore
