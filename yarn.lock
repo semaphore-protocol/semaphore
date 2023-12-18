@@ -8451,7 +8451,6 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-ethers": ^2.1.1
     "@semaphore-protocol/contracts": 3.15.2
-    circomlibjs: ^0.1.7
     ethers: ^5.7.1
     hardhat: ^2.0.0
     hardhat-dependency-compiler: ^1.1.3
