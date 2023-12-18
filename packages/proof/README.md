@@ -72,9 +72,10 @@ yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-proto
 
 \# **generateProof**(
 identity: _Identity_,
-group: _Group_ | _MerkleProof_,
-externalNullifier: _BytesLike | Hexable | number | bigint_,
-signal: _BytesLike | Hexable | number | bigint_,
+group: _Group_,
+message: _BytesLike | Hexable | number | bigint_,
+scope: _BytesLike | Hexable | number | bigint_,
+treeDepth: _number_,
 snarkArtifacts?: _SnarkArtifacts_
 ): Promise\<_SemaphoreProof_>
 
@@ -86,18 +87,22 @@ import { utils } from "ethers"
 
 const identity = new Identity()
 const group = new Group()
-const externalNullifier = utils.formatBytes32String("Topic")
-const signal = utils.formatBytes32String("Hello world")
+
+const scope = utils.formatBytes32String("Topic")
+const message = utils.formatBytes32String("Hello world")
 
 group.addMembers([...identityCommitments, identity.generateCommitment()])
 
-const fullProof = await generateProof(identity, group, externalNullifier, signal, {
-    zkeyFilePath: "./semaphore.zkey",
-    wasmFilePath: "./semaphore.wasm"
-})
+const fullProof1 = await generateProof(identity, group, message, scope)
 
-// You can also use the default zkey/wasm files (it only works from browsers!).
-// const fullProof = await generateProof(identity, group, externalNullifier, signal)
+// You can also specify the maximum shaft depth supported by the proof.
+const fullProof2 = await generateProof(identity, group, message, scope, 20)
+
+// You can also specify the default zkey/wasm files.
+const fullProof3 = await generateProof(identity, group, message, scope, 20, {
+    wasmFilePath: "./semaphore.wasm",
+    zkeyFilePath: "./semaphore.zkey"
+})
 ```
 
 \# **verifyProof**(semaphoreProof: _SemaphoreProof_, treeDepth: _number_): Promise\<_boolean_>
@@ -106,19 +111,4 @@ const fullProof = await generateProof(identity, group, externalNullifier, signal
 import { verifyProof } from "@semaphore-protocol/proof"
 
 await verifyProof(fullProof, 20)
-```
-
-\# **calculateNullifierHash**(
-identityNullifier: _bigint | number | string_,
-externalNullifier: \__BytesLike | Hexable | number | bigint_
-): bigint
-
-```typescript
-import { Identity } from "@semaphore-protocol/identity"
-import { calculateNullifierHash } from "@semaphore-protocol/proof"
-
-const identity = new Identity()
-const externalNullifier = utils.formatBytes32String("Topic")
-
-const nullifierHash = calculateNullifierHash(identity.nullifier, externalNullifier)
 ```
