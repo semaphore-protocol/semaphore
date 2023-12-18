@@ -100,6 +100,20 @@ group.addMember(commitment)
 console.log(group.members[0])
 ```
 
+\# **addMembers**(members: _BigNumberish[]_)
+
+```typescript
+import { Group } from "@semaphore-protocol/group"
+import { Identity } from "@semaphore-protocol/identity"
+
+const group = new Group()
+
+const identity1 = new Identity()
+const identity2 = new Identity()
+
+group.addMembers([identity1.commitment, identity2.commitment])
+```
+
 \# **updateMember**(index: _number_, member: _BigNumberish_)
 
 ```typescript
