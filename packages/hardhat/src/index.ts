@@ -8,9 +8,9 @@ import "./tasks/deploy-semaphore-verifier"
 
 extendConfig((config: HardhatConfig, userConfig: Readonly<HardhatUserConfig>) => {
     config.dependencyCompiler.paths = [
-        "@semaphore-protocol/contracts/base/Pairing.sol",
         "@semaphore-protocol/contracts/base/SemaphoreVerifier.sol",
-        "@semaphore-protocol/contracts/Semaphore.sol"
+        "@semaphore-protocol/contracts/Semaphore.sol",
+        "poseidon-solidity/PoseidonT3.sol"
     ]
 
     if (userConfig.dependencyCompiler?.paths) {
