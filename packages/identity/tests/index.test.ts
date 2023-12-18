@@ -1,4 +1,4 @@
-import Identity from "./identity"
+import { Identity } from "../src"
 
 describe("Identity", () => {
     const privateKey = "secret"
