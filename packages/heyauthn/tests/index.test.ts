@@ -4,7 +4,7 @@ import {
     GenerateRegistrationOptionsOpts as RegistrationOptions
 } from "@simplewebauthn/server"
 
-import HeyAuthn from "./heyAuthn"
+import { HeyAuthn } from "../src"
 
 jest.mock("@simplewebauthn/browser", () => ({
     startRegistration: async () => ({
@@ -52,9 +52,8 @@ describe("HeyAuthn", () => {
             const { identity } = await HeyAuthn.fromRegister(options)
             const expectedIdentity = new Identity("my-new-credential")
 
-            expect(expectedIdentity.trapdoor).toEqual(identity.trapdoor)
-            expect(expectedIdentity.nullifier).toEqual(identity.nullifier)
-            expect(expectedIdentity.commitment).toEqual(identity.commitment)
+            expect(identity.secretScalar).toEqual(expectedIdentity.secretScalar)
+            expect(identity.commitment).toEqual(expectedIdentity.commitment)
         })
     })
 
@@ -67,9 +66,8 @@ describe("HeyAuthn", () => {
             const { identity } = await HeyAuthn.fromAuthenticate(options)
             const expectedIdentity = new Identity("my-existing-credential")
 
-            expect(expectedIdentity.trapdoor).toEqual(identity.trapdoor)
-            expect(expectedIdentity.nullifier).toEqual(identity.nullifier)
-            expect(expectedIdentity.commitment).toEqual(identity.commitment)
+            expect(identity.secretScalar).toEqual(expectedIdentity.secretScalar)
+            expect(identity.commitment).toEqual(expectedIdentity.commitment)
         })
     })
 })
