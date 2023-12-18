@@ -2,11 +2,7 @@ import { formatBytes32String } from "@ethersproject/strings"
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { getCurveFromName } from "ffjavascript"
-import generateProof from "./generate-proof"
-import packProof from "./pack-proof"
-import { SemaphoreProof } from "./types"
-import unpackProof from "./unpack-proof"
-import verifyProof from "./verify-proof"
+import { SemaphoreProof, generateProof, packProof, unpackProof, verifyProof } from "../src"
 
 describe("Proof", () => {
     const treeDepth = 10
