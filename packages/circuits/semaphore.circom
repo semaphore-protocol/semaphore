@@ -15,9 +15,9 @@ template Semaphore(MAX_DEPTH) {
     var Ax, Ay;
     (Ax, Ay) = BabyPbk()(privateKey);
 
-    var treeLeaf = Poseidon(2)([Ax, Ay]);
+    var identityCommitment = Poseidon(2)([Ax, Ay]);
 
-    treeRoot <== BinaryMerkleRoot(MAX_DEPTH)(treeLeaf, treeDepth, treeIndices, treeSiblings);
+    treeRoot <== BinaryMerkleRoot(MAX_DEPTH)(identityCommitment, treeDepth, treeIndices, treeSiblings);
     nullifier <== Poseidon(2)([scope, privateKey]);
 
     // Dummy constraint to prevent compiler from optimizing it.
