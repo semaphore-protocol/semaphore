@@ -1,11 +1,10 @@
 <p align="center">
     <h1 align="center">
       <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon-dark.svg">
-        <source media="(prefers-color-scheme: light)" srcset="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
-        <img width="40" alt="Semaphore icon" src="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
+        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/semaphore-protocol/.github/blob/main/assets/semaphore-logo-light.svg">
+        <source media="(prefers-color-scheme: light)" srcset="https://github.com/semaphore-protocol/.github/blob/main/assets/semaphore-logo-dark.svg">
+        <img width="250" alt="Semaphore icon" src="https://github.com/semaphore-protocol/.github/blob/main/assets/semaphore-logo-dark.svg">
       </picture>
-      Semaphore
     </h1>
 </p>
 
