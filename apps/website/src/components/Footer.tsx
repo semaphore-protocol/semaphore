@@ -4,6 +4,7 @@ import NextLink from "next/link"
 import IconArrowUpRight from "../icons/IconArrowUpRight"
 import IconDiscord from "../icons/IconDiscord"
 import IconThumbsUp from "../icons/IconThumbsUp"
+import IconX from "@/icons/IconX"
 
 export default function Footer() {
     return (
@@ -56,32 +57,43 @@ export default function Footer() {
             </Stack>
 
             <Divider />
-
             <VStack spacing="5">
-                <Link href="https://semaphore.pse.dev/discord" isExternal>
-                    <HStack>
-                        <IconDiscord boxSize={{ base: "16px", md: "24px" }} />
-                        <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
-                            Discord
-                        </Heading>
-                    </HStack>
-                </Link>
+                <HStack spacing="5">
+                    <Link href="https://semaphore.pse.dev/discord" isExternal>
+                        <HStack>
+                            <IconDiscord boxSize={{ base: "16px", md: "24px" }} />
+                            <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
+                                Discord
+                            </Heading>
+                        </HStack>
+                    </Link>
+                    <Link href="https://x.com/SemaphoreDevs" isExternal>
+                        <HStack>
+                            <IconX boxSize={{ base: "16px", md: "24px" }} />
+                            <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
+                                Twitter
+                            </Heading>
+                        </HStack>
+                    </Link>
+                </HStack>
 
-                <Link
-                    href="https://github.com/semaphore-protocol/semaphore/discussions/new?category=website"
-                    isExternal
-                >
-                    <HStack>
-                        <IconThumbsUp boxSize={{ base: "16px", md: "24px" }} />
-                        <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
-                            Give feedback about the website
-                        </Heading>
-                    </HStack>
-                </Link>
+                <VStack spacing="8">
+                    <Link
+                        href="https://github.com/semaphore-protocol/semaphore/discussions/new?category=website"
+                        isExternal
+                    >
+                        <HStack>
+                            <IconThumbsUp boxSize={{ base: "16px", md: "24px" }} />
+                            <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
+                                Give feedback about the website
+                            </Heading>
+                        </HStack>
+                    </Link>
 
-                <Text fontSize={{ base: "12px", md: "14px" }} color="text.500" pt="2">
-                    Copyright © 2023 Ethereum Foundation
-                </Text>
+                    <Text fontSize={{ base: "12px", md: "14px" }} color="text.500" pt="2">
+                        Copyright © 2023 Ethereum Foundation
+                    </Text>
+                </VStack>
             </VStack>
         </VStack>
     )
