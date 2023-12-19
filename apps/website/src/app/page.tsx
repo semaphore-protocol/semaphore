@@ -5,7 +5,6 @@ import ProjectCard from "../components/ProjectCard"
 import events from "../data/events.json"
 import projects from "../data/projects.json"
 import IconDiscord from "../icons/IconDiscord"
-import IconX from "../icons/IconX"
 
 const sora = Sora({
     subsets: ["latin"]
@@ -218,11 +217,6 @@ export default function Home() {
                         <Link href="https://semaphore.pse.dev/discord" isExternal>
                             <Button leftIcon={<IconDiscord />} size="lg">
                                 Discord
-                            </Button>
-                        </Link>
-                        <Link href="https://x.com/SemaphoreDevs" isExternal>
-                            <Button leftIcon={<IconX />} size="lg">
-                                X
                             </Button>
                         </Link>
                     </VStack>
