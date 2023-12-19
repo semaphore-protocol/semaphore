@@ -1,0 +1,11 @@
+{
+    "item.label.Whitepaper": {
+        "message": "Whitepaper"
+    },
+    "item.label.Documentation": {
+        "message": "Documentación"
+    },
+    "item.label.Github": {
+        "message": "Github"
+    }
+}

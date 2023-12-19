@@ -1,0 +1,14 @@
+{
+    "version.label": {
+        "message": "V3",
+        "description": "The label for version V3"
+    },
+    "sidebar.mySidebar.category.Guides": {
+        "message": "Guides",
+        "description": "The label for category Guides in sidebar mySidebar"
+    },
+    "sidebar.mySidebar.category.Technical reference": {
+        "message": "Technical reference",
+        "description": "The label for category Technical reference in sidebar mySidebar"
+    }
+}

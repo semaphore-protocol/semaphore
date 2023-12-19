@@ -63,7 +63,11 @@ node_modules/
 # Production
 build
 dist
-docs
+/docs
+
+# Docusaurus cache and generated files
+.docusaurus
+.cache-loader
 
 # Hardhat
 artifacts

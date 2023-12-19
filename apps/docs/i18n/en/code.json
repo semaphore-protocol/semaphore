@@ -1,0 +1,406 @@
+{
+    "jumbotron.title": {
+        "message": "Signal anonymously"
+    },
+    "jumbotron.description": {
+        "message": "Using zero knowledge, Semaphore allows Ethereum users to prove their membership of a group and send signals such as votes or endorsements without revealing their original identity."
+    },
+    "quick-setup.button": {
+        "message": "Quick setup"
+    },
+    "boilerplate.button": {
+        "message": "Boilerplate"
+    },
+    "components.description": {
+        "message": "Building an Ethereum dApp? Semaphore components make it simple to add a privacy layer!"
+    },
+    "components.button.solidity": {
+        "message": "Solidity contract"
+    },
+    "components.button.circuits": {
+        "message": "zkSNARK circuits"
+    },
+    "components.button.libraries": {
+        "message": "JavaScript libraries"
+    },
+    "section.identities.title": {
+        "message": "Semaphore identities"
+    },
+    "section.identities.description": {
+        "message": "Given to all Semaphore group members, it is comprised of three parts: identity commitment, trapdoor, and nullifier."
+    },
+    "section.identities.link": {
+        "message": "Create Semaphore identities"
+    },
+    "section.identities.box1.title": {
+        "message": "Private values"
+    },
+    "section.identities.box1.description": {
+        "message": "Trapdoor and nullifier values are the private values of the Semaphore identity. To avoid fraud, the owner must keep both values secret."
+    },
+    "section.identities.box2.title": {
+        "message": "Public values"
+    },
+    "section.identities.box2.description": {
+        "message": "Semaphore uses the Poseidon hash function to create the identity commitment from the identity private values. Identity commitments can be made public, similarly to Ethereum addresses."
+    },
+    "section.identities.box3.title": {
+        "message": "Generate identities"
+    },
+    "section.identities.box3.description": {
+        "message": "Semaphore identities can be generated deterministically or randomly. Deterministic identities can be generated from the hash of a secret message."
+    },
+    "section.groups.title": {
+        "message": "Semaphore groups"
+    },
+    "section.groups.description": {
+        "message": "Semaphore groups are binary incremental Merkle trees that store the public identity commitment of each member."
+    },
+    "section.groups.link": {
+        "message": "Curate Semaphore groups"
+    },
+    "section.groups.box1.title": {
+        "message": "Merkle trees"
+    },
+    "section.groups.box1.description": {
+        "message": "Each leaf contains an identity commitment for a user. The identity commitment proves that the user is a group member without revealing the private identity of the user."
+    },
+    "section.groups.box2.title": {
+        "message": "Types of groups"
+    },
+    "section.groups.box2.description": {
+        "message": "Groups can be created and managed in a decentralized fashion with Semaphore contracts or off-chain with our JavaScript libraries."
+    },
+    "section.groups.box3.title": {
+        "message": "Group management"
+    },
+    "section.groups.box3.description": {
+        "message": "Users can join and leave groups by themselves, or an admin can add and remove them. Admins can be centralized authorities, Ethereum accounts, multi-sig wallets or smart contracts."
+    },
+    "section.proofs.title": {
+        "message": "Semaphore proofs"
+    },
+    "section.proofs.description": {
+        "message": "Semaphore group members can anonymously prove that they are part of a group and that they are generating their own proofs and signals."
+    },
+    "section.proofs.link": {
+        "message": "Generate Semaphore proofs"
+    },
+    "section.proofs.box1.title": {
+        "message": "Membership"
+    },
+    "section.proofs.box1.description": {
+        "message": "Only users who are part of a group can generate a valid proof for that group."
+    },
+    "section.proofs.box2.title": {
+        "message": "Signals"
+    },
+    "section.proofs.box2.description": {
+        "message": "Group users can anonymously broadcast signals such as votes or endorsements without revealing their original identity."
+    },
+    "section.proofs.box3.title": {
+        "message": "Verifiers"
+    },
+    "section.proofs.box3.description": {
+        "message": "Semaphore proofs can be verified with Semaphore contracts on-chain or with our JavaScript libraries off-chain."
+    },
+    "theme.ErrorPageContent.title": {
+        "message": "This page crashed.",
+        "description": "The title of the fallback page when the page crashed"
+    },
+    "theme.ErrorPageContent.tryAgain": {
+        "message": "Try again",
+        "description": "The label of the button to try again when the page crashed"
+    },
+    "theme.NotFound.title": {
+        "message": "Page Not Found",
+        "description": "The title of the 404 page"
+    },
+    "theme.NotFound.p1": {
+        "message": "We could not find what you were looking for.",
+        "description": "The first paragraph of the 404 page"
+    },
+    "theme.NotFound.p2": {
+        "message": "Please contact the owner of the site that linked you to the original URL and let them know their link is broken.",
+        "description": "The 2nd paragraph of the 404 page"
+    },
+    "theme.admonition.note": {
+        "message": "note",
+        "description": "The default label used for the Note admonition (:::note)"
+    },
+    "theme.admonition.tip": {
+        "message": "tip",
+        "description": "The default label used for the Tip admonition (:::tip)"
+    },
+    "theme.admonition.danger": {
+        "message": "danger",
+        "description": "The default label used for the Danger admonition (:::danger)"
+    },
+    "theme.admonition.info": {
+        "message": "info",
+        "description": "The default label used for the Info admonition (:::info)"
+    },
+    "theme.admonition.caution": {
+        "message": "caution",
+        "description": "The default label used for the Caution admonition (:::caution)"
+    },
+    "theme.BackToTopButton.buttonAriaLabel": {
+        "message": "Scroll back to top",
+        "description": "The ARIA label for the back to top button"
+    },
+    "theme.blog.archive.title": {
+        "message": "Archive",
+        "description": "The page & hero title of the blog archive page"
+    },
+    "theme.blog.archive.description": {
+        "message": "Archive",
+        "description": "The page & hero description of the blog archive page"
+    },
+    "theme.blog.paginator.navAriaLabel": {
+        "message": "Blog list page navigation",
+        "description": "The ARIA label for the blog pagination"
+    },
+    "theme.blog.paginator.newerEntries": {
+        "message": "Newer Entries",
+        "description": "The label used to navigate to the newer blog posts page (previous page)"
+    },
+    "theme.blog.paginator.olderEntries": {
+        "message": "Older Entries",
+        "description": "The label used to navigate to the older blog posts page (next page)"
+    },
+    "theme.blog.post.paginator.navAriaLabel": {
+        "message": "Blog post page navigation",
+        "description": "The ARIA label for the blog posts pagination"
+    },
+    "theme.blog.post.paginator.newerPost": {
+        "message": "Newer Post",
+        "description": "The blog post button label to navigate to the newer/previous post"
+    },
+    "theme.blog.post.paginator.olderPost": {
+        "message": "Older Post",
+        "description": "The blog post button label to navigate to the older/next post"
+    },
+    "theme.blog.post.plurals": {
+        "message": "One post|{count} posts",
+        "description": "Pluralized label for \"{count} posts\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+    },
+    "theme.blog.tagTitle": {
+        "message": "{nPosts} tagged with \"{tagName}\"",
+        "description": "The title of the page for a blog tag"
+    },
+    "theme.tags.tagsPageLink": {
+        "message": "View All Tags",
+        "description": "The label of the link targeting the tag list page"
+    },
+    "theme.colorToggle.ariaLabel": {
+        "message": "Switch between dark and light mode (currently {mode})",
+        "description": "The ARIA label for the navbar color mode toggle"
+    },
+    "theme.colorToggle.ariaLabel.mode.dark": {
+        "message": "dark mode",
+        "description": "The name for the dark color mode"
+    },
+    "theme.colorToggle.ariaLabel.mode.light": {
+        "message": "light mode",
+        "description": "The name for the light color mode"
+    },
+    "theme.docs.breadcrumbs.home": {
+        "message": "Home page",
+        "description": "The ARIA label for the home page in the breadcrumbs"
+    },
+    "theme.docs.breadcrumbs.navAriaLabel": {
+        "message": "Breadcrumbs",
+        "description": "The ARIA label for the breadcrumbs"
+    },
+    "theme.docs.DocCard.categoryDescription": {
+        "message": "{count} items",
+        "description": "The default description for a category card in the generated index about how many items this category includes"
+    },
+    "theme.docs.paginator.navAriaLabel": {
+        "message": "Docs pages navigation",
+        "description": "The ARIA label for the docs pagination"
+    },
+    "theme.docs.paginator.previous": {
+        "message": "Previous",
+        "description": "The label used to navigate to the previous doc"
+    },
+    "theme.docs.paginator.next": {
+        "message": "Next",
+        "description": "The label used to navigate to the next doc"
+    },
+    "theme.docs.tagDocListPageTitle.nDocsTagged": {
+        "message": "One doc tagged|{count} docs tagged",
+        "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+    },
+    "theme.docs.tagDocListPageTitle": {
+        "message": "{nDocsTagged} with \"{tagName}\"",
+        "description": "The title of the page for a docs tag"
+    },
+    "theme.docs.versionBadge.label": {
+        "message": "Version: {versionLabel}"
+    },
+    "theme.docs.versions.unreleasedVersionLabel": {
+        "message": "This is unreleased documentation for {siteTitle} {versionLabel} version.",
+        "description": "The label used to tell the user that he's browsing an unreleased doc version"
+    },
+    "theme.docs.versions.unmaintainedVersionLabel": {
+        "message": "This is documentation for {siteTitle} {versionLabel}, which is no longer actively maintained.",
+        "description": "The label used to tell the user that he's browsing an unmaintained doc version"
+    },
+    "theme.docs.versions.latestVersionSuggestionLabel": {
+        "message": "For up-to-date documentation, see the {latestVersionLink} ({versionLabel}).",
+        "description": "The label used to tell the user to check the latest version"
+    },
+    "theme.docs.versions.latestVersionLinkLabel": {
+        "message": "latest version",
+        "description": "The label used for the latest version suggestion link label"
+    },
+    "theme.common.editThisPage": {
+        "message": "Edit this page",
+        "description": "The link label to edit the current page"
+    },
+    "theme.common.headingLinkTitle": {
+        "message": "Direct link to heading",
+        "description": "Title for link to heading"
+    },
+    "theme.lastUpdated.atDate": {
+        "message": " on {date}",
+        "description": "The words used to describe on which date a page has been last updated"
+    },
+    "theme.lastUpdated.byUser": {
+        "message": " by {user}",
+        "description": "The words used to describe by who the page has been last updated"
+    },
+    "theme.lastUpdated.lastUpdatedAtBy": {
+        "message": "Last updated{atDate}{byUser}",
+        "description": "The sentence used to display when a page has been last updated, and by who"
+    },
+    "theme.navbar.mobileVersionsDropdown.label": {
+        "message": "Versions",
+        "description": "The label for the navbar versions dropdown on mobile view"
+    },
+    "theme.tags.tagsListLabel": {
+        "message": "Tags:",
+        "description": "The label alongside a tag list"
+    },
+    "theme.AnnouncementBar.closeButtonAriaLabel": {
+        "message": "Close",
+        "description": "The ARIA label for close button of announcement bar"
+    },
+    "theme.blog.sidebar.navAriaLabel": {
+        "message": "Blog recent posts navigation",
+        "description": "The ARIA label for recent posts in the blog sidebar"
+    },
+    "theme.CodeBlock.copied": {
+        "message": "Copied",
+        "description": "The copied button label on code blocks"
+    },
+    "theme.CodeBlock.copyButtonAriaLabel": {
+        "message": "Copy code to clipboard",
+        "description": "The ARIA label for copy code blocks button"
+    },
+    "theme.CodeBlock.copy": {
+        "message": "Copy",
+        "description": "The copy button label on code blocks"
+    },
+    "theme.CodeBlock.wordWrapToggle": {
+        "message": "Toggle word wrap",
+        "description": "The title attribute for toggle word wrapping button of code block lines"
+    },
+    "theme.DocSidebarItem.toggleCollapsedCategoryAriaLabel": {
+        "message": "Toggle the collapsible sidebar category '{label}'",
+        "description": "The ARIA label to toggle the collapsible sidebar category"
+    },
+    "theme.navbar.mobileLanguageDropdown.label": {
+        "message": "Languages",
+        "description": "The label for the mobile language switcher dropdown"
+    },
+    "theme.TOCCollapsible.toggleButtonLabel": {
+        "message": "On this page",
+        "description": "The label used by the button on the collapsible TOC component"
+    },
+    "theme.blog.post.readMore": {
+        "message": "Read More",
+        "description": "The label used in blog post item excerpts to link to full blog posts"
+    },
+    "theme.blog.post.readMoreLabel": {
+        "message": "Read more about {title}",
+        "description": "The ARIA label for the link to full blog posts from excerpts"
+    },
+    "theme.blog.post.readingTime.plurals": {
+        "message": "One min read|{readingTime} min read",
+        "description": "Pluralized label for \"{readingTime} min read\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+    },
+    "theme.docs.sidebar.collapseButtonTitle": {
+        "message": "Collapse sidebar",
+        "description": "The title attribute for collapse button of doc sidebar"
+    },
+    "theme.docs.sidebar.collapseButtonAriaLabel": {
+        "message": "Collapse sidebar",
+        "description": "The title attribute for collapse button of doc sidebar"
+    },
+    "theme.docs.sidebar.closeSidebarButtonAriaLabel": {
+        "message": "Close navigation bar",
+        "description": "The ARIA label for close button of mobile sidebar"
+    },
+    "theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel": {
+        "message": "← Back to main menu",
+        "description": "The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)"
+    },
+    "theme.docs.sidebar.toggleSidebarButtonAriaLabel": {
+        "message": "Toggle navigation bar",
+        "description": "The ARIA label for hamburger menu button of mobile navigation"
+    },
+    "theme.docs.sidebar.expandButtonTitle": {
+        "message": "Expand sidebar",
+        "description": "The ARIA label and title attribute for expand button of doc sidebar"
+    },
+    "theme.docs.sidebar.expandButtonAriaLabel": {
+        "message": "Expand sidebar",
+        "description": "The ARIA label and title attribute for expand button of doc sidebar"
+    },
+    "theme.common.skipToMainContent": {
+        "message": "Skip to main content",
+        "description": "The skip to content label used for accessibility, allowing to rapidly navigate to main content with keyboard tab/enter navigation"
+    },
+    "theme.tags.tagsPageTitle": {
+        "message": "Tags",
+        "description": "The title of the tag list page"
+    },
+    "footer.left.title": {
+        "message": "About"
+    },
+    "footer.left.description": {
+        "message": "Semaphore is part of Privacy & Scaling Explorations (PSE), a multidisciplinary team supported by the Ethereum Foundation. PSE explores new use cases for zero knowledge proofs and other cryptographic primitives."
+    },
+    "footer.right.usedby.title": {
+        "message": "Used by"
+    },
+    "footer.right.usedby.link1": {
+        "message": "Unirep"
+    },
+    "footer.right.usedby.link2": {
+        "message": "Interep"
+    },
+    "footer.right.learn.title": {
+        "message": "Learn"
+    },
+    "footer.right.learn.link1": {
+        "message": "Github"
+    },
+    "footer.right.learn.link2": {
+        "message": "Docs"
+    },
+    "footer.right.connect.title": {
+        "message": "Connect"
+    },
+    "footer.right.connect.link1": {
+        "message": "Discord"
+    },
+    "footer.right.connect.link2": {
+        "message": "Twitter"
+    },
+    "footer.copyright": {
+        "message": "Copyright © 2023 Ethereum Foundation"
+    }
+}

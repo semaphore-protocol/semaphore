@@ -1,0 +1,9 @@
+.illustrationHero {
+    > path {
+        fill: var(--ifm-color-primary);
+    }
+
+    > path:first-child {
+        fill: #ff975d;
+    }
+}

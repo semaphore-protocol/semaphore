@@ -22,7 +22,7 @@ circuits
 # production
 dist
 build
-docs
+/docs
 
 # misc
 .DS_Store

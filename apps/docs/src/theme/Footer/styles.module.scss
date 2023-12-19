@@ -1,0 +1,137 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+
+    a {
+        color: var(--custom-blue-2);
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    h3 {
+        font-weight: bold;
+        font-size: 18px;
+        white-space: nowrap;
+    }
+
+    > div:first-child {
+        display: flex;
+        margin-bottom: 20px;
+
+        > div:first-child {
+            flex: 1;
+            margin-right: 20px;
+
+            > p {
+                max-width: 400px;
+            }
+        }
+
+        > div:last-child {
+            flex: 1;
+            display: flex;
+            justify-content: right;
+
+            > div {
+                display: flex;
+                flex-direction: column;
+                margin-left: 200px;
+
+                > a {
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+
+    > div:last-child {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+
+        > p {
+            margin: 0;
+        }
+    }
+}
+
+@media (max-width: 1280px) {
+    .container {
+        > div:first-child {
+            > div:last-child {
+                > div {
+                    margin-left: 50px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        > div:first-child {
+            flex-direction: column;
+
+            > div:first-child {
+                margin-bottom: 30px;
+
+                > p {
+                    margin: 20px 0;
+                    max-width: inherit;
+                }
+            }
+
+            > div:last-child {
+                justify-content: space-between;
+
+                > div {
+                    margin-left: 0;
+                }
+
+                > p {
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+
+                > a {
+                    margin: 5px 0;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 640px) {
+    .container {
+        > div:last-child {
+            > a {
+                display: none;
+            }
+        }
+    }
+}
+
+html[data-theme="light"] {
+    .container {
+        a {
+            color: var(--custom-blue-3);
+        }
+    }
+
+    hr {
+        border-color: var(--custom-gray-1);
+    }
+}
+
+html[data-theme="dark"] {
+    .container {
+        a {
+            color: var(--custom-blue-2);
+        }
+    }
+
+    hr {
+        border-color: var(--custom-dark-1);
+    }
+}
