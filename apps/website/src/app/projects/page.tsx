@@ -26,8 +26,7 @@ export default function Projects() {
                         alt="Blue texture image"
                         src="https://semaphore.cedoor.dev/blue-texture.jpg"
                         objectFit="cover"
-                        minWidth="100%"
-                        maxWidth="100%"
+                        w="full"
                         h="full"
                     />
                 </Box>
