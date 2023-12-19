@@ -11,7 +11,8 @@ const styles: Styles = {
             color: "white"
         },
         "body, #__next": {
-            minHeight: "100vh"
+            minHeight: "100vh",
+            overflowX: "hidden"
         },
         "#__next": {
             display: "flex",

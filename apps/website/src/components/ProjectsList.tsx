@@ -48,6 +48,12 @@ export default function ProjectsList(props: any) {
         }
     }, [index])
 
+    useEffect(() => {
+        if (viewToScrollRef.current) {
+            viewToScrollRef.current.scrollIntoView({ behavior: "smooth" })
+        }
+    }, [index])
+
     return (
         <VStack {...props}>
             <VStack align="left" spacing="6">
