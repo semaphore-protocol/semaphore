@@ -1,0 +1,258 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1280px;
+    margin: 0 auto;
+    margin-bottom: 4rem;
+
+    h1 {
+        font-size: 42px;
+    }
+
+    h2 {
+        font-size: 36px;
+    }
+
+    p {
+        font-size: 20px;
+        color: var(--ifm-color-primary);
+    }
+}
+
+.jumbotron {
+    display: flex;
+    justify-content: space-between;
+    margin: 80px 0;
+
+    > div,
+    > svg {
+        margin: 0 20px;
+    }
+
+    > div {
+        max-width: 600px;
+
+        > div {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            a {
+                font-size: 22px;
+                margin-bottom: 10px;
+            }
+        }
+    }
+
+    > svg {
+        max-width: 500px;
+        min-width: 400px;
+        height: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .jumbotron {
+        margin-top: 50px;
+        flex-direction: column;
+        align-items: center;
+
+        > div {
+            max-width: 700px;
+        }
+
+        > svg {
+            min-width: 300px;
+        }
+    }
+}
+
+.components {
+    display: flex;
+    flex-direction: column;
+    margin: 50px 20px 80px 20px;
+
+    > h3 {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 60px;
+    }
+
+    > div {
+        display: flex;
+        justify-content: space-between;
+
+        > a {
+            flex: 1;
+            margin: 0 16px;
+
+            :first-child {
+                margin-left: 0;
+            }
+
+            :last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .components {
+        margin-bottom: 40px;
+
+        > p {
+            margin-bottom: 20px;
+        }
+
+        > div {
+            flex-direction: column;
+            align-items: center;
+
+            > a {
+                width: 100%;
+                margin: 16px 0;
+            }
+        }
+    }
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    margin: 100px 20px;
+
+    > div:first-child {
+        display: flex;
+
+        > div {
+            margin: 0 20px;
+            flex: 1;
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+                width: 100%;
+            }
+        }
+    }
+
+    > div:last-child {
+        margin-top: 80px;
+        display: flex;
+        justify-content: space-between;
+
+        > div {
+            flex: 1;
+            margin: 0 20px;
+
+            > img {
+                margin-bottom: 10px;
+            }
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        h3 {
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 16px;
+        }
+    }
+}
+
+@media (max-width: 1280px) {
+    .section {
+        > div:first-child {
+            flex-direction: column;
+
+            > div {
+                margin: 20px 0;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .section {
+        margin: 40px 20px;
+
+        > div:last-child {
+            margin-top: 20px;
+            flex-direction: column;
+
+            > div {
+                margin: 10px 0;
+            }
+        }
+    }
+}
+
+.divider {
+    height: 3px;
+    margin-top: 60px;
+}
+
+@media (max-width: 1280px) {
+    .divider {
+        margin: 0 20px;
+    }
+}
+
+html[data-theme="light"] {
+    .container {
+        h1 {
+            color: var(--custom-dark-3);
+        }
+    }
+
+    .section > div:last-child {
+        svg path,
+        svg react {
+            fill: var(--custom-dark-2);
+        }
+
+        svg circle {
+            stroke: var(--custom-dark-2);
+        }
+    }
+
+    .divider {
+        background-color: var(--custom-gray-0);
+    }
+}
+
+html[data-theme="dark"] {
+    .container {
+        h1 {
+            color: var(--custom-blue-0);
+        }
+    }
+
+    .section > div:last-child {
+        svg path,
+        svg react {
+            fill: var(--custom-gray-0);
+        }
+
+        svg circle {
+            stroke: var(--custom-gray-0);
+        }
+    }
+
+    .divider {
+        background-color: var(--custom-dark-2);
+    }
+}
