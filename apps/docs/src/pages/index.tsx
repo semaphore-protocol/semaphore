@@ -19,7 +19,7 @@ import styles from "./styles.module.scss"
 export default function Home() {
     return (
         <Layout
-            title={`Semaphore Protocol`}
+            title="Semaphore Protocol"
             description="A zero-knowledge protocol for anonymous signalling on Ethereum."
         >
             <div className={styles.container}>
