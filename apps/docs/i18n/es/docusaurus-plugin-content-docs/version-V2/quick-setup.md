@@ -95,7 +95,7 @@ Create a `Greeter` contract that uses the `Semaphore.sol` contract:
 
     /// @title Greeter contract.
     /// @dev The following code is just an example to show how Semaphore can be used.
-    contract Greeter  {
+    contract Greeter {
         event NewGreeting(bytes32 greeting);
         event NewUser(uint256 identityCommitment, bytes32 username);
 

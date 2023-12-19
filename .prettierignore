@@ -30,6 +30,13 @@ build
 # github
 .github/ISSUE_TEMPLATE
 
+# Docusaurus cache and generated files
+.docusaurus
+.cache-loader
+
+# mdx file
+*.mdx
+
 # misc
 .DS_Store
 *.pem

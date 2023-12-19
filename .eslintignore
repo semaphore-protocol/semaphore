@@ -24,6 +24,10 @@ dist
 build
 /docs
 
+# Docusaurus cache and generated files
+.docusaurus
+.cache-loader
+
 # misc
 .DS_Store
 *.pem
