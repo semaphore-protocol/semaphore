@@ -13,7 +13,7 @@ const sora = Sora({
 export default function Home() {
     return (
         <VStack>
-            <VStack h={{ base: "718", sm: "734", md: "724" }} justify="center" spacing="40" position="relative">
+            <VStack h={{ base: "718", sm: "734", md: "724" }} justify="center" spacing="20" position="relative">
                 <Box
                     zIndex="-1"
                     left="50%"
