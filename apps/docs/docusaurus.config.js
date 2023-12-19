@@ -45,13 +45,13 @@ module.exports = {
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
-            //announcementBar: {
-            //id: "semaphore-v3",
-            //content:
-            //'<b>We are pleased to announce the release of <a target="_blank" rel="noopener noreferrer" href="https://github.com/semaphore-protocol/semaphore/releases/tag/v3.0.0">Semaphore V3</a> 🎉</b>',
-            //backgroundColor: "#DAE0FF",
-            //textColor: "#000000"
-            //},
+            // announcementBar: {
+            // id: "semaphore-v3",
+            // content:
+            // '<b>We are pleased to announce the release of <a target="_blank" rel="noopener noreferrer" href="https://github.com/semaphore-protocol/semaphore/releases/tag/v3.0.0">Semaphore V3</a> 🎉</b>',
+            // backgroundColor: "#DAE0FF",
+            // textColor: "#000000"
+            // },
             navbar: {
                 logo: {
                     alt: "Semaphore Logo",
