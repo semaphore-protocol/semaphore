@@ -1,0 +1,173 @@
+---
+sidebar_position: 4
+title: Obteniendo datos
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Semaphore data
+
+Para obtener datos on-chain del contrato [Semaphore.sol](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol), puedes usar la librería [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data). 
+
+Hay dos formas para hacer esto, usando [`SemaphoreSubgraph`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/subgraph.ts) o [`SemaphoreEthers`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/ethers.ts). La clase `SemaphoreSubgraph` usa el [subgrafo de Semaphore](https://github.com/semaphore-protocol/subgraph), el cual usa [The Graph Protocol](https://thegraph.com/) detrás del telón, y la clase `SemaphoreEthers` usa [Ethers](https://github.com/ethers-io/ethers.js/).
+
+- [**Obtener datos usando SemaphoreSubgraph**](#obtener-datos-usando-semaphoresubgraph)
+- [**Obtener datos usando SemaphoreEthers**](#obtener-datos-usando-semaphoreethers)
+
+## Instalar librería
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```bash
+npm install @semaphore-protocol/data
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn add @semaphore-protocol/data
+```
+
+</TabItem>
+</Tabs>
+
+## Obtener datos usando SemaphoreSubgraph
+
+Para obtener datos usando el subgrafo de Semaphore puedes usar la clase [`SemaphoreSubgraph`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/subgraph.ts) del paquete [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data). 
+
+```typescript
+import { SemaphoreSubgraph } from "@semaphore-protocol/data"
+
+const semaphoreSubgraph = new SemaphoreSubgraph()
+
+// or:
+const semaphoreSubgraph = new SemaphoreSubgraph("arbitrum")
+
+// or:
+const semaphoreSubgraph = new SemaphoreSubgraph(
+    "https://api.studio.thegraph.com/query/14377/<your-subgraph>/<your-version>"
+)
+```
+
+### Obtener Ids de los grupos
+
+```typescript
+const groupIds = await semaphoreSubgraph.getGroupIds()
+```
+
+### Obtener los grupos
+
+```typescript
+const groups = await semaphoreSubgraph.getGroups()
+
+// or
+
+const groups = await semaphoreSubgraph.getGroups({ members: true, verifiedProofs: true })
+```
+
+### Obtener un grupo
+
+```typescript
+const group = await semaphoreSubgraph.getGroup("42")
+
+// or
+
+const { members, verifiedProofs } = semaphoreSubgraph.getGroup("42", { members: true, verifiedProofs: true })
+```
+
+### Comprueba si un identity commitment es miembro de un grupo
+
+```ts
+await semaphoreSubgraph.isGroupMember(
+    "42",
+    "16948514235341957898454876473214737047419402240398321289450170535251226167324"
+)
+```
+
+:::info
+Puedes crear un grupo off-chain usando la clase SemaphoreSubgraph para obtener los miembros de la siguiente forma:
+
+```typescript
+import { Group } from "@semaphore-protocol/group"
+import { SemaphoreSubgraph } from "@semaphore-protocol/data"
+
+const groupId = "3"
+const semaphoreSubgraph = new SemaphoreSubgraph("sepolia")
+const { members } = await semaphoreSubgraph.getGroup(groupId, { members: true })
+const group = new Group(groupId, 20, members)
+```
+:::
+
+## Obtener datos usando SemaphoreEthers
+
+Para obtener datos usando Ethers puedes usar la clase [`SemaphoreEthers`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/ethers.ts) del paquete [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data). 
+
+```typescript
+import { SemaphoreEthers } from "@semaphore-protocol/data"
+
+const semaphoreEthers = new SemaphoreEthers()
+
+// or:
+const semaphoreEthers = new SemaphoreEthers("homestead", {
+    address: "semaphore-address",
+    startBlock: 0
+})
+
+// or:
+const semaphoreEthers = new SemaphoreEthers("http://localhost:8545", {
+    address: "semaphore-address"
+})
+```
+
+### Obtener Ids de los grupos
+
+```typescript
+const groupIds = await semaphoreEthers.getGroupIds()
+```
+
+### Obtener un grupo
+
+```typescript
+const group = await semaphoreEthers.getGroup("42")
+```
+
+### Obtener el admin de un grupo
+
+```typescript
+const admin = await semaphoreEthers.getGroupAdmin("42")
+```
+
+### Obtener los miembros de un grupo
+
+```typescript
+const members = await semaphoreEthers.getGroupMembers("42")
+```
+
+### Obtener las pruebas verificadas de un grupo
+
+```typescript
+const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs("42")
+```
+
+:::info
+Puedes crear un grupo off-chain usando la clase SemaphoreEthers para obtener los miembros de la siguiente forma:
+
+```typescript
+import { Group } from "@semaphore-protocol/group"
+import { SemaphoreEthers } from "@semaphore-protocol/data"
+
+const groupId = "3"
+const semaphoreEthers = new SemaphoreEthers("sepolia")
+const members = await semaphoreEthers.getGroupMembers(groupId)
+const group = new Group(groupId, 20, members)
+```
+:::

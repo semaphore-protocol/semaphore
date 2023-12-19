@@ -1,0 +1,151 @@
+---
+sidebar_position: 2
+title: Grupos
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Gupos Semaphore
+
+Un [grupo Semaphore](/docs/glossary/#semaphore-group) contiene los [identity commitments](/docs/glossary/#identity-commitment) (compromisos de identidad) de miembros del grupo.
+Estos son algunos ejemplos de uso de los grupos:
+
+-   Encuesta con preguntas a la que se unen las personas que acudieron a un evento para calificarlo,
+-   votación a la que se unen los miembros para votar por una propuesta,
+-   Denunciantes que están verificados como empleados de una organización.
+
+Un grupo Semaphore es un [árbol de Merkle incremental](/docs/glossary/#incremental-merkle-tree), y los miembros del grupo (por ejemplo, [identity commitments](/docs/glossary/#identity-commitments)) son las hojas del árbol.
+Los grupos Semaphore determinan los siguientes tres parámetro:
+
+-   **Group id**: un identificador único para el grupo;
+-   **Tree depth**: el número máximo de miembros que puede contener un grupo (`max size = 2 ^ tree depth`);
+-   **Members** la lista de miembros para inicializar el grupo.
+
+Aprenda cómo trabajar con grupos.
+
+-   [**Grupos off-chain**](#off-chain-groups)
+-   [**Grupos on-chain**](#on-chain-groups)
+
+## Grupos off-chain (externos a la cadena)
+
+-   [Crear un grupo](#create-a-group)
+-   [Añadir miembros](#add-members)
+-   [Remover o actualizar miembros](#remove-or-update-members)
+
+### Crear un grupo
+
+Utilice la clase `Group` de la librería [`@semaphore-protocol/group`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/group) para crear un grupo off-chain con los siguientes parámetros:
+
+-   `Group id`: un identificar único para el grupo;
+-   `Tree depth`: (_default `20`_) el número máximo de usuarios que puede contener un grupo, el valor por defecto es 20 (`max size = 2 ^ tree depth`).
+-   `Members`: (_default `[]`_) la lista de miembros para inicializar el grupo. 
+
+#### Instalar librería:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```bash
+npm install @semaphore-protocol/group
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn add @semaphore-protocol/group
+```
+
+</TabItem>
+</Tabs>
+
+Para crear un grupo con el número de usuarios que aparece por defecto (20) _`treeDepth`_, llame la función para construir un `Group` sin el segundo parámetro. Por ejemplo:
+
+```ts
+import { Group } from "@semaphore-protocol/group"
+
+const group = new Group(1)
+```
+
+El siguiente código de ejemplo pasa por _`treeDepth`_ para crear un grupo para `2 ^ 30 = 1073741824` miembros:
+
+```ts
+import { Group } from "@semaphore-protocol/group"
+
+const group = new Group(1, 30)
+```
+
+También puede inicializar un grupo con varios miembros pasando la lista de identity commitments (miembros) como tercer parámetro al crear el grupo:
+
+```ts
+import { Group } from "@semaphore-protocol/group"
+
+const members = [
+  "11237622825477336339577122413451117718539783476837539122310492284566644730311",
+  "9332663527862709610616009715800254142772436825222910251631161087138559093425",
+  "13255821893820536903335282929376140649646180444238593676033702344407594536519"
+]
+const group = new Group(1, 20, members)
+```
+
+### Añadir miembros
+
+Utiliza la función `Group addMember` para añadir un miembro (es decir su "identity commitment") a un grupo. Por ejemplo:
+
+```ts
+group.addMember(identityCommitment)
+```
+
+Para añadir un lote de miembros a un grupo, pasa una selección por la función `Group addMembers`. Por ejemplo:
+
+```ts
+group.addMembers([identityCommitment1, identityCommitment2])
+```
+
+:::caution
+Cuando utiliza la misma identidad Semaphore en varios grupos, si un atacante toma control de esa identidad, todos los grupos de los que forma parte estarán comprometidos. Considere utilizar identidades diferentes para cada grupo.
+:::
+
+### Remover o actualizar miembros
+
+Para remover miembros de un equipo, pasa el índice del miembro por la función `Group removeMember`. Por ejemplo:
+
+```ts
+group.removeMember(0)
+```
+
+Para actualizar los miembros dentro de un grupo, pasa el índice del miembro y el nuevo valor por la función `Group updateMember`. Por ejemplo:
+
+```ts
+group.updateMember(0, 2)
+```
+
+:::caution
+Remover a un miembro de un grupo configura el valor del nodo a un valor especial (ejemplo, `zeroValue`).
+Dado que ese nodo no se remueve y el largo de la selección de `group.members` no cambia.
+:::
+
+## Grupos on-chain
+
+El contrato [`SemaphoreGroups`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/base/SemaphoreGroups.sol) utiliza la librería del [`IncrementalBinaryTree`](https://github.com/privacy-scaling-explorations/zk-kit/blob/main/packages/incremental-merkle-tree.sol/contracts/IncrementalBinaryTree.sol) (árbol binario incremental) y provee métodos para crear y administrar grupos.
+
+:::información
+puede importar el contrato `SemaphoreGroups.sol` y otros contratos Semaphore del módulo NPM [`@semaphore-protocol/contracts`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/contracts).
+:::
+
+Alternativamente, puede utilizar un contrato [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol) ya desplegado y utilizar sus funciones externas para grupos.
+
+:::caution
+`Semaphore.sol` no revisa si un miembro con un identity commitment en específico ya existe en un grupo. Esta revisión se debe realizar off-chain.
+:::
+
+:::caution
+`Semaphore.sol` incluye un mecanismo para verificar pruebas Semaphore creadas con raíces de árboles de Merkle antiguas. La duración de este mecanismo puede ser definido por el admin en la función `createGroup`. Por lo tanto, los miembros de un grupo pueden continuar generando pruebas válidas incluso después de ser removidos. Para más información ver el issue [#98](https://github.com/semaphore-protocol/semaphore/issues/98).
+:::
