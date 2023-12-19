@@ -1,0 +1,29 @@
+{
+    "name": "semaphore-website",
+    "version": "2.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start"
+    },
+    "dependencies": {
+        "@chakra-ui/next-js": "^2.1.5",
+        "@chakra-ui/react": "^2.8.1",
+        "@chakra-ui/theme": "^3.3.0",
+        "@chakra-ui/theme-tools": "^2.1.1",
+        "@emotion/react": "^11.11.1",
+        "@emotion/styled": "^11.11.0",
+        "framer-motion": "^10.16.4",
+        "next": "13.5.5",
+        "react": "^18",
+        "react-code-blocks": "^0.1.4",
+        "react-dom": "^18"
+    },
+    "devDependencies": {
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "typescript": "^5"
+    }
+}
