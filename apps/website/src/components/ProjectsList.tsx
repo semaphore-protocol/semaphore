@@ -101,18 +101,29 @@ export default function ProjectsList(props: any) {
                 </HStack>
             </VStack>
 
-            <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={6}>
-                {projects[index].map((project) => (
-                    <GridItem key={project.name}>
-                        <ProjectCard
-                            title={project.name}
-                            description={project.tagline}
-                            categories={project.categories}
-                            url={project.links.website || project.links.github}
-                        />
-                    </GridItem>
-                ))}
-            </Grid>
+            {projects[index].length > 0 ? (
+                <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={6}>
+                    {projects[index].map((project) => (
+                        <GridItem key={project.name}>
+                            <ProjectCard
+                                title={project.name}
+                                description={project.tagline}
+                                categories={project.categories}
+                                url={project.links.website || project.links.github}
+                            />
+                        </GridItem>
+                    ))}
+                </Grid>
+            ) : (
+                <VStack spacing="2">
+                    <Text fontSize={{ base: "20px", xs: "18px", sm: "20px" }} align="center">
+                        <b>No results found.</b>
+                    </Text>
+                    <Text fontSize={{ base: "20px", xs: "16px", sm: "18px" }} align="center">
+                        No projects matching these filters. Try changing your search.
+                    </Text>
+                </VStack>
+            )}
 
             {projects.length > 1 && (
                 <HStack w="100%">
