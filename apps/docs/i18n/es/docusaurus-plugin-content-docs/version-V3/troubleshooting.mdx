@@ -1,0 +1,223 @@
+---
+sidebar_position: 11
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Solución de problemas
+
+Si estas sugerencias no funcionan, no dude en preguntar en las [Semaphore Discussions](https://github.com/semaphore-protocol/semaphore/discussions) o en el canal `dev-chat` en el [Semaphore Discord](https://semaphore.pse.dev/discord).
+
+## Usando Semaphore en the frontend
+
+Semaphore funciona con cualquier framework de JavaScript, pero el paquete [`@semaphore-protocol/proof`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/proof) está usando [snarkjs](https://github.com/iden3/snarkjs), que usa módulos Node.js que no son compatibles con los frameworks de frontend y hay algunos cambios que debemos hacer para que funcione en el lado del cliente.
+
+### Semaphore con Nextjs
+
+Verá un error como este:
+
+```
+Module not found: Can't resolve 'fs'
+```
+
+Para resolver esto, en su archivo `next.config.js`, dentro del objeto `nextConfig`, agregue:
+
+```javascript
+webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        fs: false
+      }
+    }
+
+    return config
+  }
+```
+
+Su fichero `next.config.js` sería algo como esto:
+
+```javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+    reactStrictMode: true,
+    webpack: (config, { isServer }) => {
+        if (!isServer) {
+            config.resolve.fallback = {
+                fs: false
+            }
+        }
+
+        return config
+    }
+}
+
+module.exports = nextConfig
+```
+
+### Semaphore con React + Vite o Vuejs + Vite
+
+Verá un error como este:
+
+```bash
+readman.js:43 Uncaught ReferenceError: process is not defined
+    at stringToBase64 (threadman.js:43:5)
+    at threadman.js:50:22
+```
+
+Para resolver eso:
+
+1- Instale `@esbuild-plugins/node-globals-polyfill` y `@esbuild-plugins/node-modules-polyfill`
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```bash
+npm install @esbuild-plugins/node-globals-polyfill
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn add @esbuild-plugins/node-globals-polyfill
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```bash
+npm install @esbuild-plugins/node-modules-polyfill
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn add @esbuild-plugins/node-modules-polyfill
+```
+
+</TabItem>
+</Tabs>
+
+2- Modifique `vite.config.ts` para añadirlos:
+
+```typescript
+import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill"
+import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill"
+```
+
+y en `defineConfig` agregue:
+
+```typescript
+optimizeDeps: {
+    esbuildOptions: {
+        // Enable esbuild polyfill plugins
+        plugins: [
+            NodeGlobalsPolyfillPlugin({
+                process: true,
+                buffer: true
+            }),
+            NodeModulesPolyfillPlugin()
+        ]
+    }
+}
+```
+
+Su fichero `vite.config.ts` debería ser algo como:
+
+```typescript
+import { fileURLToPath, URL } from "node:url"
+
+import { defineConfig } from "vite"
+import vue from "@vitejs/plugin-vue"
+
+import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill"
+import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill"
+
+// https://vitejs.dev/config/
+export default defineConfig({
+    plugins: [vue()],
+    resolve: {
+        alias: {
+            "@": fileURLToPath(new URL("./src", import.meta.url))
+        }
+    },
+    optimizeDeps: {
+        esbuildOptions: {
+            // Enable esbuild polyfill plugins
+            plugins: [
+                NodeGlobalsPolyfillPlugin({
+                    process: true,
+                    buffer: true
+                }),
+                NodeModulesPolyfillPlugin()
+            ]
+        }
+    }
+})
+```
+
+:::info
+
+En caso de React con Vite, si ve un subrayado ondulado rojo en cada módulo Semaphore que dice `Could not find a declaration file for module ...`, cambie el `moduleResolution` de `bundler` a `Node` en el fichero `tsconfig.json` dentro de `compilerOptions`.
+
+Su fichero `tsconfig.json` sería algo así:
+
+```json
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "module": "ESNext",
+        "skipLibCheck": true,
+
+        /* Bundler mode */
+        "moduleResolution": "Node",
+        "allowImportingTsExtensions": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+
+        /* Linting */
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true
+    },
+    "include": ["src"],
+    "references": [{ "path": "./tsconfig.node.json" }]
+}
+```
+
+:::
+
+## Grupos de Semaphore
+
+### Creando un Grupo
+
+Cuando crea un grupo y se revierte la transacción, asegúrese de que la identificación del grupo que está utilizando no existe en la red que está utilizando.
+
+Para comprobarlo, puede utilizar la [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli) con el comando `get-groups` y la red que está utilizando y luego, asegúrese de que su id de grupo no sea parte de esa lista. También puede utilizar el [Semaphore explorer](https://explorer.semaphore.pse.dev/).
+
+## Semaphore Proofs
+
+### Transacción revertida al usar el mismo external nullifier
+
+Cuando genera una prueba usando el mismo external nullifier que usó para verificar una prueba antes, la transacción se revertirá porque ese external nullifier ya se usó. Si desea enviar y verificar varias pruebas de la misma identidad, debe usar un external nullifier diferente cada vez que genere una prueba.

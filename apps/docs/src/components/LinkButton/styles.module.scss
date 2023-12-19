@@ -1,0 +1,44 @@
+.linkButton {
+    display: flex;
+    font-weight: bold;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+html[data-theme="light"] {
+    .linkButton {
+        color: var(--custom-blue-3);
+
+        &:hover {
+            color: var(--custom-blue-3);
+        }
+
+        svg > path {
+            fill: var(--custom-blue-3);
+        }
+    }
+}
+
+html[data-theme="dark"] {
+    .linkButton {
+        color: var(--custom-blue-2);
+
+        &:hover {
+            color: var(--custom-blue-2);
+        }
+
+        svg > path {
+            fill: var(--custom-blue-2);
+        }
+    }
+}
+
+.buttonText {
+    padding-right: 10px;
+}
+
+.buttonIcon {
+    padding-top: 2px;
+}
