@@ -30,7 +30,7 @@ Finally, the nullifier hash is just the hash of the identity nullifier and the e
 
 In the case of a voting application, if you have a group and you want all members of this group to vote only once, you can use the id of the group as an external nullifier. When a user votes the first time, you can save the hash of their identity nullifier and the group id (i.e. the nullifier hash) and prevent double-voting by checking if that hash already exists.
 
-See the [Semaphore circuits](https://semaphore.pse.dev/docs/technical-reference/circuits) for more technical information, or the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate) for a real use-case.
+See the [Semaphore circuits](https://docs.semaphore.pse.dev/technical-reference/circuits) for more technical information, or the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate) for a real use-case.
 
 ## Why should I prevent proofs from being verified twice?
 
@@ -48,7 +48,7 @@ There are three ways you can start using Semaphore in your project: using the [S
 
 ### Semaphore CLI
 
-To create a new project you could use `npx` or install the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli) globally using `npm` and then create the new project using the `semaphore create` command. See the [Quick Setup](https://semaphore.pse.dev/docs/quick-setup) for more information.
+To create a new project you could use `npx` or install the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli) globally using `npm` and then create the new project using the `semaphore create` command. See the [Quick Setup](https://docs.semaphore.pse.dev/quick-setup) for more information.
 
 There are three supported templates right now: `contracts-hardhat`, `monorepo-ethers` and `monorepo-subgraph`.
 
@@ -73,7 +73,7 @@ You can also try the live Semaphore boilerplate app here: https://demo.semaphore
 
 ### Manual install
 
-Alternatively, you can also install all packages manually using npm or yarn following the [Semaphore documentation](https://semaphore.pse.dev/docs/introduction).
+Alternatively, you can also install all packages manually using npm or yarn following the [Semaphore documentation](https://docs.semaphore.pse.dev).
 
 ## How can I contribute to the protocol?
 

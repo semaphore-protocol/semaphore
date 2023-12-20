@@ -29,23 +29,6 @@ function Footer() {
                         <div>
                             <h3>
                                 {translate({
-                                    id: "footer.right.usedby.title"
-                                })}
-                            </h3>
-                            <Link href="https://github.com/Unirep" target="_blank">
-                                {translate({
-                                    id: "footer.right.usedby.link1"
-                                })}
-                            </Link>
-                            <Link href="https://interep.link/" target="_blank">
-                                {translate({
-                                    id: "footer.right.usedby.link2"
-                                })}
-                            </Link>
-                        </div>
-                        <div>
-                            <h3>
-                                {translate({
                                     id: "footer.right.learn.title"
                                 })}
                             </h3>
@@ -55,7 +38,7 @@ function Footer() {
                                     id: "footer.right.learn.link1"
                                 })}
                             </Link>
-                            <Link href="/docs/introduction" target="_blank">
+                            <Link href="/" target="_blank">
                                 {translate({
                                     id: "footer.right.learn.link2"
                                 })}
@@ -72,7 +55,7 @@ function Footer() {
                                     id: "footer.right.connect.link1"
                                 })}
                             </Link>
-                            <Link href="https://twitter.com/PrivacyScaling" target="_blank">
+                            <Link href="https://twitter.com/SemaphoreDevs" target="_blank">
                                 {translate({
                                     id: "footer.right.connect.link2"
                                 })}

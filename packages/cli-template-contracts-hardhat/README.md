@@ -48,7 +48,7 @@ yarn deploy --semaphore <semaphore-address> --group <group-id> --network goerli
 ```
 
 > **Note**  
-> Check the Semaphore contract addresses [here](https://semaphore.pse.dev/docs/deployed-contracts#semaphore).
+> Check the Semaphore contract addresses [here](https://docs.semaphore.pse.dev/deployed-contracts#semaphore).
 
 > **Warning**  
 > The group id is a number!

@@ -2,6 +2,7 @@
 id: introduction
 title: What Is Semaphore?
 sidebar_position: 1
+slug: /
 ---
 
 ## Overview
@@ -14,9 +15,9 @@ Use cases include private voting, whistleblowing, anonymous DAOs and mixers.
 
 With Semaphore, you can allow your users to do the following:
 
-1. [Create a Semaphore identity](/docs/guides/identities/).
-2. [Add their Semaphore identity to a group (i.e. _Merkle tree_)](/docs/guides/groups/).
-3. [Send a verifiable, anonymous signal (e.g a vote or endorsement)](/docs/guides/proofs/).
+1. [Create a Semaphore identity](/guides/identities/).
+2. [Add their Semaphore identity to a group (i.e. _Merkle tree_)](/guides/groups/).
+3. [Send a verifiable, anonymous signal (e.g a vote or endorsement)](/guides/proofs/).
 
 When a user broadcasts a signal (for example: a vote), Semaphore zero-knowledge
 proofs can ensure that the user has joined the group and hasn't already cast a signal with their nullifier.
@@ -39,7 +40,7 @@ and [JavaScript libraries](https://github.com/semaphore-protocol/semaphore#-pack
 
 ### Trusted Setup Ceremony
 
-The [secure parameters](/docs/glossary#trusted-setup-files) for generating valid proofs with Semaphore circuits were generated in a [Trusted Setup Ceremony](https://storage.googleapis.com/trustedsetup-a86f4.appspot.com/semaphore/semaphore_top_index.html) that was completed with over 300 participants on [29 March 2022](https://etherscan.io/tx/0xec6dbe68883c7593c2bea82f55af18b3aeb5cc146e026d0083a9b3faa9aa0b65#eventlog).
+The [secure parameters](/glossary#trusted-setup-files) for generating valid proofs with Semaphore circuits were generated in a [Trusted Setup Ceremony](https://storage.googleapis.com/trustedsetup-a86f4.appspot.com/semaphore/semaphore_top_index.html) that was completed with over 300 participants on [29 March 2022](https://etherscan.io/tx/0xec6dbe68883c7593c2bea82f55af18b3aeb5cc146e026d0083a9b3faa9aa0b65#eventlog).
 
 ### Audits
 
@@ -50,5 +51,5 @@ The [secure parameters](/docs/glossary#trusted-setup-files) for generating valid
 | v3.0.0  | [Veridise](https://veridise.com/) | [Semaphore_3.0.0_Audit.pdf](https://github.com/semaphore-protocol/semaphore/files/10513776/Semaphore_3.0.0_Audit.pdf) | `circuits`, `contracts`  |
 
 :::info
-If you are using one of the previous versions of Semaphore, see the [Semaphore V1](/docs/V1/introduction) or the [Semaphore V2](/docs/V2/introduction) documentation.
+If you are using one of the previous versions of Semaphore, see the [Semaphore V1](/V1) or the [Semaphore V2](/V2) documentation.
 :::
