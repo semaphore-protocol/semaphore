@@ -2,6 +2,7 @@
 id: introduction
 title: What Is Semaphore?
 sidebar_position: 1
+slug: /
 ---
 
 ## Overview

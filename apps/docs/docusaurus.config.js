@@ -8,7 +8,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula")
 module.exports = {
     title: "Semaphore",
     tagline: "Documentation and Guides",
-    url: "https://semaphore.pse.dev/",
+    url: "https://docs.semaphore.pse.dev/",
     baseUrl: "/",
     favicon: "/img/favicon.ico",
     onBrokenLinks: "throw",
@@ -30,7 +30,7 @@ module.exports = {
             /** @type {import('@docusaurus/preset-classic').Options} */
             ({
                 docs: {
-                    routeBasePath: "docs/",
+                    routeBasePath: "/",
                     sidebarPath: require.resolve("./sidebars.js"),
                     editUrl: "https://github.com/semaphore-protocol/website/edit/main/",
                     includeCurrentVersion: false
@@ -60,15 +60,9 @@ module.exports = {
                 items: [
                     {
                         label: "Whitepaper",
-                        to: "https://semaphore.pse.dev/whitepaper-v1.pdf",
+                        to: "https://docs.semaphore.pse.dev/whitepaper-v1.pdf",
                         position: "right",
                         className: "V1"
-                    },
-                    {
-                        label: "Documentation",
-                        href: "/docs/introduction",
-                        position: "right",
-                        className: "homepage"
                     },
                     {
                         label: "Github",

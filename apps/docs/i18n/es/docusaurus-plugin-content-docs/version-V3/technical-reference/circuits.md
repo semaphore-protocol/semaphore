@@ -6,9 +6,9 @@ sidebar_position: 2
 
 El [circuito Semaphore](https://github.com/semaphore-protocol/semaphore/tree/main/packages/circuits) es el corazón del protocolo y está compuesto por tres partes:
 
--   [**Prueba de membresía**](/docs/technical-reference/circuits#proof-of-membership)
--   [**Nullifier hash**](/docs/technical-reference/circuits#nullifier-hash) (hash anulador)
--   [**Señal**](/docs/technical-reference/circuits#signal)
+-   [**Prueba de membresía**](/technical-reference/circuits#proof-of-membership)
+-   [**Nullifier hash**](/technical-reference/circuits#nullifier-hash) (hash anulador)
+-   [**Señal**](/technical-reference/circuits#signal)
 
 ![Semaphore circuit](https://github.com/semaphore-protocol/semaphore/raw/main/packages/circuits/scheme.png)
 

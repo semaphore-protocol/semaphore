@@ -20,14 +20,14 @@ title: Groups
 
 Use Semaphore in your application or smart contract to create off-chain and on-chain groups.
 
-A [Semaphore group](/docs/glossary/#semaphore-group) contains [identity commitments](/docs/glossary/#identity-commitment) of group members.
+A [Semaphore group](/glossary/#semaphore-group) contains [identity commitments](/glossary/#identity-commitment) of group members.
 Example uses of groups include the following:
 
 -   Poll question that attendees join to rate an event.
 -   Ballot that members join to vote on a proposal.
 -   Whistleblowers who are verified employees of an organization.
 
-A Semaphore group is an [incremental Merkle tree](/docs/glossary/#incremental-merkle-tree), and group members (i.e., [identity commitments](/docs/glossary/#identity-commitments)) are tree leaves.
+A Semaphore group is an [incremental Merkle tree](/glossary/#incremental-merkle-tree), and group members (i.e., [identity commitments](/glossary/#identity-commitments)) are tree leaves.
 Semaphore groups set the following two parameters:
 
 -   **Tree depth**: the maximum number of members a group can contain (`max size = 2 ^ tree depth`).

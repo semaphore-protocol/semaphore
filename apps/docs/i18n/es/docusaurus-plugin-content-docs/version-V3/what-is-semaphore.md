@@ -2,6 +2,7 @@
 id: introduction
 title: ¿Qué es Semaphore?
 sidebar_position: 1
+slug: /
 ---
 
 ## General
@@ -14,9 +15,9 @@ Algunos de los potenciales casos de uso son: votaciones, denuncias, DAOs anónim
 
 Con Semaphore puede permitir que sus usuarios realicen las siguientes acciones:
 
-1. [Crear una identidad Semaphore](/docs/guides/identities/).
-2. [Agregar su identidad Semaphore a un grupo (es decir: _Árbol de Merkle_)](/docs/guides/groups/).
-3. [Enviar una señal anónima, verificable (ej. un voto o una aprobación)](/docs/guides/proofs/).
+1. [Crear una identidad Semaphore](/guides/identities/).
+2. [Agregar su identidad Semaphore a un grupo (es decir: _Árbol de Merkle_)](/guides/groups/).
+3. [Enviar una señal anónima, verificable (ej. un voto o una aprobación)](/guides/proofs/).
 
 Cuando un usuario emite una señal (por ejemplo: un voto), las pruebas de conocimiento cero (ZKP) pueden asegurar que el usuario se ha incorporado al grupo y aún no ha emitido una señal con su nullifier (anulador).
 
@@ -38,7 +39,7 @@ y [librerías en JavaScript](https://github.com/semaphore-protocol/semaphore#-pa
 
 ### Ceremonia de configuración de confianza (Trusted Setup Ceremony)
 
-Los [parámetros seguros](/docs/glossary#trusted-setup-files) para generar pruebas válidas con los circuitos Semaphore fueron generados en una [ceremonia de configuración de confianza](https://storage.googleapis.com/trustedsetup-a86f4.appspot.com/semaphore/semaphore_top_index.html) que se completó con más de 300 participantes el [29 de Marzo de 2022](https://etherscan.io/tx/0xec6dbe68883c7593c2bea82f55af18b3aeb5cc146e026d0083a9b3faa9aa0b65#eventlog).
+Los [parámetros seguros](/glossary#trusted-setup-files) para generar pruebas válidas con los circuitos Semaphore fueron generados en una [ceremonia de configuración de confianza](https://storage.googleapis.com/trustedsetup-a86f4.appspot.com/semaphore/semaphore_top_index.html) que se completó con más de 300 participantes el [29 de Marzo de 2022](https://etherscan.io/tx/0xec6dbe68883c7593c2bea82f55af18b3aeb5cc146e026d0083a9b3faa9aa0b65#eventlog).
 
 ### Auditorías
 
@@ -49,5 +50,5 @@ Los [parámetros seguros](/docs/glossary#trusted-setup-files) para generar prueb
 | v3.0.0  | [Veridise](https://veridise.com/) | [Semaphore_3.0.0_Audit.pdf](https://github.com/semaphore-protocol/semaphore/files/9845008/Semaphore_2.5.0_Audit.pdf) | `circuits`, `contracts`  |
 
 :::info
-Si está utilizando una de las versiones anteriores de Semaphore, vea la documentación de [Semaphore V1](/docs/V1/introduction) o de [Semaphore V2](/docs/V2/introduction).
+Si está utilizando una de las versiones anteriores de Semaphore, vea la documentación de [Semaphore V1](/V1) o de [Semaphore V2](/V2).
 :::

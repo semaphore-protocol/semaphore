@@ -40,7 +40,7 @@ For more information, see [Merkle tree in Wikipedia](https://en.wikipedia.org/wi
 
 A value used to prevent double entry or double signalling.
 
-See [Circuit nullifier hash](/docs/technical-reference/circuits/#nullifier-hash).
+See [Circuit nullifier hash](/technical-reference/circuits/#nullifier-hash).
 
 ## Relay
 
@@ -48,7 +48,7 @@ A third-party who receives a fee for including relayed transactions in the block
 To preserve the anonymity of the user broadcasting a signal with Semaphore, an application may use a relayer to post the signal transaction to Ethereum on behalf of the user.
 
 Applications may provide rewards for relayers and implement front-running prevention mechanisms, such as requiring the signals to include the relayer’s address, binding the
-signal to that specific address (https://semaphore.pse.dev/whitepaper-v1.pdf, p.6).
+signal to that specific address (https://docs.semaphore.pse.dev/whitepaper-v1.pdf, p.6).
 
 ## Trusted setup files
 

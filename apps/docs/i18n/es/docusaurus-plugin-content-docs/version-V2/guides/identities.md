@@ -5,7 +5,7 @@ title: Identities
 
 # Semaphore identities
 
-In order to join a [Semaphore group](/docs/glossary#semaphore-group), a user must first create a [Semaphore identity](/docs/glossary#semaphore-identity).
+In order to join a [Semaphore group](/glossary#semaphore-group), a user must first create a [Semaphore identity](/glossary#semaphore-identity).
 A Semaphore identity contains two values generated with the identity:
 
 -   Identity trapdoor

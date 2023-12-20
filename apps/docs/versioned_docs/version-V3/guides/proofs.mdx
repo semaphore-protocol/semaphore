@@ -8,7 +8,7 @@ import TabItem from "@theme/TabItem"
 
 # Semaphore proofs
 
-Once a user joins their [Semaphore identity](/docs/glossary#semaphore-identity) to a [Semaphore group](/docs/glossary#semaphore-group), the user can signal anonymously with a zero-knowledge proof that proves the following:
+Once a user joins their [Semaphore identity](/glossary#semaphore-identity) to a [Semaphore group](/glossary#semaphore-group), the user can signal anonymously with a zero-knowledge proof that proves the following:
 
 -   the user is a member of the group,
 -   the same user created the signal and the proof.
@@ -28,7 +28,7 @@ To generate a proof, pass the following parameters to the `generateProof` functi
 -   `group`: the group to which the user belongs;
 -   `externalNullifier`: the value that prevents double-signaling;
 -   `signal`: the signal the user wants to send anonymously;
--   `snarkArtifacts`: the `zkey` and `wasm` [trusted setup files](/docs/glossary/#trusted-setup-files).
+-   `snarkArtifacts`: the `zkey` and `wasm` [trusted setup files](/glossary/#trusted-setup-files).
 
 #### Install library:
 
@@ -55,9 +55,9 @@ yarn add @semaphore-protocol/proof
 </TabItem>
 </Tabs>
 
-In the voting system use case, once all the voters have joined their [identities](/docs/guides/identities#create-an-identity) to the ballot [group](/docs/guides/groups),
+In the voting system use case, once all the voters have joined their [identities](/guides/identities#create-an-identity) to the ballot [group](/guides/groups),
 a voter can generate a proof to vote for a proposal.
-In the call to `generateProof`, the voting system passes the unique ballot ID (the [Merkle tree](/docs/glossary/#merkle-tree/) root of the group) as the
+In the call to `generateProof`, the voting system passes the unique ballot ID (the [Merkle tree](/glossary/#merkle-tree/) root of the group) as the
 `externalNullifier` to prevent the voter signaling more than once for the ballot.
 The following code sample shows how to use `generateProof` to generate the voting proof:
 
@@ -101,10 +101,10 @@ await verifyProof(fullProof, 20) // true or false.
 
 ## Verify a proof on-chain
 
-Use the [`Semaphore.sol`](/docs/technical-reference/contracts#semaphoresol) contract to verify proofs on-chain.
+Use the [`Semaphore.sol`](/technical-reference/contracts#semaphoresol) contract to verify proofs on-chain.
 
 :::info
-See our [deployed contracts](/docs/deployed-contracts) to find the addresses for your network.
+See our [deployed contracts](/deployed-contracts) to find the addresses for your network.
 ::::
 
 To verify Semaphore proofs in your contract, import `ISemaphore.sol`, pass it the `Semaphore.sol` address and call the `verifyProof` method with following parameters:
