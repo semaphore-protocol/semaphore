@@ -373,15 +373,6 @@
     "footer.left.description": {
         "message": "Semaphore es parte de Privacy & Scaling Explorations (PSE), un equipo multidisciplinario apoyado por la Fundación Ethereum. PSE explora nuevos casos de uso para pruebas de conocimiento cero (ZKPs) y otras bases criptográficas."
     },
-    "footer.right.usedby.title": {
-        "message": "Utilizado en"
-    },
-    "footer.right.usedby.link1": {
-        "message": "Unirep"
-    },
-    "footer.right.usedby.link2": {
-        "message": "Interep"
-    },
     "footer.right.learn.title": {
         "message": "Aprender"
     },

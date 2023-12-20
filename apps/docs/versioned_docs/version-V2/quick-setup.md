@@ -78,7 +78,7 @@ To install these dependencies for your project, do the following:
     yarn add @semaphore-protocol/identity@2.6.1 @semaphore-protocol/group@2.6.1 @semaphore-protocol/proof@2.6.1 @semaphore-protocol/hardhat@0.1.0 --dev
     ```
 
-For more detail about _Semaphore contracts_, see [Contracts](https://semaphore.pse.dev/docs/technical-reference/contracts).
+For more detail about _Semaphore contracts_, see [Contracts](https://docs.semaphore.pse.dev/technical-reference/contracts).
 To view the source of our packages, see the [semaphore](https://github.com/semaphore-protocol/semaphore/tree/v2.6.1#-packages) repository.
 
 ## Create the Semaphore contract
@@ -213,7 +213,7 @@ and [Chai assertions](https://www.chaijs.com/).
     wget http://www.trusted-setup-pse.org/semaphore/20/semaphore.wasm
     ```
 
-    Learn more about [trusted setup files](/docs/glossary/#trusted-setup-files).
+    Learn more about [trusted setup files](/glossary/#trusted-setup-files).
 
 3. Rename the `Lock.js` test file to `Greeter.js` and replace the content with the following:
 

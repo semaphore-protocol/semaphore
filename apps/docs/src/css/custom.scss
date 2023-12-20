@@ -6,26 +6,28 @@
 
 /* You can override the default Infima variables here. */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DMSans:wght@400;500;600&display=swap");
 
 :root {
-    --ifm-color-primary: #3578e5;
-    --ifm-color-primary-dark: #1d68e1;
-    --ifm-color-primary-darker: #1b62d4;
-    --ifm-color-primary-darkest: #1751af;
-    --ifm-color-primary-light: #4e89e8;
-    --ifm-color-primary-lighter: #5a91ea;
-    --ifm-color-primary-lightest: #80aaef;
+    --ifm-color-primary: "linear(to-r, #4771ea, #2735a6)";
+    --ifm-color-primary-dark: #3555df;
+    --ifm-color-primary-darker: #2735a6;
+    --ifm-color-primary-darkest: #1b2050;
+    --ifm-color-primary-light: #9abaf6;
+    --ifm-color-primary-lighter: #c3d4fa;
+    --ifm-color-primary-lightest: #f0f4fe;
 
     --custom-dark-4: #0c0c15;
-    --custom-dark-3: #131320;
-    --custom-dark-2: #1f2034;
-    --custom-dark-1: #3b3b48;
-    --custom-gray-1: #8f9097;
-    --custom-gray-0: #c4c6ca;
-    --custom-blue-3: #5867bc;
+    --custom-dark-3: #00020d;
+    --custom-dark-2: #26262b;
+    --custom-dark-1: #1b2050;
+    --custom-gray-2: #26262b;
+    --custom-gray-1: #eeeef0;
+    --custom-gray-0: #f7f7f8;
+    --custom-blue-3: var(--ifm-color-primary);
     --custom-blue-2: #758bff;
-    --custom-blue-1: #dae0ff;
+    --custom-blue-1: #f0f4fe;
     --custom-blue-0: #f8f9ff;
 
     --collapse-button-bg-color-dark: #2e333a;
@@ -58,21 +60,20 @@ html[data-theme="dark"] {
     --ifm-color-primary: var(--custom-gray-1);
     --ifm-heading-color: var(--custom-gray-0);
     --ifm-navbar-background-color: var(--custom-dark-3);
-    --ifm-global-shadow-md: 0 5px 4px rgba(255, 255, 255, 0.448);
-    --ifm-toc-border-color: var(--custom-dark-2);
+    --ifm-toc-border-color: var(--custom-gray-2);
 }
 
 html[data-theme="light"] {
-    --ifm-background-color: #fcfcfc;
+    --ifm-background-color: var(--custom-gray-0);
     --ifm-color-primary: var(--custom-dark-1);
     --ifm-heading-color: var(--custom-dark-2);
-    --ifm-navbar-background-color: #fcfcfc;
-    --ifm-toc-border-color: var(--custom-blue-1);
+    --ifm-navbar-background-color: var(--custom-gray-0);
+    --ifm-toc-border-color: var(--custom-gray-1);
 }
 
 html {
-    font-family: "Inter", sans-serif;
-    font-size: 16px;
+    font-family: "DMSans", sans-serif;
+    font-size: 18px;
     font-variant: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -91,7 +92,8 @@ svg.custom-icon circle {
 }
 
 p {
-    line-height: 1.5rem;
+    font-family: "DMSans", sans-serif;
+    line-height: 32px;
     font-weight: 400;
 }
 
@@ -106,24 +108,28 @@ h2,
 h3,
 h4,
 h5 {
-    font-family: "Inter", sans-serif;
-    font-weight: 400;
+    font-family: "Outfit", sans-serif;
+    font-weight: 500;
 }
 
 h1 {
-    font-size: 32px;
+    font-size: 52px;
 }
 
 h2 {
-    font-size: 24px;
+    font-size: 32px;
 }
 
 h3 {
-    font-size: 20px;
+    font-size: 24px;
 }
 
 h4 {
-    font-size: 16px;
+    font-size: 20px;
+}
+
+h5 {
+    font-size: 10px;
 }
 
 .tocCollapsibleButton_node_modules-\@docusaurus-theme-classic-lib-next-theme-TOCCollapsible-styles-module {
@@ -236,13 +242,13 @@ html[data-theme="light"] {
 }
 
 .navbar__title {
-    font-family: "Inter", sans-serif;
+    font-family: "Outfit", sans-serif;
     color: var(--ifm-color-primary);
     font-weight: 500;
 }
 
 .navbar__link {
-    font-family: "Inter", sans-serif;
+    font-family: "Outfit", sans-serif;
     color: var(--ifm-color-primary);
     font-weight: 400;
 }
