@@ -6,7 +6,8 @@
 
 /* You can override the default Infima variables here. */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DMSans:wght@400;500;600&display=swap");
 
 :root {
     --ifm-color-primary: #3578e5;
@@ -71,8 +72,8 @@ html[data-theme="light"] {
 }
 
 html {
-    font-family: "Inter", sans-serif;
-    font-size: 16px;
+    font-family: "DMSans", sans-serif;
+    font-size: 18px;
     font-variant: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -91,7 +92,8 @@ svg.custom-icon circle {
 }
 
 p {
-    line-height: 1.5rem;
+    font-family: "DMSans", sans-serif;
+    line-height: 32px;
     font-weight: 400;
 }
 
@@ -106,24 +108,28 @@ h2,
 h3,
 h4,
 h5 {
-    font-family: "Inter", sans-serif;
-    font-weight: 400;
+    font-family: "Outfit", sans-serif;
+    font-weight: 500;
 }
 
 h1 {
-    font-size: 32px;
+    font-size: 52px;
 }
 
 h2 {
-    font-size: 24px;
+    font-size: 32px;
 }
 
 h3 {
-    font-size: 20px;
+    font-size: 24px;
 }
 
 h4 {
-    font-size: 16px;
+    font-size: 20px;
+}
+
+h5 {
+    font-size: 10px;
 }
 
 .tocCollapsibleButton_node_modules-\@docusaurus-theme-classic-lib-next-theme-TOCCollapsible-styles-module {
@@ -236,13 +242,13 @@ html[data-theme="light"] {
 }
 
 .navbar__title {
-    font-family: "Inter", sans-serif;
+    font-family: "Outfit", sans-serif;
     color: var(--ifm-color-primary);
     font-weight: 500;
 }
 
 .navbar__link {
-    font-family: "Inter", sans-serif;
+    font-family: "Outfit", sans-serif;
     color: var(--ifm-color-primary);
     font-weight: 400;
 }
