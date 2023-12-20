@@ -34,4 +34,4 @@
     </h4>
 </div>
 
-To learn more about circuits visit [semaphore.pse.dev](https://semaphore.pse.dev/docs/technical-reference/circuits).
+To learn more about circuits visit [docs.semaphore.pse.dev](https://docs.semaphore.pse.dev/technical-reference/circuits).

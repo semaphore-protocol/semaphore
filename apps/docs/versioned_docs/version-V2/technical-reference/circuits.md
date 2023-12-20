@@ -6,9 +6,9 @@ sidebar_position: 2
 
 The [Semaphore circuit](https://github.com/semaphore-protocol/semaphore/tree/v2.6.1/packages/circuits) is the heart of the protocol and consists of three parts:
 
--   [**Proof of membership**](/docs/technical-reference/circuits#proof-of-membership)
--   [**Nullifier hash**](/docs/technical-reference/circuits#nullifier-hash)
--   [**Signal**](/docs/technical-reference/circuits#signal)
+-   [**Proof of membership**](/technical-reference/circuits#proof-of-membership)
+-   [**Nullifier hash**](/technical-reference/circuits#nullifier-hash)
+-   [**Signal**](/technical-reference/circuits#signal)
 
 ![Semaphore circuit](https://github.com/semaphore-protocol/semaphore/raw/v2.6.1/packages/circuits/scheme.png)
 

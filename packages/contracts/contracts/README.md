@@ -40,7 +40,7 @@
     </h4>
 </div>
 
-To learn more about contracts visit [semaphore.pse.dev](https://semaphore.pse.dev/docs/technical-reference/contracts).
+To learn more about contracts visit [semaphore.pse.dev](https://docs.semaphore.pse.dev/technical-reference/contracts).
 
 ---
 

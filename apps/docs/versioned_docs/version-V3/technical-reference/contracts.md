@@ -6,10 +6,10 @@ sidebar_position: 3
 
 Semaphore includes two types of contracts:
 
--   [**Base contracts**](/docs/technical-reference/contracts#base-contracts)
--   [**Extension contracts**](/docs/technical-reference/contracts#extension-contracts)
+-   [**Base contracts**](/technical-reference/contracts#base-contracts)
+-   [**Extension contracts**](/technical-reference/contracts#extension-contracts)
 
-And [**Semaphore.sol**](/docs/technical-reference/contracts#semaphoresol), the main contract deployed on the networks supported by Semaphore.
+And [**Semaphore.sol**](/technical-reference/contracts#semaphoresol), the main contract deployed on the networks supported by Semaphore.
 
 :::info
 To use Semaphore contracts and interfaces in your project,
@@ -24,7 +24,7 @@ Semaphore provides the following base contracts:
 -   [`SemaphoreGroups.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/base/SemaphoreGroups.sol): contains the functions to create groups and add/remove/update members.
 
 These contracts are closely related to the protocol.
-You can use them in your contract or you can use [**Semaphore.sol**](/docs/technical-reference/contracts#semaphoresol), which integrates them for you.
+You can use them in your contract or you can use [**Semaphore.sol**](/technical-reference/contracts#semaphoresol), which integrates them for you.
 
 :::info
 While some DApps may use on-chain groups, others may prefer to use off-chain groups, saving only their tree roots in the contract.
@@ -43,9 +43,9 @@ More extensions will be added in the future.
 [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol) is based on the base contracts. It integrates them and additionally provides:
 
 -   a system to allow only admins (i.e. Ethereum accounts or smart contracts) to manage groups;
--   a mechanism to save the [nullifier hashes](/docs/technical-reference/circuits#nullifier-hash) of each group and prevent double-signaling;
+-   a mechanism to save the [nullifier hashes](/technical-reference/circuits#nullifier-hash) of each group and prevent double-signaling;
 -   a mechanism to allow Semaphore proofs generated with old Merkle roots to be verified for a certain period of time defined by the group admin.
 
 :::info
-See our [deployed contracts](/docs/deployed-contracts) to find the addresses for your network.
+See our [deployed contracts](/deployed-contracts) to find the addresses for your network.
 ::::

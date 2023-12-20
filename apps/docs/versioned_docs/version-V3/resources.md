@@ -6,7 +6,7 @@ sidebar_position: 9
 
 ## Articles
 
-[Community Proposal: Semaphore: Zero-Knowledge Signaling on Ethereum (Whitepaper v1)](https://semaphore.pse.dev/whitepaper-v1.pdf) - Kobi Gurkan, Koh Wei Jie and Barry WhiteHat
+[Community Proposal: Semaphore: Zero-Knowledge Signaling on Ethereum (Whitepaper v1)](https://docs.semaphore.pse.dev/whitepaper-v1.pdf) - Kobi Gurkan, Koh Wei Jie and Barry WhiteHat
 
 [To Mixers and Beyond: presenting Semaphore, a privacy gadget built on Ethereum](https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b) - Koh Wei Jie
 

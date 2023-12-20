@@ -55,7 +55,7 @@ function Footer() {
                                     id: "footer.right.learn.link1"
                                 })}
                             </Link>
-                            <Link href="/docs/introduction" target="_blank">
+                            <Link href="/" target="_blank">
                                 {translate({
                                     id: "footer.right.learn.link2"
                                 })}

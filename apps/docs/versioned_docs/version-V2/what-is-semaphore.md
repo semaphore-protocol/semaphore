@@ -2,6 +2,7 @@
 id: introduction
 title: What Is Semaphore?
 sidebar_position: 1
+slug: /
 ---
 
 ## Overview
@@ -14,9 +15,9 @@ Use cases include private voting, whistleblowing, anonymous DAOs and mixers.
 
 With Semaphore, you can allow your users to do the following:
 
-1. [Create a Semaphore identity](/docs/guides/identities/).
-2. [Add their Semaphore identity to a group (i.e. _Merkle tree_)](/docs/guides/groups/).
-3. [Send a verifiable, anonymous signal (e.g a vote or endorsement)](/docs/guides/proofs/).
+1. [Create a Semaphore identity](/guides/identities/).
+2. [Add their Semaphore identity to a group (i.e. _Merkle tree_)](/guides/groups/).
+3. [Send a verifiable, anonymous signal (e.g a vote or endorsement)](/guides/proofs/).
 
 When a user broadcasts a signal (for example: a vote), Semaphore zero-knowledge
 proofs can ensure that the user has joined the group and hasn't already cast a signal with their nullifier.
@@ -45,5 +46,5 @@ and [JavaScript libraries](https://github.com/semaphore-protocol/semaphore/tree/
 | v2.5.0  | [Semaphore_2.5.0_Audit.pdf](https://github.com/semaphore-protocol/semaphore/files/9845008/Semaphore_2.5.0_Audit.pdf) | `contracts`, `libraries` |
 
 :::info
-If you are using the previous version of Semaphore, see the [Semaphore V1](/docs/V1/introduction) documentation.
+If you are using the previous version of Semaphore, see the [Semaphore V1](/V1) documentation.
 :::

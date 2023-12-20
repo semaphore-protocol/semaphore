@@ -9,13 +9,12 @@ export default function NavbarItem(props: any) {
 
     const pathSegments = pathname.split("/")
 
-    let docs: string
     let version: string
 
     if (i18n.locales.includes(pathSegments[1])) {
-        ;[, , docs, version] = pathSegments
+        ;[, , version] = pathSegments
     } else {
-        ;[, docs, version] = pathSegments
+        ;[, version] = pathSegments
     }
 
     const { className = "" } = props
@@ -25,8 +24,7 @@ export default function NavbarItem(props: any) {
             !(
                 (className.includes("V1") && version !== "V1") ||
                 (className.includes("V2") && version !== "V2") ||
-                (className.includes("V3") && version !== "V3") ||
-                (className.includes("homepage") && docs === "docs")
+                (className.includes("V3") && version !== "V3")
             )) && <OriginalNavBarItem {...props} />
     )
 }
