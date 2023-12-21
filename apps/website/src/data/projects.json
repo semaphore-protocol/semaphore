@@ -1,5 +1,39 @@
 [
     {
+        "name": "Zupass",
+        "tagline": "Open source, experimental personal cryptography manager.",
+        "categories": ["Identity", "Authenticity", "Ticketing"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://zupass.org",
+            "github": "https://github.com/proofcarryingdata/zupass"
+        }
+    },
+    {
+        "name": "Unirep",
+        "tagline": "Private and nonrepudiable reputation system based on ZKP.",
+        "categories": ["Reputation", "Identity", "Social"],
+        "pse": true,
+        "icon": "",
+        "links": {
+            "website": "https://developer.unirep.io",
+            "github": "https://github.com/Unirep",
+            "discord": "https://discord.gg/VzMMDJmYc5"
+        }
+    },
+    {
+        "name": "Bandada",
+        "categories": ["Infra", "Data"],
+        "tagline": "An open-source system for managing privacy-preserving groups of anonymous individuals.",
+        "pse": true,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/privacy-scaling-explorations/bandada",
+            "website": "https://bandada.pse.dev"
+        }
+    },
+    {
         "name": "ZK Proof of Humanity",
         "tagline": "A project that allows humans, registered in Proof of Humanity, to prove their humanity without doxing.",
         "categories": ["Identity", "Authenticity"],
@@ -89,18 +123,6 @@
         }
     },
     {
-        "name": "Unirep",
-        "tagline": "Private and nonrepudiable reputation system based on ZKP.",
-        "categories": ["Reputation", "Identity", "Social"],
-        "pse": true,
-        "icon": "",
-        "links": {
-            "website": "https://developer.unirep.io",
-            "github": "https://github.com/Unirep",
-            "discord": "https://discord.gg/VzMMDJmYc5"
-        }
-    },
-    {
         "name": "Plurality",
         "tagline": "An Identity Lego for DApps to verify users independently, preserving privacy without third-party KYC.",
         "categories": ["Identity", "Trust"],
@@ -163,17 +185,6 @@
         "links": {
             "github": "https://github.com/CliqueOfficial/linea-attestations-registry/tree/main/lib",
             "website": "https://clique.social/intro/attestor"
-        }
-    },
-    {
-        "name": "Bandada",
-        "categories": ["Infra", "Data"],
-        "tagline": "An open-source system for managing privacy-preserving groups of anonymous individuals.",
-        "pse": true,
-        "icon": "",
-        "links": {
-            "github": "https://github.com/privacy-scaling-explorations/bandada",
-            "website": "https://bandada.pse.dev"
         }
     },
     {
