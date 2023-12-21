@@ -51,10 +51,10 @@ export default function ToolsCard({ icon, title, subtitle, details, url }: Tools
                             py="10px"
                             mt="24px"
                             w="full"
-                            bgGradient="semaphore"
+                            bgGradient="linear(to-r, primary.500, primary.800)"
                             color="white"
                             fontSize="18px"
-                            _hover={{ bgGradient: "semaphore", opacity: "85%" }}
+                            _hover={{ bgGradient: "linear(to-r, primary.500, primary.800)", opacity: "85%" }}
                         >
                             Select tool
                         </Link>
