@@ -44,7 +44,7 @@ export default function Footer() {
                     </HStack>
                 </Link>
                 <Link
-                    href="https://www.notion.so/pse-team/Semaphore-Identity-Kit-ebbfe6ac0a824fb0a65e8783caf9b330"
+                    href="https://pse-team.notion.site/Semaphore-Identity-Kit-ebbfe6ac0a824fb0a65e8783caf9b330"
                     isExternal
                 >
                     <HStack spacing="3">
@@ -71,17 +71,14 @@ export default function Footer() {
                         <HStack>
                             <IconX boxSize={{ base: "16px", md: "24px" }} />
                             <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
-                                Twitter
+                                X (Twitter)
                             </Heading>
                         </HStack>
                     </Link>
                 </HStack>
 
                 <VStack spacing="8">
-                    <Link
-                        href="https://github.com/semaphore-protocol/semaphore/discussions/new?category=website"
-                        isExternal
-                    >
+                    <Link href="https://github.com/orgs/semaphore-protocol/discussions/new?category=website" isExternal>
                         <HStack>
                             <IconThumbsUp boxSize={{ base: "16px", md: "24px" }} />
                             <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">

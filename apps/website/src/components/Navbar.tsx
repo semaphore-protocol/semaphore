@@ -83,7 +83,7 @@ export default function Navbar() {
                                             <HStack>
                                                 <IconX boxSize={{ base: "16px", md: "24px" }} />
                                                 <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
-                                                    Twitter
+                                                    X (Twitter)
                                                 </Heading>
                                             </HStack>
                                         </Link>
@@ -91,7 +91,7 @@ export default function Navbar() {
 
                                     <VStack spacing="8">
                                         <Link
-                                            href="https://github.com/semaphore-protocol/semaphore/discussions/new?category=website"
+                                            href="https://github.com/orgs/semaphore-protocol/discussions/new?category=website"
                                             isExternal
                                         >
                                             <HStack>

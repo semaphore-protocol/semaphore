@@ -3,8 +3,8 @@
 import { Box, HStack, Heading, IconButton, Link, StackProps, VStack, useBreakpointValue } from "@chakra-ui/react"
 import NextLink from "next/link"
 import { useCallback, useState } from "react"
-import articles from "../data/articles.json"
-import projects from "../data/projects.json"
+import allArticles from "../data/articles.json"
+import allProjects from "../data/projects.json"
 import videos from "../data/videos.json"
 import IconArrowLeft from "../icons/IconArrowLeft"
 import IconArrowRight from "../icons/IconArrowRight"
@@ -46,7 +46,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
     }, [index, size])
 
     return (
-        <VStack align="left" w="full" {...props} spacing="12">
+        <VStack align="left" w="full" spacing="16" {...props}>
             <HStack justify="space-between">
                 <Heading fontSize={{ base: "30px", md: "44px" }} textAlign={type === "projects" ? "center" : "left"}>
                     {title}
@@ -80,7 +80,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                     align="stretch"
                 >
                     {type === "projects" &&
-                        projects.map((project) => (
+                        allProjects.map((project) => (
                             <Box
                                 visibility={!size ? "hidden" : "visible"}
                                 px="3"
@@ -97,7 +97,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                         ))}
 
                     {type === "articles" &&
-                        sortByDate(articles).map((article) => (
+                        sortByDate(allArticles).map((article) => (
                             <Box
                                 visibility={!size ? "hidden" : "visible"}
                                 px="3"
