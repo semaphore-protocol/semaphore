@@ -56,7 +56,7 @@ A community coordinator or dApp administrator uses the deployed smart contract t
 
 In the following sample code, the voting contract declares a `createPoll` function that uses the Semaphore base `_createGroup` function:
 
-```ts title="https://github.com/semaphore-protocol/semaphore/contracts/extensions/SemaphoreVoting.sol"
+```ts title="https://github.com/semaphore-protocol/semaphore/blob/v3.15.1/packages/contracts/contracts/extensions/SemaphoreVoting.sol"
 
 function createPoll(
     uint256 pollId,
