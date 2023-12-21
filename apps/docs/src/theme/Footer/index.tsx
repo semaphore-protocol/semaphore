@@ -29,24 +29,6 @@ function Footer() {
                         <div>
                             <h3>
                                 {translate({
-                                    id: "footer.right.learn.title"
-                                })}
-                            </h3>
-
-                            <Link href="https://semaphore.pse.dev/github" target="_blank">
-                                {translate({
-                                    id: "footer.right.learn.link1"
-                                })}
-                            </Link>
-                            <Link href="/" target="_blank">
-                                {translate({
-                                    id: "footer.right.learn.link2"
-                                })}
-                            </Link>
-                        </div>
-                        <div>
-                            <h3>
-                                {translate({
                                     id: "footer.right.connect.title"
                                 })}
                             </h3>
@@ -58,6 +40,11 @@ function Footer() {
                             <Link href="https://twitter.com/SemaphoreDevs" target="_blank">
                                 {translate({
                                     id: "footer.right.connect.link2"
+                                })}
+                            </Link>
+                            <Link href="https://semaphore.pse.dev/github" target="_blank">
+                                {translate({
+                                    id: "footer.right.learn.link1"
                                 })}
                             </Link>
                         </div>
