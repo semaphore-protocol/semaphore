@@ -333,7 +333,7 @@ await verifyProof(verificationKey, fullProof)`,
                     pos="absolute"
                 />
 
-                <VStack display={{ base: "none", xl: "block" }} p="100px 40px" w="full" spacing="20">
+                <VStack display={{ base: "none", xl: "flex" }} p="100px 40px" w="full" spacing="20">
                     <Carousel
                         title="Videos"
                         sizes={{
@@ -352,42 +352,46 @@ await verifyProof(verificationKey, fullProof)`,
                         type="articles"
                     />
                 </VStack>
-                <Text
-                    display={{ base: "flex", xl: "none" }}
-                    flex="1"
-                    alignSelf="start"
-                    fontSize={{ base: "40px", md: "44px" }}
-                    fontWeight="500"
-                    mt="100px"
-                >
-                    Videos
-                </Text>
-                <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto">
-                    {sortByDate(videos).map((video) => (
-                        <VStack key={video.url}>
-                            <Box px="3">
+
+                <VStack spacing="16" w="full">
+                    <Text
+                        display={{ base: "flex", xl: "none" }}
+                        flex="1"
+                        alignSelf="start"
+                        fontSize={{ base: "40px", md: "44px" }}
+                        fontWeight="500"
+                        mt="100px"
+                    >
+                        Videos
+                    </Text>
+                    <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto" align="stretch">
+                        {sortByDate(videos).map((video) => (
+                            <Box px="3" key={video.url}>
                                 <VideoCard title={video.title} thumbnail={video.thumbnail} url={video.url} />
                             </Box>
-                        </VStack>
-                    ))}
-                </Flex>
-                <Text
-                    display={{ base: "flex", xl: "none" }}
-                    flex="1"
-                    alignSelf="start"
-                    fontSize="44px"
-                    fontWeight="500"
-                    mt="96px"
-                >
-                    Articles
-                </Text>
-                <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto" mb="66px">
-                    {sortByDate(articles).map((article) => (
-                        <VStack key={article.url}>
-                            <ArticleCard title={article.title} minRead={article.minRead} url={article.url} />
-                        </VStack>
-                    ))}
-                </Flex>
+                        ))}
+                    </Flex>
+                </VStack>
+
+                <VStack spacing="16" w="full">
+                    <Text
+                        display={{ base: "flex", xl: "none" }}
+                        flex="1"
+                        alignSelf="start"
+                        fontSize="44px"
+                        fontWeight="500"
+                        mt="96px"
+                    >
+                        Articles
+                    </Text>
+                    <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto" mb="66px" align="stretch">
+                        {sortByDate(articles).map((article) => (
+                            <Box px="3" key={article.url}>
+                                <ArticleCard title={article.title} minRead={article.minRead} url={article.url} />
+                            </Box>
+                        ))}
+                    </Flex>
+                </VStack>
             </VStack>
         </VStack>
     )

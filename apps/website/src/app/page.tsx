@@ -1,9 +1,9 @@
-import { Box, Button, Card, CardBody, Heading, HStack, Link, Stack, Text, VStack, Image } from "@chakra-ui/react"
+import { Box, Button, Card, CardBody, HStack, Heading, Image, Link, Stack, Text, VStack } from "@chakra-ui/react"
 import { Sora } from "next/font/google"
 import Carousel from "../components/Carousel"
 import ProjectCard from "../components/ProjectCard"
 import events from "../data/events.json"
-import projects from "../data/projects.json"
+import allProjects from "../data/projects.json"
 import IconDiscord from "../icons/IconDiscord"
 
 const sora = Sora({
@@ -68,7 +68,7 @@ export default function Home() {
                     </Heading>
 
                     <VStack spacing="3">
-                        {projects.slice(0, 3).map((project) => (
+                        {allProjects.slice(0, 3).map((project) => (
                             <ProjectCard
                                 key={project.name}
                                 title={project.name}

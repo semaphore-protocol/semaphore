@@ -11,15 +11,17 @@ import IconPSE from "../icons/IconPSE"
 import { chunkArray } from "../utils/chunkArray"
 import { getProjectCategories } from "../utils/getProjectCategories"
 
+const sortedProjects = allProjects.sort((a, b) => a.name.localeCompare(b.name))
+
 export default function ProjectsList(props: any) {
-    const [projects, setProjects] = useState<(typeof allProjects)[]>(chunkArray(allProjects))
+    const [projects, setProjects] = useState<(typeof allProjects)[]>(chunkArray(sortedProjects))
     const [index, setIndex] = useState<number>(0)
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
     const [onlyPSE, setOnlyPSE] = useState<boolean | null>(null)
     const viewToScrollRef = useRef<HTMLDivElement>(null)
 
     const filterProjects = useCallback(() => {
-        let filteredProjects = allProjects
+        let filteredProjects = sortedProjects
 
         if (selectedCategories.length > 0) {
             filteredProjects = filteredProjects.filter((project) =>
@@ -33,26 +35,20 @@ export default function ProjectsList(props: any) {
             filteredProjects = filteredProjects.filter((project) => !project.pse)
         }
 
-        filteredProjects = filteredProjects.sort((a, b) => a.name.localeCompare(b.name))
-
         setProjects(chunkArray(filteredProjects))
     }, [selectedCategories, onlyPSE])
+
+    const changePageIndex = useCallback((newIndex: number) => {
+        setIndex(newIndex)
+
+        if (viewToScrollRef.current) {
+            viewToScrollRef.current.scrollIntoView({ behavior: "smooth" })
+        }
+    }, [])
 
     useEffect(() => {
         filterProjects()
     }, [selectedCategories, onlyPSE])
-
-    useEffect(() => {
-        if (viewToScrollRef.current) {
-            viewToScrollRef.current.scrollIntoView({ behavior: "smooth" })
-        }
-    }, [index])
-
-    useEffect(() => {
-        if (viewToScrollRef.current) {
-            viewToScrollRef.current.scrollIntoView({ behavior: "smooth" })
-        }
-    }, [index])
 
     return (
         <VStack {...props}>
@@ -82,7 +78,7 @@ export default function ProjectsList(props: any) {
             <VStack align="left" spacing="6" ref={viewToScrollRef}>
                 <Text fontSize="20">Category</Text>
                 <HStack spacing="3" flexWrap="wrap">
-                    {getProjectCategories(allProjects).map((category) => (
+                    {getProjectCategories(sortedProjects).map((category) => (
                         <Button
                             key={category}
                             size="sm"
@@ -130,7 +126,7 @@ export default function ProjectsList(props: any) {
                     <HStack flex="1" justify="center">
                         <IconButton
                             visibility={index > 0 ? "visible" : "hidden"}
-                            onClick={() => setIndex((i) => i - 1)}
+                            onClick={() => changePageIndex(index - 1)}
                             variant="link"
                             aria-label="Arrow left"
                             icon={<IconChevronLeft />}
@@ -141,7 +137,7 @@ export default function ProjectsList(props: any) {
                                 <Text
                                     // eslint-disable-next-line react/no-array-index-key
                                     key={i}
-                                    onClick={() => setIndex(i)}
+                                    onClick={() => changePageIndex(i)}
                                     cursor="pointer"
                                     color={i === index ? "primary.600" : "text.400"}
                                 >
@@ -152,7 +148,7 @@ export default function ProjectsList(props: any) {
 
                         <IconButton
                             visibility={index < projects.length - 1 ? "visible" : "hidden"}
-                            onClick={() => setIndex((i) => i + 1)}
+                            onClick={() => changePageIndex(index + 1)}
                             variant="link"
                             aria-label="Arrow right"
                             icon={<IconChevronRight />}
