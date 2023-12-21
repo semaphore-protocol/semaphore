@@ -189,6 +189,11 @@ html[data-theme="dark"] {
         color: var(--custom-blue-2);
         border-bottom-color: var(--custom-blue-2);
     }
+
+    .badge--secondary {
+        --ifm-badge-background-color: var(--custom-blue-0);
+        color: var(--custom-dark-1);
+    }
 }
 
 html[data-theme="light"] {
@@ -201,7 +206,7 @@ html[data-theme="light"] {
     }
 
     .markdown a {
-        color: var(--custom-blue-3);
+        color: var(--custom-blue-2);
     }
 
     h2 a {
@@ -216,6 +221,11 @@ html[data-theme="light"] {
     li[role="tab"][aria-selected="true"] {
         color: var(--custom-blue-3);
         border-bottom-color: var(--custom-blue-3);
+    }
+
+    .badge--secondary {
+        --ifm-badge-background-color: var(--custom-dark-1);
+        color: var(--custom-blue-0);
     }
 }
 
@@ -277,12 +287,6 @@ html[data-theme="dark"] .navbar__logo {
 
 .badge {
     margin-bottom: 16px;
-}
-
-.badge--secondary {
-    --ifm-badge-background-color: var(--custom-blue-1);
-    --ifm-badge-border-color: var(--ifm-badge-background-color);
-    color: var(--custom-dark-3);
 }
 
 html[data-theme="light"] .DocSearch {
