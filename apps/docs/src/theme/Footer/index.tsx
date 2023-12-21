@@ -43,10 +43,10 @@ function Footer() {
                                 })}
                             </Link>
                             <Link href="https://semaphore.pse.dev/github" target="_blank">
-                            {translate({
-                                id: "footer.right.learn.link1"
-                            })}
-                        </Link>
+                                {translate({
+                                    id: "footer.right.learn.link1"
+                                })}
+                            </Link>
                         </div>
                     </div>
                 </div>
