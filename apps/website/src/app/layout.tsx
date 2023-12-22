@@ -8,20 +8,20 @@ export const metadata: Metadata = {
     title: "Semaphore",
     description: "A zero-knowledge protocol for anonymous signaling on Ethereum.",
     icons: { icon: "/icon.svg", apple: "/apple-icon.png" },
-    metadataBase: new URL("https://website.semaphore.pse.dev"),
+    metadataBase: new URL("https://semaphore.pse.dev"),
     openGraph: {
         type: "website",
-        url: "https://website.semaphore.pse.dev",
+        url: "https://semaphore.pse.dev",
         title: "Semaphore",
         description: "A zero-knowledge protocol for anonymous signaling on Ethereum.",
         siteName: "Semaphore",
         images: [
             {
-                url: "https://website.semaphore.pse.dev/social-media.png"
+                url: "https://semaphore.pse.dev/social-media.png"
             }
         ]
     },
-    twitter: { card: "summary_large_image", images: "https://website.semaphore.pse.dev/social-media.png" }
+    twitter: { card: "summary_large_image", images: "https://semaphore.pse.dev/social-media.png" }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
