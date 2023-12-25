@@ -94,5 +94,13 @@
         "speakers": ["Vivian Plasencia"],
         "url": "https://youtu.be/h4iVFKhAI8g",
         "thumbnail": "https://img.youtube.com/vi/h4iVFKhAI8g/0.jpg"
+    },
+    {
+        "title": "Building with Semaphore",
+        "eventName": "ETHRome",
+        "date": "2023-10-07",
+        "speakers": ["Vivian Plasencia"],
+        "url": "https://youtu.be/4e4EAdu0WVg",
+        "thumbnail": "https://img.youtube.com/vi/4e4EAdu0WVg/0.jpg"
     }
 ]
