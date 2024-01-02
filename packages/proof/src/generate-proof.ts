@@ -27,8 +27,8 @@ export default async function generateProof(
     snarkArtifacts?: SnarkArtifacts
 ): Promise<SemaphoreProof> {
     const leafIndex = group.indexOf(identity.commitment)
-    const merkeProof = group.generateMerkleProof(leafIndex)
-    const merkleProofLength = merkeProof.siblings.length
+    const merkleProof = group.generateMerkleProof(leafIndex)
+    const merkleProofLength = merkleProof.siblings.length
 
     treeDepth ??= merkleProofLength
 
@@ -41,10 +41,10 @@ export default async function generateProof(
     // The index must be converted to a list of indices, 1 for each tree level.
     // The missing siblings can be set to 0, as they won't be used in the circuit.
     const treeIndices = []
-    const treeSiblings = merkeProof.siblings
+    const treeSiblings = merkleProof.siblings
 
     for (let i = 0; i < treeDepth; i += 1) {
-        treeIndices.push((merkeProof.index >> i) & 1)
+        treeIndices.push((merkleProof.index >> i) & 1)
 
         if (treeSiblings[i] === undefined) {
             treeSiblings[i] = "0"
