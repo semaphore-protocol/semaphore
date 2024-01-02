@@ -1,11 +1,8 @@
 <p align="center">
     <h1 align="center">
-      <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/semaphore-protocol/.github/blob/main/assets/semaphore-logo-light.svg">
-        <source media="(prefers-color-scheme: light)" srcset="https://github.com/semaphore-protocol/.github/blob/main/assets/semaphore-logo-dark.svg">
-        <img width="250" alt="Semaphore icon" src="https://github.com/semaphore-protocol/.github/blob/main/assets/semaphore-logo-dark.svg">
-      </picture>
+        Semaphore Docs
     </h1>
+    <p align="center">The official documentation of Semaphore.</p>
 </p>
 
 <p align="center">
