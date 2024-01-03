@@ -88,7 +88,7 @@ const { identity } = await HeyAuthn.fromRegister(options)
 
 // Now you could also save the identity commitment in your DB (pseudocode).
 fetch("/api/register" /* Replace this with your endpoint */, {
-    identity.commmitment
+    identity.commitment
     // ...
 })
 
