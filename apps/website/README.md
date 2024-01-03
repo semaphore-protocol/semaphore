@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align="center">
+    <h1 align="center">
+        Semaphore Website
+    </h1>
+    <p align="center">The official website of Semaphore.</p>
+</p>
 
-## Getting Started
+<p align="center">
+    <a href="https://github.com/semaphore-protocol" target="_blank">
+        <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
+    </a>
+    <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+    </a>
+    <a href="https://eslint.org/">
+        <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint" />
+    </a>
+    <a href="https://prettier.io/">
+        <img alt="Code style prettier" src="https://img.shields.io/badge/code%20style-prettier-f8bc45?style=flat-square&logo=prettier" />
+    </a>
+</p>
 
-First, run the development server:
+<div align="center">
+    <h4>
+        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CONTRIBUTING.md">
+            👥 Contributing
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://github.com/semaphore-protocol/semaphore/blob/main/CODE_OF_CONDUCT.md">
+            🤝 Code of conduct
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://github.com/semaphore-protocol/semaphore/contribute">
+            🔎 Issues
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://semaphore.pse.dev/discord">
+            🗣️ Chat &amp; Support
+        </a>
+    </h4>
+</div>
+
+| This is the repo for the [semaphore.pse.dev](https://semaphore.pse.dev) website, an entry point for anyone wanting to learn more about Semaphore, how to build with it, and which other projects are using it. |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+
+## 📜 Usage
+
+### Start the website
+
+To run a dev instance locally, run:
 
 ```bash
-npm run dev
-# or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit the Semaphore website in your browser at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+yarn build
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
--   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
--   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The `build` command generates static content into the `.next` directory that can be served by any static content hosting service.
