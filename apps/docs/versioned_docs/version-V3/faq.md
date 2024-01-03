@@ -22,7 +22,7 @@ Having two private values provides an additional security layer. If someone brea
 
 ## What is the difference between the `identity nullifier`, `external nullifier` and `nullifier hash`?
 
-The identity nullifier is one of the user's secret values, whearas the external nullifier can be used like a topic on which users can generate a valid proof (e.g. send anonymous votes) a limited number of times.
+The identity nullifier is one of the user's secret values, whereas the external nullifier can be used like a topic on which users can generate a valid proof (e.g. send anonymous votes) a limited number of times.
 
 Both the identity nullifier and the external nullifier are used to prevent the same proof from being verified twice, which means that if a user generates the same proof (with same identity and same external nullifier) twice, the second one will not be valid.
 
