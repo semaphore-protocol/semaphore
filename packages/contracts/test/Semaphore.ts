@@ -239,7 +239,7 @@ describe("Semaphore", () => {
         it("Should throw an exception if the proof is not valid", async () => {
             const transaction = semaphoreContract.verifyProof(
                 groupId,
-                fullProof.treeRoot,
+                fullProof.merkleRoot,
                 fullProof.nullifier,
                 fullProof.message,
                 0,
@@ -252,10 +252,10 @@ describe("Semaphore", () => {
         it("Should verify a proof for an onchain group correctly", async () => {
             const transaction = semaphoreContract.verifyProof(
                 groupId,
-                fullProof.treeRoot,
+                fullProof.merkleRoot,
                 fullProof.nullifier,
                 fullProof.message,
-                fullProof.treeRoot,
+                fullProof.merkleRoot,
                 fullProof.proof
             )
 
@@ -263,10 +263,10 @@ describe("Semaphore", () => {
                 .to.emit(semaphoreContract, "ProofVerified")
                 .withArgs(
                     groupId,
-                    fullProof.treeRoot,
+                    fullProof.merkleRoot,
                     fullProof.nullifier,
                     fullProof.message,
-                    fullProof.treeRoot,
+                    fullProof.merkleRoot,
                     fullProof.proof
                 )
         })
@@ -274,10 +274,10 @@ describe("Semaphore", () => {
         it("Should not verify the same proof for an onchain group twice", async () => {
             const transaction = semaphoreContract.verifyProof(
                 groupId,
-                fullProof.treeRoot,
+                fullProof.merkleRoot,
                 fullProof.nullifier,
                 fullProof.message,
-                fullProof.treeRoot,
+                fullProof.merkleRoot,
                 fullProof.proof
             )
 
@@ -297,10 +297,10 @@ describe("Semaphore", () => {
 
             const transaction = semaphoreContract.verifyProof(
                 groupId,
-                fullProof.treeRoot,
+                fullProof.merkleRoot,
                 fullProof.nullifier,
                 fullProof.message,
-                fullProof.treeRoot,
+                fullProof.merkleRoot,
                 fullProof.proof
             )
 
