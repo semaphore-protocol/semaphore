@@ -8,7 +8,7 @@ export type SnarkArtifacts = {
 }
 
 export type SemaphoreProof = {
-    treeRoot: NumericString
+    merkleRoot: NumericString
     message: NumericString
     nullifier: NumericString
     scope: NumericString
