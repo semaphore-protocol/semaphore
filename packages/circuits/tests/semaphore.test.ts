@@ -6,8 +6,8 @@ import { circomkit } from "./common"
 
 describe("semaphore", () => {
     let circuit: WitnessTester<
-        ["privateKey", "treeDepth", "treeIndices", "treeSiblings", "scope", "message"],
-        ["nullifier", "treeRoot"]
+        ["privateKey", "merkleProofLength", "merkleProofIndices", "merkleProofSiblings", "scope", "message"],
+        ["nullifier", "merkleRoot"]
     >
 
     const MAX_DEPTH = 20
@@ -28,34 +28,34 @@ describe("semaphore", () => {
         tree.insert(BigInt(i))
     }
 
-    const { siblings: treeSiblings, index } = tree.generateProof(0)
+    const { siblings: merkleProofSiblings, index } = tree.generateProof(0)
 
     // The index must be converted to a list of indices, 1 for each tree level.
     // The circuit tree depth is 20, so the number of siblings must be 20, even if
     // the tree depth is actually 3. The missing siblings can be set to 0, as they
     // won't be used to calculate the root in the circuit.
-    const treeIndices: number[] = []
+    const merkleProofIndices: number[] = []
 
     for (let i = 0; i < MAX_DEPTH; i += 1) {
-        treeIndices.push((index >> i) & 1)
+        merkleProofIndices.push((index >> i) & 1)
 
-        if (treeSiblings[i] === undefined) {
-            treeSiblings[i] = BigInt(0)
+        if (merkleProofSiblings[i] === undefined) {
+            merkleProofSiblings[i] = BigInt(0)
         }
     }
 
     const INPUT = {
         privateKey: deriveSecretScalar(privateKey),
-        treeDepth: tree.depth,
-        treeIndices,
-        treeSiblings,
+        merkleProofLength: tree.depth,
+        merkleProofIndices,
+        merkleProofSiblings,
         scope,
         message
     }
 
     const OUTPUT = {
         nullifier: poseidon2([scope, deriveSecretScalar(privateKey)]),
-        treeRoot: tree.root
+        merkleRoot: tree.root
     }
 
     before(async () => {
