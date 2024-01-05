@@ -40,23 +40,23 @@ export default async function generateProof(
 
     // The index must be converted to a list of indices, 1 for each tree level.
     // The missing siblings can be set to 0, as they won't be used in the circuit.
-    const treeIndices = []
-    const treeSiblings = merkleProof.siblings
+    const merkleProofIndices = []
+    const merkleProofSiblings = merkleProof.siblings
 
     for (let i = 0; i < treeDepth; i += 1) {
-        treeIndices.push((merkleProof.index >> i) & 1)
+        merkleProofIndices.push((merkleProof.index >> i) & 1)
 
-        if (treeSiblings[i] === undefined) {
-            treeSiblings[i] = "0"
+        if (merkleProofSiblings[i] === undefined) {
+            merkleProofSiblings[i] = "0"
         }
     }
 
     const { proof, publicSignals } = await prove(
         {
             privateKey: identity.secretScalar,
-            treeDepth: merkleProofLength,
-            treeIndices,
-            treeSiblings,
+            merkleProofLength,
+            merkleProofIndices,
+            merkleProofSiblings,
             scope: hash(scope),
             message: hash(message)
         },
@@ -65,7 +65,7 @@ export default async function generateProof(
     )
 
     return {
-        treeRoot: publicSignals[0],
+        merkleRoot: publicSignals[0],
         nullifier: publicSignals[1],
         message: BigNumber.from(message).toString() as NumericString,
         scope: BigNumber.from(scope).toString() as NumericString,

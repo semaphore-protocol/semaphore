@@ -38,7 +38,7 @@ describe("Proof", () => {
             fullProof = await generateProof(identity, group, message, scope, treeDepth)
 
             expect(typeof fullProof).toBe("object")
-            expect(fullProof.treeRoot).toBe(group.root)
+            expect(fullProof.merkleRoot).toBe(group.root)
         })
     })
 
