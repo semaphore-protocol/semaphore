@@ -4,10 +4,9 @@ import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { SemaphoreProof, generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
-import { Signer, constants } from "ethers"
+import { Signer, ZeroAddress } from "ethers"
 import { run } from "hardhat"
-import { Semaphore } from "../build/typechain"
-import { createIdentityCommitments } from "./utils"
+import { Semaphore } from "../typechain-types"
 
 describe("Semaphore", () => {
     let semaphoreContract: Semaphore
@@ -15,7 +14,7 @@ describe("Semaphore", () => {
     let accounts: string[]
 
     const groupId = 1
-    const members = createIdentityCommitments(3)
+    const members = Array.from({ length: 3 }, (_, i) => new Identity(i)).map(({ commitment }) => commitment)
 
     before(async () => {
         const { semaphore } = await run("deploy:semaphore", {
@@ -37,7 +36,7 @@ describe("Semaphore", () => {
             await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId)
             await expect(transaction)
                 .to.emit(semaphoreContract, "GroupAdminUpdated")
-                .withArgs(groupId, constants.AddressZero, accounts[1])
+                .withArgs(groupId, ZeroAddress, accounts[1])
         })
 
         it("Should create a group with a custom Merkle tree root expiration", async () => {
@@ -54,7 +53,7 @@ describe("Semaphore", () => {
             await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId)
             await expect(transaction)
                 .to.emit(semaphoreContract, "GroupAdminUpdated")
-                .withArgs(groupId, constants.AddressZero, accounts[0])
+                .withArgs(groupId, ZeroAddress, accounts[0])
         })
     })
 
