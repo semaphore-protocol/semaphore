@@ -8044,11 +8044,11 @@ __metadata:
     "@nomicfoundation/hardhat-toolbox": ^2.0.0
     "@nomiclabs/hardhat-ethers": ^2.0.0
     "@nomiclabs/hardhat-etherscan": ^3.0.0
-    "@semaphore-protocol/contracts": 3.15.1
-    "@semaphore-protocol/group": 3.15.1
-    "@semaphore-protocol/hardhat": 3.15.1
-    "@semaphore-protocol/identity": 3.15.1
-    "@semaphore-protocol/proof": 3.15.1
+    "@semaphore-protocol/contracts": 3.15.2
+    "@semaphore-protocol/group": 3.15.2
+    "@semaphore-protocol/hardhat": 3.15.2
+    "@semaphore-protocol/identity": 3.15.2
+    "@semaphore-protocol/proof": 3.15.2
     "@typechain/ethers-v5": ^10.1.0
     "@typechain/hardhat": ^6.1.2
     "@types/chai": ^4.2.0
@@ -8108,7 +8108,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/cli@workspace:packages/cli"
   dependencies:
-    "@semaphore-protocol/data": 3.15.1
+    "@semaphore-protocol/data": 3.15.2
     "@types/clear": ^0.1.2
     "@types/figlet": ^1.5.5
     "@types/inquirer": ^9.0.3
@@ -8133,7 +8133,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/contracts@3.15.1, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
+"@semaphore-protocol/contracts@3.15.2, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
@@ -8142,7 +8142,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/data@3.15.1, @semaphore-protocol/data@workspace:packages/data":
+"@semaphore-protocol/data@3.15.2, @semaphore-protocol/data@workspace:packages/data":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/data@workspace:packages/data"
   dependencies:
@@ -8155,7 +8155,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/group@3.15.1, @semaphore-protocol/group@workspace:packages/group":
+"@semaphore-protocol/group@3.15.2, @semaphore-protocol/group@workspace:packages/group":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/group@workspace:packages/group"
   dependencies:
@@ -8171,12 +8171,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/hardhat@3.15.1, @semaphore-protocol/hardhat@workspace:packages/hardhat":
+"@semaphore-protocol/hardhat@3.15.2, @semaphore-protocol/hardhat@workspace:packages/hardhat":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/hardhat@workspace:packages/hardhat"
   dependencies:
     "@nomiclabs/hardhat-ethers": ^2.1.1
-    "@semaphore-protocol/contracts": 3.15.1
+    "@semaphore-protocol/contracts": 3.15.2
     circomlibjs: ^0.1.7
     ethers: ^5.7.1
     hardhat: ^2.0.0
@@ -8192,7 +8192,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/heyauthn@workspace:packages/heyauthn"
   dependencies:
-    "@semaphore-protocol/identity": 3.15.1
+    "@semaphore-protocol/identity": 3.15.2
     "@simplewebauthn/browser": 7.2.0
     "@simplewebauthn/server": 7.2.0
     rollup-plugin-cleanup: ^3.2.1
@@ -8200,7 +8200,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/identity@3.15.1, @semaphore-protocol/identity@workspace:packages/identity":
+"@semaphore-protocol/identity@3.15.2, @semaphore-protocol/identity@workspace:packages/identity":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/identity@workspace:packages/identity"
   dependencies:
@@ -8217,7 +8217,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/proof@3.15.1, @semaphore-protocol/proof@workspace:packages/proof":
+"@semaphore-protocol/proof@3.15.2, @semaphore-protocol/proof@workspace:packages/proof":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/proof@workspace:packages/proof"
   dependencies:
@@ -8236,8 +8236,8 @@ __metadata:
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
   peerDependencies:
-    "@semaphore-protocol/group": 3.15.1
-    "@semaphore-protocol/identity": 3.15.1
+    "@semaphore-protocol/group": 3.15.2
+    "@semaphore-protocol/identity": 3.15.2
   languageName: unknown
   linkType: soft
 
@@ -22124,11 +22124,11 @@ __metadata:
     "@nomicfoundation/hardhat-chai-matchers": ^1.0.5
     "@nomiclabs/hardhat-ethers": ^2.0.0
     "@nomiclabs/hardhat-etherscan": ^3.1.7
-    "@semaphore-protocol/contracts": 3.15.1
-    "@semaphore-protocol/group": 3.15.1
-    "@semaphore-protocol/hardhat": 3.15.1
-    "@semaphore-protocol/identity": 3.15.1
-    "@semaphore-protocol/proof": 3.15.1
+    "@semaphore-protocol/contracts": 3.15.2
+    "@semaphore-protocol/group": 3.15.2
+    "@semaphore-protocol/hardhat": 3.15.2
+    "@semaphore-protocol/identity": 3.15.2
+    "@semaphore-protocol/proof": 3.15.2
     "@typechain/ethers-v5": ^10.0.0
     "@typechain/hardhat": ^6.0.0
     "@types/chai": ^4.3.1
@@ -22153,10 +22153,10 @@ __metadata:
   resolution: "monorepo-ethers-web-app@workspace:packages/cli-template-monorepo-ethers/apps/web-app"
   dependencies:
     "@next/font": 13.0.3
-    "@semaphore-protocol/data": 3.15.1
-    "@semaphore-protocol/group": 3.15.1
-    "@semaphore-protocol/identity": 3.15.1
-    "@semaphore-protocol/proof": 3.15.1
+    "@semaphore-protocol/data": 3.15.2
+    "@semaphore-protocol/group": 3.15.2
+    "@semaphore-protocol/identity": 3.15.2
+    "@semaphore-protocol/proof": 3.15.2
     "@types/react": 18.0.25
     "@types/react-dom": 18.0.8
     dotenv: ^16.0.3
@@ -22176,11 +22176,11 @@ __metadata:
     "@nomicfoundation/hardhat-chai-matchers": ^1.0.5
     "@nomiclabs/hardhat-ethers": ^2.0.0
     "@nomiclabs/hardhat-etherscan": ^3.1.7
-    "@semaphore-protocol/contracts": 3.15.1
-    "@semaphore-protocol/group": 3.15.1
-    "@semaphore-protocol/hardhat": 3.15.1
-    "@semaphore-protocol/identity": 3.15.1
-    "@semaphore-protocol/proof": 3.15.1
+    "@semaphore-protocol/contracts": 3.15.2
+    "@semaphore-protocol/group": 3.15.2
+    "@semaphore-protocol/hardhat": 3.15.2
+    "@semaphore-protocol/identity": 3.15.2
+    "@semaphore-protocol/proof": 3.15.2
     "@typechain/ethers-v5": ^10.0.0
     "@typechain/hardhat": ^6.0.0
     "@types/chai": ^4.3.1
@@ -22205,10 +22205,10 @@ __metadata:
   resolution: "monorepo-subgraph-web-app@workspace:packages/cli-template-monorepo-subgraph/apps/web-app"
   dependencies:
     "@next/font": 13.0.3
-    "@semaphore-protocol/data": 3.15.1
-    "@semaphore-protocol/group": 3.15.1
-    "@semaphore-protocol/identity": 3.15.1
-    "@semaphore-protocol/proof": 3.15.1
+    "@semaphore-protocol/data": 3.15.2
+    "@semaphore-protocol/group": 3.15.2
+    "@semaphore-protocol/identity": 3.15.2
+    "@semaphore-protocol/proof": 3.15.2
     "@types/react": 18.0.25
     "@types/react-dom": 18.0.8
     dotenv: ^16.0.3
