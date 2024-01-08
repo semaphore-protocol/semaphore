@@ -16,8 +16,7 @@ async function main() {
     const deployedContracts = getDeployedContracts(hardhatArguments.network)
 
     if (deployedContracts) {
-        await verify(deployedContracts.IncrementalBinaryTree)
-        await verify(deployedContracts.Pairing)
+        await verify(deployedContracts.Poseidon)
         await verify(deployedContracts.SemaphoreVerifier)
         await verify(deployedContracts.Semaphore, [deployedContracts.SemaphoreVerifier])
     }
