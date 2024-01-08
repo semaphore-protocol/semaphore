@@ -95,7 +95,7 @@ group.addMembers([...identityCommitments, identity.generateCommitment()])
 
 const fullProof1 = await generateProof(identity, group, message, scope)
 
-// You can also specify the maximum shaft depth supported by the proof.
+// You can also specify the maximum tree depth supported by the proof.
 const fullProof2 = await generateProof(identity, group, message, scope, 20)
 
 // You can also specify the default zkey/wasm files.
