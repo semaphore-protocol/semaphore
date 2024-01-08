@@ -15,26 +15,22 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
 
                 const semaphoreVerifier = await SemaphoreVerifierFactory.deploy()
 
-                await semaphoreVerifier.deployed()
+                semaphoreVerifierAddress = await semaphoreVerifier.getAddress()
 
                 if (logs) {
-                    console.info(`SemaphoreVerifier contract has been deployed to: ${semaphoreVerifier.address}`)
+                    console.info(`SemaphoreVerifier contract has been deployed to: ${semaphoreVerifierAddress}`)
                 }
-
-                semaphoreVerifierAddress = semaphoreVerifier.address
             }
 
             if (!poseidonAddress) {
                 const PoseidonT3Factory = await ethers.getContractFactory("PoseidonT3")
                 const poseidonT3 = await PoseidonT3Factory.deploy()
 
-                await poseidonT3.deployed()
+                poseidonAddress = await poseidonT3.getAddress()
 
                 if (logs) {
-                    console.info(`Poseidon library has been deployed to: ${poseidonT3.address}`)
+                    console.info(`Poseidon library has been deployed to: ${poseidonAddress}`)
                 }
-
-                poseidonAddress = poseidonT3.address
             }
 
             const SemaphoreFactory = await ethers.getContractFactory("Semaphore", {
@@ -45,16 +41,16 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
 
             const semaphore = await SemaphoreFactory.deploy(semaphoreVerifierAddress)
 
-            await semaphore.deployed()
+            const semaphoreAddress = await semaphore.getAddress()
 
             if (logs) {
-                console.info(`Semaphore contract has been deployed to: ${semaphore.address}`)
+                console.info(`Semaphore contract has been deployed to: ${semaphoreAddress}`)
             }
 
             saveDeployedContracts(hardhatArguments.network, {
                 SemaphoreVerifier: semaphoreVerifierAddress,
                 Poseidon: poseidonAddress,
-                Semaphore: semaphore.address
+                Semaphore: semaphoreAddress
             })
 
             return {
