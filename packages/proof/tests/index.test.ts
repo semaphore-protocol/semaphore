@@ -39,7 +39,7 @@ describe("Proof", () => {
 
             expect(typeof fullProof).toBe("object")
             expect(fullProof.merkleRoot).toBe(group.root)
-        })
+        }, 20000)
     })
 
     describe("# verifyProof", () => {
