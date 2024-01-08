@@ -37,7 +37,7 @@ export default class SemaphoreEthers {
             checkParameter(options.apiKey, "apiKey", "string")
         }
 
-        if (networkOrEthereumURL === "matic") {
+        if (networkOrEthereumURL === "mumbai") {
             networkOrEthereumURL = "maticmum"
         }
 
