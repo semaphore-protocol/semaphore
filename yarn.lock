@@ -8055,7 +8055,7 @@ __metadata:
     "@types/chai": ^4.2.0
     "@types/download": ^8.0.1
     "@types/mocha": ^9.1.0
-    "@types/node": ">=12.0.0"
+    "@types/node": ^20
     chai: ^4.2.0
     dotenv: ^16.0.3
     download: ^8.0.0
@@ -8073,7 +8073,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/cli-template-monorepo-ethers@workspace:packages/cli-template-monorepo-ethers"
   dependencies:
-    "@types/node": ^17.0.9
+    "@types/node": ^20
     "@typescript-eslint/eslint-plugin": ^5.9.1
     "@typescript-eslint/parser": ^5.9.1
     eslint: ^8.2.0
@@ -8091,7 +8091,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/cli-template-monorepo-subgraph@workspace:packages/cli-template-monorepo-subgraph"
   dependencies:
-    "@types/node": ^17.0.9
+    "@types/node": ^20
     "@typescript-eslint/eslint-plugin": ^5.9.1
     "@typescript-eslint/parser": ^5.9.1
     eslint: ^8.2.0
@@ -9484,13 +9484,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:>=12.0.0":
-  version: 18.11.15
-  resolution: "@types/node@npm:18.11.15"
-  checksum: cae8692a5cee0316f93ee0342237eb921f70c51afb37c661c711a925a4642654ae7e404c5a80899d481c0cfaff3a6891ef04bacd330a2e72734192bfc91dc2d8
-  languageName: node
-  linkType: hard
-
 "@types/node@npm:^10.0.3":
   version: 10.17.60
   resolution: "@types/node@npm:10.17.60"
@@ -9505,7 +9498,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^17.0.12, @types/node@npm:^17.0.5, @types/node@npm:^17.0.9":
+"@types/node@npm:^17.0.5":
   version: 17.0.45
   resolution: "@types/node@npm:17.0.45"
   checksum: aa04366b9103b7d6cfd6b2ef64182e0eaa7d4462c3f817618486ea0422984c51fc69fd0d436eae6c9e696ddfdbec9ccaa27a917f7c2e8c75c5d57827fe3d95e8
@@ -13523,7 +13516,7 @@ __metadata:
     "@types/chai": ^4.3.0
     "@types/download": ^8.0.1
     "@types/mocha": ^9.1.0
-    "@types/node": ^17.0.12
+    "@types/node": ^20
     "@types/rimraf": ^3.0.2
     "@zk-kit/imt.sol": 2.0.0-beta.3
     chai: ^4.3.5
@@ -26840,7 +26833,7 @@ __metadata:
     "@types/download": ^8.0.1
     "@types/glob": ^7.2.0
     "@types/jest": ^27.4.0
-    "@types/node": ^17.0.9
+    "@types/node": ^20
     "@types/rimraf": ^3.0.2
     "@typescript-eslint/eslint-plugin": ^5.9.1
     "@typescript-eslint/parser": ^5.9.1
