@@ -18,7 +18,7 @@
     along with snarkJS. If not, see <https://www.gnu.org/licenses/>.
 */
 
-pragma solidity 0.8.19;
+pragma solidity 0.8.23;
 
 contract SemaphoreVerifier {
     // Scalar field size
