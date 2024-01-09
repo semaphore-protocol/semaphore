@@ -8996,7 +8996,7 @@ __metadata:
   resolution: "@semaphore-protocol/circuits@workspace:packages/circuits"
   dependencies:
     "@types/mocha": ^10.0.6
-    "@zk-kit/circuits": 0.2.3
+    "@zk-kit/circuits": 0.2.4
     "@zk-kit/eddsa-poseidon": 0.3.1
     "@zk-kit/imt": ^2.0.0-beta
     circomkit: ^0.0.19
@@ -11490,12 +11490,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/circuits@npm:0.2.3":
-  version: 0.2.3
-  resolution: "@zk-kit/circuits@npm:0.2.3"
+"@zk-kit/circuits@npm:0.2.4":
+  version: 0.2.4
+  resolution: "@zk-kit/circuits@npm:0.2.4"
   dependencies:
     circomlib: ^2.0.5
-  checksum: 9d7f812c7c67d33870b44c1c45bd52fb10c1a5f60c8c99e3765216cb2e9326c9a7d17542e4460baa65902944f5d7e1986ee01d15f5bbc7398d4c4166fc33d770
+  checksum: 6d203da9c8110dcc90bd33d593a21400a3a3b73e5194775282445ed06e93eca068aaa2c5ef7f1c0606d75c0c4d8753f7230f2cc2a4506126c3150eafd1f7a887
   languageName: node
   linkType: hard
 
