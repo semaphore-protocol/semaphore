@@ -109,9 +109,9 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 scope,
         uint256[8] calldata proof
     ) external override onlyExistingGroup(groupId) {
-        uint256 merkleTreeDepth = getMerkleTreeDepth(groupId);
+        uint256 merkleTreeSize = getMerkleTreeSize(groupId);
 
-        if (merkleTreeDepth == 0) {
+        if (merkleTreeSize == 0) {
             revert Semaphore__GroupHasNoMembers();
         }
 

@@ -208,17 +208,31 @@ describe("Semaphore", () => {
     describe("# verifyProof", () => {
         const message = 2
         const identity = new Identity("0")
+        const groupOneMemberId = 6
 
         const group = new Group()
+        const groupOneMember = new Group()
 
         group.addMembers(members)
+        groupOneMember.addMember(members[0])
 
         let fullProof: SemaphoreProof
+        let fullProofOneMember: SemaphoreProof
 
         before(async () => {
+            await semaphoreContract["createGroup(uint256,address)"](groupOneMemberId, accounts[0])
+
             await semaphoreContract.addMembers(groupId, [members[1], members[2]])
+            await semaphoreContract.addMember(groupOneMemberId, members[0])
 
             fullProof = await generateProof(identity, group, message, group.root as string, 10)
+            fullProofOneMember = await generateProof(
+                identity,
+                groupOneMember,
+                message,
+                groupOneMember.root as string,
+                10
+            )
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
@@ -249,7 +263,29 @@ describe("Semaphore", () => {
             await expect(transaction).to.be.revertedWithCustomError(semaphoreContract, "Semaphore__InvalidProof")
         })
 
-        it("Should verify a proof for an onchain group correctly", async () => {
+        it("Should verify a proof for an onchain group with one member correctly", async () => {
+            const transaction = semaphoreContract.verifyProof(
+                groupOneMemberId,
+                fullProofOneMember.merkleRoot,
+                fullProofOneMember.nullifier,
+                fullProofOneMember.message,
+                fullProofOneMember.merkleRoot,
+                fullProofOneMember.proof
+            )
+
+            await expect(transaction)
+                .to.emit(semaphoreContract, "ProofVerified")
+                .withArgs(
+                    groupOneMemberId,
+                    fullProofOneMember.merkleRoot,
+                    fullProofOneMember.nullifier,
+                    fullProofOneMember.message,
+                    fullProofOneMember.merkleRoot,
+                    fullProofOneMember.proof
+                )
+        })
+
+        it("Should verify a proof for an onchain group with more than one member correctly", async () => {
             const transaction = semaphoreContract.verifyProof(
                 groupId,
                 fullProof.merkleRoot,
