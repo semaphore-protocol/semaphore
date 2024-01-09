@@ -39,7 +39,7 @@ Use the [`@semaphore-protocol/group`](https://github.com/semaphore-protocol/sema
 
 -   `Group id`: a unique identifier for the group;
 -   `Tree depth`: (_default `20`_) the maximum number of members a group can contain (`max size = 2 ^ tree depth`).
--   `Members`: (_default `[]`_) the list of members to initialize the group. 
+-   `Members`: (_default `[]`_) the list of members to initialize the group.
 
 #### Install library:
 
@@ -49,6 +49,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -61,6 +62,13 @@ npm install @semaphore-protocol/group
 
 ```bash
 yarn add @semaphore-protocol/group
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm add @semaphore-protocol/group
 ```
 
 </TabItem>
