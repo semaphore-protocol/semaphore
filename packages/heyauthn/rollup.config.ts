@@ -7,7 +7,7 @@ const banner = `/**
  * @module ${pkg.name}
  * @version ${pkg.version}
  * @file ${pkg.description}
- * @copyright Vivek Bhupatiraju 2023
+ * @copyright Vivek Bhupatiraju 2024
  * @license ${pkg.license}
  * @see [Github]{@link ${pkg.homepage}}
 */`
