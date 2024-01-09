@@ -56,7 +56,7 @@ function getNetworks(): NetworksUserConfig {
 }
 
 const hardhatConfig: HardhatUserConfig = {
-    solidity: "0.8.19",
+    solidity: "0.8.23",
     networks: {
         hardhat: {
             chainId: 1337,
