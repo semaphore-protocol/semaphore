@@ -12,6 +12,8 @@ sidebar_position: 9
 
 [Semaphore V2 is Live!](https://medium.com/privacy-scaling-explorations/semaphore-v2-is-live-f263e9372579) - Privacy and Scaling Explorations
 
+[Zero-Knowledge Group Membership Management With Semaphore](https://medium.com/javascript-in-plain-english/zero-knowledge-group-membership-management-with-the-semaphore-protocol-1a63126de81c) - Laszlo Fazekas
+
 ## Videos
 
 [Privacy in Ethereum](https://www.youtube.com/watch?v=maDHYyj30kg) - Barry WhiteHat at the Taipei Ethereum Meetup
