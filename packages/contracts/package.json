@@ -24,7 +24,7 @@
         "@types/chai": "^4.3.0",
         "@types/download": "^8.0.1",
         "@types/mocha": "^9.1.0",
-        "@types/node": "^17.0.12",
+        "@types/node": "^20",
         "@types/rimraf": "^3.0.2",
         "chai": "^4.3.5",
         "circomlib": "^2.0.2",
