@@ -11,12 +11,12 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
 
             - name: Install Node.js
-              uses: actions/setup-node@v1
+              uses: actions/setup-node@v4
               with:
-                  node-version: "18"
+                  node-version: 20
 
             - name: Get yarn cache directory path
               id: yarn-cache-dir-path
@@ -50,12 +50,12 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
 
             - name: Install Node.js
-              uses: actions/setup-node@v1
+              uses: actions/setup-node@v4
               with:
-                  node-version: "18"
+                  node-version: 20
 
             # https://github.com/iden3/circuits/blob/8fffb6609ecad0b7bcda19bb908bdb544bdb3cf7/.github/workflows/main.yml#L18-L22
             - name: Setup Circom deps
