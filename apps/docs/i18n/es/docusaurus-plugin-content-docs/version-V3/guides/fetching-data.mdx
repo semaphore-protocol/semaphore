@@ -8,7 +8,7 @@ import TabItem from "@theme/TabItem"
 
 # Semaphore data
 
-Para obtener datos on-chain del contrato [Semaphore.sol](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol), puedes usar la librería [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data). 
+Para obtener datos on-chain del contrato [Semaphore.sol](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol), puedes usar la librería [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data).
 
 Hay dos formas para hacer esto, usando [`SemaphoreSubgraph`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/subgraph.ts) o [`SemaphoreEthers`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/ethers.ts). La clase `SemaphoreSubgraph` usa el [subgrafo de Semaphore](https://github.com/semaphore-protocol/subgraph), el cual usa [The Graph Protocol](https://thegraph.com/) detrás del telón, y la clase `SemaphoreEthers` usa [Ethers](https://github.com/ethers-io/ethers.js/).
 
@@ -23,6 +23,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -38,11 +39,18 @@ yarn add @semaphore-protocol/data
 ```
 
 </TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm add @semaphore-protocol/data
+```
+
+</TabItem>
 </Tabs>
 
 ## Obtener datos usando SemaphoreSubgraph
 
-Para obtener datos usando el subgrafo de Semaphore puedes usar la clase [`SemaphoreSubgraph`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/subgraph.ts) del paquete [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data). 
+Para obtener datos usando el subgrafo de Semaphore puedes usar la clase [`SemaphoreSubgraph`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/subgraph.ts) del paquete [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data).
 
 ```typescript
 import { SemaphoreSubgraph } from "@semaphore-protocol/data"
@@ -109,7 +117,7 @@ const group = new Group(groupId, 20, members)
 
 ## Obtener datos usando SemaphoreEthers
 
-Para obtener datos usando Ethers puedes usar la clase [`SemaphoreEthers`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/ethers.ts) del paquete [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data). 
+Para obtener datos usando Ethers puedes usar la clase [`SemaphoreEthers`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/ethers.ts) del paquete [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data).
 
 ```typescript
 import { SemaphoreEthers } from "@semaphore-protocol/data"

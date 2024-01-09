@@ -36,6 +36,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -53,6 +54,14 @@ yarn
 ```
 
 </TabItem>
+<TabItem value="pnpm">
+
+```bash
+cd my-app
+pnpm install
+```
+
+</TabItem>
 </Tabs>
 
 ## Output
@@ -63,21 +72,21 @@ The `create` command will create a directory called my-app (or whatever name you
 my-app
 ├── .yarn
 ├── apps
-│   └── contracts
-│   │   └── contracts
-|   │   │   └── Feedback.sol
-│   │   └── scripts
-|   │   │   └── download-snark-artifacts.ts
-│   │   └── tasks
-|   │   │   └── deploy.ts
-│   │   └── test
-|   │   │   └── Feedback.ts
-│   │   └── hardhat.config.ts
-│   │   └── package.json
-│   │   └── tsconfig.json
-│   └── web-app
+│   └── contracts
+│   │   └── contracts
+|   │   │   └── Feedback.sol
+│   │   └── scripts
+|   │   │   └── download-snark-artifacts.ts
+│   │   └── tasks
+|   │   │   └── deploy.ts
+│   │   └── test
+|   │   │   └── Feedback.ts
+│   │   └── hardhat.config.ts
+│   │   └── package.json
+│   │   └── tsconfig.json
+│   └── web-app
 ├── scripts
-│   └── copy-contracts-artifacts.ts
+│   └── copy-contracts-artifacts.ts
 ├── .editorconfig
 ├── .env
 ├── .env.example
@@ -92,7 +101,7 @@ my-app
 └── tsconfig.json
 ```
 
-The `Feedback.sol` contract creates a Semaphore group, allows users to join that group with their Semaphore identity, and finally allows group members to send an anonymous feedback. 
+The `Feedback.sol` contract creates a Semaphore group, allows users to join that group with their Semaphore identity, and finally allows group members to send an anonymous feedback.
 
 ## Usage
 
@@ -112,6 +121,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -127,6 +137,13 @@ yarn compile
 ```
 
 </TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm compile
+```
+
+</TabItem>
 </Tabs>
 
 ### Test contracts
@@ -139,6 +156,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -154,6 +172,13 @@ yarn test
 ```
 
 </TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm test
+```
+
+</TabItem>
 </Tabs>
 
 Generate a test coverage report:
@@ -164,6 +189,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -179,6 +205,13 @@ yarn test:coverage
 ```
 
 </TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm test:coverage
+```
+
+</TabItem>
 </Tabs>
 
 Or a test gas report:
@@ -189,6 +222,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -201,6 +235,13 @@ npm run test:report-gas
 
 ```bash
 yarn test:report-gas
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm test:report-gas
 ```
 
 </TabItem>
@@ -226,6 +267,7 @@ In the project root folder:
     values={[
     {label: 'npm', value: 'npm'},
     {label: 'Yarn', value: 'yarn'},
+    {label: 'pnpm', value: 'pnpm'}
     ]}>
     <TabItem value="npm">
 
@@ -238,6 +280,13 @@ In the project root folder:
 
     ```bash
     yarn deploy --semaphore <semaphore-address> --group <group-id> --network arbitrum-goerli
+    ```
+
+    </TabItem>
+    <TabItem value="pnpm">
+
+    ```bash
+    pnpm deploy --semaphore <semaphore-address> --group <group-id> --network arbitrum-goerli
     ```
 
     </TabItem>
@@ -261,6 +310,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -273,6 +323,13 @@ npm run dev
 
 ```bash
 yarn dev
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm dev
 ```
 
 </TabItem>
