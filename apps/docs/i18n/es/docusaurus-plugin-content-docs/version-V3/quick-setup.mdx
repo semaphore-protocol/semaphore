@@ -36,6 +36,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -51,6 +52,14 @@ npm i
 cd my-app
 yarn
 ```
+</TabItem>
+
+<TabItem value="pnpm">
+
+```bash
+cd my-app
+pnpm install
+```
 
 </TabItem>
 </Tabs>
@@ -63,21 +72,21 @@ El comando `create` creará un directorio con el nombre my-app (o cualquier nomb
 my-app
 ├── .yarn
 ├── apps
-│   └── contracts
-│   │   └── contracts
-|   │   │   └── Feedback.sol
-│   │   └── scripts
-|   │   │   └── download-snark-artifacts.ts
-│   │   └── tasks
-|   │   │   └── deploy.ts
-│   │   └── test
-|   │   │   └── Feedback.ts
-│   │   └── hardhat.config.ts
-│   │   └── package.json
-│   │   └── tsconfig.json
-│   └── web-app
+│   └── contracts
+│   │   └── contracts
+|   │   │   └── Feedback.sol
+│   │   └── scripts
+|   │   │   └── download-snark-artifacts.ts
+│   │   └── tasks
+|   │   │   └── deploy.ts
+│   │   └── test
+|   │   │   └── Feedback.ts
+│   │   └── hardhat.config.ts
+│   │   └── package.json
+│   │   └── tsconfig.json
+│   └── web-app
 ├── scripts
-│   └── copy-contracts-artifacts.ts
+│   └── copy-contracts-artifacts.ts
 ├── .editorconfig
 ├── .env
 ├── .env.example
@@ -112,6 +121,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -127,6 +137,13 @@ yarn compile
 ```
 
 </TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm compile
+```
+
+</TabItem>
 </Tabs>
 
 ### Pruebe los contratos
@@ -139,6 +156,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -154,6 +172,13 @@ yarn test
 ```
 
 </TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm test
+```
+
+</TabItem>
 </Tabs>
 
 Genere un reporte de la prueba de cobertura:
@@ -164,6 +189,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -179,6 +205,13 @@ yarn test:coverage
 ```
 
 </TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm test:coverage
+```
+
+</TabItem>
 </Tabs>
 
 O un reporte de la prueba de gas:
@@ -189,6 +222,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -201,6 +235,13 @@ npm run test:report-gas
 
 ```bash
 yarn test:report-gas
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm test:report-gas
 ```
 
 </TabItem>
@@ -226,6 +267,7 @@ En la carpeta raíz del proyecto:
     values={[
     {label: 'npm', value: 'npm'},
     {label: 'Yarn', value: 'yarn'},
+    {label: 'pnpm', value: 'pnpm'}
     ]}>
     <TabItem value="npm">
 
@@ -238,6 +280,13 @@ En la carpeta raíz del proyecto:
 
     ```bash
     yarn deploy --semaphore <semaphore-address> --group <group-id> --network goerli
+    ```
+
+    </TabItem>
+    <TabItem value="pnpm">
+
+    ```bash
+    pnpm deploy --semaphore <semaphore-address> --group <group-id> --network goerli
     ```
 
     </TabItem>
@@ -261,6 +310,7 @@ groupId="package-managers"
 values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
 ]}>
 <TabItem value="npm">
 
@@ -273,6 +323,13 @@ npm run dev
 
 ```bash
 yarn dev
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm dev
 ```
 
 </TabItem>
