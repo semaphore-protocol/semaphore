@@ -7,7 +7,7 @@ interface ISemaphore {
     error Semaphore__MerkleTreeDepthIsNotSupported();
     error Semaphore__MerkleTreeRootIsExpired();
     error Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
-    error Semaphore__YouAreUsingTheSameNillifierTwice();
+    error Semaphore__YouAreUsingTheSameNullifierTwice();
     error Semaphore__InvalidProof();
 
     /// It defines all the group parameters used by Semaphore.sol.
