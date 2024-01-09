@@ -42,7 +42,7 @@
     },
     {
         "inputs": [],
-        "name": "Semaphore__YouAreUsingTheSameNillifierTwice",
+        "name": "Semaphore__YouAreUsingTheSameNullifierTwice",
         "type": "error"
     },
     {

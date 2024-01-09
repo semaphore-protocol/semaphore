@@ -283,7 +283,7 @@ describe("Semaphore", () => {
 
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreContract,
-                "Semaphore__YouAreUsingTheSameNillifierTwice"
+                "Semaphore__YouAreUsingTheSameNullifierTwice"
             )
         })
 

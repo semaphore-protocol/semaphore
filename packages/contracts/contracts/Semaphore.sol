@@ -133,7 +133,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         }
 
         if (groups[groupId].nullifiers[nullifier]) {
-            revert Semaphore__YouAreUsingTheSameNillifierTwice();
+            revert Semaphore__YouAreUsingTheSameNullifierTwice();
         }
 
         if (
