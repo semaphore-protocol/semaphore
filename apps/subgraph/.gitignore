@@ -1,0 +1,5 @@
+# Generate output
+generated
+
+# The Graph
+subgraph.yaml

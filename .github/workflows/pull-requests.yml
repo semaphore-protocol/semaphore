@@ -41,6 +41,9 @@ jobs:
             - name: Build libraries
               run: yarn build:libraries
 
+            - name: Build subgraph
+              run: yarn build:subgraph
+
             - name: Run Prettier
               run: yarn prettier
 
@@ -77,5 +80,8 @@ jobs:
             - name: Build libraries
               run: yarn build:libraries
 
-            - name: Test contracts and libraries
+            - name: Build subgraph
+              run: yarn build:subgraph
+
+            - name: Test contracts, libraries and subgraph
               run: yarn test

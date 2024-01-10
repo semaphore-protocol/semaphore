@@ -43,11 +43,47 @@ jobs:
             - name: Build libraries
               run: yarn build:libraries
 
+            - name: Build subgraph
+              run: yarn build:subgraph
+
             - name: Run Prettier
               run: yarn prettier
 
             - name: Run Eslint
               run: yarn lint
+
+    test-subgraph:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Install Node.js
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 16.x
+
+            - name: Get yarn cache directory path
+              id: yarn-cache-dir-path
+              run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+            - name: Restore yarn cache
+              uses: actions/cache@v3
+              id: yarn-cache
+              with:
+                  path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-yarn-
+
+            - name: Install dependencies
+              run: yarn
+
+            - name: Build subgraph
+              run: yarn build:subgraph
+
+            - name: Test subgraph
+              run: yarn test:subgraph
 
     test:
         runs-on: ubuntu-latest
