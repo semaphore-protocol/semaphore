@@ -11,7 +11,7 @@ import IconPSE from "../icons/IconPSE"
 import { chunkArray } from "../utils/chunkArray"
 import { getProjectCategories } from "../utils/getProjectCategories"
 
-const sortedProjects = allProjects.sort((a, b) => a.name.localeCompare(b.name))
+const sortedProjects = allProjects.slice().sort((a, b) => a.name.localeCompare(b.name))
 
 export default function ProjectsList(props: any) {
     const [projects, setProjects] = useState<(typeof allProjects)[]>(chunkArray(sortedProjects))
