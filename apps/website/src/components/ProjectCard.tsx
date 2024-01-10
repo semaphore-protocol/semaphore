@@ -1,4 +1,4 @@
-import { Card, CardBody, CardFooter, HStack, Heading, Link, LinkProps, Tag, Text } from "@chakra-ui/react"
+import { Card, CardBody, CardFooter, CardProps, HStack, Heading, Link, Tag, Text } from "@chakra-ui/react"
 import IconDiscord from "../icons/IconDiscord"
 import IconGithub from "../icons/IconGithub"
 import IconWebsite from "../icons/IconWebsite"
@@ -20,7 +20,7 @@ export default function ProjectCard({
     githubUrl,
     discordUrl,
     ...props
-}: ProjectCardProps & LinkProps) {
+}: ProjectCardProps & CardProps) {
     return (
         <Card
             bg="darkBlue"
@@ -32,6 +32,7 @@ export default function ProjectCard({
             w="full"
             h="full"
             _hover={{ borderColor: "ceruleanBlue" }}
+            {...props}
         >
             <HStack gap="8px" mb="2rem" wrap="wrap">
                 {categories.map((category) => (
