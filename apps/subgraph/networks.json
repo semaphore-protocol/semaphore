@@ -1,0 +1,44 @@
+{
+    "sepolia": {
+        "Semaphore": {
+            "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
+            "startBlock": 3231111
+        }
+    },
+    "goerli": {
+        "Semaphore": {
+            "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
+            "startBlock": 8777695
+        }
+    },
+    "mumbai": {
+        "Semaphore": {
+            "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
+            "startBlock": 33995010
+        }
+    },
+    "optimism-goerli": {
+        "Semaphore": {
+            "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
+            "startBlock": 7632846
+        }
+    },
+    "arbitrum-goerli": {
+        "Semaphore": {
+            "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
+            "startBlock": 15174410
+        }
+    },
+    "arbitrum-one": {
+        "Semaphore": {
+            "address": "0xc60E0Ee1a2770d5F619858C641f14FC4a6401520",
+            "startBlock": 77278430
+        }
+    },
+    "localhost": {
+        "Semaphore": {
+            "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+            "startBlock": 0
+        }
+    }
+}
