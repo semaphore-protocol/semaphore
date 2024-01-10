@@ -74,7 +74,9 @@ export default function Home() {
                                 title={project.name}
                                 description={project.tagline}
                                 categories={project.categories}
-                                url={project.links.website || project.links.github}
+                                url={project.links.website}
+                                githubUrl={project.links.github}
+                                discordUrl={project.links.discord}
                             />
                         ))}
                     </VStack>
