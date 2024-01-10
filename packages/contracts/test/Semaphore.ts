@@ -205,6 +205,78 @@ describe("Semaphore", () => {
     })
 
     describe("# verifyProof", () => {
+        const groupId = 10
+        const message = 2
+        const identity = new Identity("0")
+
+        const group = new Group()
+
+        group.addMembers(members)
+
+        let fullProof: SemaphoreProof
+
+        before(async () => {
+            await semaphoreContract["createGroup(uint256,address)"](groupId, accounts[0])
+
+            await semaphoreContract.addMembers(groupId, members)
+
+            fullProof = await generateProof(identity, group, message, group.root as string, 10)
+        })
+
+        it("Should not verify a proof if the group does not exist", async () => {
+            const transaction = semaphoreContract.verifyProof(11, 1, 0, message, 0, [0, 0, 0, 0, 0, 0, 0, 0])
+
+            await expect(transaction).to.be.revertedWithCustomError(semaphoreContract, "Semaphore__GroupDoesNotExist")
+        })
+
+        it("Should not verify a proof if the Merkle tree root is not part of the group", async () => {
+            const transaction = semaphoreContract.verifyProof(groupId, 1, 0, message, 0, [0, 0, 0, 0, 0, 0, 0, 0])
+
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__MerkleTreeRootIsNotPartOfTheGroup"
+            )
+        })
+
+        it("Should verify a proof for an onchain group", async () => {
+            const validProof = await semaphoreContract.verifyProof(
+                groupId,
+                fullProof.merkleRoot,
+                fullProof.nullifier,
+                fullProof.message,
+                fullProof.merkleRoot,
+                fullProof.proof
+            )
+
+            expect(validProof).to.equal(true)
+        })
+
+        it("Should not verify a proof if the Merkle tree root is expired", async () => {
+            const groupId = 2
+
+            const group = new Group()
+
+            group.addMembers([members[0], members[1]])
+
+            const fullProof = await generateProof(identity, group, message, group.root as string, 10)
+
+            const transaction = semaphoreContract.verifyProof(
+                groupId,
+                fullProof.merkleRoot,
+                fullProof.nullifier,
+                fullProof.message,
+                fullProof.merkleRoot,
+                fullProof.proof
+            )
+
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__MerkleTreeRootIsExpired"
+            )
+        })
+    })
+
+    describe("# validateProof", () => {
         const message = 2
         const identity = new Identity("0")
         const groupOneMemberId = 6
@@ -234,23 +306,8 @@ describe("Semaphore", () => {
             )
         })
 
-        it("Should not verify a proof if the group does not exist", async () => {
-            const transaction = semaphoreContract.verifyProof(10, 1, 0, message, 0, [0, 0, 0, 0, 0, 0, 0, 0])
-
-            await expect(transaction).to.be.revertedWithCustomError(semaphoreContract, "Semaphore__GroupDoesNotExist")
-        })
-
-        it("Should not verify a proof if the Merkle tree root is not part of the group", async () => {
-            const transaction = semaphoreContract.verifyProof(2, 1, 0, message, 0, [0, 0, 0, 0, 0, 0, 0, 0])
-
-            await expect(transaction).to.be.revertedWithCustomError(
-                semaphoreContract,
-                "Semaphore__MerkleTreeRootIsNotPartOfTheGroup"
-            )
-        })
-
         it("Should throw an exception if the proof is not valid", async () => {
-            const transaction = semaphoreContract.verifyProof(
+            const transaction = semaphoreContract.validateProof(
                 groupId,
                 fullProof.merkleRoot,
                 fullProof.nullifier,
@@ -262,8 +319,8 @@ describe("Semaphore", () => {
             await expect(transaction).to.be.revertedWithCustomError(semaphoreContract, "Semaphore__InvalidProof")
         })
 
-        it("Should verify a proof for an onchain group with one member correctly", async () => {
-            const transaction = semaphoreContract.verifyProof(
+        it("Should validate a proof for an onchain group with one member correctly", async () => {
+            const transaction = semaphoreContract.validateProof(
                 groupOneMemberId,
                 fullProofOneMember.merkleRoot,
                 fullProofOneMember.nullifier,
@@ -273,7 +330,7 @@ describe("Semaphore", () => {
             )
 
             await expect(transaction)
-                .to.emit(semaphoreContract, "ProofVerified")
+                .to.emit(semaphoreContract, "ProofValidated")
                 .withArgs(
                     groupOneMemberId,
                     fullProofOneMember.merkleRoot,
@@ -284,8 +341,8 @@ describe("Semaphore", () => {
                 )
         })
 
-        it("Should verify a proof for an onchain group with more than one member correctly", async () => {
-            const transaction = semaphoreContract.verifyProof(
+        it("Should validate a proof for an onchain group with more than one member correctly", async () => {
+            const transaction = semaphoreContract.validateProof(
                 groupId,
                 fullProof.merkleRoot,
                 fullProof.nullifier,
@@ -295,7 +352,7 @@ describe("Semaphore", () => {
             )
 
             await expect(transaction)
-                .to.emit(semaphoreContract, "ProofVerified")
+                .to.emit(semaphoreContract, "ProofValidated")
                 .withArgs(
                     groupId,
                     fullProof.merkleRoot,
@@ -306,8 +363,8 @@ describe("Semaphore", () => {
                 )
         })
 
-        it("Should not verify the same proof for an onchain group twice", async () => {
-            const transaction = semaphoreContract.verifyProof(
+        it("Should not validate the same proof for an onchain group twice", async () => {
+            const transaction = semaphoreContract.validateProof(
                 groupId,
                 fullProof.merkleRoot,
                 fullProof.nullifier,
@@ -319,29 +376,6 @@ describe("Semaphore", () => {
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreContract,
                 "Semaphore__YouAreUsingTheSameNullifierTwice"
-            )
-        })
-
-        it("Should not verify a proof if the Merkle tree root is expired", async () => {
-            const groupId = 2
-            const group = new Group()
-
-            group.addMembers([members[0], members[1]])
-
-            const fullProof = await generateProof(identity, group, message, group.root as string, 10)
-
-            const transaction = semaphoreContract.verifyProof(
-                groupId,
-                fullProof.merkleRoot,
-                fullProof.nullifier,
-                fullProof.message,
-                fullProof.merkleRoot,
-                fullProof.proof
-            )
-
-            await expect(transaction).to.be.revertedWithCustomError(
-                semaphoreContract,
-                "Semaphore__MerkleTreeRootIsExpired"
             )
         })
     })
