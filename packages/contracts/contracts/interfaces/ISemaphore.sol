@@ -27,14 +27,14 @@ interface ISemaphore {
         uint256 newMerkleTreeDuration
     );
 
-    /// @dev Emitted when a Semaphore proof is verified.
+    /// @dev Emitted when a Semaphore proof is validated.
     /// @param groupId: Id of the group.
     /// @param merkleTreeRoot: Root of the Merkle tree.
     /// @param nullifier: Nullifier.
     /// @param message: Semaphore message.
     /// @param scope: Scope.
     /// @param proof: Zero-knowledge proof.
-    event ProofVerified(
+    event ProofValidated(
         uint256 indexed groupId,
         uint256 indexed merkleTreeRoot,
         uint256 nullifier,
@@ -85,7 +85,7 @@ interface ISemaphore {
     /// @param message: Semaphore message.
     /// @param scope: Scope.
     /// @param proof: Zero-knowledge proof.
-    function verifyProof(
+    function validateProof(
         uint256 groupId,
         uint256 merkleTreeRoot,
         uint256 nullifier,
@@ -93,4 +93,20 @@ interface ISemaphore {
         uint256 scope,
         uint256[8] calldata proof
     ) external;
+
+    /// @dev Verifies a zero-knowledge proof by returning true or false.
+    /// @param groupId: Id of the group.
+    /// @param merkleTreeRoot: Root of the Merkle tree.
+    /// @param nullifier: Nullifier.
+    /// @param message: Semaphore message.
+    /// @param scope: Scope.
+    /// @param proof: Zero-knowledge proof.
+    function verifyProof(
+        uint256 groupId,
+        uint256 merkleTreeRoot,
+        uint256 nullifier,
+        uint256 message,
+        uint256 scope,
+        uint256[8] calldata proof
+    ) external view returns (bool);
 }
