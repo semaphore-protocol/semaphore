@@ -100,8 +100,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
     }
 
-    /// @dev See {ISemaphore-verifyProof}.
-    function verifyProof(
+    function validateProof(
         uint256 groupId,
         uint256 merkleTreeRoot,
         uint256 nullifier,
@@ -109,6 +108,27 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 scope,
         uint256[8] calldata proof
     ) external override onlyExistingGroup(groupId) {
+        if (groups[groupId].nullifiers[nullifier]) {
+            revert Semaphore__YouAreUsingTheSameNullifierTwice();
+        }
+
+        if (!verifyProof(groupId, merkleTreeRoot, nullifier, message, scope, proof)) {
+            revert Semaphore__InvalidProof();
+        }
+
+        groups[groupId].nullifiers[nullifier] = true;
+
+        emit ProofValidated(groupId, merkleTreeRoot, nullifier, message, scope, proof);
+    }
+
+    function verifyProof(
+        uint256 groupId,
+        uint256 merkleTreeRoot,
+        uint256 nullifier,
+        uint256 message,
+        uint256 scope,
+        uint256[8] calldata proof
+    ) public view override onlyExistingGroup(groupId) returns (bool) {
         uint256 merkleTreeSize = getMerkleTreeSize(groupId);
 
         if (merkleTreeSize == 0) {
@@ -132,24 +152,13 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
             }
         }
 
-        if (groups[groupId].nullifiers[nullifier]) {
-            revert Semaphore__YouAreUsingTheSameNullifierTwice();
-        }
-
-        if (
-            !verifier.verifyProof(
+        return
+            verifier.verifyProof(
                 [proof[0], proof[1]],
                 [[proof[2], proof[3]], [proof[4], proof[5]]],
                 [proof[6], proof[7]],
                 [merkleTreeRoot, nullifier, _hash(message), _hash(scope)]
-            )
-        ) {
-            revert Semaphore__InvalidProof();
-        }
-
-        groups[groupId].nullifiers[nullifier] = true;
-
-        emit ProofVerified(groupId, merkleTreeRoot, nullifier, message, scope, proof);
+            );
     }
 
     /// @dev Creates a keccak256 hash of a message compatible with the SNARK scalar modulus.
