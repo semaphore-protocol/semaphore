@@ -105,7 +105,7 @@
         "pse": true,
         "icon": "",
         "links": {
-            "website": "https://community.semaphore.pse.dev/semaphore-explorer",
+            "website": "https://explorer.semaphore.pse.dev",
             "github": "https://github.com/semaphore-protocol/explorer",
             "discord": "https://semaphore.pse.dev/discord"
         }
