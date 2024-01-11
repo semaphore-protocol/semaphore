@@ -1,14 +1,3 @@
-import Carousel from "@/components/Carousel"
-import IconBadge from "@/icons/IconBadge"
-import IconCheck from "@/icons/IconCheck"
-import IconEye from "@/icons/IconEye"
-import IconEyelash from "@/icons/IconEyelash"
-import IconFlag from "@/icons/IconFlag"
-import IconGroup from "@/icons/IconGroup"
-import IconManageUsers from "@/icons/IconManageUsers"
-import IconTree from "@/icons/IconTree"
-import IconUser from "@/icons/IconUser"
-import { sortByDate } from "@/utils/sortByDate"
 import {
     Box,
     Divider,
@@ -25,11 +14,22 @@ import {
     VStack
 } from "@chakra-ui/react"
 import ArticleCard from "../../components/ArticleCard"
+import Carousel from "../../components/Carousel"
 import InfoCard, { InfoBlock } from "../../components/InfoCard"
 import SectionBlock, { SectionBlockProps } from "../../components/SectionBlock"
 import VideoCard from "../../components/VideoCard"
 import articles from "../../data/articles.json"
 import videos from "../../data/videos.json"
+import IconBadge from "../../icons/IconBadge"
+import IconCheck from "../../icons/IconCheck"
+import IconEye from "../../icons/IconEye"
+import IconEyelash from "../../icons/IconEyelash"
+import IconFlag from "../../icons/IconFlag"
+import IconGroup from "../../icons/IconGroup"
+import IconManageUsers from "../../icons/IconManageUsers"
+import IconTree from "../../icons/IconTree"
+import IconUser from "../../icons/IconUser"
+import { sortByDate } from "../../utils/sortByDate"
 
 export default function Learn() {
     const infoCardTexts: InfoBlock[][] = [
