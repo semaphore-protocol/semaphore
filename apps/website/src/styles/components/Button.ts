@@ -1,6 +1,5 @@
 import { StyleFunctionProps, SystemStyleObject } from "@chakra-ui/theme-tools"
 import { font } from "../styles"
-import colors from "../colors"
 
 const Button = {
     baseStyle: {
@@ -14,22 +13,41 @@ const Button = {
         paddingRight: "18px !important"
     },
     defaultProps: {
-        colorScheme: "#FFFFFF"
+        colorScheme: "white"
     },
     variants: {
         solid: (props: StyleFunctionProps): SystemStyleObject => {
             const { colorScheme: c } = props
 
-            return {
-                bg: c,
-                color: colors.darkBlueBg,
-                _hover: {
-                    color: c,
-                    bgGradient: colors.semaphore,
-                    _disabled: {
-                        bg: c
-                    }
+            if (c === "primary") {
+                const bgGradient = "linear(to-r, primary.500, primary.800)"
+                const color = "white"
+
+                return {
+                    bgGradient,
+                    color,
+                    _hover: {
+                        bg: `${c}.800`,
+                        _disabled: {
+                            bgGradient
+                        }
+                    },
+                    _active: { bg: `${c}.800` }
                 }
+            }
+
+            const bg = c
+
+            return {
+                bg,
+                color: `darkBlueBg`,
+                _hover: {
+                    bg: `primary.200`,
+                    _disabled: {
+                        bg
+                    }
+                },
+                _active: { bg: `primary.200` }
             }
         },
         outline: (props: StyleFunctionProps): SystemStyleObject => {
@@ -37,11 +55,11 @@ const Button = {
 
             return {
                 color: c,
-                border: `1.2px solid ${c}`,
+                borderWidth: "1.2px",
+                borderColor: c,
                 _hover: {
-                    bg: colors.darkBlueBg,
                     color: c,
-                    border: `1.2px solid ${colors.primary["600"]}`,
+                    borderColor: "primary.200",
                     _disabled: {
                         bg: c
                     }

@@ -19,7 +19,7 @@ export default function NavbarLinks({ onClick }: NavbarProps) {
                 as={NextLink}
                 href="/projects"
                 variant="navlink"
-                borderBottomColor={pathname === "/projects" ? "ceruleanBlue" : "transparent"}
+                borderBottomColor={pathname === "/projects" ? "primary.600" : "transparent"}
             >
                 <Heading fontSize="18px" fontWeight="normal">
                     Projects
@@ -30,7 +30,7 @@ export default function NavbarLinks({ onClick }: NavbarProps) {
                 as={NextLink}
                 href="/build"
                 variant="navlink"
-                borderBottomColor={pathname === "/build" ? "ceruleanBlue" : "transparent"}
+                borderBottomColor={pathname === "/build" ? "primary.600" : "transparent"}
             >
                 <Heading fontSize="18px" fontWeight="normal">
                     Build
@@ -41,7 +41,7 @@ export default function NavbarLinks({ onClick }: NavbarProps) {
                 as={NextLink}
                 href="/learn"
                 variant="navlink"
-                borderBottomColor={pathname === "/learn" ? "ceruleanBlue" : "transparent"}
+                borderBottomColor={pathname === "/learn" ? "primary.600" : "transparent"}
             >
                 <Heading fontSize="18px" fontWeight="normal">
                     Learn

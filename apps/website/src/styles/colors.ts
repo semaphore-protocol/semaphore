@@ -1,15 +1,6 @@
 const colors = {
     darkBlue: "#0E101B",
     darkBlueBg: "#00020D",
-    ceruleanBlue: "#3555DF",
-    semaphore: "linear(to-r, primary.500, primary.800)",
-    alabaster: {
-        300: "#B8B9C1",
-        400: "#92939E",
-        600: "#5E5F6B",
-        800: "#42424A",
-        950: "#26262B"
-    },
     primary: {
         50: "#f0f4fe",
         100: "#dde6fc",
