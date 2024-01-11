@@ -3,3 +3,6 @@ generated
 
 # The Graph
 subgraph.yaml
+
+# Tests
+tests/.bin/semaphore.wasm
