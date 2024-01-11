@@ -1,34 +1,35 @@
-import {
-    Flex,
-    Link,
-    Text,
-    VStack,
-    Tabs,
-    TabList,
-    TabPanels,
-    Tab,
-    TabPanel,
-    Divider,
-    Box,
-    Image
-} from "@chakra-ui/react"
-import InfoCard, { InfoBlock } from "../../components/InfoCard"
-import SectionBlock, { SectionBlockProps } from "../../components/SectionBlock"
-import IconEyelash from "@/icons/IconEyelash"
-import IconEye from "@/icons/IconEye"
-import IconUser from "@/icons/IconUser"
-import IconTree from "@/icons/IconTree"
-import IconManageUsers from "@/icons/IconManageUsers"
-import IconGroup from "@/icons/IconGroup"
+import Carousel from "@/components/Carousel"
 import IconBadge from "@/icons/IconBadge"
 import IconCheck from "@/icons/IconCheck"
+import IconEye from "@/icons/IconEye"
+import IconEyelash from "@/icons/IconEyelash"
 import IconFlag from "@/icons/IconFlag"
-import Carousel from "@/components/Carousel"
-import videos from "../../data/videos.json"
+import IconGroup from "@/icons/IconGroup"
+import IconManageUsers from "@/icons/IconManageUsers"
+import IconTree from "@/icons/IconTree"
+import IconUser from "@/icons/IconUser"
+import { sortByDate } from "@/utils/sortByDate"
+import {
+    Box,
+    Divider,
+    Flex,
+    Heading,
+    Image,
+    Link,
+    Tab,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Tabs,
+    Text,
+    VStack
+} from "@chakra-ui/react"
+import ArticleCard from "../../components/ArticleCard"
+import InfoCard, { InfoBlock } from "../../components/InfoCard"
+import SectionBlock, { SectionBlockProps } from "../../components/SectionBlock"
 import VideoCard from "../../components/VideoCard"
 import articles from "../../data/articles.json"
-import ArticleCard from "../../components/ArticleCard"
-import { sortByDate } from "@/utils/sortByDate"
+import videos from "../../data/videos.json"
 
 export default function Learn() {
     const infoCardTexts: InfoBlock[][] = [
@@ -343,6 +344,8 @@ await verifyProof(verificationKey, fullProof)`,
                         type="videos"
                     />
 
+                    <Divider />
+
                     <Carousel
                         title="Articles"
                         sizes={{
@@ -353,44 +356,36 @@ await verifyProof(verificationKey, fullProof)`,
                     />
                 </VStack>
 
-                <VStack spacing="16" w="full">
-                    <Text
-                        display={{ base: "flex", xl: "none" }}
-                        flex="1"
-                        alignSelf="start"
-                        fontSize={{ base: "40px", md: "44px" }}
-                        fontWeight="500"
-                        mt="100px"
-                    >
-                        Videos
-                    </Text>
-                    <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto" align="stretch">
-                        {sortByDate(videos).map((video) => (
-                            <Box px="3" key={video.url}>
-                                <VideoCard title={video.title} thumbnail={video.thumbnail} url={video.url} />
-                            </Box>
-                        ))}
-                    </Flex>
-                </VStack>
+                <VStack display={{ base: "flex", xl: "none" }} p="100px 40px" w="full" spacing="20">
+                    <VStack spacing="16" w="full">
+                        <Heading fontSize={{ base: "30px", md: "44px" }} alignSelf="start">
+                            Videos
+                        </Heading>
 
-                <VStack spacing="16" w="full">
-                    <Text
-                        display={{ base: "flex", xl: "none" }}
-                        flex="1"
-                        alignSelf="start"
-                        fontSize="44px"
-                        fontWeight="500"
-                        mt="96px"
-                    >
-                        Articles
-                    </Text>
-                    <Flex display={{ base: "flex", xl: "none" }} w="100%" overflowX="auto" mb="66px" align="stretch">
-                        {sortByDate(articles).map((article) => (
-                            <Box px="3" key={article.url}>
-                                <ArticleCard title={article.title} minRead={article.minRead} url={article.url} />
-                            </Box>
-                        ))}
-                    </Flex>
+                        <Flex w="100%" overflowX="auto" align="stretch">
+                            {sortByDate(videos).map((video) => (
+                                <Box px="3" key={video.url}>
+                                    <VideoCard title={video.title} thumbnail={video.thumbnail} url={video.url} />
+                                </Box>
+                            ))}
+                        </Flex>
+                    </VStack>
+
+                    <Divider />
+
+                    <VStack spacing="16" w="full">
+                        <Heading fontSize={{ base: "30px", md: "44px" }} alignSelf="start">
+                            Articles
+                        </Heading>
+
+                        <Flex w="100%" overflowX="auto" mb="66px" align="stretch">
+                            {sortByDate(articles).map((article) => (
+                                <Box px="3" key={article.url}>
+                                    <ArticleCard title={article.title} minRead={article.minRead} url={article.url} />
+                                </Box>
+                            ))}
+                        </Flex>
+                    </VStack>
                 </VStack>
             </VStack>
         </VStack>
