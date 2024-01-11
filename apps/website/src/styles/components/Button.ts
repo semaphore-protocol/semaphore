@@ -26,6 +26,8 @@ const Button = {
                 return {
                     bgGradient,
                     color,
+                    transitionDuration: "200ms",
+                    transitionTimingFunction: "linear",
                     _hover: {
                         bg: `${c}.800`,
                         _disabled: {
@@ -41,6 +43,8 @@ const Button = {
             return {
                 bg,
                 color: `darkBlueBg`,
+                transitionDuration: "200ms",
+                transitionTimingFunction: "linear",
                 _hover: {
                     bg: `primary.200`,
                     _disabled: {
@@ -55,6 +59,8 @@ const Button = {
 
             return {
                 color: c,
+                transitionDuration: "200ms",
+                transitionTimingFunction: "linear",
                 borderWidth: "1.2px",
                 borderColor: c,
                 _hover: {
