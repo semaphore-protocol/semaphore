@@ -1,4 +1,4 @@
-import { Flex, Link, Text, VStack, Box, Image } from "@chakra-ui/react"
+import { Flex, Link, Text, VStack, Box, Image, Heading } from "@chakra-ui/react"
 import ActionCard from "../../components/ActionCard"
 import ToolsCard from "../../components/ToolsCard"
 import IconArrowRight from "../../icons/IconArrowRight"
@@ -60,10 +60,10 @@ export default function Build() {
     return (
         <VStack justify="center">
             <VStack mt="90px">
-                <Text textAlign="center" fontSize={{ base: "40px", md: "72px" }}>
+                <Heading fontSize={{ base: "40px", sm: "46px", md: "72px" }} textAlign="center">
                     Let’s build something new
-                </Text>
-                <Text textAlign="center" fontSize={{ base: "16px", md: "20px" }} color="text.400" mt="14px">
+                </Heading>
+                <Text textAlign="center" fontSize={{ base: "16px", sm: "18px", md: "20px" }} color="text.400" mt="14px">
                     Jumpstart your app development process with these building tools.
                 </Text>
                 <VStack mt="64px">
