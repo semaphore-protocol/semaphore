@@ -28,17 +28,6 @@ export default function NavbarLinks({ onClick }: NavbarProps) {
             <Link
                 onClick={onClick}
                 as={NextLink}
-                href="/learn"
-                variant="navlink"
-                borderBottomColor={pathname === "/learn" ? "ceruleanBlue" : "transparent"}
-            >
-                <Heading fontSize="18px" fontWeight="normal">
-                    Learn
-                </Heading>
-            </Link>
-            <Link
-                onClick={onClick}
-                as={NextLink}
                 href="/build"
                 variant="navlink"
                 borderBottomColor={pathname === "/build" ? "ceruleanBlue" : "transparent"}
@@ -47,6 +36,18 @@ export default function NavbarLinks({ onClick }: NavbarProps) {
                     Build
                 </Heading>
             </Link>
+            <Link
+                onClick={onClick}
+                as={NextLink}
+                href="/learn"
+                variant="navlink"
+                borderBottomColor={pathname === "/learn" ? "ceruleanBlue" : "transparent"}
+            >
+                <Heading fontSize="18px" fontWeight="normal">
+                    Learn
+                </Heading>
+            </Link>
+
             <Link href="https://docs.semaphore.pse.dev" variant="navlink" isExternal>
                 <HStack spacing="3">
                     <Heading fontSize="18px" fontWeight="normal">
