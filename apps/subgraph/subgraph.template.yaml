@@ -1,0 +1,35 @@
+specVersion: 0.0.5
+schema:
+    file: ./schema.graphql
+dataSources:
+    - kind: ethereum
+      name: Semaphore
+      network: {{ network }}
+      source:
+          address: "{{ address }}"
+          abi: Semaphore
+          startBlock: {{ startBlock }}
+      mapping:
+          kind: ethereum/events
+          apiVersion: 0.0.7
+          language: wasm/assemblyscript
+          entities:
+              - Group
+              - Member
+          abis:
+              - name: Semaphore
+                file: ./abis/Semaphore.json
+          eventHandlers:
+              - event: GroupCreated(indexed uint256,uint256,uint256)
+                handler: createGroup
+              - event: GroupAdminUpdated(indexed uint256,indexed address,indexed address)
+                handler: updateGroupAdmin
+              - event: MemberAdded(indexed uint256,uint256,uint256,uint256)
+                handler: addMember
+              - event: MemberUpdated(indexed uint256,uint256,uint256,uint256,uint256)
+                handler: updateMember
+              - event: MemberRemoved(indexed uint256,uint256,uint256,uint256)
+                handler: removeMember
+              - event: ProofVerified(indexed uint256,indexed uint256,uint256,indexed uint256,uint256)
+                handler: addVerifiedProof
+          file: ./src/semaphore.ts
