@@ -59,12 +59,12 @@ export default function ProjectCard({
                         )}
                         {url && (
                             <Link href={url} isExternal>
-                                <IconWebsite boxSize={{ base: "16px", md: "24px" }} />
+                                <IconWebsite boxSize={{ base: "16px", md: "22px" }} />
                             </Link>
                         )}
                         {discordUrl && (
                             <Link href={discordUrl} isExternal>
-                                <IconDiscord boxSize={{ base: "16px", md: "24px" }} />
+                                <IconDiscord boxSize={{ base: "16px", md: "23px" }} />
                             </Link>
                         )}
                     </HStack>
