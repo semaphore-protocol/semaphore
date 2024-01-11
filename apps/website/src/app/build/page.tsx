@@ -9,7 +9,7 @@ import IconCli from "../../icons/IconCli"
 export default function Build() {
     const toolCardsInfo = [
         {
-            icon: <IconCli width={8} height={8} color="ceruleanBlue" />,
+            icon: <IconCli width={8} height={8} color="primary.600" />,
             title: "CLI",
             subtitle: "INTEGRATE TO YOUR PROJECT",
             url: "https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli#readme",
@@ -20,7 +20,7 @@ export default function Build() {
             ]
         },
         {
-            icon: <IconBook width={8} height={8} color="ceruleanBlue" />,
+            icon: <IconBook width={8} height={8} color="primary.600" />,
             title: "Boilerplate",
             subtitle: "START FROM TEMPLATE",
             url: "https://github.com/semaphore-protocol/boilerplate",
@@ -31,7 +31,7 @@ export default function Build() {
             ]
         },
         {
-            icon: <IconBox width={8} height={8} color="ceruleanBlue" />,
+            icon: <IconBox width={8} height={8} color="primary.600" />,
             title: "Packages",
             subtitle: "LEVERAGE DEVELOPED LIBRARIES",
             url: "https://github.com/semaphore-protocol/semaphore/tree/main/packages",
@@ -63,7 +63,7 @@ export default function Build() {
                 <Text textAlign="center" fontSize={{ base: "40px", md: "72px" }}>
                     Let’s build something new
                 </Text>
-                <Text textAlign="center" fontSize={{ base: "16px", md: "20px" }} color="alabaster.400" mt="14px">
+                <Text textAlign="center" fontSize={{ base: "16px", md: "20px" }} color="text.400" mt="14px">
                     Jumpstart your app development process with these building tools.
                 </Text>
                 <VStack mt="64px">
@@ -105,7 +105,7 @@ export default function Build() {
                         <Text fontSize={{ base: "30px", md: "44px" }} fontWeight="500">
                             Contribute to Semaphore
                         </Text>
-                        <Text fontSize={{ base: "16px", md: "18px" }} color="alabaster.300" mt="16px">
+                        <Text fontSize={{ base: "16px", md: "18px" }} color="text.300" mt="16px">
                             Semaphore is open source with dozens of community contributors. You can propose improvements
                             to the protocol or take good first issues to get started.
                         </Text>

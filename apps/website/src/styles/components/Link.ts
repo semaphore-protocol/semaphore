@@ -13,11 +13,7 @@ const Link = {
             borderBottomWidth: "2px",
             pb: "5px",
             pt: "6px",
-            _hover: { borderBottomColor: "ceruleanBlue" }
-        }),
-        buttonlink: (): SystemStyleObject => ({
-            borderRadius: "100px",
-            fontWeight: "500"
+            _hover: { borderBottomColor: "primary.600" }
         })
     }
 }

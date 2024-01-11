@@ -116,7 +116,7 @@ export default function Home() {
                                     <Text fontSize={{ base: "18px", md: "20px" }} fontFamily={sora.style.fontFamily}>
                                         Simplified privacy
                                     </Text>
-                                    <Text color="alabaster.400" fontSize="14px">
+                                    <Text color="text.400" fontSize="14px">
                                         Semaphore streamlines privacy-centric app development. It empowers developers to
                                         effortlessly incorporate robust privacy features.
                                     </Text>
@@ -134,7 +134,7 @@ export default function Home() {
                                     <Text fontSize={{ base: "18px", md: "20px" }} fontFamily={sora.style.fontFamily}>
                                         Universal integrations
                                     </Text>
-                                    <Text color="alabaster.400" fontSize="14px">
+                                    <Text color="text.400" fontSize="14px">
                                         Semaphore is a protocol for Web2 and Web3. It integrates into any front-end
                                         framework or pure HTML/CSS/JS. It is cross-chain compatible with EVM, L2s, and
                                         alt-blockchains.
@@ -160,7 +160,7 @@ export default function Home() {
                                     <Text fontSize={{ base: "18px", md: "20px" }} fontFamily={sora.style.fontFamily}>
                                         Leverage Zero Knowledge
                                     </Text>
-                                    <Text color="alabaster.400" fontSize="14px">
+                                    <Text color="text.400" fontSize="14px">
                                         Semaphore leverages Zero Knowledge, allowing us to verify information without
                                         revealing any underlying data. This powerful primitive allows one to prove
                                         membership and signal anonymously.
@@ -179,7 +179,7 @@ export default function Home() {
                                     <Text fontSize={{ base: "18px", md: "20px" }} fontFamily={sora.style.fontFamily}>
                                         Free open source software
                                     </Text>
-                                    <Text color="alabaster.400" fontSize="14px">
+                                    <Text color="text.400" fontSize="14px">
                                         Semaphore is a Public Good. This means it will never seek to profit, it is owned
                                         by the community and will always remain open source.
                                     </Text>
