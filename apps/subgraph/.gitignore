@@ -5,4 +5,4 @@ generated
 subgraph.yaml
 
 # Tests
-tests/.bin/semaphore.wasm
+/tests/.bin
