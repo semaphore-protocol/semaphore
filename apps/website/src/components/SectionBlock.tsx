@@ -27,7 +27,7 @@ export default function SectionBlock({ title, description, linkText, linkUrl, co
                     <Text fontSize={{ base: "40px", md: "44px" }} fontWeight={{ base: "400", md: "500" }}>
                         {title}
                     </Text>
-                    <Text fontSize={{ base: "16px", md: "18px" }} textColor="alabaster.400">
+                    <Text fontSize={{ base: "16px", md: "18px" }} textColor="text.400">
                         {description}
                     </Text>
                     <Link display="flex" alignItems="center" gap="10px" justifyItems="center" href={linkUrl} isExternal>
@@ -51,7 +51,7 @@ export default function SectionBlock({ title, description, linkText, linkUrl, co
                     <VStack key={item.heading} alignItems="start">
                         <VStack>{item.icon}</VStack>
                         <Text fontSize="24px">{item.heading}</Text>
-                        <Text fontSize="16px" color="alabaster.400">
+                        <Text fontSize="16px" color="text.400">
                             {item.body}
                         </Text>
                     </VStack>

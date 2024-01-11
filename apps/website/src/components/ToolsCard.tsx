@@ -10,7 +10,8 @@ import {
     StackDivider,
     Box,
     Link,
-    Flex
+    Flex,
+    Button
 } from "@chakra-ui/react"
 import IconChevronRight from "@/icons/IconChevronRight"
 
@@ -29,34 +30,22 @@ export default function ToolsCard({ icon, title, subtitle, details, url }: Tools
             borderRadius="16px"
             color="white"
             border="1px"
-            borderColor="alabaster.950"
+            borderColor="text.950"
             padding="32px"
             width={{ base: "full", lg: "348px" }}
             height={{ base: "auto", lg: "501px" }}
         >
             <HStack mb="2rem">{icon}</HStack>
             <CardBody padding={0}>
-                <VStack divider={<StackDivider borderColor="alabaster.950" />} spacing="24px" align="stretch">
+                <VStack divider={<StackDivider borderColor="text.950" />} spacing="24px" align="stretch">
                     <Box>
                         <Heading fontSize="40px" fontWeight="normal">
                             {title}
                         </Heading>
-                        <Link
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            href={url}
-                            isExternal
-                            variant="buttonlink"
-                            py="10px"
-                            mt="24px"
-                            w="full"
-                            bgGradient="linear(to-r, primary.500, primary.800)"
-                            color="white"
-                            fontSize="18px"
-                            _hover={{ bgGradient: "linear(to-r, primary.500, primary.800)", opacity: "85%" }}
-                        >
-                            Select tool
+                        <Link href={url} isExternal>
+                            <Button w="full" colorScheme="primary" size={{ base: "md", md: "lg" }} mt="6">
+                                Select tool
+                            </Button>
                         </Link>
                     </Box>
                     <Box>
@@ -69,7 +58,7 @@ export default function ToolsCard({ icon, title, subtitle, details, url }: Tools
                                 <ListItem key={elem}>
                                     <Flex>
                                         <HStack alignItems="start" mt="8px">
-                                            <IconChevronRight height={2} width={2} color="ceruleanBlue" />
+                                            <IconChevronRight height={2} width={2} color="primary.600" />
                                         </HStack>
                                         <Text display="inline-block" ml="8px" fontSize="14px" lineHeight="22.4px">
                                             {elem}
