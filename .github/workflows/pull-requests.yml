@@ -17,19 +17,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: 20
-
-            - name: Get yarn cache directory path
-              id: yarn-cache-dir-path
-              run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-
-            - name: Restore yarn cache
-              uses: actions/cache@v3
-              id: yarn-cache
-              with:
-                  path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn-
+                  cache: yarn
 
             - name: Install dependencies
               run: yarn
@@ -59,6 +47,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: 20
+                  cache: yarn
 
             # https://github.com/iden3/circuits/blob/8fffb6609ecad0b7bcda19bb908bdb544bdb3cf7/.github/workflows/main.yml#L18-L22
             - name: Setup Circom deps
@@ -66,19 +55,6 @@ jobs:
 
             - name: Setup Circom
               run: wget https://github.com/iden3/circom/releases/latest/download/circom-linux-amd64 && sudo mv ./circom-linux-amd64 /usr/bin/circom && sudo chmod +x /usr/bin/circom
-
-            - name: Get yarn cache directory path
-              id: yarn-cache-dir-path
-              run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-
-            - name: Restore yarn cache
-              uses: actions/cache@v3
-              id: yarn-cache
-              with:
-                  path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn-
 
             - name: Install dependencies
               run: yarn
