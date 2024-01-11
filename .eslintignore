@@ -24,6 +24,10 @@ dist
 build
 /docs
 
+# subgraph
+subgraph.template.yaml
+generated
+
 # Docusaurus cache and generated files
 .docusaurus
 .cache-loader
