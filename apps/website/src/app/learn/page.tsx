@@ -92,17 +92,17 @@ const nullifier = identity.getNullifier()
 const commitment = identity.generateCommitment()`,
             itemList: [
                 {
-                    icon: <IconEyelash w="24px" h="24px" color="ceruleanBlue" />,
+                    icon: <IconEyelash w="24px" h="24px" color="primary.600" />,
                     heading: "Private values",
                     body: "Trapdoor and nullifier values are the private values of the Semaphore identity. To avoid fraud, the owner must keep both values secret."
                 },
                 {
-                    icon: <IconEye w="24px" h="24px" color="ceruleanBlue" />,
+                    icon: <IconEye w="24px" h="24px" color="primary.600" />,
                     heading: "Public values",
                     body: "Semaphore uses the Poseidon hash function to create the identity commitment from the identity private values. Identity commitments can be made public, similarly to Ethereum addresses."
                 },
                 {
-                    icon: <IconUser w="24px" h="24px" color="ceruleanBlue" />,
+                    icon: <IconUser w="24px" h="24px" color="primary.600" />,
                     heading: "Generate identities",
                     body: "Semaphore identities can be generated deterministically or randomly. Deterministic identities can be generated from the hash of a secret message."
                 }
@@ -121,17 +121,17 @@ const group = new Group(1)
 group.addMember(commitment)`,
             itemList: [
                 {
-                    icon: <IconTree w="24px" h="24px" color="ceruleanBlue" />,
+                    icon: <IconTree w="24px" h="24px" color="primary.600" />,
                     heading: "Merkle trees",
                     body: "Each leaf contains an identity commitment for a user. The identity commitment proves that the user is a group member without revealing the private identity of the user."
                 },
                 {
-                    icon: <IconGroup w="24px" h="24px" color="ceruleanBlue" />,
+                    icon: <IconGroup w="24px" h="24px" color="primary.600" />,
                     heading: "Types of groups",
                     body: "Groups can be created and managed in a decentralized fashion with Semaphore contracts or off-chain with our JavaScript libraries."
                 },
                 {
-                    icon: <IconManageUsers w="24px" h="24px" color="ceruleanBlue" />,
+                    icon: <IconManageUsers w="24px" h="24px" color="primary.600" />,
                     heading: "Group management",
                     body: "Users can join and leave groups by themselves, or an admin can add and remove them. Admins can be centralized authorities, Ethereum accounts, multi-sig wallets or smart contracts."
                 }
@@ -158,17 +158,17 @@ const verificationKey = JSON.parse(fs.readFileSync("./semaphore.json", "utf-8"))
 await verifyProof(verificationKey, fullProof)`,
             itemList: [
                 {
-                    icon: <IconBadge w="24px" h="24px" color="ceruleanBlue" />,
+                    icon: <IconBadge w="24px" h="24px" color="primary.600" />,
                     heading: "Membership",
                     body: "Only users who are part of a group can generate a valid proof for that group."
                 },
                 {
-                    icon: <IconFlag w="24px" h="24px" color="ceruleanBlue" />,
+                    icon: <IconFlag w="24px" h="24px" color="primary.600" />,
                     heading: "Signals",
                     body: "Group users can anonymously broadcast signals such as votes or endorsements without revealing their original identity."
                 },
                 {
-                    icon: <IconCheck w="24px" h="24px" color="ceruleanBlue" />,
+                    icon: <IconCheck w="24px" h="24px" color="primary.600" />,
                     heading: "Verifiers",
                     body: "Semaphore proofs can be verified with our contracts or off-chain with our JavaScript libraries."
                 }
@@ -317,7 +317,7 @@ await verifyProof(verificationKey, fullProof)`,
                             codeText={sectionBlockText.codeText}
                             itemList={sectionBlockText.itemList}
                         />
-                        {i !== sectionBlockTexts.length - 1 && <Divider my="68px" borderColor="alabaster.600" />}
+                        {i !== sectionBlockTexts.length - 1 && <Divider my="68px" borderColor="text.600" />}
                     </VStack>
                 ))}
             </VStack>

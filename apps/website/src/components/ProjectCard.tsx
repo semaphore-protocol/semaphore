@@ -27,11 +27,11 @@ export default function ProjectCard({
             borderRadius="18px"
             color="white"
             border="1px"
-            borderColor="alabaster.950"
+            borderColor="text.950"
             padding="34px"
             w="full"
             h="full"
-            _hover={{ borderColor: "ceruleanBlue" }}
+            _hover={{ borderColor: "primary.600" }}
             {...props}
         >
             <HStack gap="8px" mb="2rem" wrap="wrap">
