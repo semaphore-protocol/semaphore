@@ -235,9 +235,9 @@ await verifyProof(verificationKey, fullProof)`,
                 </Text>
                 <Link href="https://pse.dev/resources" isExternal>
                     <Text
-                        borderBottomWidth="1px"
+                        borderBottomWidth="2px"
                         borderBottomColor="white"
-                        _hover={{ borderBottomColor: "transparent" }}
+                        _hover={{ borderBottomColor: "primary.600" }}
                         fontSize={{ base: "16px", md: "20px" }}
                         fontWeight="normal"
                     >
