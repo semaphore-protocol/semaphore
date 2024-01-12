@@ -4,7 +4,8 @@ const Tag = {
     baseStyle: {
         container: {
             borderRadius: "100px",
-            padding: "5px 16px 5px 16px"
+            padding: "5px 16px 5px 16px",
+            borderWidth: "1px"
         }
     },
     defaultProps: {
@@ -22,7 +23,8 @@ const Tag = {
                 return {
                     container: {
                         bg,
-                        color
+                        color,
+                        borderColor: bg
                     }
                 }
             }
@@ -32,7 +34,8 @@ const Tag = {
             return {
                 container: {
                     bg,
-                    color: `darkBlue`
+                    color: `darkBlue`,
+                    borderColor: bg
                 }
             }
         },
@@ -42,7 +45,7 @@ const Tag = {
             return {
                 container: {
                     color: c,
-                    shadow: `inset 0 0 0px 1px ${c}`
+                    borderColor: c
                 }
             }
         }

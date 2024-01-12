@@ -74,6 +74,20 @@ export default function Learn() {
                 title: "Zero-knowledge",
                 body: "If the statement is true, no verifier learns anything other than the fact that the statement is true."
             }
+        ],
+        [
+            {
+                title: "Privacy",
+                body: "Zero-knowledge property enables hiding any personal information while still enabling to building convincing proofs."
+            },
+            {
+                title: "Scalability",
+                body: "Multiple proofs can be aggregated into a single one, enabling smaller machines to verify 100s of transactions or claims in one go."
+            },
+            {
+                title: "Interoperability",
+                body: "ZKPs enable porting trust from one “realm” to another, for example between web2<>web3 worlds."
+            }
         ]
     ]
 
@@ -221,9 +235,9 @@ await verifyProof(verificationKey, fullProof)`,
                 </Text>
                 <Link href="https://pse.dev/resources" isExternal>
                     <Text
-                        borderBottomWidth="1px"
+                        borderBottomWidth="2px"
                         borderBottomColor="white"
-                        _hover={{ borderBottomColor: "transparent" }}
+                        _hover={{ borderBottomColor: "primary.600" }}
                         fontSize={{ base: "16px", md: "20px" }}
                         fontWeight="normal"
                     >
@@ -232,22 +246,31 @@ await verifyProof(verificationKey, fullProof)`,
                 </Link>
             </VStack>
             <VStack mt="40px">
-                <VStack>
-                    <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
-                        Characteristics
-                    </Text>
-                    <InfoCard texts={infoCardTexts[0]} />
-                </VStack>
+                <Flex wrap={{ base: "wrap", lg: "nowrap" }} justify="center" alignItems="center" gap="32px">
+                    <VStack>
+                        <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
+                            Characteristics
+                        </Text>
+                        <InfoCard texts={infoCardTexts[2]} />
+                    </VStack>
+                    <VStack>
+                        <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
+                            Main use cases
+                        </Text>
+                        <InfoCard texts={infoCardTexts[3]} />
+                    </VStack>
+                </Flex>
             </VStack>
         </VStack>
     )
 
     return (
         <VStack w="full">
-            <VStack position="relative">
+            <VStack pt="170px" pb="112px" position="relative">
                 <Box
                     display={{ base: "none", md: "block" }}
                     zIndex="-1"
+                    top="0"
                     left="50%"
                     transform="translateX(-50%)"
                     w="100vw"
@@ -267,6 +290,7 @@ await verifyProof(verificationKey, fullProof)`,
                 <Box
                     display={{ base: "block", lg: "none" }}
                     zIndex="-1"
+                    top="0"
                     left="50%"
                     transform="translateX(-50%)"
                     w="100vw"
@@ -283,13 +307,7 @@ await verifyProof(verificationKey, fullProof)`,
                     />
                 </Box>
 
-                <Tabs
-                    maxWidth="100vw"
-                    variant="unstyled"
-                    align="center"
-                    mt={{ base: "100px", md: "170px" }}
-                    mb={{ base: "50px", md: "112px" }}
-                >
+                <Tabs maxWidth="100vw" variant="unstyled" align="center">
                     <Box overflow="auto" mx="3">
                         <TabList gap="40px" w="max-content" whiteSpace="nowrap">
                             <Tab px={0} fontSize="24px" _selected={{ borderBottom: "2px solid white" }}>

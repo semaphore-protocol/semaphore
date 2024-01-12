@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Grid, GridItem, HStack, IconButton, Text, VStack } from "@chakra-ui/react"
+import { Grid, GridItem, HStack, IconButton, Tag, TagLabel, TagLeftIcon, Text, VStack } from "@chakra-ui/react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import ProjectCard from "../components/ProjectCard"
 import allProjects from "../data/projects.json"
@@ -56,22 +56,30 @@ export default function ProjectsList(props: any) {
                 <Text fontSize="20">Projects created by</Text>
 
                 <HStack spacing="4" flexWrap="wrap">
-                    <Button
+                    <Tag
                         size="lg"
-                        leftIcon={<IconPSE />}
                         variant={onlyPSE === true ? "solid" : "outline"}
+                        colorScheme={onlyPSE === true ? "primary" : "white"}
                         onClick={() => setOnlyPSE(onlyPSE === true ? null : true)}
+                        cursor="pointer"
+                        px="18px"
+                        py="13px"
                     >
-                        PSE
-                    </Button>
-                    <Button
+                        <TagLeftIcon boxSize="18px" as={IconPSE} />
+                        <TagLabel>PSE</TagLabel>
+                    </Tag>
+                    <Tag
                         size="lg"
-                        leftIcon={<IconCommunity />}
                         variant={onlyPSE === false ? "solid" : "outline"}
+                        colorScheme={onlyPSE === false ? "primary" : "white"}
                         onClick={() => setOnlyPSE(onlyPSE === false ? null : false)}
+                        cursor="pointer"
+                        px="18px"
+                        py="13px"
                     >
-                        Community
-                    </Button>
+                        <TagLeftIcon boxSize="18px" as={IconCommunity} />
+                        <TagLabel>Community</TagLabel>
+                    </Tag>
                 </HStack>
             </VStack>
 
@@ -79,10 +87,11 @@ export default function ProjectsList(props: any) {
                 <Text fontSize="20">Category</Text>
                 <HStack spacing="3" flexWrap="wrap">
                     {getProjectCategories(sortedProjects).map((category) => (
-                        <Button
+                        <Tag
                             key={category}
-                            size="sm"
+                            size="md"
                             variant={selectedCategories.includes(category) ? "solid" : "outline"}
+                            colorScheme={selectedCategories.includes(category) ? "primary" : "white"}
                             onClick={() => {
                                 const newCategories = selectedCategories.includes(category)
                                     ? selectedCategories.filter((c) => c !== category)
@@ -90,9 +99,10 @@ export default function ProjectsList(props: any) {
 
                                 setSelectedCategories(newCategories)
                             }}
+                            cursor="pointer"
                         >
                             {category}
-                        </Button>
+                        </Tag>
                     ))}
                 </HStack>
             </VStack>
