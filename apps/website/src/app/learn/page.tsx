@@ -74,6 +74,20 @@ export default function Learn() {
                 title: "Zero-knowledge",
                 body: "If the statement is true, no verifier learns anything other than the fact that the statement is true."
             }
+        ],
+        [
+            {
+                title: "Privacy",
+                body: "Zero-knowledge property enables hiding any personal information while still enabling to building convincing proofs."
+            },
+            {
+                title: "Scalability",
+                body: "Multiple proofs can be aggregated into a single one, enabling smaller machines to verify 100s of transactions or claims in one go."
+            },
+            {
+                title: "Interoperability",
+                body: "ZKPs enable porting trust from one “realm” to another, for example between web2<>web3 worlds."
+            }
         ]
     ]
 
@@ -232,12 +246,20 @@ await verifyProof(verificationKey, fullProof)`,
                 </Link>
             </VStack>
             <VStack mt="40px">
-                <VStack>
-                    <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
-                        Characteristics
-                    </Text>
-                    <InfoCard texts={infoCardTexts[0]} />
-                </VStack>
+                <Flex wrap={{ base: "wrap", lg: "nowrap" }} justify="center" alignItems="center" gap="32px">
+                    <VStack>
+                        <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
+                            Characteristics
+                        </Text>
+                        <InfoCard texts={infoCardTexts[2]} />
+                    </VStack>
+                    <VStack>
+                        <Text fontSize={{ base: "24px", md: "30px" }} fontWeight={{ base: "400", md: "500" }}>
+                            Main use cases
+                        </Text>
+                        <InfoCard texts={infoCardTexts[3]} />
+                    </VStack>
+                </Flex>
             </VStack>
         </VStack>
     )
