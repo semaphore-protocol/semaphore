@@ -121,9 +121,9 @@ export default function Build() {
                                     key={linkInfo.title}
                                 >
                                     <Text
-                                        borderBottomWidth="1px"
+                                        borderBottomWidth="2px"
                                         borderBottomColor="white"
-                                        _hover={{ borderBottomColor: "transparent" }}
+                                        _hover={{ borderBottomColor: "primary.600" }}
                                         fontSize="18px"
                                         fontWeight="normal"
                                     >
