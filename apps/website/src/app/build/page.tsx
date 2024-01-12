@@ -59,7 +59,7 @@ export default function Build() {
     ]
     return (
         <VStack justify="center">
-            <VStack mt="90px">
+            <VStack pt="170px" pb="128px">
                 <Heading fontSize={{ base: "40px", sm: "46px", md: "72px" }} textAlign="center">
                     Let’s build something new
                 </Heading>
@@ -81,9 +81,9 @@ export default function Build() {
                     </Flex>
                 </VStack>
             </VStack>
+
             <Flex
                 justifyContent="space-between"
-                mt="128px"
                 direction="row"
                 backgroundColor="darkBlue"
                 p="0"

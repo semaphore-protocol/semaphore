@@ -1,4 +1,5 @@
 import { Box, Button, Card, CardBody, HStack, Heading, Image, Link, Stack, Text, VStack } from "@chakra-ui/react"
+import NextLink from "next/link"
 import { Sora } from "next/font/google"
 import Carousel from "../components/Carousel"
 import ProjectCard from "../components/ProjectCard"
@@ -12,10 +13,11 @@ const sora = Sora({
 
 export default function Home() {
     return (
-        <VStack>
-            <VStack h={{ base: "718", sm: "734", md: "724" }} justify="center" spacing="20" position="relative">
+        <>
+            <VStack pt="170px" pb={{ base: "128px", md: "170px" }} justify="center" spacing="20" position="relative">
                 <Box
                     zIndex="-1"
+                    top="0"
                     left="50%"
                     transform="translateX(-50%)"
                     w="100vw"
@@ -80,6 +82,20 @@ export default function Home() {
                             />
                         ))}
                     </VStack>
+
+                    <HStack justify="center" fontSize="12px">
+                        <Link
+                            as={NextLink}
+                            href="/projects"
+                            textTransform="uppercase"
+                            textDecoration="underline"
+                            _hover={{
+                                textDecoration: "underline"
+                            }}
+                        >
+                            View more
+                        </Link>
+                    </HStack>
                 </VStack>
             </VStack>
 
@@ -253,6 +269,6 @@ export default function Home() {
                     </Card>
                 </Stack>
             </VStack>
-        </VStack>
+        </>
     )
 }

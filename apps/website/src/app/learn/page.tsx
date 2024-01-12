@@ -244,10 +244,11 @@ await verifyProof(verificationKey, fullProof)`,
 
     return (
         <VStack w="full">
-            <VStack position="relative">
+            <VStack pt="170px" pb="112px" position="relative">
                 <Box
                     display={{ base: "none", md: "block" }}
                     zIndex="-1"
+                    top="0"
                     left="50%"
                     transform="translateX(-50%)"
                     w="100vw"
@@ -267,6 +268,7 @@ await verifyProof(verificationKey, fullProof)`,
                 <Box
                     display={{ base: "block", lg: "none" }}
                     zIndex="-1"
+                    top="0"
                     left="50%"
                     transform="translateX(-50%)"
                     w="100vw"
@@ -283,13 +285,7 @@ await verifyProof(verificationKey, fullProof)`,
                     />
                 </Box>
 
-                <Tabs
-                    maxWidth="100vw"
-                    variant="unstyled"
-                    align="center"
-                    mt={{ base: "100px", md: "170px" }}
-                    mb={{ base: "50px", md: "112px" }}
-                >
+                <Tabs maxWidth="100vw" variant="unstyled" align="center">
                     <Box overflow="auto" mx="3">
                         <TabList gap="40px" w="max-content" whiteSpace="nowrap">
                             <Tab px={0} fontSize="24px" _selected={{ borderBottom: "2px solid white" }}>
