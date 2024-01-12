@@ -256,7 +256,7 @@ await verifyProof(verificationKey, fullProof)`,
                     overflow="hidden"
                 >
                     <Image
-                        alt="Guy shadow image"
+                        alt=""
                         src="https://semaphore.cedoor.dev/guy-shadow-horizontal.jpg"
                         objectFit="cover"
                         w="full"
@@ -275,7 +275,7 @@ await verifyProof(verificationKey, fullProof)`,
                     overflow="hidden"
                 >
                     <Image
-                        alt="Guy shadow image"
+                        alt=""
                         src="https://semaphore.cedoor.dev/guy-shadow.jpg"
                         objectFit="cover"
                         w="full"

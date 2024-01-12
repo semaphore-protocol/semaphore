@@ -24,7 +24,7 @@ export default function Home() {
                     overflow="hidden"
                 >
                     <Image
-                        alt="Midnight whispers image"
+                        alt=""
                         src="https://semaphore.cedoor.dev/midnight-whispers.jpg"
                         objectFit="cover"
                         w="full"
@@ -201,7 +201,7 @@ export default function Home() {
                     overflow="hidden"
                 >
                     <Image
-                        alt="Fluttering shadow image"
+                        alt=""
                         src="https://semaphore.cedoor.dev/shadow-flutter.jpg"
                         objectFit="cover"
                         w="full"

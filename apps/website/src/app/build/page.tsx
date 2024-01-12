@@ -139,7 +139,7 @@ export default function Build() {
                 <Box position="relative" w={{ base: "full", xl: "727px" }} h="630" overflow="hidden">
                     <Image
                         src="https://semaphore.cedoor.dev/flower-shadow.jpg"
-                        alt="Flower Shadow"
+                        alt=""
                         objectFit="cover"
                         w="full"
                         h="full"
