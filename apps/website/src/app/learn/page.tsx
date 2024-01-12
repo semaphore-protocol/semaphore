@@ -83,7 +83,7 @@ export default function Learn() {
             description:
                 "Given to all Semaphore group members, it is comprised of three parts - identity commitment, trapdoor, and nullifier.",
             linkText: "Create Semaphore identities",
-            linkUrl: "https://semaphore.pse.dev/docs/guides/identities",
+            linkUrl: "https://docs.semaphore.pse.dev/guides/identities",
             codeText: `import { Identity } from "@semaphore-protocol/identity"
 
 const identity = new Identity()
@@ -114,7 +114,7 @@ const commitment = identity.generateCommitment()`,
             description:
                 "Semaphore groups are binary incremental Merkle trees that store the public identity commitment of each member.",
             linkText: "Create Semaphore groups",
-            linkUrl: "https://semaphore.pse.dev/docs/guides/groups",
+            linkUrl: "https://docs.semaphore.pse.dev/guides/groups",
             codeText: `import { Group } from "@semaphore-protocol/group"
 
 const group = new Group(1)
@@ -143,7 +143,7 @@ group.addMember(commitment)`,
             description:
                 "Semaphore group members can anonymously prove that they are part of a group and that they are generating their own proofs and signals.",
             linkText: "Generate Semaphore proofs",
-            linkUrl: "https://semaphore.pse.dev/docs/guides/proofs",
+            linkUrl: "https://docs.semaphore.pse.dev/guides/proofs",
             codeText: `import { generateProof, verifyProof } from "@semaphore-protocol/proof"
 
 const externalNullifier = BigInt(1)
