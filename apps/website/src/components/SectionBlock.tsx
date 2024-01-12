@@ -32,9 +32,9 @@ export default function SectionBlock({ title, description, linkText, linkUrl, co
                     </Text>
                     <Link display="flex" alignItems="center" gap="10px" justifyItems="center" href={linkUrl} isExternal>
                         <Text
-                            borderBottomWidth="1px"
+                            borderBottomWidth="2px"
                             borderBottomColor="white"
-                            _hover={{ borderBottomColor: "transparent" }}
+                            _hover={{ borderBottomColor: "primary.600" }}
                             fontSize="18px"
                             fontWeight="400"
                         >

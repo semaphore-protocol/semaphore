@@ -4,17 +4,11 @@ import ProjectsList from "../../components/ProjectsList"
 
 export default function Projects() {
     return (
-        <VStack>
-            <VStack
-                h={{ base: "442", sm: "420", md: "393" }}
-                w="100%"
-                justify="end"
-                align="left"
-                spacing="40"
-                position="relative"
-            >
+        <>
+            <VStack pt="170px" pb="56px" w="100%" justify="end" align="left" spacing="40" position="relative">
                 <Box
                     zIndex="-1"
+                    top="0"
                     left="50%"
                     transform="translateX(-50%)"
                     w="100vw"
@@ -51,6 +45,6 @@ export default function Projects() {
                     buttonUrl="https://github.com/semaphore-protocol/semaphore/issues/new?assignees=&labels=documentation++%F0%9F%93%96&projects=&template=----project.md&title="
                 />
             </VStack>
-        </VStack>
+        </>
     )
 }
