@@ -47,10 +47,8 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
 
     return (
         <VStack align="left" w="full" spacing="16" {...props}>
-            <HStack justify="space-between">
-                <Heading fontSize={{ base: "30px", md: "44px" }} textAlign={type === "projects" ? "center" : "left"}>
-                    {title}
-                </Heading>
+            <HStack justify={type === "projects" ? "center" : "space-between"}>
+                <Heading fontSize={{ base: "30px", md: "44px" }}>{title}</Heading>
 
                 {type !== "projects" && (
                     <HStack visibility={!size ? "hidden" : "visible"}>
@@ -128,7 +126,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                 <HStack w="100%">
                     <Box flex="1" />
 
-                    <HStack flex="1" justify="center" visibility={!size ? "hidden" : "visible"}>
+                    <HStack flex="1" justify="center">
                         <IconButton
                             onClick={previousProject}
                             variant="link"
