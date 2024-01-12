@@ -23,7 +23,7 @@ export default function Projects() {
                     overflow="hidden"
                 >
                     <Image
-                        alt="Blue texture image"
+                        alt=""
                         src="https://semaphore.cedoor.dev/blue-texture.jpg"
                         objectFit="cover"
                         w="full"
