@@ -11532,6 +11532,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@zk-kit/imt.sol@npm:^2.0.0-beta.5":
+  version: 2.0.0-beta.5
+  resolution: "@zk-kit/imt.sol@npm:2.0.0-beta.5"
+  dependencies:
+    poseidon-solidity: 0.0.5
+  checksum: af4d6618e1ac22f93fd114410944d754cd4091670fd2efe771245910cc8c75bc32807dda1a8a024fcc261e4b6d3fd49543b6034b160e7c04cc5d50b5e71e0183
+  languageName: node
+  linkType: hard
+
 "@zk-kit/imt@npm:^2.0.0-beta":
   version: 2.0.0-beta
   resolution: "@zk-kit/imt@npm:2.0.0-beta"
@@ -30247,7 +30256,7 @@ __metadata:
     "@types/chai": ^4.2.0
     "@types/mocha": ^10.0.6
     "@types/node": ^20.10.7
-    "@zk-kit/imt.sol": 2.0.0-beta.4
+    "@zk-kit/imt.sol": ^2.0.0-beta.5
     chai: ^4.2.0
     ethers: ^6.4.0
     hardhat: ^2.19.4
