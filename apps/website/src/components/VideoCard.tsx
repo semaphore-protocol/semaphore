@@ -14,8 +14,10 @@ export default function VideoCard({ thumbnail, url, title }: VideoCardProps) {
                 borderRadius="10px"
                 color="white"
                 h="full"
-                _hover={{ bgColor: "darkBlueBg" }}
                 variant="unstyled"
+                borderWidth="1px"
+                borderColor="text.900"
+                _hover={{ bgColor: "darkBlueBg", borderColor: "transparent" }}
             >
                 <HStack>
                     <AspectRatio borderRadius="10px 10px 0px 0px" width="297px" height="215px" overflow="hidden">
