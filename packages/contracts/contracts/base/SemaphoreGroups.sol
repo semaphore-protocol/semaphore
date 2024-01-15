@@ -78,13 +78,10 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
     /// @param groupId: Id of the group.
     /// @param identityCommitments: New identity commitments.
     function _addMembers(uint256 groupId, uint256[] calldata identityCommitments) internal virtual {
-        for (uint256 i = 0; i < identityCommitments.length; ) {
-            _addMember(groupId, identityCommitments[i]);
+        uint256 startIndex = getMerkleTreeSize(groupId);
+        uint256 merkleTreeRoot = merkleTrees[groupId]._insertMany(identityCommitments);
 
-            unchecked {
-                ++i;
-            }
-        }
+        emit MembersAdded(groupId, startIndex, identityCommitments, merkleTreeRoot);
     }
 
     /// @dev Updates an identity commitment of an existing group. A proof of membership is
@@ -100,7 +97,6 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
         uint256[] calldata merkleProofSiblings
     ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
         uint256 leafIndex = merkleTrees[groupId]._indexOf(oldIdentityCommitment);
-
         uint256 merkleTreeRoot = merkleTrees[groupId]._update(
             oldIdentityCommitment,
             newIdentityCommitment,
