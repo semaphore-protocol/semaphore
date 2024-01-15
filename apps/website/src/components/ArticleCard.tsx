@@ -15,9 +15,11 @@ export default function ArticleCard({ title, minRead, url }: ArticleCardProps) {
                 color="white"
                 padding="24px 20px"
                 width={{ base: "full", sm: "297.5px" }}
-                _hover={{ bgColor: "darkBlueBg" }}
                 h="full"
                 variant="unstyled"
+                borderWidth="1px"
+                borderColor="text.900"
+                _hover={{ bgColor: "darkBlueBg", borderColor: "transparent" }}
             >
                 <CardBody padding="0">
                     <Heading fontSize="20px" lineHeight="28px">
