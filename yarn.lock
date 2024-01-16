@@ -9110,7 +9110,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
-    "@zk-kit/imt.sol": 2.0.0-beta.4
+    "@zk-kit/imt.sol": 2.0.0-beta.5
   languageName: unknown
   linkType: soft
 
@@ -11523,16 +11523,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/imt.sol@npm:2.0.0-beta.4":
-  version: 2.0.0-beta.4
-  resolution: "@zk-kit/imt.sol@npm:2.0.0-beta.4"
-  dependencies:
-    poseidon-solidity: 0.0.5
-  checksum: f9b45052ca95a28a693503b3b98bb7a98e6dcfa4c26dcd66c89623596dd7a23490b38e5788e27f053ce7e285d9a482d080f03edcb6bdbe804b3fc41f8bc9f280
-  languageName: node
-  linkType: hard
-
-"@zk-kit/imt.sol@npm:^2.0.0-beta.5":
+"@zk-kit/imt.sol@npm:2.0.0-beta.5, @zk-kit/imt.sol@npm:^2.0.0-beta.5":
   version: 2.0.0-beta.5
   resolution: "@zk-kit/imt.sol@npm:2.0.0-beta.5"
   dependencies:
