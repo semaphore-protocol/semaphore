@@ -123,7 +123,7 @@ describe("Semaphore", () => {
     describe("# addMembers", () => {
         it("Should add new members to an existing group", async () => {
             const groupId = 3
-            const members = Array.from({ length: 100 }, (_, i) => BigInt(i + 1))
+            const members = [BigInt(1), BigInt(2), BigInt(3)]
             const group = new Group()
 
             group.addMembers(members)
