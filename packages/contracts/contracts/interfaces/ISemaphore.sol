@@ -29,6 +29,7 @@ interface ISemaphore {
 
     /// @dev Emitted when a Semaphore proof is validated.
     /// @param groupId: Id of the group.
+    /// @param merkleTreeDepth: Depth of the Merkle tree.
     /// @param merkleTreeRoot: Root of the Merkle tree.
     /// @param nullifier: Nullifier.
     /// @param message: Semaphore message.
@@ -36,6 +37,7 @@ interface ISemaphore {
     /// @param proof: Zero-knowledge proof.
     event ProofValidated(
         uint256 indexed groupId,
+        uint256 merkleTreeDepth,
         uint256 indexed merkleTreeRoot,
         uint256 nullifier,
         uint256 message,
@@ -80,6 +82,7 @@ interface ISemaphore {
     /// @dev Saves the nullifier hash to avoid double signaling and emits an event
     /// if the zero-knowledge proof is valid.
     /// @param groupId: Id of the group.
+    /// @param merkleTreeDepth: Depth of the Merkle tree.
     /// @param merkleTreeRoot: Root of the Merkle tree.
     /// @param nullifier: Nullifier.
     /// @param message: Semaphore message.
@@ -87,6 +90,7 @@ interface ISemaphore {
     /// @param proof: Zero-knowledge proof.
     function validateProof(
         uint256 groupId,
+        uint256 merkleTreeDepth,
         uint256 merkleTreeRoot,
         uint256 nullifier,
         uint256 message,
@@ -96,6 +100,7 @@ interface ISemaphore {
 
     /// @dev Verifies a zero-knowledge proof by returning true or false.
     /// @param groupId: Id of the group.
+    /// @param merkleTreeDepth: Depth of the Merkle tree.
     /// @param merkleTreeRoot: Root of the Merkle tree.
     /// @param nullifier: Nullifier.
     /// @param message: Semaphore message.
@@ -103,6 +108,7 @@ interface ISemaphore {
     /// @param proof: Zero-knowledge proof.
     function verifyProof(
         uint256 groupId,
+        uint256 merkleTreeDepth,
         uint256 merkleTreeRoot,
         uint256 nullifier,
         uint256 message,
