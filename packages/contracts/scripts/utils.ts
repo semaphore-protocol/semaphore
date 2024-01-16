@@ -1,9 +1,9 @@
 import { readFileSync, writeFileSync } from "fs"
 
 type DeployedContracts = {
-    SemaphoreVerifier: string
     Poseidon: string
     Semaphore: string
+    Verifiers: string[]
 }
 
 export function getDeployedContracts(network: string | undefined): DeployedContracts | null {
