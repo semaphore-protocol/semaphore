@@ -204,7 +204,7 @@ describe("Semaphore", () => {
         })
     })
 
-    describe.skip("# verifyProof", () => {
+    describe("# verifyProof", () => {
         const groupId = 10
         const message = 2
         const identity = new Identity("0")
@@ -276,7 +276,7 @@ describe("Semaphore", () => {
         })
     })
 
-    describe.skip("# validateProof", () => {
+    describe("# validateProof", () => {
         const message = 2
         const identity = new Identity("0")
         const groupOneMemberId = 6
