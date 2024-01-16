@@ -24,6 +24,11 @@ interface ISemaphoreGroups {
     /// @param merkleTreeRoot: New root hash of the tree.
     event MemberAdded(uint256 indexed groupId, uint256 leafIndex, uint256 identityCommitment, uint256 merkleTreeRoot);
 
+    /// @dev Emitted when many identity commitments are added at the same time.
+    /// @param groupId: Group id of the group.
+    /// @param startIndex: Index of the first element of the new identity commitments in the merkle tree.
+    /// @param identityCommitments: The new identity commitments.
+    /// @param merkleTreeRoot: New root hash of the tree.
     event MembersAdded(
         uint256 indexed groupId,
         uint256 startIndex,
