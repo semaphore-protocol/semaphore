@@ -10,7 +10,9 @@ export default async function getSnarkArtifacts(treeDepth: number): Promise<Snar
 
     if (!fs.existsSync(tmpPath)) {
         tmp.dirSync({ name: tmpDir })
+    }
 
+    if (fs.readdirSync(tmpPath).length !== 2) {
         await download(`https://semaphore.cedoor.dev/artifacts/${treeDepth}/semaphore.wasm`, tmpPath)
         await download(`https://semaphore.cedoor.dev/artifacts/${treeDepth}/semaphore.zkey`, tmpPath)
     }
