@@ -53,7 +53,7 @@ export default async function generateProof(
 
     const { proof, publicSignals } = await prove(
         {
-            privateKey: identity.secretScalar,
+            secret: identity.secretScalar,
             merkleProofLength,
             merkleProofIndices,
             merkleProofSiblings,

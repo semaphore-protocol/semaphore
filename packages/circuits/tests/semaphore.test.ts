@@ -6,7 +6,7 @@ import { circomkit } from "./common"
 
 describe("semaphore", () => {
     let circuit: WitnessTester<
-        ["privateKey", "merkleProofLength", "merkleProofIndices", "merkleProofSiblings", "scope", "message"],
+        ["secret", "merkleProofLength", "merkleProofIndices", "merkleProofSiblings", "scope", "message"],
         ["nullifier", "merkleRoot"]
     >
 
@@ -15,8 +15,8 @@ describe("semaphore", () => {
     const scope = 32
     const message = 43
 
-    const privateKey = 1
-    const publicKey = derivePublicKey(privateKey)
+    const secret = 1
+    const publicKey = derivePublicKey(secret)
 
     const leaf = poseidon2(publicKey)
 
@@ -45,7 +45,7 @@ describe("semaphore", () => {
     }
 
     const INPUT = {
-        privateKey: deriveSecretScalar(privateKey),
+        secret: deriveSecretScalar(secret),
         merkleProofLength: tree.depth,
         merkleProofIndices,
         merkleProofSiblings,
@@ -54,7 +54,7 @@ describe("semaphore", () => {
     }
 
     const OUTPUT = {
-        nullifier: poseidon2([scope, deriveSecretScalar(privateKey)]),
+        nullifier: poseidon2([scope, deriveSecretScalar(secret)]),
         merkleRoot: tree.root
     }
 
