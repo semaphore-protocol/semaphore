@@ -16,9 +16,12 @@ async function main() {
     const deployedContracts = getDeployedContracts(hardhatArguments.network)
 
     if (deployedContracts) {
+        for (const Verifier of deployedContracts.Verifiers) {
+            await verify(Verifier)
+        }
+
         await verify(deployedContracts.Poseidon)
-        await verify(deployedContracts.SemaphoreVerifier)
-        await verify(deployedContracts.Semaphore, [deployedContracts.SemaphoreVerifier])
+        await verify(deployedContracts.Semaphore, [deployedContracts.Verifiers])
     }
 }
 
