@@ -6,10 +6,10 @@ import { SnarkArtifacts } from "./types"
 
 export default async function getSnarkArtifacts(treeDepth: number): Promise<SnarkArtifacts> {
     const tmpDir = "semaphore-proof"
-    const tmpPath = `${tmp.tmpdir}/${tmpDir}`
+    const tmpPath = `${tmp.tmpdir}/${tmpDir}-${treeDepth}`
 
     if (!fs.existsSync(tmpPath)) {
-        tmp.dirSync({ name: tmpDir })
+        tmp.dirSync({ name: `${tmpDir}-${treeDepth}` })
     }
 
     if (fs.readdirSync(tmpPath).length !== 2) {

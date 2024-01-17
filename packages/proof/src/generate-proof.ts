@@ -30,7 +30,13 @@ export default async function generateProof(
     const merkleProof = group.generateMerkleProof(leafIndex)
     const merkleProofLength = merkleProof.siblings.length
 
-    treeDepth ??= merkleProofLength
+    if (treeDepth !== undefined) {
+        if (treeDepth < 1 || treeDepth > 12) {
+            throw new TypeError("The tree depth must be a number between 1 and 12")
+        }
+    } else {
+        treeDepth = merkleProofLength
+    }
 
     // If the Snark artifacts are not defined they will be automatically downloaded.
     /* istanbul ignore next */

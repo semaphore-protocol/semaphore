@@ -24,6 +24,14 @@ describe("Proof", () => {
     })
 
     describe("# generateProof", () => {
+        it("Should not generate a Semaphore proof if the tree depth is not supported", async () => {
+            const group = new Group([BigInt(1), BigInt(2), identity.commitment])
+
+            const fun = () => generateProof(identity, group, message, scope, 13)
+
+            await expect(fun).rejects.toThrow("tree depth must be")
+        })
+
         it("Should not generate Semaphore proofs if the identity is not part of the group", async () => {
             const group = new Group([BigInt(1), BigInt(2)])
 
@@ -43,8 +51,14 @@ describe("Proof", () => {
     })
 
     describe("# verifyProof", () => {
+        it("Should not verify a Semaphore proof if the tree depth is not supported", async () => {
+            const fun = () => verifyProof(fullProof, 13)
+
+            await expect(fun).rejects.toThrow("tree depth must be")
+        })
+
         it("Should verify a Semaphore proof", async () => {
-            const response = await verifyProof(fullProof)
+            const response = await verifyProof(fullProof, treeDepth)
 
             expect(response).toBe(true)
         })
