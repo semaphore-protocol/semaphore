@@ -5,25 +5,19 @@
             "startBlock": 3231111
         }
     },
-    "goerli": {
-        "Semaphore": {
-            "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
-            "startBlock": 8777695
-        }
-    },
     "mumbai": {
         "Semaphore": {
             "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
             "startBlock": 33995010
         }
     },
-    "optimism-goerli": {
+    "optimism-sepolia": {
         "Semaphore": {
             "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
             "startBlock": 7632846
         }
     },
-    "arbitrum-goerli": {
+    "arbitrum-sepolia": {
         "Semaphore": {
             "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
             "startBlock": 15174410

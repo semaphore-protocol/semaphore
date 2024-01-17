@@ -107,14 +107,14 @@ yarn deploy:semaphore --semaphoreVerifier <address>
 > **Note**  
 > Run `yarn deploy:semaphore --help` to see the complete list.
 
-If you want to deploy your contract in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, goerli, arbitrum). Or you can specify it as an option:
+If you want to deploy your contract in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, sepolia, arbitrum). Or you can specify it as an option:
 
 ```bash
-yarn deploy:semaphore --network goerli
 yarn deploy:semaphore --network sepolia
 yarn deploy:semaphore --network mumbai
-yarn deploy:semaphore --network optimism-goerli
+yarn deploy:semaphore --network optimism-sepolia
+yarn deploy:semaphore --network arbitrum-sepolia
 yarn deploy:semaphore --network arbitrum
 ```
 
-If you want to deploy contracts on Goerli or Arbitrum, remember to provide a valid private key and an Infura API in your `.env` file.
+If you want to deploy contracts on Sepolia or Arbitrum, remember to provide a valid private key and an Infura API in your `.env` file.
