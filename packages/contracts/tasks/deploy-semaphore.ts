@@ -1,5 +1,5 @@
+import { writeFileSync } from "fs"
 import { task, types } from "hardhat/config"
-import { saveDeployedContracts } from "../scripts/utils"
 
 task("deploy:semaphore", "Deploy a Semaphore contract")
     .addOptionalParam<boolean>("verifiers", "Verifier contract addresses", undefined, types.json)
@@ -8,7 +8,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
     .setAction(
         async (
             { logs, verifiers: verifierAddresses, poseidon: poseidonAddress },
-            { ethers, hardhatArguments }
+            { ethers, hardhatArguments, defender }
         ): Promise<any> => {
             if (!verifierAddresses) {
                 verifierAddresses = []
@@ -16,19 +16,36 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
                 for (let i = 0; i < 12; i += 1) {
                     const VerifierFactory = await ethers.getContractFactory(`Verifier${i + 1}`)
 
-                    const verifier = await VerifierFactory.deploy()
+                    let verifier
+
+                    if (hardhatArguments.network !== undefined && hardhatArguments.network !== "hardhat") {
+                        verifier = await defender.deployContract(VerifierFactory, { salt: process.env.CREATE2_SALT })
+
+                        await verifier.waitForDeployment()
+                    } else {
+                        verifier = await VerifierFactory.deploy()
+                    }
 
                     verifierAddresses.push(await verifier.getAddress())
 
                     if (logs) {
-                        console.info(`SemaphoreVerifier contract has been deployed to: ${verifierAddresses[i]}`)
+                        console.info(`Verifier${i + 1} contract has been deployed to: ${verifierAddresses[i]}`)
                     }
                 }
             }
 
             if (!poseidonAddress) {
                 const PoseidonT3Factory = await ethers.getContractFactory("PoseidonT3")
-                const poseidonT3 = await PoseidonT3Factory.deploy()
+
+                let poseidonT3
+
+                if (hardhatArguments.network !== undefined && hardhatArguments.network !== "hardhat") {
+                    poseidonT3 = await defender.deployContract(PoseidonT3Factory, { salt: process.env.CREATE2_SALT })
+
+                    await poseidonT3.waitForDeployment()
+                } else {
+                    poseidonT3 = await PoseidonT3Factory.deploy()
+                }
 
                 poseidonAddress = await poseidonT3.getAddress()
 
@@ -43,7 +60,17 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
                 }
             })
 
-            const semaphore = await SemaphoreFactory.deploy(verifierAddresses)
+            let semaphore
+
+            if (hardhatArguments.network !== undefined && hardhatArguments.network !== "hardhat") {
+                semaphore = await defender.deployContract(SemaphoreFactory, verifierAddresses, {
+                    salt: process.env.CREATE2_SALT
+                })
+
+                await semaphore.waitForDeployment()
+            } else {
+                semaphore = await SemaphoreFactory.deploy(verifierAddresses)
+            }
 
             const semaphoreAddress = await semaphore.getAddress()
 
@@ -51,11 +78,18 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
                 console.info(`Semaphore contract has been deployed to: ${semaphoreAddress}`)
             }
 
-            saveDeployedContracts(hardhatArguments.network, {
-                Verifiers: verifierAddresses,
-                Poseidon: poseidonAddress,
-                Semaphore: semaphoreAddress
-            })
+            writeFileSync(
+                `./deployed-contracts/${hardhatArguments.network}.json`,
+                JSON.stringify(
+                    {
+                        Verifiers: verifierAddresses,
+                        Poseidon: poseidonAddress,
+                        Semaphore: semaphoreAddress
+                    },
+                    null,
+                    4
+                )
+            )
 
             return {
                 semaphore,
