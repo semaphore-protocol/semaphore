@@ -135,8 +135,8 @@ describe("Semaphore", () => {
             const transaction = semaphoreContract.addMembers(groupId, members)
 
             await expect(transaction)
-                .to.emit(semaphoreContract, "MemberAdded")
-                .withArgs(groupId, 2, BigInt(3), group.root)
+                .to.emit(semaphoreContract, "MembersAdded")
+                .withArgs(groupId, 0, members, group.root)
         })
     })
 
