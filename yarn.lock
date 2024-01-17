@@ -8692,7 +8692,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
-    "@zk-kit/imt.sol": 2.0.0-beta.4
+    "@zk-kit/imt.sol": 2.0.0-beta.5
   languageName: unknown
   linkType: soft
 
@@ -11025,12 +11025,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/imt.sol@npm:2.0.0-beta.4":
-  version: 2.0.0-beta.4
-  resolution: "@zk-kit/imt.sol@npm:2.0.0-beta.4"
+"@zk-kit/imt.sol@npm:2.0.0-beta.5, @zk-kit/imt.sol@npm:^2.0.0-beta.5":
+  version: 2.0.0-beta.5
+  resolution: "@zk-kit/imt.sol@npm:2.0.0-beta.5"
   dependencies:
     poseidon-solidity: 0.0.5
-  checksum: f9b45052ca95a28a693503b3b98bb7a98e6dcfa4c26dcd66c89623596dd7a23490b38e5788e27f053ce7e285d9a482d080f03edcb6bdbe804b3fc41f8bc9f280
+  checksum: af4d6618e1ac22f93fd114410944d754cd4091670fd2efe771245910cc8c75bc32807dda1a8a024fcc261e4b6d3fd49543b6034b160e7c04cc5d50b5e71e0183
   languageName: node
   linkType: hard
 
@@ -28581,7 +28581,7 @@ __metadata:
     "@types/chai": ^4.2.0
     "@types/mocha": ^10.0.6
     "@types/node": ^20.10.7
-    "@zk-kit/imt.sol": 2.0.0-beta.4
+    "@zk-kit/imt.sol": ^2.0.0-beta.5
     chai: ^4.2.0
     ethers: ^6.4.0
     hardhat: ^2.19.4
