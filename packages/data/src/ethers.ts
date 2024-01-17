@@ -1,18 +1,18 @@
-import { Contract } from "@ethersproject/contracts"
 import {
     AlchemyProvider,
     AnkrProvider,
     CloudflareProvider,
+    Contract,
     EtherscanProvider,
     InfuraProvider,
     JsonRpcProvider,
     PocketProvider,
     Provider
-} from "@ethersproject/providers"
+} from "ethers"
 import checkParameter from "./checkParameter"
 import getEvents from "./getEvents"
 import SemaphoreABI from "./semaphoreABI.json"
-import { EthersOptions, GroupResponse, EthersNetwork } from "./types"
+import { EthersNetwork, EthersOptions, GroupResponse } from "./types"
 
 export default class SemaphoreEthers {
     private _network: EthersNetwork | string
@@ -46,7 +46,7 @@ export default class SemaphoreEthers {
                 options.address ??= "0xc60E0Ee1a2770d5F619858C641f14FC4a6401520"
                 options.startBlock ??= 77278430
                 break
-            case "arbitrum-goerli":
+            case "arbitrum-sepolia":
                 options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
                 options.startBlock ??= 15174410
                 break
@@ -54,15 +54,11 @@ export default class SemaphoreEthers {
                 options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
                 options.startBlock ??= 33995010
                 break
-            case "goerli":
-                options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
-                options.startBlock ??= 8777695
-                break
             case "sepolia":
                 options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
                 options.startBlock ??= 3231111
                 break
-            case "optimism-goerli":
+            case "optimism-sepolia":
                 options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
                 options.startBlock ??= 7632846
                 break
@@ -84,7 +80,7 @@ export default class SemaphoreEthers {
                 provider = new AlchemyProvider(networkOrEthereumURL, options.apiKey)
                 break
             case "cloudflare":
-                provider = new CloudflareProvider(networkOrEthereumURL, options.apiKey)
+                provider = new CloudflareProvider(networkOrEthereumURL)
                 break
             case "etherscan":
                 provider = new EtherscanProvider(networkOrEthereumURL, options.apiKey)

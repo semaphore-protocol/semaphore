@@ -8,10 +8,9 @@ import { SupportedNetwork } from "./types"
 export default function getURL(supportedNetwork: SupportedNetwork | string): string {
     switch (supportedNetwork) {
         case "sepolia":
-        case "goerli":
         case "mumbai":
-        case "optimism-goerli":
-        case "arbitrum-goerli":
+        case "optimism-sepolia":
+        case "arbitrum-sepolia":
         case "arbitrum":
             return `https://api.studio.thegraph.com/query/14377/semaphore-${supportedNetwork}/v3.6.1`
         default:

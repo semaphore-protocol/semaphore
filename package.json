@@ -8,7 +8,7 @@
     "private": true,
     "scripts": {
         "build:libraries": "yarn workspaces foreach -t --no-private run build",
-        "build:subgraph": "yarn workspace semaphore-subgraph codegen goerli && yarn workspace semaphore-subgraph build",
+        "build:subgraph": "yarn workspace semaphore-subgraph codegen sepolia && yarn workspace semaphore-subgraph build",
         "compile:contracts": "yarn workspace semaphore-contracts compile",
         "remove:template-files": "ts-node scripts/remove-template-files.ts",
         "test": "yarn test:libraries && yarn test:contracts && yarn test:circuits && yarn test:subgraph",
@@ -23,6 +23,8 @@
         "version:bump": "yarn workspaces foreach --no-private version -d ${0} && yarn version apply --all && git commit -am \"chore: v${0}\" && git tag v${0}",
         "version:publish": "yarn build:libraries && yarn remove:template-files && yarn workspaces foreach --no-private npm publish --tolerate-republish --access public",
         "version:release": "changelogithub",
+        "clean": "rimraf node_modules docs coverage packages/*/node_modules packages/*/dist apps/*/node_modules apps/*/build apps/*/.next apps/*/generated",
+        "clean:contracts": "rimraf packages/contracts/artifacts packages/contracts/typechain-types packages/contracts/cache",
         "commit": "cz",
         "precommit": "lint-staged",
         "postinstall": "husky install"

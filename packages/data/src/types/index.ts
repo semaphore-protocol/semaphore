@@ -1,22 +1,20 @@
 export enum SupportedNetwork {
     SEPOLIA = "sepolia",
-    GOERLI = "goerli",
     MUMBAI = "mumbai",
-    OPTIMISM_GOERLI = "optimism-goerli",
-    ARBITRUM_GOERLI = "arbitrum-goerli",
+    OPTIMISM_SEPOLIA = "optimism-sepolia",
+    ARBITRUM_SEPOLIA = "arbitrum-sepolia",
     ARBITRUM = "arbitrum"
 }
 
 export type EthersNetwork =
     | "homestead"
     | "matic"
-    | "goerli"
     | "arbitrum"
     | "maticmum"
     | "mumbai"
-    | "arbitrum-goerli"
+    | "arbitrum-sepolia"
     | "optimism"
-    | "optimism-goerli"
+    | "optimism-sepolia"
     | "sepolia"
 
 export type GroupOptions = {
