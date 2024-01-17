@@ -3,7 +3,7 @@ pragma solidity 0.8.23;
 
 import {ISemaphore} from "./interfaces/ISemaphore.sol";
 import {ISemaphoreVerifier} from "./interfaces/ISemaphoreVerifier.sol";
-import {SemaphoreGroups} from "./base/SemaphoreGroups.sol";
+import {SemaphoreGroups} from "./SemaphoreGroups.sol";
 
 /// @title Semaphore
 /// @dev This contract uses the Semaphore base contracts to provide a complete service
@@ -13,15 +13,15 @@ import {SemaphoreGroups} from "./base/SemaphoreGroups.sol";
 /// generated with a new root a duration (or an expiry) within which the proofs generated with that root
 /// can be validated.
 contract Semaphore is ISemaphore, SemaphoreGroups {
-    ISemaphoreVerifier public verifier;
+    ISemaphoreVerifier[] public verifiers;
 
     /// @dev Gets a group id and returns the group parameters.
     mapping(uint256 => Group) public groups;
 
-    /// @dev Initializes the Semaphore verifier used to verify the user's ZK proofs.
-    /// @param _verifier: Semaphore verifier address.
-    constructor(ISemaphoreVerifier _verifier) {
-        verifier = _verifier;
+    /// @dev Initializes the Semaphore verifiers used to verify the user's ZK proofs.
+    /// @param _verifiers: Semaphore verifier addresses.
+    constructor(ISemaphoreVerifier[] memory _verifiers) {
+        verifiers = _verifiers;
     }
 
     /// @dev See {SemaphoreGroups-_createGroup}.
@@ -102,6 +102,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
 
     function validateProof(
         uint256 groupId,
+        uint256 merkleTreeDepth,
         uint256 merkleTreeRoot,
         uint256 nullifier,
         uint256 message,
@@ -112,23 +113,28 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
             revert Semaphore__YouAreUsingTheSameNullifierTwice();
         }
 
-        if (!verifyProof(groupId, merkleTreeRoot, nullifier, message, scope, proof)) {
+        if (!verifyProof(groupId, merkleTreeDepth, merkleTreeRoot, nullifier, message, scope, proof)) {
             revert Semaphore__InvalidProof();
         }
 
         groups[groupId].nullifiers[nullifier] = true;
 
-        emit ProofValidated(groupId, merkleTreeRoot, nullifier, message, scope, proof);
+        emit ProofValidated(groupId, merkleTreeDepth, merkleTreeRoot, nullifier, message, scope, proof);
     }
 
     function verifyProof(
         uint256 groupId,
+        uint256 merkleTreeDepth,
         uint256 merkleTreeRoot,
         uint256 nullifier,
         uint256 message,
         uint256 scope,
         uint256[8] calldata proof
     ) public view override onlyExistingGroup(groupId) returns (bool) {
+        if (merkleTreeDepth < 1 || merkleTreeDepth > verifiers.length) {
+            revert Semaphore__MerkleTreeDepthIsNotSupported();
+        }
+
         uint256 merkleTreeSize = getMerkleTreeSize(groupId);
 
         if (merkleTreeSize == 0) {
@@ -153,7 +159,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         }
 
         return
-            verifier.verifyProof(
+            verifiers[merkleTreeDepth - 1].verifyProof(
                 [proof[0], proof[1]],
                 [[proof[2], proof[3]], [proof[4], proof[5]]],
                 [proof[6], proof[7]],
