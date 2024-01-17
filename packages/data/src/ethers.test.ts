@@ -6,8 +6,9 @@ jest.mock("./getEvents", () => ({
     default: jest.fn()
 }))
 
-jest.mock("@ethersproject/contracts", () => ({
+jest.mock("ethers", () => ({
     __esModule: true,
+    ...jest.requireActual("ethers"),
     Contract: jest.fn(
         () =>
             ({
@@ -29,9 +30,9 @@ describe("SemaphoreEthers", () => {
             semaphore = new SemaphoreEthers()
             const semaphore1 = new SemaphoreEthers("arbitrum")
             const semaphore2 = new SemaphoreEthers("mumbai")
-            const semaphore3 = new SemaphoreEthers("optimism-goerli")
-            const semaphore4 = new SemaphoreEthers("arbitrum-goerli")
-            const semaphore5 = new SemaphoreEthers("arbitrum-goerli", {
+            const semaphore3 = new SemaphoreEthers("optimism-sepolia")
+            const semaphore4 = new SemaphoreEthers("arbitrum-sepolia")
+            const semaphore5 = new SemaphoreEthers("arbitrum-sepolia", {
                 address: "0x0000000000000000000000000000000000000000",
                 startBlock: 0
             })
@@ -44,8 +45,8 @@ describe("SemaphoreEthers", () => {
             expect(semaphore.contract).toBeInstanceOf(Object)
             expect(semaphore1.network).toBe("arbitrum")
             expect(semaphore2.network).toBe("maticmum")
-            expect(semaphore3.network).toBe("optimism-goerli")
-            expect(semaphore4.network).toBe("arbitrum-goerli")
+            expect(semaphore3.network).toBe("optimism-sepolia")
+            expect(semaphore4.network).toBe("arbitrum-sepolia")
             expect(semaphore5.options.address).toContain("0x000000")
             expect(semaphore6.network).toBe("homestead")
             expect(semaphore6.options.startBlock).toBe(0)
@@ -104,7 +105,7 @@ describe("SemaphoreEthers", () => {
 
         it("Should throw an error if the provider is not supported", () => {
             const fun = () =>
-                new SemaphoreEthers("goerli", {
+                new SemaphoreEthers("sepolia", {
                     provider: "hello" as any
                 })
 

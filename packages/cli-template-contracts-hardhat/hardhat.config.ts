@@ -21,11 +21,6 @@ function getNetworks(): NetworksUserConfig {
     const infuraApiKey = process.env.INFURA_API_KEY
 
     return {
-        goerli: {
-            url: `https://goerli.infura.io/v3/${infuraApiKey}`,
-            chainId: 5,
-            accounts
-        },
         sepolia: {
             url: `https://sepolia.infura.io/v3/${infuraApiKey}`,
             chainId: 11155111,
@@ -36,13 +31,18 @@ function getNetworks(): NetworksUserConfig {
             chainId: 80001,
             accounts
         },
-        "optimism-goerli": {
-            url: `https://optimism-goerli.infura.io/v3/${infuraApiKey}`,
-            chainId: 420,
+        "optimism-sepolia": {
+            url: `https://optimism-sepolia.infura.io/v3/${infuraApiKey}`,
+            chainId: 11155420,
+            accounts
+        },
+        "arbitrum-sepolia": {
+            url: "https://sepolia-rollup.arbitrum.io/rpc",
+            chainId: 7745327,
             accounts
         },
         arbitrum: {
-            url: `https://arbitrum-mainnet.infura.io/v3/${infuraApiKey}`,
+            url: "https://arb1.arbitrum.io/rpc",
             chainId: 42161,
             accounts
         }

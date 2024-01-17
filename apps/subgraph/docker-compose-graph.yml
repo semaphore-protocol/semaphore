@@ -20,7 +20,7 @@ services:
             postgres_port: 5432
             ipfs: "ipfs:5001"
             ethereum: "localhost:http://host.docker.internal:8545" # Should use the `localhost` as network name in subgraph.yml
-            # ethereum: 'goerli:https://goerli.infura.io/v3/YOUR-API-KEY'
+            # ethereum: 'sepolia:https://sepolia.infura.io/v3/YOUR-API-KEY'
             GRAPH_LOG: info
             GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: 1
         networks:
