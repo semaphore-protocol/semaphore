@@ -2,23 +2,27 @@ import { task, types } from "hardhat/config"
 import { saveDeployedContracts } from "../scripts/utils"
 
 task("deploy:semaphore", "Deploy a Semaphore contract")
-    .addOptionalParam<boolean>("semaphoreVerifier", "SemaphoreVerifier contract address", undefined, types.string)
+    .addOptionalParam<boolean>("verifiers", "Verifier contract addresses", undefined, types.json)
     .addOptionalParam<boolean>("poseidon", "Poseidon library address", undefined, types.string)
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
     .setAction(
         async (
-            { logs, semaphoreVerifier: semaphoreVerifierAddress, poseidon: poseidonAddress },
+            { logs, verifiers: verifierAddresses, poseidon: poseidonAddress },
             { ethers, hardhatArguments }
         ): Promise<any> => {
-            if (!semaphoreVerifierAddress) {
-                const SemaphoreVerifierFactory = await ethers.getContractFactory("SemaphoreVerifier")
+            if (!verifierAddresses) {
+                verifierAddresses = []
 
-                const semaphoreVerifier = await SemaphoreVerifierFactory.deploy()
+                for (let i = 0; i < 12; i += 1) {
+                    const VerifierFactory = await ethers.getContractFactory(`Verifier${i + 1}`)
 
-                semaphoreVerifierAddress = await semaphoreVerifier.getAddress()
+                    const verifier = await VerifierFactory.deploy()
 
-                if (logs) {
-                    console.info(`SemaphoreVerifier contract has been deployed to: ${semaphoreVerifierAddress}`)
+                    verifierAddresses.push(await verifier.getAddress())
+
+                    if (logs) {
+                        console.info(`SemaphoreVerifier contract has been deployed to: ${verifierAddresses[i]}`)
+                    }
                 }
             }
 
@@ -39,7 +43,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
                 }
             })
 
-            const semaphore = await SemaphoreFactory.deploy(semaphoreVerifierAddress)
+            const semaphore = await SemaphoreFactory.deploy(verifierAddresses)
 
             const semaphoreAddress = await semaphore.getAddress()
 
@@ -48,14 +52,14 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
             }
 
             saveDeployedContracts(hardhatArguments.network, {
-                SemaphoreVerifier: semaphoreVerifierAddress,
+                Verifiers: verifierAddresses,
                 Poseidon: poseidonAddress,
                 Semaphore: semaphoreAddress
             })
 
             return {
                 semaphore,
-                semaphoreVerifierAddress,
+                verifierAddresses,
                 poseidonAddress
             }
         }
