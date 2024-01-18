@@ -2,35 +2,31 @@ import { writeFileSync } from "fs"
 import { task, types } from "hardhat/config"
 
 task("deploy:semaphore", "Deploy a Semaphore contract")
-    .addOptionalParam<boolean>("verifiers", "Verifier contract addresses", undefined, types.json)
+    .addOptionalParam<boolean>("verifier", "Verifier contract address", undefined, types.json)
     .addOptionalParam<boolean>("poseidon", "Poseidon library address", undefined, types.string)
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
     .setAction(
         async (
-            { logs, verifiers: verifierAddresses, poseidon: poseidonAddress },
+            { logs, verifier: verifierAddress, poseidon: poseidonAddress },
             { ethers, hardhatArguments, defender }
         ): Promise<any> => {
-            if (!verifierAddresses) {
-                verifierAddresses = []
+            if (!verifierAddress) {
+                const VerifierFactory = await ethers.getContractFactory(`SemaphoreVerifier`)
 
-                for (let i = 0; i < 12; i += 1) {
-                    const VerifierFactory = await ethers.getContractFactory(`Verifier${i + 1}`)
+                let verifier
 
-                    let verifier
+                if (hardhatArguments.network !== undefined && hardhatArguments.network !== "hardhat") {
+                    verifier = await defender.deployContract(VerifierFactory, { salt: process.env.CREATE2_SALT })
 
-                    if (hardhatArguments.network !== undefined && hardhatArguments.network !== "hardhat") {
-                        verifier = await defender.deployContract(VerifierFactory, { salt: process.env.CREATE2_SALT })
+                    await verifier.waitForDeployment()
+                } else {
+                    verifier = await VerifierFactory.deploy()
+                }
 
-                        await verifier.waitForDeployment()
-                    } else {
-                        verifier = await VerifierFactory.deploy()
-                    }
+                verifierAddress = await verifier.getAddress()
 
-                    verifierAddresses.push(await verifier.getAddress())
-
-                    if (logs) {
-                        console.info(`Verifier${i + 1} contract has been deployed to: ${verifierAddresses[i]}`)
-                    }
+                if (logs) {
+                    console.info(`SemaphoreVerifier contract has been deployed to: ${verifierAddress}`)
                 }
             }
 
@@ -63,13 +59,13 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
             let semaphore
 
             if (hardhatArguments.network !== undefined && hardhatArguments.network !== "hardhat") {
-                semaphore = await defender.deployContract(SemaphoreFactory, verifierAddresses, {
+                semaphore = await defender.deployContract(SemaphoreFactory, [verifierAddress], {
                     salt: process.env.CREATE2_SALT
                 })
 
                 await semaphore.waitForDeployment()
             } else {
-                semaphore = await SemaphoreFactory.deploy(verifierAddresses)
+                semaphore = await SemaphoreFactory.deploy(verifierAddress)
             }
 
             const semaphoreAddress = await semaphore.getAddress()
@@ -82,7 +78,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
                 `./deployed-contracts/${hardhatArguments.network}.json`,
                 JSON.stringify(
                     {
-                        Verifiers: verifierAddresses,
+                        Verifier: verifierAddress,
                         Poseidon: poseidonAddress,
                         Semaphore: semaphoreAddress
                     },
@@ -93,7 +89,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
 
             return {
                 semaphore,
-                verifierAddresses,
+                verifierAddress,
                 poseidonAddress
             }
         }

@@ -3,7 +3,7 @@ pragma solidity 0.8.23;
 
 import {ISemaphore} from "./interfaces/ISemaphore.sol";
 import {ISemaphoreVerifier} from "./interfaces/ISemaphoreVerifier.sol";
-import {SemaphoreGroups} from "./SemaphoreGroups.sol";
+import {SemaphoreGroups} from "./base/SemaphoreGroups.sol";
 
 /// @title Semaphore
 /// @dev This contract uses the Semaphore base contracts to provide a complete service
@@ -13,15 +13,15 @@ import {SemaphoreGroups} from "./SemaphoreGroups.sol";
 /// generated with a new root a duration (or an expiry) within which the proofs generated with that root
 /// can be validated.
 contract Semaphore is ISemaphore, SemaphoreGroups {
-    ISemaphoreVerifier[] public verifiers;
+    ISemaphoreVerifier public verifier;
 
     /// @dev Gets a group id and returns the group parameters.
     mapping(uint256 => Group) public groups;
 
-    /// @dev Initializes the Semaphore verifiers used to verify the user's ZK proofs.
-    /// @param _verifiers: Semaphore verifier addresses.
-    constructor(ISemaphoreVerifier[] memory _verifiers) {
-        verifiers = _verifiers;
+    /// @dev Initializes the Semaphore verifier used to verify the user's ZK proofs.
+    /// @param _verifier: Semaphore verifier addresse.
+    constructor(ISemaphoreVerifier _verifier) {
+        verifier = _verifier;
     }
 
     /// @dev See {SemaphoreGroups-_createGroup}.
@@ -131,7 +131,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 scope,
         uint256[8] calldata proof
     ) public view override onlyExistingGroup(groupId) returns (bool) {
-        if (merkleTreeDepth < 1 || merkleTreeDepth > verifiers.length) {
+        if (merkleTreeDepth < 1 || merkleTreeDepth > 12) {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
         }
 
@@ -159,11 +159,12 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         }
 
         return
-            verifiers[merkleTreeDepth - 1].verifyProof(
+            verifier.verifyProof(
                 [proof[0], proof[1]],
                 [[proof[2], proof[3]], [proof[4], proof[5]]],
                 [proof[6], proof[7]],
-                [merkleTreeRoot, nullifier, _hash(message), _hash(scope)]
+                [merkleTreeRoot, nullifier, _hash(message), _hash(scope)],
+                merkleTreeDepth
             );
     }
 
