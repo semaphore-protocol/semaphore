@@ -2,7 +2,7 @@ import { writeFileSync } from "fs"
 import { task, types } from "hardhat/config"
 
 task("deploy:semaphore", "Deploy a Semaphore contract")
-    .addOptionalParam<boolean>("verifier", "Verifier contract address", undefined, types.json)
+    .addOptionalParam<boolean>("verifier", "Verifier contract address", undefined, types.string)
     .addOptionalParam<boolean>("poseidon", "Poseidon library address", undefined, types.string)
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
     .setAction(
@@ -60,7 +60,9 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
 
             if (hardhatArguments.network !== undefined && hardhatArguments.network !== "hardhat") {
                 semaphore = await defender.deployContract(SemaphoreFactory, [verifierAddress], {
-                    salt: process.env.CREATE2_SALT
+                    salt: process.env.CREATE2_SALT,
+                    unsafeAllow: ["external-library-linking", "constructor"],
+                    unsafeAllowDeployContract: true
                 })
 
                 await semaphore.waitForDeployment()
