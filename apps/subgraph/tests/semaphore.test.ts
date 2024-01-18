@@ -1,8 +1,10 @@
+/* eslint-disable jest/expect-expect */
 import { Address, BigInt, ByteArray } from "@graphprotocol/graph-ts"
 import { afterAll, assert, clearStore, describe, test } from "matchstick-as/assembly/index"
 import {
     addMember,
-    addVerifiedProof,
+    addMembers,
+    addValidatedProof,
     createGroup,
     removeMember,
     updateGroupAdmin,
@@ -15,6 +17,7 @@ import {
     createMemberAddedEvent,
     createMemberRemovedEvent,
     createMemberUpdatedEvent,
+    createMembersAddedEvent,
     createProofVerifiedEvent
 } from "./semaphore-utils"
 
@@ -27,12 +30,10 @@ describe("Semaphore subgraph", () => {
     describe("# createGroup", () => {
         test("Should have created a group", () => {
             const groupId = BigInt.fromI32(234)
-            const merkleTreeDepth = BigInt.fromI32(20)
-            const zeroValue = BigInt.fromI32(0)
             const oldAdmin = Address.fromString("0x0000000000000000000000000000000000000000")
             const newAdmin = Address.fromString("0x0000000000000000000000000000000000000001")
 
-            const event1 = createGroupCreatedEvent(groupId, merkleTreeDepth, zeroValue)
+            const event1 = createGroupCreatedEvent(groupId)
             const event2 = createGroupAdminUpdatedEvent(groupId, oldAdmin, newAdmin)
 
             createGroup(event1)
@@ -44,8 +45,7 @@ describe("Semaphore subgraph", () => {
             assert.fieldEquals("Group", groupId.toString(), "admin", "0x0000000000000000000000000000000000000001")
             assert.fieldEquals("Group", groupId.toString(), "merkleTree", groupId.toString())
 
-            assert.fieldEquals("MerkleTree", groupId.toString(), "depth", "20")
-            assert.fieldEquals("MerkleTree", groupId.toString(), "zeroValue", "0")
+            assert.fieldEquals("MerkleTree", groupId.toString(), "depth", "0")
             assert.fieldEquals("MerkleTree", groupId.toString(), "numberOfLeaves", "0")
             assert.fieldEquals("MerkleTree", groupId.toString(), "group", groupId.toString())
         })
@@ -131,26 +131,60 @@ describe("Semaphore subgraph", () => {
         })
     })
 
+    describe("# addMembers", () => {
+        test("Should have added many group members at once", () => {
+            const groupId = BigInt.fromI32(234)
+            const startIndex = BigInt.fromI32(1)
+            const identityCommitments = [BigInt.fromI32(123), BigInt.fromI32(124)]
+            const merkleTreeRoot = BigInt.fromI32(999)
+            const id = hash(concat(ByteArray.fromBigInt(startIndex), ByteArray.fromBigInt(groupId)))
+
+            const event = createMembersAddedEvent(groupId, startIndex, identityCommitments, merkleTreeRoot)
+
+            addMembers(event)
+
+            assert.entityCount("Member", 3)
+
+            assert.fieldEquals("Member", id, "index", "1")
+            assert.fieldEquals("Member", id, "identityCommitment", "123")
+            assert.fieldEquals("Member", id, "group", groupId.toString())
+
+            assert.fieldEquals("MerkleTree", groupId.toString(), "root", "999")
+            assert.fieldEquals("MerkleTree", groupId.toString(), "numberOfLeaves", "3")
+        })
+    })
+
     describe("# addVerifiedProof", () => {
         test("Should have added a proof", () => {
             const groupId = BigInt.fromI32(234)
+            const merkleTreeDepth = BigInt.fromI32(32)
             const merkleTreeRoot = BigInt.fromI32(1001)
-            const externalNullifier = BigInt.fromI32(1)
-            const nullifierHash = BigInt.fromI32(666)
-            const signal = BigInt.fromI32(2)
-            const id = hash(concat(ByteArray.fromBigInt(nullifierHash), ByteArray.fromBigInt(groupId)))
+            const nullifier = BigInt.fromI32(666)
+            const message = BigInt.fromI32(2)
+            const scope = BigInt.fromI32(1)
+            const proof = [BigInt.fromI32(1), BigInt.fromI32(2)]
+            const id = hash(concat(ByteArray.fromBigInt(nullifier), ByteArray.fromBigInt(groupId)))
 
-            const event = createProofVerifiedEvent(groupId, merkleTreeRoot, externalNullifier, nullifierHash, signal)
+            const event = createProofVerifiedEvent(
+                groupId,
+                merkleTreeDepth,
+                merkleTreeRoot,
+                nullifier,
+                message,
+                scope,
+                proof
+            )
 
-            addVerifiedProof(event)
+            addValidatedProof(event)
 
-            assert.entityCount("VerifiedProof", 1)
+            assert.entityCount("ValidatedProof", 1)
 
-            assert.fieldEquals("VerifiedProof", id, "merkleTreeRoot", "1001")
-            assert.fieldEquals("VerifiedProof", id, "externalNullifier", "1")
-            assert.fieldEquals("VerifiedProof", id, "nullifierHash", "666")
-            assert.fieldEquals("VerifiedProof", id, "signal", "2")
-            assert.fieldEquals("VerifiedProof", id, "group", groupId.toString())
+            assert.fieldEquals("ValidatedProof", id, "group", groupId.toString())
+            assert.fieldEquals("ValidatedProof", id, "merkleTreeRoot", "1001")
+            assert.fieldEquals("ValidatedProof", id, "scope", "1")
+            assert.fieldEquals("ValidatedProof", id, "nullifier", "666")
+            assert.fieldEquals("ValidatedProof", id, "message", "2")
+            assert.fieldEquals("ValidatedProof", id, "proof", `[${proof.join(", ")}]`)
         })
     })
 })
