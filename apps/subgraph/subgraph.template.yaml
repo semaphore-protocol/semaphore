@@ -20,7 +20,7 @@ dataSources:
               - name: Semaphore
                 file: ./abis/Semaphore.json
           eventHandlers:
-              - event: GroupCreated(indexed uint256,uint256,uint256)
+              - event: GroupCreated(indexed uint256)
                 handler: createGroup
               - event: GroupAdminUpdated(indexed uint256,indexed address,indexed address)
                 handler: updateGroupAdmin
@@ -30,6 +30,8 @@ dataSources:
                 handler: updateMember
               - event: MemberRemoved(indexed uint256,uint256,uint256,uint256)
                 handler: removeMember
-              - event: ProofVerified(indexed uint256,indexed uint256,uint256,indexed uint256,uint256)
-                handler: addVerifiedProof
+              - event: MembersAdded(indexed uint256,uint256,uint256[],uint256)
+                handler: addMembers
+              - event: ProofValidated(indexed uint256,uint256,indexed uint256,uint256,uint256,indexed uint256,uint256[8])
+                handler: addValidatedProof
           file: ./src/semaphore.ts

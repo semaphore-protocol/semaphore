@@ -68,10 +68,10 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
         uint256 groupId,
         uint256 identityCommitment
     ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
-        uint256 leafIndex = getMerkleTreeSize(groupId);
+        uint256 index = getMerkleTreeSize(groupId);
         uint256 merkleTreeRoot = merkleTrees[groupId]._insert(identityCommitment);
 
-        emit MemberAdded(groupId, leafIndex, identityCommitment, merkleTreeRoot);
+        emit MemberAdded(groupId, index, identityCommitment, merkleTreeRoot);
     }
 
     /// @dev Adds new members to an existing group.
@@ -96,14 +96,14 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
         uint256 newIdentityCommitment,
         uint256[] calldata merkleProofSiblings
     ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
-        uint256 leafIndex = merkleTrees[groupId]._indexOf(oldIdentityCommitment);
+        uint256 index = merkleTrees[groupId]._indexOf(oldIdentityCommitment);
         uint256 merkleTreeRoot = merkleTrees[groupId]._update(
             oldIdentityCommitment,
             newIdentityCommitment,
             merkleProofSiblings
         );
 
-        emit MemberUpdated(groupId, leafIndex, oldIdentityCommitment, newIdentityCommitment, merkleTreeRoot);
+        emit MemberUpdated(groupId, index, oldIdentityCommitment, newIdentityCommitment, merkleTreeRoot);
     }
 
     /// @dev Removes an identity commitment from an existing group. A proof of membership is
@@ -116,11 +116,11 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
         uint256 identityCommitment,
         uint256[] calldata merkleProofSiblings
     ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
-        uint256 leafIndex = merkleTrees[groupId]._indexOf(identityCommitment);
+        uint256 index = merkleTrees[groupId]._indexOf(identityCommitment);
 
         uint256 merkleTreeRoot = merkleTrees[groupId]._remove(identityCommitment, merkleProofSiblings);
 
-        emit MemberRemoved(groupId, leafIndex, identityCommitment, merkleTreeRoot);
+        emit MemberRemoved(groupId, index, identityCommitment, merkleTreeRoot);
     }
 
     /// @dev See {ISemaphoreGroups-hasMember}.

@@ -19,10 +19,10 @@ interface ISemaphoreGroups {
 
     /// @dev Emitted when a new identity commitment is added.
     /// @param groupId: Group id of the group.
-    /// @param leafIndex: Merkle tree leaf index.
+    /// @param index: Merkle tree leaf index.
     /// @param identityCommitment: New identity commitment.
     /// @param merkleTreeRoot: New root hash of the tree.
-    event MemberAdded(uint256 indexed groupId, uint256 leafIndex, uint256 identityCommitment, uint256 merkleTreeRoot);
+    event MemberAdded(uint256 indexed groupId, uint256 index, uint256 identityCommitment, uint256 merkleTreeRoot);
 
     /// @dev Emitted when many identity commitments are added at the same time.
     /// @param groupId: Group id of the group.
@@ -38,13 +38,13 @@ interface ISemaphoreGroups {
 
     /// @dev Emitted when an identity commitment is updated.
     /// @param groupId: Group id of the group.
-    /// @param leafIndex: Identity commitment index.
+    /// @param index: Identity commitment index.
     /// @param identityCommitment: Existing identity commitment to be updated.
     /// @param newIdentityCommitment: New identity commitment.
     /// @param merkleTreeRoot: New root hash of the tree.
     event MemberUpdated(
         uint256 indexed groupId,
-        uint256 leafIndex,
+        uint256 index,
         uint256 identityCommitment,
         uint256 newIdentityCommitment,
         uint256 merkleTreeRoot
@@ -52,10 +52,10 @@ interface ISemaphoreGroups {
 
     /// @dev Emitted when a new identity commitment is removed.
     /// @param groupId: Group id of the group.
-    /// @param leafIndex: Identity commitment index.
+    /// @param index: Identity commitment index.
     /// @param identityCommitment: Existing identity commitment to be removed.
     /// @param merkleTreeRoot: New root hash of the tree.
-    event MemberRemoved(uint256 indexed groupId, uint256 leafIndex, uint256 identityCommitment, uint256 merkleTreeRoot);
+    event MemberRemoved(uint256 indexed groupId, uint256 index, uint256 identityCommitment, uint256 merkleTreeRoot);
 
     /// @dev Returns true if a member exists in a group.
     /// @param groupId: Id of the group.
