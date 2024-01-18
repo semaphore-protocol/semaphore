@@ -1,5 +1,5 @@
+import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts"
 import { newMockEvent } from "matchstick-as"
-import { ethereum, BigInt, Address } from "@graphprotocol/graph-ts"
 import {
     GroupAdminUpdated,
     GroupCreated,
@@ -7,21 +7,16 @@ import {
     MemberAdded,
     MemberRemoved,
     MemberUpdated,
-    ProofVerified
+    MembersAdded,
+    ProofValidated
 } from "../generated/Semaphore/Semaphore"
 
-export function createGroupCreatedEvent(groupId: BigInt, merkleTreeDepth: BigInt, zeroValue: BigInt): GroupCreated {
+export function createGroupCreatedEvent(groupId: BigInt): GroupCreated {
     const groupCreatedEvent = changetype<GroupCreated>(newMockEvent())
 
     groupCreatedEvent.parameters = []
 
     groupCreatedEvent.parameters.push(new ethereum.EventParam("groupId", ethereum.Value.fromUnsignedBigInt(groupId)))
-    groupCreatedEvent.parameters.push(
-        new ethereum.EventParam("merkleTreeDepth", ethereum.Value.fromUnsignedBigInt(merkleTreeDepth))
-    )
-    groupCreatedEvent.parameters.push(
-        new ethereum.EventParam("zeroValue", ethereum.Value.fromUnsignedBigInt(zeroValue))
-    )
 
     return groupCreatedEvent
 }
@@ -132,29 +127,56 @@ export function createMemberUpdatedEvent(
     return memberUpdatedEvent
 }
 
-export function createProofVerifiedEvent(
+export function createMembersAddedEvent(
     groupId: BigInt,
-    merkleTreeRoot: BigInt,
-    externalNullifier: BigInt,
-    nullifierHash: BigInt,
-    signal: BigInt
-): ProofVerified {
-    const proofVerifiedEvent = changetype<ProofVerified>(newMockEvent())
+    startIndex: BigInt,
+    identityCommitments: BigInt[],
+    merkleTreeRoot: BigInt
+): MembersAdded {
+    const membersAddedEvent = changetype<MembersAdded>(newMockEvent())
 
-    proofVerifiedEvent.parameters = []
+    membersAddedEvent.parameters = []
 
-    proofVerifiedEvent.parameters.push(new ethereum.EventParam("groupId", ethereum.Value.fromUnsignedBigInt(groupId)))
-    proofVerifiedEvent.parameters.push(
+    membersAddedEvent.parameters.push(new ethereum.EventParam("groupId", ethereum.Value.fromUnsignedBigInt(groupId)))
+    membersAddedEvent.parameters.push(
+        new ethereum.EventParam("startIndex", ethereum.Value.fromUnsignedBigInt(startIndex))
+    )
+    membersAddedEvent.parameters.push(
+        new ethereum.EventParam("identityCommitments", ethereum.Value.fromUnsignedBigIntArray(identityCommitments))
+    )
+    membersAddedEvent.parameters.push(
         new ethereum.EventParam("merkleTreeRoot", ethereum.Value.fromUnsignedBigInt(merkleTreeRoot))
     )
-    proofVerifiedEvent.parameters.push(
-        new ethereum.EventParam("nullifierHash", ethereum.Value.fromUnsignedBigInt(nullifierHash))
-    )
-    proofVerifiedEvent.parameters.push(
-        new ethereum.EventParam("externalNullifier", ethereum.Value.fromUnsignedBigInt(externalNullifier))
-    )
 
-    proofVerifiedEvent.parameters.push(new ethereum.EventParam("signal", ethereum.Value.fromUnsignedBigInt(signal)))
+    return membersAddedEvent
+}
 
-    return proofVerifiedEvent
+export function createProofVerifiedEvent(
+    groupId: BigInt,
+    merkleTreeDepth: BigInt,
+    merkleTreeRoot: BigInt,
+    nullifier: BigInt,
+    message: BigInt,
+    scope: BigInt,
+    proof: BigInt[]
+): ProofValidated {
+    const proofValidatedEvent = changetype<ProofValidated>(newMockEvent())
+
+    proofValidatedEvent.parameters = []
+
+    proofValidatedEvent.parameters.push(new ethereum.EventParam("groupId", ethereum.Value.fromUnsignedBigInt(groupId)))
+    proofValidatedEvent.parameters.push(
+        new ethereum.EventParam("merkleTreeDepth", ethereum.Value.fromUnsignedBigInt(merkleTreeDepth))
+    )
+    proofValidatedEvent.parameters.push(
+        new ethereum.EventParam("merkleTreeRoot", ethereum.Value.fromUnsignedBigInt(merkleTreeRoot))
+    )
+    proofValidatedEvent.parameters.push(
+        new ethereum.EventParam("nullifier", ethereum.Value.fromUnsignedBigInt(nullifier))
+    )
+    proofValidatedEvent.parameters.push(new ethereum.EventParam("message", ethereum.Value.fromUnsignedBigInt(message)))
+    proofValidatedEvent.parameters.push(new ethereum.EventParam("scope", ethereum.Value.fromUnsignedBigInt(scope)))
+    proofValidatedEvent.parameters.push(new ethereum.EventParam("proof", ethereum.Value.fromUnsignedBigIntArray(proof)))
+
+    return proofValidatedEvent
 }
