@@ -1,37 +1,37 @@
 {
     "sepolia": {
         "Semaphore": {
-            "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
-            "startBlock": 3231111
+            "address": "0x021dC8BF0eADd9C128490A976756C1b052edF99d",
+            "startBlock": 5108003
         }
     },
     "mumbai": {
         "Semaphore": {
-            "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
-            "startBlock": 33995010
+            "address": "",
+            "startBlock": 0
         }
     },
     "optimism-sepolia": {
         "Semaphore": {
-            "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
-            "startBlock": 7632846
+            "address": "",
+            "startBlock": 0
         }
     },
     "arbitrum-sepolia": {
         "Semaphore": {
-            "address": "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131",
-            "startBlock": 15174410
+            "address": "",
+            "startBlock": 0
         }
     },
     "arbitrum-one": {
         "Semaphore": {
-            "address": "0xc60E0Ee1a2770d5F619858C641f14FC4a6401520",
-            "startBlock": 77278430
+            "address": "",
+            "startBlock": 0
         }
     },
     "localhost": {
         "Semaphore": {
-            "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+            "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
             "startBlock": 0
         }
     }
