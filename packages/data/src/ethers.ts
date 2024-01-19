@@ -153,13 +153,13 @@ export default class SemaphoreEthers {
         }
 
         const merkleTreeRoot = await this._contract.getMerkleTreeRoot(groupId)
+        const merkleTreeDepth = await this._contract.getMerkleTreeDepth(groupId)
         const numberOfLeaves = await this._contract.getNumberOfMerkleTreeLeaves(groupId)
 
         const group: GroupResponse = {
             id: groupId,
             merkleTree: {
-                depth: groupCreatedEvent.merkleTreeDepth.toString(),
-                zeroValue: groupCreatedEvent.zeroValue.toString(),
+                depth: merkleTreeDepth.toNumber(),
                 numberOfLeaves: numberOfLeaves.toNumber(),
                 root: merkleTreeRoot.toString()
             }
@@ -204,7 +204,6 @@ export default class SemaphoreEthers {
             throw new Error(`Group '${groupId}' not found`)
         }
 
-        const zeroValue = groupCreatedEvent.zeroValue.toString()
         const memberRemovedEvents = await getEvents(
             this._contract,
             "MemberRemoved",
@@ -217,39 +216,70 @@ export default class SemaphoreEthers {
             [groupId],
             this._options.startBlock
         )
-        const groupUpdates = new Map<string, [number, string]>()
+        const memberUpdatedEventsMap = new Map<string, [number, string]>()
 
         for (const { blockNumber, index, newIdentityCommitment } of memberUpdatedEvents) {
-            groupUpdates.set(index.toString(), [blockNumber, newIdentityCommitment.toString()])
+            memberUpdatedEventsMap.set(index.toString(), [blockNumber, newIdentityCommitment.toString()])
         }
 
         for (const { blockNumber, index } of memberRemovedEvents) {
-            const groupUpdate = groupUpdates.get(index.toString())
+            const groupUpdate = memberUpdatedEventsMap.get(index.toString())
 
             if (!groupUpdate || (groupUpdate && groupUpdate[0] < blockNumber)) {
-                groupUpdates.set(index.toString(), [blockNumber, zeroValue])
+                memberUpdatedEventsMap.set(index.toString(), [blockNumber, "0"])
             }
         }
 
+        const membersAddedEvents = await getEvents(this._contract, "MembersAdded", [groupId], this._options.startBlock)
+
+        const membersAddedEventsMap = new Map<string, [string]>()
+
+        for (const { startIndex, identityCommitments } of membersAddedEvents) {
+            membersAddedEventsMap.set(
+                startIndex.toString(),
+                identityCommitments.map((i: any) => i.toString())
+            )
+        }
+
         const memberAddedEvents = await getEvents(this._contract, "MemberAdded", [groupId], this._options.startBlock)
+
         const members: string[] = []
 
-        for (const { index, identityCommitment } of memberAddedEvents) {
-            const groupUpdate = groupUpdates.get(index.toString())
-            const member = groupUpdate ? groupUpdate[1].toString() : identityCommitment.toString()
+        const numberOfLeaves = await this._contract.getNumberOfMerkleTreeLeaves(groupId)
 
-            members.push(member)
+        let i = 0
+
+        while (i < numberOfLeaves.toNumber()) {
+            const identityCommitments = membersAddedEventsMap.get(i.toString())
+
+            if (identityCommitments) {
+                members.push(...identityCommitments)
+
+                i += identityCommitments.length
+            } else {
+                members.push(memberAddedEvents[i].identityCommitment)
+
+                i += 1
+            }
+        }
+
+        for (let j = 0; j < members.length; j += 1) {
+            const groupUpdate = memberUpdatedEventsMap.get(j.toString())
+
+            if (groupUpdate) {
+                members[j] = groupUpdate[1].toString()
+            }
         }
 
         return members
     }
 
     /**
-     * Returns a list of group verified proofs.
+     * Returns a list of group validated proofs.
      * @param groupId Group id.
-     * @returns Group verified proofs.
+     * @returns Group validated proofs.
      */
-    async getGroupVerifiedProofs(groupId: string): Promise<any> {
+    async getGroupValidatedProofs(groupId: string): Promise<any> {
         checkParameter(groupId, "groupId", "string")
 
         const [groupCreatedEvent] = await getEvents(this._contract, "GroupCreated", [groupId], this._options.startBlock)
@@ -258,18 +288,33 @@ export default class SemaphoreEthers {
             throw new Error(`Group '${groupId}' not found`)
         }
 
-        const proofVerifiedEvents = await getEvents(
+        const proofValidatedEvents = await getEvents(
             this._contract,
-            "ProofVerified",
+            "ProofValidated",
             [groupId],
             this._options.startBlock
         )
 
-        return proofVerifiedEvents.map((event) => ({
-            signal: event.signal.toString(),
+        return proofValidatedEvents.map((event) => ({
+            message: event.message.toString(),
+            merkleTreeDepth: event.merkleTreeDepth.toString(),
             merkleTreeRoot: event.merkleTreeRoot.toString(),
-            externalNullifier: event.externalNullifier.toString(),
-            nullifierHash: event.nullifierHash.toString()
+            scope: event.scope.toString(),
+            nullifier: event.nullifier.toString(),
+            proof: event.proof.map((p: any) => p.toString())
         }))
+    }
+
+    /**
+     * Returns true if a member is part of group, and false otherwise.
+     * @param groupId Group id
+     * @param member Group member.
+     * @returns True if the member is part of the group, false otherwise.
+     */
+    async isGroupMember(groupId: string, member: string): Promise<boolean> {
+        checkParameter(groupId, "groupId", "string")
+        checkParameter(member, "member", "string")
+
+        return this._contract.hasMember(groupId, member)
     }
 }
