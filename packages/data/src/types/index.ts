@@ -19,7 +19,7 @@ export type EthersNetwork =
 
 export type GroupOptions = {
     members?: boolean
-    verifiedProofs?: boolean
+    validatedProofs?: boolean
     filters?: {
         admin?: string
         identityCommitment?: string
@@ -34,16 +34,17 @@ export type GroupResponse = {
     merkleTree: {
         root: string
         depth: number
-        zeroValue: string
         numberOfLeaves: number
     }
     admin?: string
     members?: string[]
-    verifiedProofs?: {
-        signal: string
+    validatedProofs?: {
+        message: string
         merkleTreeRoot: string
-        externalNullifier: string
-        nullifierHash: string
+        merkleTreeDepth: number
+        scope: string
+        nullifier: string
+        proof: string[]
         timestamp?: string
     }[]
 }
