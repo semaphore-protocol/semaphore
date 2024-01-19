@@ -1,7 +1,8 @@
 import { writeFileSync } from "fs"
 import { task, types } from "hardhat/config"
+import { deployContract } from "./utils"
 
-task("deploy:semaphore", "Deploy a Semaphore contract")
+task("deploy", "Deploy a Semaphore contract")
     .addOptionalParam<boolean>("verifier", "Verifier contract address", undefined, types.string)
     .addOptionalParam<boolean>("poseidon", "Poseidon library address", undefined, types.string)
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
@@ -13,15 +14,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
             if (!verifierAddress) {
                 const VerifierFactory = await ethers.getContractFactory(`SemaphoreVerifier`)
 
-                let verifier
-
-                if (hardhatArguments.network !== undefined && hardhatArguments.network !== "hardhat") {
-                    verifier = await defender.deployContract(VerifierFactory, { salt: process.env.CREATE2_SALT })
-
-                    await verifier.waitForDeployment()
-                } else {
-                    verifier = await VerifierFactory.deploy()
-                }
+                const verifier = await deployContract(defender, VerifierFactory, hardhatArguments.network)
 
                 verifierAddress = await verifier.getAddress()
 
@@ -33,15 +26,7 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
             if (!poseidonAddress) {
                 const PoseidonT3Factory = await ethers.getContractFactory("PoseidonT3")
 
-                let poseidonT3
-
-                if (hardhatArguments.network !== undefined && hardhatArguments.network !== "hardhat") {
-                    poseidonT3 = await defender.deployContract(PoseidonT3Factory, { salt: process.env.CREATE2_SALT })
-
-                    await poseidonT3.waitForDeployment()
-                } else {
-                    poseidonT3 = await PoseidonT3Factory.deploy()
-                }
+                const poseidonT3 = await deployContract(defender, PoseidonT3Factory, hardhatArguments.network)
 
                 poseidonAddress = await poseidonT3.getAddress()
 
@@ -56,19 +41,9 @@ task("deploy:semaphore", "Deploy a Semaphore contract")
                 }
             })
 
-            let semaphore
-
-            if (hardhatArguments.network !== undefined && hardhatArguments.network !== "hardhat") {
-                semaphore = await defender.deployContract(SemaphoreFactory, [verifierAddress], {
-                    salt: process.env.CREATE2_SALT,
-                    unsafeAllow: ["external-library-linking", "constructor"],
-                    unsafeAllowDeployContract: true
-                })
-
-                await semaphore.waitForDeployment()
-            } else {
-                semaphore = await SemaphoreFactory.deploy(verifierAddress)
-            }
+            const semaphore = await deployContract(defender, SemaphoreFactory, hardhatArguments.network, [
+                verifierAddress
+            ])
 
             const semaphoreAddress = await semaphore.getAddress()
 
