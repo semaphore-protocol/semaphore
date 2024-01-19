@@ -29,7 +29,7 @@ type ValidatedProof @entity {
     message: BigInt!
     scope: BigInt!
     merkleTreeRoot: BigInt!
-    merkleTreeDepth: BigInt!
+    merkleTreeDepth: Int!
     nullifier: BigInt!
     proof: [BigInt!]!
     group: Group!
