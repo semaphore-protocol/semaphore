@@ -60,10 +60,10 @@ export default class SemaphoreSubgraph {
     async getGroups(options: GroupOptions = {}): Promise<GroupResponse[]> {
         checkParameter(options, "options", "object")
 
-        const { members = false, verifiedProofs = false } = options
+        const { members = false, validatedProofs = false } = options
 
         checkParameter(members, "members", "boolean")
-        checkParameter(verifiedProofs, "verifiedProofs", "boolean")
+        checkParameter(validatedProofs, "validatedProofs", "boolean")
 
         let filtersQuery = ""
 
@@ -102,7 +102,6 @@ export default class SemaphoreSubgraph {
                         merkleTree {
                             root
                             depth
-                            zeroValue
                             numberOfLeaves
                         }
                         admin
@@ -114,12 +113,14 @@ export default class SemaphoreSubgraph {
                                 : ""
                         }
                         ${
-                            verifiedProofs === true
-                                ? `verifiedProofs(orderBy: timestamp) {
-                            signal
+                            validatedProofs === true
+                                ? `validatedProofs(orderBy: timestamp) {
+                            message
                             merkleTreeRoot
-                            externalNullifier
-                            nullifierHash
+                            merkleTreeDepth
+                            scope
+                            nullifier
+                            proof
                             timestamp
                         }`
                                 : ""
@@ -150,10 +151,10 @@ export default class SemaphoreSubgraph {
         checkParameter(groupId, "groupId", "string")
         checkParameter(options, "options", "object")
 
-        const { members = false, verifiedProofs = false } = options
+        const { members = false, validatedProofs = false } = options
 
         checkParameter(members, "members", "boolean")
-        checkParameter(verifiedProofs, "verifiedProofs", "boolean")
+        checkParameter(validatedProofs, "validatedProofs", "boolean")
 
         const config: AxiosRequestConfig = {
             method: "post",
@@ -176,12 +177,14 @@ export default class SemaphoreSubgraph {
                                 : ""
                         }
                         ${
-                            verifiedProofs === true
-                                ? `verifiedProofs(orderBy: timestamp) {
-                            signal
+                            validatedProofs === true
+                                ? `validatedProofs(orderBy: timestamp) {
+                            message
                             merkleTreeRoot
-                            externalNullifier
-                            nullifierHash
+                            merkleTreeDepth
+                            scope
+                            nullifier
+                            proof
                             timestamp
                         }`
                                 : ""
