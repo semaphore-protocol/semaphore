@@ -217,6 +217,7 @@ export function addValidatedProof(event: ProofValidated): void {
         validatedProof.group = group.id
         validatedProof.message = event.params.message
         validatedProof.merkleTreeRoot = event.params.merkleTreeRoot
+        validatedProof.merkleTreeDepth = event.params.merkleTreeDepth.toI32()
         validatedProof.scope = event.params.scope
         validatedProof.nullifier = event.params.nullifier
         validatedProof.proof = event.params.proof
