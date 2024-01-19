@@ -181,6 +181,7 @@ describe("Semaphore subgraph", () => {
 
             assert.fieldEquals("ValidatedProof", id, "group", groupId.toString())
             assert.fieldEquals("ValidatedProof", id, "merkleTreeRoot", "1001")
+            assert.fieldEquals("ValidatedProof", id, "merkleTreeDepth", "32")
             assert.fieldEquals("ValidatedProof", id, "scope", "1")
             assert.fieldEquals("ValidatedProof", id, "nullifier", "666")
             assert.fieldEquals("ValidatedProof", id, "message", "2")
