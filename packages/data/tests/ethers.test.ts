@@ -1,7 +1,7 @@
-import SemaphoreEthers from "./ethers"
-import getEvents from "./getEvents"
+import SemaphoreEthers from "../src/ethers"
+import getEvents from "../src/getEvents"
 
-jest.mock("./getEvents", () => ({
+jest.mock("../src/getEvents", () => ({
     __esModule: true,
     default: jest.fn()
 }))
@@ -13,8 +13,11 @@ jest.mock("ethers", () => ({
         () =>
             ({
                 getMerkleTreeRoot: () => "222",
+                getMerkleTreeDepth: () => ({
+                    toNumber: () => 3
+                }),
                 getNumberOfMerkleTreeLeaves: () => ({
-                    toNumber: () => 2
+                    toNumber: () => 8
                 })
             } as any)
     )
@@ -128,17 +131,16 @@ describe("SemaphoreEthers", () => {
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
                     {
-                        merkleTreeDepth: "20",
-                        zeroValue: "111"
+                        groupId: "111"
                     }
                 ])
             )
 
             const group = await semaphore.getGroup("42")
 
-            expect(group.merkleTree.depth).toBe("20")
+            expect(group.merkleTree.depth).toBe(3)
             expect(group.merkleTree.root).toBe("222")
-            expect(group.merkleTree.zeroValue).toContain("111")
+            expect(group.merkleTree.numberOfLeaves).toBe(8)
         })
 
         it("Should throw an error if the group does not exist", async () => {
@@ -179,8 +181,7 @@ describe("SemaphoreEthers", () => {
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
                     {
-                        merkleTreeDepth: "20",
-                        zeroValue: "0"
+                        groupId: "20"
                     }
                 ])
             )
@@ -189,12 +190,17 @@ describe("SemaphoreEthers", () => {
                     {
                         index: "0",
                         merkleTreeRoot: "223",
-                        blockNumber: 3
+                        blockNumber: 4
                     },
                     {
                         index: "2",
                         merkleTreeRoot: "224",
-                        blockNumber: 4
+                        blockNumber: 5
+                    },
+                    {
+                        index: "5",
+                        merkleTreeRoot: "226",
+                        blockNumber: 8
                     }
                 ])
             )
@@ -211,6 +217,22 @@ describe("SemaphoreEthers", () => {
                         newIdentityCommitment: "114",
                         merkleTreeRoot: "226",
                         blockNumber: 3
+                    }
+                ])
+            )
+            getEventsMocked.mockReturnValueOnce(
+                Promise.resolve([
+                    {
+                        startIndex: "4",
+                        identityCommitments: ["209", "211"],
+                        merkleTreeRoot: "223",
+                        blockNumber: 6
+                    },
+                    {
+                        startIndex: "6",
+                        identityCommitments: ["310", "312"],
+                        merkleTreeRoot: "224",
+                        blockNumber: 7
                     }
                 ])
             )
@@ -248,6 +270,9 @@ describe("SemaphoreEthers", () => {
             expect(members[0]).toBe("0")
             expect(members[1]).toBe("113")
             expect(members[2]).toBe("0")
+            expect(members[4]).toBe("209")
+            expect(members[5]).toBe("0")
+            expect(members[7]).toBe("312")
         })
 
         it("Should throw an error if the group does not exist", async () => {
@@ -264,31 +289,32 @@ describe("SemaphoreEthers", () => {
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
                     {
-                        merkleTreeDepth: "20",
-                        zeroValue: "0"
+                        groupId: "42"
                     }
                 ])
             )
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
                     {
-                        signal: "111",
+                        message: "111",
                         merkleTreeRoot: "112",
-                        externalNullifier: "113",
-                        nullifierHash: "114"
+                        merkleTreeDepth: "112",
+                        scope: "113",
+                        nullifier: "114",
+                        proof: ["12312", "12312", "12312", "12312", "12312", "12312", "12312", "12312"]
                     }
                 ])
             )
 
-            const [verifiedProof] = await semaphore.getGroupVerifiedProofs("42")
+            const [verifiedProof] = await semaphore.getGroupValidatedProofs("42")
 
-            expect(verifiedProof.signal).toContain("111")
+            expect(verifiedProof.message).toContain("111")
         })
 
         it("Should throw an error if the group does not exist", async () => {
             getEventsMocked.mockReturnValueOnce(Promise.resolve([]))
 
-            const fun = () => semaphore.getGroupVerifiedProofs("666")
+            const fun = () => semaphore.getGroupValidatedProofs("666")
 
             await expect(fun).rejects.toThrow("Group '666' not found")
         })

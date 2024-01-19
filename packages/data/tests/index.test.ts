@@ -1,4 +1,4 @@
-import getSupportedNetworks from "./getSupportedNetworks"
+import getSupportedNetworks from "../src/getSupportedNetworks"
 
 describe("Data", () => {
     describe("# getSupportedNetworks", () => {
