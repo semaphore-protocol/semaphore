@@ -5,6 +5,7 @@
         "start": "hardhat node",
         "compile": "hardhat compile",
         "deploy": "hardhat deploy",
+        "verify": "hardhat run scripts/verify-contracts.ts",
         "test": "hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
