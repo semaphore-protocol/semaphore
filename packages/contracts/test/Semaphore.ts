@@ -19,7 +19,7 @@ describe("Semaphore", () => {
     const members = Array.from({ length: 3 }, (_, i) => new Identity(i)).map(({ commitment }) => commitment)
 
     before(async () => {
-        const { semaphore } = await run("deploy:semaphore", {
+        const { semaphore } = await run("deploy", {
             logs: false
         })
 
