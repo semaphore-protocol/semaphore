@@ -10,7 +10,7 @@ import { NetworksUserConfig } from "hardhat/types"
 import { resolve } from "path"
 import "solidity-coverage"
 import "./tasks/accounts"
-import "./tasks/deploy-semaphore"
+import "./tasks/deploy"
 
 dotenvConfig({ path: resolve(__dirname, "../../.env") })
 
