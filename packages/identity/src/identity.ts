@@ -20,7 +20,7 @@ export default class Identity {
      * Initializes the class attributes based on the parameters.
      * @param privateKey The secret value used to generate an EdDSA public key.
      */
-    constructor(privateKey: BigNumberish = randomBytes(32)) {
+    constructor(privateKey: BigNumberish = BigInt(`0x${randomBytes(32).toString("hex")}`).toString()) {
         this._privateKey = privateKey
         this._secretScalar = deriveSecretScalar(privateKey)
 

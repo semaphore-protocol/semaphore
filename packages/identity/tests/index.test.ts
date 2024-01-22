@@ -7,7 +7,7 @@ describe("Identity", () => {
         it("Should create a random identity", () => {
             const identity = new Identity()
 
-            expect(Buffer.isBuffer(identity.privateKey)).toBeTruthy()
+            expect(typeof identity.privateKey).toBe("string")
             expect(typeof identity.secretScalar).toBe("string")
             expect(identity.publicKey).toHaveLength(2)
             expect(typeof identity.commitment).toBe("string")
