@@ -55,8 +55,8 @@ export default class SemaphoreEthers {
                 options.startBlock ??= 33995010
                 break
             case "sepolia":
-                options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
-                options.startBlock ??= 3231111
+                options.address ??= "0x021dC8BF0eADd9C128490A976756C1b052edF99d"
+                options.startBlock ??= 5108003
                 break
             case "optimism-sepolia":
                 options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
@@ -154,13 +154,13 @@ export default class SemaphoreEthers {
 
         const merkleTreeRoot = await this._contract.getMerkleTreeRoot(groupId)
         const merkleTreeDepth = await this._contract.getMerkleTreeDepth(groupId)
-        const numberOfLeaves = await this._contract.getNumberOfMerkleTreeLeaves(groupId)
+        const merkleTreeSize = await this._contract.getMerkleTreeSize(groupId)
 
         const group: GroupResponse = {
             id: groupId,
             merkleTree: {
-                depth: merkleTreeDepth.toNumber(),
-                numberOfLeaves: numberOfLeaves.toNumber(),
+                depth: Number(merkleTreeDepth),
+                size: Number(merkleTreeSize),
                 root: merkleTreeRoot.toString()
             }
         }
@@ -187,7 +187,7 @@ export default class SemaphoreEthers {
             throw new Error(`Group '${groupId}' not found`)
         }
 
-        return groupAdminUpdatedEvents[groupAdminUpdatedEvents.length - 1].newAdmin.toString()
+        return groupAdminUpdatedEvents[groupAdminUpdatedEvents.length - 1][2]
     }
 
     /**
@@ -218,11 +218,11 @@ export default class SemaphoreEthers {
         )
         const memberUpdatedEventsMap = new Map<string, [number, string]>()
 
-        for (const { blockNumber, index, newIdentityCommitment } of memberUpdatedEvents) {
+        for (const [, index, , newIdentityCommitment, , blockNumber] of memberUpdatedEvents) {
             memberUpdatedEventsMap.set(index.toString(), [blockNumber, newIdentityCommitment.toString()])
         }
 
-        for (const { blockNumber, index } of memberRemovedEvents) {
+        for (const [, index, , , blockNumber] of memberRemovedEvents) {
             const groupUpdate = memberUpdatedEventsMap.get(index.toString())
 
             if (!groupUpdate || (groupUpdate && groupUpdate[0] < blockNumber)) {
@@ -234,7 +234,7 @@ export default class SemaphoreEthers {
 
         const membersAddedEventsMap = new Map<string, [string]>()
 
-        for (const { startIndex, identityCommitments } of membersAddedEvents) {
+        for (const [, startIndex, identityCommitments] of membersAddedEvents) {
             membersAddedEventsMap.set(
                 startIndex.toString(),
                 identityCommitments.map((i: any) => i.toString())
@@ -245,11 +245,11 @@ export default class SemaphoreEthers {
 
         const members: string[] = []
 
-        const numberOfLeaves = await this._contract.getNumberOfMerkleTreeLeaves(groupId)
+        const merkleTreeSize = await this._contract.getMerkleTreeSize(groupId)
 
         let i = 0
 
-        while (i < numberOfLeaves.toNumber()) {
+        while (i < Number(merkleTreeSize)) {
             const identityCommitments = membersAddedEventsMap.get(i.toString())
 
             if (identityCommitments) {
@@ -257,7 +257,7 @@ export default class SemaphoreEthers {
 
                 i += identityCommitments.length
             } else {
-                members.push(memberAddedEvents[i].identityCommitment)
+                members.push(memberAddedEvents[i][2])
 
                 i += 1
             }
@@ -296,12 +296,12 @@ export default class SemaphoreEthers {
         )
 
         return proofValidatedEvents.map((event) => ({
-            message: event.message.toString(),
-            merkleTreeDepth: event.merkleTreeDepth.toString(),
-            merkleTreeRoot: event.merkleTreeRoot.toString(),
-            scope: event.scope.toString(),
-            nullifier: event.nullifier.toString(),
-            proof: event.proof.map((p: any) => p.toString())
+            merkleTreeDepth: Number(event[1]),
+            merkleTreeRoot: event[2].toString(),
+            nullifier: event[3].toString(),
+            message: event[4].toString(),
+            scope: event[5].toString(),
+            proof: event[6].map((p: any) => p.toString())
         }))
     }
 
