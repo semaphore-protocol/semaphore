@@ -1,14 +1,14 @@
 [
     {
-        "name": "Devconnect - ProgCrypto",
-        "date": "Nov 16-17, 2023",
-        "description": "Semaphore team will deliver a workshop on how to build applications with Semaphore.",
-        "link": "https://progcrypto.org"
+        "name": "ETHGlobal - Circuit Breaker",
+        "date": "Feb 2-21, 2024",
+        "description": "Semaphore team will deliver the online workshop 'The Power of Anonimity' about building ZK applications. It will also mention improvements on Semaphore v4 and ZK-KIT.",
+        "link": "https://ethglobal.com/events/circuitbreaker"
     },
     {
-        "name": "Devconnect - Zero Knowledge Unleashed",
-        "date": "Nov 14, 2023",
-        "description": "Semaphore team will deliver a workshop on how to build zero-knowledge applications.",
-        "link": "https://lu.ma/tpgzkday_devconnect"
+        "name": "ETHDam",
+        "date": "Apr 12-14, 2024",
+        "description": "Semaphore team will deliver an in-person talk and sponsor prizes for the hackathon.",
+        "link": "https://www.ethdam.com/"
     }
 ]
