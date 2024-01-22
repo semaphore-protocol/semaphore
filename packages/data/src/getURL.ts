@@ -12,7 +12,7 @@ export default function getURL(supportedNetwork: SupportedNetwork | string): str
         case "optimism-sepolia":
         case "arbitrum-sepolia":
         case "arbitrum":
-            return `https://api.studio.thegraph.com/query/14377/semaphore-${supportedNetwork}/v4.0.0-alpha.1`
+            return `https://api.studio.thegraph.com/query/14377/semaphore-${supportedNetwork}/v4.0.0-alpha.2`
         default:
             throw new TypeError(`Network '${supportedNetwork}' is not supported`)
     }

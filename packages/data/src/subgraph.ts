@@ -102,7 +102,7 @@ export default class SemaphoreSubgraph {
                         merkleTree {
                             root
                             depth
-                            numberOfLeaves
+                            size
                         }
                         admin
                         ${
@@ -165,8 +165,7 @@ export default class SemaphoreSubgraph {
                         merkleTree {
                             root
                             depth
-                            zeroValue
-                            numberOfLeaves
+                            size
                         }
                         admin
                         ${
