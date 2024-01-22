@@ -24,7 +24,7 @@ export function createGroup(event: GroupCreated): void {
     log.info("Creating group '{}'", [group.id])
 
     merkleTree.depth = 0
-    merkleTree.numberOfLeaves = 0
+    merkleTree.size = 0
     merkleTree.group = group.id
 
     group.timestamp = event.block.timestamp
@@ -76,12 +76,12 @@ export function addMember(event: MemberAdded): void {
         member.group = merkleTree.group
         member.identityCommitment = event.params.identityCommitment
         member.timestamp = event.block.timestamp
-        member.index = merkleTree.numberOfLeaves
+        member.index = merkleTree.size
 
         member.save()
 
         merkleTree.root = event.params.merkleTreeRoot
-        merkleTree.numberOfLeaves += 1
+        merkleTree.size += 1
 
         merkleTree.save()
 
@@ -187,7 +187,7 @@ export function addMembers(event: MembersAdded): void {
         }
 
         merkleTree.root = event.params.merkleTreeRoot
-        merkleTree.numberOfLeaves += identityCommitments.length
+        merkleTree.size += identityCommitments.length
 
         merkleTree.save()
     }
