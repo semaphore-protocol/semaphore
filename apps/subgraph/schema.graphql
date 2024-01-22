@@ -2,7 +2,7 @@ type MerkleTree @entity {
     id: ID!
     depth: Int!
     root: BigInt
-    numberOfLeaves: Int!
+    size: Int!
     group: Group!
 }
 
