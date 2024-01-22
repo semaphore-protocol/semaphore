@@ -75,7 +75,7 @@ identity: _Identity_,
 group: _Group_,
 message: _BytesLike | Hexable | number | bigint_,
 scope: _BytesLike | Hexable | number | bigint_,
-treeDepth: _number_,
+merkleTreeDepth: _number_,
 snarkArtifacts?: _SnarkArtifacts_
 ): Promise\<_SemaphoreProof_>
 
@@ -105,10 +105,10 @@ const fullProof3 = await generateProof(identity, group, message, scope, 20, {
 })
 ```
 
-\# **verifyProof**(semaphoreProof: _SemaphoreProof_, treeDepth: _number_): Promise\<_boolean_>
+\# **verifyProof**(semaphoreProof: _SemaphoreProof_): Promise\<_boolean_>
 
 ```typescript
 import { verifyProof } from "@semaphore-protocol/proof"
 
-await verifyProof(fullProof, 20)
+await verifyProof(fullProof)
 ```
