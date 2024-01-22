@@ -72,7 +72,7 @@ describe("SemaphoreSubgraph", () => {
                             id: "1",
                             merkleTree: {
                                 depth: 20,
-                                numberOfLeaves: 2,
+                                size: 2,
                                 root: "2"
                             },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
@@ -89,7 +89,7 @@ describe("SemaphoreSubgraph", () => {
                 id: "1",
                 merkleTree: {
                     depth: 20,
-                    numberOfLeaves: 2,
+                    size: 2,
                     root: "2"
                 },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
@@ -110,7 +110,7 @@ describe("SemaphoreSubgraph", () => {
                             id: "1",
                             merkleTree: {
                                 depth: 20,
-                                numberOfLeaves: 2,
+                                size: 2,
                                 root: "2"
                             },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
@@ -158,7 +158,7 @@ describe("SemaphoreSubgraph", () => {
                 id: "1",
                 merkleTree: {
                     depth: 20,
-                    numberOfLeaves: 2,
+                    size: 2,
                     root: "2"
                 },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
@@ -194,7 +194,7 @@ describe("SemaphoreSubgraph", () => {
                             id: "1",
                             merkleTree: {
                                 depth: 20,
-                                numberOfLeaves: 2,
+                                size: 2,
                                 root: "2"
                             },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
@@ -216,7 +216,7 @@ describe("SemaphoreSubgraph", () => {
                 id: "1",
                 merkleTree: {
                     depth: 20,
-                    numberOfLeaves: 2,
+                    size: 2,
                     root: "2"
                 },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
@@ -233,7 +233,7 @@ describe("SemaphoreSubgraph", () => {
                             id: "1",
                             merkleTree: {
                                 depth: 20,
-                                numberOfLeaves: 2,
+                                size: 2,
                                 root: "2"
                             },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
@@ -249,7 +249,7 @@ describe("SemaphoreSubgraph", () => {
                 id: "1",
                 merkleTree: {
                     depth: 20,
-                    numberOfLeaves: 2,
+                    size: 2,
                     root: "2"
                 },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
@@ -270,7 +270,7 @@ describe("SemaphoreSubgraph", () => {
                             id: "1",
                             merkleTree: {
                                 depth: 20,
-                                numberOfLeaves: 2,
+                                size: 2,
                                 root: "2"
                             },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
@@ -317,7 +317,7 @@ describe("SemaphoreSubgraph", () => {
                 id: "1",
                 merkleTree: {
                     depth: 20,
-                    numberOfLeaves: 2,
+                    size: 2,
                     root: "2"
                 },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
