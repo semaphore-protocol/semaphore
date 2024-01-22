@@ -2,7 +2,7 @@ import { extendConfig } from "hardhat/config"
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types"
 
 import "hardhat-dependency-compiler"
-import "@nomiclabs/hardhat-ethers"
+import "@nomicfoundation/hardhat-ethers"
 import "./tasks/deploy-semaphore"
 import "./tasks/deploy-semaphore-verifier"
 

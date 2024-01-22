@@ -7,10 +7,8 @@ task("deploy:semaphore-verifier", "Deploy a SemaphoreVerifier contract")
 
         const semaphoreVerifier = await SemaphoreVerifierFactory.deploy()
 
-        await semaphoreVerifier.deployed()
-
         if (logs) {
-            console.info(`SemaphoreVerifier contract has been deployed to: ${semaphoreVerifier.address}`)
+            console.info(`SemaphoreVerifier contract has been deployed to: ${await semaphoreVerifier.getAddress()}`)
         }
 
         return {
