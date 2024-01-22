@@ -46,7 +46,7 @@ describe("Semaphore subgraph", () => {
             assert.fieldEquals("Group", groupId.toString(), "merkleTree", groupId.toString())
 
             assert.fieldEquals("MerkleTree", groupId.toString(), "depth", "0")
-            assert.fieldEquals("MerkleTree", groupId.toString(), "numberOfLeaves", "0")
+            assert.fieldEquals("MerkleTree", groupId.toString(), "size", "0")
             assert.fieldEquals("MerkleTree", groupId.toString(), "group", groupId.toString())
         })
     })
@@ -84,7 +84,7 @@ describe("Semaphore subgraph", () => {
             assert.fieldEquals("Member", id, "group", groupId.toString())
 
             assert.fieldEquals("MerkleTree", groupId.toString(), "root", "999")
-            assert.fieldEquals("MerkleTree", groupId.toString(), "numberOfLeaves", "1")
+            assert.fieldEquals("MerkleTree", groupId.toString(), "size", "1")
         })
     })
 
@@ -150,7 +150,7 @@ describe("Semaphore subgraph", () => {
             assert.fieldEquals("Member", id, "group", groupId.toString())
 
             assert.fieldEquals("MerkleTree", groupId.toString(), "root", "999")
-            assert.fieldEquals("MerkleTree", groupId.toString(), "numberOfLeaves", "3")
+            assert.fieldEquals("MerkleTree", groupId.toString(), "size", "3")
         })
     })
 
