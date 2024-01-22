@@ -34,7 +34,7 @@ export type GroupResponse = {
     merkleTree: {
         root: string
         depth: number
-        numberOfLeaves: number
+        size: number
     }
     admin?: string
     members?: string[]

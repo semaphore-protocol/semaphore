@@ -1,11 +1,11 @@
 import { GroupResponse, SemaphoreEthers, SemaphoreSubgraph, getSupportedNetworks } from "@semaphore-protocol/data"
 import chalk from "chalk"
 import { program } from "commander"
+import decompress from "decompress"
 import figlet from "figlet"
-import { existsSync, readFileSync, unlinkSync, copyFileSync } from "fs"
+import { copyFileSync, existsSync, readFileSync, unlinkSync } from "fs"
 import logSymbols from "log-symbols"
 import pacote from "pacote"
-import decompress from "decompress"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
 import checkLatestVersion from "./checkLatestVersion.js"
@@ -209,7 +209,7 @@ program
         content += ` ${chalk.bold("Merkle tree")}:\n`
         content += `   Root: ${group.merkleTree.root}\n`
         content += `   Depth: ${group.merkleTree.depth}\n`
-        content += `   Number of leaves: ${group.merkleTree.numberOfLeaves}`
+        content += `   Size: ${group.merkleTree.size}`
 
         console.info(`\n${content}\n`)
     })

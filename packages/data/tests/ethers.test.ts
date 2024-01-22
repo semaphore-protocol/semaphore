@@ -140,7 +140,7 @@ describe("SemaphoreEthers", () => {
 
             expect(group.merkleTree.depth).toBe(3)
             expect(group.merkleTree.root).toBe("222")
-            expect(group.merkleTree.numberOfLeaves).toBe(8)
+            expect(group.merkleTree.size).toBe(8)
         })
 
         it("Should throw an error if the group does not exist", async () => {
