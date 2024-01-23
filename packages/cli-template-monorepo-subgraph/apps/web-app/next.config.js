@@ -30,15 +30,6 @@ const nextConfig = withPWA({
         SEMAPHORE_CONTRACT_ADDRESS: process.env.SEMAPHORE_CONTRACT_ADDRESS,
         OPENZEPPELIN_AUTOTASK_WEBHOOK: process.env.OPENZEPPELIN_AUTOTASK_WEBHOOK,
         GROUP_ID: process.env.GROUP_ID
-    },
-    webpack: (config, { isServer }) => {
-        if (!isServer) {
-            config.resolve.fallback = {
-                fs: false
-            }
-        }
-
-        return config
     }
 })
 

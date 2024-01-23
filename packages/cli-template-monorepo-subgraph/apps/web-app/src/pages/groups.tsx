@@ -17,14 +17,14 @@ export default function GroupsPage() {
     const [_identity, setIdentity] = useState<Identity>()
 
     useEffect(() => {
-        const identityString = localStorage.getItem("identity")
+        const privateKey = localStorage.getItem("identity")
 
-        if (!identityString) {
+        if (!privateKey) {
             router.push("/")
             return
         }
 
-        setIdentity(new Identity(identityString))
+        setIdentity(new Identity(privateKey))
     }, [])
 
     useEffect(() => {

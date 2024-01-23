@@ -1,5 +1,5 @@
 import { SemaphoreEthers } from "@semaphore-protocol/data"
-import { BigNumber, utils } from "ethers"
+import { decodeBytes32String, toBeHex } from "ethers"
 import getNextConfig from "next/config"
 import { useCallback, useState } from "react"
 import { SemaphoreContextType } from "../context/SemaphoreContext"
@@ -19,7 +19,7 @@ export default function useSemaphore(): SemaphoreContextType {
 
         const members = await semaphore.getGroupMembers(env.GROUP_ID)
 
-        setUsers(members)
+        setUsers(members.map((member) => member.toString()))
     }, [])
 
     const addUser = useCallback(
@@ -34,9 +34,9 @@ export default function useSemaphore(): SemaphoreContextType {
             address: env.SEMAPHORE_CONTRACT_ADDRESS
         })
 
-        const proofs = await semaphore.getGroupVerifiedProofs(env.GROUP_ID)
+        const proofs = await semaphore.getGroupValidatedProofs(env.GROUP_ID)
 
-        setFeedback(proofs.map(({ signal }: any) => utils.parseBytes32String(BigNumber.from(signal).toHexString())))
+        setFeedback(proofs.map(({ message }: any) => decodeBytes32String(toBeHex(message, 32))))
     }, [])
 
     const addFeedback = useCallback(
