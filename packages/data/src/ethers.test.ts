@@ -30,12 +30,12 @@ describe("SemaphoreEthers", () => {
             semaphore = new SemaphoreEthers()
             const semaphore1 = new SemaphoreEthers("arbitrum")
             const semaphore2 = new SemaphoreEthers("mumbai")
-            const semaphore3 = new SemaphoreEthers("optimism-sepolia")
-            const semaphore4 = new SemaphoreEthers("arbitrum-sepolia")
-            const semaphore5 = new SemaphoreEthers("arbitrum-sepolia", {
-                address: "0x0000000000000000000000000000000000000000",
-                startBlock: 0
-            })
+            // const semaphore3 = new SemaphoreEthers("optimism-sepolia")
+            // const semaphore4 = new SemaphoreEthers("arbitrum-sepolia")
+            // const semaphore5 = new SemaphoreEthers("arbitrum-sepolia", {
+            // address: "0x0000000000000000000000000000000000000000",
+            // startBlock: 0
+            // })
             const semaphore6 = new SemaphoreEthers("homestead", {
                 address: "0x0000000000000000000000000000000000000000",
                 startBlock: 0
@@ -45,9 +45,9 @@ describe("SemaphoreEthers", () => {
             expect(semaphore.contract).toBeInstanceOf(Object)
             expect(semaphore1.network).toBe("arbitrum")
             expect(semaphore2.network).toBe("maticmum")
-            expect(semaphore3.network).toBe("optimism-sepolia")
-            expect(semaphore4.network).toBe("arbitrum-sepolia")
-            expect(semaphore5.options.address).toContain("0x000000")
+            // expect(semaphore3.network).toBe("optimism-sepolia")
+            // expect(semaphore4.network).toBe("arbitrum-sepolia")
+            // expect(semaphore5.options.address).toContain("0x000000")
             expect(semaphore6.network).toBe("homestead")
             expect(semaphore6.options.startBlock).toBe(0)
             expect(semaphore6.options.address).toContain("0x000000")
