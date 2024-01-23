@@ -44,7 +44,7 @@ cp .env.example .env
 3. And deploy your contract.
 
 ```bash
-yarn deploy --semaphore <semaphore-address> --group <group-id> --network goerli
+yarn deploy --semaphore <semaphore-address> --group <group-id> --network sepolia
 ```
 
 > **Note**  

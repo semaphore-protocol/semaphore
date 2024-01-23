@@ -8,9 +8,8 @@
     "private": true,
     "scripts": {
         "build:libraries": "yarn workspaces foreach -t --no-private run build",
-        "build:subgraph": "yarn workspace semaphore-subgraph codegen goerli && yarn workspace semaphore-subgraph build",
+        "build:subgraph": "yarn workspace semaphore-subgraph codegen sepolia && yarn workspace semaphore-subgraph build",
         "compile:contracts": "yarn workspace semaphore-contracts compile",
-        "remove:template-files": "ts-node scripts/remove-template-files.ts",
         "test": "yarn test:libraries && yarn test:contracts && yarn test:circuits && yarn test:subgraph",
         "test:libraries": "jest --coverage",
         "test:subgraph": "yarn workspace semaphore-subgraph test",
@@ -21,8 +20,10 @@
         "prettier:write": "prettier -w .",
         "docs": "typedoc --cname js.semaphore.pse.dev --githubPages true",
         "version:bump": "yarn workspaces foreach --no-private version -d ${0} && yarn version apply --all && git commit -am \"chore: v${0}\" && git tag v${0}",
-        "version:publish": "yarn build:libraries && yarn remove:template-files && yarn workspaces foreach --no-private npm publish --tolerate-republish --access public",
+        "version:publish": "yarn build:libraries && yarn clean:cli-templates && yarn workspaces foreach --no-private npm publish --tolerate-republish --access public",
         "version:release": "changelogithub",
+        "clean": "ts-node scripts/clean-apps.ts && ts-node scripts/clean-packages.ts && yarn clean:cli-templates && rimraf node_modules",
+        "clean:cli-templates": "ts-node scripts/clean-cli-templates.ts",
         "commit": "cz",
         "precommit": "lint-staged",
         "postinstall": "husky install"
