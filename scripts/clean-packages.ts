@@ -11,8 +11,8 @@ async function main() {
 
     apps.map((app) => gitIgnored.map((f) => rmSync(`${folderName}/${app}/${f}`, { recursive: true, force: true })))
 
-rmSync(`${folderName}/circuit/main`, { recursive: true, force: true })
-rmSync(`${folderName}/circuit/test`, { recursive: true, force: true })
+    rmSync(`${folderName}/circuit/main`, { recursive: true, force: true })
+    rmSync(`${folderName}/circuit/test`, { recursive: true, force: true })
 }
 
 main()
