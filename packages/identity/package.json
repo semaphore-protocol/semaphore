@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/identity",
-    "version": "3.15.2",
+    "version": "4.0.0-alpha",
     "description": "A library to create Semaphore identities.",
     "license": "MIT",
     "main": "dist/index.node.js",
@@ -38,5 +38,6 @@
     "dependencies": {
         "@zk-kit/eddsa-poseidon": "0.4.1",
         "poseidon-lite": "^0.2.0"
-    }
+    },
+    "stableVersion": "3.15.2"
 }
