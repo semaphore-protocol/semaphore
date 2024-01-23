@@ -1,11 +1,11 @@
 import { GroupResponse, SemaphoreEthers, SemaphoreSubgraph, getSupportedNetworks } from "@semaphore-protocol/data"
 import chalk from "chalk"
 import { program } from "commander"
+import decompress from "decompress"
 import figlet from "figlet"
-import { existsSync, readFileSync, unlinkSync, copyFileSync } from "fs"
+import { copyFileSync, existsSync, readFileSync, unlinkSync } from "fs"
 import logSymbols from "log-symbols"
 import pacote from "pacote"
-import decompress from "decompress"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
 import checkLatestVersion from "./checkLatestVersion.js"
@@ -209,8 +209,7 @@ program
         content += ` ${chalk.bold("Merkle tree")}:\n`
         content += `   Root: ${group.merkleTree.root}\n`
         content += `   Depth: ${group.merkleTree.depth}\n`
-        content += `   Zero value: ${group.merkleTree.zeroValue}\n`
-        content += `   Number of leaves: ${group.merkleTree.numberOfLeaves}`
+        content += `   Size: ${group.merkleTree.size}`
 
         console.info(`\n${content}\n`)
     })
@@ -308,7 +307,7 @@ program
             groupId = await getGroupId(groupIds)
         }
 
-        let verifiedProofs: any[]
+        let validatedProofs: any[]
 
         const spinner = new Spinner(`Fetching proofs of group ${groupId}`)
 
@@ -317,15 +316,15 @@ program
         try {
             const semaphoreSubgraph = new SemaphoreSubgraph(network)
 
-            const group = await semaphoreSubgraph.getGroup(groupId, { verifiedProofs: true })
-            verifiedProofs = group.verifiedProofs
+            const group = await semaphoreSubgraph.getGroup(groupId, { validatedProofs: true })
+            validatedProofs = group.validatedProofs
 
             spinner.stop()
         } catch {
             try {
                 const semaphoreEthers = new SemaphoreEthers(network)
 
-                verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId)
+                validatedProofs = await semaphoreEthers.getGroupValidatedProofs(groupId)
 
                 spinner.stop()
             } catch {
@@ -335,15 +334,17 @@ program
             }
         }
 
-        if (verifiedProofs.length === 0) {
+        if (validatedProofs.length === 0) {
             console.info(`\n ${logSymbols.info}`, "info: there are no proofs in this group\n")
             return
         }
 
-        const content = `${chalk.bold("Proofs")} (${verifiedProofs.length}): \n${verifiedProofs
+        const content = `${chalk.bold("Proofs")} (${validatedProofs.length}): \n${validatedProofs
             .map(
-                ({ signal, merkleTreeRoot, externalNullifier, nullifierHash }: any, i: number) =>
-                    `   ${i}. signal: ${signal} \n      merkleTreeRoot: ${merkleTreeRoot} \n      externalNullifier: ${externalNullifier} \n      nullifierHash: ${nullifierHash}`
+                ({ message, merkleTreeRoot, merkleTreeDepth, scope, nullifier, proof }: any, i: number) =>
+                    `   ${i}. message: ${message} \n      merkleTreeRoot: ${merkleTreeRoot} \n      merkleTreeDepth: ${merkleTreeDepth} \n      scope: ${scope} \n      nullifier: ${nullifier} \n      proof: [${proof.join(
+                        ", "
+                    )}]`
             )
             .join("\n")}`
 

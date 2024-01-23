@@ -111,15 +111,15 @@ yarn deploy <subgraph-name>
 Start services required for TheGraph node by running:
 
 ```bash
-docker compose -f docker-compose-graph.yml up
+docker compose up
 ```
 
 Start a local Hardhat node and deploy the [Semaphore contract](https://github.com/semaphore-protocol/semaphore/tree/main/packages/contracts):
 
 ```bash
 # CWD = /semaphore/packages/contracts
-yarn start
-yarn deploy:semaphore --network localhost
+yarn start --hostname 0.0.0.0
+yarn deploy --network localhost
 ```
 
 Create the `subgraph.yaml` file for your local network and create/deploy your subgraph:

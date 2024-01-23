@@ -6,3 +6,5 @@ subgraph.yaml
 
 # Tests
 /tests/.bin
+
+/data

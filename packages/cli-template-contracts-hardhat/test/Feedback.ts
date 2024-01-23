@@ -2,18 +2,17 @@ import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
-import { formatBytes32String } from "ethers/lib/utils"
+import { encodeBytes32String } from "ethers"
 import { run } from "hardhat"
 // @ts-ignore: typechain folder will be generated after contracts compilation
 import { Feedback } from "../build/typechain"
-import { config } from "../package.json"
 
 describe("Feedback", () => {
     let feedbackContract: Feedback
     let semaphoreContract: string
 
     const groupId = "42"
-    const group = new Group(groupId)
+    const group = new Group()
     const users: Identity[] = []
 
     before(async () => {
@@ -21,7 +20,7 @@ describe("Feedback", () => {
             logs: false
         })
 
-        feedbackContract = await run("deploy", { logs: false, group: groupId, semaphore: semaphore.address })
+        feedbackContract = await run("deploy", { logs: false, group: groupId, semaphore: await semaphore.getAddress() })
         semaphoreContract = semaphore
 
         users.push(new Identity())
@@ -43,27 +42,30 @@ describe("Feedback", () => {
     })
 
     describe("# sendFeedback", () => {
-        const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
-        const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
-
         it("Should allow users to send feedback anonymously", async () => {
-            const feedback = formatBytes32String("Hello World")
+            const feedback = encodeBytes32String("Hello World")
 
-            const fullProof = await generateProof(users[1], group, groupId, feedback, {
-                wasmFilePath,
-                zkeyFilePath
-            })
+            const fullProof = await generateProof(users[1], group, feedback, groupId)
 
             const transaction = feedbackContract.sendFeedback(
-                feedback,
+                fullProof.merkleTreeDepth,
                 fullProof.merkleTreeRoot,
-                fullProof.nullifierHash,
+                fullProof.nullifier,
+                feedback,
                 fullProof.proof
             )
 
             await expect(transaction)
-                .to.emit(semaphoreContract, "ProofVerified")
-                .withArgs(groupId, fullProof.merkleTreeRoot, fullProof.nullifierHash, groupId, fullProof.signal)
+                .to.emit(semaphoreContract, "ProofValidated")
+                .withArgs(
+                    groupId,
+                    fullProof.merkleTreeDepth,
+                    fullProof.merkleTreeRoot,
+                    fullProof.nullifier,
+                    fullProof.message,
+                    groupId,
+                    fullProof.proof
+                )
         })
     })
 })

@@ -1,7 +1,7 @@
-import request from "./request"
-import SemaphoreSubgraph from "./subgraph"
+import request from "../src/request"
+import SemaphoreSubgraph from "../src/subgraph"
 
-jest.mock("./request", () => ({
+jest.mock("../src/request", () => ({
     __esModule: true,
     default: jest.fn()
 }))
@@ -72,8 +72,7 @@ describe("SemaphoreSubgraph", () => {
                             id: "1",
                             merkleTree: {
                                 depth: 20,
-                                zeroValue: 0,
-                                numberOfLeaves: 2,
+                                size: 2,
                                 root: "2"
                             },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
@@ -90,8 +89,7 @@ describe("SemaphoreSubgraph", () => {
                 id: "1",
                 merkleTree: {
                     depth: 20,
-                    zeroValue: 0,
-                    numberOfLeaves: 2,
+                    size: 2,
                     root: "2"
                 },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
@@ -112,8 +110,7 @@ describe("SemaphoreSubgraph", () => {
                             id: "1",
                             merkleTree: {
                                 depth: 20,
-                                zeroValue: 0,
-                                numberOfLeaves: 2,
+                                size: 2,
                                 root: "2"
                             },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
@@ -125,19 +122,23 @@ describe("SemaphoreSubgraph", () => {
                                     identityCommitment: "2"
                                 }
                             ],
-                            verifiedProofs: [
+                            validatedProofs: [
                                 {
-                                    signal: "0x3243b",
-                                    merkleTree: "1332132",
-                                    externalNullifier: "14324",
-                                    nullifierHash: "442342",
+                                    message: "0x3243b",
+                                    merkleTreeRoot: "1332132",
+                                    merkleTreeDepth: "32",
+                                    scope: "14324",
+                                    nullifier: "442342",
+                                    proof: ["442342"],
                                     timestamp: "1657306917"
                                 },
                                 {
-                                    signal: "0x5233a",
-                                    merkleTree: "1332132",
-                                    externalNullifier: "14324",
-                                    nullifierHash: "442342",
+                                    message: "0x5233a",
+                                    merkleTreeRoot: "1332132",
+                                    merkleTreeDepth: "32",
+                                    scope: "14324",
+                                    nullifier: "442342",
+                                    proof: ["442342"],
                                     timestamp: "1657306923"
                                 }
                             ]
@@ -148,7 +149,7 @@ describe("SemaphoreSubgraph", () => {
 
             const expectedValue = await semaphore.getGroups({
                 members: true,
-                verifiedProofs: true
+                validatedProofs: true
             })
 
             expect(expectedValue).toBeDefined()
@@ -157,25 +158,28 @@ describe("SemaphoreSubgraph", () => {
                 id: "1",
                 merkleTree: {
                     depth: 20,
-                    zeroValue: 0,
-                    numberOfLeaves: 2,
+                    size: 2,
                     root: "2"
                 },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
                 members: ["1", "2"],
-                verifiedProofs: [
+                validatedProofs: [
                     {
-                        signal: "0x3243b",
-                        merkleTree: "1332132",
-                        externalNullifier: "14324",
-                        nullifierHash: "442342",
+                        message: "0x3243b",
+                        merkleTreeRoot: "1332132",
+                        merkleTreeDepth: "32",
+                        scope: "14324",
+                        nullifier: "442342",
+                        proof: ["442342"],
                         timestamp: "1657306917"
                     },
                     {
-                        signal: "0x5233a",
-                        merkleTree: "1332132",
-                        externalNullifier: "14324",
-                        nullifierHash: "442342",
+                        message: "0x5233a",
+                        merkleTreeRoot: "1332132",
+                        merkleTreeDepth: "32",
+                        scope: "14324",
+                        nullifier: "442342",
+                        proof: ["442342"],
                         timestamp: "1657306923"
                     }
                 ]
@@ -190,8 +194,7 @@ describe("SemaphoreSubgraph", () => {
                             id: "1",
                             merkleTree: {
                                 depth: 20,
-                                zeroValue: 0,
-                                numberOfLeaves: 2,
+                                size: 2,
                                 root: "2"
                             },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
@@ -213,8 +216,7 @@ describe("SemaphoreSubgraph", () => {
                 id: "1",
                 merkleTree: {
                     depth: 20,
-                    zeroValue: 0,
-                    numberOfLeaves: 2,
+                    size: 2,
                     root: "2"
                 },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
@@ -231,8 +233,7 @@ describe("SemaphoreSubgraph", () => {
                             id: "1",
                             merkleTree: {
                                 depth: 20,
-                                zeroValue: 0,
-                                numberOfLeaves: 2,
+                                size: 2,
                                 root: "2"
                             },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
@@ -248,8 +249,7 @@ describe("SemaphoreSubgraph", () => {
                 id: "1",
                 merkleTree: {
                     depth: 20,
-                    zeroValue: 0,
-                    numberOfLeaves: 2,
+                    size: 2,
                     root: "2"
                 },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286"
@@ -270,8 +270,7 @@ describe("SemaphoreSubgraph", () => {
                             id: "1",
                             merkleTree: {
                                 depth: 20,
-                                zeroValue: 0,
-                                numberOfLeaves: 2,
+                                size: 2,
                                 root: "2"
                             },
                             admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
@@ -283,19 +282,23 @@ describe("SemaphoreSubgraph", () => {
                                     identityCommitment: "2"
                                 }
                             ],
-                            verifiedProofs: [
+                            validatedProofs: [
                                 {
-                                    signal: "0x3243b",
-                                    merkleTree: "1332132",
-                                    externalNullifier: "14324",
-                                    nullifierHash: "442342",
+                                    message: "0x3243b",
+                                    merkleTreeRoot: "1332132",
+                                    merkleTreeDepth: "32",
+                                    scope: "14324",
+                                    nullifier: "442342",
+                                    proof: ["442342"],
                                     timestamp: "1657306917"
                                 },
                                 {
-                                    signal: "0x5233a",
-                                    merkleTree: "1332132",
-                                    externalNullifier: "14324",
-                                    nullifierHash: "442342",
+                                    message: "0x5233a",
+                                    merkleTreeRoot: "1332132",
+                                    merkleTreeDepth: "32",
+                                    scope: "14324",
+                                    nullifier: "442342",
+                                    proof: ["442342"],
                                     timestamp: "1657306923"
                                 }
                             ]
@@ -306,7 +309,7 @@ describe("SemaphoreSubgraph", () => {
 
             const expectedValue = await semaphore.getGroup("1", {
                 members: true,
-                verifiedProofs: true
+                validatedProofs: true
             })
 
             expect(expectedValue).toBeDefined()
@@ -314,25 +317,28 @@ describe("SemaphoreSubgraph", () => {
                 id: "1",
                 merkleTree: {
                     depth: 20,
-                    zeroValue: 0,
-                    numberOfLeaves: 2,
+                    size: 2,
                     root: "2"
                 },
                 admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
                 members: ["1", "2"],
-                verifiedProofs: [
+                validatedProofs: [
                     {
-                        signal: "0x3243b",
-                        merkleTree: "1332132",
-                        externalNullifier: "14324",
-                        nullifierHash: "442342",
+                        message: "0x3243b",
+                        merkleTreeRoot: "1332132",
+                        merkleTreeDepth: "32",
+                        scope: "14324",
+                        nullifier: "442342",
+                        proof: ["442342"],
                         timestamp: "1657306917"
                     },
                     {
-                        signal: "0x5233a",
-                        merkleTree: "1332132",
-                        externalNullifier: "14324",
-                        nullifierHash: "442342",
+                        message: "0x5233a",
+                        merkleTreeRoot: "1332132",
+                        merkleTreeDepth: "32",
+                        scope: "14324",
+                        nullifier: "442342",
+                        proof: ["442342"],
                         timestamp: "1657306923"
                     }
                 ]
