@@ -10,10 +10,10 @@ export default function IdentitiesPage() {
     const [_identity, setIdentity] = useState<Identity>()
 
     useEffect(() => {
-        const identityString = localStorage.getItem("identity")
+        const privateKey = localStorage.getItem("identity")
 
-        if (identityString) {
-            const identity = new Identity(identityString)
+        if (privateKey) {
+            const identity = new Identity(privateKey)
 
             setIdentity(identity)
 
@@ -28,7 +28,7 @@ export default function IdentitiesPage() {
 
         setIdentity(identity)
 
-        localStorage.setItem("identity", identity.toString())
+        localStorage.setItem("identity", identity.privateKey.toString())
 
         setLogs("Your new Semaphore identity was just created 🎉")
     }, [])
@@ -68,8 +68,7 @@ export default function IdentitiesPage() {
             {_identity ? (
                 <div>
                     <div className="box">
-                        <p className="box-text">Trapdoor: {_identity.trapdoor.toString()}</p>
-                        <p className="box-text">Nullifier: {_identity.nullifier.toString()}</p>
+                        <p className="box-text">Private Key: {_identity.privateKey.toString()}</p>
                         <p className="box-text">Commitment: {_identity.commitment.toString()}</p>
                     </div>
                 </div>

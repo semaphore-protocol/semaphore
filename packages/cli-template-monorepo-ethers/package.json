@@ -22,7 +22,6 @@
         "lint": "eslint . --ext .js,.ts",
         "prettier": "prettier -c .",
         "prettier:write": "prettier -w .",
-        "copy:contract-artifacts": "ts-node scripts/copy-contract-artifacts.ts",
         "prepublish": "tar -czf files.tgz .gitignore .yarn .yarnrc.yml apps"
     },
     "workspaces": [
