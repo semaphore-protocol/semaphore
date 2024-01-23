@@ -1,3 +1,4 @@
+/* eslint-disable no-sparse-arrays */
 import SemaphoreEthers from "../src/ethers"
 import getEvents from "../src/getEvents"
 
@@ -13,12 +14,8 @@ jest.mock("ethers", () => ({
         () =>
             ({
                 getMerkleTreeRoot: () => "222",
-                getMerkleTreeDepth: () => ({
-                    toNumber: () => 3
-                }),
-                getNumberOfMerkleTreeLeaves: () => ({
-                    toNumber: () => 8
-                })
+                getMerkleTreeDepth: () => BigInt(3),
+                getMerkleTreeSize: () => BigInt(8)
             } as any)
     )
 }))
@@ -128,13 +125,7 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroup", () => {
         it("Should return a specific group", async () => {
-            getEventsMocked.mockReturnValueOnce(
-                Promise.resolve([
-                    {
-                        groupId: "111"
-                    }
-                ])
-            )
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([["111"]]))
 
             const group = await semaphore.getGroup("42")
 
@@ -154,13 +145,7 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupAdmin", () => {
         it("Should return a group admin", async () => {
-            getEventsMocked.mockReturnValueOnce(
-                Promise.resolve([
-                    {
-                        newAdmin: "0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F"
-                    }
-                ])
-            )
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([[, , "0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F"]]))
 
             const admin = await semaphore.getGroupAdmin("42")
 
@@ -178,90 +163,32 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupMembers", () => {
         it("Should return a list of group members", async () => {
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([["20"]]))
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
-                    {
-                        groupId: "20"
-                    }
+                    [, "0", , , 4],
+                    [, "2", , , 5],
+                    [, "5", , , 8]
                 ])
             )
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
-                    {
-                        index: "0",
-                        merkleTreeRoot: "223",
-                        blockNumber: 4
-                    },
-                    {
-                        index: "2",
-                        merkleTreeRoot: "224",
-                        blockNumber: 5
-                    },
-                    {
-                        index: "5",
-                        merkleTreeRoot: "226",
-                        blockNumber: 8
-                    }
+                    [, "1", , "113", , 3],
+                    [, "2", , "114", , 3]
                 ])
             )
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
-                    {
-                        index: "1",
-                        newIdentityCommitment: "113",
-                        merkleTreeRoot: "225",
-                        blockNumber: 3
-                    },
-                    {
-                        index: "2",
-                        newIdentityCommitment: "114",
-                        merkleTreeRoot: "226",
-                        blockNumber: 3
-                    }
+                    [, "4", ["209", "211"]],
+                    [, "6", ["310", "312"]]
                 ])
             )
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
-                    {
-                        startIndex: "4",
-                        identityCommitments: ["209", "211"],
-                        merkleTreeRoot: "223",
-                        blockNumber: 6
-                    },
-                    {
-                        startIndex: "6",
-                        identityCommitments: ["310", "312"],
-                        merkleTreeRoot: "224",
-                        blockNumber: 7
-                    }
-                ])
-            )
-            getEventsMocked.mockReturnValueOnce(
-                Promise.resolve([
-                    {
-                        index: "0",
-                        identityCommitment: "110",
-                        merkleTreeRoot: "220",
-                        blockNumber: 0
-                    },
-                    {
-                        index: "1",
-                        identityCommitment: "111",
-                        merkleTreeRoot: "221",
-                        blockNumber: 1
-                    },
-                    {
-                        index: "2",
-                        identityCommitment: "112",
-                        merkleTreeRoot: "222",
-                        blockNumber: 2
-                    },
-                    {
-                        index: "3",
-                        identityCommitment: "113",
-                        merkleTreeRoot: "223",
-                        blockNumber: 3
-                    }
+                    [, , "110"],
+                    [, , "111"],
+                    [, , "112"],
+                    [, , "113"]
                 ])
             )
 
@@ -286,23 +213,18 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupVerifiedProofs", () => {
         it("Should return a list of group verified proofs", async () => {
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([["42"]]))
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
-                    {
-                        groupId: "42"
-                    }
-                ])
-            )
-            getEventsMocked.mockReturnValueOnce(
-                Promise.resolve([
-                    {
-                        message: "111",
-                        merkleTreeRoot: "112",
-                        merkleTreeDepth: "112",
-                        scope: "113",
-                        nullifier: "114",
-                        proof: ["12312", "12312", "12312", "12312", "12312", "12312", "12312", "12312"]
-                    }
+                    [
+                        ,
+                        "112",
+                        "112",
+                        "114",
+                        "111",
+                        "113",
+                        ["12312", "12312", "12312", "12312", "12312", "12312", "12312", "12312"]
+                    ]
                 ])
             )
 
