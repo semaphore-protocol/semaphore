@@ -39,5 +39,4 @@
         "@zk-kit/eddsa-poseidon": "0.4.1",
         "poseidon-lite": "^0.2.0"
     },
-    "stableVersion": "3.15.2"
 }
