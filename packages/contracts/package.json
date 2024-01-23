@@ -18,6 +18,7 @@
         "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
         "@nomicfoundation/hardhat-toolbox": "^4.0.0",
         "@nomicfoundation/hardhat-verify": "^2.0.0",
+        "@openzeppelin/hardhat-upgrades": "^3.0.2",
         "@semaphore-protocol/group": "workspace:packages/group",
         "@semaphore-protocol/identity": "workspace:packages/identity",
         "@semaphore-protocol/proof": "workspace:packages/proof",
