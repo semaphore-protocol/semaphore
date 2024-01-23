@@ -35,8 +35,7 @@
         "rollup-plugin-typescript2": "^0.31.2"
     },
     "dependencies": {
-        "@ethersproject/contracts": "^5.7.0",
-        "@ethersproject/providers": "^5.7.0",
-        "axios": "^0.27.2"
+        "axios": "^0.27.2",
+        "ethers": "6.10.0"
     }
 }

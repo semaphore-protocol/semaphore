@@ -127,7 +127,7 @@ await semaphoreSubgraph.isGroupMember(
 )
 ```
 
-\# **new Ethers**(networkOrEthereumURL: Network | string = "goerli", options: EthersOptions = {}): _SemaphoreEthers_
+\# **new Ethers**(networkOrEthereumURL: Network | string = "sepolia", options: EthersOptions = {}): _SemaphoreEthers_
 
 ```typescript
 import { SemaphoreEthers } from "@semaphore-protocol/data"

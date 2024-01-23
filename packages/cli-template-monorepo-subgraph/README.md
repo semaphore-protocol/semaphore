@@ -25,7 +25,7 @@ yarn dev
 1. Go to the `apps/contracts` directory and deploy your contract:
 
 ```bash
-yarn deploy --semaphore <semaphore-address> --group <group-id> --network arbitrum-goerli
+yarn deploy --semaphore <semaphore-address> --group <group-id> --network arbitrum-sepolia
 ```
 
 2. Update your `.env` file with your new contract address, the group id and the semaphore contract address.
