@@ -1,6 +1,7 @@
 import "@nomicfoundation/hardhat-chai-matchers"
 import "@nomicfoundation/hardhat-ethers"
 import "@nomicfoundation/hardhat-verify"
+import "@openzeppelin/hardhat-upgrades"
 import "@typechain/hardhat"
 import { config as dotenvConfig } from "dotenv"
 import "hardhat-gas-reporter"
@@ -39,7 +40,7 @@ function getNetworks(): NetworksUserConfig {
         },
         "arbitrum-sepolia": {
             url: "https://sepolia-rollup.arbitrum.io/rpc",
-            chainId: 7745327,
+            chainId: 421614,
             accounts
         },
         arbitrum: {
@@ -63,6 +64,10 @@ const hardhatConfig: HardhatUserConfig = {
         currency: "USD",
         enabled: process.env.REPORT_GAS === "true",
         coinmarketcap: process.env.COINMARKETCAP_API_KEY
+    },
+    defender: {
+        apiKey: process.env.DEFENDER_KEY as string,
+        apiSecret: process.env.DEFENDER_SECRET as string
     },
     typechain: {
         target: "ethers-v6"

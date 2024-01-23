@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.23;
 
-import {ISemaphoreGroups} from "./interfaces/ISemaphoreGroups.sol";
+import {ISemaphoreGroups} from "../interfaces/ISemaphoreGroups.sol";
 import {InternalLeanIMT, LeanIMTData} from "@zk-kit/imt.sol/internal/InternalLeanIMT.sol";
 
 /// @title Semaphore groups contract.
