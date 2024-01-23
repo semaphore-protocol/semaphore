@@ -20,9 +20,8 @@
     "scripts": {
         "dev": "hardhat node & yarn compile && yarn deploy --network localhost",
         "compile": "hardhat compile",
-        "download:snark-artifacts": "hardhat run scripts/download-snark-artifacts.ts",
         "deploy": "yarn compile && hardhat deploy",
-        "test": "hardhat run scripts/download-snark-artifacts.ts && hardhat test",
+        "test": "hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
         "typechain": "hardhat typechain",
@@ -31,31 +30,29 @@
     "devDependencies": {
         "@ethersproject/abi": "^5.4.7",
         "@ethersproject/providers": "^5.4.7",
-        "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
+        "@nomicfoundation/hardhat-chai-matchers": "^2.0.3",
+        "@nomicfoundation/hardhat-ethers": "^3.0.0",
         "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
-        "@nomicfoundation/hardhat-toolbox": "^2.0.0",
-        "@nomiclabs/hardhat-ethers": "^2.0.0",
-        "@nomiclabs/hardhat-etherscan": "^3.0.0",
+        "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+        "@nomicfoundation/hardhat-verify": "^2.0.0",
         "@semaphore-protocol/group": "3.15.2",
         "@semaphore-protocol/hardhat": "3.15.2",
         "@semaphore-protocol/identity": "3.15.2",
         "@semaphore-protocol/proof": "3.15.2",
-        "@typechain/ethers-v5": "^10.1.0",
-        "@typechain/hardhat": "^6.1.2",
+        "@typechain/ethers-v6": "^0.5.0",
+        "@typechain/hardhat": "^9.0.0",
         "@types/chai": "^4.2.0",
-        "@types/download": "^8.0.1",
         "@types/mocha": "^9.1.0",
         "@types/node": "^20",
         "chai": "^4.2.0",
         "dotenv": "^16.0.3",
-        "download": "^8.0.0",
-        "ethers": "^5.4.7",
-        "hardhat": "^2.11.0",
+        "ethers": "^6.4.0",
+        "hardhat": "^2.19.4",
         "hardhat-gas-reporter": "^1.0.8",
         "solidity-coverage": "^0.8.1",
-        "ts-node": ">=8.0.0",
-        "typechain": "^8.1.0",
-        "typescript": ">=4.5.0"
+        "ts-node": "^10.9.2",
+        "typechain": "^8.3.0",
+        "typescript": "^5.3.3"
     },
     "dependencies": {
         "@semaphore-protocol/contracts": "3.15.2"
@@ -63,16 +60,6 @@
     "config": {
         "solidity": {
             "version": "0.8.4"
-        },
-        "paths": {
-            "contracts": "./contracts",
-            "tests": "./test",
-            "cache": "./cache",
-            "build": {
-                "snark-artifacts": "./build/snark-artifacts",
-                "contracts": "./build/contracts",
-                "typechain": "./build/typechain"
-            }
         }
     }
 }

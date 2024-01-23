@@ -4,8 +4,8 @@
     "scripts": {
         "start": "hardhat node",
         "compile": "hardhat compile",
-        "deploy:semaphore": "hardhat deploy:semaphore",
-        "verify:contracts": "hardhat run scripts/verify-contracts.ts",
+        "deploy": "hardhat deploy",
+        "verify": "hardhat run scripts/verify-contracts.ts",
         "test": "hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",

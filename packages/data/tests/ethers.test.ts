@@ -1,7 +1,8 @@
-import SemaphoreEthers from "./ethers"
-import getEvents from "./getEvents"
+/* eslint-disable no-sparse-arrays */
+import SemaphoreEthers from "../src/ethers"
+import getEvents from "../src/getEvents"
 
-jest.mock("./getEvents", () => ({
+jest.mock("../src/getEvents", () => ({
     __esModule: true,
     default: jest.fn()
 }))
@@ -13,9 +14,8 @@ jest.mock("ethers", () => ({
         () =>
             ({
                 getMerkleTreeRoot: () => "222",
-                getNumberOfMerkleTreeLeaves: () => ({
-                    toNumber: () => 2
-                })
+                getMerkleTreeDepth: () => BigInt(3),
+                getMerkleTreeSize: () => BigInt(8)
             } as any)
     )
 }))
@@ -125,20 +125,13 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroup", () => {
         it("Should return a specific group", async () => {
-            getEventsMocked.mockReturnValueOnce(
-                Promise.resolve([
-                    {
-                        merkleTreeDepth: "20",
-                        zeroValue: "111"
-                    }
-                ])
-            )
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([["111"]]))
 
             const group = await semaphore.getGroup("42")
 
-            expect(group.merkleTree.depth).toBe("20")
+            expect(group.merkleTree.depth).toBe(3)
             expect(group.merkleTree.root).toBe("222")
-            expect(group.merkleTree.zeroValue).toContain("111")
+            expect(group.merkleTree.size).toBe(8)
         })
 
         it("Should throw an error if the group does not exist", async () => {
@@ -152,13 +145,7 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupAdmin", () => {
         it("Should return a group admin", async () => {
-            getEventsMocked.mockReturnValueOnce(
-                Promise.resolve([
-                    {
-                        newAdmin: "0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F"
-                    }
-                ])
-            )
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([[, , "0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F"]]))
 
             const admin = await semaphore.getGroupAdmin("42")
 
@@ -176,70 +163,32 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupMembers", () => {
         it("Should return a list of group members", async () => {
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([["20"]]))
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
-                    {
-                        merkleTreeDepth: "20",
-                        zeroValue: "0"
-                    }
+                    [, "0", , , 4],
+                    [, "2", , , 5],
+                    [, "5", , , 8]
                 ])
             )
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
-                    {
-                        index: "0",
-                        merkleTreeRoot: "223",
-                        blockNumber: 3
-                    },
-                    {
-                        index: "2",
-                        merkleTreeRoot: "224",
-                        blockNumber: 4
-                    }
+                    [, "1", , "113", , 3],
+                    [, "2", , "114", , 3]
                 ])
             )
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
-                    {
-                        index: "1",
-                        newIdentityCommitment: "113",
-                        merkleTreeRoot: "225",
-                        blockNumber: 3
-                    },
-                    {
-                        index: "2",
-                        newIdentityCommitment: "114",
-                        merkleTreeRoot: "226",
-                        blockNumber: 3
-                    }
+                    [, "4", ["209", "211"]],
+                    [, "6", ["310", "312"]]
                 ])
             )
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
-                    {
-                        index: "0",
-                        identityCommitment: "110",
-                        merkleTreeRoot: "220",
-                        blockNumber: 0
-                    },
-                    {
-                        index: "1",
-                        identityCommitment: "111",
-                        merkleTreeRoot: "221",
-                        blockNumber: 1
-                    },
-                    {
-                        index: "2",
-                        identityCommitment: "112",
-                        merkleTreeRoot: "222",
-                        blockNumber: 2
-                    },
-                    {
-                        index: "3",
-                        identityCommitment: "113",
-                        merkleTreeRoot: "223",
-                        blockNumber: 3
-                    }
+                    [, , "110"],
+                    [, , "111"],
+                    [, , "112"],
+                    [, , "113"]
                 ])
             )
 
@@ -248,6 +197,9 @@ describe("SemaphoreEthers", () => {
             expect(members[0]).toBe("0")
             expect(members[1]).toBe("113")
             expect(members[2]).toBe("0")
+            expect(members[4]).toBe("209")
+            expect(members[5]).toBe("0")
+            expect(members[7]).toBe("312")
         })
 
         it("Should throw an error if the group does not exist", async () => {
@@ -261,34 +213,30 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupVerifiedProofs", () => {
         it("Should return a list of group verified proofs", async () => {
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([["42"]]))
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
-                    {
-                        merkleTreeDepth: "20",
-                        zeroValue: "0"
-                    }
-                ])
-            )
-            getEventsMocked.mockReturnValueOnce(
-                Promise.resolve([
-                    {
-                        signal: "111",
-                        merkleTreeRoot: "112",
-                        externalNullifier: "113",
-                        nullifierHash: "114"
-                    }
+                    [
+                        ,
+                        "112",
+                        "112",
+                        "114",
+                        "111",
+                        "113",
+                        ["12312", "12312", "12312", "12312", "12312", "12312", "12312", "12312"]
+                    ]
                 ])
             )
 
-            const [verifiedProof] = await semaphore.getGroupVerifiedProofs("42")
+            const [verifiedProof] = await semaphore.getGroupValidatedProofs("42")
 
-            expect(verifiedProof.signal).toContain("111")
+            expect(verifiedProof.message).toContain("111")
         })
 
         it("Should throw an error if the group does not exist", async () => {
             getEventsMocked.mockReturnValueOnce(Promise.resolve([]))
 
-            const fun = () => semaphore.getGroupVerifiedProofs("666")
+            const fun = () => semaphore.getGroupValidatedProofs("666")
 
             await expect(fun).rejects.toThrow("Group '666' not found")
         })

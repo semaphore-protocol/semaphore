@@ -46,19 +46,19 @@ describe("Proof", () => {
             fullProof = await generateProof(identity, group, message, scope, treeDepth)
 
             expect(typeof fullProof).toBe("object")
-            expect(fullProof.merkleRoot).toBe(group.root)
+            expect(fullProof.merkleTreeRoot).toBe(group.root)
         }, 20000)
     })
 
     describe("# verifyProof", () => {
         it("Should not verify a Semaphore proof if the tree depth is not supported", async () => {
-            const fun = () => verifyProof(fullProof, 13)
+            const fun = () => verifyProof({ ...fullProof, merkleTreeDepth: 40 })
 
             await expect(fun).rejects.toThrow("tree depth must be")
         })
 
         it("Should verify a Semaphore proof", async () => {
-            const response = await verifyProof(fullProof, treeDepth)
+            const response = await verifyProof(fullProof)
 
             expect(response).toBe(true)
         })

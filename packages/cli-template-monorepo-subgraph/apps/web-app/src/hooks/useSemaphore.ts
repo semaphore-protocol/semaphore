@@ -1,5 +1,5 @@
 import { SemaphoreSubgraph } from "@semaphore-protocol/data"
-import { BigNumber, utils } from "ethers"
+import { decodeBytes32String, toBeHex } from "ethers"
 import getNextConfig from "next/config"
 import { useCallback, useState } from "react"
 import { SemaphoreContextType } from "../context/SemaphoreContext"
@@ -31,14 +31,10 @@ export default function useSemaphore(): SemaphoreContextType {
         const semaphore = new SemaphoreSubgraph(ethereumNetwork)
 
         const group = await semaphore.getGroup(env.GROUP_ID, {
-            verifiedProofs: true
+            validatedProofs: true
         })
 
-        setFeedback(
-            group.verifiedProofs!.map(({ signal }: any) =>
-                utils.parseBytes32String(BigNumber.from(signal).toHexString())
-            )
-        )
+        setFeedback(group.validatedProofs!.map(({ message }: any) => decodeBytes32String(toBeHex(message, 32))))
     }, [])
 
     const addFeedback = useCallback(
