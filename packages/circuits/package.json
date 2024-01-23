@@ -35,5 +35,4 @@
         "mocha": "^10.2.0",
         "poseidon-lite": "^0.2.0"
     },
-    "stableVersion": "3.15.1"
 }
