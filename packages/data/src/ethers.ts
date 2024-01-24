@@ -55,8 +55,8 @@ export default class SemaphoreEthers {
                 options.startBlock ??= 33995010
                 break
             case "sepolia":
-                options.address ??= "0x021dC8BF0eADd9C128490A976756C1b052edF99d"
-                options.startBlock ??= 5108003
+                options.address ??= "0xb25E63B115Ffba085FeCbf196a8e720F85DC351c"
+                options.startBlock ??= 5145333
                 break
             case "optimism-sepolia":
                 options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
@@ -301,7 +301,7 @@ export default class SemaphoreEthers {
             nullifier: event[3].toString(),
             message: event[4].toString(),
             scope: event[5].toString(),
-            proof: event[6].map((p: any) => p.toString())
+            points: event[6].map((p: any) => p.toString())
         }))
     }
 

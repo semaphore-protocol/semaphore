@@ -129,7 +129,7 @@ describe("SemaphoreSubgraph", () => {
                                     merkleTreeDepth: "32",
                                     scope: "14324",
                                     nullifier: "442342",
-                                    proof: ["442342"],
+                                    points: ["442342"],
                                     timestamp: "1657306917"
                                 },
                                 {
@@ -138,7 +138,7 @@ describe("SemaphoreSubgraph", () => {
                                     merkleTreeDepth: "32",
                                     scope: "14324",
                                     nullifier: "442342",
-                                    proof: ["442342"],
+                                    points: ["442342"],
                                     timestamp: "1657306923"
                                 }
                             ]
@@ -170,7 +170,7 @@ describe("SemaphoreSubgraph", () => {
                         merkleTreeDepth: "32",
                         scope: "14324",
                         nullifier: "442342",
-                        proof: ["442342"],
+                        points: ["442342"],
                         timestamp: "1657306917"
                     },
                     {
@@ -179,7 +179,7 @@ describe("SemaphoreSubgraph", () => {
                         merkleTreeDepth: "32",
                         scope: "14324",
                         nullifier: "442342",
-                        proof: ["442342"],
+                        points: ["442342"],
                         timestamp: "1657306923"
                     }
                 ]
@@ -289,7 +289,7 @@ describe("SemaphoreSubgraph", () => {
                                     merkleTreeDepth: "32",
                                     scope: "14324",
                                     nullifier: "442342",
-                                    proof: ["442342"],
+                                    points: ["442342"],
                                     timestamp: "1657306917"
                                 },
                                 {
@@ -298,7 +298,7 @@ describe("SemaphoreSubgraph", () => {
                                     merkleTreeDepth: "32",
                                     scope: "14324",
                                     nullifier: "442342",
-                                    proof: ["442342"],
+                                    points: ["442342"],
                                     timestamp: "1657306923"
                                 }
                             ]
@@ -329,7 +329,7 @@ describe("SemaphoreSubgraph", () => {
                         merkleTreeDepth: "32",
                         scope: "14324",
                         nullifier: "442342",
-                        proof: ["442342"],
+                        points: ["442342"],
                         timestamp: "1657306917"
                     },
                     {
@@ -338,7 +338,7 @@ describe("SemaphoreSubgraph", () => {
                         merkleTreeDepth: "32",
                         scope: "14324",
                         nullifier: "442342",
-                        proof: ["442342"],
+                        points: ["442342"],
                         timestamp: "1657306923"
                     }
                 ]
