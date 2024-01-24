@@ -24,8 +24,17 @@ contract Feedback {
         uint256 merkleTreeRoot,
         uint256 nullifier,
         uint256 feedback,
-        uint256[8] calldata proof
+        uint256[8] calldata points
     ) external {
-        semaphore.validateProof(groupId, merkleTreeDepth, merkleTreeRoot, nullifier, feedback, groupId, proof);
+        ISemaphore.SemaphoreProof memory proof = ISemaphore.SemaphoreProof(
+            merkleTreeDepth,
+            merkleTreeRoot,
+            nullifier,
+            feedback,
+            groupId,
+            points
+        );
+
+        semaphore.validateProof(groupId, proof);
     }
 }

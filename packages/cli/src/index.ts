@@ -341,8 +341,8 @@ program
 
         const content = `${chalk.bold("Proofs")} (${validatedProofs.length}): \n${validatedProofs
             .map(
-                ({ message, merkleTreeRoot, merkleTreeDepth, scope, nullifier, proof }: any, i: number) =>
-                    `   ${i}. message: ${message} \n      merkleTreeRoot: ${merkleTreeRoot} \n      merkleTreeDepth: ${merkleTreeDepth} \n      scope: ${scope} \n      nullifier: ${nullifier} \n      proof: [${proof.join(
+                ({ message, merkleTreeRoot, merkleTreeDepth, scope, nullifier, points }: any, i: number) =>
+                    `   ${i}. message: ${message} \n      merkleTreeRoot: ${merkleTreeRoot} \n      merkleTreeDepth: ${merkleTreeDepth} \n      scope: ${scope} \n      nullifier: ${nullifier} \n      points: [${points.join(
                         ", "
                     )}]`
             )
