@@ -48,6 +48,15 @@ describe("Proof", () => {
             expect(typeof fullProof).toBe("object")
             expect(fullProof.merkleTreeRoot).toBe(group.root)
         }, 20000)
+
+        it("Should generate a Semaphore proof passing a Merkle proof instead of a group", async () => {
+            const group = new Group([BigInt(1), BigInt(2), identity.commitment])
+
+            fullProof = await generateProof(identity, group.generateMerkleProof(2), message, scope, treeDepth)
+
+            expect(typeof fullProof).toBe("object")
+            expect(fullProof.merkleTreeRoot).toBe(group.root)
+        }, 20000)
     })
 
     describe("# verifyProof", () => {
