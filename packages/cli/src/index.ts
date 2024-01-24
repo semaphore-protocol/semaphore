@@ -98,7 +98,7 @@ program
         console.info(`\n ${logSymbols.success}`, `Your project is ready!\n`)
         console.info(` Please, install your dependencies by running:\n`)
         console.info(`   ${chalk.cyan("cd")} ${projectDirectory}`)
-        console.info(`   ${chalk.cyan("npm i")}\n`)
+        console.info(`   ${chalk.cyan("yarn install")}\n`)
 
         const { scripts } = JSON.parse(readFileSync(`${currentDirectory}/${projectDirectory}/package.json`, "utf8"))
 
@@ -107,7 +107,7 @@ program
 
             console.info(
                 `${Object.keys(scripts)
-                    .map((s) => `   ${chalk.cyan(`npm run ${s}`)}`)
+                    .map((s) => `   ${chalk.cyan(`yarn ${s}`)}`)
                     .join("\n")}\n`
             )
 
