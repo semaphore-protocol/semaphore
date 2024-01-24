@@ -1,4 +1,4 @@
-import type { NumericString } from "@zk-kit/groth16"
+import type { NumericString } from "snarkjs"
 
 export type BigNumberish = string | number | bigint
 
