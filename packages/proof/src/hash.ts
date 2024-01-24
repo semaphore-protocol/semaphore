@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber"
 import { BytesLike, Hexable, zeroPad } from "@ethersproject/bytes"
 import { keccak256 } from "@ethersproject/keccak256"
-import { NumericString } from "@zk-kit/groth16"
+import { NumericString } from "snarkjs"
 
 /**
  * Creates a keccak256 hash of a message compatible with the SNARK scalar modulus.
