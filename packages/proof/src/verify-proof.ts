@@ -1,7 +1,7 @@
-import { verify } from "@zk-kit/groth16"
+import { groth16 } from "snarkjs"
 import hash from "./hash"
 import { SemaphoreProof } from "./types"
-import unpackPoints from "./unpack-proof"
+import unpackPoints from "./unpack-points"
 import verificationKeys from "./verification-keys.json"
 
 /**
@@ -29,8 +29,9 @@ export default async function verifyProof({
         IC: verificationKeys.IC[merkleTreeDepth - 1]
     }
 
-    return verify(verificationKey, {
-        publicSignals: [merkleTreeRoot, nullifier, hash(message), hash(scope)],
-        proof: unpackPoints(points)
-    })
+    return groth16.verify(
+        verificationKey,
+        [merkleTreeRoot, nullifier, hash(message), hash(scope)],
+        unpackPoints(points)
+    )
 }
