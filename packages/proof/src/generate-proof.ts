@@ -1,6 +1,6 @@
 import { BigNumber } from "@ethersproject/bignumber"
 import { BytesLike, Hexable } from "@ethersproject/bytes"
-import { Group } from "@semaphore-protocol/group"
+import type { Group, MerkleProof } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
 import { NumericString, groth16 } from "snarkjs"
 import getSnarkArtifacts from "./get-snark-artifacts.node"
@@ -11,7 +11,7 @@ import { SemaphoreProof, SnarkArtifacts } from "./types"
 /**
  * Generates a Semaphore proof.
  * @param identity The Semaphore identity.
- * @param group The Semaphore group or its Merkle proof.
+ * @param groupOrMerkleProof The Semaphore group or its Merkle proof.
  * @param scope The external nullifier.
  * @param message The Semaphore signal.
  * @param merkleTreeDepth The depth of the tree with which the circuit was compiled.
@@ -20,14 +20,21 @@ import { SemaphoreProof, SnarkArtifacts } from "./types"
  */
 export default async function generateProof(
     identity: Identity,
-    group: Group,
+    groupOrMerkleProof: Group | MerkleProof,
     message: BytesLike | Hexable | number | bigint,
     scope: BytesLike | Hexable | number | bigint,
     merkleTreeDepth?: number,
     snarkArtifacts?: SnarkArtifacts
 ): Promise<SemaphoreProof> {
-    const leafIndex = group.indexOf(identity.commitment)
-    const merkleProof = group.generateMerkleProof(leafIndex)
+    let merkleProof
+
+    if ("siblings" in groupOrMerkleProof) {
+        merkleProof = groupOrMerkleProof
+    } else {
+        const leafIndex = groupOrMerkleProof.indexOf(identity.commitment)
+        merkleProof = groupOrMerkleProof.generateMerkleProof(leafIndex)
+    }
+
     const merkleProofLength = merkleProof.siblings.length
 
     if (merkleTreeDepth !== undefined) {
