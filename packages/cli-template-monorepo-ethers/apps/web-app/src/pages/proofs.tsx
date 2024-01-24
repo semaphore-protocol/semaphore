@@ -55,7 +55,7 @@ export default function ProofsPage() {
 
                 group.addMembers(_users)
 
-                const { proof, merkleTreeDepth, merkleTreeRoot, nullifier } = await generateProof(
+                const { points, merkleTreeDepth, merkleTreeRoot, nullifier } = await generateProof(
                     _identity,
                     group,
                     message,
@@ -72,7 +72,7 @@ export default function ProofsPage() {
                             abi: Feedback.abi,
                             address: env.FEEDBACK_CONTRACT_ADDRESS,
                             functionName: "sendFeedback",
-                            functionParameters: [merkleTreeDepth, merkleTreeRoot, nullifier, message, proof]
+                            functionParameters: [merkleTreeDepth, merkleTreeRoot, nullifier, message, points]
                         })
                     })
                 } else {
@@ -84,7 +84,7 @@ export default function ProofsPage() {
                             merkleTreeDepth,
                             merkleTreeRoot,
                             nullifier,
-                            proof
+                            points
                         })
                     })
                 }

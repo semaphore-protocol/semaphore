@@ -5,7 +5,7 @@ import type { Identity } from "@semaphore-protocol/identity"
 import { NumericString, prove } from "@zk-kit/groth16"
 import getSnarkArtifacts from "./get-snark-artifacts.node"
 import hash from "./hash"
-import packProof from "./pack-proof"
+import packPoints from "./pack-proof"
 import { SemaphoreProof, SnarkArtifacts } from "./types"
 
 /**
@@ -76,6 +76,6 @@ export default async function generateProof(
         nullifier: publicSignals[1],
         message: BigNumber.from(message).toString() as NumericString,
         scope: BigNumber.from(scope).toString() as NumericString,
-        proof: packProof(proof)
+        points: packPoints(proof)
     }
 }

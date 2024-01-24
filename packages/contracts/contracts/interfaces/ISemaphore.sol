@@ -17,6 +17,16 @@ interface ISemaphore {
         mapping(uint256 => bool) nullifiers;
     }
 
+    /// It defines all the group parameters used by Semaphore.sol.
+    struct SemaphoreProof {
+        uint256 merkleTreeDepth;
+        uint256 merkleTreeRoot;
+        uint256 nullifier;
+        uint256 message;
+        uint256 scope;
+        uint256[8] points;
+    }
+
     /// @dev Emitted when the Merkle tree duration of a group is updated.
     /// @param groupId: Id of the group.
     /// @param oldMerkleTreeDuration: Old Merkle tree duration of the group.
@@ -34,7 +44,7 @@ interface ISemaphore {
     /// @param nullifier: Nullifier.
     /// @param message: Semaphore message.
     /// @param scope: Scope.
-    /// @param proof: Zero-knowledge proof.
+    /// @param points: Zero-knowledge points.
     event ProofValidated(
         uint256 indexed groupId,
         uint256 merkleTreeDepth,
@@ -42,7 +52,7 @@ interface ISemaphore {
         uint256 nullifier,
         uint256 message,
         uint256 indexed scope,
-        uint256[8] proof
+        uint256[8] points
     );
 
     /// @dev See {SemaphoreGroups-_createGroup}.
@@ -82,37 +92,11 @@ interface ISemaphore {
     /// @dev Saves the nullifier hash to avoid double signaling and emits an event
     /// if the zero-knowledge proof is valid.
     /// @param groupId: Id of the group.
-    /// @param merkleTreeDepth: Depth of the Merkle tree.
-    /// @param merkleTreeRoot: Root of the Merkle tree.
-    /// @param nullifier: Nullifier.
-    /// @param message: Semaphore message.
-    /// @param scope: Scope.
     /// @param proof: Zero-knowledge proof.
-    function validateProof(
-        uint256 groupId,
-        uint256 merkleTreeDepth,
-        uint256 merkleTreeRoot,
-        uint256 nullifier,
-        uint256 message,
-        uint256 scope,
-        uint256[8] calldata proof
-    ) external;
+    function validateProof(uint256 groupId, SemaphoreProof calldata proof) external;
 
     /// @dev Verifies a zero-knowledge proof by returning true or false.
     /// @param groupId: Id of the group.
-    /// @param merkleTreeDepth: Depth of the Merkle tree.
-    /// @param merkleTreeRoot: Root of the Merkle tree.
-    /// @param nullifier: Nullifier.
-    /// @param message: Semaphore message.
-    /// @param scope: Scope.
     /// @param proof: Zero-knowledge proof.
-    function verifyProof(
-        uint256 groupId,
-        uint256 merkleTreeDepth,
-        uint256 merkleTreeRoot,
-        uint256 nullifier,
-        uint256 message,
-        uint256 scope,
-        uint256[8] calldata proof
-    ) external view returns (bool);
+    function verifyProof(uint256 groupId, SemaphoreProof calldata proof) external view returns (bool);
 }

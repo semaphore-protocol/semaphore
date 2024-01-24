@@ -102,36 +102,34 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
 
     function validateProof(
         uint256 groupId,
-        uint256 merkleTreeDepth,
-        uint256 merkleTreeRoot,
-        uint256 nullifier,
-        uint256 message,
-        uint256 scope,
-        uint256[8] calldata proof
+        SemaphoreProof calldata proof
     ) external override onlyExistingGroup(groupId) {
-        if (groups[groupId].nullifiers[nullifier]) {
+        if (groups[groupId].nullifiers[proof.nullifier]) {
             revert Semaphore__YouAreUsingTheSameNullifierTwice();
         }
 
-        if (!verifyProof(groupId, merkleTreeDepth, merkleTreeRoot, nullifier, message, scope, proof)) {
+        if (!verifyProof(groupId, proof)) {
             revert Semaphore__InvalidProof();
         }
 
-        groups[groupId].nullifiers[nullifier] = true;
+        groups[groupId].nullifiers[proof.nullifier] = true;
 
-        emit ProofValidated(groupId, merkleTreeDepth, merkleTreeRoot, nullifier, message, scope, proof);
+        emit ProofValidated(
+            groupId,
+            proof.merkleTreeDepth,
+            proof.merkleTreeRoot,
+            proof.nullifier,
+            proof.message,
+            proof.scope,
+            proof.points
+        );
     }
 
     function verifyProof(
         uint256 groupId,
-        uint256 merkleTreeDepth,
-        uint256 merkleTreeRoot,
-        uint256 nullifier,
-        uint256 message,
-        uint256 scope,
-        uint256[8] calldata proof
+        SemaphoreProof calldata proof
     ) public view override onlyExistingGroup(groupId) returns (bool) {
-        if (merkleTreeDepth < 1 || merkleTreeDepth > 12) {
+        if (proof.merkleTreeDepth < 1 || proof.merkleTreeDepth > 12) {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
         }
 
@@ -145,8 +143,8 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
 
         // A proof could have used an old Merkle tree root.
         // https://github.com/semaphore-protocol/semaphore/issues/98
-        if (merkleTreeRoot != currentMerkleTreeRoot) {
-            uint256 merkleRootCreationDate = groups[groupId].merkleRootCreationDates[merkleTreeRoot];
+        if (proof.merkleTreeRoot != currentMerkleTreeRoot) {
+            uint256 merkleRootCreationDate = groups[groupId].merkleRootCreationDates[proof.merkleTreeRoot];
             uint256 merkleTreeDuration = groups[groupId].merkleTreeDuration;
 
             if (merkleRootCreationDate == 0) {
@@ -160,11 +158,11 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
 
         return
             verifier.verifyProof(
-                [proof[0], proof[1]],
-                [[proof[2], proof[3]], [proof[4], proof[5]]],
-                [proof[6], proof[7]],
-                [merkleTreeRoot, nullifier, _hash(message), _hash(scope)],
-                merkleTreeDepth
+                [proof.points[0], proof.points[1]],
+                [[proof.points[2], proof.points[3]], [proof.points[4], proof.points[5]]],
+                [proof.points[6], proof.points[7]],
+                [proof.merkleTreeRoot, proof.nullifier, _hash(proof.message), _hash(proof.scope)],
+                proof.merkleTreeDepth
             );
     }
 

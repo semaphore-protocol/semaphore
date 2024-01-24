@@ -2,7 +2,7 @@ import { formatBytes32String } from "@ethersproject/strings"
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { getCurveFromName } from "ffjavascript"
-import { SemaphoreProof, generateProof, packProof, unpackProof, verifyProof } from "../src"
+import { SemaphoreProof, generateProof, packPoints, unpackPoints, verifyProof } from "../src"
 
 describe("Proof", () => {
     const treeDepth = 10
@@ -66,10 +66,10 @@ describe("Proof", () => {
 
     describe("# packProof/unpackProof", () => {
         it("Should return a packed proof", async () => {
-            const originalProof = unpackProof(fullProof.proof)
-            const proof = packProof(originalProof)
+            const originalProof = unpackPoints(fullProof.points)
+            const proof = packPoints(originalProof)
 
-            expect(proof).toStrictEqual(fullProof.proof)
+            expect(proof).toStrictEqual(fullProof.points)
         })
     })
 })
