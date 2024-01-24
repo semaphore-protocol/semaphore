@@ -6,6 +6,7 @@
         "compile": "hardhat compile",
         "deploy": "hardhat deploy",
         "verify": "hardhat run scripts/verify-contracts.ts",
+        "mock": "hardhat run scripts/create-mock-groups.ts",
         "test": "hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
