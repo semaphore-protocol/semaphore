@@ -220,7 +220,7 @@ export function addValidatedProof(event: ProofValidated): void {
         validatedProof.merkleTreeDepth = event.params.merkleTreeDepth.toI32()
         validatedProof.scope = event.params.scope
         validatedProof.nullifier = event.params.nullifier
-        validatedProof.proof = event.params.proof
+        validatedProof.points = event.params.points
         validatedProof.timestamp = event.block.timestamp
 
         validatedProof.save()

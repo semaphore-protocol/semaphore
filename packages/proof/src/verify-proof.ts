@@ -1,8 +1,8 @@
 import { verify } from "@zk-kit/groth16"
-import { SemaphoreProof } from "./types"
-import unpackProof from "./unpack-proof"
-import verificationKeys from "./verification-keys.json"
 import hash from "./hash"
+import { SemaphoreProof } from "./types"
+import unpackPoints from "./unpack-proof"
+import verificationKeys from "./verification-keys.json"
 
 /**
  * Verifies a Semaphore proof.
@@ -16,7 +16,7 @@ export default async function verifyProof({
     nullifier,
     message,
     scope,
-    proof
+    points
 }: SemaphoreProof): Promise<boolean> {
     // TODO: support all tree depths after trusted-setup.
     if (merkleTreeDepth < 1 || merkleTreeDepth > 12) {
@@ -31,6 +31,6 @@ export default async function verifyProof({
 
     return verify(verificationKey, {
         publicSignals: [merkleTreeRoot, nullifier, hash(message), hash(scope)],
-        proof: unpackProof(proof)
+        proof: unpackPoints(points)
     })
 }

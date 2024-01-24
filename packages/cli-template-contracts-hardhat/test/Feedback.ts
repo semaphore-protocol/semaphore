@@ -52,7 +52,7 @@ describe("Feedback", () => {
                 fullProof.merkleTreeRoot,
                 fullProof.nullifier,
                 feedback,
-                fullProof.proof
+                fullProof.points
             )
 
             await expect(transaction)
@@ -64,7 +64,7 @@ describe("Feedback", () => {
                     fullProof.nullifier,
                     fullProof.message,
                     groupId,
-                    fullProof.proof
+                    fullProof.points
                 )
         })
     })

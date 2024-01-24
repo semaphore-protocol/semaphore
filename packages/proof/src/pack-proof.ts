@@ -1,12 +1,12 @@
 import { Groth16Proof } from "@zk-kit/groth16"
-import { PackedProof } from "./types"
+import { PackedPoints } from "./types"
 
 /**
- * Packs a proof into a format compatible with Semaphore.
- * @param proof The Groth16 proof generated with SnarkJS.
- * @returns The proof compatible with Semaphore.
+ * Packs the Groth16 proof points into a format compatible with Semaphore.
+ * @param proof The proof points generated with SnarkJS.
+ * @returns The proof points compatible with Semaphore.
  */
-export default function packProof(proof: Groth16Proof): PackedProof {
+export default function packPoints(proof: Groth16Proof): PackedPoints {
     return [
         proof.pi_a[0],
         proof.pi_a[1],
