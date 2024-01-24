@@ -2,10 +2,10 @@ import { BigNumber } from "@ethersproject/bignumber"
 import { BytesLike, Hexable } from "@ethersproject/bytes"
 import { Group } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
-import { NumericString, prove } from "@zk-kit/groth16"
+import { NumericString, groth16 } from "snarkjs"
 import getSnarkArtifacts from "./get-snark-artifacts.node"
 import hash from "./hash"
-import packPoints from "./pack-proof"
+import packPoints from "./pack-points"
 import { SemaphoreProof, SnarkArtifacts } from "./types"
 
 /**
@@ -57,7 +57,7 @@ export default async function generateProof(
         }
     }
 
-    const { proof, publicSignals } = await prove(
+    const { proof, publicSignals } = await groth16.fullProve(
         {
             secret: identity.secretScalar,
             merkleProofLength,
