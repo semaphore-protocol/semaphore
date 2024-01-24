@@ -8,11 +8,7 @@ export default async function getSnarkArtifacts(treeDepth: number): Promise<Snar
     const tmpDir = "semaphore-proof"
     const tmpPath = `${tmp.tmpdir}/${tmpDir}-${treeDepth}`
 
-    if (!fs.existsSync(tmpPath)) {
-        tmp.dirSync({ name: `${tmpDir}-${treeDepth}` })
-    }
-
-    if (fs.readdirSync(tmpPath).length !== 2) {
+    if (!fs.existsSync(tmpPath) || fs.readdirSync(tmpPath).length !== 2) {
         await download(`https://semaphore.cedoor.dev/artifacts/${treeDepth}/semaphore.wasm`, tmpPath)
         await download(`https://semaphore.cedoor.dev/artifacts/${treeDepth}/semaphore.zkey`, tmpPath)
     }
