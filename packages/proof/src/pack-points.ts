@@ -1,4 +1,4 @@
-import { Groth16Proof } from "@zk-kit/groth16"
+import { Groth16Proof } from "snarkjs"
 import { PackedPoints } from "./types"
 
 /**
