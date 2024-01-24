@@ -120,7 +120,7 @@ export default class SemaphoreSubgraph {
                             merkleTreeDepth
                             scope
                             nullifier
-                            proof
+                            points
                             timestamp
                         }`
                                 : ""
@@ -183,7 +183,7 @@ export default class SemaphoreSubgraph {
                             merkleTreeDepth
                             scope
                             nullifier
-                            proof
+                            points
                             timestamp
                         }`
                                 : ""

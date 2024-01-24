@@ -1,8 +1,8 @@
 {
     "sepolia": {
         "Semaphore": {
-            "address": "0x021dC8BF0eADd9C128490A976756C1b052edF99d",
-            "startBlock": 5108003
+            "address": "0xb25E63B115Ffba085FeCbf196a8e720F85DC351c",
+            "startBlock": 5145333
         }
     },
     "mumbai": {

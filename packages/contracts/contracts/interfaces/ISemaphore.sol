@@ -24,7 +24,7 @@ interface ISemaphore {
         uint256 nullifier;
         uint256 message;
         uint256 scope;
-        uint256[8] proof;
+        uint256[8] points;
     }
 
     /// @dev Emitted when the Merkle tree duration of a group is updated.
@@ -44,7 +44,7 @@ interface ISemaphore {
     /// @param nullifier: Nullifier.
     /// @param message: Semaphore message.
     /// @param scope: Scope.
-    /// @param proof: Zero-knowledge proof.
+    /// @param points: Zero-knowledge points.
     event ProofValidated(
         uint256 indexed groupId,
         uint256 merkleTreeDepth,
@@ -52,7 +52,7 @@ interface ISemaphore {
         uint256 nullifier,
         uint256 message,
         uint256 indexed scope,
-        uint256[8] proof
+        uint256[8] points
     );
 
     /// @dev See {SemaphoreGroups-_createGroup}.

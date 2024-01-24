@@ -307,12 +307,12 @@ describe("Semaphore", () => {
                 .to.emit(semaphoreContract, "ProofValidated")
                 .withArgs(
                     groupOneMemberId,
-                    fullProof.merkleTreeDepth,
+                    fullProofOneMember.merkleTreeDepth,
                     fullProofOneMember.merkleTreeRoot,
                     fullProofOneMember.nullifier,
                     fullProofOneMember.message,
                     fullProofOneMember.merkleTreeRoot,
-                    fullProofOneMember.proof
+                    fullProofOneMember.points
                 )
         })
 
@@ -328,7 +328,7 @@ describe("Semaphore", () => {
                     fullProof.nullifier,
                     fullProof.message,
                     fullProof.merkleTreeRoot,
-                    fullProof.proof
+                    fullProof.points
                 )
         })
 
