@@ -31,6 +31,6 @@ type ValidatedProof @entity {
     merkleTreeRoot: BigInt!
     merkleTreeDepth: Int!
     nullifier: BigInt!
-    proof: [BigInt!]!
+    points: [BigInt!]!
     group: Group!
 }

@@ -13,10 +13,10 @@ export type SemaphoreProof = {
     message: NumericString
     nullifier: NumericString
     scope: NumericString
-    proof: PackedProof
+    points: PackedPoints
 }
 
-export type PackedProof = [
+export type PackedPoints = [
     NumericString,
     NumericString,
     NumericString,

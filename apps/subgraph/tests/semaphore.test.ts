@@ -162,7 +162,7 @@ describe("Semaphore subgraph", () => {
             const nullifier = BigInt.fromI32(666)
             const message = BigInt.fromI32(2)
             const scope = BigInt.fromI32(1)
-            const proof = [BigInt.fromI32(1), BigInt.fromI32(2)]
+            const points = [BigInt.fromI32(1), BigInt.fromI32(2)]
             const id = hash(concat(ByteArray.fromBigInt(nullifier), ByteArray.fromBigInt(groupId)))
 
             const event = createProofVerifiedEvent(
@@ -172,7 +172,7 @@ describe("Semaphore subgraph", () => {
                 nullifier,
                 message,
                 scope,
-                proof
+                points
             )
 
             addValidatedProof(event)
@@ -185,7 +185,7 @@ describe("Semaphore subgraph", () => {
             assert.fieldEquals("ValidatedProof", id, "scope", "1")
             assert.fieldEquals("ValidatedProof", id, "nullifier", "666")
             assert.fieldEquals("ValidatedProof", id, "message", "2")
-            assert.fieldEquals("ValidatedProof", id, "proof", `[${proof.join(", ")}]`)
+            assert.fieldEquals("ValidatedProof", id, "points", `[${points.join(", ")}]`)
         })
     })
 })

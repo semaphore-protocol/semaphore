@@ -44,7 +44,7 @@ export type GroupResponse = {
         merkleTreeDepth: number
         scope: string
         nullifier: string
-        proof: string[]
+        points: string[]
         timestamp?: string
     }[]
 }

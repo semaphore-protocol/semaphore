@@ -158,7 +158,7 @@ export function createProofVerifiedEvent(
     nullifier: BigInt,
     message: BigInt,
     scope: BigInt,
-    proof: BigInt[]
+    points: BigInt[]
 ): ProofValidated {
     const proofValidatedEvent = changetype<ProofValidated>(newMockEvent())
 
@@ -176,7 +176,9 @@ export function createProofVerifiedEvent(
     )
     proofValidatedEvent.parameters.push(new ethereum.EventParam("message", ethereum.Value.fromUnsignedBigInt(message)))
     proofValidatedEvent.parameters.push(new ethereum.EventParam("scope", ethereum.Value.fromUnsignedBigInt(scope)))
-    proofValidatedEvent.parameters.push(new ethereum.EventParam("proof", ethereum.Value.fromUnsignedBigIntArray(proof)))
+    proofValidatedEvent.parameters.push(
+        new ethereum.EventParam("points", ethereum.Value.fromUnsignedBigIntArray(points))
+    )
 
     return proofValidatedEvent
 }

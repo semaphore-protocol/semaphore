@@ -121,7 +121,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
             proof.nullifier,
             proof.message,
             proof.scope,
-            proof.proof
+            proof.points
         );
     }
 
@@ -158,9 +158,9 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
 
         return
             verifier.verifyProof(
-                [proof.proof[0], proof.proof[1]],
-                [[proof.proof[2], proof.proof[3]], [proof.proof[4], proof.proof[5]]],
-                [proof.proof[6], proof.proof[7]],
+                [proof.points[0], proof.points[1]],
+                [[proof.points[2], proof.points[3]], [proof.points[4], proof.points[5]]],
+                [proof.points[6], proof.points[7]],
                 [proof.merkleTreeRoot, proof.nullifier, _hash(proof.message), _hash(proof.scope)],
                 proof.merkleTreeDepth
             );
