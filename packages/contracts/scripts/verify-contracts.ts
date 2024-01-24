@@ -1,19 +1,5 @@
 import { hardhatArguments, run } from "hardhat"
-import { readFileSync } from "fs"
-
-type DeployedContracts = {
-    Poseidon: string
-    Semaphore: string
-    Verifier: string
-}
-
-export function getDeployedContracts(network: string | undefined): DeployedContracts | null {
-    try {
-        return JSON.parse(readFileSync(`./deployed-contracts/${network}.json`, "utf8"))
-    } catch (error) {
-        return null
-    }
-}
+import { getDeployedContracts } from "./utils"
 
 async function verify(address: string, constructorArguments?: any[]): Promise<void> {
     try {
