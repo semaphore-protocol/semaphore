@@ -8862,22 +8862,23 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/proof@workspace:packages/proof"
   dependencies:
-    "@ethersproject/bignumber": ^5.7.0
-    "@ethersproject/bytes": ^5.7.0
-    "@ethersproject/keccak256": ^5.7.0
+    "@ethersproject/bignumber": 5.7.0
+    "@ethersproject/bytes": 5.7.0
+    "@ethersproject/keccak256": 5.7.0
     "@ethersproject/strings": ^5.7.0
     "@rollup/plugin-alias": ^5.1.0
     "@rollup/plugin-json": ^5.0.1
     "@types/download": ^8.0.5
+    "@types/snarkjs": 0.7.8
     "@types/tmp": ^0.2.6
-    "@zk-kit/groth16": 0.5.0
-    download: ^8.0.0
+    download: 8.0.0
     poseidon-lite: ^0.2.0
     rimraf: ^5.0.5
     rollup: ^4.0.2
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
-    tmp: ^0.2.1
+    snarkjs: 0.7.3
+    tmp: 0.2.1
   peerDependencies:
     "@semaphore-protocol/group": 4.0.0-alpha
     "@semaphore-protocol/identity": 4.0.0-alpha
@@ -10565,6 +10566,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/snarkjs@npm:0.7.8":
+  version: 0.7.8
+  resolution: "@types/snarkjs@npm:0.7.8"
+  checksum: 9ac4b5c48af2680321ec204fd31c4a5ce829807ff808a429182d2be519e98d577fd4d5a86f80b8c8503628a44198f96dce6d10fbe99b745335ad7abc1d34d4f4
+  languageName: node
+  linkType: hard
+
 "@types/sockjs@npm:^0.3.33":
   version: 0.3.36
   resolution: "@types/sockjs@npm:0.3.36"
@@ -11082,16 +11090,6 @@ __metadata:
   version: 0.4.1
   resolution: "@zk-kit/eddsa-poseidon@npm:0.4.1"
   checksum: 82dcb0f45066a2899ae93c59fbe8246eaf28b3ab3078e909f4156534b1f998da0e480d3ab7f9044d12becc9546e02ea89d08305c64d60544f26aaa34ef1072f5
-  languageName: node
-  linkType: hard
-
-"@zk-kit/groth16@npm:0.5.0":
-  version: 0.5.0
-  resolution: "@zk-kit/groth16@npm:0.5.0"
-  dependencies:
-    circom_runtime: 0.1.24
-    ffjavascript: 0.2.62
-  checksum: f2aac26e9e04f7a709a4cb05a9dc6b45a5880288359867dfb5ef6efe289b980c1c9e0f204d107af27b44ab0d8d0d790f2af6ab085b65370037b6afa83c58f3b6
   languageName: node
   linkType: hard
 
@@ -15865,7 +15863,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"download@npm:^8.0.0":
+"download@npm:8.0.0":
   version: 8.0.0
   resolution: "download@npm:8.0.0"
   dependencies:
@@ -17560,6 +17558,17 @@ __metadata:
     wasmcurves: 0.2.2
     web-worker: ^1.2.0
   checksum: c292e88fd160e16aadfac27870fc5532d3ed1f2306f51d77ef37d5077fca0146b475ffa44a52b80a489ce8834f9c1f4853265499dcb5d0b8f0ec551341c318da
+  languageName: node
+  linkType: hard
+
+"ffjavascript@npm:0.2.63":
+  version: 0.2.63
+  resolution: "ffjavascript@npm:0.2.63"
+  dependencies:
+    wasmbuilder: 0.0.16
+    wasmcurves: 0.2.2
+    web-worker: 1.2.0
+  checksum: d4c549228b31692bb8a44f7eb46720b0504a9ff5bc00e8a9c44ad104622cb83613542b4c321f83cb3027c9dcd1b0834da2b1ea679c3277642f754e9e5ea1c06f
   languageName: node
   linkType: hard
 
@@ -29608,6 +29617,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"snarkjs@npm:0.7.3":
+  version: 0.7.3
+  resolution: "snarkjs@npm:0.7.3"
+  dependencies:
+    "@iden3/binfileutils": 0.0.11
+    bfj: ^7.0.2
+    blake2b-wasm: ^2.4.0
+    circom_runtime: 0.1.24
+    ejs: ^3.1.6
+    fastfile: 0.0.20
+    ffjavascript: 0.2.63
+    js-sha3: ^0.8.0
+    logplease: ^1.2.15
+    r1csfile: 0.0.47
+  bin:
+    snarkjs: build/cli.cjs
+  checksum: 6a8818c0f23b1c213b3296b4a253ceb2f26accfd0259274230550dfce010e4c6d1f5ecaaea1d84ff9b9da54c42dc94869f820838af4e33ffd4e09d95e986d9ee
+  languageName: node
+  linkType: hard
+
 "snarkjs@npm:^0.7.0, snarkjs@npm:^0.7.2":
   version: 0.7.2
   resolution: "snarkjs@npm:0.7.2"
@@ -31107,7 +31136,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tmp@npm:^0.2.0, tmp@npm:^0.2.1":
+"tmp@npm:0.2.1, tmp@npm:^0.2.0":
   version: 0.2.1
   resolution: "tmp@npm:0.2.1"
   dependencies:
@@ -32568,7 +32597,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-worker@npm:^1.2.0":
+"web-worker@npm:1.2.0, web-worker@npm:^1.2.0":
   version: 1.2.0
   resolution: "web-worker@npm:1.2.0"
   checksum: 1bb28348ddcf9b2e7c62c5fd02e49a84098795856cd905456de957271bba288e9618941cf69d8960f0a7ae81f5dfb74b427c0634be47ec69e3e955c4ec5213be
