@@ -515,5 +515,15 @@
         "links": {
             "website": "https://zkvote.vercel.app"
         }
+    },
+    {
+        "name": "Remix",
+        "tagline": "Circom Plugin and ZKP Circom Semaphore Template.",
+        "categories": ["Development", "Infra"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://medium.com/remix-ide/remix-release-v0-37-0-dbc750f7ab15"
+        }
     }
 ]
