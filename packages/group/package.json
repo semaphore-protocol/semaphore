@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/group",
-    "version": "4.0.0-alpha",
+    "version": "4.0.0-alpha.1",
     "description": "A library to create and manage Semaphore groups.",
     "license": "MIT",
     "main": "dist/index.node.js",
@@ -38,5 +38,6 @@
     },
     "dependencies": {
         "@zk-kit/imt": "^2.0.0-beta"
-    }
+    },
+    "stableVersion": "4.0.0-alpha"
 }
