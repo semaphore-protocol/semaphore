@@ -4,14 +4,17 @@
     "description": "A library to generate and verify Semaphore proofs.",
     "license": "MIT",
     "main": "dist/index.node.js",
+    "browser": "dist/index.browser.mjs",
     "exports": {
-        "node": {
-            "import": "./dist/index.node.mjs",
-            "require": "./dist/index.node.js"
-        },
-        "browser": "./dist/index.browser.mjs",
-        "default": "./dist/index.browser.mjs",
-        "types": "./dist/types/index.d.ts"
+        ".": {
+            "node": {
+                "import": "./dist/index.node.mjs",
+                "require": "./dist/index.node.js"
+            },
+            "browser": "./dist/index.browser.mjs",
+            "default": "./dist/index.browser.mjs",
+            "types": "./dist/types/index.d.ts"
+        }
     },
     "types": "dist/types/index.d.ts",
     "files": [

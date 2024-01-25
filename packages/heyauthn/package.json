@@ -22,7 +22,6 @@
         "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
     },
     "scripts": {
-        "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
         "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
         "prepublishOnly": "yarn build"
     },

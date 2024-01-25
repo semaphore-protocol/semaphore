@@ -1,4 +1,6 @@
+import { randomBytes } from "crypto"
 import { Identity } from "../src"
+import { bytesToBigint } from "../src/bytes-to-bigint"
 
 describe("Identity", () => {
     const privateKey = "secret"
@@ -58,6 +60,17 @@ describe("Identity", () => {
             const signature = identity.signMessage("message")
 
             expect(Identity.verifySignature("message", signature, identity.publicKey)).toBeTruthy()
+        })
+    })
+
+    describe("# bytesToBigint", () => {
+        it("Should convert 32 bytes to bigint", () => {
+            const bytes = randomBytes(32)
+
+            const integer = bytesToBigint(bytes)
+
+            expect(typeof integer).toBe("bigint")
+            expect(integer).toBe(BigInt(`0x${bytes.toString("hex")}`))
         })
     })
 })
