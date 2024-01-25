@@ -10,7 +10,7 @@
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
     <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+        <img alt="NPM license" src="https://img.shields.io/npm/l/%40semaphore-protocol%2Fheyauthn?style=flat-square">
     </a>
     <a href="https://www.npmjs.com/package/@semaphore-protocol/heyauthn">
         <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/heyauthn?style=flat-square" />
