@@ -189,8 +189,6 @@ program
 
                 group = await semaphoreEthers.getGroup(groupId)
 
-                group.admin = await semaphoreEthers.getGroupAdmin(groupId)
-
                 spinner.stop()
             } catch {
                 spinner.stop()

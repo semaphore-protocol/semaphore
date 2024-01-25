@@ -10,8 +10,8 @@ import { Semaphore } from "../typechain-types"
 
 describe("Semaphore", () => {
     let semaphoreContract: Semaphore
-    let signers: Signer[]
-    let accounts: string[]
+    let accounts: Signer[]
+    let accountAddresses: string[]
 
     const merkleTreeDepth = 12
 
@@ -25,27 +25,27 @@ describe("Semaphore", () => {
 
         semaphoreContract = semaphore
 
-        signers = await run("accounts", { logs: false })
-        accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
+        accounts = await run("accounts", { logs: false })
+        accountAddresses = await Promise.all(accounts.map((signer: Signer) => signer.getAddress()))
     })
 
     describe("# createGroup", () => {
         it("Should create a group", async () => {
             const transaction = semaphoreContract
-                .connect(signers[1])
-                ["createGroup(uint256,address)"](groupId, accounts[1])
+                .connect(accounts[1])
+                ["createGroup(uint256,address)"](groupId, accountAddresses[1])
 
             await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId)
             await expect(transaction)
                 .to.emit(semaphoreContract, "GroupAdminUpdated")
-                .withArgs(groupId, ZeroAddress, accounts[1])
+                .withArgs(groupId, ZeroAddress, accountAddresses[1])
         })
 
         it("Should create a group with a custom Merkle tree root expiration", async () => {
             const groupId = 2
-            const transaction = await semaphoreContract.connect(signers[1])["createGroup(uint256,address,uint256)"](
+            const transaction = await semaphoreContract.connect(accounts[1])["createGroup(uint256,address,uint256)"](
                 groupId,
-                accounts[0],
+                accountAddresses[0],
                 5 // 5 seconds.
             )
             await semaphoreContract.addMember(groupId, members[0])
@@ -55,7 +55,7 @@ describe("Semaphore", () => {
             await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId)
             await expect(transaction)
                 .to.emit(semaphoreContract, "GroupAdminUpdated")
-                .withArgs(groupId, ZeroAddress, accounts[0])
+                .withArgs(groupId, ZeroAddress, accountAddresses[0])
         })
     })
 
@@ -70,7 +70,7 @@ describe("Semaphore", () => {
         })
 
         it("Should update the group Merkle tree duration", async () => {
-            const transaction = semaphoreContract.connect(signers[1]).updateGroupMerkleTreeDuration(groupId, 300)
+            const transaction = semaphoreContract.connect(accounts[1]).updateGroupMerkleTreeDuration(groupId, 300)
 
             await expect(transaction)
                 .to.emit(semaphoreContract, "GroupMerkleTreeDurationUpdated")
@@ -80,7 +80,7 @@ describe("Semaphore", () => {
 
     describe("# updateGroupAdmin", () => {
         it("Should not update a group admin if the caller is not the group admin", async () => {
-            const transaction = semaphoreContract.updateGroupAdmin(groupId, accounts[0])
+            const transaction = semaphoreContract.updateGroupAdmin(groupId, accountAddresses[0])
 
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreContract,
@@ -89,11 +89,11 @@ describe("Semaphore", () => {
         })
 
         it("Should update the group admin", async () => {
-            const transaction = semaphoreContract.connect(signers[1]).updateGroupAdmin(groupId, accounts[0])
+            const transaction = semaphoreContract.connect(accounts[1]).updateGroupAdmin(groupId, accountAddresses[0])
 
             await expect(transaction)
                 .to.emit(semaphoreContract, "GroupAdminUpdated")
-                .withArgs(groupId, accounts[1], accounts[0])
+                .withArgs(groupId, accountAddresses[1], accountAddresses[0])
         })
     })
 
@@ -101,7 +101,7 @@ describe("Semaphore", () => {
         it("Should not add a member if the caller is not the group admin", async () => {
             const member = BigInt(2)
 
-            const transaction = semaphoreContract.connect(signers[1]).addMember(groupId, member)
+            const transaction = semaphoreContract.connect(accounts[1]).addMember(groupId, member)
 
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreContract,
@@ -130,7 +130,7 @@ describe("Semaphore", () => {
 
             group.addMembers(members)
 
-            await semaphoreContract["createGroup(uint256,address)"](groupId, accounts[0])
+            await semaphoreContract["createGroup(uint256,address)"](groupId, accountAddresses[0])
 
             const transaction = semaphoreContract.addMembers(groupId, members)
 
@@ -144,7 +144,7 @@ describe("Semaphore", () => {
         it("Should not update a member if the caller is not the group admin", async () => {
             const member = BigInt(2)
 
-            const transaction = semaphoreContract.connect(signers[1]).updateMember(groupId, member, 1, [0, 1])
+            const transaction = semaphoreContract.connect(accounts[1]).updateMember(groupId, member, 1, [0, 1])
 
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreContract,
@@ -161,7 +161,7 @@ describe("Semaphore", () => {
 
             group.updateMember(0, BigInt(4))
 
-            await semaphoreContract["createGroup(uint256,address)"](groupId, accounts[0])
+            await semaphoreContract["createGroup(uint256,address)"](groupId, accountAddresses[0])
             await semaphoreContract.addMembers(groupId, members)
 
             const { siblings, root } = group.generateMerkleProof(0)
@@ -178,7 +178,7 @@ describe("Semaphore", () => {
         it("Should not remove a member if the caller is not the group admin", async () => {
             const member = BigInt(2)
 
-            const transaction = semaphoreContract.connect(signers[1]).removeMember(groupId, member, [0, 1])
+            const transaction = semaphoreContract.connect(accounts[1]).removeMember(groupId, member, [0, 1])
 
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreContract,
@@ -195,7 +195,7 @@ describe("Semaphore", () => {
 
             group.removeMember(2)
 
-            await semaphoreContract["createGroup(uint256,address)"](groupId, accounts[0])
+            await semaphoreContract["createGroup(uint256,address)"](groupId, accountAddresses[0])
             await semaphoreContract.addMembers(groupId, members)
 
             const { siblings, root } = group.generateMerkleProof(2)
@@ -203,6 +203,20 @@ describe("Semaphore", () => {
             const transaction = semaphoreContract.removeMember(groupId, BigInt(3), siblings)
 
             await expect(transaction).to.emit(semaphoreContract, "MemberRemoved").withArgs(groupId, 2, BigInt(3), root)
+        })
+    })
+
+    describe("# getGroupAdmin", () => {
+        it("Should return a 0 address if the group does not exist", async () => {
+            const address = await semaphoreContract.getGroupAdmin(999)
+
+            expect(address).to.equal(ZeroAddress)
+        })
+
+        it("Should return the address of the group admin", async () => {
+            const address = await semaphoreContract.getGroupAdmin(groupId)
+
+            expect(address).to.equal(accountAddresses[0])
         })
     })
 
@@ -218,7 +232,7 @@ describe("Semaphore", () => {
         let fullProof: SemaphoreProof
 
         before(async () => {
-            await semaphoreContract["createGroup(uint256,address)"](groupId, accounts[0])
+            await semaphoreContract["createGroup(uint256,address)"](groupId, accountAddresses[0])
 
             await semaphoreContract.addMembers(groupId, members)
 
@@ -279,7 +293,7 @@ describe("Semaphore", () => {
         let fullProofOneMember: SemaphoreProof
 
         before(async () => {
-            await semaphoreContract["createGroup(uint256,address)"](groupOneMemberId, accounts[0])
+            await semaphoreContract["createGroup(uint256,address)"](groupOneMemberId, accountAddresses[0])
 
             await semaphoreContract.addMembers(groupId, [members[1], members[2]])
             await semaphoreContract.addMember(groupOneMemberId, members[0])
