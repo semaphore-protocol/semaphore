@@ -18,7 +18,7 @@ export default {
     input: "src/index.ts",
     output: [
         {
-            file: pkg.exports.browser,
+            file: pkg.exports["."].browser,
             format: "es",
             banner
         }
