@@ -123,6 +123,11 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
         emit MemberRemoved(groupId, index, identityCommitment, merkleTreeRoot);
     }
 
+    /// @dev See {ISemaphoreGroups-getGroupAdmin}.
+    function getGroupAdmin(uint256 groupId) public view virtual override returns (address) {
+        return admins[groupId];
+    }
+
     /// @dev See {ISemaphoreGroups-hasMember}.
     function hasMember(uint256 groupId, uint256 identityCommitment) public view virtual override returns (bool) {
         return merkleTrees[groupId]._has(identityCommitment);

@@ -57,6 +57,11 @@ interface ISemaphoreGroups {
     /// @param merkleTreeRoot: New root hash of the tree.
     event MemberRemoved(uint256 indexed groupId, uint256 index, uint256 identityCommitment, uint256 merkleTreeRoot);
 
+    /// @dev Returns the address of the group admin.
+    /// @param groupId: Id of the group.
+    /// @return Address of the group admin.
+    function getGroupAdmin(uint256 groupId) external view returns (address);
+
     /// @dev Returns true if a member exists in a group.
     /// @param groupId: Id of the group.
     /// @param identityCommitment: Identity commitment.
