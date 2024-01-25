@@ -7,7 +7,8 @@ import {
     InfuraProvider,
     JsonRpcProvider,
     PocketProvider,
-    Provider
+    Provider,
+    ZeroAddress
 } from "ethers"
 import checkParameter from "./checkParameter"
 import getEvents from "./getEvents"
@@ -55,8 +56,8 @@ export default class SemaphoreEthers {
                 options.startBlock ??= 33995010
                 break
             case "sepolia":
-                options.address ??= "0xb25E63B115Ffba085FeCbf196a8e720F85DC351c"
-                options.startBlock ??= 5145333
+                options.address ??= "0x5B8e7cC7bAC61A4b952d472b67056B2f260ba6dc"
+                options.startBlock ??= 5150903
                 break
             case "optimism-sepolia":
                 options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
@@ -146,9 +147,9 @@ export default class SemaphoreEthers {
     async getGroup(groupId: string): Promise<GroupResponse> {
         checkParameter(groupId, "groupId", "string")
 
-        const [groupCreatedEvent] = await getEvents(this._contract, "GroupCreated", [groupId], this._options.startBlock)
+        const groupAdmin = await this._contract.getGroupAdmin(groupId)
 
-        if (!groupCreatedEvent) {
+        if (groupAdmin === ZeroAddress) {
             throw new Error(`Group '${groupId}' not found`)
         }
 
@@ -158,6 +159,7 @@ export default class SemaphoreEthers {
 
         const group: GroupResponse = {
             id: groupId,
+            admin: groupAdmin,
             merkleTree: {
                 depth: Number(merkleTreeDepth),
                 size: Number(merkleTreeSize),
@@ -169,28 +171,6 @@ export default class SemaphoreEthers {
     }
 
     /**
-     * Returns a group admin.
-     * @param groupId Group id.
-     * @returns Group admin.
-     */
-    async getGroupAdmin(groupId: string): Promise<string> {
-        checkParameter(groupId, "groupId", "string")
-
-        const groupAdminUpdatedEvents = await getEvents(
-            this._contract,
-            "GroupAdminUpdated",
-            [groupId],
-            this._options.startBlock
-        )
-
-        if (groupAdminUpdatedEvents.length === 0) {
-            throw new Error(`Group '${groupId}' not found`)
-        }
-
-        return groupAdminUpdatedEvents[groupAdminUpdatedEvents.length - 1][2]
-    }
-
-    /**
      * Returns a list of group members.
      * @param groupId Group id.
      * @returns Group members.
@@ -198,9 +178,9 @@ export default class SemaphoreEthers {
     async getGroupMembers(groupId: string): Promise<string[]> {
         checkParameter(groupId, "groupId", "string")
 
-        const [groupCreatedEvent] = await getEvents(this._contract, "GroupCreated", [groupId], this._options.startBlock)
+        const groupAdmin = await this._contract.getGroupAdmin(groupId)
 
-        if (!groupCreatedEvent) {
+        if (groupAdmin === ZeroAddress) {
             throw new Error(`Group '${groupId}' not found`)
         }
 
@@ -282,9 +262,9 @@ export default class SemaphoreEthers {
     async getGroupValidatedProofs(groupId: string): Promise<any> {
         checkParameter(groupId, "groupId", "string")
 
-        const [groupCreatedEvent] = await getEvents(this._contract, "GroupCreated", [groupId], this._options.startBlock)
+        const groupAdmin = await this._contract.getGroupAdmin(groupId)
 
-        if (!groupCreatedEvent) {
+        if (groupAdmin === ZeroAddress) {
             throw new Error(`Group '${groupId}' not found`)
         }
 

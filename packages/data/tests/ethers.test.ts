@@ -1,4 +1,5 @@
 /* eslint-disable no-sparse-arrays */
+import { Contract, ZeroAddress } from "ethers"
 import SemaphoreEthers from "../src/ethers"
 import getEvents from "../src/getEvents"
 
@@ -15,19 +16,19 @@ jest.mock("ethers", () => ({
             ({
                 getMerkleTreeRoot: () => "222",
                 getMerkleTreeDepth: () => BigInt(3),
-                getMerkleTreeSize: () => BigInt(8)
+                getMerkleTreeSize: () => BigInt(8),
+                getGroupAdmin: () => "0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F"
             } as any)
     )
 }))
 
 const getEventsMocked = getEvents as jest.MockedFunction<typeof getEvents>
+const ContractMocked = Contract as jest.MockedClass<typeof Contract>
 
 describe("SemaphoreEthers", () => {
-    let semaphore: SemaphoreEthers
-
     describe("# SemaphoreEthers", () => {
         it("Should instantiate a SemaphoreEthers object with different networks", () => {
-            semaphore = new SemaphoreEthers()
+            const semaphore = new SemaphoreEthers()
             const semaphore1 = new SemaphoreEthers("arbitrum")
             const semaphore2 = new SemaphoreEthers("mumbai")
             // const semaphore3 = new SemaphoreEthers("optimism-sepolia")
@@ -115,6 +116,8 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupIds", () => {
         it("Should return all the existing groups", async () => {
+            const semaphore = new SemaphoreEthers()
+
             getEventsMocked.mockReturnValueOnce(Promise.resolve([["32"], ["42"]]))
 
             const groupIds = await semaphore.getGroupIds()
@@ -125,7 +128,7 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroup", () => {
         it("Should return a specific group", async () => {
-            getEventsMocked.mockReturnValueOnce(Promise.resolve([["111"]]))
+            const semaphore = new SemaphoreEthers()
 
             const group = await semaphore.getGroup("42")
 
@@ -135,7 +138,11 @@ describe("SemaphoreEthers", () => {
         })
 
         it("Should throw an error if the group does not exist", async () => {
-            getEventsMocked.mockReturnValueOnce(Promise.resolve([]))
+            ContractMocked.mockReturnValueOnce({
+                getGroupAdmin: () => ZeroAddress
+            } as any)
+
+            const semaphore = new SemaphoreEthers()
 
             const fun = () => semaphore.getGroup("666")
 
@@ -143,27 +150,10 @@ describe("SemaphoreEthers", () => {
         })
     })
 
-    describe("# getGroupAdmin", () => {
-        it("Should return a group admin", async () => {
-            getEventsMocked.mockReturnValueOnce(Promise.resolve([[, , "0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F"]]))
-
-            const admin = await semaphore.getGroupAdmin("42")
-
-            expect(admin).toBe("0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F")
-        })
-
-        it("Should throw an error if the group does not exist", async () => {
-            getEventsMocked.mockReturnValueOnce(Promise.resolve([]))
-
-            const fun = () => semaphore.getGroupAdmin("666")
-
-            await expect(fun).rejects.toThrow("Group '666' not found")
-        })
-    })
-
     describe("# getGroupMembers", () => {
         it("Should return a list of group members", async () => {
-            getEventsMocked.mockReturnValueOnce(Promise.resolve([["20"]]))
+            const semaphore = new SemaphoreEthers()
+
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
                     [, "0", , , 4],
@@ -203,7 +193,11 @@ describe("SemaphoreEthers", () => {
         })
 
         it("Should throw an error if the group does not exist", async () => {
-            getEventsMocked.mockReturnValueOnce(Promise.resolve([]))
+            ContractMocked.mockReturnValueOnce({
+                getGroupAdmin: () => ZeroAddress
+            } as any)
+
+            const semaphore = new SemaphoreEthers()
 
             const fun = () => semaphore.getGroupMembers("666")
 
@@ -213,7 +207,8 @@ describe("SemaphoreEthers", () => {
 
     describe("# getGroupVerifiedProofs", () => {
         it("Should return a list of group verified proofs", async () => {
-            getEventsMocked.mockReturnValueOnce(Promise.resolve([["42"]]))
+            const semaphore = new SemaphoreEthers()
+
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
                     [
@@ -234,7 +229,11 @@ describe("SemaphoreEthers", () => {
         })
 
         it("Should throw an error if the group does not exist", async () => {
-            getEventsMocked.mockReturnValueOnce(Promise.resolve([]))
+            ContractMocked.mockReturnValueOnce({
+                getGroupAdmin: () => ZeroAddress
+            } as any)
+
+            const semaphore = new SemaphoreEthers()
 
             const fun = () => semaphore.getGroupValidatedProofs("666")
 
