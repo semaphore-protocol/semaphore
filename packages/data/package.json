@@ -22,7 +22,6 @@
         "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
     },
     "scripts": {
-        "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
         "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
         "prepublishOnly": "yarn build"
     },
@@ -35,7 +34,7 @@
         "rollup-plugin-typescript2": "^0.31.2"
     },
     "dependencies": {
-        "axios": "^0.27.2",
+        "axios": "1.6.6",
         "ethers": "6.10.0"
     }
 }
