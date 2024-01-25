@@ -18,7 +18,7 @@ export default {
         { file: pkg.exports.require, format: "cjs", banner, exports: "auto" },
         { file: pkg.exports.import, format: "es", banner }
     ],
-    external: Object.keys(pkg.dependencies),
+    external: [...Object.keys(pkg.dependencies), "hardhat/config"],
     plugins: [
         typescript({
             tsconfig: "./build.tsconfig.json",

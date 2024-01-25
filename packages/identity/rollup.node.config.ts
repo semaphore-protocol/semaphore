@@ -1,4 +1,3 @@
-import json from "@rollup/plugin-json"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
 import typescript from "rollup-plugin-typescript2"
@@ -16,25 +15,15 @@ const banner = `/**
 export default {
     input: "src/index.ts",
     output: [
-        {
-            file: pkg.exports.node.require,
-            format: "cjs",
-            banner,
-            exports: "auto"
-        },
-        {
-            file: pkg.exports.node.import,
-            format: "es",
-            banner
-        }
+        { file: pkg.exports.node.require, format: "cjs", banner, exports: "auto" },
+        { file: pkg.exports.node.import, format: "es", banner }
     ],
-    external: [...Object.keys(pkg.dependencies), "fs"],
+    external: [...Object.keys(pkg.dependencies), "poseidon-lite/poseidon2", "node:crypto"],
     plugins: [
         typescript({
             tsconfig: "./build.tsconfig.json",
             useTsconfigDeclarationDir: true
         }),
-        cleanup({ comments: "jsdoc" }),
-        json()
+        cleanup({ comments: "jsdoc" })
     ]
 }
