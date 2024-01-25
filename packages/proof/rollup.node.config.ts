@@ -17,13 +17,13 @@ export default {
     input: "src/index.ts",
     output: [
         {
-            file: pkg.exports.node.require,
+            file: pkg.exports["."].node.require,
             format: "cjs",
             banner,
             exports: "auto"
         },
         {
-            file: pkg.exports.node.import,
+            file: pkg.exports["."].node.import,
             format: "es",
             banner
         }
