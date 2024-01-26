@@ -40,7 +40,7 @@ For more information, see [Merkle tree in Wikipedia](https://en.wikipedia.org/wi
 
 A value used to prevent double entry or double signalling.
 
-See [Circuit nullifier hash](/technical-reference/circuits/#nullifier-hash).
+See [Circuit nullifier hash](/technical-reference/circuits/#hash-anulador-nullifier-hash).
 
 ## Relay
 
@@ -60,5 +60,5 @@ To generate or verify valid zero-knowledge proofs with Semaphore, applications m
 -   semaphore.wasm
 -   semaphore.json
 
-For a complete list of ready-to-use files, see <http://www.trusted-setup-pse.org>.
+For a complete list of ready-to-use files, see [trusted-setup-pse.org](https://www.trusted-setup-pse.org).
 To learn more, see the [trusted setup ceremony](https://storage.googleapis.com/trustedsetup-a86f4.appspot.com/semaphore/semaphore_top_index.html).

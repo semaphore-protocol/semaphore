@@ -58,7 +58,7 @@ Para generar o verificar pruebas válidas de conocimiento cero con Semaphore, la
 -   semaphore.wasm
 -   semaphore.json
 
-Para ver una lista completa de archivos listos para utilizarse, vea <http://www.trusted-setup-pse.org>.
+Para ver una lista completa de archivos listos para utilizarse, vea [trusted-setup-pse.org](https://www.trusted-setup-pse.org).
 Para aprender más, vea la [ceremonia de configuración de confianza](https://storage.googleapis.com/trustedsetup-a86f4.appspot.com/semaphore/semaphore_top_index.html) (trusted setup ceremony).
 
 ## Señales (Signals)
