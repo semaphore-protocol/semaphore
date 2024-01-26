@@ -1,5 +1,7 @@
 import alias from "@rollup/plugin-alias"
+import commonjs from "@rollup/plugin-commonjs"
 import json from "@rollup/plugin-json"
+import { nodeResolve } from "@rollup/plugin-node-resolve"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
 import typescript from "rollup-plugin-typescript2"
@@ -23,7 +25,7 @@ export default {
             banner
         }
     ],
-    external: [...Object.keys(pkg.dependencies), "poseidon-lite/poseidon2"],
+    external: pkg.dependencies,
     plugins: [
         alias({
             entries: [{ find: "./random-number.node", replacement: "./random-number.browser" }]
@@ -32,6 +34,8 @@ export default {
             tsconfig: "./build.tsconfig.json",
             useTsconfigDeclarationDir: true
         }),
+        commonjs(),
+        nodeResolve(),
         cleanup({ comments: "jsdoc" }),
         json()
     ]
