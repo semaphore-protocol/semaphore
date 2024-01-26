@@ -4,10 +4,17 @@
     "description": "A library to create Semaphore identities.",
     "license": "MIT",
     "main": "dist/index.node.js",
+    "browser": "dist/index.browser.mjs",
     "exports": {
-        "import": "./dist/index.mjs",
-        "require": "./dist/index.node.js",
-        "types": "./dist/types/index.d.ts"
+        ".": {
+            "node": {
+                "import": "./dist/index.node.mjs",
+                "require": "./dist/index.node.js"
+            },
+            "browser": "./dist/index.browser.mjs",
+            "default": "./dist/index.browser.mjs",
+            "types": "./dist/types/index.d.ts"
+        }
     },
     "types": "dist/types/index.d.ts",
     "files": [
@@ -22,14 +29,16 @@
         "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
     },
     "scripts": {
-        "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
-        "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
+        "build": "rimraf dist && yarn build:browser && yarn build:node",
+        "build:browser": "rollup -c rollup.browser.config.ts --configPlugin typescript",
+        "build:node": "rollup -c rollup.node.config.ts --configPlugin typescript",
         "prepublishOnly": "yarn build"
     },
     "publishConfig": {
         "access": "public"
     },
     "devDependencies": {
+        "@rollup/plugin-alias": "^5.1.0",
         "@rollup/plugin-commonjs": "^24.0.1",
         "@rollup/plugin-node-resolve": "^15.0.1",
         "rollup-plugin-cleanup": "^3.2.1",
