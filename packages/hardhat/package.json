@@ -41,6 +41,5 @@
         "@semaphore-protocol/contracts": "4.0.0-alpha.3",
         "ethers": "^6.4.0",
         "hardhat-dependency-compiler": "^1.1.3"
-    },
-    "stableVersion": "4.0.0-alpha.2"
+    }
 }

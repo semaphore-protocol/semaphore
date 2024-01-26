@@ -39,6 +39,5 @@
         "prettier": "^2.5.1",
         "ts-node": "^10.8.1",
         "typescript": "^4.7.3"
-    },
-    "stableVersion": "4.0.0-alpha.2"
+    }
 }
