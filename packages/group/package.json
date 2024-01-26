@@ -37,6 +37,5 @@
     },
     "dependencies": {
         "@zk-kit/imt": "^2.0.0-beta"
-    },
-    "stableVersion": "4.0.0-alpha.1"
+    }
 }
