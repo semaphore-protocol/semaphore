@@ -24,7 +24,8 @@ export default function NavbarItem(props: any) {
             !(
                 (className.includes("V1") && version !== "V1") ||
                 (className.includes("V2") && version !== "V2") ||
-                (className.includes("V3") && version !== "V3")
+                (className.includes("V3") && version !== "V3") ||
+                (className.includes("V4-alpha") && version !== "V4-alpha")
             )) && <OriginalNavBarItem {...props} />
     )
 }
