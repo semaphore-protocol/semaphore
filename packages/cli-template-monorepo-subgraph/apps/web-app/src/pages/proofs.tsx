@@ -41,6 +41,11 @@ export default function ProofsPage() {
             return
         }
 
+        if (_users && _users.length < 2) {
+            alert("No anonymity in a group of one!")
+            return
+        }
+
         const feedback = prompt("Please enter your feedback:")
 
         if (feedback && _users) {
@@ -49,7 +54,7 @@ export default function ProofsPage() {
             setLogs(`Posting your anonymous feedback...`)
 
             try {
-                const group = new Group(env.GROUP_ID)
+                const group = new Group()
 
                 const message = encodeBytes32String(feedback)
 
