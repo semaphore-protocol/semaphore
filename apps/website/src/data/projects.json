@@ -124,11 +124,12 @@
     },
     {
         "name": "Plurality",
-        "tagline": "An Identity Lego for DApps to verify users independently, preserving privacy without third-party KYC.",
+        "tagline": "Plurality boosts web3 retention by simplifying onboarding and personalizing web3 accounts using data from user's social profiles whilst ensuring privacy.",
         "categories": ["Identity", "Trust"],
         "pse": false,
         "icon": "",
         "links": {
+            "website": "https://plurality.network",
             "github": "https://github.com/Web3-Plurality"
         }
     },
