@@ -61,6 +61,5 @@
         "solidity": {
             "version": "0.8.4"
         }
-    },
-    "stableVersion": "4.0.0-alpha.2"
+    }
 }
