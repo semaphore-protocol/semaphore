@@ -38,13 +38,13 @@ const config: Config = {
         ]
     ],
     themeConfig: {
-        //announcementBar: {
-        //id: "semaphore-v4-alpha",
-        //content:
-        //'<b>We are pleased to announce the release of Semaphore V4-alpha 🎉</b>',
-        //backgroundColor: "#DAE0FF",
-        //textColor: "#000000"
-        //},
+        // announcementBar: {
+        // id: "semaphore-v4-alpha",
+        // content:
+        // '<b>We are pleased to announce the release of Semaphore V4-alpha 🎉</b>',
+        // backgroundColor: "#DAE0FF",
+        // textColor: "#000000"
+        // },
         navbar: {
             logo: {
                 alt: "Semaphore Logo",
