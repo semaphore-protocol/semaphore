@@ -52,6 +52,11 @@ const config: Config = {
             },
             items: [
                 {
+                    type: "docsVersionDropdown",
+                    position: "right",
+                    dropdownActiveClassDisabled: true
+                },
+                {
                     label: "Whitepaper",
                     to: "https://docs.semaphore.pse.dev/whitepaper-v1.pdf",
                     position: "right",
