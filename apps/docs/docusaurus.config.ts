@@ -2,8 +2,8 @@ import type * as Preset from "@docusaurus/preset-classic"
 import type { Config } from "@docusaurus/types"
 import { themes } from "prism-react-renderer"
 
-const lightCodeTheme = themes.github
-const darkCodeTheme = themes.dracula
+const lightCodeTheme = themes.oneLight
+const darkCodeTheme = themes.oneDark
 
 const config: Config = {
     title: "Semaphore",
@@ -38,13 +38,13 @@ const config: Config = {
         ]
     ],
     themeConfig: {
-        // announcementBar: {
-        // id: "semaphore-v4-alpha",
-        // content:
-        // '<b>We are pleased to announce the release of Semaphore V4-alpha 🎉</b>',
-        // backgroundColor: "#DAE0FF",
-        // textColor: "#000000"
-        // },
+        announcementBar: {
+            id: "semaphore-v4-alpha",
+            content:
+                '<b>Semaphore V4-alpha is out 🎉 <a href="/quick-setup">Try it out</a> and let us know for any feedback on <a href="https://semaphore.pse.dev/discord" target="_blank">Discord</a> or <a href="https://github.com/orgs/semaphore-protocol/discussions" target="_blank">Github</a>!</b>',
+            backgroundColor: "#DAE0FF",
+            textColor: "#000000"
+        },
         navbar: {
             logo: {
                 alt: "Semaphore Logo",
@@ -53,7 +53,7 @@ const config: Config = {
             items: [
                 {
                     type: "docsVersionDropdown",
-                    position: "right",
+                    position: "left",
                     dropdownActiveClassDisabled: true
                 },
                 {
