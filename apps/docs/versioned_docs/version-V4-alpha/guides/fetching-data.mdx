@@ -1,0 +1,181 @@
+---
+sidebar_position: 4
+title: Fetching data
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Semaphore data
+
+To fetch on-chain data from the [Semaphore.sol](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol) contract, you can use the [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data) library.
+
+There are two ways to do this, using [`SemaphoreSubgraph`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/subgraph.ts) or [`SemaphoreEthers`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/ethers.ts). The `SemaphoreSubgraph` class uses the [Semaphore subgraph](https://github.com/semaphore-protocol/subgraph), which uses [The Graph Protocol](https://thegraph.com/) under the hood, and the `SemaphoreEthers` class uses [Ethers](https://github.com/ethers-io/ethers.js/).
+
+- [**Fetch data using SemaphoreSubgraph**](#fetch-data-using-semaphoresubgraph)
+- [**Fetch data using SemaphoreEthers**](#fetch-data-using-semaphoreethers)
+
+## Install library
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm install @semaphore-protocol/data@^3
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn add @semaphore-protocol/data@^3
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm add @semaphore-protocol/data@^3
+```
+
+</TabItem>
+</Tabs>
+
+## Fetch data using SemaphoreSubgraph
+
+To fetch data using the Semaphore subgraph you can use the [`SemaphoreSubgraph`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/subgraph.ts) class from the [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data) package.
+
+```typescript
+import { SemaphoreSubgraph } from "@semaphore-protocol/data"
+
+const semaphoreSubgraph = new SemaphoreSubgraph()
+
+// or:
+const semaphoreSubgraph = new SemaphoreSubgraph("arbitrum")
+
+// or:
+const semaphoreSubgraph = new SemaphoreSubgraph(
+    "https://api.studio.thegraph.com/query/14377/<your-subgraph>/<your-version>"
+)
+```
+
+### Get group Ids
+
+```typescript
+const groupIds = await semaphoreSubgraph.getGroupIds()
+```
+
+### Get groups
+
+```typescript
+const groups = await semaphoreSubgraph.getGroups()
+
+// or
+
+const groups = await semaphoreSubgraph.getGroups({ members: true, verifiedProofs: true })
+```
+
+### Get group
+
+```typescript
+const group = await semaphoreSubgraph.getGroup("42")
+
+// or
+
+const { members, verifiedProofs } = semaphoreSubgraph.getGroup("42", { members: true, verifiedProofs: true })
+```
+
+### Check if an identity commitment is a member of a group
+
+```ts
+await semaphoreSubgraph.isGroupMember(
+    "42",
+    "16948514235341957898454876473214737047419402240398321289450170535251226167324"
+)
+```
+
+:::info
+You can create an off-chain group using the SemaphoreSubgraph class to fetch members like so:
+
+```typescript
+import { Group } from "@semaphore-protocol/group"
+import { SemaphoreSubgraph } from "@semaphore-protocol/data"
+
+const groupId = "3"
+const semaphoreSubgraph = new SemaphoreSubgraph("sepolia")
+const { members } = await semaphoreSubgraph.getGroup(groupId, { members: true })
+const group = new Group(groupId, 20, members)
+```
+:::
+
+## Fetch data using SemaphoreEthers
+
+To fetch data using Ethers you can use the [`SemaphoreEthers`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/ethers.ts) class from the [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data) package.
+
+```typescript
+import { SemaphoreEthers } from "@semaphore-protocol/data"
+
+const semaphoreEthers = new SemaphoreEthers()
+
+// or:
+const semaphoreEthers = new SemaphoreEthers("homestead", {
+    address: "semaphore-address",
+    startBlock: 0
+})
+
+// or:
+const semaphoreEthers = new SemaphoreEthers("http://127.0.0.1:8545", {
+    address: "semaphore-address"
+})
+```
+
+### Get group Ids
+
+```typescript
+const groupIds = await semaphoreEthers.getGroupIds()
+```
+
+### Get group
+
+```typescript
+const group = await semaphoreEthers.getGroup("42")
+```
+
+### Get group admin
+
+```typescript
+const admin = await semaphoreEthers.getGroupAdmin("42")
+```
+
+### Get group members
+
+```typescript
+const members = await semaphoreEthers.getGroupMembers("42")
+```
+
+### Get group verified proofs
+
+```typescript
+const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs("42")
+```
+
+:::info
+You can create an off-chain group using the SemaphoreEthers class to fetch members like so:
+
+```typescript
+import { Group } from "@semaphore-protocol/group"
+import { SemaphoreEthers } from "@semaphore-protocol/data"
+
+const groupId = "3"
+const semaphoreEthers = new SemaphoreEthers("sepolia")
+const members = await semaphoreEthers.getGroupMembers(groupId)
+const group = new Group(groupId, 20, members)
+```
+:::
