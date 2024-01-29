@@ -7,7 +7,7 @@ const darkCodeTheme = themes.oneDark
 
 const config: Config = {
     title: "Semaphore",
-    tagline: "Documentation and Guides",
+    tagline: "Semaphore documentation and guides.",
     url: "https://docs.semaphore.pse.dev/",
     baseUrl: "/",
     favicon: "/img/favicon.ico",
