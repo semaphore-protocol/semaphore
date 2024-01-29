@@ -5,7 +5,7 @@ sidebar_position: 2
 import Tabs from "@theme/Tabs"
 import TabItem from "@theme/TabItem"
 
-# Quick setup
+# Getting started
 
 Semaphore provides an official CLI to set up your project with Hardhat. If your NPM version is 5.2 or higher you can use NPX:
 
@@ -25,7 +25,7 @@ The supported templates are: [`contracts-hardhat`](https://github.com/semaphore-
 :::
 
 :::info
-The [`semaphore CLI`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/cli) can also be used to get group data from a supported network (e.g `semaphore get-groups --network arbitrum-goerli`).
+The [`semaphore CLI`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/cli) can also be used to get group data from a supported network (e.g `semaphore get-groups --network sepolia`).
 :::
 
 To start working on your project, install the dependencies:
@@ -268,21 +268,21 @@ In the project root folder:
     <TabItem value="npm">
 
     ```bash
-    npm run deploy -- --semaphore <semaphore-address> --group <group-id> --network arbitrum-goerli
+    npm run deploy -- --semaphore <semaphore-address> --group <group-id> --network sepolia
     ```
 
     </TabItem>
     <TabItem value="yarn">
 
     ```bash
-    yarn deploy --semaphore <semaphore-address> --group <group-id> --network arbitrum-goerli
+    yarn deploy --semaphore <semaphore-address> --group <group-id> --network sepolia
     ```
 
     </TabItem>
     <TabItem value="pnpm">
 
     ```bash
-    pnpm deploy --semaphore <semaphore-address> --group <group-id> --network arbitrum-goerli
+    pnpm deploy --semaphore <semaphore-address> --group <group-id> --network sepolia
     ```
 
     </TabItem>
@@ -330,3 +330,7 @@ pnpm dev
 
 </TabItem>
 </Tabs>
+
+:::info
+If you want to see the code of a comprehensive application built on top of Semaphore see the [boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/version/4). For more info about the core libraries, keep reading the next guides.
+:::
