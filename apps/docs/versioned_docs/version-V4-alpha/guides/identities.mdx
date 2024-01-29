@@ -8,7 +8,7 @@ import TabItem from "@theme/TabItem"
 
 # Semaphore identities
 
-In order to join a [Semaphore group](/glossary#semaphore-group), a user must first create a [Semaphore identity](/glossary#semaphore-identity).
+In order to join a [Semaphore group](/V4-alpha/glossary#semaphore-group), a user must first create a [Semaphore identity](/V4-alpha/glossary#semaphore-identity).
 A Semaphore identity contains three values generated with the identity:
 
 -   Private key
@@ -18,9 +18,9 @@ A Semaphore identity contains three values generated with the identity:
 To use and verify the identity, the identity owner (user) must know its private key.
 To prevent fraud, the owner should keep their private key secret.
 
-## Install library
+## Install package
 
-In your code, use the [`@semaphore-protocol/identity`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/identity) library to manage Semaphore identites.
+In your code, use the [`@semaphore-protocol/identity`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/identity) package to manage Semaphore identites.
 
 <Tabs
 defaultValue="npm"
@@ -82,8 +82,29 @@ Building a system to save or recover secret values of Semaphore identities is no
 You may choose to delegate such functionality to existing wallets such as Metamask. For example:
 
 1. In Metamask, a user signs a message with the private key of their Ethereum account.
-2. In your application, the user creates a deterministic identity with the signed message.
+2. In your application, the user creates a deterministic identity with the signed message that acts as your Semaphore private key.
 3. The user can now recreate their Semaphore identity whenever they want by signing the same message with their Ethereum account in Metamask.
 :::
 
 ## Sign and verify messages
+
+Semaphore V4 uses asymmetric cryptography and in particular EdDSA to generate the identity keys. It is therefore also possible to sign messages and verify their signatures.
+
+### Sign a message
+
+Any Semaphore identity can sign a message by simply passing a string, number or buffer.
+
+```ts
+const message = "Hello World"
+
+const signature = identity1.signMessage(message)
+```
+
+### Verify a signature
+
+After a message is signed, anyone can verify the signature using the message itself, the signature, and the signer's public key.
+
+```ts
+// Static method.
+Identity.verifySignature(message, signature, identity1.publicKey)
+```
