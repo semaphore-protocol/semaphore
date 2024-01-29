@@ -69,6 +69,11 @@ const config: Config = {
                     position: "right"
                 },
                 {
+                    label: "Website",
+                    href: "https://semaphore.pse.dev",
+                    position: "right"
+                },
+                {
                     type: "localeDropdown",
                     position: "right"
                 }
