@@ -100,11 +100,7 @@ export default function Learn() {
             linkUrl: "https://docs.semaphore.pse.dev/guides/identities",
             codeText: `import { Identity } from "@semaphore-protocol/identity"
 
-const identity = new Identity()
-
-const trapdoor = identity.getTrapdoor()
-const nullifier = identity.getNullifier()
-const commitment = identity.generateCommitment()`,
+const { trapdoor, nullifier, commitment } = new Identity()`,
             itemList: [
                 {
                     icon: <IconEyelash w="24px" h="24px" color="primary.600" />,
@@ -159,18 +155,17 @@ group.addMember(commitment)`,
             linkText: "Generate Semaphore proofs",
             linkUrl: "https://docs.semaphore.pse.dev/guides/proofs",
             codeText: `import { generateProof, verifyProof } from "@semaphore-protocol/proof"
+import { utils } from "ethers"
 
-const externalNullifier = BigInt(1)
-const signal = "Hello world"
+const externalNullifier = utils.formatBytes32String("Topic")
+const signal = utils.formatBytes32String("Hello world")
 
 const fullProof = await generateProof(identity, group, externalNullifier, signal, {
     zkeyFilePath: "./semaphore.zkey",
     wasmFilePath: "./semaphore.wasm"
 })
 
-const verificationKey = JSON.parse(fs.readFileSync("./semaphore.json", "utf-8"))
-
-await verifyProof(verificationKey, fullProof)`,
+await verifyProof(fullProof, group.depth)`,
             itemList: [
                 {
                     icon: <IconBadge w="24px" h="24px" color="primary.600" />,
