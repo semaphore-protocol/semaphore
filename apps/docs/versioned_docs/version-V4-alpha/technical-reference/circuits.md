@@ -4,52 +4,51 @@ sidebar_position: 2
 
 # Circuits
 
-The [Semaphore circuit](https://github.com/semaphore-protocol/semaphore/tree/main/packages/circuits) is the heart of the protocol and consists of three parts:
+The [Semaphore circuit](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/circuits/semaphore.circom) is the heart of the protocol and consists of three parts:
 
--   [**Proof of membership**](/technical-reference/circuits#proof-of-membership)
--   [**Nullifier hash**](/technical-reference/circuits#nullifier-hash)
--   [**Signal**](/technical-reference/circuits#signal)
+-   [**Proof of membership**](#proof-of-membership)
+-   [**Nullifier**](#nullifier)
+-   [**Message**](#message)
 
-![Semaphore circuit](https://github.com/semaphore-protocol/semaphore/raw/main/packages/circuits/scheme.png)
+![Semaphore circuit](https://github.com/semaphore-protocol/semaphore/raw/feat/semaphore-v4/packages/circuits/scheme.png)
 
 The diagram above shows how the input signals are used in the Semaphore circuit and how the outputs are calculated.
 
 ## Proof of membership
 
-The circuit hashes the hash of the identity nullifier with the identity trapdoor to generate an identity commitment. Then, it verifies the proof of membership against the Merkle root and the identity commitment.
+The circuit derive the public key from the secret and hashes the public key to generate an identity commitment. Then, it verifies the proof of membership against the Merkle root and the identity commitment.
 
 **Private inputs:**
 
--   `treeSiblings[nLevels]`: the values along the Merkle path to the user's identity commitment,
--   `treePathIndices[nLevels]`: the direction (0/1) per tree level corresponding to the Merkle path to the user's identity commitment,
--   `identityNullifier`: the 32-byte identity secret used as nullifier,
--   `identityTrapdoor`: the 32-byte identity secret used as trapdoor.
+-   `merkleProofLength`: the actual number of nodes in the Merkle proof path,
+-   `merkleProofIndices[MAX_DEPTH]`: the list of 0s and 1s to calculate the hashes of the nodes at the correct position,
+-   `merkleProofSiblings[MAX_DEPTH]`: the list of siblings nodes to be used to calculate the hashes of the nodes up to the root,
+-   `secret`: the EdDSA [secret scalar](https://www.rfc-editor.org/rfc/rfc8032#section-5.1.5) derived from the private key.
 
 **Public outputs:**
 
--   `root`: The Merkle root of the tree.
+-   `merkleRoot`: The Merkle root of the tree.
 
-## Nullifier hash
+## Nullifier
 
-The circuit hashes the identity nullifier with the external nullifier and then checks that the result matches the provided nullifier hash.
-Nullifier hashes saved in a Semaphore smart contract allow the contract to reject a proof that contains a used nullifier hash.
+The circuit hashes the secret with the scope and then checks that the result matches the provided nullifier.
 
 **Private inputs:**
 
--   `identityNullifier`: the 32-byte identity secret used as a nullifier.
+-   `secret`: the EdDSA [secret scalar](https://www.rfc-editor.org/rfc/rfc8032#section-5.1.5) derived from the private key.
 
 **Public inputs:**
 
--   `externalNullifier`: the 32-byte external nullifier.
+-   `scope`: the value used like a topic on which users can generate a valid proof only once.
 
 **Public outputs:**
 
--   `nullifierHash`: the hash of the identity nullifier and the external nullifier; used to prevent double-signaling.
+-   `nullifier`: the value designed to be a unique identifier and used to prevent the same proof from being used twice.
 
-## Signal
+## Message
 
-The circuit calculates a dummy square of the signal hash to prevent any tampering with the proof.
+The circuit calculates a dummy square of the message to prevent any tampering with the proof.
 
 **Public inputs:**
 
--   `signalHash`: the hash of the user's signal.
+-   `message`: the anonymous value the user broadcasts.
