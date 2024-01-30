@@ -1,10 +1,10 @@
 ---
-sidebar_position: 10
+sidebar_position: 11
 ---
 
 # Credits
 
-Semaphore is the work of several people, for a complete list of contributors you can visit our [Github pages](https://github.com/semaphore-protocol/semaphore/graphs/contributors).
+Semaphore is the work of several people, for a complete list of contributors you can visit the Semaphore [Github insights](https://github.com/semaphore-protocol/semaphore/graphs/contributors).
 
 -   [Barry WhiteHat](https://github.com/barryWhiteHat)
 -   [Kobi Gurkan](https://github.com/kobigurk)
@@ -15,3 +15,4 @@ Semaphore is the work of several people, for a complete list of contributors you
 -   [Andy Guzman](https://github.com/aguzmant103)
 -   [Vivian Plasencia](https://github.com/vplasencia)
 -   [LauNaMu](https://github.com/0xyNaMu)
+-   [0xjei](https://github.com/0xjei)
