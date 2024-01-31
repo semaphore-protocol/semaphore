@@ -37,7 +37,7 @@ export default function DeployedContracts() {
     return (
         <div>
             {deployedContracts.map(({ network, contracts }) => (
-                <div>
+                <div key={network}>
                     <Heading as="h2">{capitalizeFirstLetter(network)}</Heading>
                     <ul>
                         {contracts.map(({ name, address }) => (
