@@ -233,6 +233,18 @@ html[data-theme="light"] {
     }
 }
 
+/* Navbar items visibility */
+
+a.whitepaper-v1 {
+    display: none;
+}
+
+html.docs-version-V1 {
+    a.whitepaper-v1 {
+        display: inline-block;
+    }
+}
+
 .container {
     padding: 0px;
     /* margin: 4rem auto 0px; */
