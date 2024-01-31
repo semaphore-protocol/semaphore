@@ -73,9 +73,6 @@ dist
 artifacts
 cache
 typechain-types
-packages/contracts/deployed-contracts/undefined.json
-packages/contracts/deployed-contracts/hardhat.json
-packages/contracts/deployed-contracts/localhost.json
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test

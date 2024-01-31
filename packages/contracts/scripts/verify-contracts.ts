@@ -1,5 +1,5 @@
 import { hardhatArguments, run } from "hardhat"
-import { getDeployedContracts } from "./utils"
+import { getDeployedContractAddress } from "./utils"
 
 async function verify(address: string, constructorArguments?: any[]): Promise<void> {
     try {
@@ -13,13 +13,17 @@ async function verify(address: string, constructorArguments?: any[]): Promise<vo
 }
 
 async function main() {
-    const deployedContracts = getDeployedContracts(hardhatArguments.network)
-
-    if (deployedContracts) {
-        await verify(deployedContracts.Verifier)
-        await verify(deployedContracts.Poseidon)
-        await verify(deployedContracts.Semaphore, [deployedContracts.Verifier])
+    if (!hardhatArguments.network) {
+        throw Error("Please, define a supported network")
     }
+
+    const semaphoreVerifierAddress = getDeployedContractAddress(hardhatArguments.network, "SemaphoreVerifier")
+    const poseidonT3Address = getDeployedContractAddress(hardhatArguments.network, "PoseidonT3")
+    const semaphoreAddress = getDeployedContractAddress(hardhatArguments.network, "Semaphore")
+
+    await verify(semaphoreVerifierAddress)
+    await verify(poseidonT3Address)
+    await verify(semaphoreAddress, [semaphoreVerifierAddress])
 }
 
 main()
