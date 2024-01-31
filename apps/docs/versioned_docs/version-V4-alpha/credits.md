@@ -16,3 +16,4 @@ Semaphore is the work of several people, for a complete list of contributors you
 -   [Vivian Plasencia](https://github.com/vplasencia)
 -   [LauNaMu](https://github.com/0xyNaMu)
 -   [0xjei](https://github.com/0xjei)
+-   [Mari Poveda](https://github.com/maripoveda)
