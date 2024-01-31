@@ -22,7 +22,7 @@ The [nullifier](/V4-alpha/glossary#nullifier) is the hash of the private key of 
 
 In the case of a voting application, if you have a group and you want all members of this group to vote only once, you can use the id of the group as the scope. When a user votes the first time, you can store the hash of voter's private key and the group id (i.e., the nullifier) and prevent double-voting by checking if that hash already exists.
 
-See the [Semaphore circuits](https://docs.semaphore.pse.dev/technical-reference/circuits) for more technical information, or the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/version/4) for a real use-case.
+See the [Semaphore circuits](/V4-alpha/technical-reference/circuits) for more technical information, or the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/version/4) for a real use-case.
 
 ## Where can I find examples of applications using Semaphore?
 

@@ -13,7 +13,7 @@ There are three contracts:
 
 :::info
 To use Semaphore contracts and interfaces in your project,
-install the [`@semaphore-protocol/contracts`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/contracts) NPM package.
+install the [`@semaphore-protocol/contracts`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/contracts) NPM package.
 :::
 
 ## SemaphoreVerifier.sol
