@@ -54,11 +54,9 @@ export default function ProofsPage() {
             setLogs(`Posting your anonymous feedback...`)
 
             try {
-                const group = new Group()
+                const group = new Group(_users)
 
                 const message = encodeBytes32String(feedback)
-
-                group.addMembers(_users)
 
                 const { points, merkleTreeDepth, merkleTreeRoot, nullifier } = await generateProof(
                     _identity,
