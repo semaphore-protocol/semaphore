@@ -13,7 +13,7 @@ If these suggestions do not work, feel free to ask for more help and support on 
 
 When you create a group and the transaction is reverted, make sure that the group id you are using does not exist on the network you are using.
 
-To check that, you can use the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli) with the command `get-groups` and the network you are using and then, make sure that your group id is not part of that list. You can also use the [Semaphore explorer](https://explorer.semaphore.pse.dev/).
+To check that, you can use the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/cli) with the command `get-groups` and the network you are using and then, make sure that your group id is not part of that list. You can also use the [Semaphore explorer](https://explorer.semaphore.pse.dev/).
 
 ## Transaction reverted when using the same nullifier
 
