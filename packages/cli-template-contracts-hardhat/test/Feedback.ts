@@ -5,7 +5,7 @@ import { expect } from "chai"
 import { encodeBytes32String } from "ethers"
 import { run } from "hardhat"
 // @ts-ignore: typechain folder will be generated after contracts compilation
-import { Feedback } from "../build/typechain"
+import { Feedback } from "../typechain-types"
 
 describe("Feedback", () => {
     let feedbackContract: Feedback
