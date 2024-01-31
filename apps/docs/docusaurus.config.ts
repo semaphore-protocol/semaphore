@@ -60,8 +60,8 @@ const config: Config = {
                 {
                     label: "Whitepaper",
                     to: "https://docs.semaphore.pse.dev/whitepaper-v1.pdf",
-                    position: "right",
-                    className: "V1"
+                    position: "left",
+                    className: "whitepaper-v1"
                 },
                 {
                     label: "Github",
@@ -80,7 +80,7 @@ const config: Config = {
             ]
         },
         colorMode: {
-            defaultMode: "dark",
+            defaultMode: "light",
             // Should we use the prefers-color-scheme media-query,
             // using user system preferences, instead of the hardcoded defaultMode
             respectPrefersColorScheme: true
