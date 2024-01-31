@@ -25,7 +25,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const contractAddress = process.env.FEEDBACK_CONTRACT_ADDRESS
 
     const provider =
-        ethereumNetwork === "localhost" ? new JsonRpcProvider() : new InfuraProvider(ethereumNetwork, infuraApiKey)
+        ethereumNetwork === "localhost"
+            ? new JsonRpcProvider("http://127.0.0.1:8545")
+            : new InfuraProvider(ethereumNetwork, infuraApiKey)
 
     const signer = new Wallet(ethereumPrivateKey, provider)
     const contract = new Contract(contractAddress, Feedback.abi, signer)
