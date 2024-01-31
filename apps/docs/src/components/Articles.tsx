@@ -6,6 +6,7 @@ export default function Articles() {
     useEffect(() => {
         fetch("https://raw.githubusercontent.com/semaphore-protocol/semaphore/main/apps/website/src/data/articles.json")
             .then((response) => response.json())
+            .catch(() => [])
             .then(setArticles)
     }, [])
 

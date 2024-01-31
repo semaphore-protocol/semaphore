@@ -6,6 +6,7 @@ export default function Videos() {
     useEffect(() => {
         fetch("https://raw.githubusercontent.com/semaphore-protocol/semaphore/main/apps/website/src/data/videos.json")
             .then((response) => response.json())
+            .catch(() => [])
             .then(setVideos)
     }, [])
 

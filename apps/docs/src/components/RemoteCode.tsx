@@ -7,6 +7,7 @@ export default function RemoteCode({ url, language, title }: { url: string; lang
     useEffect(() => {
         fetch(url)
             .then((response) => response.text())
+            .catch(() => "")
             .then((text) => setCode(text))
     }, [url])
 
