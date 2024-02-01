@@ -6,7 +6,7 @@ import { SemaphoreContextType } from "../context/SemaphoreContext"
 
 const { publicRuntimeConfig: env } = getNextConfig()
 
-const ethereumNetwork = env.DEFAULT_NETWORK === "localhost" ? "http://localhost:8545" : env.DEFAULT_NETWORK
+const ethereumNetwork = env.DEFAULT_NETWORK === "localhost" ? "http://127.0.0.1:8545" : env.DEFAULT_NETWORK
 
 export default function useSemaphore(): SemaphoreContextType {
     const [_users, setUsers] = useState<any[]>([])
