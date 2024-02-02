@@ -93,13 +93,13 @@ const message = utils.formatBytes32String("Hello world")
 
 group.addMembers([...identityCommitments, identity.generateCommitment()])
 
-const fullProof1 = await generateProof(identity, group, message, scope)
+const proof1 = await generateProof(identity, group, message, scope)
 
 // You can also specify the maximum tree depth supported by the proof.
-const fullProof2 = await generateProof(identity, group, message, scope, 20)
+const proof2 = await generateProof(identity, group, message, scope, 20)
 
 // You can also specify the default zkey/wasm files.
-const fullProof3 = await generateProof(identity, group, message, scope, 20, {
+const proof3 = await generateProof(identity, group, message, scope, 20, {
     wasmFilePath: "./semaphore.wasm",
     zkeyFilePath: "./semaphore.zkey"
 })
@@ -110,5 +110,5 @@ const fullProof3 = await generateProof(identity, group, message, scope, 20, {
 ```typescript
 import { verifyProof } from "@semaphore-protocol/proof"
 
-await verifyProof(fullProof)
+await verifyProof(proof1)
 ```

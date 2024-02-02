@@ -6,8 +6,7 @@ import verificationKeys from "./verification-keys.json"
 
 /**
  * Verifies a Semaphore proof.
- * @param fullProof The SnarkJS Semaphore proof.
- * @param treeDepth The depth of the tree.
+ * @param proof The Semaphore proof.
  * @returns True if the proof is valid, false otherwise.
  */
 export default async function verifyProof({

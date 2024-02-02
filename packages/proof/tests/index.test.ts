@@ -12,7 +12,7 @@ describe("Proof", () => {
 
     const identity = new Identity(42)
 
-    let fullProof: SemaphoreProof
+    let proof: SemaphoreProof
     let curve: any
 
     beforeAll(async () => {
@@ -43,31 +43,31 @@ describe("Proof", () => {
         it("Should generate a Semaphore proof", async () => {
             const group = new Group([BigInt(1), BigInt(2), identity.commitment])
 
-            fullProof = await generateProof(identity, group, message, scope, treeDepth)
+            proof = await generateProof(identity, group, message, scope, treeDepth)
 
-            expect(typeof fullProof).toBe("object")
-            expect(fullProof.merkleTreeRoot).toBe(group.root)
+            expect(typeof proof).toBe("object")
+            expect(proof.merkleTreeRoot).toBe(group.root)
         }, 20000)
 
         it("Should generate a Semaphore proof passing a Merkle proof instead of a group", async () => {
             const group = new Group([BigInt(1), BigInt(2), identity.commitment])
 
-            fullProof = await generateProof(identity, group.generateMerkleProof(2), message, scope, treeDepth)
+            proof = await generateProof(identity, group.generateMerkleProof(2), message, scope, treeDepth)
 
-            expect(typeof fullProof).toBe("object")
-            expect(fullProof.merkleTreeRoot).toBe(group.root)
+            expect(typeof proof).toBe("object")
+            expect(proof.merkleTreeRoot).toBe(group.root)
         }, 20000)
     })
 
     describe("# verifyProof", () => {
         it("Should not verify a Semaphore proof if the tree depth is not supported", async () => {
-            const fun = () => verifyProof({ ...fullProof, merkleTreeDepth: 40 })
+            const fun = () => verifyProof({ ...proof, merkleTreeDepth: 40 })
 
             await expect(fun).rejects.toThrow("tree depth must be")
         })
 
         it("Should verify a Semaphore proof", async () => {
-            const response = await verifyProof(fullProof)
+            const response = await verifyProof(proof)
 
             expect(response).toBe(true)
         })
@@ -75,10 +75,10 @@ describe("Proof", () => {
 
     describe("# packProof/unpackProof", () => {
         it("Should return a packed proof", async () => {
-            const originalProof = unpackPoints(fullProof.points)
-            const proof = packPoints(originalProof)
+            const originalPoints = unpackPoints(proof.points)
+            const points = packPoints(originalPoints)
 
-            expect(proof).toStrictEqual(fullProof.points)
+            expect(points).toStrictEqual(proof.points)
         })
     })
 })
