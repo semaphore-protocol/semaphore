@@ -17,7 +17,7 @@ export default function IdentitiesPage() {
 
             setIdentity(identity)
 
-            setLogs("Your Semaphore identity was retrieved from the browser cache 👌🏽")
+            setLogs("Your Semaphore identity has been retrieved from the browser cache 👌🏽")
         } else {
             setLogs("Create your Semaphore identity 👆🏽")
         }
@@ -30,7 +30,7 @@ export default function IdentitiesPage() {
 
         localStorage.setItem("identity", identity.privateKey.toString())
 
-        setLogs("Your new Semaphore identity was just created 🎉")
+        setLogs("Your new Semaphore identity has just been created 🎉")
     }, [])
 
     return (
@@ -38,21 +38,24 @@ export default function IdentitiesPage() {
             <h2 className="font-size: 3rem;">Identities</h2>
 
             <p>
-                Users interact with the protocol using a Semaphore{" "}
+                The identity of a user in the Semaphore protocol. A{" "}
                 <a
-                    href="https://semaphore.pse.dev/docs/guides/identities"
+                    href="https://docs.semaphore.pse.dev/guides/identities"
                     target="_blank"
                     rel="noreferrer noopener nofollow"
                 >
-                    identity
+                    Semaphore identity
                 </a>{" "}
-                (similar to Ethereum accounts). It contains three values:
+                consists of an{" "}
+                <a
+                    href="https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/eddsa-poseidon"
+                    target="_blank"
+                    rel="noreferrer noopener nofollow"
+                >
+                    EdDSA
+                </a>{" "}
+                public/private key pair and a commitment, used as the public identifier of the identity.
             </p>
-            <ol>
-                <li>Trapdoor: private, known only by user</li>
-                <li>Nullifier: private, known only by user</li>
-                <li>Commitment: public</li>
-            </ol>
 
             <div className="divider"></div>
 
