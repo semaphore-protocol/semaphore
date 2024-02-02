@@ -67,7 +67,7 @@ export default function GroupsPage() {
         if (response.status === 200) {
             addUser(_identity.commitment.toString())
 
-            setLogs(`You joined the Feedback group event 🎉 Share your feedback anonymously!`)
+            setLogs(`You have joined the Feedback group event 🎉 Share your feedback anonymously!`)
         } else {
             setLogs("Some error occurred, please try again!")
         }
@@ -82,22 +82,29 @@ export default function GroupsPage() {
             <h2>Groups</h2>
 
             <p>
-                Semaphore{" "}
                 <a
-                    href="https://semaphore.pse.dev/docs/guides/groups"
+                    href="https://docs.semaphore.pse.dev/guides/groups"
                     target="_blank"
                     rel="noreferrer noopener nofollow"
                 >
-                    groups
+                    Semaphore groups
                 </a>{" "}
-                are binary incremental Merkle trees in which each leaf contains an identity commitment for a user.
-                Groups can be abstracted to represent events, polls, or organizations.
+                are{" "}
+                <a
+                    href="https://zkkit.pse.dev/classes/_zk_kit_imt.LeanIMT.html"
+                    target="_blank"
+                    rel="noreferrer noopener nofollow"
+                >
+                    Lean incremental Merkle trees
+                </a>{" "}
+                in which each leaf contains an identity commitment for a user. Groups can be abstracted to represent
+                events, polls, or organizations.
             </p>
 
             <div className="divider"></div>
 
             <div className="text-top">
-                <h3>Feedback users ({_users.length})</h3>
+                <h3>Group users ({_users.length})</h3>
                 <button className="button-link" onClick={refreshUsers}>
                     Refresh
                 </button>
