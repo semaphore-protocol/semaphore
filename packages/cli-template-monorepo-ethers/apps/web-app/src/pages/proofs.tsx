@@ -95,7 +95,7 @@ export default function ProofsPage() {
                 if (response.status === 200) {
                     addFeedback(feedback)
 
-                    setLogs(`Your feedback was posted 🎉`)
+                    setLogs(`Your feedback has been posted 🎉`)
                 } else {
                     setLogs("Some error occurred, please try again!")
                 }
@@ -116,20 +116,20 @@ export default function ProofsPage() {
             <p>
                 Semaphore members can anonymously{" "}
                 <a
-                    href="https://semaphore.pse.dev/docs/guides/proofs"
+                    href="https://docs.semaphore.pse.dev/guides/proofs"
                     target="_blank"
                     rel="noreferrer noopener nofollow"
                 >
                     prove
                 </a>{" "}
-                that they are part of a group and that they are generating their own signals. Signals could be anonymous
-                votes, leaks, reviews, or feedback.
+                that they are part of a group and send their anonymous messages. Messages could be votes, leaks,
+                reviews, or feedback.
             </p>
 
             <div className="divider"></div>
 
             <div className="text-top">
-                <h3>Feedback signals ({_feedback.length})</h3>
+                <h3>Feedback messages ({_feedback.length})</h3>
                 <button className="button-link" onClick={refreshFeedback}>
                     Refresh
                 </button>
