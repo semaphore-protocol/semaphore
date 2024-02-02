@@ -4,6 +4,7 @@ import { Group, Identity, SemaphoreProof, generateProof } from "@semaphore-proto
 import { expect } from "chai"
 import { Signer, ZeroAddress } from "ethers"
 import { run } from "hardhat"
+// @ts-ignore
 import { Semaphore } from "../typechain-types"
 
 describe("Semaphore", () => {
@@ -227,24 +228,24 @@ describe("Semaphore", () => {
 
         group.addMembers(members)
 
-        let fullProof: SemaphoreProof
+        let proof: SemaphoreProof
 
         before(async () => {
             await semaphoreContract["createGroup(uint256,address)"](groupId, accountAddresses[0])
 
             await semaphoreContract.addMembers(groupId, members)
 
-            fullProof = await generateProof(identity, group, message, group.root as string, merkleTreeDepth)
+            proof = await generateProof(identity, group, message, group.root as string, merkleTreeDepth)
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
-            const transaction = semaphoreContract.verifyProof(11, fullProof)
+            const transaction = semaphoreContract.verifyProof(11, proof)
 
             await expect(transaction).to.be.revertedWithCustomError(semaphoreContract, "Semaphore__GroupDoesNotExist")
         })
 
         it("Should not verify a proof if the Merkle tree root is not part of the group", async () => {
-            const transaction = semaphoreContract.verifyProof(groupId, { ...fullProof, merkleTreeRoot: 1 })
+            const transaction = semaphoreContract.verifyProof(groupId, { ...proof, merkleTreeRoot: 1 })
 
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreContract,
@@ -253,7 +254,7 @@ describe("Semaphore", () => {
         })
 
         it("Should verify a proof for an onchain group", async () => {
-            const validProof = await semaphoreContract.verifyProof(groupId, fullProof)
+            const validProof = await semaphoreContract.verifyProof(groupId, proof)
 
             expect(validProof).to.equal(true)
         })
@@ -265,9 +266,9 @@ describe("Semaphore", () => {
 
             group.addMembers([members[0], members[1]])
 
-            const fullProof = await generateProof(identity, group, message, group.root as string, merkleTreeDepth)
+            const proof = await generateProof(identity, group, message, group.root as string, merkleTreeDepth)
 
-            const transaction = semaphoreContract.verifyProof(groupId, fullProof)
+            const transaction = semaphoreContract.verifyProof(groupId, proof)
 
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreContract,
@@ -287,8 +288,8 @@ describe("Semaphore", () => {
         group.addMembers(members)
         groupOneMember.addMember(members[0])
 
-        let fullProof: SemaphoreProof
-        let fullProofOneMember: SemaphoreProof
+        let proof: SemaphoreProof
+        let proofOneMember: SemaphoreProof
 
         before(async () => {
             await semaphoreContract["createGroup(uint256,address)"](groupOneMemberId, accountAddresses[0])
@@ -296,8 +297,8 @@ describe("Semaphore", () => {
             await semaphoreContract.addMembers(groupId, [members[1], members[2]])
             await semaphoreContract.addMember(groupOneMemberId, members[0])
 
-            fullProof = await generateProof(identity, group, message, group.root as string, merkleTreeDepth)
-            fullProofOneMember = await generateProof(
+            proof = await generateProof(identity, group, message, group.root as string, merkleTreeDepth)
+            proofOneMember = await generateProof(
                 identity,
                 groupOneMember,
                 message,
@@ -307,45 +308,45 @@ describe("Semaphore", () => {
         })
 
         it("Should throw an exception if the proof is not valid", async () => {
-            const transaction = semaphoreContract.validateProof(groupId, { ...fullProof, scope: 0 })
+            const transaction = semaphoreContract.validateProof(groupId, { ...proof, scope: 0 })
 
             await expect(transaction).to.be.revertedWithCustomError(semaphoreContract, "Semaphore__InvalidProof")
         })
 
         it("Should validate a proof for an onchain group with one member correctly", async () => {
-            const transaction = semaphoreContract.validateProof(groupOneMemberId, fullProofOneMember)
+            const transaction = semaphoreContract.validateProof(groupOneMemberId, proofOneMember)
 
             await expect(transaction)
                 .to.emit(semaphoreContract, "ProofValidated")
                 .withArgs(
                     groupOneMemberId,
-                    fullProofOneMember.merkleTreeDepth,
-                    fullProofOneMember.merkleTreeRoot,
-                    fullProofOneMember.nullifier,
-                    fullProofOneMember.message,
-                    fullProofOneMember.merkleTreeRoot,
-                    fullProofOneMember.points
+                    proofOneMember.merkleTreeDepth,
+                    proofOneMember.merkleTreeRoot,
+                    proofOneMember.nullifier,
+                    proofOneMember.message,
+                    proofOneMember.merkleTreeRoot,
+                    proofOneMember.points
                 )
         })
 
         it("Should validate a proof for an onchain group with more than one member correctly", async () => {
-            const transaction = semaphoreContract.validateProof(groupId, fullProof)
+            const transaction = semaphoreContract.validateProof(groupId, proof)
 
             await expect(transaction)
                 .to.emit(semaphoreContract, "ProofValidated")
                 .withArgs(
                     groupId,
-                    fullProof.merkleTreeDepth,
-                    fullProof.merkleTreeRoot,
-                    fullProof.nullifier,
-                    fullProof.message,
-                    fullProof.merkleTreeRoot,
-                    fullProof.points
+                    proof.merkleTreeDepth,
+                    proof.merkleTreeRoot,
+                    proof.nullifier,
+                    proof.message,
+                    proof.merkleTreeRoot,
+                    proof.points
                 )
         })
 
         it("Should not validate the same proof for an onchain group twice", async () => {
-            const transaction = semaphoreContract.validateProof(groupId, fullProof)
+            const transaction = semaphoreContract.validateProof(groupId, proof)
 
             await expect(transaction).to.be.revertedWithCustomError(
                 semaphoreContract,

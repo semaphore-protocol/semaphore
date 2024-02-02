@@ -45,26 +45,26 @@ describe("Feedback", () => {
         it("Should allow users to send feedback anonymously", async () => {
             const feedback = encodeBytes32String("Hello World")
 
-            const fullProof = await generateProof(users[1], group, feedback, groupId)
+            const proof = await generateProof(users[1], group, feedback, groupId)
 
             const transaction = feedbackContract.sendFeedback(
-                fullProof.merkleTreeDepth,
-                fullProof.merkleTreeRoot,
-                fullProof.nullifier,
+                proof.merkleTreeDepth,
+                proof.merkleTreeRoot,
+                proof.nullifier,
                 feedback,
-                fullProof.points
+                proof.points
             )
 
             await expect(transaction)
                 .to.emit(semaphoreContract, "ProofValidated")
                 .withArgs(
                     groupId,
-                    fullProof.merkleTreeDepth,
-                    fullProof.merkleTreeRoot,
-                    fullProof.nullifier,
-                    fullProof.message,
+                    proof.merkleTreeDepth,
+                    proof.merkleTreeRoot,
+                    proof.nullifier,
+                    proof.message,
                     groupId,
-                    fullProof.points
+                    proof.points
                 )
         })
     })
