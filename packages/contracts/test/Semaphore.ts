@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable jest/valid-expect */
-import { Group } from "@semaphore-protocol/group"
-import { Identity } from "@semaphore-protocol/identity"
-import { SemaphoreProof, generateProof } from "@semaphore-protocol/proof"
+import { Group, Identity, SemaphoreProof, generateProof } from "@semaphore-protocol/core"
 import { expect } from "chai"
 import { Signer, ZeroAddress } from "ethers"
 import { run } from "hardhat"

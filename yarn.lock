@@ -8374,6 +8374,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@semaphore-protocol/core@workspace:packages/core":
+  version: 0.0.0-use.local
+  resolution: "@semaphore-protocol/core@workspace:packages/core"
+  dependencies:
+    "@semaphore-protocol/group": 4.0.0-alpha.4
+    "@semaphore-protocol/identity": 4.0.0-alpha.4
+    "@semaphore-protocol/proof": 4.0.0-alpha.4
+  languageName: unknown
+  linkType: soft
+
 "@semaphore-protocol/data@4.0.0-alpha.4, @semaphore-protocol/data@workspace:packages/data":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/data@workspace:packages/data"
@@ -27362,9 +27372,7 @@ __metadata:
     "@nomicfoundation/hardhat-toolbox": ^4.0.0
     "@nomicfoundation/hardhat-verify": ^2.0.0
     "@openzeppelin/hardhat-upgrades": ^3.0.2
-    "@semaphore-protocol/group": "workspace:packages/group"
-    "@semaphore-protocol/identity": "workspace:packages/identity"
-    "@semaphore-protocol/proof": "workspace:packages/proof"
+    "@semaphore-protocol/core": "workspace:packages/core"
     "@typechain/ethers-v6": ^0.5.0
     "@typechain/hardhat": ^9.0.0
     "@types/chai": ^4.2.0
