@@ -8,24 +8,24 @@
     "types": "src/types/index.d.ts",
     "exports": {
         ".": {
+            "types": "./src/types/index.d.ts",
             "require": "./src/index.cjs",
-            "default": "./src/index.js",
-            "types": "./src/types/index.d.ts"
+            "default": "./src/index.js"
         },
         "./identity": {
+            "types": "./src/identity/types/index.d.ts",
             "require": "./src/identity/index.cjs",
-            "default": "./src/identity/index.js",
-            "types": "./src/identity/types/index.d.ts"
+            "default": "./src/identity/index.js"
         },
         "./group": {
+            "types": "./src/identity/types/index.d.ts",
             "require": "./src/group/index.cjs",
-            "default": "./src/group/index.js",
-            "types": "./src/group/types/index.d.ts"
+            "default": "./src/group/index.js"
         },
         "./proof": {
+            "types": "./src/identity/types/index.d.ts",
             "require": "./src/proof/index.cjs",
-            "default": "./src/proof/index.js",
-            "types": "./src/proof/types/index.d.ts"
+            "default": "./src/proof/index.js"
         }
     },
     "files": [
