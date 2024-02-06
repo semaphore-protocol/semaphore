@@ -18,7 +18,7 @@ export default {
     input: "src/index.ts",
     output: [
         { file: pkg.exports.require, format: "cjs", banner, exports: "auto" },
-        { file: pkg.exports.import, format: "es", banner }
+        { file: pkg.exports.default, format: "es", banner }
     ],
     external: Object.keys(pkg.dependencies),
     plugins: [
