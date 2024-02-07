@@ -10,8 +10,8 @@
     },
     "dependencies": {
         "@next/font": "13.0.3",
-        "@semaphore-protocol/core": "4.0.0-alpha.4",
-        "@semaphore-protocol/data": "4.0.0-alpha.4",
+        "@semaphore-protocol/core": "4.0.0-alpha.5",
+        "@semaphore-protocol/data": "4.0.0-alpha.5",
         "@types/react": "18.0.25",
         "@types/react-dom": "18.0.8",
         "dotenv": "^16.0.3",
