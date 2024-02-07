@@ -2,12 +2,12 @@ import type * as Preset from "@docusaurus/preset-classic"
 import type { Config } from "@docusaurus/types"
 import { themes } from "prism-react-renderer"
 
-const lightCodeTheme = themes.github
-const darkCodeTheme = themes.dracula
+const lightCodeTheme = themes.oneLight
+const darkCodeTheme = themes.oneDark
 
 const config: Config = {
     title: "Semaphore",
-    tagline: "Documentation and Guides",
+    tagline: "Semaphore documentation and guides.",
     url: "https://docs.semaphore.pse.dev/",
     baseUrl: "/",
     favicon: "/img/favicon.ico",
@@ -28,8 +28,9 @@ const config: Config = {
                 docs: {
                     routeBasePath: "/",
                     sidebarPath: require.resolve("./sidebars.js"),
-                    editUrl: "https://github.com/semaphore-protocol/website/edit/main/",
-                    includeCurrentVersion: false
+                    editUrl: "https://github.com/semaphore-protocol/semaphore/edit/main/apps/docs",
+                    includeCurrentVersion: false,
+                    lastVersion: "V3"
                 },
                 theme: {
                     customCss: [require.resolve("./src/css/custom.scss")]
@@ -38,13 +39,13 @@ const config: Config = {
         ]
     ],
     themeConfig: {
-        // announcementBar: {
-        // id: "semaphore-v4-alpha",
-        // content:
-        // '<b>We are pleased to announce the release of Semaphore V4-alpha 🎉</b>',
-        // backgroundColor: "#DAE0FF",
-        // textColor: "#000000"
-        // },
+        announcementBar: {
+            id: "semaphore-v4-alpha",
+            content:
+                '<b>Semaphore V4-alpha is out 🎉 <a href="/V4-alpha/getting-started">Try it out</a> and let us know for any feedback on <a href="https://semaphore.pse.dev/discord" target="_blank">Discord</a> or <a href="https://github.com/orgs/semaphore-protocol/discussions" target="_blank">Github</a>!</b>',
+            backgroundColor: "#dde6fc",
+            textColor: "#000000"
+        },
         navbar: {
             logo: {
                 alt: "Semaphore Logo",
@@ -52,14 +53,24 @@ const config: Config = {
             },
             items: [
                 {
+                    type: "docsVersionDropdown",
+                    position: "left",
+                    dropdownActiveClassDisabled: true
+                },
+                {
                     label: "Whitepaper",
                     to: "https://docs.semaphore.pse.dev/whitepaper-v1.pdf",
-                    position: "right",
-                    className: "V1"
+                    position: "left",
+                    className: "whitepaper-v1"
                 },
                 {
                     label: "Github",
                     href: "https://github.com/semaphore-protocol",
+                    position: "right"
+                },
+                {
+                    label: "Website",
+                    href: "https://semaphore.pse.dev",
                     position: "right"
                 },
                 {
@@ -69,7 +80,7 @@ const config: Config = {
             ]
         },
         colorMode: {
-            defaultMode: "dark",
+            defaultMode: "light",
             // Should we use the prefers-color-scheme media-query,
             // using user system preferences, instead of the hardcoded defaultMode
             respectPrefersColorScheme: true
