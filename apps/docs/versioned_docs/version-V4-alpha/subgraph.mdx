@@ -1,0 +1,20 @@
+---
+sidebar_position: 6
+---
+
+import RemoteCode from '@site/src/components/RemoteCode';
+
+# Subgraph
+
+[The Graph](https://thegraph.com/) is a protocol for indexing networks like Ethereum and IPFS.
+Site owners publish _subgraphs_ that expose site data for anyone to query.
+Semaphore's subgraph allows you to retrieve data from the [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/feat/semaphore-v4/packages/contracts/contracts/Semaphore.sol) smart contract.
+
+:::tip
+The Graph protocol uses the [GraphQL](https://graphql.org/) query language. For examples, see the [GraphQL API documentation](https://thegraph.com/docs/developer/graphql-api). Visit the [Semaphore subgraph](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/apps/subgraph) to see the list of networks supported by Semaphore and its URLs.
+:::
+
+## Schema
+
+<RemoteCode url="https://raw.githubusercontent.com/semaphore-protocol/semaphore/feat/semaphore-v4/apps/subgraph/schema.graphql"
+title="apps/subgraph/schema.graphql" language="graphql" />

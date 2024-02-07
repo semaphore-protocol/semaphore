@@ -147,7 +147,6 @@ h5 {
 }
 
 .navbar {
-    height: 95px;
     align-items: center;
     box-shadow: none;
     font-size: 18px;
@@ -231,6 +230,18 @@ html[data-theme="light"] {
     .badge--secondary {
         --ifm-badge-background-color: var(--custom-dark-1);
         color: var(--custom-blue-0);
+    }
+}
+
+/* Navbar items visibility */
+
+a.whitepaper-v1 {
+    display: none;
+}
+
+html.docs-version-V1 {
+    a.whitepaper-v1 {
+        display: inline-block;
     }
 }
 
