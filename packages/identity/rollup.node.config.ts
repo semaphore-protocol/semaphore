@@ -18,7 +18,7 @@ export default {
     input: "src/index.ts",
     output: [
         { file: pkg.exports["."].node.require, format: "cjs", banner, exports: "auto" },
-        { file: pkg.exports["."].node.import, format: "es", banner }
+        { file: pkg.exports["."].node.default, format: "es", banner }
     ],
     external: [...Object.keys(pkg.dependencies), "node:crypto"],
     plugins: [
