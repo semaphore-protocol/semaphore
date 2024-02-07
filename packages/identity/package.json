@@ -10,8 +10,8 @@
         ".": {
             "types": "./dist/types/index.d.ts",
             "node": {
-                "default": "./dist/index.node.js",
-                "require": "./dist/index.node.cjs"
+                "require": "./dist/index.node.cjs",
+                "default": "./dist/index.node.js"
             },
             "browser": "./dist/index.browser.js",
             "default": "./dist/index.browser.js"

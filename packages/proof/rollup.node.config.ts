@@ -23,7 +23,7 @@ export default {
             exports: "auto"
         },
         {
-            file: pkg.exports["."].node.import,
+            file: pkg.exports["."].node.default,
             format: "es",
             banner
         }
