@@ -1,5 +1,5 @@
-import { writeFileSync } from "fs"
 import { task, types } from "hardhat/config"
+import { saveDeployedContracts } from "../scripts/utils"
 import { deployContract } from "./utils"
 
 task("deploy", "Deploy a Semaphore contract")
@@ -8,41 +8,41 @@ task("deploy", "Deploy a Semaphore contract")
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
     .setAction(
         async (
-            { logs, verifier: verifierAddress, poseidon: poseidonAddress },
+            { logs, verifier: semaphoreVerifierAddress, poseidon: poseidonT3Address },
             { ethers, hardhatArguments, defender }
         ): Promise<any> => {
-            if (!verifierAddress) {
+            if (!semaphoreVerifierAddress) {
                 const VerifierFactory = await ethers.getContractFactory(`SemaphoreVerifier`)
 
                 const verifier = await deployContract(defender, VerifierFactory, hardhatArguments.network)
 
-                verifierAddress = await verifier.getAddress()
+                semaphoreVerifierAddress = await verifier.getAddress()
 
                 if (logs) {
-                    console.info(`SemaphoreVerifier contract has been deployed to: ${verifierAddress}`)
+                    console.info(`SemaphoreVerifier contract has been deployed to: ${semaphoreVerifierAddress}`)
                 }
             }
 
-            if (!poseidonAddress) {
+            if (!poseidonT3Address) {
                 const PoseidonT3Factory = await ethers.getContractFactory("PoseidonT3")
 
                 const poseidonT3 = await deployContract(defender, PoseidonT3Factory, hardhatArguments.network)
 
-                poseidonAddress = await poseidonT3.getAddress()
+                poseidonT3Address = await poseidonT3.getAddress()
 
                 if (logs) {
-                    console.info(`Poseidon library has been deployed to: ${poseidonAddress}`)
+                    console.info(`PoseidonT3 library has been deployed to: ${poseidonT3Address}`)
                 }
             }
 
             const SemaphoreFactory = await ethers.getContractFactory("Semaphore", {
                 libraries: {
-                    PoseidonT3: poseidonAddress
+                    PoseidonT3: poseidonT3Address
                 }
             })
 
             const semaphore = await deployContract(defender, SemaphoreFactory, hardhatArguments.network, [
-                verifierAddress
+                semaphoreVerifierAddress
             ])
 
             const semaphoreAddress = await semaphore.getAddress()
@@ -51,23 +51,28 @@ task("deploy", "Deploy a Semaphore contract")
                 console.info(`Semaphore contract has been deployed to: ${semaphoreAddress}`)
             }
 
-            writeFileSync(
-                `./deployed-contracts/${hardhatArguments.network}.json`,
-                JSON.stringify(
+            saveDeployedContracts(
+                [
                     {
-                        Verifier: verifierAddress,
-                        Poseidon: poseidonAddress,
-                        Semaphore: semaphoreAddress
+                        name: "SemaphoreVerifier",
+                        address: semaphoreVerifierAddress
                     },
-                    null,
-                    4
-                )
+                    {
+                        name: "PoseidonT3",
+                        address: poseidonT3Address
+                    },
+                    {
+                        name: "Semaphore",
+                        address: semaphoreAddress
+                    }
+                ],
+                hardhatArguments.network
             )
 
             return {
                 semaphore,
-                verifierAddress,
-                poseidonAddress
+                verifierAddress: semaphoreVerifierAddress,
+                poseidonAddress: poseidonT3Address
             }
         }
     )
