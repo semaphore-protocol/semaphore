@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/proof",
-    "version": "4.0.0-alpha.4",
+    "version": "4.0.0-alpha.5",
     "description": "A library to generate and verify Semaphore proofs.",
     "type": "module",
     "license": "MIT",
@@ -50,8 +50,8 @@
         "rollup-plugin-typescript2": "^0.36.0"
     },
     "peerDependencies": {
-        "@semaphore-protocol/group": "4.0.0-alpha.4",
-        "@semaphore-protocol/identity": "4.0.0-alpha.4"
+        "@semaphore-protocol/group": "4.0.0-alpha.5",
+        "@semaphore-protocol/identity": "4.0.0-alpha.5"
     },
     "dependencies": {
         "@ethersproject/bignumber": "5.7.0",
@@ -61,5 +61,6 @@
         "download": "8.0.0",
         "snarkjs": "0.7.3",
         "tmp": "0.2.1"
-    }
+    },
+    "stableVersion": "4.0.0-alpha.4"
 }
