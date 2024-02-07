@@ -45,6 +45,5 @@
         "@semaphore-protocol/group": "4.0.0-alpha.5",
         "@semaphore-protocol/identity": "4.0.0-alpha.5",
         "@semaphore-protocol/proof": "4.0.0-alpha.5"
-    },
-    "stableVersion": "4.0.0-alpha.4"
+    }
 }
