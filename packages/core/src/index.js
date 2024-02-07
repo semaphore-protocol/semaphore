@@ -1,4 +1,4 @@
 /* eslint-disable import/export */
-export * from "./identity"
-export * from "./group"
-export * from "./proof"
+export * from "./identity/index.js"
+export * from "./group/index.js"
+export * from "./proof/index.js"
