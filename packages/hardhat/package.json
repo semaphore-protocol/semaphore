@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/hardhat",
-    "version": "4.0.0-alpha.5",
+    "version": "4.0.0-alpha.6",
     "description": "A Semaphore Hardhat plugin to deploy verifiers and Semaphore contract.",
     "type": "module",
     "license": "MIT",
@@ -39,8 +39,9 @@
     },
     "dependencies": {
         "@nomicfoundation/hardhat-ethers": "^3.0.0",
-        "@semaphore-protocol/contracts": "4.0.0-alpha.5",
+        "@semaphore-protocol/contracts": "4.0.0-alpha.6",
         "ethers": "^6.4.0",
         "hardhat-dependency-compiler": "^1.1.3"
-    }
+    },
+    "stableVersion": "4.0.0-alpha.5"
 }
