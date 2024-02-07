@@ -34,6 +34,5 @@
         "circomkit": "^0.0.19",
         "mocha": "^10.2.0",
         "poseidon-lite": "^0.2.0"
-    },
-    "stableVersion": "4.0.0-alpha.4"
+    }
 }
