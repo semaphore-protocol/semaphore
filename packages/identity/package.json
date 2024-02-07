@@ -2,21 +2,21 @@
     "name": "@semaphore-protocol/identity",
     "version": "4.0.0-alpha.4",
     "description": "A library to create Semaphore identities.",
+    "type": "module",
     "license": "MIT",
-    "main": "dist/index.node.js",
-    "browser": "dist/index.browser.mjs",
+    "main": "dist/index.browser.js",
+    "types": "dist/types/index.d.ts",
     "exports": {
         ".": {
+            "types": "./dist/types/index.d.ts",
             "node": {
-                "import": "./dist/index.node.mjs",
-                "require": "./dist/index.node.js"
+                "default": "./dist/index.node.js",
+                "require": "./dist/index.node.cjs"
             },
-            "browser": "./dist/index.browser.mjs",
-            "default": "./dist/index.browser.mjs",
-            "types": "./dist/types/index.d.ts"
+            "browser": "./dist/index.browser.js",
+            "default": "./dist/index.browser.js"
         }
     },
-    "types": "dist/types/index.d.ts",
     "files": [
         "dist/",
         "src/",
@@ -39,10 +39,10 @@
     },
     "devDependencies": {
         "@rollup/plugin-alias": "^5.1.0",
-        "@rollup/plugin-commonjs": "^24.0.1",
-        "@rollup/plugin-node-resolve": "^15.0.1",
+        "@rollup/plugin-commonjs": "^25.0.7",
+        "@rollup/plugin-node-resolve": "^15.2.3",
         "rollup-plugin-cleanup": "^3.2.1",
-        "rollup-plugin-typescript2": "^0.31.2"
+        "rollup-plugin-typescript2": "^0.36.0"
     },
     "dependencies": {
         "@zk-kit/eddsa-poseidon": "0.4.1",

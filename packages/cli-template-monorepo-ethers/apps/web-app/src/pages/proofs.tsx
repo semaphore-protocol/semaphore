@@ -1,6 +1,4 @@
-import { Group } from "@semaphore-protocol/group"
-import { Identity } from "@semaphore-protocol/identity"
-import { generateProof } from "@semaphore-protocol/proof"
+import { Group, Identity, generateProof } from "@semaphore-protocol/core"
 import { encodeBytes32String } from "ethers"
 import getNextConfig from "next/config"
 import { useRouter } from "next/router"
