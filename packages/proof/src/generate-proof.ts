@@ -1,11 +1,11 @@
 import type { Group, MerkleProof } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
-import { encodeBytes32String, toBigInt } from "ethers"
 import { NumericString, groth16 } from "snarkjs"
 import getSnarkArtifacts from "./get-snark-artifacts.node"
 import hash from "./hash"
 import packPoints from "./pack-points"
 import { BigNumberish, SemaphoreProof, SnarkArtifacts } from "./types"
+import toBigInt from "./to-bigint"
 
 /**
  * Generates a Semaphore proof.
@@ -25,25 +25,8 @@ export default async function generateProof(
     merkleTreeDepth?: number,
     snarkArtifacts?: SnarkArtifacts
 ): Promise<SemaphoreProof> {
-    try {
-        message = toBigInt(message)
-    } catch (error: any) {
-        if (typeof message === "string") {
-            message = encodeBytes32String(message)
-        } else {
-            throw TypeError(error.message)
-        }
-    }
-
-    try {
-        scope = toBigInt(scope)
-    } catch (error: any) {
-        if (typeof scope === "string") {
-            scope = encodeBytes32String(scope)
-        } else {
-            throw TypeError(error.message)
-        }
-    }
+    message = toBigInt(message)
+    scope = toBigInt(scope)
 
     let merkleProof
 
