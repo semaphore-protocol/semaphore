@@ -73,8 +73,8 @@ yarn add @semaphore-protocol/identity @semaphore-protocol/group @semaphore-proto
 \# **generateProof**(
 identity: _Identity_,
 group: _Group_,
-message: _BytesLike | Hexable | number | bigint_,
-scope: _BytesLike | Hexable | number | bigint_,
+message: _BigNumberish_ | _Uint8Array_ | string,
+scope: _BigNumberish_ | _Uint8Array_ | string,
 merkleTreeDepth: _number_,
 snarkArtifacts?: _SnarkArtifacts_
 ): Promise\<_SemaphoreProof_>
@@ -83,23 +83,23 @@ snarkArtifacts?: _SnarkArtifacts_
 import { Identity } from "@semaphore-protocol/identity"
 import { Group } from "@semaphore-protocol/group"
 import { generateProof } from "@semaphore-protocol/proof"
-import { utils } from "ethers"
 
-const identity = new Identity()
-const group = new Group()
+const identity1 = new Identity()
+const identity2 = new Identity()
+const identity3 = new Identity()
 
-const scope = utils.formatBytes32String("Topic")
-const message = utils.formatBytes32String("Hello world")
+const group = new Group([identity1.commitment, identity2.commitment, identity3.commitment])
 
-group.addMembers([...identityCommitments, identity.generateCommitment()])
+const message = "Hello world"
+const scope = "Semaphore"
 
-const proof1 = await generateProof(identity, group, message, scope)
+const proof1 = await generateProof(identity1, group, message, scope)
 
 // You can also specify the maximum tree depth supported by the proof.
-const proof2 = await generateProof(identity, group, message, scope, 20)
+const proof2 = await generateProof(identity2, group, message, scope, 20)
 
 // You can also specify the default zkey/wasm files.
-const proof3 = await generateProof(identity, group, message, scope, 20, {
+const proof3 = await generateProof(identity3, group, message, scope, 20, {
     wasmFilePath: "./semaphore.wasm",
     zkeyFilePath: "./semaphore.zkey"
 })
