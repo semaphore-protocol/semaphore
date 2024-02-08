@@ -1,6 +1,5 @@
 import { Group, Identity, generateProof } from "@semaphore-protocol/core"
 import { expect } from "chai"
-import { encodeBytes32String } from "ethers"
 import { run } from "hardhat"
 // @ts-ignore: typechain folder will be generated after contracts compilation
 import { Feedback } from "../typechain-types"
@@ -41,7 +40,7 @@ describe("Feedback", () => {
 
     describe("# sendFeedback", () => {
         it("Should allow users to send feedback anonymously", async () => {
-            const feedback = encodeBytes32String("Hello World")
+            const feedback = "Hello World"
 
             const proof = await generateProof(users[1], group, feedback, groupId)
 
@@ -49,7 +48,7 @@ describe("Feedback", () => {
                 proof.merkleTreeDepth,
                 proof.merkleTreeRoot,
                 proof.nullifier,
-                feedback,
+                proof.message,
                 proof.points
             )
 
