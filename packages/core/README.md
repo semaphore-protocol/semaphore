@@ -72,7 +72,6 @@ yarn add @semaphore-protocol/core
 
 ```typescript
 import { Identity, Group, generateProof, verifyProof } from "@semaphore-protocol/core"
-import { utils } from "ethers"
 
 const identity1 = new Identity()
 const identity2 = new Identity()
@@ -80,8 +79,8 @@ const identity3 = new Identity()
 
 const group = new Group([identity1.commitment, identity2.commitment, identity3.commitment])
 
-const scope = utils.formatBytes32String("Semaphore")
-const message = utils.formatBytes32String("Hello world")
+const message = "Hello world"
+const scope = "Semaphore"
 
 const proof = await generateProof(identity1, group, message, scope)
 
