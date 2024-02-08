@@ -17,8 +17,8 @@ export default class Group {
      * Returns the root hash of the tree.
      * @returns Root hash.
      */
-    get root(): string | undefined {
-        return this.leanIMT.root?.toString()
+    get root(): string {
+        return this.leanIMT.root ? this.leanIMT.root.toString() : "0"
     }
 
     /**
