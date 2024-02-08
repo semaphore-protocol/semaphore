@@ -1,12 +1,11 @@
-import { BigNumber } from "@ethersproject/bignumber"
-import { BytesLike, Hexable } from "@ethersproject/bytes"
 import type { Group, MerkleProof } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
+import { encodeBytes32String, toBigInt } from "ethers"
 import { NumericString, groth16 } from "snarkjs"
 import getSnarkArtifacts from "./get-snark-artifacts.node"
 import hash from "./hash"
 import packPoints from "./pack-points"
-import { SemaphoreProof, SnarkArtifacts } from "./types"
+import { BigNumberish, SemaphoreProof, SnarkArtifacts } from "./types"
 
 /**
  * Generates a Semaphore proof.
@@ -21,11 +20,31 @@ import { SemaphoreProof, SnarkArtifacts } from "./types"
 export default async function generateProof(
     identity: Identity,
     groupOrMerkleProof: Group | MerkleProof,
-    message: BytesLike | Hexable | number | bigint,
-    scope: BytesLike | Hexable | number | bigint,
+    message: BigNumberish | Uint8Array,
+    scope: BigNumberish | Uint8Array,
     merkleTreeDepth?: number,
     snarkArtifacts?: SnarkArtifacts
 ): Promise<SemaphoreProof> {
+    try {
+        message = toBigInt(message)
+    } catch (error: any) {
+        if (typeof message === "string") {
+            message = encodeBytes32String(message)
+        } else {
+            throw TypeError(error.message)
+        }
+    }
+
+    try {
+        scope = toBigInt(scope)
+    } catch (error: any) {
+        if (typeof scope === "string") {
+            scope = encodeBytes32String(scope)
+        } else {
+            throw TypeError(error.message)
+        }
+    }
+
     let merkleProof
 
     if ("siblings" in groupOrMerkleProof) {
@@ -81,8 +100,8 @@ export default async function generateProof(
         merkleTreeDepth,
         merkleTreeRoot: publicSignals[0],
         nullifier: publicSignals[1],
-        message: BigNumber.from(message).toString() as NumericString,
-        scope: BigNumber.from(scope).toString() as NumericString,
+        message: message.toString() as NumericString,
+        scope: scope.toString() as NumericString,
         points: packPoints(proof)
     }
 }

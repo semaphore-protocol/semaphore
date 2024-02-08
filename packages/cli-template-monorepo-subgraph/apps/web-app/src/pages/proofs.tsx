@@ -1,5 +1,4 @@
 import { Group, Identity, generateProof } from "@semaphore-protocol/core"
-import { encodeBytes32String } from "ethers"
 import getNextConfig from "next/config"
 import { useRouter } from "next/router"
 import { useCallback, useContext, useEffect, useState } from "react"
@@ -54,12 +53,10 @@ export default function ProofsPage() {
             try {
                 const group = new Group(_users)
 
-                const message = encodeBytes32String(feedback)
-
-                const { points, merkleTreeDepth, merkleTreeRoot, nullifier } = await generateProof(
+                const { points, merkleTreeDepth, merkleTreeRoot, nullifier, message } = await generateProof(
                     _identity,
                     group,
-                    message,
+                    feedback,
                     env.GROUP_ID
                 )
 

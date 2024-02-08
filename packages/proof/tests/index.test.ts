@@ -1,4 +1,3 @@
-import { formatBytes32String } from "@ethersproject/strings"
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { getCurveFromName } from "ffjavascript"
@@ -7,8 +6,8 @@ import { SemaphoreProof, generateProof, packPoints, unpackPoints, verifyProof } 
 describe("Proof", () => {
     const treeDepth = 10
 
-    const message = formatBytes32String("Hello world")
-    const scope = formatBytes32String("Scope")
+    const message = "Hello world"
+    const scope = "Scope"
 
     const identity = new Identity(42)
 
