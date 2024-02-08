@@ -5,7 +5,7 @@ describe("Group", () => {
         it("Should create a group", () => {
             const group = new Group()
 
-            expect(group.root).toBeUndefined()
+            expect(group.root).toBe("0")
             expect(group.depth).toBe(0)
             expect(group.size).toBe(0)
         })
