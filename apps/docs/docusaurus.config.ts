@@ -21,6 +21,31 @@ const config: Config = {
         defaultLocale: "en",
         locales: ["en", "es"]
     },
+    headTags: [
+        {
+            tagName: "link",
+            attributes: {
+                rel: "preconnect",
+                href: "https://psedev.matomo.cloud"
+            }
+        },
+        {
+            tagName: "script",
+            innerHTML: `
+                var _paq = window._paq = window._paq || [];
+                /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+                _paq.push(['trackPageView']);
+                _paq.push(['enableLinkTracking']);
+                (function() {
+                    var u="https://psedev.matomo.cloud/";
+                    _paq.push(['setTrackerUrl', u+'matomo.php']);
+                    _paq.push(['setSiteId', '10']);
+                    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                    g.async=true; g.src='//cdn.matomo.cloud/psedev.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+                })();
+            `
+        }
+    ],
     presets: [
         [
             "classic",
