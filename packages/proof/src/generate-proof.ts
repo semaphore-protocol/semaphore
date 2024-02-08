@@ -11,8 +11,8 @@ import { BigNumberish, SemaphoreProof, SnarkArtifacts } from "./types"
  * Generates a Semaphore proof.
  * @param identity The Semaphore identity.
  * @param groupOrMerkleProof The Semaphore group or its Merkle proof.
- * @param scope The external nullifier.
- * @param message The Semaphore signal.
+ * @param scope The Semaphore scope.
+ * @param message The Semaphore message.
  * @param merkleTreeDepth The depth of the tree with which the circuit was compiled.
  * @param snarkArtifacts The SNARK artifacts.
  * @returns The Semaphore proof ready to be verified.
@@ -20,8 +20,8 @@ import { BigNumberish, SemaphoreProof, SnarkArtifacts } from "./types"
 export default async function generateProof(
     identity: Identity,
     groupOrMerkleProof: Group | MerkleProof,
-    message: BigNumberish | Uint8Array,
-    scope: BigNumberish | Uint8Array,
+    message: BigNumberish | Uint8Array | string,
+    scope: BigNumberish | Uint8Array | string,
     merkleTreeDepth?: number,
     snarkArtifacts?: SnarkArtifacts
 ): Promise<SemaphoreProof> {
