@@ -102,4 +102,29 @@ export default class Group {
             siblings: siblings.map(String)
         }
     }
+
+    /**
+     * It enables the conversion of the group into a JSON string that
+     * can be re-used for future imports. This approach is beneficial for
+     * large groups, as it avoids re-calculating the tree hashes.
+     * @returns The stringified JSON of the group.
+     */
+    export(): string {
+        return this.leanIMT.export()
+    }
+
+    /**
+     * It imports an entire group by initializing the tree without calculating
+     * any hashes. Note that it is crucial to ensure the integrity of the
+     * exported group.
+     * @param nodes The stringified JSON of the group.
+     * @returns The group instance.
+     */
+    static import(exportedGroup: string): Group {
+        const group = new Group()
+
+        group.leanIMT.import(exportedGroup)
+
+        return group
+    }
 }
