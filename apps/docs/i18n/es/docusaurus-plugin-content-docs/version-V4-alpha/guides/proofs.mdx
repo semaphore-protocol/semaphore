@@ -1,0 +1,111 @@
+---
+sidebar_position: 3
+title: Pruebas
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Pruebas Semaphore
+
+Una vez que un usuario liga un [grupo Semaphore](/V4-alpha/glossary#group) con su [identidad Semaphore](/V4-alpha/glossary#identity),
+el usuario puede emitir un [mensaje](/V4-alpha/glossary#message) anónimo con una prueba de conocimiento cero (ZKP) que demuestre lo siguiente:
+
+-   el usuario es un miembro del grupo,
+-   el mismo usuario creó tanto el mensaje como la prueba.
+
+También se genera un [anulador](/V4-alpha/glossary#nullifier) único para cada prueba que se puede utilizar para comprobar si esa prueba ya ha sido validada.
+
+#### Instalación de paquete
+
+En su código, use el paquete [`@semaphore-protocol/proof`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/proof) para generar y verificar una prueba.
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm install @semaphore-protocol/proof
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn add @semaphore-protocol/proof
+```
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm add @semaphore-protocol/proof
+```
+
+</TabItem>
+</Tabs>
+
+## Generar una prueba
+
+### 1. Crear la identidad
+
+Para que un usuario genere una prueba, es necesario crear una identidad Semaphore. Si no sabes cómo crear una identidad,
+consulta la [guía](/V4-alpha/guides/identities) anterior sobre identidades.
+
+### 2. Crear el grupo
+
+Antes de generar una prueba, también necesita crear un grupo de Semaphore que contenga el compromiso de la identidad de Semaphore del usuario que generará la prueba. Si no sabes cómo crear un grupo, consulta la [guía](/V4-alpha/guides/groups) anterior sobre grupos.
+
+Si su grupo está on-chain, puede usar la biblioteca [`@semaphore-protocol/data`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/data) para buscar a los miembros del grupo y recrear el grupo off-chain. Por ejemplo:
+
+```ts
+import { SemaphoreSubgraph } from "@semaphore-protocol/data"
+import { Group } from "@semaphore-protocol/group"
+
+const semaphoreSubgraph = new SemaphoreSubgraph("sepolia")
+
+const { members } = semaphoreSubgraph.getGroup("42", { members: true })
+
+const group = new Group(members)
+```
+
+### 3. Elige el alcance (scope)
+
+Cada prueba requiere un [scope](/V4-alpha/glossary#scope), en el que cada usuario solo puede generar una prueba válida.
+El scope, junto con la clave privada del usuario, se usa para generar el anulador, que es el valor que realmente puede usar para verificar si ese usuario ya ha generado una prueba con ese scope. En una aplicación de votación donde se debe evitar la doble votación, el scope podría ser la identificación de la boleta (*ballot id*) o la raíz Merkle del grupo.
+
+### 4. Generar el mensaje anónimo
+
+Finalmente, puedes generar la prueba con el mensaje anónimo usando la función `generateProof`. Por ejemplo:
+
+```ts
+import { generateProof } from "@semaphore-protocol/proof"
+
+const scope = group.root
+const message = 1
+
+const proof = await generateProof(identity, group, externalNullifier, message)
+```
+
+## Verificar una prueba
+
+Para verificar una prueba, pase la prueba que generó a la función `verifyProof`. Por ejemplo:
+
+```ts
+import { verifyProof } from "@semaphore-protocol/proof"
+
+await verifyProof(proof) // true or false.
+```
+
+Si desea validar una prueba on-chain, puede utilizar [`@semaphore-protocol/contracts`](https://github.com/semaphore-protocol/semaphore/blob/feat/semaphore-v4/packages/contracts) y el contrato [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/feat/semaphore-v4/packages/contracts/contracts/Semaphore.sol), como se explica en la [guía anterior](/V4-alpha/guides/groups#install-package-1), y utilice la función `validateProof`. Por ejemplo:
+
+```solidity
+function validateProof(ISemaphore.SemaphoreProof calldata proof) external {
+    semaphore.validateProof(groupId, proof);
+}
+```

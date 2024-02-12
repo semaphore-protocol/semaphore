@@ -1,0 +1,114 @@
+---
+sidebar_position: 1
+title: Identidades
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Identidades Semaphore
+
+Para unirse a un [grupo Semaphore](/V4-alpha/glossary#group), un usuario primero deberá crear una [identidad Semaphore](/V4-alpha/glossary#identity).
+Una identidad Semaphore contiene tres valores generados junto con la identidad:
+
+-   Private key (Clave pública)
+-   Public key (Clave privada)
+-   Commitment (Compromiso)
+
+Para utilizar y verificar su identidad, la persona dueña de la identidad (usuario) debe conocer su clave privada.
+Para prevenir fraudes, la persona dueña debe conservar de forma secreta su clave privada.
+
+### Instalación de paquete:
+
+En su código, use el paquete [`@semaphore-protocol/identity`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/identity) para
+administrar las identidades de Semaphore.
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm install @semaphore-protocol/identity
+```
+</TabItem>
+<TabItem value="yarn">
+```bash
+yarn add @semaphore-protocol/identity
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm add @semaphore-protocol/identity
+```
+
+</TabItem>
+</Tabs>
+
+### Crear identidades aleatorias
+
+Para crear una identidad aleatoria, represente `Identity` sin algún parámetro. Por ejemplo:
+
+```ts
+import { Identity } from "@semaphore-protocol/identity"
+
+const { privateKey, publicKey, commitment } = new Identity()
+```
+
+La nueva identidad contiene su clave privada, su clave pública y su compromiso asociado, que sirve como una representación pública de la identidad (similar a una dirección de Ethereum).
+
+
+### Crear identidades determinísticas
+
+Si transmite un mensaje como un parámetro, Semaphore genera `trapdoor` y `nullifier`
+del hash _SHA256_ del mensaje.
+El mensaje puede ser una contraseña o un mensaje que el usuario firma de forma criptográfica con una llave privada.
+
+Al utilizar identidades determinísticas siempre deberá mantener secreto el mensaje.
+Dado que el hash es determinístico, cualquier persona con el mismo mensaje puede recrear la misma identidad.
+
+```ts
+const identity1 = new Identity(privateKey)
+// o
+const identity2 = new Identity("secret-value")
+```
+
+:::tip
+Crear un sistema que guarde o recupere valores secretos de identidades Semaphore no es trivial.
+Puede elegir delegar este tipo de funcionalidad a carteras existente como Metamask. Por ejemplo:
+
+1. En Metamask, un usuario firma un mensaje con la llave privada de su cuenta Ethereum.
+2. En la aplicación que usted ofrece, el usuario crea una identidad determinística con el mensaje firmado que actúa como su clave privada de Semaphore.
+3. Ahora el usuario puede recrear su identidad Semaphore cuando quiera al firmar el mismo mensaje con su cuenta Ethereum en Metamask.
+
+:::
+
+## Firmar y verificar mensajes
+
+Semaphore V4 utiliza criptografía asimétrica y, en particular, EdDSA para generar las claves de identidad. Por tanto, también es posible firmar mensajes y verificar sus firmas.
+
+### Firmar un mensaje
+
+Cualquier identidad de Semaphore puede firmar un mensaje simplemente pasando una cadena, un número o un búfer.
+
+```ts
+const message = "Hello World"
+
+const signature = identity1.signMessage(message)
+```
+
+### Verificar una firma
+
+Una vez firmado un mensaje, cualquiera puede verificar la firma utilizando el mensaje en sí, la firma y la clave pública del firmante.
+
+```ts
+// Static method.
+Identity.verifySignature(message, signature, identity1.publicKey)
+```

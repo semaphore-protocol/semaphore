@@ -1,0 +1,241 @@
+---
+sidebar_position: 2
+title: Grupos
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Grupos Semaphore
+
+Un [grupo Semaphore](/V4-alpha/glossary/#group) contiene los [identity commitments](/V4-alpha/glossary/#commitment) (compromisos de identidad) de miembros del grupo.
+Estos son algunos ejemplos de uso de los grupos:
+
+-   Encuesta con preguntas a la que se unen las personas que acudieron a un evento para calificarlo,
+-   votación a la que se unen los miembros para votar por una propuesta,
+-   Denunciantes que están verificados como empleados de una organización.
+
+:::información
+Semaphore V4 utiliza el [ZK-Kit](https://github.com/privacy-scaling-explorations/zk-kit) LeanIMT (i.e. Lean Incremental
+Merkle Tree) [Solidity](https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/imt.sol/contracts) y
+implementaciones de [JavaScript](https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/imt) para gestionar grupos. Los grupos son árboles de Merkle y los miembros del grupo (i.e. los compromisos de identidad) son sus hojas.
+:::
+
+## Grupos off-chain (externos a la cadena)
+
+Utilice el paquete [`@semaphore-protocol/group`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/group) para administrar grupos off-chain.
+
+#### Instalación de paquete:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm install @semaphore-protocol/group
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn add @semaphore-protocol/group
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm add @semaphore-protocol/group
+```
+
+</TabItem>
+</Tabs>
+
+### Crear un grupo
+
+Para crear un grupo, cree una instancia de `Group` sin ningún parámetro. Por ejemplo:
+
+```ts
+import { Group } from "@semaphore-protocol/group"
+
+const group1 = new Group()
+```
+
+También puede inicializar un grupo con varios miembros pasando la lista de identity commitments como primer parámetro al crear el grupo:
+
+```ts
+const members = [
+  "11237622825477336339577122413451117718539783476837539122310492284566644730311",
+  "9332663527862709610616009715800254142772436825222910251631161087138559093425",
+  "13255821893820536903335282929376140649646180444238593676033702344407594536519"
+]
+const group2 = new Group(members)
+```
+
+### Añadir miembros
+
+Utiliza el método `addMember` para añadir un miembro a un grupo. Por ejemplo:
+
+```ts
+import { Identity } from "@semaphore-protocol/identity"
+
+const { commitment } = new Identity()
+
+group1.addMember(commitment)
+```
+
+Para añadir un lote de miembros a un grupo, pasa una selección por el método `addMembers`. Por ejemplo:
+
+```ts
+group1.addMembers(members)
+```
+
+:::caution
+Cuando utiliza la misma identidad Semaphore en varios grupos, si un atacante toma control de esa identidad, todos los grupos de los que forma parte estarán comprometidos. Considere utilizar identidades diferentes para cada grupo.
+:::
+
+### Remover o actualizar miembros
+
+Para remover miembros de un equipo, pasa el índice del miembro por el método `removeMember`. Por ejemplo:
+
+```ts
+group.removeMember(0)
+```
+
+Para actualizar los miembros dentro de un grupo, pasa el índice del miembro y el nuevo valor por el método `updateMember`. Por ejemplo:
+
+```ts
+group.updateMember(0, 2)
+```
+
+:::caution
+Remover a un miembro de un grupo configura su valor a 0.
+Dado que ese miembro no se remueve, el número de miembros (i.e. `group.size` o `group.members.length`) no cambia.
+:::
+
+### Generar una prueba de Merkle (Merkle proof)
+
+Los grupos de Semaphore son [Merkle trees](/V4-alpha/glossary#merkle-tree), y, por lo tanto, es posible calcular la prueba de Merkle de un miembro del grupo (i.e., la hoja del árbol) pasando el índice del miembro a `generarMerkleProof`. Por ejemplo:
+
+```ts
+group.generateMerkleProof(0)
+```
+
+## Grupos on-chain
+
+Semaphore proporciona [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/feat/semaphore-v4/packages/contracts/contracts/Semaphore.sol) un contrato diseñado para gestionar grupos on-chain ([implementados](/V4-alpha/deployed-contracts) en las principales redes de prueba).
+
+Utilice el paquete [`@semaphore-protocol/contracts`](https://github.com/semaphore-protocol/semaphore/blob/feat/semaphore-v4/packages/contracts) para importar la interface `ISemaphore.sol` en su contrato y comience a utilizar sus funciones.
+
+### Instalación de paquete
+
+<Tabs
+    defaultValue="npm"
+    groupId="package-managers"
+    values={[
+        {label: 'npm', value: 'npm'},
+        {label: 'Yarn', value: 'yarn'},
+        {label: 'pnpm', value: 'pnpm'}
+    ]}>
+    <TabItem value="npm">
+
+        ```bash
+        npm install @semaphore-protocol/contracts
+        ```
+
+    </TabItem>
+    <TabItem value="yarn">
+
+        ```bash
+        yarn add @semaphore-protocol/contracts
+        ```
+
+    </TabItem>
+    <TabItem value="pnpm">
+
+        ```bash
+        pnpm add @semaphore-protocol/contracts
+        ```
+
+    </TabItem>
+</Tabs>
+
+### Crear un grupo
+
+Para crear un grupo, inicialice su contrato con la dirección `Semaphore.sol` y un ID de grupo.
+La función `createGroup` se puede utilizar para crear un grupo de Semaphore. Por ejemplo:
+
+```solidity
+pragma solidity ^0.8.23;
+
+import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
+
+contract YourContract {
+    ISemaphore public semaphore;
+
+    uint256 public groupId;
+
+    constructor(ISemaphore _semaphore, uint256 _groupId) {
+        semaphore = _semaphore;
+        groupId = _groupId;
+
+        semaphore.createGroup(groupId, address(this));
+    }
+}
+```
+
+`Semaphore.sol` también incluye un mecanismo para verificar las pruebas de Semaphore creadas con raíces antiguas del árbol de Merkle, cuya duración
+puede ser definida opcionalmente por el administrador en la función `createGroup` como tercer parámetro. La duración del valor predeterminado es 1 hora y debería estar bien para la mayoría de los casos de uso.
+Para obtener más contexto, consulte el problema (issue) [#98](https://github.com/semaphore-protocol/semaphore/issues/98).
+
+### Añadir miembros
+
+Utilice la función `addMember` para agregar un miembro a un grupo. Por ejemplo:
+
+```solidity
+function addMember(uint256 identityCommitment) external {
+    semaphore.addMember(groupId, identityCommitment);
+}
+```
+
+Para agregar un lote de miembros a un grupo, pase una matriz a la función `addMembers`. Por ejemplo:
+
+```solidity
+function addMembers(uint256[] calldata identityCommitments) external {
+    semaphore.addMembers(groupId, identityCommitments);
+}
+```
+
+### Eliminar o actualizar miembros
+
+Para actualizar miembros en un grupo, pase el compromiso de identidad del miembro que desea actualizar, su nuevo compromiso de identidad y los hermanos (siblings) de la prueba de Merkle para ese miembro. Por ejemplo:
+
+```solidity
+function updateMember(uint256 identityCommitment, uint256 newIdentityCommitment, uint256[] calldata merkleProofSiblings) external {
+    semaphore.updateMember(groupId, identityCommitment, newIdentityCommitment, merkleProofSiblings);
+}
+```
+
+:::información
+Para calcular la prueba de Merkle de un miembro del grupo, puede utilizar el método `generateMerkleProof` de la clase `Group` de JavaScript descrita anteriormente.
+:::
+
+Para eliminar miembros de un grupo, pase el compromiso de identidad del miembro que desea eliminar y los hermanos de la prueba Merkle para ese miembro. Por ejemplo:
+
+```solidity
+function removeMember(uint256 identityCommitment, uint256[] calldata merkleProofSiblings) external {
+semaphore.removeMember(groupId, identityCommitment, merkleProofSiblings);
+}
+```
+
+:::información
+Si desea ver un ejemplo de un contrato, eche un vistazo a [`contracts-hardhat`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/cli-template-contracts-hardhat) CLI Template.
+También puedes crear un proyecto con esa plantilla ejecutando `semaphore create my-app --template contracts-hardhat`.
+:::
