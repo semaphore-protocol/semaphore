@@ -169,3 +169,32 @@ console.log(proof)
 }
 */
 ```
+
+\# **export**(): _string_
+
+```typescript
+import { Group } from "@semaphore-protocol/group"
+
+const group = new Group([1, 2, 3])
+
+const exportedGroup = group.export()
+
+console.log(exportedGroup)
+/*
+[["1","2","3"],["7853200120776062878684798364095072458815029376092732009249414926327459813530","3"],["13816780880028945690020260331303642730075999758909899334839547418969502592169"]]
+*/
+```
+
+\# **import**(exportedGroup: _string_): _Group_
+
+```typescript
+import { Group } from "@semaphore-protocol/group"
+
+const group1 = new Group([1, 2, 3])
+
+const exportedGroup = group.export()
+
+const group2 = Group.import(exportedGroup)
+
+assert(group1.root === group2.root)
+```
