@@ -8914,7 +8914,7 @@ __metadata:
   dependencies:
     "@rollup/plugin-commonjs": ^25.0.7
     "@rollup/plugin-node-resolve": ^15.2.3
-    "@zk-kit/imt": ^2.0.0-beta
+    "@zk-kit/imt": ^2.0.0-beta.1
     poseidon-lite: ^0.2.0
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.36.0
@@ -11198,6 +11198,13 @@ __metadata:
   version: 2.0.0-beta
   resolution: "@zk-kit/imt@npm:2.0.0-beta"
   checksum: e4fdde4c171df9ab2c0b02f38ba480418231239aebf362098186a59537c19e24d7985ff11ff9e908f23d54ca620e81edfecf82d52b2c881677f89cd8654cdb80
+  languageName: node
+  linkType: hard
+
+"@zk-kit/imt@npm:^2.0.0-beta.1":
+  version: 2.0.0-beta.1
+  resolution: "@zk-kit/imt@npm:2.0.0-beta.1"
+  checksum: 7c540c81e665072be57291ad5332b6870efd442f3ea7b9b13593bda56c5253e65fdb5aa56c906c32ab5f9102ef3212f6d039e1fc766313aee634567a578e794a
   languageName: node
   linkType: hard
 
