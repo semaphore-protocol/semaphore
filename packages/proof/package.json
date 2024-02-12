@@ -59,6 +59,5 @@
         "ethers": "6.10.0",
         "snarkjs": "0.7.3",
         "tmp": "0.2.1"
-    },
-    "stableVersion": "4.0.0-alpha.6"
+    }
 }

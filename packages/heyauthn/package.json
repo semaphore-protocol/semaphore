@@ -37,6 +37,5 @@
         "@semaphore-protocol/identity": "4.0.0-alpha.7",
         "@simplewebauthn/browser": "7.2.0",
         "@simplewebauthn/server": "7.2.0"
-    },
-    "stableVersion": "4.0.0-alpha.6"
+    }
 }
