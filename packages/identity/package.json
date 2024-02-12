@@ -47,6 +47,5 @@
     "dependencies": {
         "@zk-kit/eddsa-poseidon": "0.4.1",
         "poseidon-lite": "^0.2.0"
-    },
-    "stableVersion": "4.0.0-alpha.6"
+    }
 }
