@@ -8337,7 +8337,7 @@ __metadata:
     "@types/mocha": ^10.0.6
     "@zk-kit/circuits": 0.2.4
     "@zk-kit/eddsa-poseidon": 0.3.1
-    "@zk-kit/imt": ^2.0.0-beta
+    "@zk-kit/imt": ^2.0.0-beta.1
     circomkit: ^0.0.19
     circomlib: 2.0.5
     mocha: ^10.2.0
@@ -10763,13 +10763,6 @@ __metadata:
   dependencies:
     poseidon-solidity: 0.0.5
   checksum: af4d6618e1ac22f93fd114410944d754cd4091670fd2efe771245910cc8c75bc32807dda1a8a024fcc261e4b6d3fd49543b6034b160e7c04cc5d50b5e71e0183
-  languageName: node
-  linkType: hard
-
-"@zk-kit/imt@npm:^2.0.0-beta":
-  version: 2.0.0-beta
-  resolution: "@zk-kit/imt@npm:2.0.0-beta"
-  checksum: e4fdde4c171df9ab2c0b02f38ba480418231239aebf362098186a59537c19e24d7985ff11ff9e908f23d54ca620e81edfecf82d52b2c881677f89cd8654cdb80
   languageName: node
   linkType: hard
 
