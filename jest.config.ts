@@ -1,5 +1,5 @@
 import fs from "fs"
-import type { Config } from "@jest/types"
+import type { Config } from "jest"
 
 const exclude = ["circuits", "contracts"]
 
@@ -8,6 +8,7 @@ const projects: any = fs
     .filter((directory) => directory.isDirectory())
     .filter((directory) => !exclude.includes(directory.name))
     .map(({ name }) => ({
+        preset: "ts-jest",
         rootDir: `packages/${name}`,
         displayName: name,
         setupFiles: ["dotenv/config"],
@@ -16,11 +17,10 @@ const projects: any = fs
         }
     }))
 
-export default async (): Promise<Config.InitialOptions> => ({
+const config: Config = {
     projects,
     verbose: true,
     coverageDirectory: "./coverage/libraries",
-    collectCoverageFrom: ["<rootDir>/src/**/*.ts", "!<rootDir>/src/**/index.ts", "!<rootDir>/src/**/*.d.ts"],
     coverageThreshold: {
         global: {
             branches: 90,
@@ -29,4 +29,6 @@ export default async (): Promise<Config.InitialOptions> => ({
             statements: 95
         }
     }
-})
+}
+
+export default config
