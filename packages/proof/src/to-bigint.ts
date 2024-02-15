@@ -1,4 +1,5 @@
-import { encodeBytes32String, toBigInt as _toBigInt } from "ethers"
+import { encodeBytes32String } from "ethers/abi"
+import { toBigInt as _toBigInt } from "ethers/utils"
 import { BigNumberish } from "./types"
 
 export default function toBigInt(value: BigNumberish | Uint8Array | string): bigint {

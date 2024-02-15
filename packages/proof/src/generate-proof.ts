@@ -48,7 +48,6 @@ export default async function generateProof(
     }
 
     // If the Snark artifacts are not defined they will be automatically downloaded.
-    /* istanbul ignore next */
     if (!snarkArtifacts) {
         snarkArtifacts = await getSnarkArtifacts(merkleTreeDepth)
     }
