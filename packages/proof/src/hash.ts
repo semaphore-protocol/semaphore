@@ -1,4 +1,5 @@
-import { keccak256, toBeHex } from "ethers"
+import { keccak256 } from "ethers/crypto"
+import { toBeHex } from "ethers/utils"
 import { NumericString } from "snarkjs"
 import { BigNumberish } from "./types"
 

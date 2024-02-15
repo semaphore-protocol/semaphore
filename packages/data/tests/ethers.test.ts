@@ -1,5 +1,6 @@
 /* eslint-disable no-sparse-arrays */
-import { Contract, ZeroAddress } from "ethers"
+import { ZeroAddress } from "ethers/constants"
+import { Contract } from "ethers/contract"
 import SemaphoreEthers from "../src/ethers"
 import getEvents from "../src/getEvents"
 
@@ -8,9 +9,9 @@ jest.mock("../src/getEvents", () => ({
     default: jest.fn()
 }))
 
-jest.mock("ethers", () => ({
+jest.mock("ethers/contract", () => ({
     __esModule: true,
-    ...jest.requireActual("ethers"),
+    ...jest.requireActual("ethers/contract"),
     Contract: jest.fn(
         () =>
             ({
