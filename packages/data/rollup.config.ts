@@ -19,7 +19,7 @@ export default {
         { file: pkg.exports.require, format: "cjs", banner, exports: "auto" },
         { file: pkg.exports.default, format: "es", banner }
     ],
-    external: Object.keys(pkg.dependencies),
+    external: [...Object.keys(pkg.dependencies), "ethers/contract", "ethers/constants", "ethers/providers"],
     plugins: [
         json(),
         typescript({ tsconfig: "./build.tsconfig.json", useTsconfigDeclarationDir: true }),

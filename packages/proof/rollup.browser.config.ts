@@ -23,7 +23,18 @@ export default {
             banner
         }
     ],
-    external: Object.keys(pkg.dependencies),
+    external: [
+        ...Object.keys(pkg.dependencies),
+        "node:fs",
+        "node:fs/promises",
+        "node:os",
+        "node:path",
+        "node:stream",
+        "node:stream/promises",
+        "ethers/crypto",
+        "ethers/utils",
+        "ethers/abi"
+    ],
     plugins: [
         alias({
             entries: [{ find: "./get-snark-artifacts.node", replacement: "./get-snark-artifacts.browser" }]

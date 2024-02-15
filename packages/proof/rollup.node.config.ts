@@ -28,7 +28,18 @@ export default {
             banner
         }
     ],
-    external: [...Object.keys(pkg.dependencies), "fs"],
+    external: [
+        ...Object.keys(pkg.dependencies),
+        "node:fs",
+        "node:fs/promises",
+        "node:os",
+        "node:path",
+        "node:stream",
+        "node:stream/promises",
+        "ethers/crypto",
+        "ethers/utils",
+        "ethers/abi"
+    ],
     plugins: [
         typescript({
             tsconfig: "./build.tsconfig.json",
