@@ -1,15 +1,15 @@
+import { ZeroAddress } from "ethers/constants"
+import { Contract } from "ethers/contract"
 import {
     AlchemyProvider,
     AnkrProvider,
     CloudflareProvider,
-    Contract,
     EtherscanProvider,
     InfuraProvider,
     JsonRpcProvider,
     PocketProvider,
-    Provider,
-    ZeroAddress
-} from "ethers"
+    Provider
+} from "ethers/providers"
 import checkParameter from "./checkParameter"
 import getEvents from "./getEvents"
 import SemaphoreABI from "./semaphoreABI.json"

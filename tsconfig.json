@@ -3,8 +3,8 @@
         "baseUrl": ".",
         "strict": true,
         "target": "ES5",
-        "module": "ES6",
-        "moduleResolution": "node",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
         "esModuleInterop": true,
         "preserveConstEnums": true,
         "resolveJsonModule": true,
@@ -14,7 +14,7 @@
         "declarationDir": "types",
         "typeRoots": ["node_modules/@types", "types"],
         "paths": {
-            "@semaphore-protocol/*": ["packages/*/src"]
+            "@semaphore-protocol/*": ["./packages/*/src"]
         }
     },
     "ts-node": {
