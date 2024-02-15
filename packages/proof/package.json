@@ -38,7 +38,6 @@
         "access": "public"
     },
     "devDependencies": {
-        "@ethersproject/strings": "^5.7.0",
         "@rollup/plugin-alias": "^5.1.0",
         "@rollup/plugin-json": "^6.1.0",
         "@types/download": "^8.0.5",

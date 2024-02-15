@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import { Contract, EventLog } from "ethers"
+import { Contract, EventLog } from "ethers/contract"
 
 /**
  * Returns the list of events of a contract with possible filters.
