@@ -1,4 +1,4 @@
-import { jsDateToGraphqlDate } from "./utils"
+import { jsDateToGraphqlDate } from "../src/utils"
 
 describe("Utils", () => {
     describe("# jsDateToGraphqlDate", () => {
