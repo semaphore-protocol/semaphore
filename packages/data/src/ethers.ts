@@ -75,7 +75,7 @@ export default class SemaphoreEthers {
 
         switch (options.provider) {
             case "infura":
-                provider = new InfuraProvider(networkOrEthereumURL, options.apiKey)
+                provider = new InfuraProvider(networkOrEthereumURL, options.projectId, options.projectSecret)
                 break
             case "alchemy":
                 provider = new AlchemyProvider(networkOrEthereumURL, options.apiKey)
@@ -87,7 +87,7 @@ export default class SemaphoreEthers {
                 provider = new EtherscanProvider(networkOrEthereumURL, options.apiKey)
                 break
             case "pocket":
-                provider = new PocketProvider(networkOrEthereumURL, options.apiKey)
+                provider = new PocketProvider(networkOrEthereumURL, options.applicationId, options.applicationSecret)
                 break
             case "ankr":
                 provider = new AnkrProvider(networkOrEthereumURL, options.apiKey)

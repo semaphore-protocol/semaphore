@@ -54,4 +54,8 @@ export type EthersOptions = {
     startBlock?: number
     provider?: "etherscan" | "infura" | "alchemy" | "cloudflare" | "pocket" | "ankr"
     apiKey?: string
+    projectId?: string // Infura
+    projectSecret?: string // Infura
+    applicationId?: string // Pocket
+    applicationSecret?: string // Pocket
 }
