@@ -98,8 +98,6 @@ describe("Group", () => {
 
             const exportedGroup = group.export()
 
-            console.log(exportedGroup)
-
             expect(typeof exportedGroup).toBe("string")
             expect(JSON.parse(exportedGroup)).toHaveLength(3)
             expect(JSON.parse(exportedGroup)[0]).toHaveLength(3)
