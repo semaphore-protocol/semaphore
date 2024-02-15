@@ -6,8 +6,12 @@
 
 /* You can override the default Infima variables here. */
 
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap");
+@font-face {
+    font-family: "DM Sans";
+    src: url("/static/fonts/DMSans.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
 
 :root {
     --ifm-color-primary: "linear(to-r, #4771ea, #2735a6)";
@@ -109,7 +113,6 @@ h2,
 h3,
 h4,
 h5 {
-    font-family: "Outfit", sans-serif;
     font-weight: 500;
 }
 
@@ -265,18 +268,6 @@ html.docs-version-V1 {
 
 .react-toggle-thumb:hover {
     box-shadow: none !important;
-}
-
-.navbar__title {
-    font-family: "Outfit", sans-serif;
-    color: var(--ifm-color-primary);
-    font-weight: 500;
-}
-
-.navbar__link {
-    font-family: "Outfit", sans-serif;
-    color: var(--ifm-color-primary);
-    font-weight: 400;
 }
 
 .menu__link {
