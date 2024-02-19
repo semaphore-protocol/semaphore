@@ -17,7 +17,13 @@ export default {
     output: [
         { file: pkg.exports["."].require, format: "cjs", banner, exports: "auto" },
         { file: pkg.exports["."].default, format: "es", banner },
-        { dir: "./dist/lib.commonjs", format: "cjs", banner, preserveModules: true },
+        {
+            dir: "./dist/lib.commonjs",
+            format: "cjs",
+            banner,
+            preserveModules: true,
+            entryFileNames: "[name].cjs"
+        },
         { dir: "./dist/lib.esm", format: "es", banner, preserveModules: true }
     ],
     plugins: [
