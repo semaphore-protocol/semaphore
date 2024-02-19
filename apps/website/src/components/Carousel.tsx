@@ -68,10 +68,9 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                 )}
             </HStack>
 
-            <HStack w="full" overflow="hidden">
+            <Box w="full" overflowX="auto">
                 <HStack
                     w="full"
-                    overflowX="auto"  // Enable horizontal scrolling
                     transition="transform 0.4s ease-in-out"
                     transform={`translateX(-${index * 100}%)`}
                     py="1"
@@ -121,7 +120,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                             </Box>
                         ))}
                 </HStack>
-            </HStack>
+            </Box>
 
             {type === "projects" && (
                 <HStack w="100%">
