@@ -8,7 +8,7 @@
  */
 
 // The list of types supported by this utility functions.
-const supportedTypes = ["number", "string", "function", "array", "uint8array"] as const
+const supportedTypes = ["number", "string", "function", "array", "uint8array", "object"] as const
 
 // Type extracted from the list above.
 export type SupportedType = (typeof supportedTypes)[number]
@@ -68,6 +68,15 @@ export function isUint8Array(value: any): boolean {
 }
 
 /**
+ * It returns true if the value is an object, false otherwise.
+ * @param value The value to be checked.
+ * @returns True or false.
+ */
+export function isObject(value: any): boolean {
+    return typeof value === "object"
+}
+
+/**
  * It returns true if the value type is the same as the type passed
  * as the second parameter, false otherwise.
  * @param type The expected type.
@@ -85,6 +94,8 @@ export function isType(value: any, type: SupportedType): boolean {
             return isArray(value)
         case "uint8array":
             return isUint8Array(value)
+        case "object":
+            return isObject(value)
         default:
             return false
     }

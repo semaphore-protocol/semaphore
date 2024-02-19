@@ -14,6 +14,7 @@ import {
     isDefined,
     isFunction,
     isNumber,
+    isObject,
     isString,
     isSupportedType,
     isType,
@@ -83,6 +84,17 @@ export function requireArray(parameterValue: any[], parameterName: string) {
 export function requireUint8Array(parameterValue: Uint8Array, parameterName: string) {
     if (!isUint8Array(parameterValue)) {
         throw new TypeError(`Parameter '${parameterName}' is not a Uint8Array`)
+    }
+}
+
+/**
+ * It throws a type error if the parameter value is not an object.
+ * @param parameterValue The parameter value.
+ * @param parameterName The parameter name.
+ */
+export function requireObject(parameterValue: object, parameterName: string) {
+    if (!isObject(parameterValue)) {
+        throw new TypeError(`Parameter '${parameterName}' is not an object`)
     }
 }
 
