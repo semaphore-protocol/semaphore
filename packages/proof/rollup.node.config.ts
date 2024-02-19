@@ -38,7 +38,8 @@ export default {
         "node:stream/promises",
         "ethers/crypto",
         "ethers/utils",
-        "ethers/abi"
+        "ethers/abi",
+        "@semaphore-protocol/utils/errors"
     ],
     plugins: [
         typescript({
