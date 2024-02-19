@@ -34,12 +34,20 @@ describe("Utils", () => {
             expect(types.isArray(1)).toBeFalsy()
         })
 
-        it("Should return true if the value is an uint8array", () => {
+        it("Should return true if the value is a uint8array", () => {
             expect(types.isUint8Array(new Uint8Array([]))).toBeTruthy()
         })
 
-        it("Should return false if the value is not an uint8array", () => {
-            expect(types.isArray(1)).toBeFalsy()
+        it("Should return false if the value is not a uint8array", () => {
+            expect(types.isUint8Array(1)).toBeFalsy()
+        })
+
+        it("Should return true if the value is an object", () => {
+            expect(types.isObject({})).toBeTruthy()
+        })
+
+        it("Should return false if the value is not an object", () => {
+            expect(types.isObject(1)).toBeFalsy()
         })
 
         it("Should return true if the value type is the one expected", () => {
@@ -48,6 +56,7 @@ describe("Utils", () => {
             expect(types.isType(() => true, "function")).toBeTruthy()
             expect(types.isType([], "array")).toBeTruthy()
             expect(types.isType(new Uint8Array([]), "uint8array")).toBeTruthy()
+            expect(types.isType({}, "object")).toBeTruthy()
         })
 
         it("Should return false if the value type is not the one expected or is not supported", () => {
@@ -56,6 +65,7 @@ describe("Utils", () => {
             expect(types.isType(1, "function")).toBeFalsy()
             expect(types.isType(1, "array")).toBeFalsy()
             expect(types.isType(1, "uint8array")).toBeFalsy()
+            expect(types.isType(1, "object")).toBeFalsy()
             expect(types.isType(1, "type" as any)).toBeFalsy()
         })
 
@@ -137,6 +147,18 @@ describe("Utils", () => {
 
         it("Should not throw an error if the parameter is a function", () => {
             const fun = () => errors.requireFunction(() => true, "parameter")
+
+            expect(fun).not.toThrow()
+        })
+
+        it("Should throw an error if the parameter is not an object", () => {
+            const fun = () => errors.requireObject(1 as any, "parameter")
+
+            expect(fun).toThrow("Parameter 'parameter' is not an object")
+        })
+
+        it("Should not throw an error if the parameter is an object", () => {
+            const fun = () => errors.requireObject({}, "parameter")
 
             expect(fun).not.toThrow()
         })
