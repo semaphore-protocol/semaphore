@@ -8,7 +8,7 @@
  */
 
 // The list of types supported by this utility functions.
-const supportedTypes = ["number", "string", "function", "array", "uint8array", "object"] as const
+const supportedTypes = ["number", "string", "function", "array", "uint8array", "object", "bigint"] as const
 
 // Type extracted from the list above.
 export type SupportedType = (typeof supportedTypes)[number]
@@ -77,6 +77,15 @@ export function isObject(value: any): boolean {
 }
 
 /**
+ * It returns true if the value is a bigint, false otherwise.
+ * @param value The value to be checked.
+ * @returns True or false.
+ */
+export function isBigInt(value: any): boolean {
+    return typeof value === "bigint"
+}
+
+/**
  * It returns true if the value type is the same as the type passed
  * as the second parameter, false otherwise.
  * @param type The expected type.
@@ -96,6 +105,8 @@ export function isType(value: any, type: SupportedType): boolean {
             return isUint8Array(value)
         case "object":
             return isObject(value)
+        case "bigint":
+            return isBigInt(value)
         default:
             return false
     }
