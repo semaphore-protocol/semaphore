@@ -1,11 +1,12 @@
 import type { Group, MerkleProof } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
+import { requireDefined, requireNumber, requireObject, requireTypes } from "@semaphore-protocol/utils/errors"
 import { NumericString, groth16 } from "snarkjs"
 import getSnarkArtifacts from "./get-snark-artifacts.node"
 import hash from "./hash"
 import packPoints from "./pack-points"
-import { BigNumberish, SemaphoreProof, SnarkArtifacts } from "./types"
 import toBigInt from "./to-bigint"
+import { BigNumberish, SemaphoreProof, SnarkArtifacts } from "./types"
 
 /**
  * Generates a Semaphore proof.
@@ -25,6 +26,24 @@ export default async function generateProof(
     merkleTreeDepth?: number,
     snarkArtifacts?: SnarkArtifacts
 ): Promise<SemaphoreProof> {
+    requireDefined(identity, "identity")
+    requireDefined(groupOrMerkleProof, "groupOrMerkleProof")
+    requireDefined(message, "message")
+    requireDefined(scope, "scope")
+
+    requireObject(identity, "identity")
+    requireObject(identity, "groupOrMerkleProof")
+    requireTypes(message, "message", ["string", "bigint", "number", "uint8array"])
+    requireTypes(scope, "scope", ["string", "bigint", "number", "uint8array"])
+
+    if (merkleTreeDepth) {
+        requireNumber(merkleTreeDepth, "merkleTreeDepth")
+    }
+
+    if (snarkArtifacts) {
+        requireObject(snarkArtifacts, "snarkArtifacts")
+    }
+
     message = toBigInt(message)
     scope = toBigInt(scope)
 

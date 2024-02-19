@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+import { requireNumber } from "@semaphore-protocol/utils/errors"
 import { createWriteStream, existsSync, readdirSync } from "node:fs"
 import { mkdir } from "node:fs/promises"
 import os from "node:os"
@@ -23,6 +24,8 @@ async function download(url: string, outputPath: string) {
 }
 
 export default async function getSnarkArtifacts(treeDepth: number): Promise<SnarkArtifacts> {
+    requireNumber(treeDepth, "treeDepth")
+
     const tmpDir = "semaphore-proof"
     const tmpPath = `${os.tmpdir()}/${tmpDir}-${treeDepth}`
 
