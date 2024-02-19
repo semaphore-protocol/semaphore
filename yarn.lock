@@ -1255,7 +1255,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.22.7, @babel/parser@npm:^7.23.9, @babel/parser@npm:^7.6.2":
+"@babel/parser@npm:^7.22.7, @babel/parser@npm:^7.23.9":
   version: 7.23.9
   resolution: "@babel/parser@npm:7.23.9"
   bin:
@@ -3350,7 +3350,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.22.8, @babel/traverse@npm:^7.23.9, @babel/traverse@npm:^7.6.2":
+"@babel/traverse@npm:^7.22.8, @babel/traverse@npm:^7.23.9":
   version: 7.23.9
   resolution: "@babel/traverse@npm:7.23.9"
   dependencies:
@@ -3445,18 +3445,6 @@ __metadata:
   version: 0.2.3
   resolution: "@bcoe/v8-coverage@npm:0.2.3"
   checksum: 850f9305536d0f2bd13e9e0881cb5f02e4f93fad1189f7b2d4bebf694e3206924eadee1068130d43c11b750efcc9405f88a8e42ef098b6d75239c0f047de1a27
-  languageName: node
-  linkType: hard
-
-"@betit/rollup-plugin-rename-extensions@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@betit/rollup-plugin-rename-extensions@npm:0.1.0"
-  dependencies:
-    "@babel/parser": ^7.6.2
-    "@babel/traverse": ^7.6.2
-    magic-string: ^0.25.2
-    rollup-pluginutils: ^2.8.2
-  checksum: fe801484d24c913fddd6b53fa43f5ff437fe44a78ac55fbff93e2d427823c21ecc0d5c57a9d61670873eaf7893c2deca68027abbabba076591277d17023232cb
   languageName: node
   linkType: hard
 
@@ -8482,7 +8470,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/utils@workspace:packages/utils"
   dependencies:
-    "@betit/rollup-plugin-rename-extensions": ^0.1.0
     rimraf: ^5.0.5
     rollup: ^4.9.6
     rollup-plugin-cleanup: ^3.2.1
@@ -22036,7 +22023,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.25.0, magic-string@npm:^0.25.2, magic-string@npm:^0.25.7":
+"magic-string@npm:^0.25.0, magic-string@npm:^0.25.7":
   version: 0.25.9
   resolution: "magic-string@npm:0.25.9"
   dependencies:
