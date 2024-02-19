@@ -8533,6 +8533,7 @@ __metadata:
   dependencies:
     "@rollup/plugin-alias": ^5.1.0
     "@rollup/plugin-json": ^6.1.0
+    "@semaphore-protocol/utils": 4.0.0-alpha.8
     "@types/download": ^8.0.5
     "@types/snarkjs": 0.7.8
     "@types/tmp": ^0.2.6
@@ -8546,6 +8547,15 @@ __metadata:
   peerDependencies:
     "@semaphore-protocol/group": 4.0.0-alpha.8
     "@semaphore-protocol/identity": 4.0.0-alpha.8
+  languageName: unknown
+  linkType: soft
+
+"@semaphore-protocol/utils@4.0.0-alpha.8, @semaphore-protocol/utils@workspace:packages/utils":
+  version: 0.0.0-use.local
+  resolution: "@semaphore-protocol/utils@workspace:packages/utils"
+  dependencies:
+    rollup-plugin-cleanup: ^3.2.1
+    rollup-plugin-typescript2: ^0.36.0
   languageName: unknown
   linkType: soft
 
