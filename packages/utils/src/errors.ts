@@ -11,6 +11,7 @@
 import {
     SupportedType,
     isArray,
+    isBigInt,
     isDefined,
     isFunction,
     isNumber,
@@ -95,6 +96,17 @@ export function requireUint8Array(parameterValue: Uint8Array, parameterName: str
 export function requireObject(parameterValue: object, parameterName: string) {
     if (!isObject(parameterValue)) {
         throw new TypeError(`Parameter '${parameterName}' is not an object`)
+    }
+}
+
+/**
+ * It throws a type error if the parameter value is not a bigint.
+ * @param parameterValue The parameter value.
+ * @param parameterName The parameter name.
+ */
+export function requireBigInt(parameterValue: bigint, parameterName: string) {
+    if (!isBigInt(parameterValue)) {
+        throw new TypeError(`Parameter '${parameterName}' is not a bigint`)
     }
 }
 

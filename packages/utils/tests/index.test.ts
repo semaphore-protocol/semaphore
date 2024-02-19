@@ -50,6 +50,14 @@ describe("Utils", () => {
             expect(types.isObject(1)).toBeFalsy()
         })
 
+        it("Should return true if the value is a bigint", () => {
+            expect(types.isBigInt(BigInt(1))).toBeTruthy()
+        })
+
+        it("Should return false if the value is not a bigint", () => {
+            expect(types.isBigInt(1)).toBeFalsy()
+        })
+
         it("Should return true if the value type is the one expected", () => {
             expect(types.isType(1, "number")).toBeTruthy()
             expect(types.isType("string", "string")).toBeTruthy()
@@ -57,6 +65,7 @@ describe("Utils", () => {
             expect(types.isType([], "array")).toBeTruthy()
             expect(types.isType(new Uint8Array([]), "uint8array")).toBeTruthy()
             expect(types.isType({}, "object")).toBeTruthy()
+            expect(types.isType(BigInt(1), "bigint")).toBeTruthy()
         })
 
         it("Should return false if the value type is not the one expected or is not supported", () => {
@@ -66,6 +75,7 @@ describe("Utils", () => {
             expect(types.isType(1, "array")).toBeFalsy()
             expect(types.isType(1, "uint8array")).toBeFalsy()
             expect(types.isType(1, "object")).toBeFalsy()
+            expect(types.isType(1, "bigint")).toBeFalsy()
             expect(types.isType(1, "type" as any)).toBeFalsy()
         })
 
@@ -159,6 +169,18 @@ describe("Utils", () => {
 
         it("Should not throw an error if the parameter is an object", () => {
             const fun = () => errors.requireObject({}, "parameter")
+
+            expect(fun).not.toThrow()
+        })
+
+        it("Should throw an error if the parameter is not a bigint", () => {
+            const fun = () => errors.requireBigInt(1 as any, "parameter")
+
+            expect(fun).toThrow("Parameter 'parameter' is not a bigint")
+        })
+
+        it("Should not throw an error if the parameter is a bigint", () => {
+            const fun = () => errors.requireBigInt(BigInt(1), "parameter")
 
             expect(fun).not.toThrow()
         })
