@@ -1,4 +1,3 @@
-import json from "@rollup/plugin-json"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
 import typescript from "rollup-plugin-typescript2"
@@ -16,37 +15,22 @@ const banner = `/**
 export default {
     input: "src/index.ts",
     output: [
+        { file: pkg.exports["."].require, format: "cjs", banner, exports: "auto" },
+        { file: pkg.exports["."].default, format: "es", banner },
         {
-            file: pkg.exports["."].node.require,
+            dir: "./dist/lib.commonjs",
             format: "cjs",
             banner,
-            exports: "auto"
+            preserveModules: true,
+            entryFileNames: "[name].cjs"
         },
-        {
-            file: pkg.exports["."].node.default,
-            format: "es",
-            banner
-        }
-    ],
-    external: [
-        ...Object.keys(pkg.dependencies),
-        "node:fs",
-        "node:fs/promises",
-        "node:os",
-        "node:path",
-        "node:stream",
-        "node:stream/promises",
-        "ethers/crypto",
-        "ethers/utils",
-        "ethers/abi",
-        "@semaphore-protocol/utils/errors"
+        { dir: "./dist/lib.esm", format: "es", banner, preserveModules: true }
     ],
     plugins: [
         typescript({
             tsconfig: "./build.tsconfig.json",
             useTsconfigDeclarationDir: true
         }),
-        cleanup({ comments: "jsdoc" }),
-        json()
+        cleanup({ comments: "jsdoc" })
     ]
 }

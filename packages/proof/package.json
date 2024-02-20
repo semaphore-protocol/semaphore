@@ -41,10 +41,11 @@
         "@rollup/plugin-alias": "^5.1.0",
         "@rollup/plugin-json": "^6.1.0",
         "@types/download": "^8.0.5",
+        "@types/snarkjs": "0.7.8",
         "@types/tmp": "^0.2.6",
         "poseidon-lite": "^0.2.0",
         "rimraf": "^5.0.5",
-        "rollup": "^4.0.2",
+        "rollup": "^4.9.6",
         "rollup-plugin-cleanup": "^3.2.1",
         "rollup-plugin-typescript2": "^0.36.0"
     },
@@ -53,7 +54,7 @@
         "@semaphore-protocol/identity": "4.0.0-alpha.8"
     },
     "dependencies": {
-        "@types/snarkjs": "0.7.8",
+        "@semaphore-protocol/utils": "4.0.0-alpha.8",
         "ethers": "6.10.0",
         "snarkjs": "0.7.3"
     }
