@@ -1,3 +1,10 @@
+import {
+    requireArray,
+    requireDefined,
+    requireNumber,
+    requireObject,
+    requireString
+} from "@semaphore-protocol/utils/errors"
 import { groth16 } from "snarkjs"
 import hash from "./hash"
 import { SemaphoreProof } from "./types"
@@ -9,14 +16,19 @@ import verificationKeys from "./verification-keys.json"
  * @param proof The Semaphore proof.
  * @returns True if the proof is valid, false otherwise.
  */
-export default async function verifyProof({
-    merkleTreeDepth,
-    merkleTreeRoot,
-    nullifier,
-    message,
-    scope,
-    points
-}: SemaphoreProof): Promise<boolean> {
+export default async function verifyProof(proof: SemaphoreProof): Promise<boolean> {
+    requireDefined(proof, "proof")
+    requireObject(proof, "proof")
+
+    const { merkleTreeDepth, merkleTreeRoot, nullifier, message, scope, points } = proof
+
+    requireNumber(merkleTreeDepth, "proof.merkleTreeDepth")
+    requireString(merkleTreeRoot, "proof.merkleTreeRoot")
+    requireString(nullifier, "proof.nullifier")
+    requireString(message, "proof.message")
+    requireString(scope, "proof.scope")
+    requireArray(points, "proof.points")
+
     // TODO: support all tree depths after trusted-setup.
     if (merkleTreeDepth < 1 || merkleTreeDepth > 12) {
         throw new TypeError("The tree depth must be a number between 1 and 12")
