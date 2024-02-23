@@ -1,6 +1,6 @@
+import { Noir } from "@noir-lang/noir_js"
+import { BarretenbergBackend } from "@noir-lang/backend_barretenberg"
 import { SemaphoreProof } from "./types"
-import { Noir } from '@noir-lang/noir_js'
-import { BarretenbergBackend } from '@noir-lang/backend_barretenberg'
 import compiled from "../artifacts/16.json"
 
 /**
@@ -9,10 +9,7 @@ import compiled from "../artifacts/16.json"
  * @param treeDepth The Merkle tree depth.
  * @returns True if the proof is valid, false otherwise.
  */
-export default function verifyProof(
-    { merkleTreeRoot, nullifierHash, externalNullifier, signal, proof }: SemaphoreProof,
-    treeDepth: number
-): Promise<boolean> {
+export default function verifyProof({ proof }: SemaphoreProof, treeDepth: number): Promise<boolean> {
     if (treeDepth !== 16) {
         throw new TypeError("Currently only depth 16 is supported")
     }

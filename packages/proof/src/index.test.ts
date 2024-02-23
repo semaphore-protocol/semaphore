@@ -19,8 +19,7 @@ describe("Proof", () => {
         it("Should not generate Semaphore proofs if the identity is not part of the group", async () => {
             const group = new Group(treeDepth, 16, [BigInt(1), BigInt(2)])
 
-            const fun = () =>
-                generateProof(identity, group, externalNullifier, signal)
+            const fun = () => generateProof(identity, group, externalNullifier, signal)
 
             await expect(fun).rejects.toThrow("The identity is not part of the group")
         })

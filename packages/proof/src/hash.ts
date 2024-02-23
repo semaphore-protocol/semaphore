@@ -5,6 +5,6 @@ import { poseidon2 } from "poseidon-lite"
  * @param message The message to be hashed.
  * @returns The message digest.
  */
-export default function hash2(a: bigint, b: bigint): bigint{
+export default function hash2(a: bigint, b: bigint): bigint {
     return poseidon2([a, b])
 }
