@@ -8,7 +8,7 @@ import TabItem from "@theme/TabItem"
 
 # Semaphore identities
 
-In order to join a [Semaphore group](/V4-alpha/glossary#group), a user must first create a [Semaphore identity](/V4-alpha/glossary#identity).
+In order to join a [Semaphore group](/V4-beta/glossary#group), a user must first create a [Semaphore identity](/V4-beta/glossary#identity).
 A Semaphore identity contains three values generated with the identity:
 
 -   Private key
@@ -20,7 +20,7 @@ To prevent fraud, the owner should keep their private key secret.
 
 ## Install package
 
-In your code, use the [`@semaphore-protocol/identity`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/identity) package to manage Semaphore identites.
+In your code, use the [`@semaphore-protocol/identity`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/identity) package to manage Semaphore identites.
 
 <Tabs
 defaultValue="npm"
@@ -52,6 +52,10 @@ pnpm add @semaphore-protocol/identity
 
 </TabItem>
 </Tabs>
+
+:::info
+Semaphore also provides `@semaphore-protocol/core`, which includes the functions of the following core packages: `@semaphore-protocol/identity`, `@semaphore-protocol/group`, `@semaphore-protocol/proof`.
+:::
 
 ## Create identities
 
