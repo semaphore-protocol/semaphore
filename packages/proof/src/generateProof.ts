@@ -9,7 +9,7 @@ import { Noir } from "@noir-lang/noir_js"
 import { BarretenbergBackend } from "@noir-lang/backend_barretenberg"
 import { SemaphoreProof } from "./types"
 import hash2 from "./hash"
-import compiled from "../artifacts/16.json"
+import compiled from "../noir-artifacts/16.json"
 
 function serialiseInput(value: bigint): string {
     return new Fr(value).toString()
