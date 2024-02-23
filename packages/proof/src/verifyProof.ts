@@ -1,8 +1,7 @@
-import { verify } from "@zk-kit/groth16"
-import hash from "./hash"
 import { SemaphoreProof } from "./types"
-import unpackProof from "./unpackProof"
-import verificationKeys from "./verificationKeys.json"
+import { Noir } from '@noir-lang/noir_js'
+import { BarretenbergBackend } from '@noir-lang/backend_barretenberg'
+import compiled from "../artifacts/16.json"
 
 /**
  * Verifies a Semaphore proof.
@@ -14,18 +13,18 @@ export default function verifyProof(
     { merkleTreeRoot, nullifierHash, externalNullifier, signal, proof }: SemaphoreProof,
     treeDepth: number
 ): Promise<boolean> {
-    if (treeDepth < 16 || treeDepth > 32) {
-        throw new TypeError("The tree depth must be a number between 16 and 32")
+    if (treeDepth !== 16) {
+        throw new TypeError("Currently only depth 16 is supported")
     }
 
-    const verificationKey = {
-        ...verificationKeys,
-        vk_delta_2: verificationKeys.vk_delta_2[treeDepth - 16],
-        IC: verificationKeys.IC[treeDepth - 16]
+    if (!compiled) {
+        throw new Error("Failed to read circuit artifact")
     }
 
-    return verify(verificationKey, {
-        publicSignals: [merkleTreeRoot, nullifierHash, hash(signal), hash(externalNullifier)],
-        proof: unpackProof(proof)
-    })
+    // @ts-ignore
+    const backend = new BarretenbergBackend(compiled)
+    // @ts-ignore
+    const noir = new Noir(compiled, backend)
+
+    return noir.verifyFinalProof(proof)
 }

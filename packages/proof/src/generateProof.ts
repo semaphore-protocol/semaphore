@@ -2,12 +2,18 @@ import { BigNumber } from "@ethersproject/bignumber"
 import { BytesLike, Hexable } from "@ethersproject/bytes"
 import { Group } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
-import { prove } from "@zk-kit/groth16"
 import { MerkleProof } from "@zk-kit/incremental-merkle-tree"
 import type { NumericString } from "snarkjs"
-import hash from "./hash"
-import packProof from "./packProof"
-import { SemaphoreProof, SnarkArtifacts } from "./types"
+import hash2 from "./hash"
+import { Fr } from "@aztec/bb.js"
+import { Noir } from '@noir-lang/noir_js'
+import { BarretenbergBackend } from '@noir-lang/backend_barretenberg'
+import { SemaphoreProof } from "./types"
+import compiled from "../artifacts/16.json"
+
+function serialiseInput(value: bigint): string {
+    return new Fr(value).toString()
+}
 
 /**
  * Generates a Semaphore proof.
@@ -23,7 +29,6 @@ export default async function generateProof(
     groupOrMerkleProof: Group | MerkleProof,
     externalNullifier: BytesLike | Hexable | number | bigint,
     signal: BytesLike | Hexable | number | bigint,
-    snarkArtifacts?: SnarkArtifacts
 ): Promise<SemaphoreProof> {
     let merkleProof: MerkleProof
 
@@ -39,31 +44,31 @@ export default async function generateProof(
         merkleProof = groupOrMerkleProof
     }
 
-    if (!snarkArtifacts) {
-        snarkArtifacts = {
-            wasmFilePath: `https://www.trusted-setup-pse.org/semaphore/${merkleProof.siblings.length}/semaphore.wasm`,
-            zkeyFilePath: `https://www.trusted-setup-pse.org/semaphore/${merkleProof.siblings.length}/semaphore.zkey`
-        }
-    }
+    // @ts-ignore
+    const backend = new BarretenbergBackend(compiled)
+    // @ts-ignore
+    const noir = new Noir(compiled, backend)
 
-    const { proof, publicSignals } = await prove(
-        {
-            identityTrapdoor: trapdoor,
-            identityNullifier: nullifier,
-            treePathIndices: merkleProof.pathIndices,
-            treeSiblings: merkleProof.siblings,
-            externalNullifier: hash(externalNullifier),
-            signalHash: hash(signal)
-        },
-        snarkArtifacts.wasmFilePath,
-        snarkArtifacts.zkeyFilePath
-    )
+    const indices = BigInt(Number.parseInt(merkleProof.pathIndices.join(''), 2))
+    const input = {
+      id_nullifier: serialiseInput(nullifier),
+      id_trapdoor: serialiseInput(trapdoor),
+      indices: serialiseInput(indices),
+      siblings: merkleProof.siblings.map(v => serialiseInput(v)),
+      external_nullifier: serialiseInput(BigNumber.from(externalNullifier).toBigInt()),
+      root: serialiseInput(merkleProof.root),
+      nullifier_hash: serialiseInput(hash2(BigNumber.from(externalNullifier).toBigInt(), nullifier)),
+      signal_hash: serialiseInput(BigNumber.from(signal).toBigInt()),
+    };
+
+    // @ts-ignore
+    const proof = await noir.generateFinalProof(input)
 
     return {
-        merkleTreeRoot: publicSignals[0],
-        nullifierHash: publicSignals[1],
+        merkleTreeRoot: merkleProof.root,
+        nullifierHash: input.nullifier_hash.toString() as NumericString,
         signal: BigNumber.from(signal).toString() as NumericString,
         externalNullifier: BigNumber.from(externalNullifier).toString() as NumericString,
-        proof: packProof(proof)
+        proof,
     }
 }

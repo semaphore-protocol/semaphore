@@ -1,25 +1,10 @@
+import { ProofData } from "@noir-lang/noir_js"
 import type { NumericString } from "snarkjs"
-
-export type SnarkArtifacts = {
-    wasmFilePath: string
-    zkeyFilePath: string
-}
 
 export type SemaphoreProof = {
     merkleTreeRoot: NumericString
     signal: NumericString
     nullifierHash: NumericString
     externalNullifier: NumericString
-    proof: PackedProof
+    proof: ProofData
 }
-
-export type PackedProof = [
-    NumericString,
-    NumericString,
-    NumericString,
-    NumericString,
-    NumericString,
-    NumericString,
-    NumericString,
-    NumericString
-]

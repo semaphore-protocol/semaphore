@@ -5,7 +5,7 @@
     "license": "MIT",
     "main": "dist/index.node.js",
     "exports": {
-        "import": "./dist/index.mjs",
+        "import": "./src/index.ts",
         "require": "./dist/index.node.js",
         "types": "./dist/types/index.d.ts"
     },

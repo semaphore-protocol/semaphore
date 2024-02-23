@@ -1,3 +1,4 @@
+import { vi } from "vitest"
 import { Identity } from "@semaphore-protocol/identity"
 import {
     GenerateAuthenticationOptionsOpts as AuthenticationOptions,
@@ -6,7 +7,7 @@ import {
 
 import HeyAuthn from "./heyAuthn"
 
-jest.mock("@simplewebauthn/browser", () => ({
+vi.mock("@simplewebauthn/browser", () => ({
     startRegistration: async () => ({
         id: "my-new-credential",
         rawId: "my-new-credential",
