@@ -64,7 +64,7 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphoreVoting-castVote}.
-    function castVote(uint256 vote, uint256 nullifierHash, uint256 pollId, uint256[8] calldata proof) public override {
+    function castVote(uint256 vote, uint256 nullifierHash, uint256 pollId, bytes calldata proof) public override {
         if (polls[pollId].state != PollState.Ongoing) {
             revert Semaphore__PollIsNotOngoing();
         }
@@ -73,10 +73,18 @@ contract SemaphoreVoting is ISemaphoreVoting, SemaphoreGroups {
             revert Semaphore__YouAreUsingTheSameNillifierTwice();
         }
 
-        uint256 merkleTreeDepth = getMerkleTreeDepth(pollId);
         uint256 merkleTreeRoot = getMerkleTreeRoot(pollId);
 
-        verifier.verifyProof(merkleTreeRoot, nullifierHash, vote, pollId, proof, merkleTreeDepth);
+        bytes32[] memory publicInputs = new bytes32[](4);
+        publicInputs[0] = bytes32(pollId);
+        publicInputs[1] = bytes32(merkleTreeRoot);
+        publicInputs[2] = bytes32(nullifierHash);
+        publicInputs[3] = bytes32(vote);
+
+        verifier.verify(
+            proof,
+            publicInputs
+        );
 
         polls[pollId].nullifierHashes[nullifierHash] = true;
 

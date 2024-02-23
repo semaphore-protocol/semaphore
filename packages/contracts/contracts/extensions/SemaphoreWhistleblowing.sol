@@ -65,12 +65,20 @@ contract SemaphoreWhistleblowing is ISemaphoreWhistleblowing, SemaphoreGroups {
         uint256 leak,
         uint256 nullifierHash,
         uint256 entityId,
-        uint256[8] calldata proof
+        bytes calldata proof
     ) public override {
-        uint256 merkleTreeDepth = getMerkleTreeDepth(entityId);
         uint256 merkleTreeRoot = getMerkleTreeRoot(entityId);
 
-        verifier.verifyProof(merkleTreeRoot, nullifierHash, leak, entityId, proof, merkleTreeDepth);
+        bytes32[] memory publicInputs = new bytes32[](4);
+        publicInputs[0] = bytes32(entityId);
+        publicInputs[1] = bytes32(merkleTreeRoot);
+        publicInputs[2] = bytes32(nullifierHash);
+        publicInputs[3] = bytes32(leak);
+
+        verifier.verify(
+            proof,
+            publicInputs
+        );
 
         emit LeakPublished(entityId, leak);
     }

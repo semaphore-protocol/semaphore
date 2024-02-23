@@ -69,7 +69,7 @@ interface ISemaphoreVoting {
     /// @param nullifierHash: Nullifier hash.
     /// @param pollId: Id of the poll.
     /// @param proof: Private zk-proof parameters.
-    function castVote(uint256 vote, uint256 nullifierHash, uint256 pollId, uint256[8] calldata proof) external;
+    function castVote(uint256 vote, uint256 nullifierHash, uint256 pollId, bytes calldata proof) external;
 
     /// @dev Ends a pull and publishes the key to decrypt the votes.
     /// @param pollId: Id of the poll.

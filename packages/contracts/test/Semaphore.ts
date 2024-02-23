@@ -5,31 +5,26 @@ import { Identity } from "@semaphore-protocol/identity"
 import { SemaphoreProof, generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { constants, Signer } from "ethers"
-import { ethers, run } from "hardhat"
-import { Pairing, Semaphore } from "../build/typechain"
+import { run } from "hardhat"
+import { Semaphore } from "../build/typechain"
 import { createIdentityCommitments } from "./utils"
 
 describe("Semaphore", () => {
     let semaphoreContract: Semaphore
-    let pairingContract: Pairing
     let signers: Signer[]
     let accounts: string[]
 
-    const treeDepth = Number(process.env.TREE_DEPTH) || 20
+    const treeDepth = 16
     const groupId = 1
     const group = new Group(groupId, treeDepth)
     const members = createIdentityCommitments(3)
 
-    const wasmFilePath = `../../snark-artifacts/${treeDepth}/semaphore.wasm`
-    const zkeyFilePath = `../../snark-artifacts/${treeDepth}/semaphore.zkey`
-
     before(async () => {
-        const { semaphore, pairingAddress } = await run("deploy:semaphore", {
+        const { semaphore } = await run("deploy:semaphore", {
             logs: false
         })
 
         semaphoreContract = semaphore
-        pairingContract = await ethers.getContractAt("Pairing", pairingAddress)
 
         signers = await run("accounts", { logs: false })
         accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
@@ -242,10 +237,7 @@ describe("Semaphore", () => {
         before(async () => {
             await semaphoreContract.addMembers(groupId, [members[1], members[2]])
 
-            fullProof = await generateProof(identity, group, group.root, signal, {
-                wasmFilePath,
-                zkeyFilePath
-            })
+            fullProof = await generateProof(identity, group, group.root, signal)
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
@@ -273,7 +265,7 @@ describe("Semaphore", () => {
                 fullProof.proof
             )
 
-            await expect(transaction).to.be.revertedWithCustomError(pairingContract, "InvalidProof")
+            await expect(transaction).to.be.reverted
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
@@ -319,10 +311,7 @@ describe("Semaphore", () => {
 
             group.addMembers([members[0], members[1]])
 
-            const fullProof = await generateProof(identity, group, group.root, signal, {
-                wasmFilePath,
-                zkeyFilePath
-            })
+            const fullProof = await generateProof(identity, group, group.root, signal)
 
             const transaction = semaphoreContract.verifyProof(
                 groupId,

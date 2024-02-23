@@ -7,7 +7,6 @@ import "hardhat-gas-reporter"
 import { HardhatUserConfig } from "hardhat/config"
 import { NetworksUserConfig } from "hardhat/types"
 import { resolve } from "path"
-import "solidity-coverage"
 import { config } from "./package.json"
 import "./tasks/accounts"
 import "./tasks/deploy-semaphore"
@@ -59,7 +58,16 @@ function getNetworks(): NetworksUserConfig {
 }
 
 const hardhatConfig: HardhatUserConfig = {
-    solidity: config.solidity,
+    solidity: {
+        version: "0.8.4",
+        settings: {
+            optimizer: {
+                enabled: true,
+                runs: 100_000,
+            },
+            viaIR: false,
+        },
+    },
     paths: {
         sources: config.paths.contracts,
         tests: config.paths.tests,

@@ -6,7 +6,7 @@
     "main": "dist/index.node.js",
     "exports": {
         "import": "./src/index.ts",
-        "require": "./dist/index.node.js",
+        "require": "./src/index.ts",
         "types": "./dist/types/index.d.ts"
     },
     "types": "dist/types/index.d.ts",

@@ -2,7 +2,7 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "target": "ES2018",
-        "module": "CommonJS",
+        "module": "esnext",
         "outDir": "dist"
     },
     "include": ["scripts/**/*", "tasks/**/*", "test/**/*", "build/typechain/**/*", "types/**/*"],
