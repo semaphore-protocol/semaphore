@@ -8,8 +8,8 @@ contract Feedback {
 
     uint256 public groupId;
 
-    constructor(ISemaphore _semaphore, uint256 _groupId) {
-        semaphore = _semaphore;
+    constructor(address semaphoreAddress, uint256 _groupId) {
+        semaphore = ISemaphore(semaphoreAddress);
         groupId = _groupId;
 
         semaphore.createGroup(groupId, address(this));
