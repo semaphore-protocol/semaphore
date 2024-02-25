@@ -4,13 +4,27 @@ This project is a complete application that demonstrates a basic Semaphore use c
 
 ## 📜 Usage
 
-Copy the `.env.example` file as `.env`:
+### Add the environment variables
+
+-   Copy the `.env.example` file as `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-and add your environment variables or run the app in a local network.
+-   Copy the `.env.development.local.example` file as `.env.development.local`:
+
+```bash
+cp ./apps/web-app/.env.development.local.example ./apps/web-app/.env.development.local
+```
+
+-   Copy the `.env.production.local.example` file as `.env.production.local`:
+
+```bash
+cp ./apps/web-app/.env.production.local.example ./apps/web-app/.env.production.local
+```
+
+Add your environment variables or run the app in a local network.
 
 ### Local server
 
@@ -30,7 +44,7 @@ yarn deploy --semaphore <semaphore-address> --group <group-id> --network arbitru
 
 2. Update your `.env` file with your new contract address, the group id and the semaphore contract address.
 
-3. Copy your contract artifacts from `apps/contracts/build/contracts/contracts` folder to `apps/web-app/contract-artifacts` folders manually. Or run `yarn copy:contract-artifacts` in the project root to do it automatically.
+3. Copy your contract artifacts from `apps/contracts/artifacts/contracts/` folder to `apps/web-app/contract-artifacts` folder manually.
 
 > **Note**  
 > Check the Semaphore contract addresses [here](https://docs.semaphore.pse.dev/deployed-contracts).
@@ -40,7 +54,7 @@ yarn deploy --semaphore <semaphore-address> --group <group-id> --network arbitru
 
 ### Code quality and formatting
 
-Run [ESLint](https://eslint.org/) to analyze the code and catch bugs:
+Run [ESLint](https://eslint.org/) and [solhint](https://github.com/protofire/solhint) to analyze the code and catch bugs:
 
 ```bash
 yarn lint
@@ -52,7 +66,7 @@ Run [Prettier](https://prettier.io/) to check formatting rules:
 yarn prettier
 ```
 
-or to automatically format the code:
+Or to automatically format the code:
 
 ```bash
 yarn prettier:write
