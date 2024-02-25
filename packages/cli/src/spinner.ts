@@ -1,20 +1,17 @@
 import ora, { Ora } from "ora"
 
 export default class Spinner {
-    private text: string
     private ora: Ora
 
     constructor(text: string) {
-        this.text = text
+        this.ora = ora({
+            text,
+            indent: 1
+        })
     }
 
     start() {
-        console.info("")
-
-        this.ora = ora({
-            text: this.text,
-            indent: 1
-        }).start()
+        this.ora.start()
     }
 
     stop() {
