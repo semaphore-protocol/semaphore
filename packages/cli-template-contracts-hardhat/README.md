@@ -4,13 +4,19 @@ This project demonstrates a basic Semaphore use case. It comes with a sample con
 
 ## Usage
 
-### Compile
+### Install dependencies
+
+```bash
+yarn
+```
+
+### Compile contracts
 
 ```bash
 yarn compile
 ```
 
-### Testing
+### Test contracts
 
 ```bash
 yarn test
@@ -28,7 +34,7 @@ Or a test gas report:
 yarn test:report-gas
 ```
 
-### Deploy
+### Deploy contracts
 
 1. Copy the `.env.example` file as `.env`.
 
@@ -52,3 +58,23 @@ yarn deploy --semaphore <semaphore-address> --group <group-id> --network sepolia
 
 > **Warning**  
 > The group id is a number!
+
+### Code quality and formatting
+
+Run [ESLint](https://eslint.org/) and [solhint](https://github.com/protofire/solhint) to analyze the code and catch bugs:
+
+```bash
+yarn lint
+```
+
+Run [Prettier](https://prettier.io/) to check formatting rules:
+
+```bash
+yarn prettier
+```
+
+Or to automatically format the code:
+
+```bash
+yarn prettier:write
+```
