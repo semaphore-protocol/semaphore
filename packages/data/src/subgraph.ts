@@ -203,6 +203,16 @@ export default class SemaphoreSubgraph {
     }
 
     /**
+     * Returns a list of group members.
+     * @param groupId Group id.
+     * @returns Group members.
+     */
+    async getGroupMembers(groupId: string): Promise<string[]> {
+        const group = await this.getGroup(groupId, { members: true }) // parameters are checked inside getGroup
+        return group.members ?? []
+    }
+
+    /**
      * Returns true if a member is part of group, and false otherwise.
      * @param groupId Group id
      * @param member Group member.
