@@ -44,11 +44,11 @@ You can find some applications that are using Semaphore in [this blog post](http
 
 ## How can I start a project using Semaphore?
 
-There are three ways you can start using Semaphore in your project: using the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli), using the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate) as a template or forking it, or installing the Semaphore packages manually.
+There are three ways you can start using Semaphore in your project: using the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/cli), using the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate) as a template or forking it, or installing the Semaphore packages manually.
 
 ### Semaphore CLI
 
-To create a new project you could use `npx` or install the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli) globally using `npm` and then create the new project using the `semaphore create` command. See the [Quick Setup](https://docs.semaphore.pse.dev/quick-setup) for more information.
+To create a new project you could use `npx` or install the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/cli) globally using `npm` and then create the new project using the `semaphore create` command. See the [Quick Setup](https://docs.semaphore.pse.dev/quick-setup) for more information.
 
 There are three supported templates right now: `contracts-hardhat`, `monorepo-ethers` and `monorepo-subgraph`.
 
