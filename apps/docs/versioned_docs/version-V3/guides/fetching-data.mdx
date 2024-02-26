@@ -8,9 +8,9 @@ import TabItem from "@theme/TabItem"
 
 # Semaphore data
 
-To fetch on-chain data from the [Semaphore.sol](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol) contract, you can use the [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data) library.
+To fetch on-chain data from the [Semaphore.sol](https://github.com/semaphore-protocol/semaphore/blob/v3.15.2/packages/contracts/contracts/Semaphore.sol) contract, you can use the [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/data) library.
 
-There are two ways to do this, using [`SemaphoreSubgraph`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/subgraph.ts) or [`SemaphoreEthers`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/ethers.ts). The `SemaphoreSubgraph` class uses the [Semaphore subgraph](https://github.com/semaphore-protocol/subgraph), which uses [The Graph Protocol](https://thegraph.com/) under the hood, and the `SemaphoreEthers` class uses [Ethers](https://github.com/ethers-io/ethers.js/).
+There are two ways to do this, using [`SemaphoreSubgraph`](https://github.com/semaphore-protocol/semaphore/blob/v3.15.2/packages/data/src/subgraph.ts) or [`SemaphoreEthers`](https://github.com/semaphore-protocol/semaphore/blob/v3.15.2/packages/data/src/ethers.ts). The `SemaphoreSubgraph` class uses the [Semaphore subgraph](https://github.com/semaphore-protocol/subgraph), which uses [The Graph Protocol](https://thegraph.com/) under the hood, and the `SemaphoreEthers` class uses [Ethers](https://github.com/ethers-io/ethers.js/).
 
 - [**Fetch data using SemaphoreSubgraph**](#fetch-data-using-semaphoresubgraph)
 - [**Fetch data using SemaphoreEthers**](#fetch-data-using-semaphoreethers)
@@ -50,7 +50,7 @@ pnpm add @semaphore-protocol/data@^3
 
 ## Fetch data using SemaphoreSubgraph
 
-To fetch data using the Semaphore subgraph you can use the [`SemaphoreSubgraph`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/subgraph.ts) class from the [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data) package.
+To fetch data using the Semaphore subgraph you can use the [`SemaphoreSubgraph`](https://github.com/semaphore-protocol/semaphore/blob/v3.15.2/packages/data/src/subgraph.ts) class from the [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/data) package.
 
 ```typescript
 import { SemaphoreSubgraph } from "@semaphore-protocol/data"
@@ -117,7 +117,7 @@ const group = new Group(groupId, 20, members)
 
 ## Fetch data using SemaphoreEthers
 
-To fetch data using Ethers you can use the [`SemaphoreEthers`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/src/ethers.ts) class from the [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data) package.
+To fetch data using Ethers you can use the [`SemaphoreEthers`](https://github.com/semaphore-protocol/semaphore/blob/v3.15.2/packages/data/src/ethers.ts) class from the [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/data) package.
 
 ```typescript
 import { SemaphoreEthers } from "@semaphore-protocol/data"
