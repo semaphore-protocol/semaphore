@@ -8489,6 +8489,7 @@ __metadata:
     "@types/download": ^8.0.5
     "@types/snarkjs": 0.7.8
     "@types/tmp": ^0.2.6
+    "@zk-kit/utils": ^0.2.0
     ethers: 6.10.0
     poseidon-lite: ^0.2.0
     rimraf: ^5.0.5
@@ -10791,6 +10792,13 @@ __metadata:
   version: 2.0.0-beta.1
   resolution: "@zk-kit/imt@npm:2.0.0-beta.1"
   checksum: 7c540c81e665072be57291ad5332b6870efd442f3ea7b9b13593bda56c5253e65fdb5aa56c906c32ab5f9102ef3212f6d039e1fc766313aee634567a578e794a
+  languageName: node
+  linkType: hard
+
+"@zk-kit/utils@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@zk-kit/utils@npm:0.2.0"
+  checksum: 158cfdc9fe6b52e5dad65d1e593dd502e8fe5faea7b2f994ff1f261de688e7aac9bccc345d686826b66a9795d6ba0f518e8974996bd71b743ae22449ceb4835c
   languageName: node
   linkType: hard
 

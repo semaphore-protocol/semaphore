@@ -2,9 +2,9 @@ import type { Group, MerkleProof } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
 import { requireDefined, requireNumber, requireObject, requireTypes } from "@semaphore-protocol/utils/errors"
 import { NumericString, groth16 } from "snarkjs"
+import { packGroth16Proof } from "@zk-kit/utils"
 import getSnarkArtifacts from "./get-snark-artifacts.node"
 import hash from "./hash"
-import packPoints from "./pack-points"
 import toBigInt from "./to-bigint"
 import { BigNumberish, SemaphoreProof, SnarkArtifacts } from "./types"
 
@@ -103,6 +103,6 @@ export default async function generateProof(
         nullifier: publicSignals[1],
         message: message.toString() as NumericString,
         scope: scope.toString() as NumericString,
-        points: packPoints(proof)
+        points: packGroth16Proof(proof)
     }
 }
