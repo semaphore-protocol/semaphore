@@ -55,8 +55,7 @@ const config: Config = {
                     routeBasePath: "/",
                     sidebarPath: require.resolve("./sidebars.js"),
                     editUrl: "https://github.com/semaphore-protocol/semaphore/edit/main/apps/docs",
-                    includeCurrentVersion: false,
-                    lastVersion: "V3"
+                    includeCurrentVersion: false
                 },
                 theme: {
                     customCss: [require.resolve("./src/css/custom.scss")]
