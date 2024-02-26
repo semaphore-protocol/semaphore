@@ -110,7 +110,7 @@ const identity2 = new Identity("secret")
                 {
                     icon: <IconEyelash w="24px" h="24px" color="primary.600" />,
                     heading: "Private values",
-                    body: "The private key is a secret that identity owners must keep private. It can be both generated randomly or passed as a parameter."
+                    body: "The private key is a secret that identity owners must keep private. It can either be generated randomly or passed as a parameter."
                 },
                 {
                     icon: <IconEye w="24px" h="24px" color="primary.600" />,
