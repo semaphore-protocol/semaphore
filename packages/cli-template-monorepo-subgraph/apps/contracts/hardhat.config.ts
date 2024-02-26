@@ -1,16 +1,9 @@
-import "@nomicfoundation/hardhat-chai-matchers"
-import "@nomicfoundation/hardhat-ethers"
-import "@nomicfoundation/hardhat-verify"
-import "@semaphore-protocol/hardhat"
-import "@typechain/hardhat"
-import { config as dotenvConfig } from "dotenv"
-import "hardhat-gas-reporter"
 import { HardhatUserConfig } from "hardhat/config"
 import { NetworksUserConfig } from "hardhat/types"
-import "solidity-coverage"
+import "@nomicfoundation/hardhat-toolbox"
+import "dotenv/config"
+import "@semaphore-protocol/hardhat"
 import "./tasks/deploy"
-
-dotenvConfig()
 
 function getNetworks(): NetworksUserConfig {
     if (!process.env.INFURA_API_KEY || !process.env.ETHEREUM_PRIVATE_KEY) {
@@ -49,7 +42,7 @@ function getNetworks(): NetworksUserConfig {
     }
 }
 
-const hardhatConfig: HardhatUserConfig = {
+const config: HardhatUserConfig = {
     solidity: "0.8.23",
     networks: {
         hardhat: {
@@ -73,4 +66,4 @@ const hardhatConfig: HardhatUserConfig = {
     }
 }
 
-export default hardhatConfig
+export default config
