@@ -6,9 +6,9 @@ import {
     requireString
 } from "@semaphore-protocol/utils/errors"
 import { groth16 } from "snarkjs"
+import { unpackGroth16Proof } from "@zk-kit/utils"
 import hash from "./hash"
 import { SemaphoreProof } from "./types"
-import unpackPoints from "./unpack-points"
 import verificationKeys from "./verification-keys.json"
 
 /**
@@ -43,6 +43,6 @@ export default async function verifyProof(proof: SemaphoreProof): Promise<boolea
     return groth16.verify(
         verificationKey,
         [merkleTreeRoot, nullifier, hash(message), hash(scope)],
-        unpackPoints(points)
+        unpackGroth16Proof(points)
     )
 }
