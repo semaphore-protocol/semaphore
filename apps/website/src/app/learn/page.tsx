@@ -120,7 +120,7 @@ const identity2 = new Identity("secret")
                 {
                     icon: <IconUser w="24px" h="24px" color="primary.600" />,
                     heading: "Storing identities",
-                    body: "Building a system to save or recover secret values of Semaphore identities is nontrivial. You may choose to delegate such functionality to existing wallets such as Metamask."
+                    body: "Building a system to save or recover secret values of Semaphore identities is nontrivial. You may choose to delegate such functionality, for example by using a signature as a secret."
                 }
             ]
         },
