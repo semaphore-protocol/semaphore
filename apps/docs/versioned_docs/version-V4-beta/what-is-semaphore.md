@@ -15,9 +15,9 @@ Use cases include private voting, whistleblowing, anonymous DAOs and mixers.
 
 With Semaphore, you can allow your users to do the following:
 
-1. [Create a Semaphore identity](/V4-beta/guides/identities/).
-2. [Add their Semaphore identity to a group (i.e. _Merkle tree_)](/V4-beta/guides/groups/).
-3. [Send a verifiable, anonymous message (e.g a vote or endorsement)](/V4-beta/guides/proofs/).
+1. [Create a Semaphore identity](/guides/identities/).
+2. [Add their Semaphore identity to a group (i.e. _Merkle tree_)](/guides/groups/).
+3. [Send a verifiable, anonymous message (e.g a vote or endorsement)](/guides/proofs/).
 
 When a user broadcasts a message, Semaphore zero-knowledge
 proofs can ensure that the user has joined the group and hasn't already cast a message with their nullifier.
