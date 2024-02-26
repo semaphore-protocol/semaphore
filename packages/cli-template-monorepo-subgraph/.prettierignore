@@ -14,8 +14,12 @@ docs
 # production
 dist
 build
-cache
 contract-artifacts
+
+# Hardhat files
+artifacts
+cache
+typechain-types
 
 # github
 .github/ISSUE_TEMPLATE

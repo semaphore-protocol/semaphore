@@ -16,28 +16,19 @@
         "README.md"
     ],
     "scripts": {
-        "dev": "yarn workspaces foreach -pi run dev",
-        "dev:web-app": "yarn workspace monorepo-subgraph-web-app dev",
-        "dev:contracts": "yarn workspace monorepo-subgraph-contracts dev",
-        "lint": "eslint . --ext .js,.ts",
-        "prettier": "prettier -c .",
-        "prettier:write": "prettier -w .",
+        "dev": "yarn workspaces foreach -A -pi run dev",
+        "dev:web-app": "yarn workspace monorepo-ethers-web-app dev",
+        "dev:contracts": "yarn workspace monorepo-ethers-contracts dev",
+        "lint": "yarn workspaces foreach -A -pi run lint",
+        "prettier": "prettier -c . && yarn workspaces foreach -A -pi run prettier",
+        "prettier:write": "prettier -w . && yarn workspaces foreach -A -pi run prettier:write",
         "prepublish": "tar -czf files.tgz .gitignore .yarn .yarnrc.yml apps"
     },
     "workspaces": [
         "apps/*"
     ],
+    "packageManager": "yarn@4.1.0",
     "devDependencies": {
-        "@types/node": "^20",
-        "@typescript-eslint/eslint-plugin": "^5.9.1",
-        "@typescript-eslint/parser": "^5.9.1",
-        "eslint": "^8.2.0",
-        "eslint-config-airbnb-base": "15.0.0",
-        "eslint-config-airbnb-typescript": "^16.1.0",
-        "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-import": "^2.25.2",
-        "prettier": "^2.5.1",
-        "ts-node": "^10.8.1",
-        "typescript": "^4.7.3"
+        "prettier": "^3.2.5"
     }
 }
