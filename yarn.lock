@@ -8527,7 +8527,7 @@ __metadata:
     "@nomicfoundation/hardhat-network-helpers": ^1.0.0
     "@nomicfoundation/hardhat-toolbox": ^4.0.0
     "@nomicfoundation/hardhat-verify": ^2.0.0
-    "@semaphore-protocol/contracts": ^4.0.0-alpha.8
+    "@semaphore-protocol/contracts": 4.0.0-alpha.8
     "@semaphore-protocol/core": ^4.0.0-alpha.8
     "@semaphore-protocol/hardhat": ^4.0.0-alpha.8
     "@typechain/ethers-v6": ^0.5.0
@@ -8622,7 +8622,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/contracts@4.0.0-alpha.8, @semaphore-protocol/contracts@^4.0.0-alpha.8, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
+"@semaphore-protocol/contracts@4.0.0-alpha.8, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:

@@ -2,13 +2,15 @@
 
 This project demonstrates a basic Semaphore use case. It comes with a sample contract, a test for that contract and a sample task that deploys that contract.
 
-## Usage
+## Install
 
 ### Install dependencies
 
 ```bash
 yarn
 ```
+
+## Usage
 
 ### Compile contracts
 
