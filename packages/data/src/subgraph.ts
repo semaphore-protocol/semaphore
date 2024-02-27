@@ -209,7 +209,7 @@ export default class SemaphoreSubgraph {
      */
     async getGroupMembers(groupId: string): Promise<string[]> {
         const group = await this.getGroup(groupId, { members: true }) // parameters are checked inside getGroup
-        return group.members ?? []
+        return group.members!
     }
 
     /**
@@ -219,7 +219,7 @@ export default class SemaphoreSubgraph {
      */
     async getGroupValidatedProofs(groupId: string): Promise<any[]> {
         const group = await this.getGroup(groupId, { validatedProofs: true }) // parameters are checked inside getGroup
-        return group.validatedProofs ?? []
+        return group.validatedProofs!
     }
 
     /**
