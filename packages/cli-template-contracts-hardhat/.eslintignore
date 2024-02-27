@@ -13,17 +13,6 @@ artifacts
 cache
 typechain-types
 
-# types
-types
-
-# circuits
-circuits
-
-# production
-dist
-build
-docs
-
 # misc
 .DS_Store
 *.pem
@@ -32,8 +21,3 @@ docs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# packages
-cli-template-*
-
-snark-artifacts

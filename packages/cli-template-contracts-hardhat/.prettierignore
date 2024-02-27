@@ -4,7 +4,6 @@ package-lock.json
 yarn.lock
 .yarn
 
-
 # debug
 npm-debug.log*
 yarn-debug.log*
@@ -18,12 +17,6 @@ coverage.json
 artifacts
 cache
 typechain-types
-packages/contracts/deployed-contracts/undefined.json
-packages/contracts/deployed-contracts/hardhat.json
-packages/contracts/deployed-contracts/localhost.json
-
-# contracts
-Verifier*.sol
 
 # misc
 .DS_Store
@@ -34,4 +27,3 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-zk-artifacts
