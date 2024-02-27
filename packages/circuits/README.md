@@ -2,7 +2,7 @@
     <h1 align="center">
         Semaphore circuits
     </h1>
-    <p align="center">Semaphore circuits to create and verify zero-knowledge proofs.</p>
+    <p align="center">Semaphore circuits to generate and verify zero-knowledge proofs.</p>
 </p>
 
 <p align="center">
