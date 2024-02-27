@@ -30,7 +30,7 @@ Finally, the nullifier hash is just the hash of the identity nullifier and the e
 
 In the case of a voting application, if you have a group and you want all members of this group to vote only once, you can use the id of the group as an external nullifier. When a user votes the first time, you can save the hash of their identity nullifier and the group id (i.e. the nullifier hash) and prevent double-voting by checking if that hash already exists.
 
-See the [Semaphore circuits](https://docs.semaphore.pse.dev/technical-reference/circuits) for more technical information, or the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate) for a real use-case.
+See the [Semaphore circuits](https://docs.semaphore.pse.dev/technical-reference/circuits) for more technical information, or the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/version/3) for a real use-case.
 
 ## Why should I prevent proofs from being verified twice?
 
@@ -44,11 +44,11 @@ You can find some applications that are using Semaphore in [this blog post](http
 
 ## How can I start a project using Semaphore?
 
-There are three ways you can start using Semaphore in your project: using the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli), using the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate) as a template or forking it, or installing the Semaphore packages manually.
+There are three ways you can start using Semaphore in your project: using the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/cli), using the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/version/3) as a template or forking it, or installing the Semaphore packages manually.
 
 ### Semaphore CLI
 
-To create a new project you could use `npx` or install the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli) globally using `npm` and then create the new project using the `semaphore create` command. See the [Quick Setup](https://docs.semaphore.pse.dev/quick-setup) for more information.
+To create a new project you could use `npx` or install the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/cli) globally using `npm` and then create the new project using the `semaphore create` command. See the [Quick Setup](https://docs.semaphore.pse.dev/quick-setup) for more information.
 
 There are three supported templates right now: `contracts-hardhat`, `monorepo-ethers` and `monorepo-subgraph`.
 
@@ -65,7 +65,7 @@ The Semaphore CLI can also be used to get group data from a supported network. T
 
 ### Semaphore boilerplate
 
-To create a project, you could also use the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate). You could fork it or use it as a template.
+To create a project, you could also use the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/version/3). You could fork it or use it as a template.
 
 The Semaphore CLI templates and the Semaphore boilerplate contain the same code, which is a feedback application where you can create an identity, join a group, and send your feedback anonymously. They are almost the same, the only difference is that the templates use plain CSS so you can decide the CSS framework or library you want to use and the boilerplate uses [ChakraUI](https://chakra-ui.com/) by default.
 
