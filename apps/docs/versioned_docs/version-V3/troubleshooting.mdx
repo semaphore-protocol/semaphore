@@ -11,7 +11,7 @@ If these suggestions do not work, feel free to ask in the [Semaphore Discussions
 
 ## Using Semaphore in the frontend
 
-Semaphore works with any JavaScript frontend framework, but the [`@semaphore-protocol/proof`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/proof) package is using [snarkjs](https://github.com/iden3/snarkjs), which uses Node.js modules which are not compatible with frontend frameworks and there are some changes that we need to do to make it work on the client side.
+Semaphore works with any JavaScript frontend framework, but the [`@semaphore-protocol/proof`](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/proof) package is using [snarkjs](https://github.com/iden3/snarkjs), which uses Node.js modules which are not compatible with frontend frameworks and there are some changes that we need to do to make it work on the client side.
 
 ### Semaphore with Nextjs
 
@@ -229,7 +229,7 @@ Your `tsconfig.json` file would be something like this:
 
 When you create a group and the transaction is reverted, make sure that the group id you are using does not exist on the network you are using.
 
-To check that, you can use the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli) with the command `get-groups` and the network you are using and then, make sure that your group id is not part of that list. You can also use the [Semaphore explorer](https://explorer.semaphore.pse.dev/).
+To check that, you can use the [Semaphore CLI](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/cli) with the command `get-groups` and the network you are using and then, make sure that your group id is not part of that list. You can also use the [Semaphore explorer](https://explorer.semaphore.pse.dev/).
 
 ## Semaphore Proofs
 
