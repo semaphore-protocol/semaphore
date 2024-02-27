@@ -6,7 +6,6 @@
     "files": [
         "files.tgz",
         "contracts/",
-        "scripts/",
         "tasks/",
         "test/",
         ".editorconfig",
@@ -16,7 +15,10 @@
         ".prettierignore",
         ".prettierrc.json",
         "hardhat.config.ts",
-        "tsconfig.json"
+        "tsconfig.json",
+        "README.md",
+        ".yarn/",
+        ".yarnrc.yml"
     ],
     "publishConfig": {
         "access": "public"
@@ -30,6 +32,7 @@
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
         "typechain": "hardhat typechain",
+        "prepublish": "tar -czf files.tgz .gitignore",
         "lint": "eslint . --ext .js,.ts && solhint 'contracts/**/*.sol'",
         "prettier": "prettier -c --plugin=prettier-plugin-solidity .",
         "prettier:write": "prettier -w --plugin=prettier-plugin-solidity ."
@@ -69,7 +72,7 @@
         "typescript": "^5.3.3"
     },
     "dependencies": {
-        "@semaphore-protocol/contracts": "^4.0.0-alpha.8"
+        "@semaphore-protocol/contracts": "4.0.0-alpha.8"
     },
     "packageManager": "yarn@4.1.0"
 }
