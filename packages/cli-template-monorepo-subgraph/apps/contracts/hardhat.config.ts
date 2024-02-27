@@ -1,9 +1,12 @@
 import { HardhatUserConfig } from "hardhat/config"
 import { NetworksUserConfig } from "hardhat/types"
 import "@nomicfoundation/hardhat-toolbox"
-import "dotenv/config"
+import { config as dotenvConfig } from "dotenv"
+import { resolve } from "path"
 import "@semaphore-protocol/hardhat"
 import "./tasks/deploy"
+
+dotenvConfig({ path: resolve(__dirname, "../../.env") })
 
 function getNetworks(): NetworksUserConfig {
     if (!process.env.INFURA_API_KEY || !process.env.ETHEREUM_PRIVATE_KEY) {
@@ -44,6 +47,7 @@ function getNetworks(): NetworksUserConfig {
 
 const config: HardhatUserConfig = {
     solidity: "0.8.23",
+    defaultNetwork: process.env.DEFAULT_NETWORK || "localhost",
     networks: {
         hardhat: {
             chainId: 1337

@@ -5,14 +5,10 @@
     "license": "Unlicense",
     "files": [
         "files.tgz",
-        "scripts/",
         ".editorconfig",
         ".env.example",
-        ".eslintignore",
-        ".eslintrc.json",
         ".prettierignore",
         ".prettierrc.json",
-        "tsconfig.json",
         "README.md"
     ],
     "scripts": {
