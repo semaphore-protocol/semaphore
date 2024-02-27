@@ -61,7 +61,7 @@ interface ISemaphore {
         uint256 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
-        uint256[8] calldata proof
+        bytes calldata proof
     ) external;
 
     /// @dev Creates a new group. Only the admin will be able to add or remove members.

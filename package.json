@@ -12,8 +12,8 @@
         "compile:contracts": "yarn workspace semaphore-contracts compile",
         "download:snark-artifacts": "rimraf snark-artifacts && ts-node scripts/download-snark-artifacts.ts",
         "remove:template-files": "ts-node scripts/remove-template-files.ts",
-        "test": "yarn test:libraries && yarn test:contracts && yarn test:subgraph",
-        "test:libraries": "jest --coverage",
+        "test": "yarn test:libraries && yarn test:contracts",
+        "test:libraries": "yarn vitest --globals",
         "test:subgraph": "yarn workspace semaphore-subgraph test",
         "test:contracts": "yarn workspace semaphore-contracts test:coverage",
         "lint": "eslint . --ext .js,.ts,.tsx && yarn workspace semaphore-contracts lint",
@@ -95,5 +95,8 @@
     },
     "resolutions": {
         "changelogithub@0.12.7": "patch:changelogithub@npm:0.12.7#.yarn/patches/changelogithub-npm-0.12.7-72f348805d.patch"
+    },
+    "dependencies": {
+        "vitest": "^1.3.1"
     }
 }

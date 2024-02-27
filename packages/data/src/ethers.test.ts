@@ -1,14 +1,15 @@
+import { vi, MockedFunction } from "vitest"
 import SemaphoreEthers from "./ethers"
 import getEvents from "./getEvents"
 
-jest.mock("./getEvents", () => ({
+vi.mock("./getEvents", () => ({
     __esModule: true,
-    default: jest.fn()
+    default: vi.fn()
 }))
 
-jest.mock("@ethersproject/contracts", () => ({
+vi.mock("@ethersproject/contracts", () => ({
     __esModule: true,
-    Contract: jest.fn(
+    Contract: vi.fn(
         () =>
             ({
                 getMerkleTreeRoot: () => "222",
@@ -19,7 +20,7 @@ jest.mock("@ethersproject/contracts", () => ({
     )
 }))
 
-const getEventsMocked = getEvents as jest.MockedFunction<typeof getEvents>
+const getEventsMocked = getEvents as MockedFunction<typeof getEvents>
 
 describe("SemaphoreEthers", () => {
     let semaphore: SemaphoreEthers

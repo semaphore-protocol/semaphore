@@ -153,7 +153,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
-        uint256[8] calldata proof
+        bytes calldata proof
     ) external override {
         uint256 merkleTreeDepth = getMerkleTreeDepth(groupId);
 
@@ -182,7 +182,16 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
             revert Semaphore__YouAreUsingTheSameNillifierTwice();
         }
 
-        verifier.verifyProof(merkleTreeRoot, nullifierHash, signal, externalNullifier, proof, merkleTreeDepth);
+        bytes32[] memory publicInputs = new bytes32[](4);
+        publicInputs[0] = bytes32(externalNullifier);
+        publicInputs[1] = bytes32(merkleTreeRoot);
+        publicInputs[2] = bytes32(nullifierHash);
+        publicInputs[3] = bytes32(signal);
+
+        verifier.verify(
+            proof,
+            publicInputs
+        );
 
         groups[groupId].nullifierHashes[nullifierHash] = true;
 

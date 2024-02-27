@@ -49,5 +49,5 @@ interface ISemaphoreWhistleblowing {
     /// @param nullifierHash: Nullifier hash.
     /// @param entityId: Id of the entity.
     /// @param proof: Private zk-proof parameters.
-    function publishLeak(uint256 leak, uint256 nullifierHash, uint256 entityId, uint256[8] calldata proof) external;
+    function publishLeak(uint256 leak, uint256 nullifierHash, uint256 entityId, bytes calldata proof) external;
 }
