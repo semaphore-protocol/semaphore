@@ -2,29 +2,15 @@
 
 This project is a complete application that demonstrates a basic Semaphore use case. It comes with a sample contract, a test for that contract and a sample task that deploys that contract. It also contains a frontend to play around with the contract.
 
+## Install
+
+### Install dependencies
+
+```bash
+yarn
+```
+
 ## 📜 Usage
-
-### Add the environment variables
-
--   Copy the `.env.example` file as `.env`:
-
-```bash
-cp .env.example .env
-```
-
--   Copy the `.env.development.local.example` file as `.env.development.local`:
-
-```bash
-cp ./apps/web-app/.env.development.local.example ./apps/web-app/.env.development.local
-```
-
--   Copy the `.env.production.local.example` file as `.env.production.local`:
-
-```bash
-cp ./apps/web-app/.env.production.local.example ./apps/web-app/.env.production.local
-```
-
-Add your environment variables or run the app in a local network.
 
 ### Local server
 
