@@ -4,13 +4,13 @@ sidebar_position: 2
 
 # Circuits
 
-The [Semaphore circuit](https://github.com/semaphore-protocol/semaphore/tree/main/packages/circuits) is the heart of the protocol and consists of three parts:
+The [Semaphore circuit](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/circuits) is the heart of the protocol and consists of three parts:
 
--   [**Proof of membership**](/technical-reference/circuits#proof-of-membership)
--   [**Nullifier hash**](/technical-reference/circuits#nullifier-hash)
--   [**Signal**](/technical-reference/circuits#signal)
+-   [**Proof of membership**](/V3/technical-reference/circuits#proof-of-membership)
+-   [**Nullifier hash**](/V3/technical-reference/circuits#nullifier-hash)
+-   [**Signal**](/V3/technical-reference/circuits#signal)
 
-![Semaphore circuit](https://github.com/semaphore-protocol/semaphore/raw/main/packages/circuits/scheme.png)
+![Semaphore circuit](https://github.com/semaphore-protocol/semaphore/raw/v3.15.2/packages/circuits/scheme.png)
 
 The diagram above shows how the input signals are used in the Semaphore circuit and how the outputs are calculated.
 
