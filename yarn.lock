@@ -8699,7 +8699,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/core@4.0.0-alpha.8, @semaphore-protocol/core@^4.0.0-alpha.8, @semaphore-protocol/core@workspace:packages/core":
+"@semaphore-protocol/core@4.0.0-alpha.8, @semaphore-protocol/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/core@workspace:packages/core"
   dependencies:
@@ -8709,7 +8709,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/data@4.0.0-alpha.8, @semaphore-protocol/data@^4.0.0-alpha.8, @semaphore-protocol/data@workspace:packages/data":
+"@semaphore-protocol/data@4.0.0-alpha.8, @semaphore-protocol/data@workspace:packages/data":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/data@workspace:packages/data"
   dependencies:
@@ -8734,7 +8734,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/hardhat@4.0.0-alpha.8, @semaphore-protocol/hardhat@^4.0.0-alpha.8, @semaphore-protocol/hardhat@workspace:packages/hardhat":
+"@semaphore-protocol/hardhat@4.0.0-alpha.8, @semaphore-protocol/hardhat@workspace:packages/hardhat":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/hardhat@workspace:packages/hardhat"
   dependencies:
@@ -24782,8 +24782,8 @@ __metadata:
     "@nomicfoundation/hardhat-toolbox": ^4.0.0
     "@nomicfoundation/hardhat-verify": ^2.0.0
     "@semaphore-protocol/contracts": 4.0.0-alpha.8
-    "@semaphore-protocol/core": ^4.0.0-alpha.8
-    "@semaphore-protocol/hardhat": ^4.0.0-alpha.8
+    "@semaphore-protocol/core": 4.0.0-alpha.8
+    "@semaphore-protocol/hardhat": 4.0.0-alpha.8
     "@typechain/ethers-v6": ^0.5.0
     "@typechain/hardhat": ^9.0.0
     "@types/chai": ^4.2.0
@@ -24816,8 +24816,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo-subgraph-web-app@workspace:packages/cli-template-monorepo-subgraph/apps/web-app"
   dependencies:
-    "@semaphore-protocol/core": ^4.0.0-alpha.8
-    "@semaphore-protocol/data": ^4.0.0-alpha.8
+    "@semaphore-protocol/core": 4.0.0-alpha.8
+    "@semaphore-protocol/data": 4.0.0-alpha.8
     "@types/node": ^20
     "@types/react": ^18
     "@types/react-dom": ^18
