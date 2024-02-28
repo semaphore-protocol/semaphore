@@ -8,6 +8,11 @@ import { Readable } from "node:stream"
 import { finished } from "node:stream/promises"
 import { SnarkArtifacts } from "./types"
 
+/**
+ * A utility function to download the zero-knowledge artifacts from an external server.
+ * @param url The URL from which to download the artifacts.
+ * @param outputPath The path in which to save the artifacts.
+ */
 async function download(url: string, outputPath: string) {
     const response = await fetch(url)
 
@@ -23,6 +28,13 @@ async function download(url: string, outputPath: string) {
     await finished(Readable.fromWeb(response.body as any).pipe(fileStream))
 }
 
+/**
+ * Downloads the zero-knowledge artifacts and returns their paths.
+ * Artifacts exist for each tree depth supported by Semaphore, and
+ * they were generated in a trusted-setup.
+ * @param treeDepth The depth of the tree.
+ * @returns The zero-knowledge artifacts paths.
+ */
 export default async function getSnarkArtifacts(treeDepth: number): Promise<SnarkArtifacts> {
     requireNumber(treeDepth, "treeDepth")
 
