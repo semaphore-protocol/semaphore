@@ -11,10 +11,10 @@ import { poseidon2 } from "poseidon-lite/poseidon2"
 import { randomNumber } from "./random-number.node"
 
 /**
- * The Semaphore identity is essentially an {@link https://www.rfc-editor.org/rfc/rfc8032|EdDSA}
- * public/private key pair. The {@link https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/eddsa-poseidon|EdDSA implementation}
- * in this library uses {@link https://eips.ethereum.org/EIPS/eip-2494|Baby Jubjub} for public key generation
- * and {@link https://www.poseidon-hash.info|Poseidon} for signatures.
+ * The Semaphore identity is essentially an {@link https://www.rfc-editor.org/rfc/rfc8032 | EdDSA}
+ * public/private key pair. The {@link https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/eddsa-poseidon | EdDSA implementation}
+ * in this library uses {@link https://eips.ethereum.org/EIPS/eip-2494 | Baby Jubjub} for public key generation
+ * and {@link https://www.poseidon-hash.info | Poseidon} for signatures.
  * In addition, the commitment, i.e. the hash of the public key, is used to represent
  * Semaphore identities in groups, adding an additional layer of privacy and security.
  */
@@ -53,7 +53,7 @@ export default class Identity {
 
     /**
      * Returns the private key.
-     * @returns The private key as a {@link https://zkkit.pse.dev/types/_zk_kit_utils.BigNumberish.html|BigNumberish}.
+     * @returns The private key as a {@link https://zkkit.pse.dev/types/_zk_kit_utils.BigNumberish.html | BigNumberish}.
      */
     public get privateKey(): BigNumberish {
         return this._privateKey
@@ -68,7 +68,7 @@ export default class Identity {
     }
 
     /**
-     * Returns the public key as a Baby Jubjub {@link https://zkkit.pse.dev/types/_zk_kit_baby_jubjub.Point.html|Point}.
+     * Returns the public key as a Baby Jubjub {@link https://zkkit.pse.dev/types/_zk_kit_baby_jubjub.Point.html | Point}.
      * @returns The public key as a point.
      */
     public get publicKey(): Point<string> {
@@ -93,7 +93,7 @@ export default class Identity {
      * const signature = identity.signMessage("message")
      *
      * @param message The message to be signed.
-     * @returns A {@link https://zkkit.pse.dev/types/_zk_kit_eddsa_poseidon.Signature.html|Signature} object containing the signature components.
+     * @returns A {@link https://zkkit.pse.dev/types/_zk_kit_eddsa_poseidon.Signature.html | Signature} object containing the signature components.
      */
     public signMessage(message: BigNumberish): Signature<string> {
         return signMessage(this.privateKey, message)
