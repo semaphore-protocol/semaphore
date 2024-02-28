@@ -8527,8 +8527,8 @@ __metadata:
   dependencies:
     "@types/mocha": "npm:^10.0.6"
     "@zk-kit/circuits": "npm:0.2.4"
-    "@zk-kit/eddsa-poseidon": "npm:0.3.1"
-    "@zk-kit/imt": "npm:^2.0.0-beta.1"
+    "@zk-kit/eddsa-poseidon": "npm:0.6.0"
+    "@zk-kit/imt": "npm:^2.0.0-beta.2"
     circomkit: "npm:^0.0.19"
     circomlib: "npm:2.0.5"
     mocha: "npm:^10.2.0"
@@ -8655,7 +8655,7 @@ __metadata:
   dependencies:
     "@rollup/plugin-commonjs": "npm:^25.0.7"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
-    "@zk-kit/imt": "npm:^2.0.0-beta.1"
+    "@zk-kit/imt": "npm:2.0.0-beta.2"
     poseidon-lite: "npm:^0.2.0"
     rollup-plugin-cleanup: "npm:^3.2.1"
     rollup-plugin-typescript2: "npm:^0.36.0"
@@ -8697,8 +8697,10 @@ __metadata:
     "@rollup/plugin-alias": "npm:^5.1.0"
     "@rollup/plugin-commonjs": "npm:^25.0.7"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
-    "@zk-kit/eddsa-poseidon": "npm:0.4.1"
-    poseidon-lite: "npm:^0.2.0"
+    "@zk-kit/baby-jubjub": "npm:0.2.0"
+    "@zk-kit/eddsa-poseidon": "npm:0.6.0"
+    "@zk-kit/utils": "npm:0.3.0"
+    poseidon-lite: "npm:0.2.0"
     rollup-plugin-cleanup: "npm:^3.2.1"
     rollup-plugin-typescript2: "npm:^0.36.0"
   languageName: unknown
@@ -8714,7 +8716,7 @@ __metadata:
     "@types/download": "npm:^8.0.5"
     "@types/snarkjs": "npm:0.7.8"
     "@types/tmp": "npm:^0.2.6"
-    "@zk-kit/utils": "npm:0.2.0"
+    "@zk-kit/utils": "npm:0.3.0"
     ethers: "npm:6.10.0"
     poseidon-lite: "npm:^0.2.0"
     rimraf: "npm:^5.0.5"
@@ -11151,6 +11153,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@zk-kit/baby-jubjub@npm:0.2.0":
+  version: 0.2.0
+  resolution: "@zk-kit/baby-jubjub@npm:0.2.0"
+  dependencies:
+    "@zk-kit/utils": "npm:0.3.0"
+  checksum: 10/764804bd96adaa2b7df3110d64ef327e6ab0d2c4bf0fe60a81ed6be3770ee6b6e74d1f67e574be23bd830aa1c8ce94137f909d5d4fde7005bc50ca82d0ee6c10
+  languageName: node
+  linkType: hard
+
 "@zk-kit/circuits@npm:0.2.4":
   version: 0.2.4
   resolution: "@zk-kit/circuits@npm:0.2.4"
@@ -11160,17 +11171,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/eddsa-poseidon@npm:0.3.1":
-  version: 0.3.1
-  resolution: "@zk-kit/eddsa-poseidon@npm:0.3.1"
-  checksum: 10/53890cca9d391526067631a05b27757e6838604cd9425a869dee81c83639f317f7919d7f05ecb2d9c24719c0b297760c6eda96dc22275ccec04dd0a3eb816dc2
-  languageName: node
-  linkType: hard
-
-"@zk-kit/eddsa-poseidon@npm:0.4.1":
-  version: 0.4.1
-  resolution: "@zk-kit/eddsa-poseidon@npm:0.4.1"
-  checksum: 10/11ffc69ddd8f267c34b73b0edbb17adb3effd61abb957f4295e9e23548031f6b4fb073db6a8871f9c4631313530faf28a62379c2d652234d829216fd0945178e
+"@zk-kit/eddsa-poseidon@npm:0.6.0":
+  version: 0.6.0
+  resolution: "@zk-kit/eddsa-poseidon@npm:0.6.0"
+  dependencies:
+    "@zk-kit/baby-jubjub": "npm:0.2.0"
+    "@zk-kit/utils": "npm:0.3.0"
+  checksum: 10/ba32c455675d82ceb88eba30ff9907d80bab266fb3fc2fe9ebf5945c39e23d833b752fb67b8ac3dba294d457918b3178e4c390df45fb587d358352110974e45c
   languageName: node
   linkType: hard
 
@@ -11183,17 +11190,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/imt@npm:^2.0.0-beta.1":
-  version: 2.0.0-beta.1
-  resolution: "@zk-kit/imt@npm:2.0.0-beta.1"
-  checksum: 10/4675e26363c650f4e050554eee707cf2b31c29228dd6875236811d65ba694a9019f1ec0e9bb7b599b1d654530757b3494bd284ed8e2936b773628091801fe492
+"@zk-kit/imt@npm:2.0.0-beta.2, @zk-kit/imt@npm:^2.0.0-beta.2":
+  version: 2.0.0-beta.2
+  resolution: "@zk-kit/imt@npm:2.0.0-beta.2"
+  checksum: 10/b99ab587f4a5f147531160feb9b27e5505659d5bb34fe2cbbc8e3d3bedc95febb3cf1ffcd4f75570feb03a2d929063e9b5f9d638ac2c1bba0204ca9cdc1fa2c0
   languageName: node
   linkType: hard
 
-"@zk-kit/utils@npm:0.2.0":
-  version: 0.2.0
-  resolution: "@zk-kit/utils@npm:0.2.0"
-  checksum: 10/4df98e7c68c919d5efa1e109d79b1579e6921ffedbc196424391dbed513424633fa14ad7ec123641a06729e9acadcc9b0866507fca83d98dd86a5130930d90ab
+"@zk-kit/utils@npm:0.3.0":
+  version: 0.3.0
+  resolution: "@zk-kit/utils@npm:0.3.0"
+  checksum: 10/aa889d4ad2f88930a327bf987c95f8b9b4ece0b39b6f7685d14d1fd3803475e6900a9db489f876ae9d4b3a1e4cb99313870969c9b67b089d45b75f8faf44ffd5
   languageName: node
   linkType: hard
 
@@ -26575,7 +26582,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"poseidon-lite@npm:^0.2.0":
+"poseidon-lite@npm:0.2.0, poseidon-lite@npm:^0.2.0":
   version: 0.2.0
   resolution: "poseidon-lite@npm:0.2.0"
   checksum: 10/63c7668b480ee3d57aaca0eda7e56d563ab2bfcc40bbce0e4bccdc9deed4c0d68255749356e328b622ce8715b1f1ba689fe1a86ca78eb1056a51a18daa252ee1
