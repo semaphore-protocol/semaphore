@@ -334,14 +334,6 @@ yarn commit
 
 It will also automatically check that the modified files comply with ESLint and Prettier rules.
 
-### Snark artifacts
-
-Download the Semaphore snark artifacts needed to generate and verify proofs:
-
-```bash
-yarn download:snark-artifacts
-```
-
 ### Testing
 
 Run [Jest](https://jestjs.io/) to test the JS libraries:
