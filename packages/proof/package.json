@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/proof",
-    "version": "4.0.0-beta",
+    "version": "4.0.0-beta.1",
     "description": "A library to generate and verify Semaphore proofs.",
     "type": "module",
     "license": "MIT",
@@ -50,13 +50,14 @@
         "rollup-plugin-typescript2": "^0.36.0"
     },
     "peerDependencies": {
-        "@semaphore-protocol/group": "4.0.0-beta",
-        "@semaphore-protocol/identity": "4.0.0-beta"
+        "@semaphore-protocol/group": "4.0.0-beta.1",
+        "@semaphore-protocol/identity": "4.0.0-beta.1"
     },
     "dependencies": {
-        "@semaphore-protocol/utils": "4.0.0-beta",
+        "@semaphore-protocol/utils": "4.0.0-beta.1",
         "@zk-kit/utils": "0.3.0",
         "ethers": "6.10.0",
         "snarkjs": "0.7.3"
-    }
+    },
+    "stableVersion": "4.0.0-beta"
 }
