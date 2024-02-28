@@ -18,7 +18,7 @@
     <a href="https://npmjs.org/package/@semaphore-protocol/group">
         <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/group.svg?style=flat-square" />
     </a>
-    <a href="https://js.semaphore.pse.dev/group">
+    <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_group">
         <img alt="Documentation typedoc" src="https://img.shields.io/badge/docs-typedoc-744C7C?style=flat-square">
     </a>
     <a href="https://eslint.org/">
@@ -69,6 +69,8 @@ yarn add @semaphore-protocol/group
 ```
 
 ## 📜 Usage
+
+For more information on the functions provided by `@semaphore-protocol/group`, please refer to the [TypeDoc documentation](https://js.semaphore.pse.dev/modules/_semaphore_protocol_group).
 
 \# **new Group**(members: _BigNumberish[]_ = []): _Group_
 
