@@ -23,7 +23,8 @@ template Semaphore(MAX_DEPTH) {
     // to skip steps 1, 2, 3 in the generation of the public key defined here:
     // https://www.rfc-editor.org/rfc/rfc8032#section-5.1.5, making the circuit
     // more efficient and simple.
-    // See the Semaphore identity package to know more about how the identity is generated.
+    // See the Semaphore identity package to know more about how the identity is generated:
+    // https://github.com/semaphore-protocol/semaphore/tree/main/packages/identity.
     signal input secret;
     signal input merkleProofLength, merkleProofIndices[MAX_DEPTH], merkleProofSiblings[MAX_DEPTH];
     signal input message;
