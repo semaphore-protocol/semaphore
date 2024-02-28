@@ -9,7 +9,17 @@ import toBigInt from "./to-bigint"
 import { BigNumberish, SemaphoreProof, SnarkArtifacts } from "./types"
 
 /**
- * Generates a Semaphore proof.
+ * It generates a Semaphore proof, i.e. a zero-knowledge proof that an identity that
+ * is part of a group has shared an anonymous message.
+ * The message may be any arbitrary user-defined value (e.g. a vote), or the hash of that value.
+ * The scope is a value used like a topic on which users can generate a valid proof only once,
+ * for example the id of an election in which voters can only vote once.
+ * The hash of the identity's scope and private key is called a nullifier and can be
+ * used to verify whether that identity has already generated a valid proof in that scope.
+ * The depth of the tree determines which zero-knowledge artifacts to use to generate the proof.
+ * If it is not defined, it will be inferred from the group or Merkle proof passed as the second parameter.
+ * Finally, the artifacts themselves can be passed manually with file paths,
+ * or they will be automatically fetched.
  * @param identity The Semaphore identity.
  * @param groupOrMerkleProof The Semaphore group or its Merkle proof.
  * @param scope The Semaphore scope.
@@ -32,7 +42,7 @@ export default async function generateProof(
     requireDefined(scope, "scope")
 
     requireObject(identity, "identity")
-    requireObject(identity, "groupOrMerkleProof")
+    requireObject(groupOrMerkleProof, "groupOrMerkleProof")
     requireTypes(message, "message", ["string", "bigint", "number", "uint8array"])
     requireTypes(scope, "scope", ["string", "bigint", "number", "uint8array"])
 
@@ -44,11 +54,15 @@ export default async function generateProof(
         requireObject(snarkArtifacts, "snarkArtifacts")
     }
 
+    // Message and scope can be strings, numbers or buffers (i.e. Uint8Array).
+    // They will be converted to bigints anyway.
     message = toBigInt(message)
     scope = toBigInt(scope)
 
     let merkleProof
 
+    // The second parameter can be either a Merkle proof or a group.
+    // If it is a group the Merkle proof will be calculated here.
     if ("siblings" in groupOrMerkleProof) {
         merkleProof = groupOrMerkleProof
     } else {
