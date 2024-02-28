@@ -51,6 +51,5 @@
         "ora": "^8.0.1",
         "pacote": "^17.0.6",
         "semver": "^7.6.0"
-    },
-    "stableVersion": "4.0.0-alpha.8"
+    }
 }
