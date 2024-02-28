@@ -37,6 +37,7 @@
         "rollup-plugin-typescript2": "^0.31.2"
     },
     "dependencies": {
+        "@aztec/bb.js": "latest",
         "@ethersproject/bignumber": "^5.7.0",
         "@ethersproject/bytes": "^5.7.0",
         "@ethersproject/keccak256": "^5.7.0",

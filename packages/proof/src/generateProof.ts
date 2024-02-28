@@ -1,5 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber"
-import { BytesLike, Hexable } from "@ethersproject/bytes"
+import { BytesLike, Hexable, hexZeroPad } from "@ethersproject/bytes"
 import { Group } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
 import { MerkleProof } from "@zk-kit/incremental-merkle-tree"
@@ -8,7 +8,7 @@ import { Fr } from "@aztec/bb.js"
 import { Noir } from "@noir-lang/noir_js"
 import { BarretenbergBackend } from "@noir-lang/backend_barretenberg"
 import { SemaphoreProof } from "./types"
-import hash2 from "./hash"
+import hash from "./hash"
 import compiled from "../noir-artifacts/16.json"
 
 function serialiseInput(value: bigint): string {
@@ -27,7 +27,7 @@ function serialiseInput(value: bigint): string {
 export default async function generateProof(
     { trapdoor, nullifier, commitment }: Identity,
     groupOrMerkleProof: Group | MerkleProof,
-    externalNullifier: BytesLike | Hexable | number | bigint,
+    externalNullifier: Fr,
     signal: BytesLike | Hexable | number | bigint
 ): Promise<SemaphoreProof> {
     let merkleProof: MerkleProof
@@ -50,19 +50,21 @@ export default async function generateProof(
     const noir = new Noir(compiled, backend)
 
     const indices = BigInt(Number.parseInt(merkleProof.pathIndices.join(""), 2))
+    console.log(merkleProof.siblings)
     const input = {
-        id_nullifier: serialiseInput(nullifier),
-        id_trapdoor: serialiseInput(trapdoor),
+        id_nullifier: nullifier.toString(),
+        id_trapdoor: trapdoor.toString(),
         indices: serialiseInput(indices),
-        siblings: merkleProof.siblings.map((v) => serialiseInput(v)),
-        external_nullifier: serialiseInput(BigNumber.from(externalNullifier).toBigInt()),
-        root: serialiseInput(merkleProof.root),
-        nullifier_hash: serialiseInput(hash2(BigNumber.from(externalNullifier).toBigInt(), nullifier)),
+        siblings: merkleProof.siblings.map((sibling) => `0x${BigInt(sibling).toString(16)}`),
+        external_nullifier: hexZeroPad(externalNullifier.toString(), 32),
+        nullifier_hash: (await hash(externalNullifier, nullifier)).toString(),
+        root: merkleProof.root.toString(),
         signal_hash: serialiseInput(BigNumber.from(signal).toBigInt())
     }
+    console.log(input)
 
     // @ts-ignore
-    const proof = await noir.generateFinalProof(input)
+    const proof = await noir.generateProof(input)
 
     return {
         merkleTreeRoot: merkleProof.root,

@@ -1,12 +1,15 @@
 import { IncrementalMerkleTree, MerkleProof } from "@zk-kit/incremental-merkle-tree"
-import { poseidon2 } from "poseidon-lite/poseidon2"
+import { BarretenbergSync, Fr } from "@aztec/bb.js"
+// import { cpus } from "os"
+
 import hash from "./hash"
 import { BigNumberish } from "./types"
 
 export default class Group {
     private _id: BigNumberish
 
-    merkleTree: IncrementalMerkleTree
+    merkleTree: IncrementalMerkleTree | null = null
+    private bb: BarretenbergSync | null = null
 
     /**
      * Initializes the group with the group id and the tree depth.
@@ -14,13 +17,28 @@ export default class Group {
      * @param treeDepth Tree depth.
      * @param members List of group members.
      */
-    constructor(id: BigNumberish, treeDepth = 20, members: BigNumberish[] = []) {
+    constructor(id: BigNumberish, private treeDepth = 20) {
         if (treeDepth < 16 || treeDepth > 32) {
             throw new Error("The tree depth must be between 16 and 32")
         }
-
         this._id = id
-        this.merkleTree = new IncrementalMerkleTree(poseidon2, treeDepth, hash(id), 2, members.map(BigInt))
+    }
+
+    /**
+     *
+     * Inits helper functions
+     *
+     */
+    async init(members: Fr[] = []) {
+        console.log("members", members)
+        const bb = await BarretenbergSync.new()
+        this.merkleTree = new IncrementalMerkleTree(
+            (values) => bb.poseidonHash(values),
+            this.treeDepth,
+            hash(this._id),
+            2,
+            members.map((m) => m.toString())
+        )
     }
 
     /**
@@ -36,7 +54,7 @@ export default class Group {
      * @returns Root hash.
      */
     get root(): BigNumberish {
-        return this.merkleTree.root
+        return this.merkleTree!.root
     }
 
     /**
@@ -44,7 +62,7 @@ export default class Group {
      * @returns Tree depth.
      */
     get depth(): number {
-        return this.merkleTree.depth
+        return this.merkleTree!.depth
     }
 
     /**
@@ -52,7 +70,7 @@ export default class Group {
      * @returns Tree zero value.
      */
     get zeroValue(): BigNumberish {
-        return this.merkleTree.zeroes[0]
+        return this.merkleTree!.zeroes[0]
     }
 
     /**
@@ -60,7 +78,7 @@ export default class Group {
      * @returns List of members.
      */
     get members(): BigNumberish[] {
-        return this.merkleTree.leaves
+        return this.merkleTree!.leaves
     }
 
     /**
@@ -68,16 +86,16 @@ export default class Group {
      * @param member Group member.
      * @returns Index of the member.
      */
-    indexOf(member: BigNumberish): number {
-        return this.merkleTree.indexOf(member)
+    indexOf(member: Fr): number {
+        return this.merkleTree!.indexOf(member.toString())
     }
 
     /**
      * Adds a new member to the group.
      * @param member New member.
      */
-    addMember(member: BigNumberish) {
-        this.merkleTree.insert(BigInt(member))
+    addMember(member: Fr) {
+        this.merkleTree!.insert(member.toString())
     }
 
     /**
@@ -85,7 +103,7 @@ export default class Group {
      * @param members New members.
      * @deprecated Use the new class parameter to add a list of members.
      */
-    addMembers(members: BigNumberish[]) {
+    addMembers(members: Fr[]) {
         for (const member of members) {
             this.addMember(member)
         }
@@ -96,8 +114,8 @@ export default class Group {
      * @param index Index of the member to be updated.
      * @param member New member value.
      */
-    updateMember(index: number, member: BigNumberish) {
-        this.merkleTree.update(index, member)
+    updateMember(index: number, member: Fr) {
+        this.merkleTree!.update(index, member.toString())
     }
 
     /**
@@ -105,7 +123,7 @@ export default class Group {
      * @param index Index of the member to be removed.
      */
     removeMember(index: number) {
-        this.merkleTree.delete(index)
+        this.merkleTree!.delete(index)
     }
 
     /**
@@ -114,7 +132,7 @@ export default class Group {
      * @returns Proof object.
      */
     generateMerkleProof(index: number): MerkleProof {
-        const merkleProof = this.merkleTree.createProof(index)
+        const merkleProof = this.merkleTree!.createProof(index)
 
         merkleProof.siblings = merkleProof.siblings.map((s) => s[0])
 

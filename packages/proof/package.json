@@ -40,17 +40,17 @@
         "rollup-plugin-typescript2": "^0.31.2"
     },
     "peerDependencies": {
-        "@semaphore-protocol/group": "3.15.2",
+        "@semaphore-protocol/group": "*",
         "@semaphore-protocol/identity": "3.15.2"
     },
     "dependencies": {
-        "@aztec/bb.js": "^0.22.0",
+        "@aztec/bb.js": "latest",
         "@ethersproject/bignumber": "^5.5.0",
         "@ethersproject/bytes": "^5.7.0",
         "@ethersproject/keccak256": "^5.7.0",
         "@ethersproject/strings": "^5.5.0",
-        "@noir-lang/backend_barretenberg": "^0.22.0",
-        "@noir-lang/noir_js": "^0.22.0",
+        "@noir-lang/backend_barretenberg": "nightly",
+        "@noir-lang/noir_js": "nightly",
         "@zk-kit/groth16": "0.3.0",
         "@zk-kit/incremental-merkle-tree": "0.4.3"
     }

@@ -349,9 +349,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aztec/bb.js@npm:0.16.0":
-  version: 0.16.0
-  resolution: "@aztec/bb.js@npm:0.16.0"
+"@aztec/bb.js@npm:0.24.0, @aztec/bb.js@npm:latest":
+  version: 0.24.0
+  resolution: "@aztec/bb.js@npm:0.24.0"
   dependencies:
     comlink: ^4.4.1
     commander: ^10.0.1
@@ -359,21 +359,7 @@ __metadata:
     tslib: ^2.4.0
   bin:
     bb.js: dest/node/main.js
-  checksum: 5f68b4ad16284a3a871e0ad21fea05aed670383bc639c9d07ab3bf9b7a9d15cc8a4e5cda404a9290775ad5023924739543a8aac37d602892dd1fb5087521970b
-  languageName: node
-  linkType: hard
-
-"@aztec/bb.js@npm:^0.22.0":
-  version: 0.22.0
-  resolution: "@aztec/bb.js@npm:0.22.0"
-  dependencies:
-    comlink: ^4.4.1
-    commander: ^10.0.1
-    debug: ^4.3.4
-    tslib: ^2.4.0
-  bin:
-    bb.js: dest/node/main.js
-  checksum: ea0d7329317552350d088ddbe13a806d2149247e27f703a03dca304f9178bad1e2d29ea7cb1008a86b238ecb414bbf4fba523ebe34f318fca8c987fe26e41a98
+  checksum: a086dabf30084cfa526e512148b9c02f0a0770dcc19b7dca4af9a3e98612b716acc7eaac6b52c0f12d985932e866d1cb9e534ded6ac9d747f3dd021afe25de27
   languageName: node
   linkType: hard
 
@@ -7635,48 +7621,48 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noir-lang/acvm_js@npm:0.38.0":
-  version: 0.38.0
-  resolution: "@noir-lang/acvm_js@npm:0.38.0"
-  checksum: 42a5bba45135d1df0d0eb3f7b65439733e016580bad610e859e140638d42200d6b856ff11c4b30417b74ce011da7c39861aafb1c5b8c7211de2172aea449c635
+"@noir-lang/acvm_js@npm:0.40.0-9544813.nightly":
+  version: 0.40.0-9544813.nightly
+  resolution: "@noir-lang/acvm_js@npm:0.40.0-9544813.nightly"
+  checksum: 9f4917bf13da4fc2991b6968253356c307c90f8049191665f56b1b3bd441c4f5b34aac807e0e8d882ab95c62a858691f10a99fbc6eaf63be674d51a11ba43c73
   languageName: node
   linkType: hard
 
-"@noir-lang/backend_barretenberg@npm:^0.22.0":
-  version: 0.22.0
-  resolution: "@noir-lang/backend_barretenberg@npm:0.22.0"
+"@noir-lang/backend_barretenberg@npm:nightly":
+  version: 0.24.0-9544813.nightly
+  resolution: "@noir-lang/backend_barretenberg@npm:0.24.0-9544813.nightly"
   dependencies:
-    "@aztec/bb.js": 0.16.0
-    "@noir-lang/types": 0.22.0
+    "@aztec/bb.js": 0.24.0
+    "@noir-lang/types": 0.24.0-9544813.nightly
     fflate: ^0.8.0
-  checksum: ead456218ba61d925e0fc5b47d1b94272e980b44a220f1262fb6cdc73cff7cd4232ddc69dd67bb21e50f0b43e7696d4a96fde15e3eadc0bf223ec6d59e014e23
+  checksum: d9f4c7f7ae3f3a1282daea08ca804d1a10fcd648b1f53394b62bbc684f1454ebef8b0c64a9270306f9e83d4ce6958815f86badcc1532bdb11633e7eb4215e46f
   languageName: node
   linkType: hard
 
-"@noir-lang/noir_js@npm:^0.22.0":
-  version: 0.22.0
-  resolution: "@noir-lang/noir_js@npm:0.22.0"
+"@noir-lang/noir_js@npm:nightly":
+  version: 0.24.0-9544813.nightly
+  resolution: "@noir-lang/noir_js@npm:0.24.0-9544813.nightly"
   dependencies:
-    "@noir-lang/acvm_js": 0.38.0
-    "@noir-lang/noirc_abi": 0.22.0
-    "@noir-lang/types": 0.22.0
-  checksum: 3b0873ad87521415af11208bebe5690191d03fa06dcd515789f0a63f7641146cdcb01d292b208452856ea3967e196c8332cb2618e013f9e7e5ce7d6e09de043d
+    "@noir-lang/acvm_js": 0.40.0-9544813.nightly
+    "@noir-lang/noirc_abi": 0.24.0-9544813.nightly
+    "@noir-lang/types": 0.24.0-9544813.nightly
+  checksum: 899a8fef219f4a32856f160952033c2939f527a87c3317b35ee0fdb5c56b4640c3eb5c2f429606804051534f3a9de8a00b7c96352f7a5cb12e4efbae24f18e93
   languageName: node
   linkType: hard
 
-"@noir-lang/noirc_abi@npm:0.22.0":
-  version: 0.22.0
-  resolution: "@noir-lang/noirc_abi@npm:0.22.0"
-  checksum: a250c6cc5ca37fcf02663f8d6b027776f0e58920fb8f8a84efcf74f079f235bb11bbad682ba332211d9b9a79b6a3eb7faede7701cd88582b682971a41ca6212d
-  languageName: node
-  linkType: hard
-
-"@noir-lang/types@npm:0.22.0":
-  version: 0.22.0
-  resolution: "@noir-lang/types@npm:0.22.0"
+"@noir-lang/noirc_abi@npm:0.24.0-9544813.nightly":
+  version: 0.24.0-9544813.nightly
+  resolution: "@noir-lang/noirc_abi@npm:0.24.0-9544813.nightly"
   dependencies:
-    "@noir-lang/noirc_abi": 0.22.0
-  checksum: 5dd1badf0449c518e755172de1d2f2c1b95bfaf7b7328b7de00b8ce9ba68bd447ca65e827185da7d737e7e88dcaf296b29687ffe2e1f5b4d5cc31ce3e3b4f208
+    "@noir-lang/types": 0.24.0-9544813.nightly
+  checksum: eb2059c666026c330ffa732cb349a2309173f9dd4ec7c94151e70547c2a4b2f56e00fc7212341313880cfd9a3cdb3b944817f6d2f721d6b001f1da44ec4d895d
+  languageName: node
+  linkType: hard
+
+"@noir-lang/types@npm:0.24.0-9544813.nightly":
+  version: 0.24.0-9544813.nightly
+  resolution: "@noir-lang/types@npm:0.24.0-9544813.nightly"
+  checksum: a03aad0d418a6bf3d48d1fa9a24b8b2d8f0ce736bc0bf852880fabb9479804ed24608719fea30a76f9568c7d9f3ceebe1c4e78bc5466ca29f4ab29239fe75392
   languageName: node
   linkType: hard
 
@@ -9155,6 +9141,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/group@workspace:packages/group"
   dependencies:
+    "@aztec/bb.js": latest
     "@ethersproject/bignumber": ^5.7.0
     "@ethersproject/bytes": ^5.7.0
     "@ethersproject/keccak256": ^5.7.0
@@ -9217,13 +9204,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/proof@workspace:packages/proof"
   dependencies:
-    "@aztec/bb.js": ^0.22.0
+    "@aztec/bb.js": latest
     "@ethersproject/bignumber": ^5.5.0
     "@ethersproject/bytes": ^5.7.0
     "@ethersproject/keccak256": ^5.7.0
     "@ethersproject/strings": ^5.5.0
-    "@noir-lang/backend_barretenberg": ^0.22.0
-    "@noir-lang/noir_js": ^0.22.0
+    "@noir-lang/backend_barretenberg": nightly
+    "@noir-lang/noir_js": nightly
     "@rollup/plugin-commonjs": ^24.1.0
     "@rollup/plugin-json": ^5.0.1
     "@rollup/plugin-node-resolve": ^15.0.2
@@ -9235,7 +9222,7 @@ __metadata:
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-typescript2: ^0.31.2
   peerDependencies:
-    "@semaphore-protocol/group": 3.15.2
+    "@semaphore-protocol/group": "*"
     "@semaphore-protocol/identity": 3.15.2
   languageName: unknown
   linkType: soft

@@ -1,21 +1,28 @@
-import { BigNumber } from "@ethersproject/bignumber"
 import Identity from "./identity"
 
 describe("Identity", () => {
     describe("# Identity", () => {
-        it("Should not create a identity if the parameter is not valid", () => {
-            const fun1 = () => new Identity(13 as any)
-            const fun2 = () => new Identity(true as any)
-            const fun3 = () => new Identity((() => true) as any)
+        it("Should not create a identity if the parameter is not valid", async () => {
+            const fun = async (i: any) => {
+                const id = new Identity()
+                await id.init(i)
+                return id
+            }
 
-            expect(fun1).toThrow("Parameter 'identityOrMessage' is not a string")
-            expect(fun2).toThrow("Parameter 'identityOrMessage' is not a string")
-            expect(fun3).toThrow("Parameter 'identityOrMessage' is not a string")
+            await expect(fun(13 as any)).rejects.toThrow(new TypeError("Parameter 'identityOrMessage' is not a string"))
+            await expect(fun(true as any)).rejects.toThrow(
+                new TypeError("Parameter 'identityOrMessage' is not a string")
+            )
+            await expect(fun((() => true) as any)).rejects.toThrow(
+                new TypeError("Parameter 'identityOrMessage' is not a string")
+            )
         })
 
-        it("Should create random identities", () => {
+        it("Should create random identities", async () => {
             const identity1 = new Identity()
+            await identity1.init()
             const identity2 = new Identity()
+            await identity2.init()
 
             expect(identity1.trapdoor).not.toBe(identity2.getTrapdoor())
             expect(identity1.nullifier).not.toBe(identity2.getNullifier())
@@ -23,102 +30,114 @@ describe("Identity", () => {
             expect(identity1.commitment).not.toBe(identity2.getCommitment())
         })
 
-        it("Should create deterministic identities from a message", () => {
-            const identity1 = new Identity("message")
-            const identity2 = new Identity("message")
+        it("Should create deterministic identities from a message", async () => {
+            const identity1 = new Identity()
+            await identity1.init("message")
+            const identity2 = new Identity()
+            await identity2.init("message")
 
-            expect(identity1.trapdoor).toBe(identity2.getTrapdoor())
-            expect(identity1.nullifier).toBe(identity2.getNullifier())
+            expect(identity1.trapdoor).toStrictEqual(identity2.getTrapdoor())
+            expect(identity1.nullifier).toStrictEqual(identity2.getNullifier())
         })
 
-        it("Should create deterministic identities from number/boolean messages", () => {
-            const identity1 = new Identity("true")
-            const identity2 = new Identity("true")
-            const identity3 = new Identity("7")
-            const identity4 = new Identity("7")
+        it("Should create deterministic identities from number/boolean messages", async () => {
+            const identity1 = new Identity()
+            await identity1.init("true")
+            const identity2 = new Identity()
+            await identity2.init("true")
+            const identity3 = new Identity()
+            await identity3.init("7")
+            const identity4 = new Identity()
+            await identity4.init("7")
 
-            expect(identity1.trapdoor).toBe(identity2.getTrapdoor())
-            expect(identity1.nullifier).toBe(identity2.getNullifier())
-            expect(identity3.trapdoor).toBe(identity4.getTrapdoor())
-            expect(identity3.nullifier).toBe(identity4.getNullifier())
+            expect(identity1.trapdoor).toStrictEqual(identity2.getTrapdoor())
+            expect(identity1.nullifier).toStrictEqual(identity2.getNullifier())
+            expect(identity3.trapdoor).toStrictEqual(identity4.getTrapdoor())
+            expect(identity3.nullifier).toStrictEqual(identity4.getNullifier())
         })
 
-        it("Should not recreate an existing invalid identity", () => {
-            const fun = () => new Identity('[true, "01323"]')
+        it("Should not recreate an existing invalid identity", async () => {
+            const fun = async (i: any) => {
+                const id = new Identity()
+                await id.init(i)
+                return id
+            }
 
-            expect(fun).toThrow("invalid BigNumber value")
+            await expect(fun('[true, "01323"]')).rejects.toThrow()
         })
 
-        it("Should recreate an existing identity", () => {
-            const identity1 = new Identity("message")
+        it("Should recreate an existing identity", async () => {
+            const identity1 = new Identity()
+            await identity1.init("message")
 
-            const identity2 = new Identity(identity1.toString())
+            const identity2 = new Identity()
+            await identity2.init(identity1.toString())
 
-            expect(identity1.trapdoor).toBe(identity2.getTrapdoor())
-            expect(identity1.nullifier).toBe(identity2.getNullifier())
+            expect(identity1.trapdoor).toStrictEqual(identity2.getTrapdoor())
+            expect(identity1.nullifier).toStrictEqual(identity2.getNullifier())
         })
     })
 
     describe("# getTrapdoor", () => {
-        it("Should return the identity trapdoor", () => {
-            const identity = new Identity("message")
+        it("Should return the identity trapdoor", async () => {
+            const identity = new Identity()
+            await identity.init("message")
 
             const trapdoor = identity.getTrapdoor()
 
-            expect(trapdoor.toString()).toBe(
-                "11566083507498623434013707198824105161167204201250008419741119866456392774309"
-            )
+            expect(trapdoor.toString()).toBe("0x19922bd8da917b7552dbb8342db69e9f2de6e4ed9f966a217048c482ee1ab2a5")
         })
     })
 
     describe("# getNullifier", () => {
-        it("Should return the identity nullifier", () => {
-            const identity = new Identity("message")
+        it("Should return the identity nullifier", async () => {
+            const identity = new Identity()
+            await identity.init("message")
 
             const nullifier = identity.getNullifier()
 
-            expect(nullifier.toString()).toBe(
-                "14070056666392584007908120012103355272369511035580155843212703537125048345255"
-            )
+            expect(nullifier.toString()).toBe("0x1f1b5eaf4668f989ad73aaeb663fcc0efc59690fec152c467811968f3b7e62a7")
         })
     })
 
     describe("# getSecret", () => {
-        it("Should return an identity secret", () => {
-            const { secret } = new Identity("message")
+        it("Should return an identity secret", async () => {
+            const identity = new Identity()
+            await identity.init("message")
+            const { secret } = identity
 
-            expect(secret.toString()).toBe(
-                "17452394798940441025978193762953691632066258438336130543532009665042636950194"
-            )
+            expect(secret.toString()).toBe("0x0f2780e09410f2ec25773032e54549fd9d0248b7a761fdb616d33b2cbad7d75c")
         })
     })
 
     describe("# getCommitment", () => {
-        it("Should return an identity commitment", () => {
-            const { commitment } = new Identity("message")
+        it("Should return an identity commitment", async () => {
+            const identity = new Identity()
+            await identity.init("message")
+            const { commitment } = identity
 
-            expect(commitment.toString()).toBe(
-                "19361462367798001240039467285882167157718016385695743307694056771074972404368"
-            )
+            expect(commitment.toString()).toBe("0x1e2c3d4155d87f0fcc3ec5ba1bebbc53db9f9d43d93bc9e62bbdc7ab93a32d5e")
         })
     })
 
     describe("# toString", () => {
-        it("Should return a string", () => {
-            const identity = new Identity("message")
+        it("Should return a string", async () => {
+            const identity = new Identity()
+            await identity.init("message")
 
             const identityString = identity.toString()
 
             expect(typeof identityString).toBe("string")
         })
 
-        it("Should return a valid identity string", () => {
-            const identity = new Identity("message")
+        it("Should return a valid identity string", async () => {
+            const identity = new Identity()
+            await identity.init("message")
 
             const [trapdoor, nullifier] = JSON.parse(identity.toString())
 
-            expect(BigNumber.from(trapdoor).toBigInt()).toBe(identity.trapdoor)
-            expect(BigNumber.from(nullifier).toBigInt()).toBe(identity.nullifier)
+            expect(trapdoor).toBe(identity.trapdoor.toString())
+            expect(nullifier).toBe(identity.nullifier.toString())
         })
     })
 })
