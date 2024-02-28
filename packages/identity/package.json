@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/identity",
-    "version": "4.0.0-beta",
+    "version": "4.0.0-beta.1",
     "description": "A library to create Semaphore identities.",
     "type": "module",
     "license": "MIT",
@@ -49,5 +49,6 @@
         "@zk-kit/eddsa-poseidon": "0.6.0",
         "@zk-kit/utils": "0.3.0",
         "poseidon-lite": "0.2.0"
-    }
+    },
+    "stableVersion": "4.0.0-beta"
 }
