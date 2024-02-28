@@ -45,7 +45,7 @@ export default function Home() {
                 </VStack>
 
                 <Stack direction={{ base: "column", sm: "row" }} spacing="6" align="center">
-                    <Link href="https://docs.semaphore.pse.dev/quick-setup" isExternal>
+                    <Link href="https://docs.semaphore.pse.dev/getting-started" isExternal>
                         <Button size={{ base: "md", md: "lg" }}>Get Started</Button>
                     </Link>
                     <Link href="https://demo.semaphore.pse.dev" isExternal>

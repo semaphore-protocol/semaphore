@@ -95,27 +95,32 @@ export default function Learn() {
         {
             title: "Semaphore identities",
             description:
-                "Given to all Semaphore group members, it is comprised of three parts - identity commitment, trapdoor, and nullifier.",
+                "A Semaphore identity is an EdDSA key-pair plus the commitment (i.e. the hash of the public key), which is used as the public value of the Semaphore group members.",
             linkText: "Create Semaphore identities",
             linkUrl: "https://docs.semaphore.pse.dev/guides/identities",
             codeText: `import { Identity } from "@semaphore-protocol/identity"
 
-const { trapdoor, nullifier, commitment } = new Identity()`,
+// Random identity.
+const identity1 = new Identity()
+
+// Passing a secret.
+const identity2 = new Identity("secret")
+`,
             itemList: [
                 {
                     icon: <IconEyelash w="24px" h="24px" color="primary.600" />,
-                    heading: "Private values",
-                    body: "Trapdoor and nullifier values are the private values of the Semaphore identity. To avoid fraud, the owner must keep both values secret."
+                    heading: "Private value",
+                    body: "The private key is a secret that identity owners must keep private. It can either be generated randomly or passed as a parameter."
                 },
                 {
                     icon: <IconEye w="24px" h="24px" color="primary.600" />,
                     heading: "Public values",
-                    body: "Semaphore uses the Poseidon hash function to create the identity commitment from the identity private values. Identity commitments can be made public, similarly to Ethereum addresses."
+                    body: "Semaphore uses the Poseidon hash function to derive the identity commitment from the identity public key. Identity commitments can be made public, similarly to Ethereum addresses."
                 },
                 {
                     icon: <IconUser w="24px" h="24px" color="primary.600" />,
-                    heading: "Generate identities",
-                    body: "Semaphore identities can be generated deterministically or randomly. Deterministic identities can be generated from the hash of a secret message."
+                    heading: "Storing identities",
+                    body: "Building a system to save or recover secret values of Semaphore identities is nontrivial. You may choose to delegate such functionality, for example by using a signature as a secret."
                 }
             ]
         },
@@ -127,45 +132,41 @@ const { trapdoor, nullifier, commitment } = new Identity()`,
             linkUrl: "https://docs.semaphore.pse.dev/guides/groups",
             codeText: `import { Group } from "@semaphore-protocol/group"
 
-const group = new Group(1)
+const members = [identity1.commitment, identity2.commitment]
 
-group.addMember(commitment)`,
+const group = new Group(members)
+`,
             itemList: [
                 {
                     icon: <IconTree w="24px" h="24px" color="primary.600" />,
                     heading: "Merkle trees",
-                    body: "Each leaf contains an identity commitment for a user. The identity commitment proves that the user is a group member without revealing the private identity of the user."
+                    body: "Each leaf contains an identity commitment for a user. The structure of Merkle trees ensures that it can be efficiently proved that an identity commitment is a member of the group."
                 },
                 {
                     icon: <IconGroup w="24px" h="24px" color="primary.600" />,
                     heading: "Types of groups",
-                    body: "Groups can be created and managed in a decentralized fashion with Semaphore contracts or off-chain with our JavaScript libraries."
+                    body: "Groups can be created and managed in a decentralized fashion with Semaphore contracts or off-chain with the JavaScript libraries."
                 },
                 {
                     icon: <IconManageUsers w="24px" h="24px" color="primary.600" />,
                     heading: "Group management",
-                    body: "Users can join and leave groups by themselves, or an admin can add and remove them. Admins can be centralized authorities, Ethereum accounts, multi-sig wallets or smart contracts."
+                    body: "Users could join and leave groups by themselves, or an admin could add and remove them. Admins can be centralized authorities, Ethereum accounts, multi-sig wallets or smart contracts."
                 }
             ]
         },
         {
             title: "Semaphore proofs",
-            description:
-                "Semaphore group members can anonymously prove that they are part of a group and that they are generating their own proofs and signals.",
+            description: "Semaphore group members can prove that they are part of a group and send anonymous messages.",
             linkText: "Generate Semaphore proofs",
             linkUrl: "https://docs.semaphore.pse.dev/guides/proofs",
             codeText: `import { generateProof, verifyProof } from "@semaphore-protocol/proof"
-import { utils } from "ethers"
 
-const externalNullifier = utils.formatBytes32String("Topic")
-const signal = utils.formatBytes32String("Hello world")
+const scope = "Semaphore"
+const message = "Hello world"
 
-const fullProof = await generateProof(identity, group, externalNullifier, signal, {
-    zkeyFilePath: "./semaphore.zkey",
-    wasmFilePath: "./semaphore.wasm"
-})
+const proof = await generateProof(identity1, group, scope, message)
 
-await verifyProof(fullProof, group.depth)`,
+await verifyProof(proof)`,
             itemList: [
                 {
                     icon: <IconBadge w="24px" h="24px" color="primary.600" />,
@@ -174,13 +175,13 @@ await verifyProof(fullProof, group.depth)`,
                 },
                 {
                     icon: <IconFlag w="24px" h="24px" color="primary.600" />,
-                    heading: "Signals",
-                    body: "Group users can anonymously broadcast signals such as votes or endorsements without revealing their original identity."
+                    heading: "Messages",
+                    body: "Group users can anonymously share messages such as votes or endorsements without revealing their original identity."
                 },
                 {
                     icon: <IconCheck w="24px" h="24px" color="primary.600" />,
-                    heading: "Verifiers",
-                    body: "Semaphore proofs can be verified with our contracts or off-chain with our JavaScript libraries."
+                    heading: "Proof verification",
+                    body: "Semaphore proofs can be verified both on-chain with the Semaphore contracts, or off-chain with the JavaScript libraries."
                 }
             ]
         }
