@@ -132,7 +132,7 @@ program
 
         const groupIds = await getGroupIds(network)
 
-        if (groupIds === null) {
+        if (!groupIds || groupIds.length === 0) {
             console.info(`\n ${logSymbols.info}`, `info: there are no groups on the '${network}' network\n`)
             return
         }
@@ -163,7 +163,7 @@ program
         if (!groupId) {
             const groupIds = await getGroupIds(network)
 
-            if (groupIds === null) {
+            if (!groupIds || groupIds.length === 0) {
                 console.info(`\n ${logSymbols.info}`, `info: there are no groups on the '${network}' network\n`)
                 return
             }
@@ -231,7 +231,7 @@ program
         if (!groupId) {
             const groupIds = await getGroupIds(network)
 
-            if (groupIds === null) {
+            if (!groupIds || groupIds.length === 0) {
                 console.info(`\n ${logSymbols.info}`, `info: there are no groups on the '${network}' network\n`)
                 return
             }
@@ -297,7 +297,7 @@ program
         if (!groupId) {
             const groupIds = await getGroupIds(network)
 
-            if (groupIds === null) {
+            if (!groupIds || groupIds.length === 0) {
                 console.info(`\n ${logSymbols.info}`, `info: there are no groups on the '${network}' network\n`)
                 return
             }

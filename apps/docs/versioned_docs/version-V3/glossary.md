@@ -39,7 +39,7 @@ For more information, see [Merkle tree in Wikipedia](https://en.wikipedia.org/wi
 
 A value used to prevent double entry or double signalling.
 
-See [Circuit nullifier hash](/technical-reference/circuits/#nullifier-hash).
+See [Circuit nullifier hash](/V3/technical-reference/circuits/#nullifier-hash).
 
 ## Relay
 
