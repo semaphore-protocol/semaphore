@@ -116,7 +116,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
             revert Semaphore__InvalidProof();
         }
 
-        // Save the nullifier so that it cannot be used again to successfully verify a proof
+        // Saves the nullifier so that it cannot be used again to successfully verify a proof
         // that is part of the group with id groupId.
         groups[groupId].nullifiers[proof.nullifier] = true;
 
@@ -136,7 +136,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 groupId,
         SemaphoreProof calldata proof
     ) public view override onlyExistingGroup(groupId) returns (bool) {
-        // The function will revert if the merkle tree depth is not supported.
+        // The function will revert if the Merkle tree depth is not supported.
         if (proof.merkleTreeDepth < 1 || proof.merkleTreeDepth > 12) {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
         }
@@ -150,14 +150,13 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
             revert Semaphore__GroupHasNoMembers();
         }
 
-        // Gets the merkle root of the Incremental Merkle Tree that represents the group with id groupId.
+        // Gets the Merkle root of the Incremental Merkle Tree that represents the group with id groupId.
         uint256 currentMerkleTreeRoot = getMerkleTreeRoot(groupId);
 
         // A proof could have used an old Merkle tree root.
         // https://github.com/semaphore-protocol/semaphore/issues/98
         if (proof.merkleTreeRoot != currentMerkleTreeRoot) {
             uint256 merkleRootCreationDate = groups[groupId].merkleRootCreationDates[proof.merkleTreeRoot];
-
             uint256 merkleTreeDuration = groups[groupId].merkleTreeDuration;
 
             if (merkleRootCreationDate == 0) {
