@@ -74,6 +74,5 @@
     "dependencies": {
         "@semaphore-protocol/contracts": "4.0.0-beta.1"
     },
-    "packageManager": "yarn@4.1.0",
-    "stableVersion": "4.0.0-beta"
+    "packageManager": "yarn@4.1.0"
 }

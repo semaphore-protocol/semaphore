@@ -58,6 +58,5 @@
         "@zk-kit/utils": "0.3.0",
         "ethers": "6.10.0",
         "snarkjs": "0.7.3"
-    },
-    "stableVersion": "4.0.0-beta"
+    }
 }
