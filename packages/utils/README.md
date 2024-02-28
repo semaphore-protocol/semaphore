@@ -18,7 +18,7 @@
     <a href="https://npmjs.org/package/@semaphore-protocol/utils">
         <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/utils.svg?style=flat-square" />
     </a>
-    <a href="https://js.semaphore.pse.dev/utils">
+    <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_utils">
         <img alt="Documentation typedoc" src="https://img.shields.io/badge/docs-typedoc-744C7C?style=flat-square">
     </a>
     <a href="https://eslint.org/">
@@ -49,9 +49,6 @@
     </h4>
 </div>
 
-> [!NOTE]  
-> Please, for more information on the modules provided by this library, see its code documentation [here](https://js.semaphore.pse.dev/modules/_semaphore_protocol_utils).
-
 ## 🛠 Install
 
 ### npm or yarn
@@ -69,6 +66,8 @@ yarn add @semaphore-protocol/utils
 ```
 
 ## 📜 Usage
+
+For more information on the functions and modules provided by `@semaphore-protocol/utils`, please refer to the [TypeDoc documentation](https://js.semaphore.pse.dev/modules/_semaphore_protocol_utils).
 
 ```typescript
 // You can import modules from the main bundle.
