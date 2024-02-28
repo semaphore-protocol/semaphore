@@ -8,14 +8,14 @@ import TabItem from "@theme/TabItem"
 
 # Semaphore groups
 
-A [Semaphore group](/glossary/#semaphore-group) contains [identity commitments](/glossary/#identity-commitment) of group members.
+A [Semaphore group](/V3/glossary/#semaphore-group) contains [identity commitments](/V3/glossary/#identity-commitment) of group members.
 Example uses of groups include the following:
 
 -   poll question that attendees join to rate an event,
 -   ballot that members join to vote on a proposal,
 -   whistleblowers who are verified employees of an organization.
 
-A Semaphore group is an [incremental Merkle tree](/glossary/#incremental-merkle-tree), and group members (i.e., [identity commitments](/glossary/#identity-commitments)) are tree leaves.
+A Semaphore group is an [incremental Merkle tree](/V3/glossary/#incremental-merkle-tree), and group members (i.e., [identity commitments](/V3/glossary/#identity-commitments)) are tree leaves.
 Semaphore groups set the following three parameters:
 
 -   **Group id**: a unique identifier for the group;
@@ -35,7 +35,7 @@ Learn how to work with groups.
 
 ### Create a group
 
-Use the [`@semaphore-protocol/group`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/group) library `Group` class to create an off-chain group with the following parameters:
+Use the [`@semaphore-protocol/group`](https://github.com/semaphore-protocol/semaphore/blob/v3.15.2/packages/group) library `Group` class to create an off-chain group with the following parameters:
 
 -   `Group id`: a unique identifier for the group;
 -   `Tree depth`: (_default `20`_) the maximum number of members a group can contain (`max size = 2 ^ tree depth`).
@@ -142,13 +142,13 @@ Given that the node isn't removed, and the length of the `group.members` array d
 
 ## On-chain groups
 
-The [`SemaphoreGroups`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/base/SemaphoreGroups.sol) contract uses the [`IncrementalBinaryTree`](https://github.com/privacy-scaling-explorations/zk-kit/blob/main/packages/incremental-merkle-tree.sol/contracts/IncrementalBinaryTree.sol) library and provides methods to create and manage groups.
+The [`SemaphoreGroups`](https://github.com/semaphore-protocol/semaphore/blob/v3.15.2/packages/contracts/contracts/base/SemaphoreGroups.sol) contract uses the [`IncrementalBinaryTree`](https://github.com/privacy-scaling-explorations/zk-kit/blob/main/packages/incremental-merkle-tree.sol/contracts/IncrementalBinaryTree.sol) library and provides methods to create and manage groups.
 
 :::info
-You can import `SemaphoreGroups.sol` and other Semaphore contracts from the [`@semaphore-protocol/contracts`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/contracts) NPM module.
+You can import `SemaphoreGroups.sol` and other Semaphore contracts from the [`@semaphore-protocol/contracts`](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/contracts) NPM module.
 :::
 
-Alternatively, you can use an already deployed [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol) contract and use its group external functions.
+Alternatively, you can use an already deployed [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/v3.15.2/packages/contracts/contracts/Semaphore.sol) contract and use its group external functions.
 
 :::caution
 `Semaphore.sol` does not check if a member with a specific identity commitment already exists in a group. This check must be done off-chain.

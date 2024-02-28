@@ -1,37 +1,41 @@
-import { Group } from "@semaphore-protocol/group"
-import { Identity } from "@semaphore-protocol/identity"
-import { generateProof } from "@semaphore-protocol/proof"
+import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers"
+import { Group, Identity, generateProof } from "@semaphore-protocol/core"
 import { expect } from "chai"
 import { encodeBytes32String } from "ethers"
 import { run } from "hardhat"
 // @ts-ignore: typechain folder will be generated after contracts compilation
-import { Feedback } from "../typechain-types"
+// eslint-disable-next-line
+import { Feedback, ISemaphore } from "../typechain-types"
 
 describe("Feedback", () => {
-    let feedbackContract: Feedback
-    let semaphoreContract: string
+    async function deployFeedbackFixture() {
+        const groupId = "42"
 
-    const groupId = "42"
-    const group = new Group()
-    const users: Identity[] = []
-
-    before(async () => {
         const { semaphore } = await run("deploy:semaphore", {
             logs: false
         })
 
-        feedbackContract = await run("deploy", { logs: false, group: groupId, semaphore: await semaphore.getAddress() })
-        semaphoreContract = semaphore
+        const semaphoreContract: ISemaphore = semaphore
 
-        users.push(new Identity())
-        users.push(new Identity())
-    })
+        const feedbackContract: Feedback = await run("deploy", {
+            logs: false,
+            group: groupId,
+            semaphore: await semaphoreContract.getAddress()
+        })
+
+        return { semaphoreContract, feedbackContract, groupId }
+    }
 
     describe("# joinGroup", () => {
         it("Should allow users to join the group", async () => {
-            for await (const [i, user] of users.entries()) {
-                const transaction = feedbackContract.joinGroup(user.commitment)
+            const { semaphoreContract, feedbackContract, groupId } = await loadFixture(deployFeedbackFixture)
 
+            const users = [new Identity(), new Identity()]
+
+            const group = new Group()
+
+            for (const [i, user] of users.entries()) {
+                const transaction = await feedbackContract.joinGroup(user.commitment)
                 group.addMember(user.commitment)
 
                 await expect(transaction)
@@ -43,6 +47,16 @@ describe("Feedback", () => {
 
     describe("# sendFeedback", () => {
         it("Should allow users to send feedback anonymously", async () => {
+            const { semaphoreContract, feedbackContract, groupId } = await loadFixture(deployFeedbackFixture)
+
+            const users = [new Identity(), new Identity()]
+            const group = new Group()
+
+            for (const user of users) {
+                await feedbackContract.joinGroup(user.commitment)
+                group.addMember(user.commitment)
+            }
+
             const feedback = encodeBytes32String("Hello World")
 
             const proof = await generateProof(users[1], group, feedback, groupId)

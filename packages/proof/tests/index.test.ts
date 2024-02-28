@@ -1,7 +1,7 @@
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { getCurveFromName } from "ffjavascript"
-import { SemaphoreProof, generateProof, packPoints, unpackPoints, verifyProof } from "../src"
+import { SemaphoreProof, generateProof, verifyProof } from "../src"
 
 describe("Proof", () => {
     const treeDepth = 10
@@ -69,15 +69,6 @@ describe("Proof", () => {
             const response = await verifyProof(proof)
 
             expect(response).toBe(true)
-        })
-    })
-
-    describe("# packProof/unpackProof", () => {
-        it("Should return a packed proof", async () => {
-            const originalPoints = unpackPoints(proof.points)
-            const points = packPoints(originalPoints)
-
-            expect(points).toStrictEqual(proof.points)
         })
     })
 })
