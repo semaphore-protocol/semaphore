@@ -8,7 +8,7 @@ include "binary-merkle-root.circom";
 // The first part involves the generation of the Semaphore identity,
 // i.e. the public key and its hash, which is called the commitment
 // and is used as a public value.
-// In the second part, it is verified whether the identity commitment is part
+// In the second part, it is verified whether or not the identity commitment is part
 // of the Merkle tree, i.e. the Semaphore group. That is, a proof of membership is verified.
 // The third part covers the generation of a nullifier, i.e. the hash of the scope of the proof
 // and the secret used to derive the public key (secret scalar). The nullifier is used to prevent the same
