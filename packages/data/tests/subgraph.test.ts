@@ -346,6 +346,113 @@ describe("SemaphoreSubgraph", () => {
         })
     })
 
+    describe("# getGroupMembers", () => {
+        it("Should return a list of group members", async () => {
+            requestMocked.mockImplementationOnce(() =>
+                Promise.resolve({
+                    groups: [
+                        {
+                            id: "1",
+                            merkleTree: {
+                                depth: 20,
+                                size: 2,
+                                root: "2"
+                            },
+                            admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
+                            members: [
+                                {
+                                    identityCommitment: "20"
+                                },
+                                {
+                                    identityCommitment: "17"
+                                }
+                            ]
+                        }
+                    ]
+                })
+            )
+
+            const expectedValue = await semaphore.getGroupMembers("1")
+
+            expect(expectedValue).toBeDefined()
+            expect(Array.isArray(expectedValue)).toBeTruthy()
+            expect(expectedValue[0]).toBe("20")
+            expect(expectedValue[1]).toBe("17")
+        })
+
+        it("Should throw an error if the groupId parameter type is wrong", async () => {
+            const fun = () => semaphore.getGroupMembers(1 as any)
+            await expect(fun).rejects.toThrow("Parameter 'groupId' is not a string")
+        })
+    })
+
+    describe("# getGroupValidatedProofs", () => {
+        it("Should return a list of group validated proofs", async () => {
+            requestMocked.mockImplementationOnce(() =>
+                Promise.resolve({
+                    groups: [
+                        {
+                            id: "1",
+                            merkleTree: {
+                                depth: 20,
+                                size: 2,
+                                root: "2"
+                            },
+                            admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
+                            validatedProofs: [
+                                {
+                                    message: "0x3243b",
+                                    merkleTreeRoot: "1332132",
+                                    merkleTreeDepth: "32",
+                                    scope: "14324",
+                                    nullifier: "442342",
+                                    points: ["442342"],
+                                    timestamp: "1657306917"
+                                },
+                                {
+                                    message: "0x5233a",
+                                    merkleTreeRoot: "1332132",
+                                    merkleTreeDepth: "32",
+                                    scope: "14324",
+                                    nullifier: "442342",
+                                    points: ["442342"],
+                                    timestamp: "1657306923"
+                                }
+                            ]
+                        }
+                    ]
+                })
+            )
+            const expectedValue = await semaphore.getGroupValidatedProofs("1")
+
+            expect(expectedValue).toBeDefined()
+            expect(Array.isArray(expectedValue)).toBeTruthy()
+            expect(expectedValue[0]).toEqual({
+                message: "0x3243b",
+                merkleTreeRoot: "1332132",
+                merkleTreeDepth: "32",
+                scope: "14324",
+                nullifier: "442342",
+                points: ["442342"],
+                timestamp: "1657306917"
+            })
+            expect(expectedValue[1]).toEqual({
+                message: "0x5233a",
+                merkleTreeRoot: "1332132",
+                merkleTreeDepth: "32",
+                scope: "14324",
+                nullifier: "442342",
+                points: ["442342"],
+                timestamp: "1657306923"
+            })
+        })
+
+        it("Should throw an error if the groupId parameter type is wrong", async () => {
+            const fun = () => semaphore.getGroupValidatedProofs(1 as any)
+            await expect(fun).rejects.toThrow("Parameter 'groupId' is not a string")
+        })
+    })
+
     describe("# isGroupMember", () => {
         it("Should throw an error if the member parameter type is wrong", async () => {
             const fun = () => semaphore.isGroupMember("1", 1 as any)
