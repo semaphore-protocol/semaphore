@@ -7,24 +7,24 @@ interface ISemaphoreGroups {
     error Semaphore__GroupAlreadyExists();
     error Semaphore__CallerIsNotTheGroupAdmin();
 
-    /// @dev Emitted when a new group is created.
+    /// @dev Event emitted when a new group is created.
     /// @param groupId: Id of the group.
     event GroupCreated(uint256 indexed groupId);
 
-    /// @dev Emitted when an admin is assigned to a group.
+    /// @dev Event emitted when an admin is assigned to a group.
     /// @param groupId: Id of the group.
     /// @param oldAdmin: Old admin of the group.
     /// @param newAdmin: New admin of the group.
     event GroupAdminUpdated(uint256 indexed groupId, address indexed oldAdmin, address indexed newAdmin);
 
-    /// @dev Emitted when a new identity commitment is added.
+    /// @dev Event emitted when a new identity commitment is added.
     /// @param groupId: Group id of the group.
     /// @param index: Merkle tree leaf index.
     /// @param identityCommitment: New identity commitment.
     /// @param merkleTreeRoot: New root hash of the tree.
     event MemberAdded(uint256 indexed groupId, uint256 index, uint256 identityCommitment, uint256 merkleTreeRoot);
 
-    /// @dev Emitted when many identity commitments are added at the same time.
+    /// @dev Event emitted when many identity commitments are added at the same time.
     /// @param groupId: Group id of the group.
     /// @param startIndex: Index of the first element of the new identity commitments in the merkle tree.
     /// @param identityCommitments: The new identity commitments.
@@ -36,7 +36,7 @@ interface ISemaphoreGroups {
         uint256 merkleTreeRoot
     );
 
-    /// @dev Emitted when an identity commitment is updated.
+    /// @dev Event emitted when an identity commitment is updated.
     /// @param groupId: Group id of the group.
     /// @param index: Identity commitment index.
     /// @param identityCommitment: Existing identity commitment to be updated.
@@ -50,7 +50,7 @@ interface ISemaphoreGroups {
         uint256 merkleTreeRoot
     );
 
-    /// @dev Emitted when a new identity commitment is removed.
+    /// @dev Event emitted when a new identity commitment is removed.
     /// @param groupId: Group id of the group.
     /// @param index: Identity commitment index.
     /// @param identityCommitment: Existing identity commitment to be removed.
