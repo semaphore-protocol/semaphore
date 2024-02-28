@@ -133,5 +133,5 @@ When a member votes (for example, by selecting a radio button), then the dApp ta
 
 ### Related
 
--   To get started developing with Semaphore, see the [Quick setup](/quick-setup/) guide.
+-   To get started developing with Semaphore, see the [Quick setup](/V2/quick-setup/) guide.
 -   For an example app that you can use to start your own project, see [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate).
