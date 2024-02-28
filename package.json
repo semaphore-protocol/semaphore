@@ -12,6 +12,7 @@
         "compile:contracts": "yarn workspace semaphore-contracts compile",
         "test": "yarn test:libraries && yarn test:contracts && yarn test:circuits && yarn test:subgraph",
         "test:libraries": "jest --coverage",
+        "test:library": "jest packages/${0}",
         "test:subgraph": "yarn workspace semaphore-subgraph test",
         "test:contracts": "yarn workspace semaphore-contracts test:coverage",
         "test:circuits": "yarn workspace @semaphore-protocol/circuits test",
