@@ -12,8 +12,7 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
 
     /// @dev Gets a group id and returns its tree data.
     /// The tree is an Incremental Merkle Tree
-    /// which is called Lean Incremental Merkle Tree:
-    /// https://www.npmjs.com/package/@zk-kit/imt.sol
+    /// which is called Lean Incremental Merkle Tree.
     mapping(uint256 => LeanIMTData) internal merkleTrees;
 
     /// @dev Gets a group id and returns its admin.
