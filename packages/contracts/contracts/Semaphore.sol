@@ -100,24 +100,23 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
     }
 
-    /// @dev See {ISemaphore-validateProof}. 
+    /// @dev See {ISemaphore-validateProof}.
     function validateProof(
         uint256 groupId,
         SemaphoreProof calldata proof
     ) external override onlyExistingGroup(groupId) {
-
         // The function will revert if the nullifier that is part of the proof,
         // was already used inside the group with id groupId.
         if (groups[groupId].nullifiers[proof.nullifier]) {
             revert Semaphore__YouAreUsingTheSameNullifierTwice();
         }
-        
+
         // The function will revert if the proof is not verified successfully.
         if (!verifyProof(groupId, proof)) {
             revert Semaphore__InvalidProof();
         }
 
-        // Save the nullifier so that it cannot be used again to successfully verify a proof 
+        // Save the nullifier so that it cannot be used again to successfully verify a proof
         // that is part of the group with id groupId.
         groups[groupId].nullifiers[proof.nullifier] = true;
 
@@ -137,7 +136,6 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 groupId,
         SemaphoreProof calldata proof
     ) public view override onlyExistingGroup(groupId) returns (bool) {
-
         // The function will revert if the merkle tree depth is not supported.
         if (proof.merkleTreeDepth < 1 || proof.merkleTreeDepth > 12) {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
@@ -158,11 +156,10 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         // A proof could have used an old Merkle tree root.
         // https://github.com/semaphore-protocol/semaphore/issues/98
         if (proof.merkleTreeRoot != currentMerkleTreeRoot) {
-
             uint256 merkleRootCreationDate = groups[groupId].merkleRootCreationDates[proof.merkleTreeRoot];
 
             uint256 merkleTreeDuration = groups[groupId].merkleTreeDuration;
- 
+
             if (merkleRootCreationDate == 0) {
                 revert Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
             }

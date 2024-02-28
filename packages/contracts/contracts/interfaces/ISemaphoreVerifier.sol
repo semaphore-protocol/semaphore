@@ -3,7 +3,6 @@ pragma solidity 0.8.23;
 
 /// @title SemaphoreVerifier contract interface.
 interface ISemaphoreVerifier {
-
     /// @dev Returns true if the proof was successfully verified.
     /// @param _pA: Point A.
     /// @param _pB: Point B.
