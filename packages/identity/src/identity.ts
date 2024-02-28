@@ -53,7 +53,7 @@ export default class Identity {
 
     /**
      * Returns the private key.
-     * @returns The private key as a bignumber-ish.
+     * @returns The private key as a {@link https://zkkit.pse.dev/types/_zk_kit_utils.BigNumberish.html|BigNumberish}.
      */
     public get privateKey(): BigNumberish {
         return this._privateKey
@@ -68,7 +68,7 @@ export default class Identity {
     }
 
     /**
-     * Returns the public key as a Baby Jubjub point.
+     * Returns the public key as a Baby Jubjub {@link https://zkkit.pse.dev/types/_zk_kit_baby_jubjub.Point.html|Point}.
      * @returns The public key as a point.
      */
     public get publicKey(): Point<string> {
@@ -93,7 +93,7 @@ export default class Identity {
      * const signature = identity.signMessage("message")
      *
      * @param message The message to be signed.
-     * @returns A signature object containing the signature components.
+     * @returns A {@link https://zkkit.pse.dev/types/_zk_kit_eddsa_poseidon.Signature.html|Signature} object containing the signature components.
      */
     public signMessage(message: BigNumberish): Signature<string> {
         return signMessage(this.privateKey, message)
