@@ -18,6 +18,12 @@ include "binary-merkle-root.circom";
 template Semaphore(MAX_DEPTH) {
     // Input signals.
     // The input signals are all private except 'message' and 'scope'.
+    // The secret is the scalar generated from the EdDSA private key.
+    // Using the secret scalar instead of the private key allows this circuit
+    // to skip steps 1, 2, 3 in the generation of the public key defined here:
+    // https://www.rfc-editor.org/rfc/rfc8032#section-5.1.5, making the circuit
+    // more efficient and simple.
+    // See the Semaphore identity package to know more about how the identity is generated.
     signal input secret;
     signal input merkleProofLength, merkleProofIndices[MAX_DEPTH], merkleProofSiblings[MAX_DEPTH];
     signal input message;
