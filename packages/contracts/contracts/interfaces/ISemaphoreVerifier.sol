@@ -3,6 +3,14 @@ pragma solidity 0.8.23;
 
 /// @title SemaphoreVerifier contract interface.
 interface ISemaphoreVerifier {
+
+    /// @dev Returns true if the proof was successfully verified.
+    /// @param _pA: Point A.
+    /// @param _pB: Point B.
+    /// @param _pC: Point C.
+    /// @param _pubSignals: Public signals.
+    /// @param merkleTreeDepth: Merkle tree depth.
+    /// @return True if the proof was successfully verified, false otherwise.
     function verifyProof(
         uint[2] calldata _pA,
         uint[2][2] calldata _pB,
