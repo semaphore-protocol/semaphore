@@ -45,7 +45,7 @@ describe("semaphore", () => {
     }
 
     const INPUT = {
-        secret: deriveSecretScalar(secret),
+        secret: deriveSecretScalar(secret) as `${number}`,
         merkleProofLength: tree.depth,
         merkleProofIndices,
         merkleProofSiblings,
