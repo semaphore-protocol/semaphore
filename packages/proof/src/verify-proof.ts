@@ -12,7 +12,8 @@ import { SemaphoreProof } from "./types"
 import verificationKeys from "./verification-keys.json"
 
 /**
- * Verifies a Semaphore proof.
+ * Verifies whether a Semaphore proof is valid. Depending on the depth of the tree used to
+ * generate the proof, a different verification key will be used.
  * @param proof The Semaphore proof.
  * @returns True if the proof is valid, false otherwise.
  */
