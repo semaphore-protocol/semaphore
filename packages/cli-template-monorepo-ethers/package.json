@@ -26,6 +26,5 @@
     "packageManager": "yarn@4.1.0",
     "devDependencies": {
         "prettier": "^3.2.5"
-    },
-    "stableVersion": "4.0.0-beta"
+    }
 }

@@ -46,6 +46,5 @@
         "rollup": "^4.9.6",
         "rollup-plugin-cleanup": "^3.2.1",
         "rollup-plugin-typescript2": "^0.36.0"
-    },
-    "stableVersion": "4.0.0-beta"
+    }
 }
