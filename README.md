@@ -356,7 +356,7 @@ yarn test
 
 ### Build libraries & compile contracts
 
-Run [Rollup](https://www.rollupjs.org) to build all the packages:
+Run [Rollup](https://www.rollupjs.org) and [TheGraph](https://www.npmjs.com/package/@graphprotocol/graph-cli) to build all the packages and the subgraph:
 
 ```bash
 yarn build
