@@ -21,6 +21,9 @@ jobs:
             - name: Install dependencies
               run: yarn
 
+            - name: Build libraries
+              run: yarn build:libraries
+
             - name: Generate doc website
               run: yarn docs
 
