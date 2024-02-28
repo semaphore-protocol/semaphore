@@ -8685,17 +8685,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/cli-template-monorepo-ethers@workspace:packages/cli-template-monorepo-ethers"
   dependencies:
-    "@types/node": ^20
-    "@typescript-eslint/eslint-plugin": ^5.9.1
-    "@typescript-eslint/parser": ^5.9.1
-    eslint: ^8.2.0
-    eslint-config-airbnb-base: 15.0.0
-    eslint-config-airbnb-typescript: ^16.1.0
-    eslint-config-prettier: ^8.3.0
-    eslint-plugin-import: ^2.25.2
-    prettier: ^2.5.1
-    ts-node: ^10.8.1
-    typescript: ^4.7.3
+    prettier: ^3.2.5
   languageName: unknown
   linkType: soft
 
@@ -24849,28 +24839,39 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo-ethers-contracts@workspace:packages/cli-template-monorepo-ethers/apps/contracts"
   dependencies:
-    "@nomicfoundation/hardhat-chai-matchers": ^2.0.3
+    "@nomicfoundation/hardhat-chai-matchers": ^2.0.0
     "@nomicfoundation/hardhat-ethers": ^3.0.0
     "@nomicfoundation/hardhat-network-helpers": ^1.0.0
     "@nomicfoundation/hardhat-toolbox": ^4.0.0
     "@nomicfoundation/hardhat-verify": ^2.0.0
     "@semaphore-protocol/contracts": 4.0.0-alpha.8
-    "@semaphore-protocol/data": 4.0.0-alpha.8
+    "@semaphore-protocol/core": 4.0.0-alpha.8
     "@semaphore-protocol/hardhat": 4.0.0-alpha.8
     "@typechain/ethers-v6": ^0.5.0
     "@typechain/hardhat": ^9.0.0
     "@types/chai": ^4.2.0
-    "@types/mocha": ^9.1.1
+    "@types/eslint": ^8
+    "@types/mocha": ">=9.1.0"
+    "@types/node": ^20.11.20
+    "@typescript-eslint/eslint-plugin": ^7.0.2
+    "@typescript-eslint/parser": ^7.0.2
     chai: ^4.2.0
-    dotenv: ^14.3.2
+    dotenv: ^16.4.5
+    eslint: ^8.57.0
+    eslint-config-airbnb-base: ^15.0.0
+    eslint-config-airbnb-typescript: ^17.1.0
+    eslint-config-prettier: ^9.1.0
+    eslint-plugin-import: ^2.29.1
     ethers: ^6.4.0
-    hardhat: ^2.19.4
+    hardhat: ^2.20.1
     hardhat-gas-reporter: ^1.0.8
+    prettier: ^3.2.5
     prettier-plugin-solidity: ^1.3.1
-    solhint: ^3.3.6
-    solhint-plugin-prettier: ^0.0.5
-    solidity-coverage: ^0.8.0
+    solhint: ^4.1.1
+    solidity-coverage: ^0.8.1
+    ts-node: ^10.9.2
     typechain: ^8.3.0
+    typescript: ^5.3.3
   languageName: unknown
   linkType: soft
 
@@ -24878,18 +24879,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo-ethers-web-app@workspace:packages/cli-template-monorepo-ethers/apps/web-app"
   dependencies:
-    "@next/font": 13.0.3
     "@semaphore-protocol/core": 4.0.0-alpha.8
     "@semaphore-protocol/data": 4.0.0-alpha.8
-    "@types/react": 18.0.25
-    "@types/react-dom": 18.0.8
-    dotenv: ^16.0.3
-    ethers: ^6.4.0
-    next: 13.0.3
+    "@types/node": ^20
+    "@types/react": ^18
+    "@types/react-dom": ^18
+    dotenv: ^16.4.5
+    eslint: ^8
+    eslint-config-next: 14.1.0
+    ethers: ^6.11.1
+    next: 14.1.0
     next-pwa: ^5.6.0
-    react: 18.2.0
-    react-dom: 18.2.0
-    typescript: ^4.7.3
+    react: ^18
+    react-dom: ^18
+    typescript: ^5
   languageName: unknown
   linkType: soft
 
