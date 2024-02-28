@@ -12,15 +12,6 @@ coverage.json
 artifacts
 cache
 typechain-types
-packages/contracts/deployed-contracts/undefined.json
-packages/contracts/deployed-contracts/hardhat.json
-packages/contracts/deployed-contracts/localhost.json
-
-# circuits
-circuits
-
-# contracts
-Verifier*.sol
 
 # production
 dist

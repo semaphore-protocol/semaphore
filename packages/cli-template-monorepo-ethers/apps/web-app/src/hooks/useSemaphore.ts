@@ -1,12 +1,12 @@
 import { SemaphoreEthers } from "@semaphore-protocol/data"
-import { BigNumber, utils } from "ethers"
-import getNextConfig from "next/config"
+import { decodeBytes32String, toBeHex } from "ethers"
 import { useCallback, useState } from "react"
 import { SemaphoreContextType } from "../context/SemaphoreContext"
 
-const { publicRuntimeConfig: env } = getNextConfig()
-
-const ethereumNetwork = env.DEFAULT_NETWORK === "localhost" ? "http://localhost:8545" : env.DEFAULT_NETWORK
+const ethereumNetwork =
+    process.env.NEXT_PUBLIC_DEFAULT_NETWORK === "localhost"
+        ? "http://127.0.0.1:8545"
+        : process.env.NEXT_PUBLIC_DEFAULT_NETWORK
 
 export default function useSemaphore(): SemaphoreContextType {
     const [_users, setUsers] = useState<any[]>([])
@@ -14,12 +14,12 @@ export default function useSemaphore(): SemaphoreContextType {
 
     const refreshUsers = useCallback(async (): Promise<void> => {
         const semaphore = new SemaphoreEthers(ethereumNetwork, {
-            address: env.SEMAPHORE_CONTRACT_ADDRESS
+            address: process.env.NEXT_PUBLIC_SEMAPHORE_CONTRACT_ADDRESS
         })
 
-        const members = await semaphore.getGroupMembers(env.GROUP_ID)
+        const members = await semaphore.getGroupMembers(process.env.NEXT_PUBLIC_GROUP_ID as string)
 
-        setUsers(members)
+        setUsers(members.map((member) => member.toString()))
     }, [])
 
     const addUser = useCallback(
@@ -31,12 +31,12 @@ export default function useSemaphore(): SemaphoreContextType {
 
     const refreshFeedback = useCallback(async (): Promise<void> => {
         const semaphore = new SemaphoreEthers(ethereumNetwork, {
-            address: env.SEMAPHORE_CONTRACT_ADDRESS
+            address: process.env.NEXT_PUBLIC_SEMAPHORE_CONTRACT_ADDRESS
         })
 
-        const proofs = await semaphore.getGroupVerifiedProofs(env.GROUP_ID)
+        const proofs = await semaphore.getGroupValidatedProofs(process.env.NEXT_PUBLIC_GROUP_ID as string)
 
-        setFeedback(proofs.map(({ signal }: any) => utils.parseBytes32String(BigNumber.from(signal).toHexString())))
+        setFeedback(proofs.map(({ message }: any) => decodeBytes32String(toBeHex(message, 32))))
     }, [])
 
     const addFeedback = useCallback(

@@ -7,7 +7,7 @@ const banner = `/**
  * @module ${pkg.name}
  * @version ${pkg.version}
  * @file ${pkg.description}
- * @copyright Ethereum Foundation 2022
+ * @copyright Ethereum Foundation 2024
  * @license ${pkg.license}
  * @see [Github]{@link ${pkg.homepage}}
 */`
@@ -16,9 +16,9 @@ export default {
     input: "src/index.ts",
     output: [
         { file: pkg.exports.require, format: "cjs", banner, exports: "auto" },
-        { file: pkg.exports.import, format: "es", banner }
+        { file: pkg.exports.default, format: "es", banner }
     ],
-    external: Object.keys(pkg.dependencies),
+    external: [...Object.keys(pkg.dependencies), "hardhat/config"],
     plugins: [
         typescript({
             tsconfig: "./build.tsconfig.json",

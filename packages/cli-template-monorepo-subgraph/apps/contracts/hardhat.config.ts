@@ -1,15 +1,9 @@
-import "@nomicfoundation/hardhat-chai-matchers"
-import "@nomiclabs/hardhat-ethers"
-import "@nomiclabs/hardhat-etherscan"
-import "@semaphore-protocol/hardhat"
-import "@typechain/hardhat"
-import { config as dotenvConfig } from "dotenv"
-import "hardhat-gas-reporter"
 import { HardhatUserConfig } from "hardhat/config"
 import { NetworksUserConfig } from "hardhat/types"
+import "@nomicfoundation/hardhat-toolbox"
+import { config as dotenvConfig } from "dotenv"
 import { resolve } from "path"
-import "solidity-coverage"
-import { config } from "./package.json"
+import "@semaphore-protocol/hardhat"
 import "./tasks/deploy"
 
 dotenvConfig({ path: resolve(__dirname, "../../.env") })
@@ -23,11 +17,6 @@ function getNetworks(): NetworksUserConfig {
     const infuraApiKey = process.env.INFURA_API_KEY
 
     return {
-        goerli: {
-            url: `https://goerli.infura.io/v3/${infuraApiKey}`,
-            chainId: 5,
-            accounts
-        },
         sepolia: {
             url: `https://sepolia.infura.io/v3/${infuraApiKey}`,
             chainId: 11155111,
@@ -38,14 +27,14 @@ function getNetworks(): NetworksUserConfig {
             chainId: 80001,
             accounts
         },
-        "optimism-goerli": {
-            url: `https://optimism-goerli.infura.io/v3/${infuraApiKey}`,
-            chainId: 420,
+        "optimism-sepolia": {
+            url: `https://optimism-sepolia.infura.io/v3/${infuraApiKey}`,
+            chainId: 11155420,
             accounts
         },
-        "arbitrum-goerli": {
-            url: "https://goerli-rollup.arbitrum.io/rpc",
-            chainId: 421613,
+        "arbitrum-sepolia": {
+            url: "https://sepolia-rollup.arbitrum.io/rpc",
+            chainId: 421614,
             accounts
         },
         arbitrum: {
@@ -56,14 +45,9 @@ function getNetworks(): NetworksUserConfig {
     }
 }
 
-const hardhatConfig: HardhatUserConfig = {
-    solidity: config.solidity,
-    paths: {
-        sources: config.paths.contracts,
-        tests: config.paths.tests,
-        cache: config.paths.cache,
-        artifacts: config.paths.build.contracts
-    },
+const config: HardhatUserConfig = {
+    solidity: "0.8.23",
+    defaultNetwork: process.env.DEFAULT_NETWORK || "localhost",
     networks: {
         hardhat: {
             chainId: 1337
@@ -76,12 +60,14 @@ const hardhatConfig: HardhatUserConfig = {
         coinmarketcap: process.env.COINMARKETCAP_API_KEY
     },
     typechain: {
-        outDir: config.paths.build.typechain,
-        target: "ethers-v5"
+        target: "ethers-v6"
     },
     etherscan: {
         apiKey: process.env.ETHERSCAN_API_KEY
+    },
+    sourcify: {
+        enabled: true
     }
 }
 
-export default hardhatConfig
+export default config

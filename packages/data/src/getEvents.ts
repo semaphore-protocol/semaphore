@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import { Contract } from "@ethersproject/contracts"
+import { Contract, EventLog } from "ethers/contract"
 
 /**
  * Returns the list of events of a contract with possible filters.
@@ -14,9 +14,9 @@ export default async function getEvents(
     eventName: string,
     filterArgs: any[] = [],
     startBlock: number = 0
-): Promise<any[]> {
+): Promise<any[][]> {
     const filter = contract.filters[eventName](...filterArgs)
-    const events = await contract.queryFilter(filter, startBlock)
+    const events = (await contract.queryFilter(filter, startBlock)) as EventLog[]
 
-    return events.map(({ args, blockNumber }) => ({ ...args, blockNumber }))
+    return events.map(({ args, blockNumber }) => [...args, blockNumber])
 }

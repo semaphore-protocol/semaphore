@@ -1,4 +1,5 @@
-import { Contract } from "@ethersproject/contracts"
+import { ZeroAddress } from "ethers/constants"
+import { Contract } from "ethers/contract"
 import {
     AlchemyProvider,
     AnkrProvider,
@@ -8,11 +9,11 @@ import {
     JsonRpcProvider,
     PocketProvider,
     Provider
-} from "@ethersproject/providers"
+} from "ethers/providers"
 import checkParameter from "./checkParameter"
 import getEvents from "./getEvents"
 import SemaphoreABI from "./semaphoreABI.json"
-import { EthersOptions, GroupResponse, EthersNetwork } from "./types"
+import { EthersNetwork, EthersOptions, GroupResponse } from "./types"
 
 export default class SemaphoreEthers {
     private _network: EthersNetwork | string
@@ -46,7 +47,7 @@ export default class SemaphoreEthers {
                 options.address ??= "0xc60E0Ee1a2770d5F619858C641f14FC4a6401520"
                 options.startBlock ??= 77278430
                 break
-            case "arbitrum-goerli":
+            case "arbitrum-sepolia":
                 options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
                 options.startBlock ??= 15174410
                 break
@@ -54,15 +55,11 @@ export default class SemaphoreEthers {
                 options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
                 options.startBlock ??= 33995010
                 break
-            case "goerli":
-                options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
-                options.startBlock ??= 8777695
-                break
             case "sepolia":
-                options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
-                options.startBlock ??= 3231111
+                options.address ??= "0x5B8e7cC7bAC61A4b952d472b67056B2f260ba6dc"
+                options.startBlock ??= 5150903
                 break
-            case "optimism-goerli":
+            case "optimism-sepolia":
                 options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
                 options.startBlock ??= 7632846
                 break
@@ -78,19 +75,19 @@ export default class SemaphoreEthers {
 
         switch (options.provider) {
             case "infura":
-                provider = new InfuraProvider(networkOrEthereumURL, options.apiKey)
+                provider = new InfuraProvider(networkOrEthereumURL, options.projectId, options.projectSecret)
                 break
             case "alchemy":
                 provider = new AlchemyProvider(networkOrEthereumURL, options.apiKey)
                 break
             case "cloudflare":
-                provider = new CloudflareProvider(networkOrEthereumURL, options.apiKey)
+                provider = new CloudflareProvider(networkOrEthereumURL)
                 break
             case "etherscan":
                 provider = new EtherscanProvider(networkOrEthereumURL, options.apiKey)
                 break
             case "pocket":
-                provider = new PocketProvider(networkOrEthereumURL, options.apiKey)
+                provider = new PocketProvider(networkOrEthereumURL, options.applicationId, options.applicationSecret)
                 break
             case "ankr":
                 provider = new AnkrProvider(networkOrEthereumURL, options.apiKey)
@@ -150,48 +147,27 @@ export default class SemaphoreEthers {
     async getGroup(groupId: string): Promise<GroupResponse> {
         checkParameter(groupId, "groupId", "string")
 
-        const [groupCreatedEvent] = await getEvents(this._contract, "GroupCreated", [groupId], this._options.startBlock)
+        const groupAdmin = await this._contract.getGroupAdmin(groupId)
 
-        if (!groupCreatedEvent) {
+        if (groupAdmin === ZeroAddress) {
             throw new Error(`Group '${groupId}' not found`)
         }
 
         const merkleTreeRoot = await this._contract.getMerkleTreeRoot(groupId)
-        const numberOfLeaves = await this._contract.getNumberOfMerkleTreeLeaves(groupId)
+        const merkleTreeDepth = await this._contract.getMerkleTreeDepth(groupId)
+        const merkleTreeSize = await this._contract.getMerkleTreeSize(groupId)
 
         const group: GroupResponse = {
             id: groupId,
+            admin: groupAdmin,
             merkleTree: {
-                depth: groupCreatedEvent.merkleTreeDepth.toString(),
-                zeroValue: groupCreatedEvent.zeroValue.toString(),
-                numberOfLeaves: numberOfLeaves.toNumber(),
+                depth: Number(merkleTreeDepth),
+                size: Number(merkleTreeSize),
                 root: merkleTreeRoot.toString()
             }
         }
 
         return group
-    }
-
-    /**
-     * Returns a group admin.
-     * @param groupId Group id.
-     * @returns Group admin.
-     */
-    async getGroupAdmin(groupId: string): Promise<string> {
-        checkParameter(groupId, "groupId", "string")
-
-        const groupAdminUpdatedEvents = await getEvents(
-            this._contract,
-            "GroupAdminUpdated",
-            [groupId],
-            this._options.startBlock
-        )
-
-        if (groupAdminUpdatedEvents.length === 0) {
-            throw new Error(`Group '${groupId}' not found`)
-        }
-
-        return groupAdminUpdatedEvents[groupAdminUpdatedEvents.length - 1].newAdmin.toString()
     }
 
     /**
@@ -202,13 +178,12 @@ export default class SemaphoreEthers {
     async getGroupMembers(groupId: string): Promise<string[]> {
         checkParameter(groupId, "groupId", "string")
 
-        const [groupCreatedEvent] = await getEvents(this._contract, "GroupCreated", [groupId], this._options.startBlock)
+        const groupAdmin = await this._contract.getGroupAdmin(groupId)
 
-        if (!groupCreatedEvent) {
+        if (groupAdmin === ZeroAddress) {
             throw new Error(`Group '${groupId}' not found`)
         }
 
-        const zeroValue = groupCreatedEvent.zeroValue.toString()
         const memberRemovedEvents = await getEvents(
             this._contract,
             "MemberRemoved",
@@ -221,59 +196,105 @@ export default class SemaphoreEthers {
             [groupId],
             this._options.startBlock
         )
-        const groupUpdates = new Map<string, [number, string]>()
+        const memberUpdatedEventsMap = new Map<string, [number, string]>()
 
-        for (const { blockNumber, index, newIdentityCommitment } of memberUpdatedEvents) {
-            groupUpdates.set(index.toString(), [blockNumber, newIdentityCommitment.toString()])
+        for (const [, index, , newIdentityCommitment, , blockNumber] of memberUpdatedEvents) {
+            memberUpdatedEventsMap.set(index.toString(), [blockNumber, newIdentityCommitment.toString()])
         }
 
-        for (const { blockNumber, index } of memberRemovedEvents) {
-            const groupUpdate = groupUpdates.get(index.toString())
+        for (const [, index, , , blockNumber] of memberRemovedEvents) {
+            const groupUpdate = memberUpdatedEventsMap.get(index.toString())
 
             if (!groupUpdate || (groupUpdate && groupUpdate[0] < blockNumber)) {
-                groupUpdates.set(index.toString(), [blockNumber, zeroValue])
+                memberUpdatedEventsMap.set(index.toString(), [blockNumber, "0"])
             }
         }
 
+        const membersAddedEvents = await getEvents(this._contract, "MembersAdded", [groupId], this._options.startBlock)
+
+        const membersAddedEventsMap = new Map<string, [string]>()
+
+        for (const [, startIndex, identityCommitments] of membersAddedEvents) {
+            membersAddedEventsMap.set(
+                startIndex.toString(),
+                identityCommitments.map((i: any) => i.toString())
+            )
+        }
+
         const memberAddedEvents = await getEvents(this._contract, "MemberAdded", [groupId], this._options.startBlock)
+
         const members: string[] = []
 
-        for (const { index, identityCommitment } of memberAddedEvents) {
-            const groupUpdate = groupUpdates.get(index.toString())
-            const member = groupUpdate ? groupUpdate[1].toString() : identityCommitment.toString()
+        const merkleTreeSize = await this._contract.getMerkleTreeSize(groupId)
 
-            members.push(member)
+        let i = 0
+
+        while (i < Number(merkleTreeSize)) {
+            const identityCommitments = membersAddedEventsMap.get(i.toString())
+
+            if (identityCommitments) {
+                members.push(...identityCommitments)
+
+                i += identityCommitments.length
+            } else {
+                members.push(memberAddedEvents[i][2])
+
+                i += 1
+            }
+        }
+
+        for (let j = 0; j < members.length; j += 1) {
+            const groupUpdate = memberUpdatedEventsMap.get(j.toString())
+
+            if (groupUpdate) {
+                members[j] = groupUpdate[1].toString()
+            }
         }
 
         return members
     }
 
     /**
-     * Returns a list of group verified proofs.
+     * Returns a list of group validated proofs.
      * @param groupId Group id.
-     * @returns Group verified proofs.
+     * @returns Group validated proofs.
      */
-    async getGroupVerifiedProofs(groupId: string): Promise<any> {
+    async getGroupValidatedProofs(groupId: string): Promise<any> {
         checkParameter(groupId, "groupId", "string")
 
-        const [groupCreatedEvent] = await getEvents(this._contract, "GroupCreated", [groupId], this._options.startBlock)
+        const groupAdmin = await this._contract.getGroupAdmin(groupId)
 
-        if (!groupCreatedEvent) {
+        if (groupAdmin === ZeroAddress) {
             throw new Error(`Group '${groupId}' not found`)
         }
 
-        const proofVerifiedEvents = await getEvents(
+        const proofValidatedEvents = await getEvents(
             this._contract,
-            "ProofVerified",
+            "ProofValidated",
             [groupId],
             this._options.startBlock
         )
 
-        return proofVerifiedEvents.map((event) => ({
-            signal: event.signal.toString(),
-            merkleTreeRoot: event.merkleTreeRoot.toString(),
-            externalNullifier: event.externalNullifier.toString(),
-            nullifierHash: event.nullifierHash.toString()
+        return proofValidatedEvents.map((event) => ({
+            merkleTreeDepth: Number(event[1]),
+            merkleTreeRoot: event[2].toString(),
+            nullifier: event[3].toString(),
+            message: event[4].toString(),
+            scope: event[5].toString(),
+            points: event[6].map((p: any) => p.toString())
         }))
+    }
+
+    /**
+     * Returns true if a member is part of group, and false otherwise.
+     * @param groupId Group id
+     * @param member Group member.
+     * @returns True if the member is part of the group, false otherwise.
+     */
+    async isGroupMember(groupId: string, member: string): Promise<boolean> {
+        checkParameter(groupId, "groupId", "string")
+        checkParameter(member, "member", "string")
+
+        return this._contract.hasMember(groupId, member)
     }
 }

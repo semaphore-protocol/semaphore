@@ -1,121 +1,121 @@
-import { BigNumber } from "@ethersproject/bignumber"
-import hash from "js-sha512"
-import { poseidon1 } from "poseidon-lite/poseidon1"
+import {
+    BigNumberish,
+    Point,
+    Signature,
+    derivePublicKey,
+    deriveSecretScalar,
+    signMessage,
+    verifySignature
+} from "@zk-kit/eddsa-poseidon"
 import { poseidon2 } from "poseidon-lite/poseidon2"
-import checkParameter from "./checkParameter"
-import { genRandomNumber, isJsonArray } from "./utils"
+import { randomNumber } from "./random-number.node"
 
+/**
+ * The Semaphore identity is essentially an {@link https://www.rfc-editor.org/rfc/rfc8032 | EdDSA}
+ * public/private key pair. The {@link https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/eddsa-poseidon | EdDSA implementation}
+ * in this library uses {@link https://eips.ethereum.org/EIPS/eip-2494 | Baby Jubjub} for public key generation
+ * and {@link https://www.poseidon-hash.info | Poseidon} for signatures.
+ * In addition, the commitment, i.e. the hash of the public key, is used to represent
+ * Semaphore identities in groups, adding an additional layer of privacy and security.
+ */
 export default class Identity {
-    private _trapdoor: bigint
-    private _nullifier: bigint
-    private _secret: bigint
-    private _commitment: bigint
+    // The EdDSA private key, passed as a parameter or generated randomly.
+    private _privateKey: BigNumberish
+    // The secret scalar derived from the private key.
+    // It is used in circuits to derive the public key.
+    private _secretScalar: string
+    // The EdDSA public key, derived from the private key.
+    private _publicKey: Point<string>
+    // The identity commitment used as a public value in Semaphore groups.
+    private _commitment: string
 
     /**
-     * Initializes the class attributes based on the strategy passed as parameter.
-     * @param identityOrMessage Additional data needed to create identity for given strategy.
+     * Initializes the class attributes based on a given private key.
+     * If the private key is not passed as a parameter, a random key is generated.
+     * The constructor calculates the secret scalar and public key from the private key,
+     * and computes a commitment of the public key using a hash function (Poseidon).
+     *
+     * @example
+     * // Generates an identity.
+     * const { privateKey, publicKey, commitment } = new Identity("private-key")
+     * @example
+     * // Generates an identity with a random private key.
+     * const { privateKey, publicKey, commitment } = new Identity()
+     *
+     * @param privateKey The private key used to derive the public key.
      */
-    constructor(identityOrMessage?: string) {
-        if (identityOrMessage === undefined) {
-            this._trapdoor = genRandomNumber()
-            this._nullifier = genRandomNumber()
-            this._secret = poseidon2([this._nullifier, this._trapdoor])
-            this._commitment = poseidon1([this._secret])
-
-            return
-        }
-
-        checkParameter(identityOrMessage, "identityOrMessage", "string")
-
-        if (!isJsonArray(identityOrMessage)) {
-            const h = hash.sha512(identityOrMessage).padStart(128, "0")
-            // alt_bn128 is 253.6 bits, so we can safely use 253 bits.
-            this._trapdoor = BigInt(`0x${h.slice(64)}`) >> BigInt(3)
-            this._nullifier = BigInt(`0x${h.slice(0, 64)}`) >> BigInt(3)
-            this._secret = poseidon2([this._nullifier, this._trapdoor])
-            this._commitment = poseidon1([this._secret])
-
-            return
-        }
-
-        const [trapdoor, nullifier] = JSON.parse(identityOrMessage)
-
-        this._trapdoor = BigNumber.from(trapdoor).toBigInt()
-        this._nullifier = BigNumber.from(nullifier).toBigInt()
-        this._secret = poseidon2([this._nullifier, this._trapdoor])
-        this._commitment = poseidon1([this._secret])
+    constructor(privateKey: BigNumberish = randomNumber().toString()) {
+        this._privateKey = privateKey
+        this._secretScalar = deriveSecretScalar(privateKey)
+        this._publicKey = derivePublicKey(privateKey)
+        this._commitment = poseidon2(this._publicKey).toString()
     }
 
     /**
-     * Returns the identity trapdoor.
-     * @returns The identity trapdoor.
+     * Returns the private key.
+     * @returns The private key as a {@link https://zkkit.pse.dev/types/_zk_kit_utils.BigNumberish.html | BigNumberish}.
      */
-    public get trapdoor(): bigint {
-        return this._trapdoor
+    public get privateKey(): BigNumberish {
+        return this._privateKey
     }
 
     /**
-     * Returns the identity trapdoor.
-     * @returns The identity trapdoor.
+     * Returns the secret scalar.
+     * @returns The secret scalar as a string.
      */
-    public getTrapdoor(): bigint {
-        return this._trapdoor
+    public get secretScalar(): string {
+        return this._secretScalar
     }
 
     /**
-     * Returns the identity nullifier.
-     * @returns The identity nullifier.
+     * Returns the public key as a Baby Jubjub {@link https://zkkit.pse.dev/types/_zk_kit_baby_jubjub.Point.html | Point}.
+     * @returns The public key as a point.
      */
-    public get nullifier(): bigint {
-        return this._nullifier
+    public get publicKey(): Point<string> {
+        return this._publicKey
     }
 
     /**
-     * Returns the identity nullifier.
-     * @returns The identity nullifier.
+     * Returns the commitment hash of the public key.
+     * @returns The commitment as a string.
      */
-    public getNullifier(): bigint {
-        return this._nullifier
-    }
-
-    /**
-     * Returns the identity secret.
-     * @returns The identity secret.
-     */
-    public get secret(): bigint {
-        return this._secret
-    }
-
-    /**
-     * Returns the identity secret.
-     * @returns The identity secret.
-     */
-    public getSecret(): bigint {
-        return this._secret
-    }
-
-    /**
-     * Returns the identity commitment.
-     * @returns The identity commitment.
-     */
-    public get commitment(): bigint {
+    public get commitment(): string {
         return this._commitment
     }
 
     /**
-     * Returns the identity commitment.
-     * @returns The identity commitment.
+     * Generates a signature for a given message using the private key.
+     * This method demonstrates how to sign a message and could be used
+     * for authentication or data integrity.
+     *
+     * @example
+     * const identity = new Identity()
+     * const signature = identity.signMessage("message")
+     *
+     * @param message The message to be signed.
+     * @returns A {@link https://zkkit.pse.dev/types/_zk_kit_eddsa_poseidon.Signature.html | Signature} object containing the signature components.
      */
-    public getCommitment(): bigint {
-        return this._commitment
+    public signMessage(message: BigNumberish): Signature<string> {
+        return signMessage(this.privateKey, message)
     }
 
     /**
-     * Returns a JSON string with trapdoor and nullifier. It can be used
-     * to export the identity and reuse it later.
-     * @returns The string representation of the identity.
+     * Verifies a signature against a given message and public key.
+     * This static method allows for the verification of signatures without needing
+     * an instance of the Identity class. It's useful for cases where you only have
+     * the public key, the message and a signature, and need to verify if they match.
+     *
+     * @example
+     * const identity = new Identity()
+     * const signature = identity.signMessage("message")
+     * Identity.verifySignature("message", signature, identity.publicKey)
+     *
+     * @param message The message that was signed.
+     * @param signature The signature to verify.
+     * @param publicKey The public key to use for verification.
+     * @returns A boolean indicating whether the signature is valid.
      */
-    public toString(): string {
-        return JSON.stringify([`0x${this._trapdoor.toString(16)}`, `0x${this._nullifier.toString(16)}`])
+    static verifySignature(message: BigNumberish, signature: Signature, publicKey: Point): boolean {
+        return verifySignature(message, signature, publicKey)
     }
 }

@@ -28,7 +28,7 @@ Pull requests are great if you want to add a feature or fix a bug. Here's a quic
 
 6. Commit your changes.
 
-7. Push to your fork and submit a pull request on our `dev` branch. Please provide us with some explanation of why you made the changes you made. For new features make sure to explain a standard use case to us.
+7. Push to your fork and submit a pull request on our `main` branch. Please provide us with some explanation of why you made the changes you made. For new features make sure to explain a standard use case to us.
 
 ## CI (Github Actions) Tests
 
@@ -93,7 +93,6 @@ Just as in the subject, use the imperative, present tense: "change" not "changed
 ### Branch rules
 
 -   There must be a `main` branch, used only for the releases.
--   There must be a `dev` branch, used to merge all the branches under it.
 -   Avoid long descriptive names for long-lived branches.
 -   Use kebab-case (no CamelCase).
 -   Use grouping tokens (words) at the beginning of your branch names (in a similar way to the `type` of commit).

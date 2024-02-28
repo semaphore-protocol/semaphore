@@ -34,9 +34,5 @@ export default async function getGroupIds(network): Promise<string[]> {
             return null
         }
     }
-    if (groupIds.length === 0) {
-        console.info(`\n ${logSymbols.info}`, "info: there are no groups in this network\n")
-        return null
-    }
     return groupIds
 }

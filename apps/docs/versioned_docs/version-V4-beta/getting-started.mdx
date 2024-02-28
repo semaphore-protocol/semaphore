@@ -1,0 +1,336 @@
+---
+sidebar_position: 2
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Getting started
+
+Semaphore provides an official CLI to set up your project with Hardhat. If your NPM version is 5.2 or higher you can use NPX:
+
+```bash
+npx @semaphore-protocol/cli create my-app --template monorepo-ethers
+```
+
+Otherwise, install `@semaphore-protocol/cli` globally and run the `create` command:
+
+```bash
+npm i -g @semaphore-protocol/cli
+semaphore create my-app --template monorepo-ethers
+```
+
+:::info
+The supported templates are: [`contracts-hardhat`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli-template-contracts-hardhat), [`monorepo-ethers`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli-template-monorepo-ethers), [`monorepo-subgraph`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli-template-monorepo-subgraph).
+:::
+
+:::info
+The [`semaphore CLI`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli) can also be used to get group data from a supported network (e.g. `semaphore get-groups --network sepolia`).
+:::
+
+To start working on your project, install the dependencies:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+cd my-app
+npm i
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+cd my-app
+yarn
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+cd my-app
+pnpm install
+```
+
+</TabItem>
+</Tabs>
+
+## Output
+
+The `create` command will create a directory called my-app (or whatever name you choose) inside the current folder. That directory will contain the initial project structure, which includes a simple contract, a task to deploy it, some tests and a Next.js application (the web-app folder) to interact with that contract.
+
+```
+my-app
+├── .yarn
+├── apps
+│   └── contracts
+│   │   └── contracts
+|   │   │   └── Feedback.sol
+│   │   └── tasks
+|   │   │   └── deploy.ts
+│   │   └── test
+|   │   │   └── Feedback.ts
+│   │   └── hardhat.config.ts
+│   │   └── package.json
+│   │   └── tsconfig.json
+│   └── web-app
+├── .editorconfig
+├── .env
+├── .env.example
+├── .eslintignore
+├── .eslintrc.json
+├── .gitignore
+├── .prettierignore
+├── .prettierrc.json
+├── .yarnrc.yml
+├── package.json
+├── README.md
+└── tsconfig.json
+```
+
+The `Feedback.sol` contract creates a Semaphore group, allows users to join that group with their Semaphore identity, and finally allows group members to send an anonymous feedback.
+
+## Usage
+
+### Compile contracts
+
+Go to the `contracts` folder:
+
+```bash
+cd apps/contracts
+```
+
+And compile your contracts:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm run compile
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn compile
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm compile
+```
+
+</TabItem>
+</Tabs>
+
+### Test contracts
+
+Test your contracts:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm test
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn test
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm test
+```
+
+</TabItem>
+</Tabs>
+
+Generate a test coverage report:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm run test:coverage
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn test:coverage
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm test:coverage
+```
+
+</TabItem>
+</Tabs>
+
+Or a test gas report:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm run test:report-gas
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn test:report-gas
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm test:report-gas
+```
+
+</TabItem>
+</Tabs>
+
+### Deploy contracts
+
+Follow the instructions below to deploy your contracts:
+
+In the project root folder:
+
+1. Add your environment variables in the `.env` file.
+
+    :::note
+    You should at least set a valid Infura API Key (you could use Alchemy as well) and a private key with some ethers.
+    :::
+
+2. Go to the `apps/contracts` folder and deploy your contract.
+
+    <Tabs
+    defaultValue="npm"
+    groupId="package-managers"
+    values={[
+    {label: 'npm', value: 'npm'},
+    {label: 'Yarn', value: 'yarn'},
+    {label: 'pnpm', value: 'pnpm'}
+    ]}>
+    <TabItem value="npm">
+
+    ```bash
+    npm run deploy -- --semaphore <semaphore-address> --group <group-id> --network sepolia
+    ```
+
+    </TabItem>
+    <TabItem value="yarn">
+
+    ```bash
+    yarn deploy --semaphore <semaphore-address> --group <group-id> --network sepolia
+    ```
+
+    </TabItem>
+    <TabItem value="pnpm">
+
+    ```bash
+    pnpm deploy --semaphore <semaphore-address> --group <group-id> --network sepolia
+    ```
+
+    </TabItem>
+    </Tabs>
+
+    :::note
+    Check the Semaphore contract addresses [here](/deployed-contracts).
+    :::
+
+    :::caution
+    The group id is a number.
+    :::
+
+### Start app
+
+Start the application:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm run dev
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn dev
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm dev
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+If you want to see the code of a comprehensive application built on top of Semaphore see the [boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/main). For more info about the core libraries, keep reading the next guides.
+:::

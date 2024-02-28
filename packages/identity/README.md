@@ -10,7 +10,7 @@
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
     <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+        <img alt="NPM license" src="https://img.shields.io/npm/l/%40semaphore-protocol%2Fidentity?style=flat-square">
     </a>
     <a href="https://www.npmjs.com/package/@semaphore-protocol/identity">
         <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/identity?style=flat-square" />
@@ -18,7 +18,7 @@
     <a href="https://npmjs.org/package/@semaphore-protocol/identity">
         <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/identity.svg?style=flat-square" />
     </a>
-    <a href="https://js.semaphore.pse.dev/identity">
+    <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_identity">
         <img alt="Documentation typedoc" src="https://img.shields.io/badge/docs-typedoc-744C7C?style=flat-square">
     </a>
     <a href="https://eslint.org/">
@@ -49,8 +49,8 @@
     </h4>
 </div>
 
-| This library provides a class that can be used to create identities compatible with the Semaphore [circuits](https://github.com/semaphore-protocol/semaphore/tree/main/circuits). Each identity contains two secret values: _trapdoor_ and _nullifier_, and one public value: _commitment_. The Poseidon hash of the secret values is the identity secret, and its hash is the identity commitment. |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| This library provides a class that can be used to create identities compatible with the Semaphore [circuits](https://github.com/semaphore-protocol/semaphore/tree/main/circuits). Each identity contains an [EdDSA](https://www.rfc-editor.org/rfc/rfc8032) private key, its public key, and the identity commitment, which is the [Poseidon](https://eprint.iacr.org/2019/458.pdf) hash of the public key. |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## 🛠 Install
 
@@ -70,20 +70,40 @@ yarn add @semaphore-protocol/identity
 
 ## 📜 Usage
 
-\# **new Identity**(identityOrMessage?: _string_): _Identity_
+For more information on the functions provided by `@semaphore-protocol/identity`, please refer to the [TypeDoc documentation](https://js.semaphore.pse.dev/modules/_semaphore_protocol_identity).
+
+\# **new Identity**(privateKey?: _BigNumberish_): _Identity_
 
 ```typescript
 import { Identity } from "@semaphore-protocol/identity"
 
-// The identity can be generated randomly.
-const identity1 = new Identity()
+// The identity will be generated randomly.
+const { privateKey, publicKey, commitment } = new Identity()
 
-// Deterministically from a secret message.
-const identity2 = new Identity("secret-message")
+// Alternatively, you can pass your private key.
+const identity = new Identity("your-private-key")
+```
 
-// Or it can be retrieved from an existing identity.
-const identity3 = new Identity(identity1.toString())
+\# **identity.signMessage**(message: _BigNumberish_): _Signature\<string>_
 
-// Trapdoor, nullifier and commitment are the attributes (e.g. JS getters).
-const { trapdoor, nullifier, commitment } = identity1
+```typescript
+import { Identity } from "@semaphore-protocol/identity"
+
+const message = "message"
+const identity = new Identity()
+
+const signature = identity.signMessage(message)
+```
+
+\# **Identity.verifySignature**(message: _BigNumberish_, signature: _Signature_, publicKey: _Point_): _boolean_
+
+```typescript
+import { Identity } from "@semaphore-protocol/identity"
+
+const message = "message"
+const identity = new Identity()
+
+const signature = identity.signMessage("message", signature)
+
+Identity.verifySignature(message, signature, identity.publicKey)
 ```

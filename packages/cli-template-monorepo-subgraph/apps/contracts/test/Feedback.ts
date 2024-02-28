@@ -1,42 +1,41 @@
-import { Group } from "@semaphore-protocol/group"
-import { Identity } from "@semaphore-protocol/identity"
-import { generateProof } from "@semaphore-protocol/proof"
+import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers"
+import { Group, Identity, generateProof } from "@semaphore-protocol/core"
 import { expect } from "chai"
-import { formatBytes32String } from "ethers/lib/utils"
+import { encodeBytes32String } from "ethers"
 import { run } from "hardhat"
 // @ts-ignore: typechain folder will be generated after contracts compilation
-import { Feedback } from "../build/typechain"
-import { config } from "../package.json"
+// eslint-disable-next-line
+import { Feedback, ISemaphore } from "../typechain-types"
 
 describe("Feedback", () => {
-    let feedbackContract: Feedback
-    let semaphoreContract: string
+    async function deployFeedbackFixture() {
+        const groupId = "42"
 
-    const groupId = "42"
-    const group = new Group(groupId)
-    const users: Identity[] = []
-
-    before(async () => {
         const { semaphore } = await run("deploy:semaphore", {
             logs: false
         })
 
-        feedbackContract = await run("deploy", {
+        const semaphoreContract: ISemaphore = semaphore
+
+        const feedbackContract: Feedback = await run("deploy", {
             logs: false,
             group: groupId,
-            semaphore: semaphore.address
+            semaphore: await semaphoreContract.getAddress()
         })
-        semaphoreContract = semaphore
 
-        users.push(new Identity())
-        users.push(new Identity())
-    })
+        return { semaphoreContract, feedbackContract, groupId }
+    }
 
     describe("# joinGroup", () => {
         it("Should allow users to join the group", async () => {
-            for await (const [i, user] of users.entries()) {
-                const transaction = feedbackContract.joinGroup(user.commitment)
+            const { semaphoreContract, feedbackContract, groupId } = await loadFixture(deployFeedbackFixture)
 
+            const users = [new Identity(), new Identity()]
+
+            const group = new Group()
+
+            for (const [i, user] of users.entries()) {
+                const transaction = await feedbackContract.joinGroup(user.commitment)
                 group.addMember(user.commitment)
 
                 await expect(transaction)
@@ -47,27 +46,40 @@ describe("Feedback", () => {
     })
 
     describe("# sendFeedback", () => {
-        const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
-        const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
-
         it("Should allow users to send feedback anonymously", async () => {
-            const feedback = formatBytes32String("Hello World")
+            const { semaphoreContract, feedbackContract, groupId } = await loadFixture(deployFeedbackFixture)
 
-            const fullProof = await generateProof(users[1], group, groupId, feedback, {
-                wasmFilePath,
-                zkeyFilePath
-            })
+            const users = [new Identity(), new Identity()]
+            const group = new Group()
+
+            for (const user of users) {
+                await feedbackContract.joinGroup(user.commitment)
+                group.addMember(user.commitment)
+            }
+
+            const feedback = encodeBytes32String("Hello World")
+
+            const proof = await generateProof(users[1], group, feedback, groupId)
 
             const transaction = feedbackContract.sendFeedback(
+                proof.merkleTreeDepth,
+                proof.merkleTreeRoot,
+                proof.nullifier,
                 feedback,
-                fullProof.merkleTreeRoot,
-                fullProof.nullifierHash,
-                fullProof.proof
+                proof.points
             )
 
             await expect(transaction)
-                .to.emit(semaphoreContract, "ProofVerified")
-                .withArgs(groupId, fullProof.merkleTreeRoot, fullProof.nullifierHash, groupId, fullProof.signal)
+                .to.emit(semaphoreContract, "ProofValidated")
+                .withArgs(
+                    groupId,
+                    proof.merkleTreeDepth,
+                    proof.merkleTreeRoot,
+                    proof.nullifier,
+                    proof.message,
+                    groupId,
+                    proof.points
+                )
         })
     })
 })

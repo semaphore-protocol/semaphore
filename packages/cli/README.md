@@ -10,7 +10,7 @@
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
     <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+        <img alt="NPM license" src="https://img.shields.io/npm/l/%40semaphore-protocol%2Fcli?style=flat-square">
     </a>
     <a href="https://www.npmjs.com/package/@semaphore-protocol/cli">
         <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/cli?style=flat-square" />
@@ -76,9 +76,9 @@ Options:
 
 Commands:
   create [options] [project-directory]  Create a Semaphore project with a supported template.
-  get-groups [options]                  Get the list of groups from a supported network (e.g. goerli or arbitrum).
-  get-group [options] [group-id]        Get the data of a group from a supported network (e.g. goerli or arbitrum).
-  get-members [options] [group-id]      Get the members of a group from a supported network (e.g. goerli or arbitrum).
-  get-proofs [options] [group-id]       Get the proofs of a group from a supported network (e.g. goerli or arbitrum).
+  get-groups [options]                  Get the list of groups from a supported network (e.g. sepolia or arbitrum).
+  get-group [options] [group-id]        Get the data of a group from a supported network (e.g. sepolia or arbitrum).
+  get-members [options] [group-id]      Get the members of a group from a supported network (e.g. sepolia or arbitrum).
+  get-proofs [options] [group-id]       Get the proofs of a group from a supported network (e.g. sepolia or arbitrum).
   help [command]                        Display help for a specific command.
 ```
