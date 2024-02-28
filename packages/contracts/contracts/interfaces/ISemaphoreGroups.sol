@@ -57,7 +57,7 @@ interface ISemaphoreGroups {
     /// @param merkleTreeRoot: New root hash of the tree.
     event MemberRemoved(uint256 indexed groupId, uint256 index, uint256 identityCommitment, uint256 merkleTreeRoot);
 
-    /// @dev Returns the address of the group admin.
+    /// @dev Returns the address of the group admin. The group admin can be an Ethereum account or a smart contract.
     /// @param groupId: Id of the group.
     /// @return Address of the group admin.
     function getGroupAdmin(uint256 groupId) external view returns (address);
