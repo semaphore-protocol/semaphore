@@ -1,16 +1,16 @@
-# Semaphore Hardhat + Next.js + SemaphoreEthers template
+# Semaphore Hardhat + Next.js + SemaphoreSubgraph template
 
 This project is a complete application that demonstrates a basic Semaphore use case. It comes with a sample contract, a test for that contract and a sample task that deploys that contract. It also contains a frontend to play around with the contract.
 
-## 📜 Usage
+## Install
 
-Copy the `.env.example` file as `.env`:
+### Install dependencies
 
 ```bash
-cp .env.example .env
+yarn
 ```
 
-and add your environment variables or run the app in a local network.
+## 📜 Usage
 
 ### Local server
 
@@ -30,7 +30,7 @@ yarn deploy --semaphore <semaphore-address> --group <group-id> --network arbitru
 
 2. Update your `.env` file with your new contract address, the group id and the semaphore contract address.
 
-3. Copy your contract artifacts from `apps/contracts/build/contracts/contracts` folder to `apps/web-app/contract-artifacts` folders manually. Or run `yarn copy:contract-artifacts` in the project root to do it automatically.
+3. Copy your contract artifacts from `apps/contracts/artifacts/contracts/` folder to `apps/web-app/contract-artifacts` folder manually.
 
 > **Note**  
 > Check the Semaphore contract addresses [here](https://docs.semaphore.pse.dev/deployed-contracts).
@@ -40,7 +40,7 @@ yarn deploy --semaphore <semaphore-address> --group <group-id> --network arbitru
 
 ### Code quality and formatting
 
-Run [ESLint](https://eslint.org/) to analyze the code and catch bugs:
+Run [ESLint](https://eslint.org/) and [solhint](https://github.com/protofire/solhint) to analyze the code and catch bugs:
 
 ```bash
 yarn lint
@@ -52,7 +52,7 @@ Run [Prettier](https://prettier.io/) to check formatting rules:
 yarn prettier
 ```
 
-or to automatically format the code:
+Or to automatically format the code:
 
 ```bash
 yarn prettier:write
