@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/utils",
-    "version": "4.0.0-alpha.8",
+    "version": "4.0.0-beta",
     "description": "A library to provide utility functions to the other Semaphore packages.",
     "type": "module",
     "license": "MIT",
@@ -46,5 +46,6 @@
         "rollup": "^4.9.6",
         "rollup-plugin-cleanup": "^3.2.1",
         "rollup-plugin-typescript2": "^0.36.0"
-    }
+    },
+    "stableVersion": "4.0.0-alpha.8"
 }
