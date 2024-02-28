@@ -1,12 +1,12 @@
 import { SemaphoreSubgraph } from "@semaphore-protocol/data"
 import { decodeBytes32String, toBeHex } from "ethers"
-import getNextConfig from "next/config"
 import { useCallback, useState } from "react"
 import { SemaphoreContextType } from "../context/SemaphoreContext"
 
-const { publicRuntimeConfig: env } = getNextConfig()
-
-const ethereumNetwork = env.DEFAULT_NETWORK === "localhost" ? "http://127.0.0.1:8545" : env.DEFAULT_NETWORK
+const ethereumNetwork =
+    process.env.NEXT_PUBLIC_DEFAULT_NETWORK === "localhost"
+        ? "http://127.0.0.1:8545"
+        : process.env.NEXT_PUBLIC_DEFAULT_NETWORK
 
 export default function useSemaphore(): SemaphoreContextType {
     const [_users, setUsers] = useState<any[]>([])
@@ -15,7 +15,7 @@ export default function useSemaphore(): SemaphoreContextType {
     const refreshUsers = useCallback(async (): Promise<void> => {
         const semaphore = new SemaphoreSubgraph(ethereumNetwork)
 
-        const group = await semaphore.getGroup(env.GROUP_ID, { members: true })
+        const group = await semaphore.getGroup(process.env.NEXT_PUBLIC_GROUP_ID as string, { members: true })
 
         setUsers(group.members!)
     }, [])
@@ -30,7 +30,7 @@ export default function useSemaphore(): SemaphoreContextType {
     const refreshFeedback = useCallback(async (): Promise<void> => {
         const semaphore = new SemaphoreSubgraph(ethereumNetwork)
 
-        const group = await semaphore.getGroup(env.GROUP_ID, {
+        const group = await semaphore.getGroup(process.env.NEXT_PUBLIC_GROUP_ID as string, {
             validatedProofs: true
         })
 
