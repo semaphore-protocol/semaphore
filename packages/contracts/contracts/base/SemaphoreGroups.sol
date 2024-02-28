@@ -11,9 +11,12 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
     using InternalLeanIMT for LeanIMTData;
 
     /// @dev Gets a group id and returns its tree data.
+    /// The tree is an Incremental Merkle Tree
+    /// which is called Lean Incremental Merkle Tree.
     mapping(uint256 => LeanIMTData) internal merkleTrees;
 
     /// @dev Gets a group id and returns its admin.
+    /// The admin can be an Ethereum account or a smart contract.
     mapping(uint256 => address) internal admins;
 
     /// @dev Checks if the group admin is the transaction sender.

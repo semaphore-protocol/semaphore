@@ -21,6 +21,12 @@ contract SemaphoreVerifier {
     uint256 constant gammay1 = 4082367875863433681332203403145435568316851327593401208105741076214120093531;
     uint256 constant gammay2 = 8495653923123431417604973247489272438418190587263600148770280649306958101930;
 
+    // TODO: Add more variables when Semaphore supports tree depth > 12.
+    // Right now Semaphore supports tree depth 1-12.
+
+    // Verification Key points.
+    // These values are taken from the verification key json file generated with snarkjs.
+    // It allows to use the same verifier to verify proofs for all the tree depths supported by Semaphore.
     uint256[14][12] VK_POINTS = [
         [
             563562783592406106461234396505774794044312891062077216951605541624542949349,
