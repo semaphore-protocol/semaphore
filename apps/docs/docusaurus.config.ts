@@ -55,8 +55,7 @@ const config: Config = {
                     routeBasePath: "/",
                     sidebarPath: require.resolve("./sidebars.js"),
                     editUrl: "https://github.com/semaphore-protocol/semaphore/edit/main/apps/docs",
-                    includeCurrentVersion: false,
-                    lastVersion: "V3"
+                    includeCurrentVersion: false
                 },
                 theme: {
                     customCss: [require.resolve("./src/css/custom.scss")]
@@ -66,9 +65,9 @@ const config: Config = {
     ],
     themeConfig: {
         announcementBar: {
-            id: "semaphore-v4-alpha",
+            id: "semaphore-v4-beta",
             content:
-                '<b>Semaphore V4-alpha is out 🎉 <a href="/V4-alpha/getting-started">Try it out</a> and let us know for any feedback on <a href="https://semaphore.pse.dev/discord" target="_blank">Discord</a> or <a href="https://github.com/orgs/semaphore-protocol/discussions" target="_blank">Github</a>!</b>',
+                '<b>Semaphore V4-beta is out 🎉 <a href="/V4-beta/getting-started">Try it out</a> and let us know for any feedback on <a href="https://semaphore.pse.dev/discord" target="_blank">Discord</a> or <a href="https://github.com/orgs/semaphore-protocol/discussions" target="_blank">Github</a>!</b>',
             backgroundColor: "#dde6fc",
             textColor: "#000000"
         },

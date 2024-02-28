@@ -71,6 +71,25 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
     <tbody>
         <tr>
             <td>
+                <a href="/packages/core">
+                    @semaphore-protocol/core
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/core">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/core.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/core">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/core.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <a href="/packages/contracts">
                     @semaphore-protocol/contracts
                 </a>
@@ -211,6 +230,28 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 <!-- Downloads -->
                 <a href="https://npmjs.org/package/@semaphore-protocol/cli">
                     <img src="https://img.shields.io/npm/dm/@semaphore-protocol/cli.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/packages/utils">
+                    @semaphore-protocol/utils
+                </a>
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_utils">
+                    (docs)
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/utils">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/utils.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/utils">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/utils.svg?style=flat-square" alt="Downloads" />
                 </a>
             </td>
         </tr>

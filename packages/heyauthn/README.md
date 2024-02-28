@@ -10,7 +10,7 @@
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
     <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+        <img alt="NPM license" src="https://img.shields.io/npm/l/%40semaphore-protocol%2Fheyauthn?style=flat-square">
     </a>
     <a href="https://www.npmjs.com/package/@semaphore-protocol/heyauthn">
         <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/heyauthn?style=flat-square" />
@@ -18,7 +18,7 @@
     <a href="https://npmjs.org/package/@semaphore-protocol/heyauthn">
         <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/heyauthn.svg?style=flat-square" />
     </a>
-    <a href="https://js.semaphore.pse.dev/heyauthn">
+    <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_heyauthn">
         <img alt="Documentation typedoc" src="https://img.shields.io/badge/docs-typedoc-744C7C?style=flat-square">
     </a>
     <a href="https://eslint.org/">
@@ -70,6 +70,8 @@ yarn add @semaphore-protocol/heyauthn
 
 ## 📜 Usage
 
+For more information on the functions provided by `@semaphore-protocol/heyauthn`, please refer to the [TypeDoc documentation](https://js.semaphore.pse.dev/modules/_semaphore_protocol_heyauthn).
+
 ```typescript
 import { HeyAuthn } from "@semaphore-protocol/heyauthn"
 
@@ -101,16 +103,13 @@ import { Group } from "@semaphore-protocol/group"
 import { generateProof } from "@semaphore-protocol/proof"
 import { utils } from "ethers"
 
-const group = new Group("42")
+const group = new Group()
 
 group.addMembers(memberList)
 
-const signal = utils.formatBytes32String("Hey anon!")
+const message = utils.formatBytes32String("Hey anon!")
 
-generateProof(identity, group, group.id, "42", {
-    zkeyFilePath: "./semaphore.zkey",
-    wasmFilePath: "./semaphore.wasm"
-})
+generateProof(identity, group, message, group.root)
 ```
 
 ## Authors

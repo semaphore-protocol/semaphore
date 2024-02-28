@@ -42,13 +42,13 @@
 
 ## Networks
 
-| Semaphore version | Sepolia                                                                                   | Goerli                                                                                                            | Mumbai                                                                                  | Optimism Goerli                                                                                           | Arbitrum Goerli                                                                                           | Arbitrum One                                                                                                          |
-| ----------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| v2.0              | N/A                                                                                       | N/A                                                                                                               | N/A                                                                                     | N/A                                                                                                       | N/A                                                                                                       | [semaphore-protocol/arbitrum](https://thegraph.com/hosted-service/subgraph/semaphore-protocol/arbitrum)               |
-| v2.5              | N/A                                                                                       | [semaphore-protocol/goerli](https://thegraph.com/hosted-service/subgraph/semaphore-protocol/goerli)               | N/A                                                                                     | N/A                                                                                                       | N/A                                                                                                       | N/A                                                                                                                   |
-| v2.6              | N/A                                                                                       | [semaphore-protocol/goerli-5259d3](https://thegraph.com/hosted-service/subgraph/semaphore-protocol/goerli-5259d3) | N/A                                                                                     | N/A                                                                                                       | N/A                                                                                                       | [semaphore-protocol/arbitrum-86337c](https://thegraph.com/hosted-service/subgraph/semaphore-protocol/arbitrum-86337c) |
-| v3.0 - v3.1       | N/A                                                                                       | [semaphore-protocol/goerli-89490c](https://thegraph.com/hosted-service/subgraph/semaphore-protocol/goerli-89490c) | N/A                                                                                     | N/A                                                                                                       | N/A                                                                                                       | [semaphore-protocol/arbitrum-72dca3](https://thegraph.com/hosted-service/subgraph/semaphore-protocol/arbitrum-72dca3) |
-| >= v3.2           | [semaphore-sepolia](https://api.studio.thegraph.com/query/14377/semaphore-sepolia/v3.6.1) | [semaphore-goerli](https://api.studio.thegraph.com/query/14377/semaphore-goerli/v3.6.1)                           | [semaphore-mumbai](https://api.studio.thegraph.com/query/14377/semaphore-mumbai/v3.6.1) | [semaphore-optimism-goerli](https://api.studio.thegraph.com/query/14377/semaphore-optimism-goerli/v3.6.1) | [semaphore-arbitrum-goerli](https://api.studio.thegraph.com/query/14377/semaphore-arbitrum-goerli/v3.6.1) | [semaphore-arbitrum](https://api.studio.thegraph.com/query/14377/semaphore-arbitrum/v3.6.1)                           |
+| Semaphore version | Sepolia                                                                                   | Mumbai                                                                                  | Optimism Sepolia | Arbitrum Sepolia | Arbitrum One                                                                                                          |
+| ----------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------- |
+| v2.0              | N/A                                                                                       | N/A                                                                                     | N/A              | N/A              | [semaphore-protocol/arbitrum](https://thegraph.com/hosted-service/subgraph/semaphore-protocol/arbitrum)               |
+| v2.5              | N/A                                                                                       | N/A                                                                                     | N/A              | N/A              | N/A                                                                                                                   |
+| v2.6              | N/A                                                                                       | N/A                                                                                     | N/A              | N/A              | [semaphore-protocol/arbitrum-86337c](https://thegraph.com/hosted-service/subgraph/semaphore-protocol/arbitrum-86337c) |
+| v3.0 - v3.1       | N/A                                                                                       | N/A                                                                                     | N/A              | N/A              | [semaphore-protocol/arbitrum-72dca3](https://thegraph.com/hosted-service/subgraph/semaphore-protocol/arbitrum-72dca3) |
+| >= v3.2           | [semaphore-sepolia](https://api.studio.thegraph.com/query/14377/semaphore-sepolia/v3.6.1) | [semaphore-mumbai](https://api.studio.thegraph.com/query/14377/semaphore-mumbai/v3.6.1) | N/A              | N/A              | [semaphore-arbitrum](https://api.studio.thegraph.com/query/14377/semaphore-arbitrum/v3.6.1)                           |
 
 ## 🛠 Install
 
@@ -111,15 +111,15 @@ yarn deploy <subgraph-name>
 Start services required for TheGraph node by running:
 
 ```bash
-docker compose -f docker-compose-graph.yml up
+docker compose up
 ```
 
 Start a local Hardhat node and deploy the [Semaphore contract](https://github.com/semaphore-protocol/semaphore/tree/main/packages/contracts):
 
 ```bash
 # CWD = /semaphore/packages/contracts
-yarn start
-yarn deploy:semaphore --network localhost
+yarn start --hostname 0.0.0.0
+yarn deploy --network localhost
 ```
 
 Create the `subgraph.yaml` file for your local network and create/deploy your subgraph:

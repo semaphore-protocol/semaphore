@@ -4,10 +4,9 @@
     "scripts": {
         "start": "hardhat node",
         "compile": "hardhat compile",
-        "deploy:semaphore": "hardhat deploy:semaphore",
-        "deploy:semaphore-voting": "hardhat deploy:semaphore-voting",
-        "deploy:semaphore-whistleblowing": "hardhat deploy:semaphore-whistleblowing",
-        "verify:contracts": "hardhat run scripts/verify-contracts.ts",
+        "deploy": "hardhat deploy",
+        "verify": "hardhat run scripts/verify-contracts.ts",
+        "mock": "hardhat run scripts/create-mock-groups.ts",
         "test": "hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
@@ -15,53 +14,31 @@
         "lint": "solhint 'contracts/**/*.sol'"
     },
     "devDependencies": {
-        "@nomicfoundation/hardhat-chai-matchers": "^1.0.5",
-        "@nomiclabs/hardhat-ethers": "^2.0.6",
-        "@nomiclabs/hardhat-etherscan": "^3.1.7",
-        "@semaphore-protocol/group": "workspace:packages/group",
-        "@semaphore-protocol/identity": "workspace:packages/identity",
-        "@semaphore-protocol/proof": "workspace:packages/proof",
-        "@typechain/ethers-v5": "^10.0.0",
-        "@typechain/hardhat": "^6.0.0",
-        "@types/chai": "^4.3.0",
-        "@types/download": "^8.0.1",
-        "@types/mocha": "^9.1.0",
-        "@types/node": "^17.0.12",
-        "@types/rimraf": "^3.0.2",
-        "chai": "^4.3.5",
-        "circomlib": "^2.0.2",
-        "circomlibjs": "^0.1.7",
-        "download": "^8.0.0",
-        "ethers": "^5.6.8",
-        "hardhat": "^2.9.7",
+        "@nomicfoundation/hardhat-chai-matchers": "^2.0.3",
+        "@nomicfoundation/hardhat-ethers": "^3.0.0",
+        "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+        "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+        "@nomicfoundation/hardhat-verify": "^2.0.0",
+        "@openzeppelin/hardhat-upgrades": "^3.0.4",
+        "@semaphore-protocol/core": "workspace:packages/core",
+        "@typechain/ethers-v6": "^0.5.0",
+        "@typechain/hardhat": "^9.0.0",
+        "@types/chai": "^4.2.0",
+        "@types/mocha": "^10.0.6",
+        "@types/node": "^20.10.7",
+        "chai": "^4.2.0",
+        "ethers": "^6.4.0",
+        "hardhat": "^2.19.4",
         "hardhat-gas-reporter": "^1.0.8",
-        "js-logger": "^1.6.1",
-        "prettier-plugin-solidity": "^1.0.0-beta.19",
-        "rimraf": "^3.0.2",
+        "prettier-plugin-solidity": "^1.3.1",
         "solhint": "^3.3.6",
         "solhint-plugin-prettier": "^0.0.5",
-        "solidity-coverage": "^0.7.21",
-        "ts-node": "^10.4.0",
-        "typechain": "^8.0.0"
-    },
-    "config": {
-        "solidity": {
-            "version": "0.8.4"
-        },
-        "paths": {
-            "contracts": "./contracts",
-            "circuit": "./circuit",
-            "tests": "./test",
-            "cache": "./cache",
-            "snarkjs-templates": "./snarkjs-templates",
-            "build": {
-                "contracts": "./build/contracts",
-                "typechain": "./build/typechain"
-            }
-        }
+        "solidity-coverage": "^0.8.0",
+        "ts-node": "^10.9.2",
+        "typechain": "^8.3.0",
+        "typescript": "^5.3.3"
     },
     "dependencies": {
-        "@openzeppelin/contracts": "4.7.3",
-        "@zk-kit/incremental-merkle-tree.sol": "1.3.3"
+        "@zk-kit/imt.sol": "^2.0.0-beta.5"
     }
 }

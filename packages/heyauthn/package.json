@@ -1,15 +1,16 @@
 {
     "name": "@semaphore-protocol/heyauthn",
-    "version": "3.15.2",
+    "version": "4.0.0-alpha.8",
     "description": "A library to allow developers to create and manage Semaphore identities using WebAuthn",
+    "type": "module",
     "license": "MIT",
-    "main": "dist/index.node.js",
-    "exports": {
-        "import": "./dist/index.mjs",
-        "require": "./dist/index.node.js",
-        "types": "./dist/types/index.d.ts"
-    },
+    "main": "dist/index.js",
     "types": "dist/types/index.d.ts",
+    "exports": {
+        "types": "./dist/types/index.d.ts",
+        "require": "./dist/index.cjs",
+        "default": "./dist/index.js"
+    },
     "files": [
         "dist/",
         "src/",
@@ -22,7 +23,6 @@
         "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
     },
     "scripts": {
-        "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
         "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
         "prepublishOnly": "yarn build"
     },
@@ -31,10 +31,10 @@
     },
     "devDependencies": {
         "rollup-plugin-cleanup": "^3.2.1",
-        "rollup-plugin-typescript2": "^0.31.2"
+        "rollup-plugin-typescript2": "^0.36.0"
     },
     "dependencies": {
-        "@semaphore-protocol/identity": "3.15.2",
+        "@semaphore-protocol/identity": "4.0.0-alpha.8",
         "@simplewebauthn/browser": "7.2.0",
         "@simplewebauthn/server": "7.2.0"
     }

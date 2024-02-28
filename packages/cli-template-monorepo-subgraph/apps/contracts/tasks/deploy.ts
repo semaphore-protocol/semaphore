@@ -10,7 +10,7 @@ task("deploy", "Deploy a Feedback contract")
                 logs
             })
 
-            semaphoreAddress = semaphore.address
+            semaphoreAddress = await semaphore.getAddress()
         }
 
         if (!groupId) {
@@ -21,10 +21,8 @@ task("deploy", "Deploy a Feedback contract")
 
         const feedbackContract = await FeedbackFactory.deploy(semaphoreAddress, groupId)
 
-        await feedbackContract.deployed()
-
         if (logs) {
-            console.info(`Feedback contract has been deployed to: ${feedbackContract.address}`)
+            console.info(`Feedback contract has been deployed to: ${await feedbackContract.getAddress()}`)
         }
 
         return feedbackContract
