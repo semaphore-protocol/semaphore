@@ -18,7 +18,7 @@
     <a href="https://npmjs.org/package/@semaphore-protocol/identity">
         <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/identity.svg?style=flat-square" />
     </a>
-    <a href="https://js.semaphore.pse.dev/identity">
+    <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_identity">
         <img alt="Documentation typedoc" src="https://img.shields.io/badge/docs-typedoc-744C7C?style=flat-square">
     </a>
     <a href="https://eslint.org/">
@@ -70,6 +70,8 @@ yarn add @semaphore-protocol/identity
 
 ## 📜 Usage
 
+For more information on the functions provided by `@semaphore-protocol/identity`, please refer to the [TypeDoc documentation](https://js.semaphore.pse.dev/modules/_semaphore_protocol_identity).
+
 \# **new Identity**(privateKey?: _BigNumberish_): _Identity_
 
 ```typescript
@@ -91,19 +93,6 @@ const message = "message"
 const identity = new Identity()
 
 const signature = identity.signMessage(message)
-```
-
-\# **identity.verifySignature**(message: _BigNumberish_, signature: _Signature_): _boolean_
-
-```typescript
-import { Identity } from "@semaphore-protocol/identity"
-
-const message = "message"
-const identity = new Identity()
-
-const signature = identity.signMessage(message)
-
-identity.verifySignature(message, signature)
 ```
 
 \# **Identity.verifySignature**(message: _BigNumberish_, signature: _Signature_, publicKey: _Point_): _boolean_
