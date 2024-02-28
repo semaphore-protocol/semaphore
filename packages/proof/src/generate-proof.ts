@@ -14,7 +14,7 @@ import { BigNumberish, SemaphoreProof, SnarkArtifacts } from "./types"
  * The message may be any arbitrary user-defined value (e.g. a vote), or the hash of that value.
  * The scope is a value used like a topic on which users can generate a valid proof only once,
  * for example the id of an election in which voters can only vote once.
- * The hash of the identity's scope and private key is called a nullifier and can be
+ * The hash of the identity's scope and secret scalar is called a nullifier and can be
  * used to verify whether that identity has already generated a valid proof in that scope.
  * The depth of the tree determines which zero-knowledge artifacts to use to generate the proof.
  * If it is not defined, it will be inferred from the group or Merkle proof passed as the second parameter.
