@@ -43,22 +43,6 @@ describe("Identity", () => {
 
             const signature = identity.signMessage("message")
 
-            expect(identity.verifySignature("message", signature)).toBeTruthy()
-        })
-
-        it("Should verify an external signature", () => {
-            const identity = new Identity(privateKey)
-
-            const signature = identity.signMessage("message")
-
-            expect(Identity.verifySignature("message", signature, identity.publicKey)).toBeTruthy()
-        })
-
-        it("Should verify an external signature with an unpacked public key", () => {
-            const identity = new Identity(privateKey)
-
-            const signature = identity.signMessage("message")
-
             expect(Identity.verifySignature("message", signature, identity.publicKey)).toBeTruthy()
         })
     })
