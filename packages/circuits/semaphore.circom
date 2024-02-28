@@ -11,7 +11,7 @@ include "binary-merkle-root.circom";
 // In the second part, it is verified whether the identity commitment is part
 // of the Merkle tree, i.e. the Semaphore group. That is, a proof of membership is verified.
 // The third part covers the generation of a nullifier, i.e. the hash of the scope of the proof
-// and the secret used to derive the public key. The nullifier is used to prevent the same
+// and the secret used to derive the public key (secret scalar). The nullifier is used to prevent the same
 // proof from being verified twice.
 // The circuit lastly includes the message, which is an arbitrary anonymous value defined by
 // the user, or the hash of that value.
