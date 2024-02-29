@@ -18,7 +18,7 @@
         "lint": "yarn workspaces foreach -A -pi run lint",
         "prettier": "prettier -c . && yarn workspaces foreach -A -pi run prettier",
         "prettier:write": "prettier -w . && yarn workspaces foreach -A -pi run prettier:write",
-        "prepublish": "tar -czf files.tgz .gitignore .yarn .yarnrc.yml apps"
+        "prepublish": "tar --exclude typechain-types --exclude artifacts --exclude cache  --exclude node_modules --exclude out --exclude .next --exclude build -czf files.tgz .gitignore .yarn .yarnrc.yml apps"
     },
     "workspaces": [
         "apps/*"
