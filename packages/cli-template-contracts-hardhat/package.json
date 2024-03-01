@@ -16,9 +16,7 @@
         ".prettierrc.json",
         "hardhat.config.ts",
         "tsconfig.json",
-        "README.md",
-        ".yarn/",
-        ".yarnrc.yml"
+        "README.md"
     ],
     "publishConfig": {
         "access": "public"
@@ -32,7 +30,7 @@
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
         "typechain": "hardhat typechain",
-        "prepublish": "tar -czf files.tgz .gitignore",
+        "prepublish": "tar -czf files.tgz .gitignore .yarn .yarnrc.yml",
         "lint": "eslint . --ext .js,.ts && solhint 'contracts/**/*.sol'",
         "prettier": "prettier -c --plugin=prettier-plugin-solidity .",
         "prettier:write": "prettier -w --plugin=prettier-plugin-solidity ."
