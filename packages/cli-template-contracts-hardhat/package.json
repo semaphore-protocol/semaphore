@@ -16,9 +16,7 @@
         ".prettierrc.json",
         "hardhat.config.ts",
         "tsconfig.json",
-        "README.md",
-        ".yarn/",
-        ".yarnrc.yml"
+        "README.md"
     ],
     "publishConfig": {
         "access": "public"
