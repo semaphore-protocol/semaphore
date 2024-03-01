@@ -32,7 +32,7 @@
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
         "typechain": "hardhat typechain",
-        "prepublish": "tar --exclude typechain-types --exclude artifacts --exclude cache  --exclude node_modules -czf files.tgz .gitignore .yarn .yarnrc.yml",
+        "prepublish": "tar -czf files.tgz .gitignore .yarn .yarnrc.yml",
         "lint": "eslint . --ext .js,.ts && solhint 'contracts/**/*.sol'",
         "prettier": "prettier -c --plugin=prettier-plugin-solidity .",
         "prettier:write": "prettier -w --plugin=prettier-plugin-solidity ."
