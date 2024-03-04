@@ -3,7 +3,7 @@ import { rmSync } from "fs"
 const folderName = "packages"
 
 const gitIgnored = [
-    "contracts/build",
+    "contracts/artifacts",
     "contracts/cache",
     "contracts/node_modules",
     "web-app/node_modules",
