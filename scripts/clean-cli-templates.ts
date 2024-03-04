@@ -10,10 +10,10 @@ const gitIgnored = [
     "web-app/.next"
 ]
 
-const packages = ["cli-template-monorepo-ethers", "cli-template-monorepo-subgraph"]
+const folders = ["cli-template-monorepo-ethers", "cli-template-monorepo-subgraph"]
 
 async function main() {
-    packages.map((pkg) =>
+    folders.map((pkg) =>
         gitIgnored.map((f) => rmSync(`${folderName}/${pkg}/apps/${f}`, { recursive: true, force: true }))
     )
 }

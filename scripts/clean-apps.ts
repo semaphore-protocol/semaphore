@@ -15,11 +15,11 @@ const gitIgnored = [
 ]
 
 async function main() {
-    const apps = readdirSync(folderName, { withFileTypes: true })
+    const folders = readdirSync(folderName, { withFileTypes: true })
         .filter((file) => file.isDirectory())
         .map((dir) => dir.name)
 
-    apps.map((app) => gitIgnored.map((f) => rmSync(`${folderName}/${app}/${f}`, { recursive: true, force: true })))
+    folders.map((app) => gitIgnored.map((f) => rmSync(`${folderName}/${app}/${f}`, { recursive: true, force: true })))
 }
 
 main()
