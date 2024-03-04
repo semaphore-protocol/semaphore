@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/data",
-    "version": "4.0.0-beta.1",
+    "version": "4.0.0-beta.2",
     "description": "A library to query Semaphore contracts.",
     "type": "module",
     "license": "MIT",
