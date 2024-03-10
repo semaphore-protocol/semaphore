@@ -5,19 +5,19 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-        "codegen": "node scripts/generateSubgraph.js ${0} && graph codegen",
+        "codegen": "node scripts/generate-subgraph.js ${0} && graph codegen",
         "build": "graph build",
         "auth": "graph auth --studio",
         "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ ${0}",
+        "start-ipfs": "node scripts/start-ipfs.js",
         "create-local": "graph create --node http://localhost:8020/ semaphore",
         "remove-local": "graph remove --node http://localhost:8020/ semaphore",
         "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 semaphore",
         "test": "graph test Semaphore -v 0.5.0"
     },
     "dependencies": {
-        "@graphprotocol/graph-cli": "0.56.0",
-        "@graphprotocol/graph-ts": "^0.31.0",
-        "vitest": "^1.3.1"
+        "@graphprotocol/graph-cli": "0.67.0",
+        "@graphprotocol/graph-ts": "0.32.0"
     },
     "devDependencies": {
         "@types/mustache": "^4.2.2",

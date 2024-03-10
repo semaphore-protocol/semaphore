@@ -1,15 +1,22 @@
 {
     "name": "@semaphore-protocol/proof",
-    "version": "3.15.2",
+    "version": "4.0.0-beta.1",
     "description": "A library to generate and verify Semaphore proofs.",
+    "type": "module",
     "license": "MIT",
-    "main": "dist/index.node.js",
-    "exports": {
-        "import": "./dist/index.node.mjs",
-        "require": "./dist/index.node.js",
-        "types": "./dist/types/index.d.ts"
-    },
+    "main": "dist/index.browser.js",
     "types": "dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "node": {
+                "require": "./dist/index.node.cjs",
+                "default": "./dist/index.node.js"
+            },
+            "browser": "./dist/index.browser.js",
+            "default": "./dist/index.browser.js"
+        }
+    },
     "files": [
         "dist/",
         "src/",
@@ -22,36 +29,35 @@
         "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
     },
     "scripts": {
-        "build:watch": "rollup -c rollup.config.ts -w --configPlugin typescript",
-        "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
+        "build": "rimraf dist && yarn build:browser && yarn build:node",
+        "build:browser": "rollup -c rollup.browser.config.ts --configPlugin typescript",
+        "build:node": "rollup -c rollup.node.config.ts --configPlugin typescript",
         "prepublishOnly": "yarn build"
     },
     "publishConfig": {
         "access": "public"
     },
     "devDependencies": {
-        "@rollup/plugin-commonjs": "^24.1.0",
-        "@rollup/plugin-json": "^5.0.1",
-        "@rollup/plugin-node-resolve": "^15.0.2",
+        "@rollup/plugin-alias": "^5.1.0",
+        "@rollup/plugin-json": "^6.1.0",
+        "@types/download": "^8.0.5",
+        "@types/snarkjs": "0.7.8",
+        "@types/tmp": "^0.2.6",
         "poseidon-lite": "^0.2.0",
         "rimraf": "^5.0.5",
-        "rollup": "^4.0.2",
+        "rollup": "^4.9.6",
         "rollup-plugin-cleanup": "^3.2.1",
-        "rollup-plugin-typescript2": "^0.31.2"
+        "rollup-plugin-typescript2": "^0.36.0"
     },
     "peerDependencies": {
-        "@semaphore-protocol/group": "*",
-        "@semaphore-protocol/identity": "3.15.2"
+        "@semaphore-protocol/group": "4.0.0-beta.1",
+        "@semaphore-protocol/identity": "4.0.0-beta.1"
     },
     "dependencies": {
-        "@aztec/bb.js": "latest",
-        "@ethersproject/bignumber": "^5.5.0",
-        "@ethersproject/bytes": "^5.7.0",
-        "@ethersproject/keccak256": "^5.7.0",
-        "@ethersproject/strings": "^5.5.0",
         "@noir-lang/backend_barretenberg": "nightly",
         "@noir-lang/noir_js": "nightly",
-        "@zk-kit/groth16": "0.3.0",
-        "@zk-kit/incremental-merkle-tree": "0.4.3"
+        "@zk-kit/utils": "0.3.0",
+        "ethers": "6.10.0",
+        "snarkjs": "0.7.3"
     }
 }

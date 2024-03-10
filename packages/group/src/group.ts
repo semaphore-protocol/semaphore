@@ -1,112 +1,86 @@
-import { IncrementalMerkleTree, MerkleProof } from "@zk-kit/incremental-merkle-tree"
-import { BarretenbergSync, Fr } from "@aztec/bb.js"
-// import { cpus } from "os"
+import { LeanIMT } from "@zk-kit/imt"
+import { poseidon2 } from "poseidon-lite/poseidon2"
+import { BigNumberish, MerkleProof } from "./types"
 
-import hash from "./hash"
-import { BigNumberish } from "./types"
-
+/**
+ * The Semaphore group is a {@link https://zkkit.pse.dev/classes/_zk_kit_imt.LeanIMT.html | LeanIMT}
+ * (Lean Incremental Merkle Tree), i.e. an optimized version of the incremental binary Merkle tree
+ * used by Semaphore V3. The new tree does not use zero hashes, and its depth is dynamic.
+ * The members of a Semaphore group, or the leaves of a tree, are the identity commitments.
+ * Thanks to the properties of Merkle trees, it can be efficiently demonstrated that a group
+ * member belongs to the group.
+ * This class supports operations such as member addition, update, removal and Merkle proof
+ * generation and verification. Groups can also be exported or imported.
+ */
 export default class Group {
-    private _id: BigNumberish
-
-    merkleTree: IncrementalMerkleTree | null = null
-    private bb: BarretenbergSync | null = null
+    // The {@link https://zkkit.pse.dev/classes/_zk_kit_imt.LeanIMT.html | LeanIMT} instance.
+    public leanIMT: LeanIMT
 
     /**
-     * Initializes the group with the group id and the tree depth.
-     * @param id Group identifier.
-     * @param treeDepth Tree depth.
-     * @param members List of group members.
+     * Creates a new instance of the Group. Optionally, a list of identity commitments can
+     * be passed as a parameter. Adding members in chunks is more efficient than adding
+     * them one by one with the `addMember` function.
+     * @param members A list of identity commitments.
      */
-    constructor(id: BigNumberish, private treeDepth = 20) {
-        if (treeDepth < 16 || treeDepth > 32) {
-            throw new Error("The tree depth must be between 16 and 32")
-        }
-        this._id = id
-    }
-
-    /**
-     *
-     * Inits helper functions
-     *
-     */
-    async init(members: Fr[] = []) {
-        console.log("members", members)
-        const bb = await BarretenbergSync.new()
-        this.merkleTree = new IncrementalMerkleTree(
-            (values) => bb.poseidonHash(values),
-            this.treeDepth,
-            hash(this._id),
-            2,
-            members.map((m) => m.toString())
-        )
-    }
-
-    /**
-     * Returns the id of the group.
-     * @returns Group id.
-     */
-    get id(): BigNumberish {
-        return this._id
+    constructor(members: BigNumberish[] = []) {
+        this.leanIMT = new LeanIMT((a, b) => poseidon2([a, b]), members.map(BigInt))
     }
 
     /**
      * Returns the root hash of the tree.
-     * @returns Root hash.
+     * @returns The root hash as a string.
      */
-    get root(): BigNumberish {
-        return this.merkleTree!.root
+    public get root(): string {
+        return this.leanIMT.root ? this.leanIMT.root.toString() : "0"
     }
 
     /**
      * Returns the depth of the tree.
-     * @returns Tree depth.
+     * @returns The tree depth as a number.
      */
-    get depth(): number {
-        return this.merkleTree!.depth
+    public get depth(): number {
+        return this.leanIMT.depth
     }
 
     /**
-     * Returns the zero value of the tree.
-     * @returns Tree zero value.
+     * Returns the size of the tree (i.e. number of leaves).
+     * @returns The tree size as a number.
      */
-    get zeroValue(): BigNumberish {
-        return this.merkleTree!.zeroes[0]
+    public get size(): number {
+        return this.leanIMT.size
     }
 
     /**
      * Returns the members (i.e. identity commitments) of the group.
-     * @returns List of members.
+     * @returns The list of members of the group.
      */
-    get members(): BigNumberish[] {
-        return this.merkleTree!.leaves
+    public get members(): string[] {
+        return this.leanIMT.leaves.map(String)
     }
 
     /**
      * Returns the index of a member. If the member does not exist it returns -1.
-     * @param member Group member.
-     * @returns Index of the member.
+     * @param member A member of the group.
+     * @returns The index of the member, or -1 if it does not exist.
      */
-    indexOf(member: Fr): number {
-        return this.merkleTree!.indexOf(member.toString())
+    public indexOf(member: BigNumberish): number {
+        return this.leanIMT.indexOf(BigInt(member))
     }
 
     /**
      * Adds a new member to the group.
-     * @param member New member.
+     * @param member The new member to be added.
      */
-    addMember(member: Fr) {
-        this.merkleTree!.insert(member.toString())
+    public addMember(member: BigNumberish) {
+        this.leanIMT.insert(BigInt(member))
     }
 
     /**
      * Adds new members to the group.
      * @param members New members.
-     * @deprecated Use the new class parameter to add a list of members.
      */
-    addMembers(members: Fr[]) {
-        for (const member of members) {
-            this.addMember(member)
-        }
+    public addMembers(members: BigNumberish[]) {
+        this.leanIMT.insertMany(members.map(BigInt))
     }
 
     /**
@@ -114,28 +88,56 @@ export default class Group {
      * @param index Index of the member to be updated.
      * @param member New member value.
      */
-    updateMember(index: number, member: Fr) {
-        this.merkleTree!.update(index, member.toString())
+    public updateMember(index: number, member: BigNumberish) {
+        this.leanIMT.update(index, BigInt(member))
     }
 
     /**
      * Removes a member from the group.
-     * @param index Index of the member to be removed.
+     * @param index The index of the member to be removed.
      */
-    removeMember(index: number) {
-        this.merkleTree!.delete(index)
+    public removeMember(index: number) {
+        this.leanIMT.update(index, BigInt(0))
     }
 
     /**
-     * Creates a proof of membership.
-     * @param index Index of the proof's member.
-     * @returns Proof object.
+     * Creates a proof of membership for a member of the group.
+     * @param index The index of the member.
+     * @returns The {@link MerkleProof} object.
      */
-    generateMerkleProof(index: number): MerkleProof {
-        const merkleProof = this.merkleTree!.createProof(index)
+    public generateMerkleProof(_index: number): MerkleProof {
+        const { index, leaf, root, siblings } = this.leanIMT.generateProof(_index)
 
-        merkleProof.siblings = merkleProof.siblings.map((s) => s[0])
+        return {
+            index,
+            leaf: leaf.toString(),
+            root: root.toString(),
+            siblings: siblings.map(String)
+        }
+    }
 
-        return merkleProof
+    /**
+     * Enables the conversion of the group into a JSON string that
+     * can be re-used for future imports. This approach is beneficial for
+     * large groups, as it avoids re-calculating the tree hashes.
+     * @returns The stringified JSON of the group.
+     */
+    public export(): string {
+        return this.leanIMT.export()
+    }
+
+    /**
+     * Imports an entire group by initializing the tree without calculating
+     * any hashes. Note that it is crucial to ensure the integrity of the
+     * exported group.
+     * @param nodes The stringified JSON of the group.
+     * @returns The {@link Group} instance.
+     */
+    static import(exportedGroup: string): Group {
+        const group = new Group()
+
+        group.leanIMT.import(exportedGroup)
+
+        return group
     }
 }

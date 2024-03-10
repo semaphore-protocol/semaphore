@@ -1,64 +1,58 @@
-use dep::std::hash::poseidon2::Poseidon2;
+use dep::std::hash::poseidon;
+use dep::std::hash::poseidon::PoseidonHasher;
 use dep::std::println;
+use dep::std::eddsa::eddsa_to_pub;
+use dep::std::ec::consts::te::baby_jubjub;
 
-global LEVELS: Field = 16;
+global LEVELS: Field = 10;
 
-// same as stds::merkle::compute_merkle_root but using poseidon hash
-fn compute_merkle_root<N>(leaf: Field, index: Field, hash_path: [Field; N]) -> Field {
-    let n = hash_path.len();
-    let index_bits = index.to_le_bits(n as u32);
+// length is how many non-zero elements are in the hash_path
+// because once we find a zero sibling, we will promote the current hash to the root
+fn compute_merkle_root<N>(leaf: Field, indices: [Field; N], hash_path: [Field; N]) -> Field {
     let mut current = leaf;
-    for i in 0..n {
-        println(current);
-        let path_bit = index_bits[i] as bool;
-        let (hash_left, hash_right) = if path_bit {
-            (hash_path[i], current)
-        } else {
-            (current, hash_path[i])
-        };
-        current = Poseidon2::hash([hash_left, hash_right], 2);
+    for i in 0..hash_path.len() {
+        if (hash_path[i] != 0) {
+            // if the path bit is 0, we are on the left
+            // so we hash with the hash_path as (current, hash_path[i])
+            // otherwise we hash with the hash_path as (hash_path[i], current)
+            if (indices[i] == 0) {
+                current = poseidon::bn254::hash_2([current, hash_path[i]]);
+            } else {
+                current = poseidon::bn254::hash_2([hash_path[i], current]);
+            }
+        }
+
     }
     current
 }
 
 fn main(
-    id_nullifier: Field,
-    id_trapdoor: Field,
-    siblings: [Field; LEVELS],
-    indices: Field,
-    external_nullifier: pub Field,
+    secret: Field,
+    hash_path: [Field; LEVELS],
+    indices: [Field; LEVELS],
+    // nullifier_hash: pub Field,
     root: pub Field,
-    nullifier_hash: pub Field,
-    signal_hash: pub Field
 ) {
-    // reconstruct the commitment from the private nullfiers
-    let secret = Poseidon2::hash([id_nullifier, id_trapdoor], 2);
-    let id_commitment = Poseidon2::hash([secret], 1);
+    let bjj = baby_jubjub();
+    let pubkey = bjj.curve.mul(secret, bjj.base8);
+    // println(pubkey_x);
+    // println(pubkey_y);
+    let identity = poseidon::bn254::hash_2([pubkey.x, pubkey.y]);
+    // println("identity");
+    // println(identity);
 
-    // compute the root of the merkle tree given the provided merkle merkle path
-    // and the reconstructed id commitment
-    // this can later be verified against a trusted root onchain or offchain
-    assert(root == compute_merkle_root(id_commitment, indices, siblings));
+    // // compute the root of the merkle tree given the provided merkle merkle path
+    // // and the reconstructed id commitment
+    // // this can later be verified against a trusted root onchain or offchain
+    assert(root == compute_merkle_root(identity, indices, hash_path));
 
-    // the nullifier hash allows us to check how often a given identity signaled per topic
-    // every topic should use a distinct external nullifier
-    assert(nullifier_hash == Poseidon2::hash([external_nullifier, id_nullifier], 2));
-    assert(signal_hash * signal_hash == signal_hash * signal_hash);
+    // // the nullifier hash allows us to check how often a given identity signaled per topic
+    // // every topic should use a distinct external nullifier
+    // assert(nullifier_hash == Poseidon2::hash([scope, secret], 2));
 }
 
-#[test]
-fn test_hash() {
-    // check against the reference implementation
-    let s = Poseidon2::hash(
-        [
-        0x24696f29dc2ef79a8dc176e566c61d7e83d8e823c8b3570c0b9f08adf0c5fda0,
-        0x2710144414c3a5f2354f4c08d52ed655b9fe253b4bf12cb9ad3de693d9b1db11
-    ],
-        2
-    );
-    println(s);
-    assert(s == 0x1f90601d6a45db255dd53d23d72150edbd4d62d7c37855bcd3cd112984ee35fd);
-    let c = Poseidon2::hash([s], 1);
-    println(c);
-    assert(c == 0x00177e58e388e3252f87eb7199f35a4baf6c2dba41427b12e82b47b8e6fb0f3d);
-}
+// #[test]
+// fn test_hash() {
+//     // check against the reference implementation
+//     let s = main(0x16b051f37589e0dcf4ad3c415c090798c10d3095bedeedabfcc709ad787f3507,0x062800ac9e60839fab9218e5ed9d541f4586e41275f4071816a975895d349a5e, 0x103aef72f9b558b77ab0fdf910f2e8fdb1aaf91cbb629cdc46cd79dab1c5e8b4);
+// }

@@ -10,7 +10,7 @@
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
     <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+        <img alt="NPM license" src="https://img.shields.io/npm/l/%40semaphore-protocol%2Fdata?style=flat-square">
     </a>
     <a href="https://www.npmjs.com/package/@semaphore-protocol/data">
         <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/data?style=flat-square" />
@@ -18,7 +18,7 @@
     <a href="https://npmjs.org/package/@semaphore-protocol/data">
         <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/data.svg?style=flat-square" />
     </a>
-    <a href="https://js.semaphore.pse.dev/data">
+    <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_data">
         <img alt="Documentation typedoc" src="https://img.shields.io/badge/docs-typedoc-744C7C?style=flat-square">
     </a>
     <a href="https://eslint.org/">
@@ -70,6 +70,8 @@ yarn add @semaphore-protocol/data
 
 ## 📜 Usage
 
+For more information on the functions provided by `@semaphore-protocol/data`, please refer to the [TypeDoc documentation](https://js.semaphore.pse.dev/modules/_semaphore_protocol_data).
+
 \# **getSupportedNetworks**(): _string[]_
 
 ```typescript
@@ -118,6 +120,18 @@ const group = await semaphoreSubgraph.getGroup("42")
 const { members, verifiedProofs } = semaphoreSubgraph.getGroup("42", { members: true, verifiedProofs: true })
 ```
 
+\# **getGroupMembers**(groupId: _string_): _Promise\<string[]>_
+
+```typescript
+const members = await semaphoreSubgraph.getGroupMembers("42")
+```
+
+\# **getGroupVerifiedProofs**(groupId: _string_): _Promise\<any[]>_
+
+```typescript
+const verifiedProofs = await semaphoreSubgraph.getGroupVerifiedProofs("42")
+```
+
 \# **isGroupMember**(groupId: _string_, member: _string_): _Promise\<boolean>_
 
 ```typescript
@@ -127,7 +141,7 @@ await semaphoreSubgraph.isGroupMember(
 )
 ```
 
-\# **new Ethers**(networkOrEthereumURL: Network | string = "goerli", options: EthersOptions = {}): _SemaphoreEthers_
+\# **new Ethers**(networkOrEthereumURL: Network | string = "sepolia", options: EthersOptions = {}): _SemaphoreEthers_
 
 ```typescript
 import { SemaphoreEthers } from "@semaphore-protocol/data"
@@ -174,4 +188,13 @@ const members = await semaphoreEthers.getGroupMembers("42")
 
 ```typescript
 const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs("42")
+```
+
+\# **isGroupMember**(groupId: _string_, member: _string_): _Promise\<boolean>_
+
+```typescript
+await semaphoreEthers.isGroupMember(
+    "42",
+    "16948514235341957898454876473214737047419402240398321289450170535251226167324"
+)
 ```

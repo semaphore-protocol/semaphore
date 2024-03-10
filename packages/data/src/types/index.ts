@@ -1,27 +1,25 @@
 export enum SupportedNetwork {
     SEPOLIA = "sepolia",
-    GOERLI = "goerli",
     MUMBAI = "mumbai",
-    OPTIMISM_GOERLI = "optimism-goerli",
-    ARBITRUM_GOERLI = "arbitrum-goerli",
+    OPTIMISM_SEPOLIA = "optimism-sepolia",
+    ARBITRUM_SEPOLIA = "arbitrum-sepolia",
     ARBITRUM = "arbitrum"
 }
 
 export type EthersNetwork =
     | "homestead"
     | "matic"
-    | "goerli"
     | "arbitrum"
     | "maticmum"
     | "mumbai"
-    | "arbitrum-goerli"
+    | "arbitrum-sepolia"
     | "optimism"
-    | "optimism-goerli"
+    | "optimism-sepolia"
     | "sepolia"
 
 export type GroupOptions = {
     members?: boolean
-    verifiedProofs?: boolean
+    validatedProofs?: boolean
     filters?: {
         admin?: string
         identityCommitment?: string
@@ -36,16 +34,17 @@ export type GroupResponse = {
     merkleTree: {
         root: string
         depth: number
-        zeroValue: string
-        numberOfLeaves: number
+        size: number
     }
     admin?: string
     members?: string[]
-    verifiedProofs?: {
-        signal: string
+    validatedProofs?: {
+        message: string
         merkleTreeRoot: string
-        externalNullifier: string
-        nullifierHash: string
+        merkleTreeDepth: number
+        scope: string
+        nullifier: string
+        points: string[]
         timestamp?: string
     }[]
 }
@@ -55,4 +54,8 @@ export type EthersOptions = {
     startBlock?: number
     provider?: "etherscan" | "infura" | "alchemy" | "cloudflare" | "pocket" | "ankr"
     apiKey?: string
+    projectId?: string // Infura
+    projectSecret?: string // Infura
+    applicationId?: string // Pocket
+    applicationSecret?: string // Pocket
 }

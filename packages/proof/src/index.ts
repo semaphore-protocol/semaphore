@@ -1,6 +1,6 @@
-import generateProof from "./generateProof"
-import verifyProof from "./verifyProof"
+import { packGroth16Proof, unpackGroth16Proof } from "@zk-kit/utils"
+import generateProof from "./generate-proof"
+import verifyProof from "./verify-proof"
 
-export { MerkleProof } from "@zk-kit/incremental-merkle-tree"
 export * from "./types"
-export { generateProof, verifyProof }
+export { generateProof, packGroth16Proof, unpackGroth16Proof, verifyProof }

@@ -10,7 +10,7 @@
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
     </a>
     <a href="https://github.com/semaphore-protocol/semaphore/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+        <img alt="NPM license" src="https://img.shields.io/npm/l/%40semaphore-protocol%2Fgroup?style=flat-square">
     </a>
     <a href="https://www.npmjs.com/package/@semaphore-protocol/group">
         <img alt="NPM version" src="https://img.shields.io/npm/v/@semaphore-protocol/group?style=flat-square" />
@@ -18,7 +18,7 @@
     <a href="https://npmjs.org/package/@semaphore-protocol/group">
         <img alt="Downloads" src="https://img.shields.io/npm/dm/@semaphore-protocol/group.svg?style=flat-square" />
     </a>
-    <a href="https://js.semaphore.pse.dev/group">
+    <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_group">
         <img alt="Documentation typedoc" src="https://img.shields.io/badge/docs-typedoc-744C7C?style=flat-square">
     </a>
     <a href="https://eslint.org/">
@@ -49,8 +49,8 @@
     </h4>
 </div>
 
-| This library is an abstraction of [`@zk-kit/incremental-merkle-tree`](https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/incremental-merkle-tree). The main goal is to make it easier to create offchain groups, which are also used to generate Semaphore proofs. Semaphore groups are actually incremental Merkle trees, and the group members are tree leaves. Since the Merkle tree implementation we are using is a binary tree, the maximum number of members of a group is equal to `2^treeDepth`. |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| This library is an abstraction of the LeanIMT data structure (part of [`@zk-kit/imt`](https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/imt)). The main goal is to make it easier to create offchain groups, which are also used to generate Semaphore proofs. Semaphore groups are actually Merkle trees, and the group members are tree leaves. |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## 🛠 Install
 
@@ -70,54 +70,133 @@ yarn add @semaphore-protocol/group
 
 ## 📜 Usage
 
-\# **new Group**(groupId: _Member_, treeDepth = 20): _Group_
+For more information on the functions provided by `@semaphore-protocol/group`, please refer to the [TypeDoc documentation](https://js.semaphore.pse.dev/modules/_semaphore_protocol_group).
+
+\# **new Group**(members: _BigNumberish[]_ = []): _Group_
 
 ```typescript
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 
-// Group with max 1048576 members (20^²).
-const group1 = new Group(1)
+const group1 = new Group()
 
-// Group with max 65536 members (16^²).
-const group2 = new Group(1, 16)
-
-// Group with max 16777216 members (24^²).
-const group3 = new Group(1, 24)
-
-// Group with a list of predefined members.
 const identity1 = new Identity()
 const identity2 = new Identity()
-const identity3 = new Identity()
 
-const group3 = new Group(1, 16, [identity1.commitment, identity2.commitment, identity3.commitment])
+const group2 = new Group([identity1.commitment, identity2.commitment])
 ```
 
-\# **addMember**(identityCommitment: _Member_)
+\# **addMember**(member: _BigNumberish_)
 
 ```typescript
+import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 
-const identity = new Identity()
-const commitment = identity.generateCommitment()
+const group = new Group()
+
+const { commitment } = new Identity()
 
 group.addMember(commitment)
+
+// "12989101133047504182892154686643420754368236204022364847543591045056549053997"
+console.log(group.members[0])
+```
+
+\# **addMembers**(members: _BigNumberish[]_)
+
+```typescript
+import { Group } from "@semaphore-protocol/group"
+import { Identity } from "@semaphore-protocol/identity"
+
+const group = new Group()
+
+const identity1 = new Identity()
+const identity2 = new Identity()
+
+group.addMembers([identity1.commitment, identity2.commitment])
+```
+
+\# **updateMember**(index: _number_, member: _BigNumberish_)
+
+```typescript
+import { Group } from "@semaphore-protocol/group"
+
+const group = new Group([1, 3])
+
+group.updateMember(0, 2)
+
+console.log(group.members[0]) // "2"
 ```
 
 \# **removeMember**(index: _number_)
 
 ```typescript
+import { Group } from "@semaphore-protocol/group"
+
+const group = new Group([1, 3])
+
 group.removeMember(0)
+
+console.log(group.members[0]) // "0"
 ```
 
-\# **indexOf**(member: _Member_): _number_
+\# **indexOf**(member: _BigNumberish_): _number_
 
 ```typescript
-group.indexOf(commitment) // 0
+import { Group } from "@semaphore-protocol/group"
+
+const group = new Group([1])
+
+const index = group.indexOf(1)
+
+console.log(index) // 0
 ```
 
 \# **generateMerkleProof**(index: _number_): _MerkleProof_
 
 ```typescript
+import { Group } from "@semaphore-protocol/group"
+
+const group = new Group([1, 3])
+
 const proof = group.generateMerkleProof(0)
+
+console.log(proof)
+/*
+{
+    index: 0,
+    leaf: '1',
+    root: '21106761926285267690763443010820487107972411248208546226053195422384279971821',
+    siblings: [ '3' ]
+}
+*/
+```
+
+\# **export**(): _string_
+
+```typescript
+import { Group } from "@semaphore-protocol/group"
+
+const group = new Group([1, 2, 3])
+
+const exportedGroup = group.export()
+
+console.log(exportedGroup)
+/*
+[["1","2","3"],["7853200120776062878684798364095072458815029376092732009249414926327459813530","3"],["13816780880028945690020260331303642730075999758909899334839547418969502592169"]]
+*/
+```
+
+\# **import**(exportedGroup: _string_): _Group_
+
+```typescript
+import { Group } from "@semaphore-protocol/group"
+
+const group1 = new Group([1, 2, 3])
+
+const exportedGroup = group.export()
+
+const group2 = Group.import(exportedGroup)
+
+assert(group1.root === group2.root)
 ```

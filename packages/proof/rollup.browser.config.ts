@@ -1,6 +1,5 @@
-import commonjs from "@rollup/plugin-commonjs"
+import alias from "@rollup/plugin-alias"
 import json from "@rollup/plugin-json"
-import { nodeResolve } from "@rollup/plugin-node-resolve"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
 import typescript from "rollup-plugin-typescript2"
@@ -10,7 +9,7 @@ const banner = `/**
  * @module ${pkg.name}
  * @version ${pkg.version}
  * @file ${pkg.description}
- * @copyright Ethereum Foundation 2022
+ * @copyright Ethereum Foundation 2024
  * @license ${pkg.license}
  * @see [Github]{@link ${pkg.homepage}}
 */`
@@ -19,26 +18,31 @@ export default {
     input: "src/index.ts",
     output: [
         {
-            file: pkg.exports.require,
-            format: "cjs",
-            banner,
-            exports: "auto"
-        },
-        {
-            file: pkg.exports.import,
+            file: pkg.exports["."].browser,
             format: "es",
             banner
         }
     ],
-    external: Object.keys(pkg.dependencies),
+    external: [
+        ...Object.keys(pkg.dependencies),
+        "node:fs",
+        "node:fs/promises",
+        "node:os",
+        "node:path",
+        "node:stream",
+        "node:stream/promises",
+        "ethers/crypto",
+        "ethers/utils",
+        "ethers/abi",
+        "@semaphore-protocol/utils/errors"
+    ],
     plugins: [
+        alias({
+            entries: [{ find: "./get-snark-artifacts.node", replacement: "./get-snark-artifacts.browser" }]
+        }),
         typescript({
             tsconfig: "./build.tsconfig.json",
             useTsconfigDeclarationDir: true
-        }),
-        nodeResolve(),
-        commonjs({
-            esmExternals: true
         }),
         cleanup({ comments: "jsdoc" }),
         json()

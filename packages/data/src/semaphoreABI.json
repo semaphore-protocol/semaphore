@@ -12,6 +12,26 @@
     },
     {
         "inputs": [],
+        "name": "LeafAlreadyExists",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LeafCannotBeZero",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LeafDoesNotExist",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LeafGreaterThanSnarkScalarField",
+        "type": "error"
+    },
+    {
+        "inputs": [],
         "name": "Semaphore__CallerIsNotTheGroupAdmin",
         "type": "error"
     },
@@ -23,6 +43,16 @@
     {
         "inputs": [],
         "name": "Semaphore__GroupDoesNotExist",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "Semaphore__GroupHasNoMembers",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "Semaphore__InvalidProof",
         "type": "error"
     },
     {
@@ -42,7 +72,12 @@
     },
     {
         "inputs": [],
-        "name": "Semaphore__YouAreUsingTheSameNillifierTwice",
+        "name": "Semaphore__YouAreUsingTheSameNullifierTwice",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WrongSiblingNodes",
         "type": "error"
     },
     {
@@ -77,18 +112,6 @@
                 "indexed": true,
                 "internalType": "uint256",
                 "name": "groupId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "merkleTreeDepth",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "zeroValue",
                 "type": "uint256"
             }
         ],
@@ -229,31 +252,74 @@
                 "type": "uint256"
             },
             {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "startIndex",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "identityCommitments",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "merkleTreeRoot",
+                "type": "uint256"
+            }
+        ],
+        "name": "MembersAdded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "groupId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "merkleTreeDepth",
+                "type": "uint256"
+            },
+            {
                 "indexed": true,
                 "internalType": "uint256",
                 "name": "merkleTreeRoot",
                 "type": "uint256"
             },
             {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "nullifier",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "message",
+                "type": "uint256"
+            },
+            {
                 "indexed": true,
                 "internalType": "uint256",
-                "name": "externalNullifier",
+                "name": "scope",
                 "type": "uint256"
             },
             {
                 "indexed": false,
-                "internalType": "uint256",
-                "name": "nullifierHash",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "signal",
-                "type": "uint256"
+                "internalType": "uint256[8]",
+                "name": "points",
+                "type": "uint256[8]"
             }
         ],
-        "name": "ProofVerified",
+        "name": "ProofValidated",
         "type": "event"
     },
     {
@@ -300,11 +366,6 @@
                 "type": "uint256"
             },
             {
-                "internalType": "uint256",
-                "name": "merkleTreeDepth",
-                "type": "uint256"
-            },
-            {
                 "internalType": "address",
                 "name": "admin",
                 "type": "address"
@@ -328,11 +389,6 @@
                 "type": "uint256"
             },
             {
-                "internalType": "uint256",
-                "name": "merkleTreeDepth",
-                "type": "uint256"
-            },
-            {
                 "internalType": "address",
                 "name": "admin",
                 "type": "address"
@@ -341,6 +397,25 @@
         "name": "createGroup",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "groupId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getGroupAdmin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -389,7 +464,7 @@
                 "type": "uint256"
             }
         ],
-        "name": "getNumberOfMerkleTreeLeaves",
+        "name": "getMerkleTreeSize",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -411,13 +486,56 @@
         "name": "groups",
         "outputs": [
             {
-                "internalType": "address",
-                "name": "admin",
-                "type": "address"
+                "internalType": "uint256",
+                "name": "merkleTreeDuration",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "groupId",
+                "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "merkleTreeDuration",
+                "name": "identityCommitment",
+                "type": "uint256"
+            }
+        ],
+        "name": "hasMember",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "groupId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "identityCommitment",
+                "type": "uint256"
+            }
+        ],
+        "name": "indexOf",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
                 "type": "uint256"
             }
         ],
@@ -438,13 +556,8 @@
             },
             {
                 "internalType": "uint256[]",
-                "name": "proofSiblings",
+                "name": "merkleProofSiblings",
                 "type": "uint256[]"
-            },
-            {
-                "internalType": "uint8[]",
-                "name": "proofPathIndices",
-                "type": "uint8[]"
             }
         ],
         "name": "removeMember",
@@ -507,16 +620,61 @@
             },
             {
                 "internalType": "uint256[]",
-                "name": "proofSiblings",
+                "name": "merkleProofSiblings",
                 "type": "uint256[]"
-            },
-            {
-                "internalType": "uint8[]",
-                "name": "proofPathIndices",
-                "type": "uint8[]"
             }
         ],
         "name": "updateMember",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "groupId",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "merkleTreeDepth",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "merkleTreeRoot",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "nullifier",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "message",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "scope",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256[8]",
+                        "name": "points",
+                        "type": "uint256[8]"
+                    }
+                ],
+                "internalType": "struct ISemaphore.SemaphoreProof",
+                "name": "proof",
+                "type": "tuple"
+            }
+        ],
+        "name": "validateProof",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -542,34 +700,52 @@
                 "type": "uint256"
             },
             {
-                "internalType": "uint256",
-                "name": "merkleTreeRoot",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "signal",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "nullifierHash",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "externalNullifier",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256[8]",
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "merkleTreeDepth",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "merkleTreeRoot",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "nullifier",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "message",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "scope",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256[8]",
+                        "name": "points",
+                        "type": "uint256[8]"
+                    }
+                ],
+                "internalType": "struct ISemaphore.SemaphoreProof",
                 "name": "proof",
-                "type": "uint256[8]"
+                "type": "tuple"
             }
         ],
         "name": "verifyProof",
-        "outputs": [],
-        "stateMutability": "nonpayable",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     }
 ]
