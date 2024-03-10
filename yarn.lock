@@ -5365,6 +5365,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noir-lang/noir_wasm@npm:nightly":
+  version: 0.24.0-f988d02.nightly
+  resolution: "@noir-lang/noir_wasm@npm:0.24.0-f988d02.nightly"
+  dependencies:
+    "@noir-lang/types": 0.24.0-f988d02.nightly
+    pako: ^2.1.0
+  checksum: e827b53f95a72cd4c08f8b93385bfb8928f87bcd2fb893599890172115adda2de386e5648d27ce673d7c1ebae8d7ddde3171f5b29ce36687d315cc694577c579
+  languageName: node
+  linkType: hard
+
 "@noir-lang/noirc_abi@npm:0.24.0-9544813.nightly":
   version: 0.24.0-9544813.nightly
   resolution: "@noir-lang/noirc_abi@npm:0.24.0-9544813.nightly"
@@ -5378,6 +5388,13 @@ __metadata:
   version: 0.24.0-9544813.nightly
   resolution: "@noir-lang/types@npm:0.24.0-9544813.nightly"
   checksum: a03aad0d418a6bf3d48d1fa9a24b8b2d8f0ce736bc0bf852880fabb9479804ed24608719fea30a76f9568c7d9f3ceebe1c4e78bc5466ca29f4ab29239fe75392
+  languageName: node
+  linkType: hard
+
+"@noir-lang/types@npm:0.24.0-f988d02.nightly":
+  version: 0.24.0-f988d02.nightly
+  resolution: "@noir-lang/types@npm:0.24.0-f988d02.nightly"
+  checksum: 62271c8bcf508f105a6125ce636daf28b1bba004dde48be6166bdf2647a8b2ed6f7b31b11362d5e83548bc1c3b66be20fa71ef91eccc44cae54ac10546f3a6e3
   languageName: node
   linkType: hard
 
@@ -6727,6 +6744,17 @@ __metadata:
   peerDependencies:
     "@semaphore-protocol/group": 4.0.0-beta.1
     "@semaphore-protocol/identity": 4.0.0-beta.1
+  languageName: unknown
+  linkType: soft
+
+"@semaphore-protocol/utils@workspace:packages/utils":
+  version: 0.0.0-use.local
+  resolution: "@semaphore-protocol/utils@workspace:packages/utils"
+  dependencies:
+    rimraf: ^5.0.5
+    rollup: ^4.9.6
+    rollup-plugin-cleanup: ^3.2.1
+    rollup-plugin-typescript2: ^0.36.0
   languageName: unknown
   linkType: soft
 
@@ -23339,6 +23367,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pako@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "pako@npm:2.1.0"
+  checksum: 71666548644c9a4d056bcaba849ca6fd7242c6cf1af0646d3346f3079a1c7f4a66ffec6f7369ee0dc88f61926c10d6ab05da3e1fca44b83551839e89edd75a3e
+  languageName: node
+  linkType: hard
+
 "param-case@npm:^3.0.4":
   version: 3.0.4
   resolution: "param-case@npm:3.0.4"
@@ -26397,6 +26432,7 @@ __metadata:
     "@commitlint/config-conventional": ^16.0.0
     "@noir-lang/backend_barretenberg": nightly
     "@noir-lang/noir_js": nightly
+    "@noir-lang/noir_wasm": nightly
     "@rollup/plugin-typescript": ^11.1.6
     "@types/circomlibjs": ^0.1.4
     "@types/download": ^8.0.1

@@ -97,6 +97,7 @@
     },
     "dependencies": {
         "@noir-lang/backend_barretenberg": "nightly",
-        "@noir-lang/noir_js": "nightly"
+        "@noir-lang/noir_js": "nightly",
+        "@noir-lang/noir_wasm": "nightly"
     }
 }

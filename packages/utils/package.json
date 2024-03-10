@@ -1,0 +1,50 @@
+{
+    "name": "@semaphore-protocol/utils",
+    "version": "4.0.0-beta.2",
+    "description": "A library to provide utility functions to the other Semaphore packages.",
+    "type": "module",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "types": "dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "require": "./dist/index.cjs",
+            "default": "./dist/index.js"
+        },
+        "./errors": {
+            "types": "./dist/types/errors.d.ts",
+            "require": "./dist/lib.commonjs/errors.cjs",
+            "default": "./dist/lib.esm/errors.js"
+        },
+        "./types": {
+            "types": "./dist/types/types.d.ts",
+            "require": "./dist/lib.commonjs/types.cjs",
+            "default": "./dist/lib.esm/types.js"
+        }
+    },
+    "files": [
+        "dist/",
+        "src/",
+        "LICENSE",
+        "README.md"
+    ],
+    "repository": "https://github.com/semaphore-protocol/semaphore",
+    "homepage": "https://github.com/semaphore-protocol/semaphore/tree/main/packages/utils",
+    "bugs": {
+        "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
+    },
+    "scripts": {
+        "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
+        "prepublishOnly": "yarn build"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "rimraf": "^5.0.5",
+        "rollup": "^4.9.6",
+        "rollup-plugin-cleanup": "^3.2.1",
+        "rollup-plugin-typescript2": "^0.36.0"
+    }
+}

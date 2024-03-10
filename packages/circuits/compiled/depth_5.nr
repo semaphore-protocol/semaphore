@@ -4,7 +4,7 @@ use dep::std::println;
 use dep::std::eddsa::eddsa_to_pub;
 use dep::std::ec::consts::te::baby_jubjub;
 
-global LEVELS: Field = 10;
+global LEVELS: Field = 5;
 
 fn compute_merkle_root<N>(leaf: Field, indices: Field, hash_path: [Field; N]) -> Field {
     let n = hash_path.len();

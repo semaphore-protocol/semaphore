@@ -1,12 +1,14 @@
 /* istanbul ignore file */
 import { requireNumber } from "@semaphore-protocol/utils/errors"
 import { createWriteStream, existsSync, readdirSync } from "node:fs"
-import { mkdir } from "node:fs/promises"
+import { mkdir, readFile, writeFile } from "node:fs/promises"
 import os from "node:os"
-import { dirname } from "node:path"
+import { dirname, join, resolve } from "node:path"
 import { Readable } from "node:stream"
 import { finished } from "node:stream/promises"
 import { SnarkArtifacts } from "./types"
+import { compile, createFileManager } from "@noir-lang/noir_wasm"
+import { CompiledCircuit } from "@noir-lang/noir_js"
 
 /**
  * A utility function to download the zero-knowledge artifacts from an external server.
@@ -35,25 +37,11 @@ async function download(url: string, outputPath: string) {
  * @param treeDepth The depth of the tree.
  * @returns The zero-knowledge artifacts paths.
  */
-export default async function getSnarkArtifacts(treeDepth: number): Promise<SnarkArtifacts> {
+export default async function getSnarkArtifacts(treeDepth: number): Promise<CompiledCircuit> {
     requireNumber(treeDepth, "treeDepth")
 
-    const tmpDir = "semaphore-proof"
-    const tmpPath = `${os.tmpdir()}/${tmpDir}-${treeDepth}`
+    const data = await readFile(join(__dirname, `../../circuits/compiled/depth_${treeDepth}.json`), "utf-8")
 
-    if (!existsSync(tmpPath) || readdirSync(tmpPath).length !== 2) {
-        await download(
-            `https://semaphore.cedoor.dev/artifacts/${treeDepth}/semaphore.wasm`,
-            `${tmpPath}/semaphore.wasm`
-        )
-        await download(
-            `https://semaphore.cedoor.dev/artifacts/${treeDepth}/semaphore.zkey`,
-            `${tmpPath}/semaphore.zkey`
-        )
-    }
-
-    return {
-        wasmFilePath: `${tmpPath}/semaphore.wasm`,
-        zkeyFilePath: `${tmpPath}/semaphore.zkey`
-    }
+    const compiled = JSON.parse(data) as CompiledCircuit
+    return compiled
 }

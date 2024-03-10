@@ -1,16 +1,10 @@
 import type { Group, MerkleProof } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
-// import { requireDefined, requireNumber, requireObject, requireTypes } from "@semaphore-protocol/utils/errors"
-import { BarretenbergSync, Fr } from "@aztec/bb.js"
+import { requireDefined, requireNumber, requireObject } from "@semaphore-protocol/utils/errors"
 import { Noir } from "@noir-lang/noir_js"
 import { BarretenbergBackend } from "@noir-lang/backend_barretenberg"
-// import getSnarkArtifacts from "./get-snark-artifacts.node"
-import { BigNumberish, SemaphoreProof } from "./types"
-// eslint-disable-next-line import/no-relative-packages
-import compiled from "../../circuits/target/circuits.json"
-import { group } from "console"
-import { zeroPadValue } from "ethers"
-import { bigNumberishToBuffer } from "@zk-kit/utils"
+import { poseidon1 } from "poseidon-lite/poseidon1"
+import getSnarkArtifacts from "./get-snark-artifacts.node"
 
 /**
  * It generates a Semaphore proof, i.e. a zero-knowledge proof that an identity that
@@ -36,21 +30,15 @@ export default async function generateProof(
     groupOrMerkleProof: Group | MerkleProof,
     merkleTreeDepth: number
 ) {
-    // requireDefined(identity, "identity")
-    // requireDefined(groupOrMerkleProof, "groupOrMerkleProof")
-    // requireDefined(scope, "scope")
+    requireDefined(identity, "identity")
+    requireDefined(groupOrMerkleProof, "groupOrMerkleProof")
 
-    // requireObject(identity, "identity")
-    // requireObject(groupOrMerkleProof, "groupOrMerkleProof")
-    // requireTypes(scope, "scope", ["string", "bigint", "number", "uint8array"])
+    requireObject(identity, "identity")
+    requireObject(groupOrMerkleProof, "groupOrMerkleProof")
 
-    // if (merkleTreeDepth) {
-    //     requireNumber(merkleTreeDepth, "merkleTreeDepth")
-    // }
-
-    // if (snarkArtifacts) {
-    //     requireObject(snarkArtifacts, "snarkArtifacts")
-    // }
+    if (merkleTreeDepth) {
+        requireNumber(merkleTreeDepth, "merkleTreeDepth")
+    }
 
     if (merkleTreeDepth !== undefined) {
         if (merkleTreeDepth < 1 || merkleTreeDepth > 12) {
@@ -82,21 +70,21 @@ export default async function generateProof(
             hashPath[i] = "0"
         }
     }
-    // @ts-ignore
+
+    const compiled = await getSnarkArtifacts(merkleTreeDepth)
+
     const backend = new BarretenbergBackend(compiled, { threads: 8 })
-    // @ts-ignore
     const noir = new Noir(compiled, backend)
 
     const input = {
         secret,
         hash_path: hashPath.map((x) => `0x${BigInt(x).toString(16)}`),
-        indices,
-        // nullifier_hash: bb.poseidonHash([scop, secret]).toString(),
+        indices: BigInt(`0b${indices.join("")}`).toString(10),
+        nullifier: `0x${poseidon1([secret]).toString(16)}`,
         root
     }
     console.log(input)
 
-    // // @ts-ignore
     const proof = await noir.generateProof(input)
 
     return {
