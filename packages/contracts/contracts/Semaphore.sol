@@ -56,18 +56,14 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
 
     /// @dev See {SemaphoreGroups-_addMember}.
     function addMember(uint256 groupId, uint256 identityCommitment) external override {
-        _addMember(groupId, identityCommitment);
-
-        uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
+        uint256 merkleTreeRoot = _addMember(groupId, identityCommitment);
 
         groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
     }
 
     /// @dev See {SemaphoreGroups-_addMembers}.
     function addMembers(uint256 groupId, uint256[] calldata identityCommitments) external override {
-        _addMembers(groupId, identityCommitments);
-
-        uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
+        uint256 merkleTreeRoot = _addMembers(groupId, identityCommitments);
 
         groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
     }
@@ -79,9 +75,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 newIdentityCommitment,
         uint256[] calldata merkleProofSiblings
     ) external override {
-        _updateMember(groupId, identityCommitment, newIdentityCommitment, merkleProofSiblings);
-
-        uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
+        uint256 merkleTreeRoot = _updateMember(groupId, identityCommitment, newIdentityCommitment, merkleProofSiblings);
 
         groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
     }
@@ -92,9 +86,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 identityCommitment,
         uint256[] calldata merkleProofSiblings
     ) external override {
-        _removeMember(groupId, identityCommitment, merkleProofSiblings);
-
-        uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
+        uint256 merkleTreeRoot = _removeMember(groupId, identityCommitment, merkleProofSiblings);
 
         groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
     }
