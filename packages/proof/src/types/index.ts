@@ -1,4 +1,5 @@
 import type { NumericString } from "snarkjs"
+import type { PackedGroth16Proof } from "@zk-kit/utils"
 
 export type BigNumberish = string | number | bigint
 
@@ -13,16 +14,5 @@ export type SemaphoreProof = {
     message: NumericString
     nullifier: NumericString
     scope: NumericString
-    points: PackedPoints
+    points: PackedGroth16Proof
 }
-
-export type PackedPoints = [
-    NumericString,
-    NumericString,
-    NumericString,
-    NumericString,
-    NumericString,
-    NumericString,
-    NumericString,
-    NumericString
-]
