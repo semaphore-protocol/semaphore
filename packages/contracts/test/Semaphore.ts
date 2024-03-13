@@ -32,7 +32,7 @@ describe("Semaphore", () => {
         it("Should create a group", async () => {
             const transaction = semaphoreContract
                 .connect(accounts[1])
-                ["createGroup(uint256,address)"](groupId, accountAddresses[1])
+            ["createGroup(uint256,address)"](groupId, accountAddresses[1])
 
             await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId)
             await expect(transaction)
@@ -122,6 +122,17 @@ describe("Semaphore", () => {
     })
 
     describe("# addMembers", () => {
+        it("Should not add members if the caller is not the group admin", async () => {
+            const members = [BigInt(1), BigInt(2), BigInt(3)]
+
+            const transaction = semaphoreContract.connect(accounts[1]).addMembers(groupId, members)
+
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__CallerIsNotTheGroupAdmin"
+            )
+        })
+
         it("Should add new members to an existing group", async () => {
             const groupId = 3
             const members = [BigInt(1), BigInt(2), BigInt(3)]
