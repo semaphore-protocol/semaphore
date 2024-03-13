@@ -8699,7 +8699,7 @@ __metadata:
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@zk-kit/baby-jubjub": "npm:0.2.0"
     "@zk-kit/eddsa-poseidon": "npm:0.6.0"
-    "@zk-kit/utils": "npm:0.3.0"
+    "@zk-kit/utils": "npm:0.6.0"
     poseidon-lite: "npm:0.2.0"
     rollup-plugin-cleanup: "npm:^3.2.1"
     rollup-plugin-typescript2: "npm:^0.36.0"
@@ -8716,7 +8716,7 @@ __metadata:
     "@types/download": "npm:^8.0.5"
     "@types/snarkjs": "npm:0.7.8"
     "@types/tmp": "npm:^0.2.6"
-    "@zk-kit/utils": "npm:0.3.0"
+    "@zk-kit/utils": "npm:0.6.0"
     ethers: "npm:6.10.0"
     poseidon-lite: "npm:^0.2.0"
     rimraf: "npm:^5.0.5"
@@ -11201,6 +11201,15 @@ __metadata:
   version: 0.3.0
   resolution: "@zk-kit/utils@npm:0.3.0"
   checksum: 10/aa889d4ad2f88930a327bf987c95f8b9b4ece0b39b6f7685d14d1fd3803475e6900a9db489f876ae9d4b3a1e4cb99313870969c9b67b089d45b75f8faf44ffd5
+  languageName: node
+  linkType: hard
+
+"@zk-kit/utils@npm:0.6.0":
+  version: 0.6.0
+  resolution: "@zk-kit/utils@npm:0.6.0"
+  dependencies:
+    buffer: "npm:^6.0.3"
+  checksum: 10/7a88b1588df8791c9ea5cbbd5caafac4567127da4951ba1ee6d3f0d93e23aea3dbd9e45789b31f53e8c56637050ce41d520f176af368c4f815382bebb27b4856
   languageName: node
   linkType: hard
 
