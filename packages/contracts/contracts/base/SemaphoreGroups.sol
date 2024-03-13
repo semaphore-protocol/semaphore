@@ -85,7 +85,7 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
     function _addMembers(
         uint256 groupId,
         uint256[] calldata identityCommitments
-    ) internal virtual returns (uint256 merkleTreeRoot) {
+    ) internal virtual onlyGroupAdmin(groupId) returns (uint256 merkleTreeRoot) {
         uint256 startIndex = getMerkleTreeSize(groupId);
         merkleTreeRoot = merkleTrees[groupId]._insertMany(identityCommitments);
 
