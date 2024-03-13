@@ -67,12 +67,13 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
     /// @dev Adds an identity commitment to an existing group.
     /// @param groupId: Id of the group.
     /// @param identityCommitment: New identity commitment.
+    /// @return merkleTreeRoot New root hash of the tree.
     function _addMember(
         uint256 groupId,
         uint256 identityCommitment
-    ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
+    ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) returns (uint256 merkleTreeRoot) {
         uint256 index = getMerkleTreeSize(groupId);
-        uint256 merkleTreeRoot = merkleTrees[groupId]._insert(identityCommitment);
+        merkleTreeRoot = merkleTrees[groupId]._insert(identityCommitment);
 
         emit MemberAdded(groupId, index, identityCommitment, merkleTreeRoot);
     }
@@ -80,9 +81,13 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
     /// @dev Adds new members to an existing group.
     /// @param groupId: Id of the group.
     /// @param identityCommitments: New identity commitments.
-    function _addMembers(uint256 groupId, uint256[] calldata identityCommitments) internal virtual {
+    /// @return merkleTreeRoot New root hash of the tree.
+    function _addMembers(
+        uint256 groupId,
+        uint256[] calldata identityCommitments
+    ) internal virtual returns (uint256 merkleTreeRoot) {
         uint256 startIndex = getMerkleTreeSize(groupId);
-        uint256 merkleTreeRoot = merkleTrees[groupId]._insertMany(identityCommitments);
+        merkleTreeRoot = merkleTrees[groupId]._insertMany(identityCommitments);
 
         emit MembersAdded(groupId, startIndex, identityCommitments, merkleTreeRoot);
     }
@@ -93,14 +98,15 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
     /// @param oldIdentityCommitment: Existing identity commitment to be updated.
     /// @param newIdentityCommitment: New identity commitment.
     /// @param merkleProofSiblings: Array of the sibling nodes of the proof of membership.
+    /// @return merkleTreeRoot New root hash of the tree.
     function _updateMember(
         uint256 groupId,
         uint256 oldIdentityCommitment,
         uint256 newIdentityCommitment,
         uint256[] calldata merkleProofSiblings
-    ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
+    ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) returns (uint256 merkleTreeRoot) {
         uint256 index = merkleTrees[groupId]._indexOf(oldIdentityCommitment);
-        uint256 merkleTreeRoot = merkleTrees[groupId]._update(
+        merkleTreeRoot = merkleTrees[groupId]._update(
             oldIdentityCommitment,
             newIdentityCommitment,
             merkleProofSiblings
@@ -114,14 +120,15 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
     /// @param groupId: Id of the group.
     /// @param identityCommitment: Existing identity commitment to be removed.
     /// @param merkleProofSiblings: Array of the sibling nodes of the proof of membership.
+    /// @return merkleTreeRoot New root hash of the tree.
     function _removeMember(
         uint256 groupId,
         uint256 identityCommitment,
         uint256[] calldata merkleProofSiblings
-    ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
+    ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) returns (uint256 merkleTreeRoot) {
         uint256 index = merkleTrees[groupId]._indexOf(identityCommitment);
 
-        uint256 merkleTreeRoot = merkleTrees[groupId]._remove(identityCommitment, merkleProofSiblings);
+        merkleTreeRoot = merkleTrees[groupId]._remove(identityCommitment, merkleProofSiblings);
 
         emit MemberRemoved(groupId, index, identityCommitment, merkleTreeRoot);
     }
