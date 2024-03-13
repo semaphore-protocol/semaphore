@@ -379,3 +379,15 @@ yarn docs
 ```
 
 The output will be placed on the `docs` folder.
+
+### Releases
+
+Bump a new version with:
+
+```bash
+yarn version:bump <version>
+# e.g. yarn version:bump 2.0.0
+```
+
+It will create a commit and a git tag that will need to pushed on the main branch. A workflow will be triggered and will
+publish the Semaphore packages on [npm](https://www.npmjs.com/) and release a new version on Github with its changelogs automatically.
