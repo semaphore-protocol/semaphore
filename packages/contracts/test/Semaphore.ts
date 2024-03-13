@@ -32,7 +32,7 @@ describe("Semaphore", () => {
         it("Should create a group", async () => {
             const transaction = semaphoreContract
                 .connect(accounts[1])
-            ["createGroup(uint256,address)"](groupId, accountAddresses[1])
+                ["createGroup(uint256,address)"](groupId, accountAddresses[1])
 
             await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId)
             await expect(transaction)
