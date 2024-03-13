@@ -55,10 +55,7 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
     /// @dev Updates the group admin.
     /// @param groupId: Id of the group.
     /// @param newAdmin: New admin of the group.
-    function _updateGroupAdmin(
-        uint256 groupId,
-        address newAdmin
-    ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
+    function _updateGroupAdmin(uint256 groupId, address newAdmin) internal virtual onlyGroupAdmin(groupId) {
         admins[groupId] = newAdmin;
 
         emit GroupAdminUpdated(groupId, msg.sender, newAdmin);
@@ -71,7 +68,7 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
     function _addMember(
         uint256 groupId,
         uint256 identityCommitment
-    ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) returns (uint256 merkleTreeRoot) {
+    ) internal virtual onlyGroupAdmin(groupId) returns (uint256 merkleTreeRoot) {
         uint256 index = getMerkleTreeSize(groupId);
         merkleTreeRoot = merkleTrees[groupId]._insert(identityCommitment);
 
@@ -104,7 +101,7 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
         uint256 oldIdentityCommitment,
         uint256 newIdentityCommitment,
         uint256[] calldata merkleProofSiblings
-    ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) returns (uint256 merkleTreeRoot) {
+    ) internal virtual onlyGroupAdmin(groupId) returns (uint256 merkleTreeRoot) {
         uint256 index = merkleTrees[groupId]._indexOf(oldIdentityCommitment);
         merkleTreeRoot = merkleTrees[groupId]._update(
             oldIdentityCommitment,
@@ -125,7 +122,7 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
         uint256 groupId,
         uint256 identityCommitment,
         uint256[] calldata merkleProofSiblings
-    ) internal virtual onlyExistingGroup(groupId) onlyGroupAdmin(groupId) returns (uint256 merkleTreeRoot) {
+    ) internal virtual onlyGroupAdmin(groupId) returns (uint256 merkleTreeRoot) {
         uint256 index = merkleTrees[groupId]._indexOf(identityCommitment);
 
         merkleTreeRoot = merkleTrees[groupId]._remove(identityCommitment, merkleProofSiblings);
