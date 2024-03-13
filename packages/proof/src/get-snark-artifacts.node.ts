@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import { requireNumber } from "@semaphore-protocol/utils/errors"
+import { requireNumber } from "@zk-kit/utils/error-handlers"
 import { createWriteStream, existsSync, readdirSync } from "node:fs"
 import { mkdir } from "node:fs/promises"
 import os from "node:os"

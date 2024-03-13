@@ -70,10 +70,10 @@ yarn add @semaphore-protocol/utils
 For more information on the functions and modules provided by `@semaphore-protocol/utils`, please refer to the [TypeDoc documentation](https://js.semaphore.pse.dev/modules/_semaphore_protocol_utils).
 
 ```typescript
-// You can import modules from the main bundle.
-import { errors, types } from "@semaphore-protocol/utils"
+// You can import functions/parameters from the main bundle.
+import { supportedNetworks, decodeMessage } from "@semaphore-protocol/utils"
 
 // Or by using conditional exports.
-import { requireNumber } from "@semaphore-protocol/utils/errors"
-import { isNumber } from "@semaphore-protocol/utils/types"
+import supportedNetworks from "@semaphore-protocol/utils/supported-networks"
+import decodeMessage from "@semaphore-protocol/utils/decode-message"
 ```
