@@ -2,16 +2,16 @@ import alias from "@rollup/plugin-alias"
 import commonjs from "@rollup/plugin-commonjs"
 import json from "@rollup/plugin-json"
 import { nodeResolve } from "@rollup/plugin-node-resolve"
+import typescript from "@rollup/plugin-typescript"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
-import typescript from "rollup-plugin-typescript2"
 
 const pkg = JSON.parse(fs.readFileSync("./package.json", "utf-8"))
 const banner = `/**
  * @module ${pkg.name}
  * @version ${pkg.version}
  * @file ${pkg.description}
- * @copyright Ethereum Foundation 2024
+ * @copyright Ethereum Foundation ${new Date().getFullYear()}
  * @license ${pkg.license}
  * @see [Github]{@link ${pkg.homepage}}
 */`
@@ -31,8 +31,7 @@ export default {
             entries: [{ find: "./random-number.node", replacement: "./random-number.browser" }]
         }),
         typescript({
-            tsconfig: "./build.tsconfig.json",
-            useTsconfigDeclarationDir: true
+            tsconfig: "./build.tsconfig.json"
         }),
         commonjs(),
         nodeResolve(),

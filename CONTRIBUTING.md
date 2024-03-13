@@ -46,7 +46,7 @@ We always use ESLint and Prettier. To check that your code follows the rules, si
 
 For commits it is recommended to use [Conventional Commits](https://www.conventionalcommits.org).
 
-Don't worry if it looks complicated, in our repositories, after `git add`, you can usually run the npm script `yarn commit` to make many of these steps interactive.
+Don't worry if it looks complicated, in our repositories, `git commit` opens an interactive app to create your conventional commit.
 
 Each commit message consists of a **header**, a **body** and a **footer**. The **header** has a special format that includes a **type**, a **scope** and a **subject**:
 
