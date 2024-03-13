@@ -1,4 +1,4 @@
-import { packGroth16Proof, unpackGroth16Proof } from "@zk-kit/utils"
+import { packGroth16Proof, unpackGroth16Proof } from "@zk-kit/utils/proof-packing"
 import generateProof from "./generate-proof"
 import verifyProof from "./verify-proof"
 
