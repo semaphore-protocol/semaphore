@@ -1,6 +1,4 @@
-import alias from "@rollup/plugin-alias"
 import commonjs from "@rollup/plugin-commonjs"
-import json from "@rollup/plugin-json"
 import { nodeResolve } from "@rollup/plugin-node-resolve"
 import typescript from "@rollup/plugin-typescript"
 import * as fs from "fs"
@@ -19,23 +17,16 @@ const banner = `/**
 export default {
     input: "src/index.ts",
     output: [
-        {
-            file: pkg.exports["."].browser,
-            format: "es",
-            banner
-        }
+        { file: pkg.exports.require, format: "cjs", banner, exports: "auto" },
+        { file: pkg.exports.default, format: "es", banner }
     ],
-    external: pkg.dependencies,
+    external: Object.keys(pkg.dependencies),
     plugins: [
-        alias({
-            entries: [{ find: "./random-number.node", replacement: "./random-number.browser" }]
-        }),
         typescript({
             tsconfig: "./build.tsconfig.json"
         }),
         commonjs(),
-        nodeResolve(),
-        cleanup({ comments: "jsdoc" }),
-        json()
+        nodeResolve({ preferBuiltins: false }),
+        cleanup({ comments: "jsdoc" })
     ]
 }

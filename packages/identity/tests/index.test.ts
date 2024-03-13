@@ -1,13 +1,22 @@
-import { randomBytes } from "crypto"
 import { Identity } from "../src"
-import { bytesToBigint } from "../src/bytes-to-bigint"
 
 describe("Identity", () => {
-    const privateKey = "secret"
+    const privateKeyText = "secret"
+    const privateKeyHexadecimal = "dd998334940df8931b76d899fdb189415f7ff4280599f03a7574725a166aad7d"
 
     describe("# Identity", () => {
-        it("Should create a random identity", () => {
+        it("Should create an identity with a random secret (private key)", () => {
             const identity = new Identity()
+
+            expect(typeof identity.privateKey).toBe("string")
+            expect(identity.privateKey).toHaveLength(64)
+            expect(typeof identity.secretScalar).toBe("string")
+            expect(identity.publicKey).toHaveLength(2)
+            expect(typeof identity.commitment).toBe("string")
+        })
+
+        it("Should create deterministic identities from a secret text (private key)", () => {
+            const identity = new Identity(privateKeyText)
 
             expect(typeof identity.privateKey).toBe("string")
             expect(typeof identity.secretScalar).toBe("string")
@@ -15,19 +24,26 @@ describe("Identity", () => {
             expect(typeof identity.commitment).toBe("string")
         })
 
-        it("Should create deterministic identities from a secret (private key)", () => {
-            const identity = new Identity(privateKey)
+        it("Should create deterministic identities from a secret hexadecimal (private key)", () => {
+            const identity = new Identity(privateKeyHexadecimal)
 
             expect(typeof identity.privateKey).toBe("string")
+            expect(identity.privateKey).toHaveLength(64)
             expect(typeof identity.secretScalar).toBe("string")
             expect(identity.publicKey).toHaveLength(2)
             expect(typeof identity.commitment).toBe("string")
+        })
+
+        it("Should throw an error if the private key is not a string", () => {
+            const fun = () => new Identity(32 as any)
+
+            expect(fun).toThrow("Parameter 'privateKey' is not a string, received type: number")
         })
     })
 
     describe("# signMessage", () => {
         it("Should sign a message", () => {
-            const identity = new Identity(privateKey)
+            const identity = new Identity(privateKeyText)
 
             const signature = identity.signMessage("message")
 
@@ -39,22 +55,11 @@ describe("Identity", () => {
 
     describe("# verifySignature", () => {
         it("Should verify a signature", () => {
-            const identity = new Identity(privateKey)
+            const identity = new Identity(privateKeyText)
 
             const signature = identity.signMessage("message")
 
             expect(Identity.verifySignature("message", signature, identity.publicKey)).toBeTruthy()
-        })
-    })
-
-    describe("# bytesToBigint", () => {
-        it("Should convert 32 bytes to bigint", () => {
-            const bytes = randomBytes(32)
-
-            const integer = bytesToBigint(bytes)
-
-            expect(typeof integer).toBe("bigint")
-            expect(integer).toBe(BigInt(`0x${bytes.toString("hex")}`))
         })
     })
 })
