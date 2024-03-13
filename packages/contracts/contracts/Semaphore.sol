@@ -46,7 +46,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     function updateGroupMerkleTreeDuration(
         uint256 groupId,
         uint256 newMerkleTreeDuration
-    ) external override onlyExistingGroup(groupId) onlyGroupAdmin(groupId) {
+    ) external override onlyGroupAdmin(groupId) {
         uint256 oldMerkleTreeDuration = groups[groupId].merkleTreeDuration;
 
         groups[groupId].merkleTreeDuration = newMerkleTreeDuration;
@@ -92,10 +92,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     }
 
     /// @dev See {ISemaphore-validateProof}.
-    function validateProof(
-        uint256 groupId,
-        SemaphoreProof calldata proof
-    ) external override onlyExistingGroup(groupId) {
+    function validateProof(uint256 groupId, SemaphoreProof calldata proof) external override {
         // The function will revert if the nullifier that is part of the proof,
         // was already used inside the group with id groupId.
         if (groups[groupId].nullifiers[proof.nullifier]) {
