@@ -1,4 +1,4 @@
-import typescript from "rollup-plugin-typescript2"
+import typescript from "@rollup/plugin-typescript"
 import fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
 
@@ -9,7 +9,7 @@ const banner = `#!/usr/bin/env node
  * @module ${pkg.name}
  * @version ${pkg.version}
  * @file ${pkg.description}
- * @copyright Ethereum Foundation 2024
+ * @copyright Ethereum Foundation ${new Date().getFullYear()}
  * @license ${pkg.license}
  * @see [Github]{@link ${pkg.homepage}}
 */
@@ -20,9 +20,8 @@ export default {
     output: [{ file: pkg.bin.semaphore, format: "es", banner }],
     external: [...Object.keys(pkg.dependencies), "url", "fs", "path", "child_process"],
     plugins: [
-        (typescript as any)({
-            tsconfig: "./build.tsconfig.json",
-            useTsconfigDeclarationDir: true
+        typescript({
+            tsconfig: "./build.tsconfig.json"
         }),
         cleanup({ comments: "jsdoc" })
     ]
