@@ -1,5 +1,5 @@
-import * as errors from "./errors"
-import * as types from "./types"
 import * as constants from "./constants"
+import supportedNetworks from "./supported-networks"
 
-export { errors, types, constants }
+export * from "./types"
+export { constants, supportedNetworks }

@@ -18,7 +18,14 @@ const banner = `#!/usr/bin/env node
 export default {
     input: "src/index.ts",
     output: [{ file: pkg.bin.semaphore, format: "es", banner }],
-    external: [...Object.keys(pkg.dependencies), "url", "fs", "path", "child_process"],
+    external: [
+        ...Object.keys(pkg.dependencies),
+        "url",
+        "fs",
+        "path",
+        "child_process",
+        "@semaphore-protocol/utils/supported-networks"
+    ],
     plugins: [
         typescript({
             tsconfig: "./build.tsconfig.json"

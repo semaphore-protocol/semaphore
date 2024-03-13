@@ -1,13 +1,7 @@
-import {
-    requireArray,
-    requireDefined,
-    requireNumber,
-    requireObject,
-    requireString
-} from "@semaphore-protocol/utils/errors"
-import { MIN_DEPTH, MAX_DEPTH } from "@semaphore-protocol/utils/constants"
-import { groth16 } from "snarkjs"
+import { MAX_DEPTH, MIN_DEPTH } from "@semaphore-protocol/utils/constants"
+import { requireArray, requireDefined, requireNumber, requireObject, requireString } from "@zk-kit/utils/error-handlers"
 import { unpackGroth16Proof } from "@zk-kit/utils/proof-packing"
+import { groth16 } from "snarkjs"
 import hash from "./hash"
 import { SemaphoreProof } from "./types"
 import verificationKeys from "./verification-keys.json"
