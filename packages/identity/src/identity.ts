@@ -1,8 +1,10 @@
 import type { Point } from "@zk-kit/baby-jubjub"
-import { Signature, derivePublicKey, deriveSecretScalar, signMessage, verifySignature } from "@zk-kit/eddsa-poseidon"
+import { EdDSAPoseidon, Signature, signMessage, verifySignature } from "@zk-kit/eddsa-poseidon"
 import type { BigNumberish } from "@zk-kit/utils"
+import { bufferToHexadecimal, hexadecimalToBuffer } from "@zk-kit/utils/conversions"
+import { requireString } from "@zk-kit/utils/error-handlers"
+import { isHexadecimal } from "@zk-kit/utils/type-checks"
 import { poseidon2 } from "poseidon-lite/poseidon2"
-import { randomNumber } from "./random-number.node"
 
 /**
  * The Semaphore identity is essentially an {@link https://www.rfc-editor.org/rfc/rfc8032 | EdDSA}
@@ -11,10 +13,12 @@ import { randomNumber } from "./random-number.node"
  * and {@link https://www.poseidon-hash.info | Poseidon} for signatures.
  * In addition, the commitment, i.e. the hash of the public key, is used to represent
  * Semaphore identities in groups, adding an additional layer of privacy and security.
+ * The private key of the identity is stored as a hexadecimal string or text.
+ * The other attributes are stored as stringified bigint.
  */
 export default class Identity {
     // The EdDSA private key, passed as a parameter or generated randomly.
-    private _privateKey: BigNumberish
+    private _privateKey: string
     // The secret scalar derived from the private key.
     // It is used in circuits to derive the public key.
     private _secretScalar: string
@@ -24,10 +28,11 @@ export default class Identity {
     private _commitment: string
 
     /**
-     * Initializes the class attributes based on a given private key.
-     * If the private key is not passed as a parameter, a random key is generated.
-     * The constructor calculates the secret scalar and public key from the private key,
-     * and computes a commitment of the public key using a hash function (Poseidon).
+     * Initializes the class attributes based on a given private key, which must be a hexadecimal string or a text.
+     * Hexadecimal strings must not start with '0x' or '0X'.
+     * If the private key is not passed as a parameter, a random hexadecimal key will be generated.
+     * The EdDSAPoseidon class is used to generate the secret scalar and the public key.
+     * Additionally, the constructor computes a commitment of the public key using a hash function (Poseidon).
      *
      * @example
      * // Generates an identity.
@@ -36,20 +41,37 @@ export default class Identity {
      * // Generates an identity with a random private key.
      * const { privateKey, publicKey, commitment } = new Identity()
      *
-     * @param privateKey The private key used to derive the public key.
+     * @param privateKey The private key used to derive the public key (hexadecimal or string).
      */
-    constructor(privateKey: BigNumberish = randomNumber().toString()) {
-        this._privateKey = privateKey
-        this._secretScalar = deriveSecretScalar(privateKey)
-        this._publicKey = derivePublicKey(privateKey)
+    constructor(privateKey?: string) {
+        let eddsa: EdDSAPoseidon
+
+        if (privateKey) {
+            requireString(privateKey, "privateKey")
+
+            this._privateKey = privateKey
+
+            if (isHexadecimal(privateKey, false)) {
+                eddsa = new EdDSAPoseidon(hexadecimalToBuffer(privateKey))
+            } else {
+                eddsa = new EdDSAPoseidon(privateKey)
+            }
+        } else {
+            eddsa = new EdDSAPoseidon()
+
+            this._privateKey = bufferToHexadecimal(eddsa.privateKey as any)
+        }
+
+        this._secretScalar = eddsa.secretScalar
+        this._publicKey = eddsa.publicKey as Point<string>
         this._commitment = poseidon2(this._publicKey).toString()
     }
 
     /**
      * Returns the private key.
-     * @returns The private key as a {@link https://zkkit.pse.dev/types/_zk_kit_utils.BigNumberish.html | BigNumberish}.
+     * @returns The private key as a string (hexadecimal or text).
      */
-    public get privateKey(): BigNumberish {
+    public get privateKey(): string {
         return this._privateKey
     }
 
