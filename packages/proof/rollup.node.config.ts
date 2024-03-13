@@ -1,14 +1,14 @@
 import json from "@rollup/plugin-json"
+import typescript from "@rollup/plugin-typescript"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
-import typescript from "rollup-plugin-typescript2"
 
 const pkg = JSON.parse(fs.readFileSync("./package.json", "utf-8"))
 const banner = `/**
  * @module ${pkg.name}
  * @version ${pkg.version}
  * @file ${pkg.description}
- * @copyright Ethereum Foundation 2024
+ * @copyright Ethereum Foundation ${new Date().getFullYear()}
  * @license ${pkg.license}
  * @see [Github]{@link ${pkg.homepage}}
 */`
@@ -43,8 +43,7 @@ export default {
     ],
     plugins: [
         typescript({
-            tsconfig: "./build.tsconfig.json",
-            useTsconfigDeclarationDir: true
+            tsconfig: "./build.tsconfig.json"
         }),
         cleanup({ comments: "jsdoc" }),
         json()

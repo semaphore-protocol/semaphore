@@ -19,7 +19,7 @@ jest.mock("ethers/contract", () => ({
                 getMerkleTreeDepth: () => BigInt(3),
                 getMerkleTreeSize: () => BigInt(8),
                 getGroupAdmin: () => "0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F"
-            } as any)
+            }) as any
     )
 }))
 
