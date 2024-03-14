@@ -4,7 +4,6 @@ pragma solidity 0.8.23;
 /// @title SemaphoreGroups contract interface.
 interface ISemaphoreGroups {
     error Semaphore__GroupDoesNotExist();
-    error Semaphore__GroupAlreadyExists();
     error Semaphore__CallerIsNotTheGroupAdmin();
 
     /// @dev Event emitted when a new group is created.
