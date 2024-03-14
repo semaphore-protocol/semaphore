@@ -17,7 +17,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     /// @dev Gets a group id and returns the group parameters.
     mapping(uint256 => Group) public groups;
 
-    /// @dev Counter to assign the group id.
+    /// @dev Counter to assign an incremental id to the groups.
     uint256 public groupCounter;
 
     /// @dev Initializes the Semaphore verifier used to verify the user's ZK proofs.
