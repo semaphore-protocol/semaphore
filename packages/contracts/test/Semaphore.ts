@@ -273,6 +273,30 @@ describe("Semaphore", () => {
                 "Semaphore__MerkleTreeRootIsExpired"
             )
         })
+
+        it("Should not verify a proof if the Merkle depth is not supported", async () => {
+            const scope = "random-scope"
+
+            const proof = await generateProof(identity, group, message, scope, merkleTreeDepth)
+
+            proof.merkleTreeDepth = 33
+
+            const transaction = semaphoreContract.verifyProof(groupId, proof)
+
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__MerkleTreeDepthIsNotSupported"
+            )
+        })
+
+        it("Should not verify a proof if the group has no members", async () => {
+            const groupId = 6
+            await semaphoreContract["createGroup(address)"](accountAddresses[0])
+
+            const transaction = semaphoreContract.verifyProof(groupId, proof)
+
+            await expect(transaction).to.be.revertedWithCustomError(semaphoreContract, "Semaphore__GroupHasNoMembers")
+        })
     })
 
     describe("# validateProof", () => {
