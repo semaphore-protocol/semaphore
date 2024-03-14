@@ -8,11 +8,6 @@ yarn.lock
 coverage
 coverage.json
 
-# hardhat
-artifacts
-cache
-typechain-types
-
 # production
 dist
 build

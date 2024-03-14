@@ -17,21 +17,27 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     /// @dev Gets a group id and returns the group parameters.
     mapping(uint256 => Group) public groups;
 
+    /// @dev Counter to assign the group id.
+    uint256 public groupCounter;
+
     /// @dev Initializes the Semaphore verifier used to verify the user's ZK proofs.
     /// @param _verifier: Semaphore verifier addresse.
     constructor(ISemaphoreVerifier _verifier) {
         verifier = _verifier;
+        groupCounter = 0;
     }
 
     /// @dev See {SemaphoreGroups-_createGroup}.
-    function createGroup(uint256 groupId, address admin) external override {
+    function createGroup(address admin) external override returns (uint256 groupId) {
+        groupId = groupCounter++;
         _createGroup(groupId, admin);
 
         groups[groupId].merkleTreeDuration = 1 hours;
     }
 
     /// @dev See {ISemaphore-createGroup}.
-    function createGroup(uint256 groupId, address admin, uint256 merkleTreeDuration) external override {
+    function createGroup(address admin, uint256 merkleTreeDuration) external override returns (uint256 groupId) {
+        groupId = groupCounter++;
         _createGroup(groupId, admin);
 
         groups[groupId].merkleTreeDuration = merkleTreeDuration;

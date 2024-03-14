@@ -56,13 +56,13 @@ interface ISemaphore {
     );
 
     /// @dev See {SemaphoreGroups-_createGroup}.
-    function createGroup(uint256 groupId, address admin) external;
+    function createGroup(address admin) external returns (uint256);
 
     /// @dev It creates a group with a custom Merkle tree duration.
-    /// @param groupId: Id of the group.
     /// @param admin: Admin of the group. It can be an Ethereum account or a smart contract.
     /// @param merkleTreeDuration: Merkle tree duration.
-    function createGroup(uint256 groupId, address admin, uint256 merkleTreeDuration) external;
+    /// @return Id of the group.
+    function createGroup(address admin, uint256 merkleTreeDuration) external returns (uint256);
 
     /// @dev See {SemaphoreGroups-_updateGroupAdmin}.
     function updateGroupAdmin(uint256 groupId, address newAdmin) external;
