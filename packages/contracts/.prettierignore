@@ -1,8 +1,0 @@
-# testing
-coverage
-coverage.json
-
-# hardhat
-artifacts
-cache
-typechain-types
