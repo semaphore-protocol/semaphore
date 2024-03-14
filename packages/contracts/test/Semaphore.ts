@@ -14,7 +14,7 @@ describe("Semaphore", () => {
 
     const merkleTreeDepth = 12
 
-    const groupId = 1
+    const groupId = 0
     const members = Array.from({ length: 3 }, (_, i) => new Identity(i)).map(({ commitment }) => commitment)
 
     before(async () => {
@@ -30,9 +30,8 @@ describe("Semaphore", () => {
 
     describe("# createGroup", () => {
         it("Should create a group", async () => {
-            const transaction = semaphoreContract
-                .connect(accounts[1])
-                ["createGroup(uint256,address)"](groupId, accountAddresses[1])
+            const groupId = 0
+            const transaction = semaphoreContract.connect(accounts[1])["createGroup(address)"](accountAddresses[1])
 
             await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId)
             await expect(transaction)
@@ -41,9 +40,8 @@ describe("Semaphore", () => {
         })
 
         it("Should create a group with a custom Merkle tree root expiration", async () => {
-            const groupId = 2
-            const transaction = await semaphoreContract.connect(accounts[1])["createGroup(uint256,address,uint256)"](
-                groupId,
+            const groupId = 1
+            const transaction = await semaphoreContract.connect(accounts[1])["createGroup(address,uint256)"](
                 accountAddresses[0],
                 5 // 5 seconds.
             )
@@ -123,13 +121,13 @@ describe("Semaphore", () => {
 
     describe("# addMembers", () => {
         it("Should add new members to an existing group", async () => {
-            const groupId = 3
+            const groupId = 2
             const members = [BigInt(1), BigInt(2), BigInt(3)]
             const group = new Group()
 
             group.addMembers(members)
 
-            await semaphoreContract["createGroup(uint256,address)"](groupId, accountAddresses[0])
+            await semaphoreContract["createGroup(address)"](accountAddresses[0])
 
             const transaction = semaphoreContract.addMembers(groupId, members)
 
@@ -152,7 +150,7 @@ describe("Semaphore", () => {
         })
 
         it("Should update a member from an existing group", async () => {
-            const groupId = 4
+            const groupId = 3
             const members = [BigInt(1), BigInt(2), BigInt(3)]
             const group = new Group()
 
@@ -160,7 +158,7 @@ describe("Semaphore", () => {
 
             group.updateMember(0, BigInt(4))
 
-            await semaphoreContract["createGroup(uint256,address)"](groupId, accountAddresses[0])
+            await semaphoreContract["createGroup(address)"](accountAddresses[0])
             await semaphoreContract.addMembers(groupId, members)
 
             const { siblings, root } = group.generateMerkleProof(0)
@@ -186,7 +184,7 @@ describe("Semaphore", () => {
         })
 
         it("Should remove a member from an existing group", async () => {
-            const groupId = 5
+            const groupId = 4
             const members = [BigInt(1), BigInt(2), BigInt(3)]
             const group = new Group()
 
@@ -194,7 +192,7 @@ describe("Semaphore", () => {
 
             group.removeMember(2)
 
-            await semaphoreContract["createGroup(uint256,address)"](groupId, accountAddresses[0])
+            await semaphoreContract["createGroup(address)"](accountAddresses[0])
             await semaphoreContract.addMembers(groupId, members)
 
             const { siblings, root } = group.generateMerkleProof(2)
@@ -220,7 +218,7 @@ describe("Semaphore", () => {
     })
 
     describe("# verifyProof", () => {
-        const groupId = 10
+        const groupId = 5
         const message = 2
         const identity = new Identity("0")
 
@@ -231,7 +229,7 @@ describe("Semaphore", () => {
         let proof: SemaphoreProof
 
         before(async () => {
-            await semaphoreContract["createGroup(uint256,address)"](groupId, accountAddresses[0])
+            await semaphoreContract["createGroup(address)"](accountAddresses[0])
 
             await semaphoreContract.addMembers(groupId, members)
 
@@ -260,7 +258,7 @@ describe("Semaphore", () => {
         })
 
         it("Should not verify a proof if the Merkle tree root is expired", async () => {
-            const groupId = 2
+            const groupId = 1
 
             const group = new Group()
 
@@ -292,7 +290,7 @@ describe("Semaphore", () => {
         let proofOneMember: SemaphoreProof
 
         before(async () => {
-            await semaphoreContract["createGroup(uint256,address)"](groupOneMemberId, accountAddresses[0])
+            await semaphoreContract["createGroup(address)"](accountAddresses[0])
 
             await semaphoreContract.addMembers(groupId, [members[1], members[2]])
             await semaphoreContract.addMember(groupOneMemberId, members[0])
