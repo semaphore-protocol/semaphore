@@ -42,10 +42,6 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
     /// @param groupId: Id of the group.
     /// @param admin: Admin of the group.
     function _createGroup(uint256 groupId, address admin) internal virtual {
-        if (admins[groupId] != address(0)) {
-            revert Semaphore__GroupAlreadyExists();
-        }
-
         admins[groupId] = admin;
 
         emit GroupCreated(groupId);
