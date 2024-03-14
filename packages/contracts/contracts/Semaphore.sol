@@ -24,7 +24,6 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     /// @param _verifier: Semaphore verifier addresse.
     constructor(ISemaphoreVerifier _verifier) {
         verifier = _verifier;
-        groupCounter = 0;
     }
 
     /// @dev See {SemaphoreGroups-_createGroup}.
