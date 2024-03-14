@@ -11,9 +11,7 @@
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
         "typechain": "hardhat typechain",
-        "lint": "solhint 'contracts/**/*.sol'",
-        "prettier": "prettier -c --plugin=prettier-plugin-solidity .",
-        "prettier:write": "prettier -w --plugin=prettier-plugin-solidity ."
+        "lint": "solhint 'contracts/**/*.sol'"
     },
     "devDependencies": {
         "@nomicfoundation/hardhat-chai-matchers": "^2.0.3",
