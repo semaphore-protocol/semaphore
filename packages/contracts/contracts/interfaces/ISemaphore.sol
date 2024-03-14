@@ -56,6 +56,9 @@ interface ISemaphore {
     );
 
     /// @dev See {SemaphoreGroups-_createGroup}.
+    function createGroup() external returns (uint256);
+
+    /// @dev See {SemaphoreGroups-_createGroup}.
     function createGroup(address admin) external returns (uint256);
 
     /// @dev It creates a group with a custom Merkle tree duration.

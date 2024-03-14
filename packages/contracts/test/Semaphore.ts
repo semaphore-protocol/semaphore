@@ -54,6 +54,17 @@ describe("Semaphore", () => {
                 .to.emit(semaphoreContract, "GroupAdminUpdated")
                 .withArgs(groupId, ZeroAddress, accountAddresses[0])
         })
+
+        it("Should create a group without any parameters", async () => {
+            const groupId = 2
+
+            const transaction = await semaphoreContract["createGroup()"]()
+
+            await expect(transaction).to.emit(semaphoreContract, "GroupCreated").withArgs(groupId)
+            await expect(transaction)
+                .to.emit(semaphoreContract, "GroupAdminUpdated")
+                .withArgs(groupId, ZeroAddress, accountAddresses[0])
+        })
     })
 
     describe("# updateGroupMerkleTreeDuration", () => {
@@ -132,7 +143,7 @@ describe("Semaphore", () => {
         })
 
         it("Should add new members to an existing group", async () => {
-            const groupId = 2
+            const groupId = 3
             const members = [BigInt(1), BigInt(2), BigInt(3)]
             const group = new Group()
 
@@ -161,7 +172,7 @@ describe("Semaphore", () => {
         })
 
         it("Should update a member from an existing group", async () => {
-            const groupId = 3
+            const groupId = 4
             const members = [BigInt(1), BigInt(2), BigInt(3)]
             const group = new Group()
 
@@ -195,7 +206,7 @@ describe("Semaphore", () => {
         })
 
         it("Should remove a member from an existing group", async () => {
-            const groupId = 4
+            const groupId = 5
             const members = [BigInt(1), BigInt(2), BigInt(3)]
             const group = new Group()
 
@@ -229,7 +240,7 @@ describe("Semaphore", () => {
     })
 
     describe("# verifyProof", () => {
-        const groupId = 5
+        const groupId = 6
         const message = 2
         const identity = new Identity("0")
 
@@ -301,7 +312,7 @@ describe("Semaphore", () => {
         })
 
         it("Should not verify a proof if the group has no members", async () => {
-            const groupId = 6
+            const groupId = 7
             await semaphoreContract["createGroup(address)"](accountAddresses[0])
 
             const transaction = semaphoreContract.verifyProof(groupId, proof)
@@ -313,7 +324,7 @@ describe("Semaphore", () => {
     describe("# validateProof", () => {
         const message = 2
         const identity = new Identity("0")
-        const groupOneMemberId = 6
+        const groupOneMemberId = 7
 
         const group = new Group()
         const groupOneMember = new Group()
