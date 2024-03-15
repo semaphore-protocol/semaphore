@@ -387,4 +387,38 @@ describe("Semaphore", () => {
             )
         })
     })
+
+    describe("SemaphoreGroups", () => {
+        describe("# hasMember", () => {
+            it("Should return true because the memeber is part of the group", async () => {
+                const groupId = 1
+                const isMember = await semaphoreContract.hasMember(groupId, members[0])
+
+                await expect(isMember).to.be.true
+            })
+            it("Should return false because the memeber is not part of the group", async () => {
+                const groupId = 1
+                const identity = new Identity()
+                const isMember = await semaphoreContract.hasMember(groupId, identity.commitment)
+
+                await expect(isMember).to.be.false
+            })
+        })
+        describe("# indexOf", () => {
+            it("Should return the index of a member", async () => {
+                const groupId = 1
+                const index = await semaphoreContract.indexOf(groupId, members[0])
+
+                await expect(index).to.equal(0)
+            })
+        })
+        describe("# getMerkleTreeDepth", () => {
+            it("Should return the merkle tree depth", async () => {
+                const groupId = 1
+                const depth = await semaphoreContract.getMerkleTreeDepth(groupId)
+
+                await expect(depth).to.equal(2)
+            })
+        })
+    })
 })
