@@ -21,11 +21,11 @@ export default class Identity {
     private _privateKey: string
     // The secret scalar derived from the private key.
     // It is used in circuits to derive the public key.
-    private _secretScalar: string
+    private _secretScalar: bigint
     // The EdDSA public key, derived from the private key.
-    private _publicKey: Point<string>
+    private _publicKey: Point<bigint>
     // The identity commitment used as a public value in Semaphore groups.
-    private _commitment: string
+    private _commitment: bigint
 
     /**
      * Initializes the class attributes based on a given private key, which must be a hexadecimal string or a text.
@@ -63,8 +63,8 @@ export default class Identity {
         }
 
         this._secretScalar = eddsa.secretScalar
-        this._publicKey = eddsa.publicKey as Point<string>
-        this._commitment = poseidon2(this._publicKey).toString()
+        this._publicKey = eddsa.publicKey
+        this._commitment = poseidon2(this._publicKey)
     }
 
     /**
@@ -79,7 +79,7 @@ export default class Identity {
      * Returns the secret scalar.
      * @returns The secret scalar as a string.
      */
-    public get secretScalar(): string {
+    public get secretScalar(): bigint {
         return this._secretScalar
     }
 
@@ -87,7 +87,7 @@ export default class Identity {
      * Returns the public key as a Baby Jubjub {@link https://zkkit.pse.dev/types/_zk_kit_baby_jubjub.Point.html | Point}.
      * @returns The public key as a point.
      */
-    public get publicKey(): Point<string> {
+    public get publicKey(): Point<bigint> {
         return this._publicKey
     }
 
@@ -95,7 +95,7 @@ export default class Identity {
      * Returns the commitment hash of the public key.
      * @returns The commitment as a string.
      */
-    public get commitment(): string {
+    public get commitment(): bigint {
         return this._commitment
     }
 
@@ -111,7 +111,7 @@ export default class Identity {
      * @param message The message to be signed.
      * @returns A {@link https://zkkit.pse.dev/types/_zk_kit_eddsa_poseidon.Signature.html | Signature} object containing the signature components.
      */
-    public signMessage(message: BigNumberish): Signature<string> {
+    public signMessage(message: BigNumberish): Signature<bigint> {
         return signMessage(this.privateKey, message)
     }
 
