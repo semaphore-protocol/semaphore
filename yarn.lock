@@ -8665,9 +8665,9 @@ __metadata:
     "@rollup/plugin-commonjs": "npm:^25.0.7"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@zk-kit/baby-jubjub": "npm:0.2.0"
-    "@zk-kit/eddsa-poseidon": "npm:0.7.0"
-    "@zk-kit/utils": "npm:0.6.0"
+    "@zk-kit/baby-jubjub": "npm:0.3.0"
+    "@zk-kit/eddsa-poseidon": "npm:0.10.0"
+    "@zk-kit/utils": "npm:0.8.1"
     poseidon-lite: "npm:0.2.0"
     rimraf: "npm:^5.0.5"
     rollup: "npm:^4.12.0"
@@ -8684,7 +8684,7 @@ __metadata:
     "@rollup/plugin-typescript": "npm:^11.1.6"
     "@semaphore-protocol/utils": "npm:4.0.0-beta.2"
     "@types/snarkjs": "npm:^0"
-    "@zk-kit/utils": "npm:0.6.0"
+    "@zk-kit/utils": "npm:0.8.1"
     ethers: "npm:6.10.0"
     poseidon-lite: "npm:^0.2.0"
     rimraf: "npm:^5.0.5"
@@ -10944,6 +10944,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@zk-kit/eddsa-poseidon@npm:0.10.0":
+  version: 0.10.0
+  resolution: "@zk-kit/eddsa-poseidon@npm:0.10.0"
+  dependencies:
+    "@zk-kit/baby-jubjub": "npm:0.3.0"
+    "@zk-kit/utils": "npm:0.8.1"
+    buffer: "npm:6.0.3"
+  checksum: 10/9454f893c2035e989719e8e46fb327c7710cca8676d5a82004a361e68a81dbfd2a6682b9ecabc849de982d7e49f404db492351f8fd11083d41276deffcb74c5f
+  languageName: node
+  linkType: hard
+
 "@zk-kit/eddsa-poseidon@npm:0.6.0":
   version: 0.6.0
   resolution: "@zk-kit/eddsa-poseidon@npm:0.6.0"
@@ -10951,17 +10962,6 @@ __metadata:
     "@zk-kit/baby-jubjub": "npm:0.2.0"
     "@zk-kit/utils": "npm:0.3.0"
   checksum: 10/ba32c455675d82ceb88eba30ff9907d80bab266fb3fc2fe9ebf5945c39e23d833b752fb67b8ac3dba294d457918b3178e4c390df45fb587d358352110974e45c
-  languageName: node
-  linkType: hard
-
-"@zk-kit/eddsa-poseidon@npm:0.7.0":
-  version: 0.7.0
-  resolution: "@zk-kit/eddsa-poseidon@npm:0.7.0"
-  dependencies:
-    "@zk-kit/baby-jubjub": "npm:0.3.0"
-    "@zk-kit/utils": "npm:0.6.0"
-    buffer: "npm:6.0.3"
-  checksum: 10/25bce37fee4c8fc273de603275e0555908c14be45ee9380b0ae5a60455b05dddf9aebd54dbbb0946af394dab8533f71695edfc5557b0f264c6ffa71e78eccac2
   languageName: node
   linkType: hard
 
@@ -10994,6 +10994,15 @@ __metadata:
   dependencies:
     buffer: "npm:^6.0.3"
   checksum: 10/7a88b1588df8791c9ea5cbbd5caafac4567127da4951ba1ee6d3f0d93e23aea3dbd9e45789b31f53e8c56637050ce41d520f176af368c4f815382bebb27b4856
+  languageName: node
+  linkType: hard
+
+"@zk-kit/utils@npm:0.8.1":
+  version: 0.8.1
+  resolution: "@zk-kit/utils@npm:0.8.1"
+  dependencies:
+    buffer: "npm:^6.0.3"
+  checksum: 10/759a4fe338e630ac8159315739ddaf0abb6f01c64e4eeab7c0e2c659f07419907e7761847d1e56a314af5ffd379c58da22da9284d7416c4b65e3fa291e33a09f
   languageName: node
   linkType: hard
 

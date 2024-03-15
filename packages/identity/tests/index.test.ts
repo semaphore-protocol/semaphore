@@ -10,18 +10,18 @@ describe("Identity", () => {
 
             expect(typeof identity.privateKey).toBe("string")
             expect(identity.privateKey).toHaveLength(64)
-            expect(typeof identity.secretScalar).toBe("string")
+            expect(typeof identity.secretScalar).toBe("bigint")
             expect(identity.publicKey).toHaveLength(2)
-            expect(typeof identity.commitment).toBe("string")
+            expect(typeof identity.commitment).toBe("bigint")
         })
 
         it("Should create deterministic identities from a secret text (private key)", () => {
             const identity = new Identity(privateKeyText)
 
             expect(typeof identity.privateKey).toBe("string")
-            expect(typeof identity.secretScalar).toBe("string")
+            expect(typeof identity.secretScalar).toBe("bigint")
             expect(identity.publicKey).toHaveLength(2)
-            expect(typeof identity.commitment).toBe("string")
+            expect(typeof identity.commitment).toBe("bigint")
         })
 
         it("Should create deterministic identities from a secret hexadecimal (private key)", () => {
@@ -29,9 +29,9 @@ describe("Identity", () => {
 
             expect(typeof identity.privateKey).toBe("string")
             expect(identity.privateKey).toHaveLength(64)
-            expect(typeof identity.secretScalar).toBe("string")
+            expect(typeof identity.secretScalar).toBe("bigint")
             expect(identity.publicKey).toHaveLength(2)
-            expect(typeof identity.commitment).toBe("string")
+            expect(typeof identity.commitment).toBe("bigint")
         })
 
         it("Should throw an error if the private key is not a string", () => {
@@ -48,8 +48,8 @@ describe("Identity", () => {
             const signature = identity.signMessage("message")
 
             expect(signature.R8).toHaveLength(2)
-            expect(typeof signature.R8[0]).toBe("string")
-            expect(typeof signature.S).toBe("string")
+            expect(typeof signature.R8[0]).toBe("bigint")
+            expect(typeof signature.S).toBe("bigint")
         })
     })
 
