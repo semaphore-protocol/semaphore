@@ -31,7 +31,6 @@ export default async function verifyProof(proof: SemaphoreProof): Promise<boolea
     requireString(scope, "proof.scope")
     requireArray(points, "proof.points")
 
-    // TODO: support all tree depths after trusted-setup.
     if (merkleTreeDepth < MIN_DEPTH || merkleTreeDepth > MAX_DEPTH) {
         throw new TypeError(`The tree depth must be a number between ${MIN_DEPTH} and ${MAX_DEPTH}`)
     }
