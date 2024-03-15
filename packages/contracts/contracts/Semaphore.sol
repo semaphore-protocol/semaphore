@@ -14,6 +14,12 @@ import {SemaphoreGroups} from "./base/SemaphoreGroups.sol";
 contract Semaphore is ISemaphore, SemaphoreGroups {
     ISemaphoreVerifier public verifier;
 
+    /// @dev Minimum supported tree depth.
+    uint8 public constant MIN_DEPTH = 1;
+
+    /// @dev Maximum supported tree depth.
+    uint8 public constant MAX_DEPTH = 12;
+
     /// @dev Gets a group id and returns the group parameters.
     mapping(uint256 => Group) public groups;
 
@@ -130,7 +136,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         SemaphoreProof calldata proof
     ) public view override onlyExistingGroup(groupId) returns (bool) {
         // The function will revert if the Merkle tree depth is not supported.
-        if (proof.merkleTreeDepth < 1 || proof.merkleTreeDepth > 12) {
+        if (proof.merkleTreeDepth < MIN_DEPTH || proof.merkleTreeDepth > MAX_DEPTH) {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
         }
 
