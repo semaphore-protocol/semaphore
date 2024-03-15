@@ -21,6 +21,11 @@
             "types": "./dist/types/types.d.ts",
             "require": "./dist/lib.commonjs/types.cjs",
             "default": "./dist/lib.esm/types.js"
+        },
+        "./constants": {
+            "types": "./dist/types/constants.d.ts",
+            "require": "./dist/lib.commonjs/constants.cjs",
+            "default": "./dist/lib.esm/constants.js"
         }
     },
     "files": [

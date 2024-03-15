@@ -3,6 +3,8 @@
 
 pragma solidity 0.8.23;
 
+import {MAX_DEPTH} from "./Constants.sol";
+
 contract SemaphoreVerifier {
     // Scalar field size
     uint256 constant r = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
@@ -22,12 +24,12 @@ contract SemaphoreVerifier {
     uint256 constant gammay2 = 8495653923123431417604973247489272438418190587263600148770280649306958101930;
 
     // TODO: Add more variables when Semaphore supports tree depth > 12.
-    // Right now Semaphore supports tree depth 1-12.
+    // Right now Semaphore supports tree depth 1-12. It will support up to 32.
 
     // Verification Key points.
     // These values are taken from the verification key json file generated with snarkjs.
     // It allows to use the same verifier to verify proofs for all the tree depths supported by Semaphore.
-    uint256[14][12] VK_POINTS = [
+    uint256[14][MAX_DEPTH] VK_POINTS = [
         [
             563562783592406106461234396505774794044312891062077216951605541624542949349,
             16293410697967515504861065986355060225819302510590370360517024529684437085892,
