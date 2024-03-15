@@ -15,7 +15,7 @@ describe("Semaphore", () => {
     const merkleTreeDepth = 12
 
     const groupId = 0
-    const members = Array.from({ length: 3 }, (_, i) => new Identity(i)).map(({ commitment }) => commitment)
+    const members = Array.from({ length: 3 }, (_, i) => new Identity(i.toString())).map(({ commitment }) => commitment)
 
     before(async () => {
         const { semaphore } = await run("deploy", {

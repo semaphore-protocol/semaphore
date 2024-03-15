@@ -4,18 +4,12 @@
     "description": "A library to create Semaphore identities.",
     "type": "module",
     "license": "MIT",
-    "main": "dist/index.browser.js",
+    "main": "dist/index.js",
     "types": "dist/types/index.d.ts",
     "exports": {
-        ".": {
-            "types": "./dist/types/index.d.ts",
-            "node": {
-                "require": "./dist/index.node.cjs",
-                "default": "./dist/index.node.js"
-            },
-            "browser": "./dist/index.browser.js",
-            "default": "./dist/index.browser.js"
-        }
+        "types": "./dist/types/index.d.ts",
+        "require": "./dist/index.cjs",
+        "default": "./dist/index.js"
     },
     "files": [
         "dist/",
@@ -29,9 +23,7 @@
         "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
     },
     "scripts": {
-        "build": "rimraf dist && yarn build:browser && yarn build:node",
-        "build:browser": "rollup -c rollup.browser.config.ts --configPlugin typescript",
-        "build:node": "rollup -c rollup.node.config.ts --configPlugin typescript",
+        "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
         "prepublishOnly": "yarn build"
     },
     "publishConfig": {
@@ -47,9 +39,9 @@
         "rollup-plugin-cleanup": "^3.2.1"
     },
     "dependencies": {
-        "@zk-kit/baby-jubjub": "0.2.0",
-        "@zk-kit/eddsa-poseidon": "0.6.0",
-        "@zk-kit/utils": "0.6.0",
+        "@zk-kit/baby-jubjub": "0.3.0",
+        "@zk-kit/eddsa-poseidon": "0.10.0",
+        "@zk-kit/utils": "0.8.1",
         "poseidon-lite": "0.2.0"
     }
 }

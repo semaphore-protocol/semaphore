@@ -34,7 +34,8 @@ export default {
         "ethers/crypto",
         "ethers/utils",
         "ethers/abi",
-        "@semaphore-protocol/utils/errors"
+        "@zk-kit/utils/error-handlers",
+        "@zk-kit/utils/proof-packing"
     ],
     plugins: [
         alias({

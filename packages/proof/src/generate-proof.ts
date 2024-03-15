@@ -1,13 +1,14 @@
 import type { Group, MerkleProof } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
-import { requireDefined, requireNumber, requireObject, requireTypes } from "@semaphore-protocol/utils/errors"
-import { MIN_DEPTH, MAX_DEPTH } from "@semaphore-protocol/utils/constants"
-import { NumericString, groth16 } from "snarkjs"
+import { MAX_DEPTH, MIN_DEPTH } from "@semaphore-protocol/utils/constants"
+import { requireDefined, requireNumber, requireObject, requireTypes } from "@zk-kit/utils/error-handlers"
 import { packGroth16Proof } from "@zk-kit/utils/proof-packing"
+import type { BigNumberish } from "ethers"
+import { NumericString, groth16 } from "snarkjs"
 import getSnarkArtifacts from "./get-snark-artifacts.node"
 import hash from "./hash"
 import toBigInt from "./to-bigint"
-import { BigNumberish, SemaphoreProof, SnarkArtifacts } from "./types"
+import { SemaphoreProof, SnarkArtifacts } from "./types"
 
 /**
  * It generates a Semaphore proof, i.e. a zero-knowledge proof that an identity that
@@ -44,8 +45,8 @@ export default async function generateProof(
 
     requireObject(identity, "identity")
     requireObject(groupOrMerkleProof, "groupOrMerkleProof")
-    requireTypes(message, "message", ["string", "bigint", "number", "uint8array"])
-    requireTypes(scope, "scope", ["string", "bigint", "number", "uint8array"])
+    requireTypes(message, "message", ["string", "bigint", "number", "Uint8Array"])
+    requireTypes(scope, "scope", ["string", "bigint", "number", "Uint8Array"])
 
     if (merkleTreeDepth) {
         requireNumber(merkleTreeDepth, "merkleTreeDepth")
