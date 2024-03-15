@@ -4,6 +4,7 @@ pragma solidity 0.8.23;
 import {ISemaphore} from "./interfaces/ISemaphore.sol";
 import {ISemaphoreVerifier} from "./interfaces/ISemaphoreVerifier.sol";
 import {SemaphoreGroups} from "./base/SemaphoreGroups.sol";
+import {MIN_DEPTH, MAX_DEPTH} from "./base/Constants.sol";
 
 /// @title Semaphore
 /// @dev This contract uses the Semaphore base contracts to provide a complete service
@@ -130,7 +131,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         SemaphoreProof calldata proof
     ) public view override onlyExistingGroup(groupId) returns (bool) {
         // The function will revert if the Merkle tree depth is not supported.
-        if (proof.merkleTreeDepth < 1 || proof.merkleTreeDepth > 12) {
+        if (proof.merkleTreeDepth < MIN_DEPTH || proof.merkleTreeDepth > MAX_DEPTH) {
             revert Semaphore__MerkleTreeDepthIsNotSupported();
         }
 
