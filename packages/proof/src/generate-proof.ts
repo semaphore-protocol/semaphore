@@ -1,6 +1,7 @@
 import type { Group, MerkleProof } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
 import { requireDefined, requireNumber, requireObject, requireTypes } from "@semaphore-protocol/utils/errors"
+import { MIN_DEPTH, MAX_DEPTH } from "@semaphore-protocol/utils/constants"
 import { NumericString, groth16 } from "snarkjs"
 import { packGroth16Proof } from "@zk-kit/utils/proof-packing"
 import getSnarkArtifacts from "./get-snark-artifacts.node"
@@ -73,8 +74,8 @@ export default async function generateProof(
     const merkleProofLength = merkleProof.siblings.length
 
     if (merkleTreeDepth !== undefined) {
-        if (merkleTreeDepth < 1 || merkleTreeDepth > 12) {
-            throw new TypeError("The tree depth must be a number between 1 and 12")
+        if (merkleTreeDepth < MIN_DEPTH || merkleTreeDepth > MAX_DEPTH) {
+            throw new TypeError(`The tree depth must be a number between ${MIN_DEPTH} and ${MAX_DEPTH}`)
         }
     } else {
         merkleTreeDepth = merkleProofLength

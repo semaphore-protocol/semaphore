@@ -5,6 +5,7 @@ import {
     requireObject,
     requireString
 } from "@semaphore-protocol/utils/errors"
+import { MIN_DEPTH, MAX_DEPTH } from "@semaphore-protocol/utils/constants"
 import { groth16 } from "snarkjs"
 import { unpackGroth16Proof } from "@zk-kit/utils/proof-packing"
 import hash from "./hash"
@@ -31,8 +32,8 @@ export default async function verifyProof(proof: SemaphoreProof): Promise<boolea
     requireArray(points, "proof.points")
 
     // TODO: support all tree depths after trusted-setup.
-    if (merkleTreeDepth < 1 || merkleTreeDepth > 12) {
-        throw new TypeError("The tree depth must be a number between 1 and 12")
+    if (merkleTreeDepth < MIN_DEPTH || merkleTreeDepth > MAX_DEPTH) {
+        throw new TypeError(`The tree depth must be a number between ${MIN_DEPTH} and ${MAX_DEPTH}`)
     }
 
     const verificationKey = {
