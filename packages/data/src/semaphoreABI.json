@@ -37,11 +37,6 @@
     },
     {
         "inputs": [],
-        "name": "Semaphore__GroupAlreadyExists",
-        "type": "error"
-    },
-    {
-        "inputs": [],
         "name": "Semaphore__GroupDoesNotExist",
         "type": "error"
     },
@@ -361,11 +356,6 @@
     {
         "inputs": [
             {
-                "internalType": "uint256",
-                "name": "groupId",
-                "type": "uint256"
-            },
-            {
                 "internalType": "address",
                 "name": "admin",
                 "type": "address"
@@ -377,17 +367,18 @@
             }
         ],
         "name": "createGroup",
-        "outputs": [],
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "groupId",
+                "type": "uint256"
+            }
+        ],
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
         "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "groupId",
-                "type": "uint256"
-            },
             {
                 "internalType": "address",
                 "name": "admin",
@@ -395,7 +386,13 @@
             }
         ],
         "name": "createGroup",
-        "outputs": [],
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "groupId",
+                "type": "uint256"
+            }
+        ],
         "stateMutability": "nonpayable",
         "type": "function"
     },
@@ -465,6 +462,19 @@
             }
         ],
         "name": "getMerkleTreeSize",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "groupCounter",
         "outputs": [
             {
                 "internalType": "uint256",
