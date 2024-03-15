@@ -4,6 +4,7 @@ pragma solidity 0.8.23;
 import {ISemaphore} from "./interfaces/ISemaphore.sol";
 import {ISemaphoreVerifier} from "./interfaces/ISemaphoreVerifier.sol";
 import {SemaphoreGroups} from "./base/SemaphoreGroups.sol";
+import {MIN_DEPTH, MAX_DEPTH} from "./base/Constants.sol";
 
 /// @title Semaphore
 /// @dev This contract uses the Semaphore base contracts to provide a complete service
@@ -13,12 +14,6 @@ import {SemaphoreGroups} from "./base/SemaphoreGroups.sol";
 /// within which the proofs generated with that root can be validated.
 contract Semaphore is ISemaphore, SemaphoreGroups {
     ISemaphoreVerifier public verifier;
-
-    /// @dev Minimum supported tree depth.
-    uint8 public constant MIN_DEPTH = 1;
-
-    /// @dev Maximum supported tree depth.
-    uint8 public constant MAX_DEPTH = 12;
 
     /// @dev Gets a group id and returns the group parameters.
     mapping(uint256 => Group) public groups;
