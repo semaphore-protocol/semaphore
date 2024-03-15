@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import { requireNumber } from "@semaphore-protocol/utils/errors"
+import { requireNumber } from "@zk-kit/utils/error-handlers"
 import { SnarkArtifacts } from "./types"
 
 /**

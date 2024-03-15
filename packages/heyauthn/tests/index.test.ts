@@ -4,7 +4,7 @@ import {
     GenerateRegistrationOptionsOpts as RegistrationOptions
 } from "@simplewebauthn/server"
 
-import { HeyAuthn } from "../src"
+import HeyAuthn from "../src/hey-authn"
 
 jest.mock("@simplewebauthn/browser", () => ({
     startRegistration: async () => ({

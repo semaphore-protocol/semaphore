@@ -1,5 +1,6 @@
-import * as errors from "./errors"
-import * as types from "./types"
 import * as constants from "./constants"
+import decodeMessage from "./decode-message"
+import supportedNetworks from "./supported-networks"
 
-export { errors, types, constants }
+export * from "./types"
+export { constants, decodeMessage, supportedNetworks }

@@ -1,7 +1,9 @@
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { getCurveFromName } from "ffjavascript"
-import { SemaphoreProof, generateProof, verifyProof } from "../src"
+import generateProof from "../src/generate-proof"
+import { SemaphoreProof } from "../src/types"
+import verifyProof from "../src/verify-proof"
 
 describe("Proof", () => {
     const treeDepth = 10
@@ -9,7 +11,7 @@ describe("Proof", () => {
     const message = "Hello world"
     const scope = "Scope"
 
-    const identity = new Identity(42)
+    const identity = new Identity("secret")
 
     let proof: SemaphoreProof
     let curve: any
