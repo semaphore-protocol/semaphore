@@ -28,6 +28,14 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     }
 
     /// @dev See {SemaphoreGroups-_createGroup}.
+    function createGroup() external override returns (uint256 groupId) {
+        groupId = groupCounter++;
+        _createGroup(groupId, msg.sender);
+
+        groups[groupId].merkleTreeDuration = 1 hours;
+    }
+
+    /// @dev See {SemaphoreGroups-_createGroup}.
     function createGroup(address admin) external override returns (uint256 groupId) {
         groupId = groupCounter++;
         _createGroup(groupId, admin);
