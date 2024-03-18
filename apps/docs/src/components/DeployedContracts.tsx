@@ -27,7 +27,7 @@ export default function DeployedContracts() {
 
     useEffect(() => {
         fetch(
-            "https://raw.githubusercontent.com/semaphore-protocol/semaphore/feat/semaphore-v4/packages/contracts/deployed-contracts.json"
+            "https://raw.githubusercontent.com/semaphore-protocol/semaphore/main/packages/contracts/deployed-contracts.json"
         )
             .then((response) => response.json())
             .catch(() => [])
