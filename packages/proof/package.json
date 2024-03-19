@@ -56,5 +56,8 @@
         "@zk-kit/utils": "0.8.1",
         "ethers": "6.10.0",
         "snarkjs": "0.7.3"
+    },
+    "resolutions": {
+        "web-worker": "1.2.0"
     }
 }
