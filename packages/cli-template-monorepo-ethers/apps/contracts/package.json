@@ -1,5 +1,6 @@
 {
     "name": "monorepo-ethers-contracts",
+    "private": true,
     "scripts": {
         "dev": "hardhat node & yarn deploy --network localhost",
         "compile": "hardhat compile",
