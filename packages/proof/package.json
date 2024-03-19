@@ -59,5 +59,8 @@
     },
     "resolutions": {
         "web-worker": "1.2.0"
+    },
+    "overrides": {
+        "web-worker": "1.2.0"
     }
 }
