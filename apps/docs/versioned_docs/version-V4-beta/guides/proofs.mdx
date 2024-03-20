@@ -92,7 +92,7 @@ import { generateProof } from "@semaphore-protocol/proof"
 const scope = group.root
 const message = 1
 
-const proof = await generateProof(identity, group, externalNullifier, message)
+const proof = await generateProof(identity, group, scope, message)
 ```
 
 ## Verify a proof
