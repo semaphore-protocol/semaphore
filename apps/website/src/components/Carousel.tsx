@@ -68,7 +68,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                 )}
             </HStack>
 
-            <HStack w="full" overflow="hidden">
+            <Box w="full" overflowX="auto">
                 <HStack
                     w="full"
                     transition="transform 0.4s ease-in-out"
@@ -120,7 +120,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                             </Box>
                         ))}
                 </HStack>
-            </HStack>
+            </Box>
 
             {type === "projects" && (
                 <HStack w="100%">
