@@ -12,7 +12,8 @@
             },
             {
                 "name": "Semaphore",
-                "address": "0x5B8e7cC7bAC61A4b952d472b67056B2f260ba6dc"
+                "address": "0x5B8e7cC7bAC61A4b952d472b67056B2f260ba6dc",
+                "startBlock": 5150903
             }
         ]
     }

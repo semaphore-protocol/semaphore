@@ -2,6 +2,7 @@ import "@nomicfoundation/hardhat-chai-matchers"
 import "@nomicfoundation/hardhat-ethers"
 import "@nomicfoundation/hardhat-verify"
 import "@openzeppelin/hardhat-upgrades"
+import { SupportedNetwork } from "@semaphore-protocol/utils"
 import "@typechain/hardhat"
 import { config as dotenvConfig } from "dotenv"
 import "hardhat-gas-reporter"
@@ -22,7 +23,7 @@ function getNetworks(): NetworksUserConfig {
     const infuraApiKey = process.env.INFURA_API_KEY
     const accounts = [`0x${process.env.BACKEND_PRIVATE_KEY}`]
 
-    return {
+    const networks: Record<SupportedNetwork, any> = {
         sepolia: {
             url: `https://sepolia.infura.io/v3/${infuraApiKey}`,
             chainId: 11155111,
@@ -49,6 +50,8 @@ function getNetworks(): NetworksUserConfig {
             accounts
         }
     }
+
+    return networks
 }
 
 const hardhatConfig: HardhatUserConfig = {

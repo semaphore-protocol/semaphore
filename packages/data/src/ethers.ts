@@ -1,3 +1,5 @@
+import { SupportedNetwork, getDeployedContract, supportedNetworks } from "@semaphore-protocol/utils"
+import { defaultNetwork } from "@semaphore-protocol/utils/networks"
 import { ZeroAddress } from "ethers/constants"
 import { Contract } from "ethers/contract"
 import {
@@ -25,7 +27,7 @@ export default class SemaphoreEthers {
      * @param networkOrEthereumURL Ethereum network or custom URL.
      * @param options Ethers options.
      */
-    constructor(networkOrEthereumURL: EthersNetwork | string = "sepolia", options: EthersOptions = {}) {
+    constructor(networkOrEthereumURL: EthersNetwork | string = defaultNetwork, options: EthersOptions = {}) {
         checkParameter(networkOrEthereumURL, "networkOrSubgraphURL", "string")
 
         if (options.provider) {
@@ -42,33 +44,17 @@ export default class SemaphoreEthers {
             networkOrEthereumURL = "maticmum"
         }
 
-        switch (networkOrEthereumURL) {
-            case "arbitrum":
-                options.address ??= "0xc60E0Ee1a2770d5F619858C641f14FC4a6401520"
-                options.startBlock ??= 77278430
-                break
-            case "arbitrum-sepolia":
-                options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
-                options.startBlock ??= 15174410
-                break
-            case "maticmum":
-                options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
-                options.startBlock ??= 33995010
-                break
-            case "sepolia":
-                options.address ??= "0x5B8e7cC7bAC61A4b952d472b67056B2f260ba6dc"
-                options.startBlock ??= 5150903
-                break
-            case "optimism-sepolia":
-                options.address ??= "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131"
-                options.startBlock ??= 7632846
-                break
-            default:
-                if (options.address === undefined) {
-                    throw new Error(`You should provide a Semaphore contract address for this network`)
-                }
+        if (supportedNetworks.includes(networkOrEthereumURL as SupportedNetwork)) {
+            const { address, startBlock } = getDeployedContract(networkOrEthereumURL as SupportedNetwork)
 
-                options.startBlock ??= 0
+            options.address ??= address
+            options.startBlock ??= startBlock
+        } else {
+            if (options.address === undefined) {
+                throw new Error(`You should provide a Semaphore contract address for this network`)
+            }
+
+            options.startBlock ??= 0
         }
 
         let provider: Provider

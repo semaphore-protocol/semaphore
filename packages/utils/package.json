@@ -12,10 +12,10 @@
             "require": "./dist/index.cjs",
             "default": "./dist/index.js"
         },
-        "./supported-networks": {
-            "types": "./dist/types/supported-networks.d.ts",
-            "require": "./dist/lib.commonjs/supported-networks.cjs",
-            "default": "./dist/lib.esm/supported-networks.js"
+        "./networks": {
+            "types": "./dist/types/networks.d.ts",
+            "require": "./dist/lib.commonjs/networks.cjs",
+            "default": "./dist/lib.esm/networks.js"
         },
         "./constants": {
             "types": "./dist/types/constants.d.ts",
@@ -47,6 +47,7 @@
         "access": "public"
     },
     "devDependencies": {
+        "@rollup/plugin-json": "^6.1.0",
         "@rollup/plugin-typescript": "^11.1.6",
         "rimraf": "^5.0.5",
         "rollup": "^4.12.0",

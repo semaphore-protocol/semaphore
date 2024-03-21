@@ -1,11 +1,3 @@
-export enum SupportedNetwork {
-    SEPOLIA = "sepolia",
-    MUMBAI = "mumbai",
-    OPTIMISM_SEPOLIA = "optimism-sepolia",
-    ARBITRUM_SEPOLIA = "arbitrum-sepolia",
-    ARBITRUM = "arbitrum"
-}
-
 export type EthersNetwork =
     | "homestead"
     | "matic"

@@ -1,4 +1,5 @@
 import typescript from "@rollup/plugin-typescript"
+import json from "@rollup/plugin-json"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
 
@@ -23,7 +24,8 @@ export default [
             typescript({
                 tsconfig: "./build.tsconfig.json"
             }),
-            cleanup({ comments: "jsdoc" })
+            cleanup({ comments: "jsdoc" }),
+            json()
         ]
     },
     {
@@ -44,7 +46,8 @@ export default [
                 declaration: false,
                 declarationDir: undefined
             }),
-            cleanup({ comments: "jsdoc" })
+            cleanup({ comments: "jsdoc" }),
+            json()
         ]
     }
 ]

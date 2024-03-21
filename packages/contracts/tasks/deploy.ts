@@ -1,3 +1,4 @@
+import { SupportedNetwork } from "@semaphore-protocol/utils"
 import { task, types } from "hardhat/config"
 import { saveDeployedContracts } from "../scripts/utils"
 import { deployContract } from "./utils"
@@ -51,6 +52,8 @@ task("deploy", "Deploy a Semaphore contract")
                 console.info(`Semaphore contract has been deployed to: ${semaphoreAddress}`)
             }
 
+            const deploymentTransaction = semaphore.deploymentTransaction()
+
             saveDeployedContracts(
                 [
                     {
@@ -63,10 +66,14 @@ task("deploy", "Deploy a Semaphore contract")
                     },
                     {
                         name: "Semaphore",
-                        address: semaphoreAddress
+                        address: semaphoreAddress,
+                        startBlock:
+                            deploymentTransaction && deploymentTransaction.blockNumber
+                                ? deploymentTransaction.blockNumber
+                                : undefined
                     }
                 ],
-                hardhatArguments.network
+                hardhatArguments.network as SupportedNetwork
             )
 
             return {

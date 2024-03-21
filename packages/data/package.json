@@ -37,6 +37,7 @@
         "rollup-plugin-cleanup": "^3.2.1"
     },
     "dependencies": {
+        "@semaphore-protocol/utils": "4.0.0-beta.4",
         "axios": "1.6.6",
         "ethers": "6.11.0"
     }
