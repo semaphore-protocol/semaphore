@@ -70,6 +70,9 @@ interface ISemaphore {
     /// @dev See {SemaphoreGroups-_updateGroupAdmin}.
     function updateGroupAdmin(uint256 groupId, address newAdmin) external;
 
+    /// @dev See {SemaphoreGroups-_acceptGroupAdmin}.
+    function acceptGroupAdmin(uint256 groupId) external;
+
     /// @dev Updates the group Merkle tree duration.
     /// @param groupId: Id of the group.
     /// @param newMerkleTreeDuration: New Merkle tree duration.

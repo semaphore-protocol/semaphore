@@ -87,7 +87,7 @@ describe("Semaphore", () => {
     })
 
     describe("# updateGroupAdmin", () => {
-        it("Should not update a group admin if the caller is not the group admin", async () => {
+        it("Should not update an admin if the caller is not the admin", async () => {
             const transaction = semaphoreContract.updateGroupAdmin(groupId, accountAddresses[0])
 
             await expect(transaction).to.be.revertedWithCustomError(
@@ -96,8 +96,25 @@ describe("Semaphore", () => {
             )
         })
 
-        it("Should update the group admin", async () => {
+        it("Should update the admin", async () => {
             const transaction = semaphoreContract.connect(accounts[1]).updateGroupAdmin(groupId, accountAddresses[0])
+
+            await expect(transaction)
+                .to.emit(semaphoreContract, "GroupAdminPending")
+                .withArgs(groupId, accountAddresses[1], accountAddresses[0])
+        })
+
+        it("Should not accept accept the new admin if the caller is not the new admin", async () => {
+            const transaction = semaphoreContract.connect(accounts[2]).acceptGroupAdmin(groupId)
+
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__CallerIsNotThePendingGroupAdmin"
+            )
+        })
+
+        it("Should accept the new admin", async () => {
+            const transaction = semaphoreContract.acceptGroupAdmin(groupId)
 
             await expect(transaction)
                 .to.emit(semaphoreContract, "GroupAdminUpdated")

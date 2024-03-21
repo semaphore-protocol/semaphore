@@ -19,6 +19,10 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
     /// The admin can be an Ethereum account or a smart contract.
     mapping(uint256 => address) internal admins;
 
+    /// @dev Gets a group id and returns any pending admin.
+    /// The pending admin can be an Ethereum account or a smart contract.
+    mapping(uint256 => address) internal pendingAdmins;
+
     /// @dev Checks if the group admin is the transaction sender.
     /// @param groupId: Id of the group.
     modifier onlyGroupAdmin(uint256 groupId) {
@@ -48,13 +52,30 @@ abstract contract SemaphoreGroups is ISemaphoreGroups {
         emit GroupAdminUpdated(groupId, address(0), admin);
     }
 
-    /// @dev Updates the group admin.
+    /// @dev Updates the group admin. In order for the new admin to actually be updated,
+    /// they must explicitly accept by calling `_acceptGroupAdmin`.
     /// @param groupId: Id of the group.
     /// @param newAdmin: New admin of the group.
     function _updateGroupAdmin(uint256 groupId, address newAdmin) internal virtual onlyGroupAdmin(groupId) {
-        admins[groupId] = newAdmin;
+        pendingAdmins[groupId] = newAdmin;
 
-        emit GroupAdminUpdated(groupId, msg.sender, newAdmin);
+        emit GroupAdminPending(groupId, msg.sender, newAdmin);
+    }
+
+    /// @dev Allows the new admin to accept to update the group admin with their address.
+    /// @param groupId: Id of the group.
+    function _acceptGroupAdmin(uint256 groupId) internal virtual {
+        if (pendingAdmins[groupId] != msg.sender) {
+            revert Semaphore__CallerIsNotThePendingGroupAdmin();
+        }
+
+        address oldAdmin = admins[groupId];
+
+        admins[groupId] = msg.sender;
+
+        delete pendingAdmins[groupId];
+
+        emit GroupAdminUpdated(groupId, oldAdmin, msg.sender);
     }
 
     /// @dev Adds an identity commitment to an existing group.
