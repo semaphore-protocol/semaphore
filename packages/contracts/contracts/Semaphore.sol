@@ -56,6 +56,11 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         _updateGroupAdmin(groupId, newAdmin);
     }
 
+    /// @dev See {SemaphoreGroups- acceptGroupAdmin}.
+    function acceptGroupAdmin(uint256 groupId) external override {
+        _acceptGroupAdmin(groupId);
+    }
+
     /// @dev See {ISemaphore-updateGroupMerkleTreeDuration}.
     function updateGroupMerkleTreeDuration(
         uint256 groupId,
