@@ -1,4 +1,4 @@
-import { SupportedNetwork } from "./types"
+import type { SupportedNetwork } from "@semaphore-protocol/utils"
 
 /**
  * Returns the subgraph URL related to the network passed as a parameter.

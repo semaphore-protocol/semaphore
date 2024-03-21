@@ -21,6 +21,7 @@
         "@nomicfoundation/hardhat-verify": "^2.0.0",
         "@openzeppelin/hardhat-upgrades": "^3.0.4",
         "@semaphore-protocol/core": "workspace:packages/core",
+        "@semaphore-protocol/utils": "workspace:packages/utils",
         "@typechain/ethers-v6": "^0.5.0",
         "@typechain/hardhat": "^9.0.0",
         "@types/chai": "^4.2.0",

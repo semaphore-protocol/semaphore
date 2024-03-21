@@ -11,11 +11,9 @@ export async function deployContract(
 
     if (network !== undefined && network !== "hardhat" && network !== "localhost") {
         contract = await defender.deployContract(contractFactory, args, { salt: process.env.CREATE2_SALT })
-
-        await contract.waitForDeployment()
     } else {
         contract = await contractFactory.deploy(...args)
     }
 
-    return contract
+    return contract.waitForDeployment()
 }

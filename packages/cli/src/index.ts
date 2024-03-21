@@ -1,5 +1,5 @@
 import { GroupResponse, SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-protocol/data"
-import supportedNetworks from "@semaphore-protocol/utils/supported-networks"
+import { supportedNetworks } from "@semaphore-protocol/utils/networks"
 import chalk from "chalk"
 import { program } from "commander"
 import decompress from "decompress"

@@ -6597,6 +6597,7 @@ __metadata:
   dependencies:
     "@rollup/plugin-json": "npm:^6.1.0"
     "@rollup/plugin-typescript": "npm:^11.1.6"
+    "@semaphore-protocol/utils": "npm:4.0.0-beta.4"
     axios: "npm:1.6.6"
     ethers: "npm:6.11.0"
     rimraf: "npm:^5.0.5"
@@ -6696,6 +6697,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/utils@workspace:packages/utils"
   dependencies:
+    "@rollup/plugin-json": "npm:^6.1.0"
     "@rollup/plugin-typescript": "npm:^11.1.6"
     ethers: "npm:^6.11.1"
     rimraf: "npm:^5.0.5"
@@ -25006,6 +25008,7 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:^2.0.0"
     "@openzeppelin/hardhat-upgrades": "npm:^3.0.4"
     "@semaphore-protocol/core": "workspace:packages/core"
+    "@semaphore-protocol/utils": "workspace:packages/utils"
     "@typechain/ethers-v6": "npm:^0.5.0"
     "@typechain/hardhat": "npm:^9.0.0"
     "@types/chai": "npm:^4.2.0"
@@ -25035,6 +25038,7 @@ __metadata:
     "@docusaurus/preset-classic": "npm:3.1.1"
     "@docusaurus/tsconfig": "npm:3.1.1"
     "@mdx-js/react": "npm:^3.0.0"
+    "@semaphore-protocol/utils": "npm:4.0.0-beta.4"
     "@svgr/webpack": "npm:^5.5.0"
     "@types/react": "npm:^18.2.29"
     clsx: "npm:^1.2.1"
