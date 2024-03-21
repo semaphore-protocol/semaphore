@@ -5,16 +5,23 @@ pragma solidity 0.8.23;
 interface ISemaphoreGroups {
     error Semaphore__GroupDoesNotExist();
     error Semaphore__CallerIsNotTheGroupAdmin();
+    error Semaphore__CallerIsNotThePendingGroupAdmin();
 
     /// @dev Event emitted when a new group is created.
     /// @param groupId: Id of the group.
     event GroupCreated(uint256 indexed groupId);
 
-    /// @dev Event emitted when an admin is assigned to a group.
+    /// @dev Event emitted when a new admin is assigned to a group.
     /// @param groupId: Id of the group.
     /// @param oldAdmin: Old admin of the group.
     /// @param newAdmin: New admin of the group.
     event GroupAdminUpdated(uint256 indexed groupId, address indexed oldAdmin, address indexed newAdmin);
+
+    /// @dev Event emitted when a group admin is being updated.
+    /// @param groupId: Id of the group.
+    /// @param oldAdmin: Old admin of the group.
+    /// @param newAdmin: New admin of the group.
+    event GroupAdminPending(uint256 indexed groupId, address indexed oldAdmin, address indexed newAdmin);
 
     /// @dev Event emitted when a new identity commitment is added.
     /// @param groupId: Group id of the group.
