@@ -418,13 +418,13 @@ describe("Semaphore", () => {
 
     describe("SemaphoreGroups", () => {
         describe("# hasMember", () => {
-            it("Should return true because the memeber is part of the group", async () => {
+            it("Should return true because the member is part of the group", async () => {
                 const groupId = 1
                 const isMember = await semaphoreContract.hasMember(groupId, members[0])
 
                 await expect(isMember).to.be.true
             })
-            it("Should return false because the memeber is not part of the group", async () => {
+            it("Should return false because the member is not part of the group", async () => {
                 const groupId = 1
                 const identity = new Identity()
                 const isMember = await semaphoreContract.hasMember(groupId, identity.commitment)
