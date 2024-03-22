@@ -1,13 +1,12 @@
 export type EthersNetwork =
-    | "homestead"
+    | "mainnet"
+    | "sepolia"
     | "matic"
+    | "matic-mumbai"
     | "arbitrum"
-    | "maticmum"
-    | "mumbai"
     | "arbitrum-sepolia"
     | "optimism"
     | "optimism-sepolia"
-    | "sepolia"
 
 export type GroupOptions = {
     members?: boolean

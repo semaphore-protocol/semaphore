@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync } from "fs"
 export type NetworkDeployedContracts = {
     name: "Semaphore" | "SemaphoreVerifier" | "PoseidonT3"
     address: string
-    startBlock?: number
+    startBlock: number
 }[]
 
 export type DeployedContracts = {

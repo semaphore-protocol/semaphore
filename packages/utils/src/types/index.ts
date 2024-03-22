@@ -1,1 +1,1 @@
-export type SupportedNetwork = "sepolia" | "mumbai" | "optimism-sepolia" | "arbitrum-sepolia" | "arbitrum"
+export type SupportedNetwork = "sepolia" | "arbitrum-sepolia" // | "optimism-sepolia" | "matic-mumbai" | "arbitrum"
