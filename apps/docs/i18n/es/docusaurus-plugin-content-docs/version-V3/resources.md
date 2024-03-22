@@ -6,7 +6,7 @@ sidebar_position: 9
 
 ## Artículos
 
-[Propuesta de la comunidad: Semaphore: Señalización de conocimiento cero (ZK) en Ethereum (v1 Whitepaper)](https://docs.semaphore.pse.dev/whitepaper-v1.pdf) - Kobi Gurkan, Koh Wei Jie y Barry WhiteHat
+[Propuesta de la comunidad: Semaphore: Señalización de conocimiento cero (ZK) en Ethereum (v1 Whitepaper)](https://semaphore.pse.dev/whitepaper-v1.pdf) - Kobi Gurkan, Koh Wei Jie y Barry WhiteHat
 
 [Para Mezcladores y más allá: presentando Semaphore, una herramienta de privacidad construida en Ethereum](https://medium.com/coinmonks/to-mixers-and-beyond-presenting-semaphore-a-privacy-gadget-built-on-ethereum-4c8b00857c9b) - Koh Wei Jie
 
