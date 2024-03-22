@@ -1,5 +1,5 @@
 import type { SupportedNetwork } from "@semaphore-protocol/utils"
-import { supportedNetworks } from "@semaphore-protocol/utils/networks"
+import { isSupportedNetwork } from "@semaphore-protocol/utils/networks"
 
 /**
  * Returns the subgraph URL related to the network passed as a parameter.
@@ -7,7 +7,7 @@ import { supportedNetworks } from "@semaphore-protocol/utils/networks"
  * @returns Subgraph URL.
  */
 export default function getURL(supportedNetwork: SupportedNetwork): string {
-    if (!supportedNetworks.includes(supportedNetwork)) {
+    if (!isSupportedNetwork(supportedNetwork)) {
         throw new TypeError(`Network '${supportedNetwork}' is not supported`)
     }
 

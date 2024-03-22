@@ -1,13 +1,16 @@
 import { encodeBytes32String } from "ethers/abi"
 import { toBigInt } from "ethers/utils"
 import decodeMessage from "../src/decode-message"
-import { getDeployedContract, supportedNetworks } from "../src/networks"
+import { getDeployedContract, isSupportedNetwork } from "../src/networks"
 
 describe("Utils", () => {
-    describe("# supportedNetworks", () => {
-        it("Should be a list of networks supported by Semaphore", () => {
-            expect(supportedNetworks).toBeInstanceOf(Array)
-            expect(typeof supportedNetworks[0]).toBe("string")
+    describe("# isSupportedNetwork", () => {
+        it("Should return true if the network is supported", () => {
+            expect(isSupportedNetwork("sepolia")).toBeTruthy()
+        })
+
+        it("Should return false if the network is not supported", () => {
+            expect(isSupportedNetwork("hello")).toBeFalsy()
         })
     })
 

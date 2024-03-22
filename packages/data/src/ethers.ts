@@ -1,4 +1,4 @@
-import { SupportedNetwork, getDeployedContract, supportedNetworks } from "@semaphore-protocol/utils"
+import { SupportedNetwork, getDeployedContract, isSupportedNetwork } from "@semaphore-protocol/utils"
 import { defaultNetwork } from "@semaphore-protocol/utils/networks"
 import { ZeroAddress } from "ethers/constants"
 import { Contract } from "ethers/contract"
@@ -40,7 +40,7 @@ export default class SemaphoreEthers {
             checkParameter(options.apiKey, "apiKey", "string")
         }
 
-        if (supportedNetworks.includes(networkOrEthereumURL as SupportedNetwork)) {
+        if (isSupportedNetwork(networkOrEthereumURL)) {
             const { address, startBlock } = getDeployedContract(networkOrEthereumURL as SupportedNetwork)
 
             options.address ??= address

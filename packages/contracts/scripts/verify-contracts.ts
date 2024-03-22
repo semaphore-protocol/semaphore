@@ -1,4 +1,4 @@
-import { SupportedNetwork, supportedNetworks } from "@semaphore-protocol/utils"
+import { isSupportedNetwork } from "@semaphore-protocol/utils"
 import { hardhatArguments, run } from "hardhat"
 import { getDeployedContractAddress } from "./utils"
 
@@ -16,8 +16,8 @@ async function verify(address: string, constructorArguments?: any[]): Promise<vo
 async function main() {
     const { network } = hardhatArguments
 
-    if (!network || !supportedNetworks.includes(network as SupportedNetwork)) {
-        throw Error("Please, define a supported network")
+    if (!network || !isSupportedNetwork(network)) {
+        throw Error(`Network '${network}' is not supported`)
     }
 
     const semaphoreVerifierAddress = getDeployedContractAddress(network, "SemaphoreVerifier")

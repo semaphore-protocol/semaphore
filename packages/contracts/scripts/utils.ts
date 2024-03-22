@@ -1,4 +1,4 @@
-import { SupportedNetwork, supportedNetworks } from "@semaphore-protocol/utils"
+import { SupportedNetwork, isSupportedNetwork } from "@semaphore-protocol/utils"
 import { readFileSync, writeFileSync } from "fs"
 
 export type NetworkDeployedContracts = {
@@ -12,7 +12,7 @@ export type DeployedContracts = {
     contracts: NetworkDeployedContracts
 }[]
 
-const deployedContractsPath = "../../utils/src/deployed-contracts.json"
+const deployedContractsPath = "../utils/src/deployed-contracts.json"
 
 export function getDeployedContracts(): DeployedContracts {
     return JSON.parse(readFileSync(deployedContractsPath, "utf8"))
@@ -41,7 +41,7 @@ export function getDeployedContractAddress(network: string, contractName: string
 }
 
 export function saveDeployedContracts(contracts: NetworkDeployedContracts, network?: SupportedNetwork) {
-    if (network && supportedNetworks.includes(network)) {
+    if (network && isSupportedNetwork(network)) {
         const deployedContracts = getDeployedContracts() as DeployedContracts
 
         for (let i = 0; i < deployedContracts.length; i += 1) {
