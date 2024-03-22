@@ -12,8 +12,10 @@ export type DeployedContracts = {
     contracts: NetworkDeployedContracts
 }[]
 
+const deployedContractsPath = "../../utils/src/deployed-contracts.json"
+
 export function getDeployedContracts(): DeployedContracts {
-    return JSON.parse(readFileSync(`./deployed-contracts.json`, "utf8"))
+    return JSON.parse(readFileSync(deployedContractsPath, "utf8"))
 }
 
 export function getDeployedContractsByNetwork(network: string): NetworkDeployedContracts {
@@ -46,7 +48,7 @@ export function saveDeployedContracts(contracts: NetworkDeployedContracts, netwo
             if (deployedContracts[i].network === network) {
                 deployedContracts[i].contracts = contracts
 
-                writeFileSync(`./deployed-contracts.json`, JSON.stringify(deployedContracts, null, 4))
+                writeFileSync(deployedContractsPath, JSON.stringify(deployedContracts, null, 4))
 
                 return
             }
@@ -57,6 +59,6 @@ export function saveDeployedContracts(contracts: NetworkDeployedContracts, netwo
             contracts
         })
 
-        writeFileSync(`./deployed-contracts.json`, JSON.stringify(deployedContracts, null, 4))
+        writeFileSync(deployedContractsPath, JSON.stringify(deployedContracts, null, 4))
     }
 }
