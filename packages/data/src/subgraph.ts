@@ -22,7 +22,7 @@ export default class SemaphoreSubgraph {
             return
         }
 
-        this._url = getURL(networkOrSubgraphURL)
+        this._url = getURL(networkOrSubgraphURL as SupportedNetwork)
     }
 
     /**

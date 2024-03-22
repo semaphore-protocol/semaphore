@@ -17,7 +17,8 @@
     },
     "dependencies": {
         "@graphprotocol/graph-cli": "0.67.0",
-        "@graphprotocol/graph-ts": "0.32.0"
+        "@graphprotocol/graph-ts": "0.32.0",
+        "@semaphore-protocol/utils": "workspace:packages/utils"
     },
     "devDependencies": {
         "@types/mustache": "^4.2.2",

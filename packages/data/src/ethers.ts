@@ -40,10 +40,6 @@ export default class SemaphoreEthers {
             checkParameter(options.apiKey, "apiKey", "string")
         }
 
-        if (networkOrEthereumURL === "mumbai") {
-            networkOrEthereumURL = "maticmum"
-        }
-
         if (supportedNetworks.includes(networkOrEthereumURL as SupportedNetwork)) {
             const { address, startBlock } = getDeployedContract(networkOrEthereumURL as SupportedNetwork)
 
@@ -51,7 +47,7 @@ export default class SemaphoreEthers {
             options.startBlock ??= startBlock
         } else {
             if (options.address === undefined) {
-                throw new Error(`You should provide a Semaphore contract address for this network`)
+                throw new Error(`Network '${networkOrEthereumURL}' needs a Semaphore contract address`)
             }
 
             options.startBlock ??= 0

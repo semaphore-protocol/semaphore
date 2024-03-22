@@ -3,7 +3,13 @@ import deployedContracts from "../../contracts/deployed-contracts.json"
 import { SupportedNetwork } from "./types"
 
 // List of Semaphore supported networks.
-const supportedNetworks: SupportedNetwork[] = ["sepolia", "mumbai", "optimism-sepolia", "arbitrum-sepolia", "arbitrum"]
+const supportedNetworks: SupportedNetwork[] = [
+    "sepolia",
+    // "matic-mumbai",
+    // "optimism-sepolia",
+    "arbitrum-sepolia"
+    // "arbitrum"
+]
 
 // Default Semaphore network.
 const defaultNetwork: SupportedNetwork = "sepolia"

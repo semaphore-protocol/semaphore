@@ -52,25 +52,22 @@ task("deploy", "Deploy a Semaphore contract")
                 console.info(`Semaphore contract has been deployed to: ${semaphoreAddress}`)
             }
 
-            const deploymentTransaction = semaphore.deploymentTransaction()
-
             saveDeployedContracts(
                 [
                     {
                         name: "SemaphoreVerifier",
-                        address: semaphoreVerifierAddress
+                        address: semaphoreVerifierAddress,
+                        startBlock: 0
                     },
                     {
                         name: "PoseidonT3",
-                        address: poseidonT3Address
+                        address: poseidonT3Address,
+                        startBlock: 0
                     },
                     {
                         name: "Semaphore",
                         address: semaphoreAddress,
-                        startBlock:
-                            deploymentTransaction && deploymentTransaction.blockNumber
-                                ? deploymentTransaction.blockNumber
-                                : undefined
+                        startBlock: 0
                     }
                 ],
                 hardhatArguments.network as SupportedNetwork

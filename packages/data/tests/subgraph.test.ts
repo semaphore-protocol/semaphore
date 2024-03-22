@@ -14,10 +14,8 @@ describe("SemaphoreSubgraph", () => {
     describe("# SemaphoreSubgraph", () => {
         it("Should instantiate a SemaphoreSubgraph object", () => {
             semaphore = new SemaphoreSubgraph()
-            const semaphore1 = new SemaphoreSubgraph("arbitrum")
 
             expect(semaphore.url).toContain("sepolia")
-            expect(semaphore1.url).toContain("arbitrum")
         })
 
         it("Should instantiate a SemaphoreSubgraph object using URL", () => {

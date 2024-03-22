@@ -25098,6 +25098,7 @@ __metadata:
   dependencies:
     "@graphprotocol/graph-cli": "npm:0.67.0"
     "@graphprotocol/graph-ts": "npm:0.32.0"
+    "@semaphore-protocol/utils": "workspace:packages/utils"
     "@types/mustache": "npm:^4.2.2"
     matchstick-as: "npm:0.5.0"
     mustache: "npm:^4.2.0"

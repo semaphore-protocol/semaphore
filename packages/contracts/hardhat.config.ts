@@ -29,26 +29,26 @@ function getNetworks(): NetworksUserConfig {
             chainId: 11155111,
             accounts
         },
-        mumbai: {
-            url: `https://polygon-mumbai.infura.io/v3/${infuraApiKey}`,
-            chainId: 80001,
-            accounts
-        },
-        "optimism-sepolia": {
-            url: `https://optimism-sepolia.infura.io/v3/${infuraApiKey}`,
-            chainId: 11155420,
-            accounts
-        },
+        // mumbai: {
+        // url: `https://polygon-mumbai.infura.io/v3/${infuraApiKey}`,
+        // chainId: 80001,
+        // accounts
+        // },
+        // "optimism-sepolia": {
+        // url: `https://optimism-sepolia.infura.io/v3/${infuraApiKey}`,
+        // chainId: 11155420,
+        // accounts
+        // },
         "arbitrum-sepolia": {
             url: "https://sepolia-rollup.arbitrum.io/rpc",
             chainId: 421614,
             accounts
-        },
-        arbitrum: {
-            url: "https://arb1.arbitrum.io/rpc",
-            chainId: 42161,
-            accounts
         }
+        // arbitrum: {
+        // url: "https://arb1.arbitrum.io/rpc",
+        // chainId: 42161,
+        // accounts
+        // }
     }
 
     return networks
