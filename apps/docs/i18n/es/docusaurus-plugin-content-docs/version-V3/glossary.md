@@ -46,7 +46,7 @@ Ver [hash de circuito nullifier](/technical-reference/circuits/#nullifier-hash).
 Un tercero que recibe una comisión por incluir transacciones retransmitidas en la blockchain (McMenamin, Daza, and Fitz. https://eprint.iacr.org/2022/155.pdf, p.3).
 Para preservar la anonimidad del usuario emitiendo una señal con Semaphore, una aplicación puede utilizar un retransmisor para publicar la transacción de la señal en Ethereum en nombre del usuario.
 
-Las aplicaciones pueden ofrecer recompensas a los retransmisores e implementar mecanismos para prevenir ventajas maliciosas, como requerir que las señales incluyan la dirección del retransmisor, vinculando así la señal a esa dirección en específico (https://docs.semaphore.pse.dev/whitepaper-v1.pdf, p.6).
+Las aplicaciones pueden ofrecer recompensas a los retransmisores e implementar mecanismos para prevenir ventajas maliciosas, como requerir que las señales incluyan la dirección del retransmisor, vinculando así la señal a esa dirección en específico (https://semaphore.pse.dev/whitepaper-v1.pdf, p.6).
 
 ## Archivos confiables de configuración (Trusted setup files)
 

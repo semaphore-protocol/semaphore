@@ -84,7 +84,7 @@ const config: Config = {
                 },
                 {
                     label: "Whitepaper",
-                    to: "https://docs.semaphore.pse.dev/whitepaper-v1.pdf",
+                    to: "https://semaphore.pse.dev/whitepaper-v1.pdf",
                     position: "left",
                     className: "whitepaper-v1"
                 },
