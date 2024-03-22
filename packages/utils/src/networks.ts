@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-relative-packages
-import deployedContracts from "../../contracts/deployed-contracts.json"
+import deployedContracts from "./deployed-contracts.json"
 import { SupportedNetwork } from "./types"
 
 // List of Semaphore supported networks.
