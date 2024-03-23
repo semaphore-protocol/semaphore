@@ -71,6 +71,8 @@ const config: Config = {
             backgroundColor: "#dde6fc",
             textColor: "#000000"
         },
+        // Social media card
+        image: "img/social-media.png",
         navbar: {
             logo: {
                 alt: "Semaphore Logo",
