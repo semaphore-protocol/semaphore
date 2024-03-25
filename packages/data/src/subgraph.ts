@@ -1,8 +1,9 @@
+import { defaultNetwork, SupportedNetwork } from "@semaphore-protocol/utils/networks"
 import { AxiosRequestConfig } from "axios"
 import checkParameter from "./checkParameter"
 import getURL from "./getURL"
 import request from "./request"
-import { GroupOptions, GroupResponse, SupportedNetwork } from "./types"
+import { GroupOptions, GroupResponse } from "./types"
 import { jsDateToGraphqlDate } from "./utils"
 
 export default class SemaphoreSubgraph {
@@ -12,7 +13,7 @@ export default class SemaphoreSubgraph {
      * Initializes the subgraph object with one of the supported networks or a custom URL.
      * @param networkOrSubgraphURL Supported Semaphore network or custom Subgraph URL.
      */
-    constructor(networkOrSubgraphURL: SupportedNetwork | string = SupportedNetwork.SEPOLIA) {
+    constructor(networkOrSubgraphURL: SupportedNetwork | string = defaultNetwork) {
         checkParameter(networkOrSubgraphURL, "networkOrSubgraphURL", "string")
 
         if (typeof networkOrSubgraphURL === "string" && networkOrSubgraphURL.startsWith("http")) {
@@ -20,7 +21,7 @@ export default class SemaphoreSubgraph {
             return
         }
 
-        this._url = getURL(networkOrSubgraphURL)
+        this._url = getURL(networkOrSubgraphURL as SupportedNetwork)
     }
 
     /**

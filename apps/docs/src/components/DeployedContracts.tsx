@@ -1,5 +1,5 @@
+import { deployedContracts } from "@semaphore-protocol/utils"
 import Heading from "@theme/Heading"
-import { useEffect, useState } from "react"
 
 function capitalizeFirstLetter(s: string): string {
     return s.charAt(0).toUpperCase() + s.slice(1)
@@ -23,17 +23,6 @@ function getEtherscanLink(network: string): string {
 }
 
 export default function DeployedContracts() {
-    const [deployedContracts, setDeployedContracts] = useState<any[]>([])
-
-    useEffect(() => {
-        fetch(
-            "https://raw.githubusercontent.com/semaphore-protocol/semaphore/main/packages/contracts/deployed-contracts.json"
-        )
-            .then((response) => response.json())
-            .catch(() => [])
-            .then(setDeployedContracts)
-    }, [])
-
     return (
         <div>
             {deployedContracts.map(({ network, contracts }) => (

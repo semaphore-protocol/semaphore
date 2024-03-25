@@ -30,54 +30,48 @@ describe("SemaphoreEthers", () => {
     describe("# SemaphoreEthers", () => {
         it("Should instantiate a SemaphoreEthers object with different networks", () => {
             const semaphore = new SemaphoreEthers()
-            const semaphore1 = new SemaphoreEthers("arbitrum")
-            const semaphore2 = new SemaphoreEthers("mumbai")
-            const semaphore3 = new SemaphoreEthers("optimism-sepolia")
-            const semaphore4 = new SemaphoreEthers("arbitrum-sepolia")
-            const semaphore5 = new SemaphoreEthers("arbitrum-sepolia", {
+            const semaphore2 = new SemaphoreEthers("arbitrum-sepolia")
+            const semaphore3 = new SemaphoreEthers("arbitrum-sepolia", {
                 address: "0x0000000000000000000000000000000000000000",
                 startBlock: 0
             })
-            const semaphore6 = new SemaphoreEthers("homestead", {
+            const semaphore4 = new SemaphoreEthers("mainnet", {
                 address: "0x0000000000000000000000000000000000000000",
                 startBlock: 0
             })
 
             expect(semaphore.network).toBe("sepolia")
             expect(semaphore.contract).toBeInstanceOf(Object)
-            expect(semaphore1.network).toBe("arbitrum")
-            expect(semaphore2.network).toBe("maticmum")
-            expect(semaphore3.network).toBe("optimism-sepolia")
-            expect(semaphore4.network).toBe("arbitrum-sepolia")
-            expect(semaphore5.options.address).toContain("0x000000")
-            expect(semaphore6.network).toBe("homestead")
-            expect(semaphore6.options.startBlock).toBe(0)
-            expect(semaphore6.options.address).toContain("0x000000")
+            expect(semaphore2.network).toBe("arbitrum-sepolia")
+            expect(semaphore3.options.address).toContain("0x000000")
+            expect(semaphore4.network).toBe("mainnet")
+            expect(semaphore4.options.startBlock).toBe(0)
+            expect(semaphore4.options.address).toContain("0x000000")
         })
 
         it("Should instantiate a SemaphoreEthers object with different providers", () => {
-            const semaphore1 = new SemaphoreEthers("homestead", {
+            const semaphore1 = new SemaphoreEthers("mainnet", {
                 provider: "infura",
                 address: "0x0000000000000000000000000000000000000000",
                 apiKey: "1234567890"
             })
-            const semaphore2 = new SemaphoreEthers("homestead", {
+            const semaphore2 = new SemaphoreEthers("mainnet", {
                 provider: "etherscan",
                 address: "0x0000000000000000000000000000000000000000"
             })
-            const semaphore3 = new SemaphoreEthers("homestead", {
+            const semaphore3 = new SemaphoreEthers("mainnet", {
                 provider: "alchemy",
                 address: "0x0000000000000000000000000000000000000000"
             })
-            const semaphore4 = new SemaphoreEthers("homestead", {
+            const semaphore4 = new SemaphoreEthers("mainnet", {
                 provider: "cloudflare",
                 address: "0x0000000000000000000000000000000000000000"
             })
-            const semaphore5 = new SemaphoreEthers("homestead", {
+            const semaphore5 = new SemaphoreEthers("mainnet", {
                 provider: "pocket",
                 address: "0x0000000000000000000000000000000000000000"
             })
-            const semaphore6 = new SemaphoreEthers("homestead", {
+            const semaphore6 = new SemaphoreEthers("mainnet", {
                 provider: "ankr",
                 address: "0x0000000000000000000000000000000000000000"
             })
@@ -100,9 +94,9 @@ describe("SemaphoreEthers", () => {
         })
 
         it("Should throw an error if the network is not supported by Semaphore yet and there's no address", () => {
-            const fun = () => new SemaphoreEthers("homestead")
+            const fun = () => new SemaphoreEthers("mainnet")
 
-            expect(fun).toThrow("You should provide a Semaphore contract address for this network")
+            expect(fun).toThrow("Network 'mainnet' needs a Semaphore contract address")
         })
 
         it("Should throw an error if the provider is not supported", () => {

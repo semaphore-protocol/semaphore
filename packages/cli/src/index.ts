@@ -1,5 +1,5 @@
 import { GroupResponse, SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-protocol/data"
-import supportedNetworks from "@semaphore-protocol/utils/supported-networks"
+import { isSupportedNetwork, supportedNetworks } from "@semaphore-protocol/utils/networks"
 import chalk from "chalk"
 import { program } from "commander"
 import decompress from "decompress"
@@ -121,10 +121,10 @@ program
     .allowExcessArguments(false)
     .action(async ({ network }) => {
         if (!network) {
-            network = await getSupportedNetwork(supportedNetworks)
+            network = await getSupportedNetwork(Object.keys(supportedNetworks))
         }
 
-        if (!supportedNetworks.includes(network)) {
+        if (!isSupportedNetwork(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
             return
         }
@@ -151,10 +151,10 @@ program
     .allowExcessArguments(false)
     .action(async (groupId, { network }) => {
         if (!network) {
-            network = await getSupportedNetwork(supportedNetworks)
+            network = await getSupportedNetwork(Object.keys(supportedNetworks))
         }
 
-        if (!supportedNetworks.includes(network)) {
+        if (!isSupportedNetwork(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
             return
         }
@@ -219,10 +219,10 @@ program
     .allowExcessArguments(false)
     .action(async (groupId, { network }) => {
         if (!network) {
-            network = await getSupportedNetwork(supportedNetworks)
+            network = await getSupportedNetwork(Object.keys(supportedNetworks))
         }
 
-        if (!supportedNetworks.includes(network)) {
+        if (!isSupportedNetwork(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
             return
         }
@@ -285,10 +285,10 @@ program
     .allowExcessArguments(false)
     .action(async (groupId, { network }) => {
         if (!network) {
-            network = await getSupportedNetwork(supportedNetworks)
+            network = await getSupportedNetwork(Object.keys(supportedNetworks))
         }
 
-        if (!supportedNetworks.includes(network)) {
+        if (!isSupportedNetwork(network)) {
             console.info(`\n ${logSymbols.error}`, `error: the network '${network}' is not supported\n`)
             return
         }

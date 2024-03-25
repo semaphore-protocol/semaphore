@@ -1,4 +1,5 @@
 import typescript from "@rollup/plugin-typescript"
+import json from "@rollup/plugin-json"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
 
@@ -19,11 +20,13 @@ export default [
             { file: pkg.exports["."].require, format: "cjs", banner, exports: "auto" },
             { file: pkg.exports["."].default, format: "es", banner }
         ],
+        external: [...Object.keys(pkg.dependencies), "ethers/abi", "ethers/utils"],
         plugins: [
             typescript({
                 tsconfig: "./build.tsconfig.json"
             }),
-            cleanup({ comments: "jsdoc" })
+            cleanup({ comments: "jsdoc" }),
+            json()
         ]
     },
     {
@@ -38,13 +41,15 @@ export default [
             },
             { dir: "./dist/lib.esm", format: "es", banner, preserveModules: true }
         ],
+        external: [...Object.keys(pkg.dependencies), "ethers/abi", "ethers/utils"],
         plugins: [
             typescript({
                 tsconfig: "./build.tsconfig.json",
                 declaration: false,
                 declarationDir: undefined
             }),
-            cleanup({ comments: "jsdoc" })
+            cleanup({ comments: "jsdoc" }),
+            json()
         ]
     }
 ]

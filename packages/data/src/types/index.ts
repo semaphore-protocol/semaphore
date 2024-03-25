@@ -1,21 +1,12 @@
-export enum SupportedNetwork {
-    SEPOLIA = "sepolia",
-    MUMBAI = "mumbai",
-    OPTIMISM_SEPOLIA = "optimism-sepolia",
-    ARBITRUM_SEPOLIA = "arbitrum-sepolia",
-    ARBITRUM = "arbitrum"
-}
-
 export type EthersNetwork =
-    | "homestead"
+    | "mainnet"
+    | "sepolia"
     | "matic"
+    | "matic-mumbai"
     | "arbitrum"
-    | "maticmum"
-    | "mumbai"
     | "arbitrum-sepolia"
     | "optimism"
     | "optimism-sepolia"
-    | "sepolia"
 
 export type GroupOptions = {
     members?: boolean

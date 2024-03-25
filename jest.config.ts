@@ -13,8 +13,8 @@ const projects: any = fs
         displayName: name,
         setupFiles: ["dotenv/config"],
         moduleNameMapper: {
-            "@semaphore-protocol/(.*)/(.*)": "<rootDir>/../$1/src/$2.ts",
-            "@semaphore-protocol/(.*)": "<rootDir>/../$1/src/index.ts"
+            "@semaphore-protocol/(.*)/(.*)": "<rootDir>/../$1/src/$2",
+            "@semaphore-protocol/(.*)": "<rootDir>/../$1/src"
         }
     }))
 

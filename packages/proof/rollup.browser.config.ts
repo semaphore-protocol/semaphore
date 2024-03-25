@@ -35,7 +35,8 @@ export default {
         "ethers/utils",
         "ethers/abi",
         "@zk-kit/utils/error-handlers",
-        "@zk-kit/utils/proof-packing"
+        "@zk-kit/utils/proof-packing",
+        "@semaphore-protocol/utils/constants"
     ],
     plugins: [
         alias({

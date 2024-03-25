@@ -1,6 +1,6 @@
+import { SupportedNetwork } from "@semaphore-protocol/utils"
 import { task, types } from "hardhat/config"
 import { saveDeployedContracts } from "../scripts/utils"
-import { deployContract } from "./utils"
 
 task("deploy", "Deploy a Semaphore contract")
     .addOptionalParam<boolean>("verifier", "Verifier contract address", undefined, types.string)
@@ -9,12 +9,16 @@ task("deploy", "Deploy a Semaphore contract")
     .setAction(
         async (
             { logs, verifier: semaphoreVerifierAddress, poseidon: poseidonT3Address },
-            { ethers, hardhatArguments, defender }
+            { ethers, hardhatArguments }
         ): Promise<any> => {
+            const startBlock = await ethers.provider.getBlockNumber()
+
             if (!semaphoreVerifierAddress) {
                 const VerifierFactory = await ethers.getContractFactory(`SemaphoreVerifier`)
 
-                const verifier = await deployContract(defender, VerifierFactory, hardhatArguments.network)
+                const verifier = await VerifierFactory.deploy()
+
+                await verifier.waitForDeployment()
 
                 semaphoreVerifierAddress = await verifier.getAddress()
 
@@ -26,7 +30,9 @@ task("deploy", "Deploy a Semaphore contract")
             if (!poseidonT3Address) {
                 const PoseidonT3Factory = await ethers.getContractFactory("PoseidonT3")
 
-                const poseidonT3 = await deployContract(defender, PoseidonT3Factory, hardhatArguments.network)
+                const poseidonT3 = await PoseidonT3Factory.deploy()
+
+                await poseidonT3.waitForDeployment()
 
                 poseidonT3Address = await poseidonT3.getAddress()
 
@@ -41,9 +47,9 @@ task("deploy", "Deploy a Semaphore contract")
                 }
             })
 
-            const semaphore = await deployContract(defender, SemaphoreFactory, hardhatArguments.network, [
-                semaphoreVerifierAddress
-            ])
+            const semaphore = await SemaphoreFactory.deploy(semaphoreVerifierAddress)
+
+            await semaphore.waitForDeployment()
 
             const semaphoreAddress = await semaphore.getAddress()
 
@@ -55,18 +61,21 @@ task("deploy", "Deploy a Semaphore contract")
                 [
                     {
                         name: "SemaphoreVerifier",
-                        address: semaphoreVerifierAddress
+                        address: semaphoreVerifierAddress,
+                        startBlock
                     },
                     {
                         name: "PoseidonT3",
-                        address: poseidonT3Address
+                        address: poseidonT3Address,
+                        startBlock
                     },
                     {
                         name: "Semaphore",
-                        address: semaphoreAddress
+                        address: semaphoreAddress,
+                        startBlock
                     }
                 ],
-                hardhatArguments.network
+                hardhatArguments.network as SupportedNetwork
             )
 
             return {
