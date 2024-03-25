@@ -20,6 +20,7 @@ export default [
             { file: pkg.exports["."].require, format: "cjs", banner, exports: "auto" },
             { file: pkg.exports["."].default, format: "es", banner }
         ],
+        external: [...Object.keys(pkg.dependencies), "ethers/abi", "ethers/utils"],
         plugins: [
             typescript({
                 tsconfig: "./build.tsconfig.json"
@@ -40,6 +41,7 @@ export default [
             },
             { dir: "./dist/lib.esm", format: "es", banner, preserveModules: true }
         ],
+        external: [...Object.keys(pkg.dependencies), "ethers/abi", "ethers/utils"],
         plugins: [
             typescript({
                 tsconfig: "./build.tsconfig.json",

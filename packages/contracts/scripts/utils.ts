@@ -12,7 +12,7 @@ export type DeployedContracts = {
     contracts: NetworkDeployedContracts
 }[]
 
-const deployedContractsPath = "../utils/src/deployed-contracts.json"
+const deployedContractsPath = "../utils/src/networks/deployed-contracts.json"
 
 export function getDeployedContracts(): DeployedContracts {
     return JSON.parse(readFileSync(deployedContractsPath, "utf8"))

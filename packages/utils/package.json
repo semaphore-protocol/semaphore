@@ -13,9 +13,9 @@
             "default": "./dist/index.js"
         },
         "./networks": {
-            "types": "./dist/types/networks.d.ts",
-            "require": "./dist/lib.commonjs/networks.cjs",
-            "default": "./dist/lib.esm/networks.js"
+            "types": "./dist/types/networks/index.d.ts",
+            "require": "./dist/lib.commonjs/networks/index.cjs",
+            "default": "./dist/lib.esm/networks/index.js"
         },
         "./constants": {
             "types": "./dist/types/constants.d.ts",
