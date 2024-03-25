@@ -1,12 +1,12 @@
 "use client"
 
+import Stepper from "@/components/Stepper"
+import LogsContext from "@/context/LogsContext"
+import SemaphoreContext from "@/context/SemaphoreContext"
 import { Identity } from "@semaphore-protocol/core"
 import { useRouter } from "next/navigation"
 import { useCallback, useContext, useEffect, useState } from "react"
 import Feedback from "../../../contract-artifacts/Feedback.json"
-import Stepper from "@/components/Stepper"
-import LogsContext from "@/context/LogsContext"
-import SemaphoreContext from "@/context/SemaphoreContext"
 
 export default function GroupsPage() {
     const router = useRouter()
@@ -74,7 +74,7 @@ export default function GroupsPage() {
         setLoading(false)
     }, [_identity])
 
-    const userHasJoined = useCallback((identity: Identity) => _users.includes(identity.commitment), [_users])
+    const userHasJoined = useCallback((identity: Identity) => _users.includes(identity.commitment.toString()), [_users])
 
     return (
         <>

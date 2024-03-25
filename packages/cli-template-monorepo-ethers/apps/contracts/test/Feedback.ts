@@ -9,8 +9,6 @@ import { Feedback, ISemaphore } from "../typechain-types"
 
 describe("Feedback", () => {
     async function deployFeedbackFixture() {
-        const groupId = "42"
-
         const { semaphore } = await run("deploy:semaphore", {
             logs: false
         })
@@ -19,9 +17,10 @@ describe("Feedback", () => {
 
         const feedbackContract: Feedback = await run("deploy", {
             logs: false,
-            group: groupId,
             semaphore: await semaphoreContract.getAddress()
         })
+
+        const groupId = await feedbackContract.groupId()
 
         return { semaphoreContract, feedbackContract, groupId }
     }

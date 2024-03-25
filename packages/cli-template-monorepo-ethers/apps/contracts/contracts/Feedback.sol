@@ -8,11 +8,10 @@ contract Feedback {
 
     uint256 public groupId;
 
-    constructor(address semaphoreAddress, uint256 _groupId) {
+    constructor(address semaphoreAddress) {
         semaphore = ISemaphore(semaphoreAddress);
-        groupId = _groupId;
 
-        semaphore.createGroup(groupId, address(this));
+        groupId = semaphore.createGroup();
     }
 
     function joinGroup(uint256 identityCommitment) external {
