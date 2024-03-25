@@ -62,6 +62,6 @@ template Semaphore(MAX_DEPTH) {
     // The message is not really used within the circuit.
     // The square applied to it is a way to force Circom's compiler to add a constraint and
     // prevent its value from being changed by an attacker.
-    // More information here: https://geometryresearch.xyz/notebook/groth16-malleability.
+    // More information here: https://geometry.xyz/notebook/groth16-malleability.
     signal dummySquare <== message * message;
 }
