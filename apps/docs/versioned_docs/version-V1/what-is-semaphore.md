@@ -95,7 +95,7 @@ to any question. The user, however, can only vote once per question.
 ## About the code
 
 This repository contains the code for Semaphore's contracts written in
-Soliidty, and zk-SNARK circuits written in
+Solidity, and zk-SNARK circuits written in
 [circom](https://github.com/iden3/circom). It also contains Typescript code to
 execute tests.
 
