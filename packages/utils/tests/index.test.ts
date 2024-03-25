@@ -1,25 +1,49 @@
 import { encodeBytes32String } from "ethers/abi"
 import { toBigInt } from "ethers/utils"
 import decodeMessage from "../src/decode-message"
-import { getDeployedContract, isSupportedNetwork } from "../src/networks"
+import { getDeployedContract, getHardhatNetworks, isSupportedNetwork, supportedNetworks } from "../src/networks"
 
 describe("Utils", () => {
-    describe("# isSupportedNetwork", () => {
-        it("Should return true if the network is supported", () => {
-            expect(isSupportedNetwork("sepolia")).toBeTruthy()
+    describe("# networks", () => {
+        describe("# isSupportedNetwork", () => {
+            it("Should return true if the network is supported", () => {
+                expect(isSupportedNetwork("sepolia")).toBeTruthy()
+            })
+
+            it("Should return false if the network is not supported", () => {
+                expect(isSupportedNetwork("hello")).toBeFalsy()
+            })
         })
 
-        it("Should return false if the network is not supported", () => {
-            expect(isSupportedNetwork("hello")).toBeFalsy()
+        describe("# getDeployedContract", () => {
+            it("Should return Semaphore deployment data for Sepolia", () => {
+                const { address, startBlock } = getDeployedContract("sepolia")
+
+                expect(address).toHaveLength(42)
+                expect(typeof startBlock).toBe("number")
+            })
+
+            it("Should throw an error if the network is not supported", () => {
+                const fun = () => getDeployedContract("hello" as any)
+
+                expect(fun).toThrow("Semaphore has not been deployed on 'hello' yet")
+            })
         })
-    })
 
-    describe("# getDeployedContract", () => {
-        it("Should return Semaphore deployment data for Sepolia", () => {
-            const { address, startBlock } = getDeployedContract("sepolia")
+        describe("# getHardhatNetworks", () => {
+            it("Should return an empty object if the private key is not defined", () => {
+                const networks = getHardhatNetworks()
 
-            expect(address).toHaveLength(42)
-            expect(typeof startBlock).toBe("number")
+                expect(networks).toEqual({})
+            })
+
+            it("Should return a list of networks compatible with the Hardhat 'networks' object", () => {
+                const networks = getHardhatNetworks("ec12f72ab17a2f14cf538a1a2455d6cd94ec99a90e8d8be591f987744b7b440f")
+
+                expect(Object.keys(networks)).toEqual(Object.keys(supportedNetworks))
+                expect(Object.keys(networks)).toHaveLength(Object.keys(supportedNetworks).length)
+                expect(networks.sepolia.accounts).toHaveLength(1)
+            })
         })
     })
 

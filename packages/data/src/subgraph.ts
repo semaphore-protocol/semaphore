@@ -1,5 +1,4 @@
-import type { SupportedNetwork } from "@semaphore-protocol/utils"
-import { defaultNetwork } from "@semaphore-protocol/utils/networks"
+import { defaultNetwork, SupportedNetwork } from "@semaphore-protocol/utils/networks"
 import { AxiosRequestConfig } from "axios"
 import checkParameter from "./checkParameter"
 import getURL from "./getURL"

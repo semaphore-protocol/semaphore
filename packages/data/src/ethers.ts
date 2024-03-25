@@ -1,5 +1,9 @@
-import { SupportedNetwork, getDeployedContract, isSupportedNetwork } from "@semaphore-protocol/utils"
-import { defaultNetwork } from "@semaphore-protocol/utils/networks"
+import {
+    SupportedNetwork,
+    defaultNetwork,
+    getDeployedContract,
+    isSupportedNetwork
+} from "@semaphore-protocol/utils/networks"
 import { ZeroAddress } from "ethers/constants"
 import { Contract } from "ethers/contract"
 import {

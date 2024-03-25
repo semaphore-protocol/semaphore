@@ -24,7 +24,7 @@ export default {
         "fs",
         "path",
         "child_process",
-        "@semaphore-protocol/utils/supported-networks"
+        "@semaphore-protocol/utils/networks"
     ],
     plugins: [
         typescript({
