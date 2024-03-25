@@ -54,6 +54,9 @@ jobs:
             - name: Install dependencies
               run: yarn
 
+            - name: Build libraries
+              run: yarn build:libraries
+
             - name: Build subgraph
               run: yarn build:subgraph
 
