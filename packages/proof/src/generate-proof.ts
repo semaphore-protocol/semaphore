@@ -24,8 +24,8 @@ import { SemaphoreProof, SnarkArtifacts } from "./types"
  * or they will be automatically fetched.
  * @param identity The Semaphore identity.
  * @param groupOrMerkleProof The Semaphore group or its Merkle proof.
- * @param scope The Semaphore scope.
  * @param message The Semaphore message.
+ * @param scope The Semaphore scope.
  * @param merkleTreeDepth The depth of the tree with which the circuit was compiled.
  * @param snarkArtifacts The SNARK artifacts.
  * @returns The Semaphore proof ready to be verified.
