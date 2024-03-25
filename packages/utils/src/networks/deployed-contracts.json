@@ -1,0 +1,82 @@
+[
+    {
+        "network": "sepolia",
+        "contracts": [
+            {
+                "name": "SemaphoreVerifier",
+                "address": "0x58AD7a4389E0F5d814815E5D5A3Ab903dAE9284a",
+                "startBlock": 5539276
+            },
+            {
+                "name": "PoseidonT3",
+                "address": "0x4EFfF6a6a7BB31cdAd9Ee742b0faAA6Bb9BF096B",
+                "startBlock": 5539276
+            },
+            {
+                "name": "Semaphore",
+                "address": "0x0A09FB3f63c13F1C54F2fA41AFB1e7a98cffc774",
+                "startBlock": 5539276
+            }
+        ]
+    },
+    {
+        "network": "arbitrum-sepolia",
+        "contracts": [
+            {
+                "name": "SemaphoreVerifier",
+                "address": "0x5f4edC58142f4395D1D536e793137A0252dA5a49",
+                "startBlock": 25837653
+            },
+            {
+                "name": "PoseidonT3",
+                "address": "0x181B7f34538cE3BceC68597d4A212aB3f7881648",
+                "startBlock": 25837653
+            },
+            {
+                "name": "Semaphore",
+                "address": "0x220fBdB6F996827b1Cf12f0C181E8d5e6de3a36F",
+                "startBlock": 25837653
+            }
+        ]
+    },
+    {
+        "network": "optimism-sepolia",
+        "contracts": [
+            {
+                "name": "SemaphoreVerifier",
+                "address": "0x3d3df6CFc6BFf68d9693e097F32bF4a9903E77a5",
+                "startBlock": 9663266
+            },
+            {
+                "name": "PoseidonT3",
+                "address": "0x5f4edC58142f4395D1D536e793137A0252dA5a49",
+                "startBlock": 9663266
+            },
+            {
+                "name": "Semaphore",
+                "address": "0x181B7f34538cE3BceC68597d4A212aB3f7881648",
+                "startBlock": 9663266
+            }
+        ]
+    },
+    {
+        "network": "matic-mumbai",
+        "contracts": [
+            {
+                "name": "SemaphoreVerifier",
+                "address": "0xE5269ae1E996C6FEEf6E832c7032401E73087568",
+                "startBlock": 47356015
+            },
+            {
+                "name": "PoseidonT3",
+                "address": "0xC0ae1a8D3505B2bE9DCe0e826abd722Afd13F1c9",
+                "startBlock": 47356015
+            },
+            {
+                "name": "Semaphore",
+                "address": "0x346a936b19071b2f619200848B8ADbb938D72250",
+                "startBlock": 47356015
+            }
+        ]
+    }
+]

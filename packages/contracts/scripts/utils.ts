@@ -1,8 +1,10 @@
+import { SupportedNetwork, isSupportedNetwork } from "@semaphore-protocol/utils"
 import { readFileSync, writeFileSync } from "fs"
 
 export type NetworkDeployedContracts = {
     name: "Semaphore" | "SemaphoreVerifier" | "PoseidonT3"
     address: string
+    startBlock: number
 }[]
 
 export type DeployedContracts = {
@@ -10,10 +12,10 @@ export type DeployedContracts = {
     contracts: NetworkDeployedContracts
 }[]
 
-const supportedNetworks = ["sepolia", "arbitrum", "mumbai", "optimism-sepolia", "arbitrum-sepolia"]
+const deployedContractsPath = "../utils/src/networks/deployed-contracts.json"
 
 export function getDeployedContracts(): DeployedContracts {
-    return JSON.parse(readFileSync(`./deployed-contracts.json`, "utf8"))
+    return JSON.parse(readFileSync(deployedContractsPath, "utf8"))
 }
 
 export function getDeployedContractsByNetwork(network: string): NetworkDeployedContracts {
@@ -38,15 +40,15 @@ export function getDeployedContractAddress(network: string, contractName: string
     return semaphoreAddress.address
 }
 
-export function saveDeployedContracts(contracts: NetworkDeployedContracts, network?: string) {
-    if (network && supportedNetworks.includes(network)) {
+export function saveDeployedContracts(contracts: NetworkDeployedContracts, network?: SupportedNetwork) {
+    if (network && isSupportedNetwork(network)) {
         const deployedContracts = getDeployedContracts() as DeployedContracts
 
         for (let i = 0; i < deployedContracts.length; i += 1) {
             if (deployedContracts[i].network === network) {
                 deployedContracts[i].contracts = contracts
 
-                writeFileSync(`./deployed-contracts.json`, JSON.stringify(deployedContracts, null, 4))
+                writeFileSync(deployedContractsPath, JSON.stringify(deployedContracts, null, 4))
 
                 return
             }
@@ -57,6 +59,6 @@ export function saveDeployedContracts(contracts: NetworkDeployedContracts, netwo
             contracts
         })
 
-        writeFileSync(`./deployed-contracts.json`, JSON.stringify(deployedContracts, null, 4))
+        writeFileSync(deployedContractsPath, JSON.stringify(deployedContracts, null, 4))
     }
 }
