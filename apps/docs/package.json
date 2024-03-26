@@ -17,7 +17,7 @@
         "@docusaurus/core": "3.1.1",
         "@docusaurus/preset-classic": "3.1.1",
         "@mdx-js/react": "^3.0.0",
-        "@semaphore-protocol/utils": "4.0.0-beta.4",
+        "@semaphore-protocol/utils": "4.0.0-beta.5",
         "@svgr/webpack": "^5.5.0",
         "clsx": "^1.2.1",
         "docusaurus-plugin-sass": "^0.2.5",
