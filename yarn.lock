@@ -20710,6 +20710,7 @@ __metadata:
   dependencies:
     "@semaphore-protocol/core": "npm:4.0.0-beta.4"
     "@semaphore-protocol/data": "npm:4.0.0-beta.4"
+    "@semaphore-protocol/utils": "npm:4.0.0-beta.4"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
@@ -20772,6 +20773,7 @@ __metadata:
   dependencies:
     "@semaphore-protocol/core": "npm:4.0.0-beta.4"
     "@semaphore-protocol/data": "npm:4.0.0-beta.4"
+    "@semaphore-protocol/utils": "npm:4.0.0-beta.4"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
