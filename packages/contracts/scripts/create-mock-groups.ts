@@ -16,16 +16,20 @@ async function main() {
     const [admin] = await ethers.getSigners()
     const adminAddress = await admin.getAddress()
 
-    const identity = new Identity(0)
-    const members = Array.from({ length: 3 }, (_, i) => new Identity(i)).map(({ commitment }) => commitment)
+    const identity = new Identity("0")
+    const members = Array.from({ length: 3 }, (_, i) => new Identity(i.toString())).map(({ commitment }) => commitment)
     const group = new Group(members)
 
-    const groupId = 42
-
-    console.info(`Creating group '${groupId}' with ${members.length} members...`)
+    console.info(`Creating new group...`)
 
     // Create a group and add 3 members.
-    await semaphoreContract["createGroup(uint256,address)"](groupId, adminAddress)
+    const tx = await semaphoreContract["createGroup(address)"](adminAddress)
+
+    const { logs } = (await tx.wait()) as any
+    const [groupId] = logs[0].args
+
+    console.info(`Adding ${members.length} members to group '${groupId}'...`)
+
     await semaphoreContract.addMembers(groupId, members)
 
     console.info(`Removing third member from group '${groupId}'...`)
