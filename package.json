@@ -7,7 +7,7 @@
     "bugs": "https://github.com/semaphore-protocol/semaphore/issues",
     "private": true,
     "scripts": {
-        "build": "yarn build:subgraph && yarn build:libraries",
+        "build": "yarn build:libraries && yarn build:subgraph",
         "build:libraries": "yarn workspaces foreach -A -t --no-private run build",
         "build:subgraph": "yarn workspace semaphore-subgraph codegen sepolia && yarn workspace semaphore-subgraph build",
         "compile:contracts": "yarn workspace semaphore-contracts compile",
