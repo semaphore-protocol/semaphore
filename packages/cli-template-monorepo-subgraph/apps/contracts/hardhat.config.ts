@@ -10,7 +10,7 @@ dotenvConfig({ path: resolve(__dirname, "../../.env") })
 
 const config: HardhatUserConfig = {
     solidity: "0.8.23",
-    defaultNetwork: process.env.DEFAULT_NETWORK || "localhost",
+    defaultNetwork: process.env.DEFAULT_NETWORK || "hardhat",
     networks: {
         hardhat: {
             chainId: 1337

@@ -9,7 +9,7 @@ const ethereumNetwork =
         : process.env.NEXT_PUBLIC_DEFAULT_NETWORK
 
 export default function useSemaphore(): SemaphoreContextType {
-    const [_users, setUsers] = useState<any[]>([])
+    const [_users, setUsers] = useState<string[]>([])
     const [_feedback, setFeedback] = useState<string[]>([])
 
     const refreshUsers = useCallback(async (): Promise<void> => {
@@ -19,7 +19,7 @@ export default function useSemaphore(): SemaphoreContextType {
 
         const members = await semaphore.getGroupMembers(process.env.NEXT_PUBLIC_GROUP_ID as string)
 
-        setUsers(members.map((member) => member.toString()))
+        setUsers(members)
     }, [])
 
     const addUser = useCallback(
