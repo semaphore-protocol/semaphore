@@ -213,7 +213,7 @@ and [Chai assertions](https://www.chaijs.com/).
     wget http://www.trusted-setup-pse.org/semaphore/20/semaphore.wasm
     ```
 
-    Learn more about [trusted setup files](/glossary/#trusted-setup-files).
+    Learn more about [trusted setup files](/V2/glossary/#trusted-setup-files).
 
 3. Rename the `Lock.js` test file to `Greeter.js` and replace the content with the following:
 

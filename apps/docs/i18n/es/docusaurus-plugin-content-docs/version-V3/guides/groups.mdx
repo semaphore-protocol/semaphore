@@ -8,14 +8,14 @@ import TabItem from "@theme/TabItem"
 
 # Gupos Semaphore
 
-Un [grupo Semaphore](/glossary/#semaphore-group) contiene los [identity commitments](/glossary/#identity-commitment) (compromisos de identidad) de miembros del grupo.
+Un [grupo Semaphore](/V3/glossary/#grupo-semaphore) contiene los [identity commitments](/V3/glossary/#compromiso-de-identidad-identity-commitment) (compromisos de identidad) de miembros del grupo.
 Estos son algunos ejemplos de uso de los grupos:
 
 -   Encuesta con preguntas a la que se unen las personas que acudieron a un evento para calificarlo,
 -   votación a la que se unen los miembros para votar por una propuesta,
 -   Denunciantes que están verificados como empleados de una organización.
 
-Un grupo Semaphore es un [árbol de Merkle incremental](/glossary/#incremental-merkle-tree), y los miembros del grupo (por ejemplo, [identity commitments](/glossary/#identity-commitments)) son las hojas del árbol.
+Un grupo Semaphore es un [árbol de Merkle incremental](/V3/glossary/#árbol-de-merkle-merkle-tree), y los miembros del grupo (por ejemplo, [identity commitments](/V3/glossary/#compromiso-de-identidad-identity-commitment)) son las hojas del árbol.
 Los grupos Semaphore determinan los siguientes tres parámetro:
 
 -   **Group id**: un identificador único para el grupo;
@@ -24,14 +24,14 @@ Los grupos Semaphore determinan los siguientes tres parámetro:
 
 Aprenda cómo trabajar con grupos.
 
--   [**Grupos off-chain**](#off-chain-groups)
--   [**Grupos on-chain**](#on-chain-groups)
+-   [**Grupos off-chain**](#grupos-off-chain-externos-a-la-cadena)
+-   [**Grupos on-chain**](#grupos-on-chain)
 
 ## Grupos off-chain (externos a la cadena)
 
--   [Crear un grupo](#create-a-group)
--   [Añadir miembros](#add-members)
--   [Remover o actualizar miembros](#remove-or-update-members)
+-   [Crear un grupo](#crear-un-grupo)
+-   [Añadir miembros](#añadir-miembros)
+-   [Remover o actualizar miembros](#remover-o-actualizar-miembros)
 
 ### Crear un grupo
 
