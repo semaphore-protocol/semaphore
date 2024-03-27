@@ -6,10 +6,10 @@ sidebar_position: 3
 
 Semaphore incluye dos tipos de contratos:
 
--   [**Contratos base**](/technical-reference/contracts#base-contracts)
--   [**Contratos para la extensión**](/technical-reference/contracts#extension-contracts)
+-   [**Contratos base**](#contratos-base)
+-   [**Contratos para la extensión**](#contratos-para-la-extensión)
 
-así como [**Semaphore.sol**](/technical-reference/contracts#semaphoresol), el principal contrato desplegado en las redes soportadas por Semaphore.
+así como [**Semaphore.sol**](#semaphoresol), el principal contrato desplegado en las redes soportadas por Semaphore.
 
 :::info
 Para utilizar los contratos e interfaces Semaphore en su proyecto, instale el paquete NPM [`@semaphore-protocol/contracts`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/contracts).
@@ -23,7 +23,7 @@ Semaphore ofrece los siguientes contratos base:
 -   [`SemaphoreGroups.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/base/SemaphoreGroups.sol): contiene las funciones para crear grupos y añadir/remover/actualizar miembros.
 
 Los contratos base están relacionados de forma muy cercana al protocolo.
-Puede utilizarlos en su contrato o puede utilizar [**Semaphore.sol**](/technical-reference/contracts#semaphoresol) que ya los tiene integrados.
+Puede utilizarlos en su contrato o puede utilizar [**Semaphore.sol**](/V3/technical-reference/contracts#semaphoresol) que ya los tiene integrados.
 
 :::info
 Si bien algunas dApps pueden utilizar grupos internos a la cadena, otros puede que prefieran utilizar grupos externos a la cadena, por lo que únicamente guardarán las raíces de sus árboles en el contrato.
@@ -42,9 +42,9 @@ En un futuro se incluirán más extensiones.
 [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol) utiliza los contratos base como punto de partida, los integra y de forma adicional brinda:
 
 -   un sistema que solamente permite que administradores (ej. cuentas de Ethereum o contratos inteligentes) controlen grupos;
--   un mecanismo que guarda los [hashes anuladores](/technical-reference/circuits#nullifier-hash) (nullifier hashes) de cada grupo y evita que el mismo miembro emita dos señales;
+-   un mecanismo que guarda los [hashes anuladores](/V3/technical-reference/circuits#hash-anulador-nullifier-hash) (nullifier hashes) de cada grupo y evita que el mismo miembro emita dos señales;
 -   un mecanismo que permite que pruebas Semaphore generadas con raíces de Merkle antiguas sean verificadas por un periodo de tiempo determinado por el administrador del grupo.
 
 :::info
-Visitando [contratos desplegados](/deployed-contracts) puede encontrar las direcciones correspondientes a su red.
+Visitando [contratos desplegados](/V3/deployed-contracts) puede encontrar las direcciones correspondientes a su red.
 ::::

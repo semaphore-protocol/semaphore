@@ -36,7 +36,7 @@ Community members connect their wallets to the dApp to take the following action
 
 ### Relay
 
-To preserve anonymity and avoid disclosing the member's wallet address, the dApp may use a [relay](/glossary/#relay) to broadcast the vote.
+To preserve anonymity and avoid disclosing the member's wallet address, the dApp may use a [relay](/V2/glossary/#relay) to broadcast the vote.
 The relay calls the **contract** function that then posts the member's vote transaction to Ethereum.
 
 ## Private voting
@@ -52,7 +52,7 @@ The voting scenario has the following steps:
 
 ### Create a poll
 
-A community coordinator or dApp administrator uses the deployed smart contract to create an on-chain (Ethereum) poll, a [Semaphore group](/guides/groups/) that members can join and cast votes to.
+A community coordinator or dApp administrator uses the deployed smart contract to create an on-chain (Ethereum) poll, a [Semaphore group](/V2/guides/groups/) that members can join and cast votes to.
 
 In the following sample code, the voting contract declares a `createPoll` function that uses the Semaphore base `_createGroup` function:
 
@@ -78,11 +78,11 @@ function createPoll(
 }
 ```
 
-A poll is a Semaphore [group](/guides/groups/) that stores the following:
+A poll is a Semaphore [group](/V2/guides/groups/) that stores the following:
 
 -   A topic to vote on.
 -   The public ID of the poll creator.
--   [Semaphore IDs](/guides/identities/) of members who joined the poll.
+-   [Semaphore IDs](/V2/guides/identities/) of members who joined the poll.
 
 To create the poll, the administrator calls the smart contract function--for example:
 
@@ -128,7 +128,7 @@ With a member registered for a poll, learn how the dApp [records votes](#record-
 Once members have joined a poll, the coordinator starts the poll to allow voting.
 When a member votes (for example, by selecting a radio button), then the dApp takes the following actions:
 
-1. Uses the `@semaphore-protocol/proof` library to create a proof of the vote, the poll identifier, the Semaphore ID, and a [nullifier](/glossary/#nullifier) that prevents double-voting.
+1. Uses the `@semaphore-protocol/proof` library to create a proof of the vote, the poll identifier, the Semaphore ID, and a [nullifier](/V2/glossary/#nullifier) that prevents double-voting.
 2. Sends the vote proof to the [relay](#relay).
 
 ### Related
