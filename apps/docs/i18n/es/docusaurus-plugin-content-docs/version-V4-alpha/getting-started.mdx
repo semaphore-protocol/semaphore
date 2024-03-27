@@ -1,0 +1,337 @@
+---
+sidebar_position: 2
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Empezar
+
+Semaphore ofrece un CLI oficial para configurar su proyecto con Hardhat. Si su NPM es versión 5.2 or más reciente puede utilizar NPX:
+
+```bash
+npx @semaphore-protocol/cli create my-app --template monorepo-ethers
+```
+
+De lo contrario, instale `@semaphore-protocol/cli` de forma global y corra el comando `init`:
+
+```bash
+npm i -g @semaphore-protocol/cli
+semaphore create my-app --template monorepo-ethers
+```
+
+:::info
+Los templates soportados son: [`contracts-hardhat`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/cli-template-contracts-hardhat), [`monorepo-ethers`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/cli-template-monorepo-ethers), [`monorepo-subgraph`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/cli-template-monorepo-subgraph).
+:::
+
+:::info
+El CLI [`semaphore`](https://github.com/semaphore-protocol/semaphore/tree/feat/semaphore-v4/packages/cli) también se puede utilizar para obtener información de los grupos que existen dentro de las redes soportadas por Semaphore (por ejemplo: `semaphore get-groups --network sepolia`).
+:::
+
+Para comenzar a trabajar en su proyecto, instale las siguientes dependencias:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+cd my-app
+npm i
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+cd my-app
+yarn
+```
+</TabItem>
+
+<TabItem value="pnpm">
+
+```bash
+cd my-app
+pnpm install
+```
+
+</TabItem>
+</Tabs>
+
+## Output
+
+El comando `create` creará un directorio con el nombre my-app (o cualquier nombre que usted escoja) dentro de la carpeta actual. Ese directorio contendrá la estructura inicial del proyecto, que incluye un contrato simple (contract), una tarea (task) para desplegar lo, algunas pruebas (test) y una aplicación de Next.js (la carpeta web-app) para interactuar con el contrato.
+
+```
+my-app
+├── .yarn
+├── apps
+│   └── contracts
+│   │   └── contracts
+|   │   │   └── Feedback.sol
+│   │   └── tasks
+|   │   │   └── deploy.ts
+│   │   └── test
+|   │   │   └── Feedback.ts
+│   │   └── hardhat.config.ts
+│   │   └── package.json
+│   │   └── tsconfig.json
+│   └── web-app
+├── .editorconfig
+├── .env
+├── .env.example
+├── .eslintignore
+├── .eslintrc.json
+├── .gitignore
+├── .prettierignore
+├── .prettierrc.json
+├── .yarnrc.yml
+├── package.json
+├── README.md
+└── tsconfig.json
+```
+
+El contrato `Feedback.sol` crea un grupo Semaphore, permite que los usuarios se unan a ese grupo con su identidad Semaphore, y, finalmente, permite que los miembros de ese grupo envíen un feedback anónimo.
+
+## Uso
+
+### Compilar contratos
+
+Vaya a la carpeta `contracts`:
+
+```bash
+cd apps/contracts
+```
+
+Y compile sus contratos al correr:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm run compile
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn compile
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm compile
+```
+
+</TabItem>
+</Tabs>
+
+### Pruebe los contratos
+
+Pruebe sus contratos al correr:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm test
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn test
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm test
+```
+
+</TabItem>
+</Tabs>
+
+Genere un reporte de la prueba de cobertura:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm run test:coverage
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn test:coverage
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm test:coverage
+```
+
+</TabItem>
+</Tabs>
+
+O un reporte de la prueba de gas:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm run test:report-gas
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn test:report-gas
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm test:report-gas
+```
+
+</TabItem>
+</Tabs>
+
+### Desplegar contratos
+
+Siga las instrucciones a continuación para desplegar sus contratos:
+
+En la carpeta raíz del proyecto:
+
+1. Agregue sus variables de entorno en el archivo `.env`.
+
+    :::note
+    Deberá por lo menos configurar un URL válido en Ethereum (ejemplo: Infura) y una llave privada con algunos ethers.
+    :::
+
+2. Vaya a la carpeta `apps/contracts` y despliegue su contrato.
+
+    <Tabs
+    defaultValue="npm"
+    groupId="package-managers"
+    values={[
+    {label: 'npm', value: 'npm'},
+    {label: 'Yarn', value: 'yarn'},
+    {label: 'pnpm', value: 'pnpm'}
+    ]}>
+    <TabItem value="npm">
+
+    ```bash
+    npm run deploy -- --semaphore <semaphore-address> --group <group-id> --network sepolia
+    ```
+
+    </TabItem>
+    <TabItem value="yarn">
+
+    ```bash
+    yarn deploy --semaphore <semaphore-address> --group <group-id> --network sepolia
+    ```
+
+    </TabItem>
+    <TabItem value="pnpm">
+
+    ```bash
+    pnpm deploy --semaphore <semaphore-address> --group <group-id> --network sepolia
+    ```
+
+    </TabItem>
+    </Tabs>
+
+    :::note
+    Revise las direcciones de los contratos de Semaphore [aquí](/V4-alpha/deployed-contracts).
+    :::
+
+    :::caution
+    El group id (id del grupo) es un número.
+    :::
+
+### Inicie la app
+
+Inicie la aplicación:
+
+<Tabs
+defaultValue="npm"
+groupId="package-managers"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'Yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'}
+]}>
+<TabItem value="npm">
+
+```bash
+npm run dev
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+yarn dev
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash
+pnpm dev
+```
+
+</TabItem>
+</Tabs>
+
+
+:::información
+Si desea ver el código de una aplicación completa creada sobre Semaphore, consulte el [repositorio](https://github.com/semaphore-protocol/boilerplate/tree/version/4). Para obtener más información sobre las bibliotecas principales, continúe leyendo las siguientes guías.
+:::
