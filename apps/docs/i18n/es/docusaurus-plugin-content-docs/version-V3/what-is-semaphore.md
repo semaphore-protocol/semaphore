@@ -15,9 +15,9 @@ Algunos de los potenciales casos de uso son: votaciones, denuncias, DAOs anónim
 
 Con Semaphore puede permitir que sus usuarios realicen las siguientes acciones:
 
-1. [Crear una identidad Semaphore](/guides/identities/).
-2. [Agregar su identidad Semaphore a un grupo (es decir: _Árbol de Merkle_)](/guides/groups/).
-3. [Enviar una señal anónima, verificable (ej. un voto o una aprobación)](/guides/proofs/).
+1. [Crear una identidad Semaphore](/V3/guides/identities/).
+2. [Agregar su identidad Semaphore a un grupo (es decir: _Árbol de Merkle_)](/V3/guides/groups/).
+3. [Enviar una señal anónima, verificable (ej. un voto o una aprobación)](/V3/guides/proofs/).
 
 Cuando un usuario emite una señal (por ejemplo: un voto), las pruebas de conocimiento cero (ZKP) pueden asegurar que el usuario se ha incorporado al grupo y aún no ha emitido una señal con su nullifier (anulador).
 
@@ -39,7 +39,7 @@ y [librerías en JavaScript](https://github.com/semaphore-protocol/semaphore#-pa
 
 ### Ceremonia de configuración de confianza (Trusted Setup Ceremony)
 
-Los [parámetros seguros](/glossary#trusted-setup-files) para generar pruebas válidas con los circuitos Semaphore fueron generados en una [ceremonia de configuración de confianza](https://storage.googleapis.com/trustedsetup-a86f4.appspot.com/semaphore/semaphore_top_index.html) que se completó con más de 300 participantes el [29 de Marzo de 2022](https://etherscan.io/tx/0xec6dbe68883c7593c2bea82f55af18b3aeb5cc146e026d0083a9b3faa9aa0b65#eventlog).
+Los [parámetros seguros](/V3/glossary#archivos-confiables-de-configuración-trusted-setup-files) para generar pruebas válidas con los circuitos Semaphore fueron generados en una [ceremonia de configuración de confianza](https://storage.googleapis.com/trustedsetup-a86f4.appspot.com/semaphore/semaphore_top_index.html) que se completó con más de 300 participantes el [29 de Marzo de 2022](https://etherscan.io/tx/0xec6dbe68883c7593c2bea82f55af18b3aeb5cc146e026d0083a9b3faa9aa0b65#eventlog).
 
 ### Auditorías
 

@@ -7,7 +7,7 @@ title: Proofs
 
 Learn how to use Semaphore to generate and verify zero-knowledge proofs.
 
-Once a user joins their [Semaphore identity](/glossary#semaphore-identity) to a [Semaphore group](/glossary#semaphore-group), the user can signal anonymously with a zero-knowledge proof that proves the following:
+Once a user joins their [Semaphore identity](/V2/glossary#semaphore-identity) to a [Semaphore group](/V2/glossary#semaphore-group), the user can signal anonymously with a zero-knowledge proof that proves the following:
 
 -   The user is a member of the group.
 -   The same user created the signal and the proof.
@@ -27,11 +27,11 @@ To generate a proof, pass the following properties to the `generateProof` functi
 -   `group`: The group to which the user belongs.
 -   `externalNullifier`: The value that prevents double-signaling.
 -   `signal`: The signal the user wants to send anonymously.
--   `snarkArtifacts`: The `zkey` and `wasm` [trusted setup files](/glossary/#trusted-setup-files).
+-   `snarkArtifacts`: The `zkey` and `wasm` [trusted setup files](/V2/glossary/#trusted-setup-files).
 
-In the voting system use case, once all the voters have joined their [identities](/guides/identities#create-an-identity) to the ballot [group](/guides/groups),
+In the voting system use case, once all the voters have joined their [identities](/V2/guides/identities#create-identities) to the ballot [group](/V2/guides/groups),
 a voter can generate a proof to vote for a proposal.
-In the call to `generateProof`, the voting system passes the unique ballot ID (the [Merkle tree](/glossary/#merkle-tree/) root of the group) as the
+In the call to `generateProof`, the voting system passes the unique ballot ID (the [Merkle tree](/V2/glossary#merkle-tree) root of the group) as the
 `externalNullifier` to prevent the voter signaling more than once for the ballot.
 The following code sample shows how to use `generateProof` to generate the voting proof:
 
@@ -53,7 +53,7 @@ Use the [`@semaphore-protocol/proof`](https://github.com/semaphore-protocol/sema
 To verify a proof, pass the following to the `verifyProof` function:
 
 -   _`proof`_: the Semaphore proof.
--   _`verificationKey`_: the JavaScript object in the `semaphore.json` [trusted setup file](/glossary/#trusted-setup-files).
+-   _`verificationKey`_: the JavaScript object in the `semaphore.json` [trusted setup file](/V2/glossary/#trusted-setup-files).
 
 The following code sample shows how to parse the verification key object from `semaphore.json`
 and verify the previously generated proof:
