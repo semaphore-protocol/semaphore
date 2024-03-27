@@ -9,18 +9,18 @@ sidebar_position: 7
 La identidad de un usuario en el protocolo Semaphore.
 Una identidad contiene los tres valores que se mencionan a continuación:
 
--   [Compromiso de identidad](#identity-commitment) (identity commitment): el valor público.
+-   [Compromiso de identidad](#compromiso-de-identidad-identity-commitment) (identity commitment): el valor público.
 -   Identidad trampilla (identity trapdoor) y anulador de identidad (identity nullifier): valores secretos que únicamente son del conocimiento del usuario.
 
 ## Compromiso de identidad (Identity commitment)
 
-El valor público de la [identidad Semaphore](#semaphore-identity) utilizado en los [grupos Semaphore](#semaphore-group).
+El valor público de la [identidad Semaphore](#identidad-semaphore) utilizado en los [grupos Semaphore](#grupo-semaphore).
 
 Semaphore utiliza la función hash [Poseidon](https://www.poseidon-hash.info/) para crear un compromiso de identidad a partir de los valores secretos de la identidad Semaphore.
 
 ## Grupo Semaphore
 
-Un grupo es un [árbol de Merkle](#merkle-tree) binario e incremental en el que cada hoja contiene un [compromiso de identidad](#identity-commitment) para un usuario.
+Un grupo es un [árbol de Merkle](#árbol-de-merkle-merkle-tree) binario e incremental en el que cada hoja contiene un [compromiso de identidad](#compromiso-de-identidad-identity-commitment) para un usuario.
 El compromiso de identidad comprueba que un usuario es un miembro del grupo sin revelar la identidad Semaphore del usuario.
 
 Semaphore utiliza la función hash **Poseidon** para crear árboles de Merkle.
@@ -39,7 +39,7 @@ Para más información, vea [árbol de Merkle en Wikipedia](https://es.wikipedia
 
 Un valor utilizado para prevenir registros dobles o dos señales emitidas por el mismo usuario.
 
-Ver [hash de circuito nullifier](/technical-reference/circuits/#nullifier-hash).
+Ver [hash de circuito nullifier](/V3/technical-reference/circuits#hash-anulador-nullifier-hash).
 
 ## Retransmisor (Relayer)
 

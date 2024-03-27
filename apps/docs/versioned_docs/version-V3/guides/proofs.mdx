@@ -63,9 +63,9 @@ pnpm add @semaphore-protocol/proof@^3
 </TabItem>
 </Tabs>
 
-In the voting system use case, once all the voters have joined their [identities](/V3/guides/identities#create-an-identity) to the ballot [group](/V3/guides/groups),
+In the voting system use case, once all the voters have joined their [identities](/V3/guides/identities#create-identities) to the ballot [group](/V3/guides/groups),
 a voter can generate a proof to vote for a proposal.
-In the call to `generateProof`, the voting system passes the unique ballot ID (the [Merkle tree](/V3/glossary/#merkle-tree/) root of the group) as the
+In the call to `generateProof`, the voting system passes the unique ballot ID (the [Merkle tree](/V3/glossary#merkle-tree) root of the group) as the
 `externalNullifier` to prevent the voter signaling more than once for the ballot.
 The following code sample shows how to use `generateProof` to generate the voting proof:
 
@@ -120,9 +120,9 @@ To verify Semaphore proofs in your contract, import `ISemaphore.sol`, pass it th
 -   `groupId`: the identifier of the group;
 -   `merkleTreeRoot`: the root of the Merkle tree;
 -   `signal`: the signal the user wants to send anonymously;
--   `nullifierHash`: a [nullifier hash](#retrieve-a-nullifier-hash);
+-   `nullifierHash`: a nullifier hash;
 -   `externalNullifier`: the value that prevents double-signaling;
--   `proof`: a [Solidity-compatible Semaphore proof](#generate-a-solidity-compatible-proof).
+-   `proof`: a Solidity-compatible Semaphore proof.
 
 :::info
 You can import `ISemaphore.sol` and other Semaphore contracts from the [`@semaphore-protocol/contracts`](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/contracts) NPM module.
