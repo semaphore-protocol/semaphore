@@ -54,8 +54,16 @@ describe("Identity", () => {
     })
 
     describe("# verifySignature", () => {
-        it("Should verify a signature", () => {
+        it("Should verify a signature with a text private key", () => {
             const identity = new Identity(privateKeyText)
+
+            const signature = identity.signMessage("message")
+
+            expect(Identity.verifySignature("message", signature, identity.publicKey)).toBeTruthy()
+        })
+
+        it("Should verify a signature with hexadecimal private key", () => {
+            const identity = new Identity(privateKeyHexadecimal)
 
             const signature = identity.signMessage("message")
 
