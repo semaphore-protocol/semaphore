@@ -96,7 +96,7 @@ export default async function generateProof(
         merkleProofIndices.push((merkleProof.index >> i) & 1)
 
         if (merkleProofSiblings[i] === undefined) {
-            merkleProofSiblings[i] = "0"
+            merkleProofSiblings[i] = 0n
         }
     }
 

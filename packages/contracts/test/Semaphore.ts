@@ -124,7 +124,7 @@ describe("Semaphore", () => {
 
     describe("# addMember", () => {
         it("Should not add a member if the caller is not the group admin", async () => {
-            const member = BigInt(2)
+            const member = 2n
 
             const transaction = semaphoreContract.connect(accounts[1]).addMember(groupId, member)
 
@@ -149,7 +149,7 @@ describe("Semaphore", () => {
 
     describe("# addMembers", () => {
         it("Should not add members if the caller is not the group admin", async () => {
-            const members = [BigInt(1), BigInt(2), BigInt(3)]
+            const members = [1n, 2n, 3n]
 
             const transaction = semaphoreContract.connect(accounts[1]).addMembers(groupId, members)
 
@@ -161,7 +161,7 @@ describe("Semaphore", () => {
 
         it("Should add new members to an existing group", async () => {
             const groupId = 3
-            const members = [BigInt(1), BigInt(2), BigInt(3)]
+            const members = [1n, 2n, 3n]
             const group = new Group()
 
             group.addMembers(members)
@@ -178,7 +178,7 @@ describe("Semaphore", () => {
 
     describe("# updateMember", () => {
         it("Should not update a member if the caller is not the group admin", async () => {
-            const member = BigInt(2)
+            const member = 2n
 
             const transaction = semaphoreContract.connect(accounts[1]).updateMember(groupId, member, 1, [0, 1])
 
@@ -190,29 +190,27 @@ describe("Semaphore", () => {
 
         it("Should update a member from an existing group", async () => {
             const groupId = 4
-            const members = [BigInt(1), BigInt(2), BigInt(3)]
+            const members = [1n, 2n, 3n]
             const group = new Group()
 
             group.addMembers(members)
 
-            group.updateMember(0, BigInt(4))
+            group.updateMember(0, 4n)
 
             await semaphoreContract["createGroup(address)"](accountAddresses[0])
             await semaphoreContract.addMembers(groupId, members)
 
             const { siblings, root } = group.generateMerkleProof(0)
 
-            const transaction = semaphoreContract.updateMember(groupId, BigInt(1), BigInt(4), siblings)
+            const transaction = semaphoreContract.updateMember(groupId, 1n, 4n, siblings)
 
-            await expect(transaction)
-                .to.emit(semaphoreContract, "MemberUpdated")
-                .withArgs(groupId, 0, BigInt(1), BigInt(4), root)
+            await expect(transaction).to.emit(semaphoreContract, "MemberUpdated").withArgs(groupId, 0, 1n, 4n, root)
         })
     })
 
     describe("# removeMember", () => {
         it("Should not remove a member if the caller is not the group admin", async () => {
-            const member = BigInt(2)
+            const member = 2n
 
             const transaction = semaphoreContract.connect(accounts[1]).removeMember(groupId, member, [0, 1])
 
@@ -224,7 +222,7 @@ describe("Semaphore", () => {
 
         it("Should remove a member from an existing group", async () => {
             const groupId = 5
-            const members = [BigInt(1), BigInt(2), BigInt(3)]
+            const members = [1n, 2n, 3n]
             const group = new Group()
 
             group.addMembers(members)
@@ -236,9 +234,9 @@ describe("Semaphore", () => {
 
             const { siblings, root } = group.generateMerkleProof(2)
 
-            const transaction = semaphoreContract.removeMember(groupId, BigInt(3), siblings)
+            const transaction = semaphoreContract.removeMember(groupId, 3n, siblings)
 
-            await expect(transaction).to.emit(semaphoreContract, "MemberRemoved").withArgs(groupId, 2, BigInt(3), root)
+            await expect(transaction).to.emit(semaphoreContract, "MemberRemoved").withArgs(groupId, 2, 3n, root)
         })
     })
 
@@ -272,7 +270,7 @@ describe("Semaphore", () => {
 
             await semaphoreContract.addMembers(groupId, members)
 
-            proof = await generateProof(identity, group, message, group.root as string, merkleTreeDepth)
+            proof = await generateProof(identity, group, message, group.root, merkleTreeDepth)
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
@@ -303,7 +301,7 @@ describe("Semaphore", () => {
 
             group.addMembers([members[0], members[1]])
 
-            const proof = await generateProof(identity, group, message, group.root as string, merkleTreeDepth)
+            const proof = await generateProof(identity, group, message, group.root, merkleTreeDepth)
 
             const transaction = semaphoreContract.verifyProof(groupId, proof)
 
@@ -358,12 +356,12 @@ describe("Semaphore", () => {
             await semaphoreContract.addMembers(groupId, [members[1], members[2]])
             await semaphoreContract.addMember(groupOneMemberId, members[0])
 
-            proof = await generateProof(identity, group, message, group.root as string, merkleTreeDepth)
+            proof = await generateProof(identity, group, message, group.root, merkleTreeDepth)
             proofOneMember = await generateProof(
                 identity,
                 groupOneMember,
                 message,
-                groupOneMember.root as string,
+                groupOneMember.root,
                 merkleTreeDepth
             )
         })
