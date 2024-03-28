@@ -98,7 +98,7 @@ const { commitment } = new Identity()
 
 group.addMember(commitment)
 
-// "12989101133047504182892154686643420754368236204022364847543591045056549053997"
+// 12989101133047504182892154686643420754368236204022364847543591045056549053997n
 console.log(group.members[0])
 ```
 
@@ -121,11 +121,11 @@ group.addMembers([identity1.commitment, identity2.commitment])
 ```typescript
 import { Group } from "@semaphore-protocol/group"
 
-const group = new Group([1, 3])
+const group = new Group([1n, 3n])
 
 group.updateMember(0, 2)
 
-console.log(group.members[0]) // "2"
+console.log(group.members[0]) // "2n"
 ```
 
 \# **removeMember**(index: _number_)
@@ -133,11 +133,11 @@ console.log(group.members[0]) // "2"
 ```typescript
 import { Group } from "@semaphore-protocol/group"
 
-const group = new Group([1, 3])
+const group = new Group([1n, 3n])
 
 group.removeMember(0)
 
-console.log(group.members[0]) // "0"
+console.log(group.members[0]) // 0n
 ```
 
 \# **indexOf**(member: _BigNumberish_): _number_
@@ -145,7 +145,7 @@ console.log(group.members[0]) // "0"
 ```typescript
 import { Group } from "@semaphore-protocol/group"
 
-const group = new Group([1])
+const group = new Group([1n])
 
 const index = group.indexOf(1)
 
@@ -157,7 +157,7 @@ console.log(index) // 0
 ```typescript
 import { Group } from "@semaphore-protocol/group"
 
-const group = new Group([1, 3])
+const group = new Group([1n, 3n])
 
 const proof = group.generateMerkleProof(0)
 
@@ -177,7 +177,7 @@ console.log(proof)
 ```typescript
 import { Group } from "@semaphore-protocol/group"
 
-const group = new Group([1, 2, 3])
+const group = new Group([1n, 2n, 3n])
 
 const exportedGroup = group.export()
 
@@ -192,7 +192,7 @@ console.log(exportedGroup)
 ```typescript
 import { Group } from "@semaphore-protocol/group"
 
-const group1 = new Group([1, 2, 3])
+const group1 = new Group([1n, 2n, 3n])
 
 const exportedGroup = group.export()
 
