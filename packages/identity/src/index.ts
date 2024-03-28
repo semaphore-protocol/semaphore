@@ -112,7 +112,11 @@ export class Identity {
      * @returns A {@link https://zkkit.pse.dev/types/_zk_kit_eddsa_poseidon.Signature.html | Signature} object containing the signature components.
      */
     public signMessage(message: BigNumberish): Signature<bigint> {
-        return signMessage(this.privateKey, message)
+        const privateKey = isHexadecimal(this.privateKey, false)
+            ? hexadecimalToBuffer(this.privateKey)
+            : this.privateKey
+
+        return signMessage(privateKey, message)
     }
 
     /**
