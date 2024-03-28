@@ -124,10 +124,6 @@ export class Group {
      * @returns The {@link MerkleProof} object.
      */
     public generateMerkleProof(index: number): LeanIMTMerkleProof {
-        if (this.members[index] === 0n) {
-            throw new Error("Failed to generate Merkle proof: member has been removed")
-        }
-
         return this.leanIMT.generateProof(index)
     }
 
