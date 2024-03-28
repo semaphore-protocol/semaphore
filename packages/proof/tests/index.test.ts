@@ -47,7 +47,7 @@ describe("Proof", () => {
             proof = await generateProof(identity, group, message, scope, treeDepth)
 
             expect(typeof proof).toBe("object")
-            expect(proof.merkleTreeRoot).toBe(group.root)
+            expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
         }, 20000)
 
         it("Should generate a Semaphore proof passing a Merkle proof instead of a group", async () => {
@@ -56,7 +56,7 @@ describe("Proof", () => {
             proof = await generateProof(identity, group.generateMerkleProof(2), message, scope, treeDepth)
 
             expect(typeof proof).toBe("object")
-            expect(proof.merkleTreeRoot).toBe(group.root)
+            expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
         }, 20000)
     })
 

@@ -5,7 +5,7 @@ describe("Group", () => {
         it("Should create a group", () => {
             const group = new Group()
 
-            expect(group.root).toBe("0")
+            expect(group.root).toBe(0n)
             expect(group.depth).toBe(0)
             expect(group.size).toBe(0)
         })
@@ -19,7 +19,7 @@ describe("Group", () => {
             group2.addMember(2n)
             group2.addMember(3n)
 
-            expect(group.root).toContain(group2.root)
+            expect(group.root).toBe(group2.root)
             expect(group.depth).toBe(2)
             expect(group.size).toBe(3)
         })
@@ -64,7 +64,7 @@ describe("Group", () => {
             group.updateMember(0, 1n)
 
             expect(group.size).toBe(2)
-            expect(group.members[0]).toBe("1")
+            expect(group.members[0]).toBe(1n)
         })
     })
 
@@ -76,7 +76,7 @@ describe("Group", () => {
             group.removeMember(0)
 
             expect(group.size).toBe(2)
-            expect(group.members[0]).toBe("0")
+            expect(group.members[0]).toBe(0n)
         })
     })
 
@@ -88,7 +88,7 @@ describe("Group", () => {
 
             const proof = group.generateMerkleProof(0)
 
-            expect(proof.leaf).toBe("1")
+            expect(proof.leaf).toBe(1n)
         })
     })
 
