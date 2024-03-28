@@ -72,6 +72,10 @@ export class Group {
      * @param member The new member to be added.
      */
     public addMember(member: BigNumber) {
+        if (member === 0n || member === "0") {
+            throw new Error("Failed to add member: value cannot be 0")
+        }
+
         this.leanIMT.insert(BigInt(member))
     }
 
@@ -80,6 +84,12 @@ export class Group {
      * @param members New members.
      */
     public addMembers(members: BigNumber[]) {
+        for (const member of members) {
+            if (member === 0n || member === "0") {
+                throw new Error("Failed to add member: value cannot be 0")
+            }
+        }
+
         this.leanIMT.insertMany(members.map(BigInt))
     }
 
@@ -89,6 +99,10 @@ export class Group {
      * @param member New member value.
      */
     public updateMember(index: number, member: BigNumber) {
+        if (this.members[index] === 0n) {
+            throw new Error("Failed to update member: it has been removed")
+        }
+
         this.leanIMT.update(index, BigInt(member))
     }
 
@@ -97,7 +111,11 @@ export class Group {
      * @param index The index of the member to be removed.
      */
     public removeMember(index: number) {
-        this.leanIMT.update(index, BigInt(0))
+        if (this.members[index] === 0n) {
+            throw new Error("Failed to remove member: it has already been removed")
+        }
+
+        this.leanIMT.update(index, 0n)
     }
 
     /**
@@ -105,8 +123,8 @@ export class Group {
      * @param index The index of the member.
      * @returns The {@link MerkleProof} object.
      */
-    public generateMerkleProof(_index: number): LeanIMTMerkleProof {
-        return this.leanIMT.generateProof(_index)
+    public generateMerkleProof(index: number): LeanIMTMerkleProof {
+        return this.leanIMT.generateProof(index)
     }
 
     /**
