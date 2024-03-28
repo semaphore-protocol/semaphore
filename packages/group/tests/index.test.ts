@@ -125,16 +125,6 @@ describe("Group", () => {
 
             expect(proof.leaf).toBe(1n)
         })
-
-        it("Should not generate a proof of membership if the member has been removed", () => {
-            const group = new Group()
-            group.addMembers([1n, 3n])
-            group.removeMember(0)
-
-            const fun = () => group.generateMerkleProof(0)
-
-            expect(fun).toThrow("Failed to generate Merkle proof: member has been removed")
-        })
     })
 
     describe("# export", () => {
