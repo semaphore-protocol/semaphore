@@ -26,7 +26,7 @@ describe("Proof", () => {
 
     describe("# generateProof", () => {
         it("Should not generate a Semaphore proof if the tree depth is not supported", async () => {
-            const group = new Group([BigInt(1), BigInt(2), identity.commitment])
+            const group = new Group([1n, 2n, identity.commitment])
 
             const fun = () => generateProof(identity, group, message, scope, 13)
 
@@ -34,7 +34,7 @@ describe("Proof", () => {
         })
 
         it("Should not generate Semaphore proofs if the identity is not part of the group", async () => {
-            const group = new Group([BigInt(1), BigInt(2)])
+            const group = new Group([1n, 2n])
 
             const fun = () => generateProof(identity, group, message, scope, treeDepth)
 
@@ -42,7 +42,7 @@ describe("Proof", () => {
         })
 
         it("Should generate a Semaphore proof", async () => {
-            const group = new Group([BigInt(1), BigInt(2), identity.commitment])
+            const group = new Group([1n, 2n, identity.commitment])
 
             proof = await generateProof(identity, group, message, scope, treeDepth)
 
@@ -51,7 +51,7 @@ describe("Proof", () => {
         }, 20000)
 
         it("Should generate a Semaphore proof passing a Merkle proof instead of a group", async () => {
-            const group = new Group([BigInt(1), BigInt(2), identity.commitment])
+            const group = new Group([1n, 2n, identity.commitment])
 
             proof = await generateProof(identity, group.generateMerkleProof(2), message, scope, treeDepth)
 
