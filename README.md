@@ -60,7 +60,7 @@
 </div>
 
 | Semaphore is a generic privacy layer. Leveraging zero-knowledge technology, users can prove their membership in groups and send messages (extending from votes to endorsements) off-chain or across EVM-compatible blockchains, all without revealing their personal identity. |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 
 The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/scheme.png). However, Semaphore also provides [Solidity contracts](/packages/contracts) and JavaScript libraries to make the steps for offchain proof creation and onchain/offchain verification easier. To learn more about Semaphore visit [semaphore.pse.dev](https://semaphore.pse.dev).
 
