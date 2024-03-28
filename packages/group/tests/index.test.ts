@@ -33,6 +33,14 @@ describe("Group", () => {
 
             expect(group.size).toBe(1)
         })
+
+        it("Should not add a member to a group if its value is 0", () => {
+            const group = new Group()
+
+            const fun = () => group.addMember(0n)
+
+            expect(fun).toThrow("Failed to add member: value cannot be 0")
+        })
     })
 
     describe("# addMembers", () => {
@@ -42,6 +50,14 @@ describe("Group", () => {
             group.addMembers([1n, 3n])
 
             expect(group.size).toBe(2)
+        })
+
+        it("Should not add many members to a group if any value is 0", () => {
+            const group = new Group()
+
+            const fun = () => group.addMembers([1n, 0n])
+
+            expect(fun).toThrow("Failed to add member: value cannot be 0")
         })
     })
 
@@ -66,6 +82,16 @@ describe("Group", () => {
             expect(group.size).toBe(2)
             expect(group.members[0]).toBe(1n)
         })
+
+        it("Should not update a member in a group if it has previously been removed", () => {
+            const group = new Group()
+            group.addMembers([1n, 3n])
+            group.removeMember(0)
+
+            const fun = () => group.updateMember(0, 1n)
+
+            expect(fun).toThrow("Failed to update member: it has been removed")
+        })
     })
 
     describe("# removeMember", () => {
@@ -78,17 +104,36 @@ describe("Group", () => {
             expect(group.size).toBe(2)
             expect(group.members[0]).toBe(0n)
         })
+
+        it("Should not remove a member from a group if it has already been removed", () => {
+            const group = new Group()
+            group.addMembers([1n, 3n])
+            group.removeMember(0)
+
+            const fun = () => group.removeMember(0)
+
+            expect(fun).toThrow("Failed to remove member: it has already been removed")
+        })
     })
 
     describe("# generateMerkleProof", () => {
         it("Should generate a proof of membership", () => {
             const group = new Group()
-
             group.addMembers([1n, 3n])
 
             const proof = group.generateMerkleProof(0)
 
             expect(proof.leaf).toBe(1n)
+        })
+
+        it("Should not generate a proof of membership if the member has been removed", () => {
+            const group = new Group()
+            group.addMembers([1n, 3n])
+            group.removeMember(0)
+
+            const fun = () => group.generateMerkleProof(0)
+
+            expect(fun).toThrow("Failed to generate Merkle proof: member has been removed")
         })
     })
 
