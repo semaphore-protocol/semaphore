@@ -6330,10 +6330,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/circuits@workspace:packages/circuits"
   dependencies:
+    "@semaphore-protocol/core": "workspace:^"
     "@types/mocha": "npm:^10.0.6"
+    "@zk-kit/baby-jubjub": "npm:^1.0.0-beta"
     "@zk-kit/circuits": "npm:0.2.4"
-    "@zk-kit/eddsa-poseidon": "npm:0.6.0"
-    "@zk-kit/imt": "npm:^2.0.0-beta.2"
     circomkit: "npm:^0.0.19"
     circomlib: "npm:2.0.5"
     mocha: "npm:^10.2.0"
@@ -6436,7 +6436,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/core@npm:4.0.0-beta.7, @semaphore-protocol/core@workspace:packages/core":
+"@semaphore-protocol/core@npm:4.0.0-beta.7, @semaphore-protocol/core@workspace:^, @semaphore-protocol/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/core@workspace:packages/core"
   dependencies:
@@ -8645,21 +8645,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/baby-jubjub@npm:0.2.0":
-  version: 0.2.0
-  resolution: "@zk-kit/baby-jubjub@npm:0.2.0"
-  dependencies:
-    "@zk-kit/utils": "npm:0.3.0"
-  checksum: 10/764804bd96adaa2b7df3110d64ef327e6ab0d2c4bf0fe60a81ed6be3770ee6b6e74d1f67e574be23bd830aa1c8ce94137f909d5d4fde7005bc50ca82d0ee6c10
-  languageName: node
-  linkType: hard
-
 "@zk-kit/baby-jubjub@npm:0.3.0":
   version: 0.3.0
   resolution: "@zk-kit/baby-jubjub@npm:0.3.0"
   dependencies:
     "@zk-kit/utils": "npm:0.6.0"
   checksum: 10/a5b6f80e277c90be6874f60632cb3818ac3267434c52173474bc475798237e0c0fee92522a434cb2cb8b512b3246d5fb41ae38b117aeeb814b62f57875cfc6d9
+  languageName: node
+  linkType: hard
+
+"@zk-kit/baby-jubjub@npm:^1.0.0-beta":
+  version: 1.0.0-beta
+  resolution: "@zk-kit/baby-jubjub@npm:1.0.0-beta"
+  dependencies:
+    "@zk-kit/utils": "npm:1.0.0-beta"
+  checksum: 10/417b15946916a398117e55c7293391c3231d5d9b59deda7a745e80ca8816fa79048bcfc0dec9ed490fec9599e1bee1d73c3148b53e373a1faea57f20d5af9afd
   languageName: node
   linkType: hard
 
@@ -8683,16 +8683,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/eddsa-poseidon@npm:0.6.0":
-  version: 0.6.0
-  resolution: "@zk-kit/eddsa-poseidon@npm:0.6.0"
-  dependencies:
-    "@zk-kit/baby-jubjub": "npm:0.2.0"
-    "@zk-kit/utils": "npm:0.3.0"
-  checksum: 10/ba32c455675d82ceb88eba30ff9907d80bab266fb3fc2fe9ebf5945c39e23d833b752fb67b8ac3dba294d457918b3178e4c390df45fb587d358352110974e45c
-  languageName: node
-  linkType: hard
-
 "@zk-kit/imt.sol@npm:2.0.0-beta.8":
   version: 2.0.0-beta.8
   resolution: "@zk-kit/imt.sol@npm:2.0.0-beta.8"
@@ -8706,20 +8696,6 @@ __metadata:
   version: 2.0.0-beta.2
   resolution: "@zk-kit/imt@npm:2.0.0-beta.2"
   checksum: 10/b99ab587f4a5f147531160feb9b27e5505659d5bb34fe2cbbc8e3d3bedc95febb3cf1ffcd4f75570feb03a2d929063e9b5f9d638ac2c1bba0204ca9cdc1fa2c0
-  languageName: node
-  linkType: hard
-
-"@zk-kit/imt@npm:^2.0.0-beta.2":
-  version: 2.0.0-beta.3
-  resolution: "@zk-kit/imt@npm:2.0.0-beta.3"
-  checksum: 10/d0eaa0ab98c42d12b13e42c6842e49aaeae48a50ccc54bce9c8d4bd18fe35f58bb46967ab82df09462c1788b4d814bc2e64d0048dc94cac8803d2bbc08f0f5fe
-  languageName: node
-  linkType: hard
-
-"@zk-kit/utils@npm:0.3.0":
-  version: 0.3.0
-  resolution: "@zk-kit/utils@npm:0.3.0"
-  checksum: 10/aa889d4ad2f88930a327bf987c95f8b9b4ece0b39b6f7685d14d1fd3803475e6900a9db489f876ae9d4b3a1e4cb99313870969c9b67b089d45b75f8faf44ffd5
   languageName: node
   linkType: hard
 
