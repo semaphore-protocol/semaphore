@@ -28,9 +28,9 @@
         "circomlib": "2.0.5"
     },
     "devDependencies": {
+        "@semaphore-protocol/core": "workspace:^",
         "@types/mocha": "^10.0.6",
-        "@zk-kit/eddsa-poseidon": "0.6.0",
-        "@zk-kit/imt": "^2.0.0-beta.2",
+        "@zk-kit/baby-jubjub": "1.0.0-beta",
         "circomkit": "^0.0.19",
         "mocha": "^10.2.0",
         "poseidon-lite": "^0.2.0"
