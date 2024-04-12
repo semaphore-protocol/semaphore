@@ -241,7 +241,7 @@ contract SemaphoreVerifier {
 
         assembly {
             function checkField(v) {
-                if iszero(lt(v, q)) {
+                if iszero(lt(v, r)) {
                     mstore(0, 0)
                     return(0, 0x20)
                 }
