@@ -35,16 +35,12 @@ template Semaphore(MAX_DEPTH) {
     // The output signals are all public.
     signal output merkleRoot, nullifier;
 
-    // The secret scalar must be in the prime subgroup order 'r'.
-    var r = 2736030358979909402780800718157159386076813972158567259200215660948447373041;
+    // The secret scalar must be in the prime subgroup order 'l'.
+    var l = 2736030358979909402780800718157159386076813972158567259200215660948447373041;
 
-    component isLessThan = LessThan(252);
-    isLessThan.in <== [secret, r];
+    component isLessThan = LessThan(251);
+    isLessThan.in <== [secret, l];
     isLessThan.out === 1;
-
-    component isGreaterThan = GreaterThan(252);
-    isGreaterThan.in <== [secret, 0];
-    isGreaterThan.out === 1;
 
     // Identity generation.
     // The circuit derives the EdDSA public key from a secret using
