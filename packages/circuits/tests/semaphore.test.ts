@@ -4,6 +4,9 @@ import { WitnessTester } from "circomkit"
 import { poseidon2 } from "poseidon-lite"
 import { circomkit, generateMerkleProof } from "./common"
 
+// Prime number of 251 bits.
+const l = 2736030358979909402780800718157159386076813972158567259200215660948447373041n
+
 describe("semaphore", () => {
     let circuit: WitnessTester<
         ["secret", "merkleProofLength", "merkleProofIndices", "merkleProofSiblings", "scope", "message"],
@@ -11,8 +14,6 @@ describe("semaphore", () => {
     >
 
     const MAX_DEPTH = 20
-
-    const identity = new Identity("secret")
 
     const scope = 32
     const message = 43
@@ -26,12 +27,16 @@ describe("semaphore", () => {
     })
 
     it("Should calculate the root and the nullifier correctly", async () => {
-        const group = new Group([identity.commitment, 2n, 3n])
+        const secret = l - 1n
+
+        const commitment = poseidon2(mulPointEscalar(Base8, secret))
+
+        const group = new Group([commitment, 2n, 3n])
 
         const { merkleProofSiblings, merkleProofIndices } = generateMerkleProof(group, 0, MAX_DEPTH)
 
         const INPUT = {
-            secret: identity.secretScalar,
+            secret,
             merkleProofLength: group.depth,
             merkleProofIndices,
             merkleProofSiblings,
@@ -40,7 +45,7 @@ describe("semaphore", () => {
         }
 
         const OUTPUT = {
-            nullifier: poseidon2([scope, identity.secretScalar]),
+            nullifier: poseidon2([scope, secret]),
             merkleRoot: group.root
         }
 
@@ -48,7 +53,7 @@ describe("semaphore", () => {
     })
 
     it("Should not calculate the root and the nullifier correctly", async () => {
-        const secret = 2736030358979909402780800718157159386076813972158567259200215660948447373041n
+        const secret = l
 
         const commitment = poseidon2(mulPointEscalar(Base8, secret))
         const group = new Group([commitment, 2n, 3n])
