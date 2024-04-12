@@ -1,4 +1,4 @@
-import { Group, Identity } from "@semaphore-protocol/core"
+import { Group } from "@semaphore-protocol/core"
 import { Base8, mulPointEscalar } from "@zk-kit/baby-jubjub"
 import { WitnessTester } from "circomkit"
 import { poseidon2 } from "poseidon-lite"
@@ -6,6 +6,9 @@ import { circomkit, generateMerkleProof } from "./common"
 
 // Prime number of 251 bits.
 const l = 2736030358979909402780800718157159386076813972158567259200215660948447373041n
+
+// Prime finite field.
+const r = 21888242871839275222246405745257275088548364400416034343698204186575808495617n
 
 describe("semaphore", () => {
     let circuit: WitnessTester<
@@ -52,8 +55,28 @@ describe("semaphore", () => {
         await circuit.expectPass(INPUT, OUTPUT)
     })
 
-    it("Should not calculate the root and the nullifier correctly", async () => {
+    it("Should not calculate the root and the nullifier correctly if secret > l", async () => {
         const secret = l
+
+        const commitment = poseidon2(mulPointEscalar(Base8, secret))
+        const group = new Group([commitment, 2n, 3n])
+
+        const { merkleProofSiblings, merkleProofIndices } = generateMerkleProof(group, 0, MAX_DEPTH)
+
+        const INPUT = {
+            secret,
+            merkleProofLength: group.depth,
+            merkleProofIndices,
+            merkleProofSiblings,
+            scope,
+            message
+        }
+
+        await circuit.expectFail(INPUT)
+    })
+
+    it("Should not calculate the root and the nullifier correctly if secret = r - 1", async () => {
+        const secret = r - 1n
 
         const commitment = poseidon2(mulPointEscalar(Base8, secret))
         const group = new Group([commitment, 2n, 3n])
