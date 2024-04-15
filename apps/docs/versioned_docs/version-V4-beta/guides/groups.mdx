@@ -174,7 +174,7 @@ pnpm add @semaphore-protocol/contracts
 
 ### Create a group
 
-To create a group initialize your contract with the `Semaphore.sol` address and a group ID.
+To create a group initialize your contract with the `Semaphore.sol` address.
 The `createGroup` function can be used to create a Semaphore group. For example:
 
 ```solidity
@@ -187,16 +187,15 @@ contract YourContract {
 
     uint256 public groupId;
 
-    constructor(ISemaphore _semaphore, uint256 _groupId) {
+    constructor(ISemaphore _semaphore) {
         semaphore = _semaphore;
-        groupId = _groupId;
 
-        semaphore.createGroup(groupId, address(this));
+        groupId = semaphore.createGroup();
     }
 }
 ```
 
-`Semaphore.sol` also includes a mechanism to verify Semaphore proofs created with old Merkle tree roots, the duration of which can optionally be defined by the admin in the `createGroup` function as the third parameter. The default value duration is 1 hour and it should be fine for most use-cases. For more context see the issue [#98](https://github.com/semaphore-protocol/semaphore/issues/98).
+`Semaphore.sol` also includes a mechanism to verify Semaphore proofs created with old Merkle tree roots, the duration of which can optionally be defined by the admin in the `createGroup` function. The default value duration is 1 hour and it should be fine for most use-cases. For more context see the issue [#98](https://github.com/semaphore-protocol/semaphore/issues/98).
 
 ### Add members
 
