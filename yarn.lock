@@ -6332,7 +6332,7 @@ __metadata:
   dependencies:
     "@semaphore-protocol/core": "workspace:^"
     "@types/mocha": "npm:^10.0.6"
-    "@zk-kit/baby-jubjub": "npm:^1.0.0-beta"
+    "@zk-kit/baby-jubjub": "npm:1.0.0-beta"
     "@zk-kit/circuits": "npm:0.2.4"
     circomkit: "npm:^0.0.19"
     circomlib: "npm:2.0.5"
@@ -8654,7 +8654,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/baby-jubjub@npm:^1.0.0-beta":
+"@zk-kit/baby-jubjub@npm:1.0.0-beta":
   version: 1.0.0-beta
   resolution: "@zk-kit/baby-jubjub@npm:1.0.0-beta"
   dependencies:
