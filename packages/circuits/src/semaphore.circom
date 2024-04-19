@@ -3,6 +3,7 @@ pragma circom 2.1.5;
 include "babyjub.circom";
 include "poseidon.circom";
 include "binary-merkle-root.circom";
+include "comparators.circom";
 
 // The Semaphore circuit can be divided into 3 main parts.
 // The first part involves the generation of the Semaphore identity,
@@ -33,6 +34,13 @@ template Semaphore(MAX_DEPTH) {
     // Output signals.
     // The output signals are all public.
     signal output merkleRoot, nullifier;
+
+    // The secret scalar must be in the prime subgroup order 'l'.
+    var l = 2736030358979909402780800718157159386076813972158567259200215660948447373041;
+
+    component isLessThan = LessThan(251);
+    isLessThan.in <== [secret, l];
+    isLessThan.out === 1;
 
     // Identity generation.
     // The circuit derives the EdDSA public key from a secret using

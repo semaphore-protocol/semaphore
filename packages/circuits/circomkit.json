@@ -4,7 +4,7 @@
     "version": "2.1.5",
     "circuits": "./circuits.json",
     "dirPtau": "./ptau",
-    "dirCircuits": "./",
+    "dirCircuits": "./src",
     "dirInputs": "./inputs",
     "dirBuild": "./build",
     "optimization": 2,
