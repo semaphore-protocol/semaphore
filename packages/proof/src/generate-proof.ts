@@ -3,12 +3,12 @@ import type { Identity } from "@semaphore-protocol/identity"
 import { MAX_DEPTH, MIN_DEPTH } from "@semaphore-protocol/utils/constants"
 import { requireDefined, requireNumber, requireObject, requireTypes } from "@zk-kit/utils/error-handlers"
 import { packGroth16Proof } from "@zk-kit/utils/proof-packing"
+import { maybeGetSemaphoreSnarkArtifacts, type SnarkArtifacts } from "@zk-kit/utils"
 import type { BigNumberish } from "ethers"
-import { NumericString, groth16 } from "snarkjs"
-import getSnarkArtifacts from "./get-snark-artifacts.node"
+import { type NumericString, groth16 } from "snarkjs"
 import hash from "./hash"
 import toBigInt from "./to-bigint"
-import { SemaphoreProof, SnarkArtifacts } from "./types"
+import type { SemaphoreProof } from "./types"
 
 /**
  * It generates a Semaphore proof, i.e. a zero-knowledge proof that an identity that
@@ -27,7 +27,7 @@ import { SemaphoreProof, SnarkArtifacts } from "./types"
  * @param message The Semaphore message.
  * @param scope The Semaphore scope.
  * @param merkleTreeDepth The depth of the tree with which the circuit was compiled.
- * @param snarkArtifacts The SNARK artifacts.
+ * @param snarkArtifacts See {@link https://zkkit.pse.dev/interfaces/_zk_kit_utils.SnarkArtifacts.html | SnarkArtifacts}.
  * @returns The Semaphore proof ready to be verified.
  */
 export default async function generateProof(
@@ -83,9 +83,8 @@ export default async function generateProof(
     }
 
     // If the Snark artifacts are not defined they will be automatically downloaded.
-    if (!snarkArtifacts) {
-        snarkArtifacts = await getSnarkArtifacts(merkleTreeDepth)
-    }
+    snarkArtifacts ??= await maybeGetSemaphoreSnarkArtifacts(merkleTreeDepth)
+    const { wasm, zkey } = snarkArtifacts
 
     // The index must be converted to a list of indices, 1 for each tree level.
     // The missing siblings can be set to 0, as they won't be used in the circuit.
@@ -109,8 +108,8 @@ export default async function generateProof(
             scope: hash(scope),
             message: hash(message)
         },
-        snarkArtifacts.wasmFilePath,
-        snarkArtifacts.zkeyFilePath
+        wasm,
+        zkey
     )
 
     return {

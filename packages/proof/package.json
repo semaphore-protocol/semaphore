@@ -53,7 +53,7 @@
     },
     "dependencies": {
         "@semaphore-protocol/utils": "4.0.0-beta.7",
-        "@zk-kit/utils": "0.8.1",
+        "@zk-kit/utils": "1.0.0-beta.4",
         "ethers": "6.10.0",
         "snarkjs": "0.7.3"
     }
