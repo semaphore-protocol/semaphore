@@ -1,4 +1,3 @@
-import alias from "@rollup/plugin-alias"
 import json from "@rollup/plugin-json"
 import typescript from "@rollup/plugin-typescript"
 import * as fs from "fs"
