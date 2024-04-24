@@ -86,5 +86,11 @@ typechain-types
 !.yarn/sdks
 !.yarn/versions
 
+# asdf
+.tool-versions
+
+# direnv
+.envrc
+
 # Other
 snark-artifacts
