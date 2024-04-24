@@ -78,7 +78,7 @@ group: _Group_,
 message: _BigNumberish_ | _Uint8Array_ | string,
 scope: _BigNumberish_ | _Uint8Array_ | string,
 merkleTreeDepth: _number_,
-snarkArtifacts?: _SnarkArtifacts_
+snarkArtifacts?: [_SnarkArtifacts_](https://github.com/privacy-scaling-explorations/zk-kit/blob/88acdc6d8fa5f3f2a8ecd1e1a0140244b970c551/packages/utils/src/types/index.ts#L46)
 ): Promise\<_SemaphoreProof_>
 
 ```typescript
@@ -95,12 +95,14 @@ const group = new Group([identity1.commitment, identity2.commitment, identity3.c
 const message = "Hello world"
 const scope = "Semaphore"
 
+// snarkArtifacts not provided
+// so they will be automatically downloaded (see https://github.com/privacy-scaling-explorations/snark-artifacts)
 const proof1 = await generateProof(identity1, group, message, scope)
 
 // You can also specify the maximum tree depth supported by the proof.
 const proof2 = await generateProof(identity2, group, message, scope, 20)
 
-// You can also override our default zkey/wasm files (@zk-kit/semaphore-artifacts), that are otherwise automatically downloaded.
+// You can also override our default zkey/wasm files
 const proof3 = await generateProof(identity3, group, message, scope, 20, {
     wasm: "./semaphore.wasm",
     zkey: "./semaphore.zkey"
