@@ -6536,7 +6536,7 @@ __metadata:
     "@rollup/plugin-typescript": "npm:^11.1.6"
     "@semaphore-protocol/utils": "npm:4.0.0-beta.7"
     "@types/snarkjs": "npm:^0"
-    "@zk-kit/utils": "npm:0.8.1"
+    "@zk-kit/utils": "npm:^1.0.0-beta.4"
     ethers: "npm:6.10.0"
     poseidon-lite: "npm:^0.2.0"
     rimraf: "npm:^5.0.5"
@@ -8723,6 +8723,15 @@ __metadata:
   dependencies:
     buffer: "npm:^6.0.3"
   checksum: 10/97e2c5c703e6c5ffd43149e8f92399a9511b6042d90b394c3340afcac179be8115c0f27ff26e5f8ea38321d31ef8fedfdd5bc9b55b5e051ab8b87c2940428651
+  languageName: node
+  linkType: hard
+
+"@zk-kit/utils@npm:^1.0.0-beta.4":
+  version: 1.0.0-beta.4
+  resolution: "@zk-kit/utils@npm:1.0.0-beta.4"
+  dependencies:
+    buffer: "npm:^6.0.3"
+  checksum: 10/6e9ba05bca4db2fd1c08c8a4dfd3c4ff5bcab205d0fb679278898c40d36cd4d07bbc0d33ac1c97a98e4110ff0370d1138f31fc1f20a6d3914b41d8c063fa1df3
   languageName: node
   linkType: hard
 
