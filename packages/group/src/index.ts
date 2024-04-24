@@ -144,10 +144,10 @@ export class Group {
      * @param nodes The stringified JSON of the group.
      * @returns The {@link Group} instance.
      */
-    static import(exportedGroup: string): Group {
+    static import(nodes: string): Group {
         const group = new Group()
 
-        group.leanIMT.import(exportedGroup)
+        group.leanIMT.import(nodes)
 
         return group
     }
