@@ -52,6 +52,10 @@ export default async function generateProof(
         requireNumber(merkleTreeDepth, "merkleTreeDepth")
     }
 
+    if (snarkArtifacts) {
+        requireObject(snarkArtifacts, "snarkArtifacts")
+    }
+
     // Message and scope can be strings, numbers or buffers (i.e. Uint8Array).
     // They will be converted to bigints anyway.
     message = toBigInt(message)
