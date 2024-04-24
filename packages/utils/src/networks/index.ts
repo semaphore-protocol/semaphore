@@ -46,7 +46,7 @@ export function getHardhatNetworks(privateKey?: string) {
 /**
  * Returns name, address and start block of a Semaphore contract deployed
  * on a specific supported network.
- * @param The network supported by Semaphore.
+ * @param supportedNetwork The network supported by Semaphore.
  * @returns An object with name, address and start block of the deployed contract.
  */
 export function getDeployedContract(supportedNetwork: SupportedNetwork) {
