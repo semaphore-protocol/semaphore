@@ -95,14 +95,14 @@ const group = new Group([identity1.commitment, identity2.commitment, identity3.c
 const message = "Hello world"
 const scope = "Semaphore"
 
-// snarkArtifacts not provided
-// so they will be automatically downloaded (see https://github.com/privacy-scaling-explorations/snark-artifacts)
+// snarkArtifacts are not provided.
+// So they will be automatically downloaded (see https://github.com/privacy-scaling-explorations/snark-artifacts).
 const proof1 = await generateProof(identity1, group, message, scope)
 
 // You can also specify the maximum tree depth supported by the proof.
 const proof2 = await generateProof(identity2, group, message, scope, 20)
 
-// You can also override our default zkey/wasm files
+// You can also override our default zkey/wasm files.
 const proof3 = await generateProof(identity3, group, message, scope, 20, {
     wasm: "./semaphore.wasm",
     zkey: "./semaphore.zkey"
