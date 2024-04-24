@@ -100,10 +100,10 @@ const proof1 = await generateProof(identity1, group, message, scope)
 // You can also specify the maximum tree depth supported by the proof.
 const proof2 = await generateProof(identity2, group, message, scope, 20)
 
-// You can also specify the default zkey/wasm files.
+// You can also override our default zkey/wasm files (@zk-kit/semaphore-artifacts), that are otherwise automatically downloaded.
 const proof3 = await generateProof(identity3, group, message, scope, 20, {
-    wasmFilePath: "./semaphore.wasm",
-    zkeyFilePath: "./semaphore.zkey"
+    wasm: "./semaphore.wasm",
+    zkey: "./semaphore.zkey"
 })
 ```
 
