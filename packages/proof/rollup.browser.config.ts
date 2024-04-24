@@ -34,14 +34,12 @@ export default {
         "ethers/crypto",
         "ethers/utils",
         "ethers/abi",
+        "@zk-kit/utils",
         "@zk-kit/utils/error-handlers",
         "@zk-kit/utils/proof-packing",
         "@semaphore-protocol/utils/constants"
     ],
     plugins: [
-        alias({
-            entries: [{ find: "./get-snark-artifacts.node", replacement: "./get-snark-artifacts.browser" }]
-        }),
         typescript({
             tsconfig: "./build.tsconfig.json"
         }),
