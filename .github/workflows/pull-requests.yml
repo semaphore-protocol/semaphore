@@ -52,8 +52,8 @@ jobs:
             # https://github.com/iden3/circuits/blob/8fffb6609ecad0b7bcda19bb908bdb544bdb3cf7/.github/workflows/main.yml#L18-L22
             - name: Setup Circom deps
               run: |
-                sudo rm /etc/apt/sources.list.d/microsoft-prod.list
-                sudo apt-get update && sudo apt-get install -y wget nlohmann-json3-dev libgmp-dev nasm g++ build-essential
+                  sudo rm /etc/apt/sources.list.d/microsoft-prod.list
+                  sudo apt-get update && sudo apt-get install -y wget nlohmann-json3-dev libgmp-dev nasm g++ build-essential
 
             - name: Setup Circom
               run: wget https://github.com/iden3/circom/releases/latest/download/circom-linux-amd64 && sudo mv ./circom-linux-amd64 /usr/bin/circom && sudo chmod +x /usr/bin/circom
