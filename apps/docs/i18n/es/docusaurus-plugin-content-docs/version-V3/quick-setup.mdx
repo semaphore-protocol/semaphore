@@ -31,37 +31,34 @@ El CLI [`semaphore`](https://github.com/semaphore-protocol/semaphore/tree/main/p
 Para comenzar a trabajar en su proyecto, instale las siguientes dependencias:
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    cd my-app
+    npm i
+    ```
+  </TabItem>
 
-```bash
-cd my-app
-npm i
-```
+  <TabItem value="yarn">
+    ```bash
+    cd my-app
+    yarn
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-cd my-app
-yarn
-```
-</TabItem>
-
-<TabItem value="pnpm">
-
-```bash
-cd my-app
-pnpm install
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    cd my-app
+    pnpm install
+    ```
+  </TabItem>
 </Tabs>
 
 ## Output
@@ -116,34 +113,31 @@ cd apps/contracts
 Y compile sus contratos al correr:
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm run compile
+    ```
+  </TabItem>
 
-```bash
-npm run compile
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn compile
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn compile
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm compile
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm compile
+    ```
+  </TabItem>
 </Tabs>
 
 ### Pruebe los contratos
@@ -151,100 +145,91 @@ pnpm compile
 Pruebe sus contratos al correr:
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm test
+    ```
+  </TabItem>
 
-```bash
-npm test
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn test
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn test
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm test
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm test
+    ```
+  </TabItem>
 </Tabs>
 
 Genere un reporte de la prueba de cobertura:
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm run test:coverage
+    ```
+  </TabItem>
 
-```bash
-npm run test:coverage
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn test:coverage
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn test:coverage
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm test:coverage
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm test:coverage
+    ```
+  </TabItem>
 </Tabs>
 
 O un reporte de la prueba de gas:
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm run test:report-gas
+    ```
+  </TabItem>
 
-```bash
-npm run test:report-gas
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn test:report-gas
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn test:report-gas
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm test:report-gas
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm test:report-gas
+    ```
+  </TabItem>
 </Tabs>
 
 ### Desplegar contratos
@@ -255,82 +240,76 @@ En la carpeta raíz del proyecto:
 
 1. Agregue sus variables de entorno en el archivo `.env`.
 
-    :::note
-    Deberá por lo menos configurar un URL válido en Ethereum (ejemplo: Infura) y una llave privada con algunos ethers.
-    :::
+   :::note
+   Deberá por lo menos configurar un URL válido en Ethereum (ejemplo: Infura) y una llave privada con algunos ethers.
+   :::
 
 2. Vaya a la carpeta `apps/contracts` y desplegue su contrato.
 
-    <Tabs
-    defaultValue="npm"
-    groupId="package-managers"
-    values={[
+   <Tabs
+     defaultValue="npm"
+     groupId="package-managers"
+     values={[
     {label: 'npm', value: 'npm'},
     {label: 'Yarn', value: 'yarn'},
     {label: 'pnpm', value: 'pnpm'}
-    ]}>
-    <TabItem value="npm">
+    ]}
+   >
+     <TabItem value="npm">
+       ```bash
+       npm run deploy -- --semaphore <semaphore-address> --group <group-id> --network goerli
+       ```
+     </TabItem>
 
-    ```bash
-    npm run deploy -- --semaphore <semaphore-address> --group <group-id> --network goerli
-    ```
+     <TabItem value="yarn">
+       ```bash
+       yarn deploy --semaphore <semaphore-address> --group <group-id> --network goerli
+       ```
+     </TabItem>
 
-    </TabItem>
-    <TabItem value="yarn">
+     <TabItem value="pnpm">
+       ```bash
+       pnpm deploy --semaphore <semaphore-address> --group <group-id> --network goerli
+       ```
+     </TabItem>
+   </Tabs>
 
-    ```bash
-    yarn deploy --semaphore <semaphore-address> --group <group-id> --network goerli
-    ```
+   :::note
+   Revise las direcciones de los contratos de Semaphore [aquí](/V3/deployed-contracts).
+   :::
 
-    </TabItem>
-    <TabItem value="pnpm">
-
-    ```bash
-    pnpm deploy --semaphore <semaphore-address> --group <group-id> --network goerli
-    ```
-
-    </TabItem>
-    </Tabs>
-
-    :::note
-    Revise las direcciones de los contratos de Semaphore [aquí](/V3/deployed-contracts).
-    :::
-
-    :::caution
-    El group id (id del grupo) es un número.
-    :::
+   :::caution
+   El group id (id del grupo) es un número.
+   :::
 
 ### Inicie la app
 
 Inicie la aplicación:
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm run dev
+    ```
+  </TabItem>
 
-```bash
-npm run dev
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn dev
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn dev
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm dev
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm dev
+    ```
+  </TabItem>
 </Tabs>

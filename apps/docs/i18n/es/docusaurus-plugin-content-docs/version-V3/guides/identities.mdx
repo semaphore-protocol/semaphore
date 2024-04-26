@@ -11,48 +11,47 @@ import TabItem from "@theme/TabItem"
 Para unirse a un [grupo Semaphore](/V3/glossary#grupo-semaphore), un usuario primero deberá crear una [identidad Semaphore](/V3/glossary#identidad-semaphore).
 Una identidad Semaphore contiene dos valores generados junto con la identidad:
 
--   Identity trapdoor (Identidad trampilla)
--   Identity nullifier (Anulador de identidad)
+- Identity trapdoor (Identidad trampilla)
+- Identity nullifier (Anulador de identidad)
 
 Para utilizar y verificar su identidad, la persona dueña de la identidad (usuario) debe conocer los valores trapdoor y nullifier.
 Para prevenir fraudes, la persona dueña debe conservar de forma secreta ambos valores.
 
 ## Crear identidades
 
-En su código, utilice la librería [`@semaphore-protocol/identity`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/identity) para crear una identidad Semaphore _de forma determinística_ (del hash de un mensaje) o _de forma aleatoria_.
+En su código, utilice la librería [`@semaphore-protocol/identity`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/identity) para crear una identidad Semaphore *de forma determinística* (del hash de un mensaje) o *de forma aleatoria*.
 
--   [**Crear identidades aleatorias**](#crear-identidades-aleatorias)
--   [**Crear identidades determinísticas**](#crear-identidades-determinísticas)
+- [**Crear identidades aleatorias**](#crear-identidades-aleatorias)
+- [**Crear identidades determinísticas**](#crear-identidades-determinísticas)
 
 ### Instalar librería:
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm install @semaphore-protocol/identity@^3
+    ```
+  </TabItem>
 
-```bash
-npm install @semaphore-protocol/identity@^3
-```
-</TabItem>
-<TabItem value="yarn">
-```bash
-yarn add @semaphore-protocol/identity@^3
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn add @semaphore-protocol/identity@^3
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm add @semaphore-protocol/identity@^3
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm add @semaphore-protocol/identity@^3
+    ```
+  </TabItem>
 </Tabs>
 
 ### Crear identidades aleatorias
@@ -67,8 +66,8 @@ const { trapdoor, nullifier, commitment } = new Identity()
 
 La nueva identidad contiene dos valores aleatorios secretos: `trapdoor` y `nullifier`, y un valor público: `commitment`.
 
-El hash Poseidon del identity nullifier y trapdoor se conoce como _identity secret_ (el secreto de identidad),
-y su hash es el _identity commitment_ (compromiso de identidad).
+El hash Poseidon del identity nullifier y trapdoor se conoce como *identity secret* (el secreto de identidad),
+y su hash es el *identity commitment* (compromiso de identidad).
 
 Un identity commitment (compromiso de identidad), de forma similar a las direcciones Ethereum, es un valor público que se utiliza en los grupos Semaphore para representar la
 identidad de un miembro del grupo. Los valores secretos son similares a las llaves privadas
@@ -77,7 +76,7 @@ Ethereum y se utilizan para generar pruebas de conocimiento cero (ZKP) Semaphore
 ### Crear identidades determinísticas
 
 Si transmite un mensaje como un parámetro, Semaphore genera `trapdoor` y `nullifier`
-del hash _SHA256_ del mensaje.
+del hash *SHA256* del mensaje.
 El mensaje puede ser una contraseña o un mensaje que el usuario firma de forma criptográfica con una llave privada.
 
 Al utilizar identidades determinísticas siempre deberá mantener secreto el mensaje.

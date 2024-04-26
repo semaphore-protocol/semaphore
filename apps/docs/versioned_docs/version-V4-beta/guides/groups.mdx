@@ -11,9 +11,9 @@ import TabItem from "@theme/TabItem"
 A [Semaphore group](/glossary/#group) contains [identity commitments](/glossary/#identity-commitment) of group members.
 Example uses of groups include the following:
 
--   poll question that attendees join to rate an event,
--   ballot that members join to vote on a proposal,
--   whistleblowers who are verified employees of an organization.
+- poll question that attendees join to rate an event,
+- ballot that members join to vote on a proposal,
+- whistleblowers who are verified employees of an organization.
 
 :::info
 Semaphore V4 uses the [ZK-Kit](https://github.com/privacy-scaling-explorations/zk-kit) LeanIMT (i.e., Lean Incremental
@@ -28,34 +28,31 @@ Use the [`@semaphore-protocol/group`](https://github.com/semaphore-protocol/sema
 ### Install package
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm install @semaphore-protocol/group
+    ```
+  </TabItem>
 
-```bash
-npm install @semaphore-protocol/group
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn add @semaphore-protocol/group
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn add @semaphore-protocol/group
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm add @semaphore-protocol/group
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm add @semaphore-protocol/group
+    ```
+  </TabItem>
 </Tabs>
 
 :::info
@@ -142,34 +139,31 @@ Use the [`@semaphore-protocol/contracts`](https://github.com/semaphore-protocol/
 ### Install package
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm install @semaphore-protocol/contracts
+    ```
+  </TabItem>
 
-```bash
-npm install @semaphore-protocol/contracts
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn add @semaphore-protocol/contracts
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn add @semaphore-protocol/contracts
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm add @semaphore-protocol/contracts
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm add @semaphore-protocol/contracts
+    ```
+  </TabItem>
 </Tabs>
 
 ### Create a group
@@ -240,4 +234,3 @@ function removeMember(uint256 identityCommitment, uint256[] calldata merkleProof
 :::info
 If you want to see an example of a working contract, have a look at the [`contracts-hardhat`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli-template-contracts-hardhat) CLI template. You can also create a project with that template by running `semaphore create my-app --template contracts-hardhat`.
 :::
-

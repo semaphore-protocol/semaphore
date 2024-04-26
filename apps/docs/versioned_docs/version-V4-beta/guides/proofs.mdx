@@ -10,8 +10,8 @@ import TabItem from "@theme/TabItem"
 
 Once a user joins a [Semaphore group](/glossary#group) with their [Semaphore identity](/glossary#identity), the user can send their anonymous [message](/glossary#message) with a zero-knowledge proof that proves the following:
 
--   the user is a member of the group,
--   the same user created the message and the proof.
+- the user is a member of the group,
+- the same user created the message and the proof.
 
 A unique [nullifier](/glossary#nullifier) is also generated for each proof that can be used to check whether that proof has already been validated.
 
@@ -20,34 +20,31 @@ A unique [nullifier](/glossary#nullifier) is also generated for each proof that 
 In your code, use the [`@semaphore-protocol/proof`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/proof) package to generate and verify a proof.
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm install @semaphore-protocol/proof
+    ```
+  </TabItem>
 
-```bash
-npm install @semaphore-protocol/proof
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn add @semaphore-protocol/proof
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn add @semaphore-protocol/proof
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm add @semaphore-protocol/proof
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm add @semaphore-protocol/proof
+    ```
+  </TabItem>
 </Tabs>
 
 :::info
