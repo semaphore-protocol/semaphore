@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/data",
-    "version": "4.0.0-beta.7",
+    "version": "4.0.0-beta.8",
     "description": "A library to query Semaphore contracts.",
     "type": "module",
     "license": "MIT",
@@ -37,7 +37,7 @@
         "rollup-plugin-cleanup": "^3.2.1"
     },
     "dependencies": {
-        "@semaphore-protocol/utils": "4.0.0-beta.7",
+        "@semaphore-protocol/utils": "4.0.0-beta.8",
         "axios": "1.6.6",
         "ethers": "6.11.0"
     }
