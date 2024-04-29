@@ -12,7 +12,7 @@
         "serve": "docusaurus serve",
         "write-translations": "docusaurus write-translations",
         "write-heading-ids": "docusaurus write-heading-ids",
-        "format": "remark ./**/*.mdx --frail",
+        "format": "remark ./**/*.mdx --frail --quiet",
         "format:write": "remark ./**/*.mdx --output"
     },
     "dependencies": {
