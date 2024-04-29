@@ -2,19 +2,53 @@
     "$schema": "https://turbo.build/schema.json",
     "pipeline": {
         "build": {
-            "dependsOn": ["codegen:sepolia","^build"],
-            "inputs":[
+            "dependsOn": ["codegen:sepolia", "^build"],
+            "inputs": [
                 "tsconfig.json",
                 "{apps,packages}/**/src/**/*.{circom,mdx,sol,ts,tsx,yaml,yml}",
-                "!packages/cli-template-*/**"
+                "!packages/cli-template-*/**",
+                "!{apps,packages}/**/src/**/*.test.{ts}",
+                "!{apps,packages}/**/src/**/test/**/*",
+                "!{apps,packages}/**/{build,dist,generated}/**/tests/**/*"
             ],
-            "outputs": [
-                "{apps,packages}/**/{build,dist,generated}/*.{cjs,js,r1cs,sym,ts,wasm}"
-            ]
+            "outputs": ["{apps,packages}/**/{build,dist,generated}/*.{cjs,js,r1cs,sym,ts,wasm}"]
         },
         "codegen:sepolia": {
-            "inputs": ["apps/subgraph/scripts/generate-subgraph.ts", "apps/subgraph/src/semaphore.ts", "apps/subgraph/{schema.graphql,subgraph.yaml,subgraph.template.yaml}"],
+            "inputs": [
+                "apps/subgraph/scripts/generate-subgraph.ts",
+                "apps/subgraph/src/semaphore.ts",
+                "apps/subgraph/{schema.graphql,subgraph.yaml,subgraph.template.yaml}"
+            ],
             "outputs": ["apps/subgraph/generated/**/*"]
+        },
+        "//#format:prettier": {
+            "inputs": [
+                "*.{js,json,md,ts,yml}",
+                "{apps,packages}/**/*.{json,md,mdx,sol,ts,ts,tsx,yaml,yml}",
+                "!{apps,packages}/**/{build,dist,generated}/**/*"
+            ]
+        },
+        "//#format:write": {
+            "inputs": [
+                "*.{js,json,md,ts,yml}",
+                "{apps,packages}/**/*.{js,json,md,mdx,sol,ts,ts,tsx,yaml,yml}",
+                "!{apps,packages}/**/{build,dist,generated}/**/*"
+            ],
+            "outputs": [
+                "*.{js,json,md,ts,yml}",
+                "{apps,packages}/**/*.{md,mdx,js,json,sol,ts,tsx,yml,yaml}",
+                "!{apps,packages}/**/{build,dist,generated}/**/*"
+            ]
+        },
+        "//#lint:eslint": {
+            "inputs": [
+                "{apps,packages}/**/*.{js,ts,tsx}",
+                "!{apps,packages}/**/{build,dist,generated}/**/*",
+                "packages/cli-template-*/**"
+            ]
+        },
+        "lint:solhint": {
+            "inputs": ["packages/contracts/*.sol"]
         }
     }
 }
