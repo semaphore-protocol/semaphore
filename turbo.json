@@ -41,6 +41,7 @@
             ]
         },
         "//#lint:eslint": {
+            "dependsOn": ["@semaphore-protocol/proof#build"],
             "inputs": [
                 "{apps,packages}/**/*.{js,ts,tsx}",
                 "!{apps,packages}/**/{build,dist,generated}/**/*",
@@ -48,6 +49,7 @@
             ]
         },
         "lint:solhint": {
+            "dependsOn": ["^build"],
             "inputs": ["packages/contracts/*.sol"]
         }
     }
