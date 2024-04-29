@@ -295,13 +295,13 @@ yarn lint
 Run [Prettier](https://prettier.io/) to check formatting rules:
 
 ```bash
-yarn prettier
+yarn format
 ```
 
 Or to automatically format the code:
 
 ```bash
-yarn prettier:write
+yarn format:write
 ```
 
 ### Conventional commits

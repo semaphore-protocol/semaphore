@@ -70,65 +70,59 @@ Para resolver eso:
 1- Instale `@esbuild-plugins/node-globals-polyfill` y `@esbuild-plugins/node-modules-polyfill`
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm install @esbuild-plugins/node-globals-polyfill
+    ```
+  </TabItem>
 
-```bash
-npm install @esbuild-plugins/node-globals-polyfill
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn add @esbuild-plugins/node-globals-polyfill
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn add @esbuild-plugins/node-globals-polyfill
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm add @esbuild-plugins/node-globals-polyfill
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm add @esbuild-plugins/node-globals-polyfill
+    ```
+  </TabItem>
 </Tabs>
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm install @esbuild-plugins/node-modules-polyfill
+    ```
+  </TabItem>
 
-```bash
-npm install @esbuild-plugins/node-modules-polyfill
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn add @esbuild-plugins/node-modules-polyfill
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn add @esbuild-plugins/node-modules-polyfill
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm add @esbuild-plugins/node-modules-polyfill
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm add @esbuild-plugins/node-modules-polyfill
+    ```
+  </TabItem>
 </Tabs>
 
 2- Modifique `vite.config.ts` para añadirlos:

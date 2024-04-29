@@ -11,70 +11,67 @@ import TabItem from "@theme/TabItem"
 Un [grupo Semaphore](/V3/glossary/#grupo-semaphore) contiene los [identity commitments](/V3/glossary/#compromiso-de-identidad-identity-commitment) (compromisos de identidad) de miembros del grupo.
 Estos son algunos ejemplos de uso de los grupos:
 
--   Encuesta con preguntas a la que se unen las personas que acudieron a un evento para calificarlo,
--   votación a la que se unen los miembros para votar por una propuesta,
--   Denunciantes que están verificados como empleados de una organización.
+- Encuesta con preguntas a la que se unen las personas que acudieron a un evento para calificarlo,
+- votación a la que se unen los miembros para votar por una propuesta,
+- Denunciantes que están verificados como empleados de una organización.
 
 Un grupo Semaphore es un [árbol de Merkle incremental](/V3/glossary/#árbol-de-merkle-merkle-tree), y los miembros del grupo (por ejemplo, [identity commitments](/V3/glossary/#compromiso-de-identidad-identity-commitment)) son las hojas del árbol.
 Los grupos Semaphore determinan los siguientes tres parámetro:
 
--   **Group id**: un identificador único para el grupo;
--   **Tree depth**: el número máximo de miembros que puede contener un grupo (`max size = 2 ^ tree depth`);
--   **Members** la lista de miembros para inicializar el grupo.
+- **Group id**: un identificador único para el grupo;
+- **Tree depth**: el número máximo de miembros que puede contener un grupo (`max size = 2 ^ tree depth`);
+- **Members** la lista de miembros para inicializar el grupo.
 
 Aprenda cómo trabajar con grupos.
 
--   [**Grupos off-chain**](#grupos-off-chain-externos-a-la-cadena)
--   [**Grupos on-chain**](#grupos-on-chain)
+- [**Grupos off-chain**](#grupos-off-chain-externos-a-la-cadena)
+- [**Grupos on-chain**](#grupos-on-chain)
 
 ## Grupos off-chain (externos a la cadena)
 
--   [Crear un grupo](#crear-un-grupo)
--   [Añadir miembros](#añadir-miembros)
--   [Remover o actualizar miembros](#remover-o-actualizar-miembros)
+- [Crear un grupo](#crear-un-grupo)
+- [Añadir miembros](#añadir-miembros)
+- [Remover o actualizar miembros](#remover-o-actualizar-miembros)
 
 ### Crear un grupo
 
 Utilice la clase `Group` de la librería [`@semaphore-protocol/group`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/group) para crear un grupo off-chain con los siguientes parámetros:
 
--   `Group id`: un identificar único para el grupo;
--   `Tree depth`: (_default `20`_) el número máximo de usuarios que puede contener un grupo, el valor por defecto es 20 (`max size = 2 ^ tree depth`).
--   `Members`: (_default `[]`_) la lista de miembros para inicializar el grupo.
+- `Group id`: un identificar único para el grupo;
+- `Tree depth`: (*default `20`*) el número máximo de usuarios que puede contener un grupo, el valor por defecto es 20 (`max size = 2 ^ tree depth`).
+- `Members`: (*default `[]`*) la lista de miembros para inicializar el grupo.
 
 #### Instalar librería:
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm install @semaphore-protocol/group@^3
+    ```
+  </TabItem>
 
-```bash
-npm install @semaphore-protocol/group@^3
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn add @semaphore-protocol/group@^3
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn add @semaphore-protocol/group@^3
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm add @semaphore-protocol/group@^3
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm add @semaphore-protocol/group@^3
+    ```
+  </TabItem>
 </Tabs>
 
-Para crear un grupo con el número de usuarios que aparece por defecto (20) _`treeDepth`_, llame la función para construir un `Group` sin el segundo parámetro. Por ejemplo:
+Para crear un grupo con el número de usuarios que aparece por defecto (20) *`treeDepth`*, llame la función para construir un `Group` sin el segundo parámetro. Por ejemplo:
 
 ```ts
 import { Group } from "@semaphore-protocol/group"
@@ -82,7 +79,7 @@ import { Group } from "@semaphore-protocol/group"
 const group = new Group(1)
 ```
 
-El siguiente código de ejemplo pasa por _`treeDepth`_ para crear un grupo para `2 ^ 30 = 1073741824` miembros:
+El siguiente código de ejemplo pasa por *`treeDepth`* para crear un grupo para `2 ^ 30 = 1073741824` miembros:
 
 ```ts
 import { Group } from "@semaphore-protocol/group"

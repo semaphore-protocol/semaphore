@@ -11,9 +11,9 @@ import TabItem from "@theme/TabItem"
 In order to join a [Semaphore group](/glossary#group), a user must first create a [Semaphore identity](/glossary#identity).
 A Semaphore identity contains three values generated with the identity:
 
--   Private key
--   Public key
--   Commitment
+- Private key
+- Public key
+- Commitment
 
 To use and verify the identity, the identity owner (user) must know its private key.
 To prevent fraud, the owner should keep their private key secret.
@@ -23,34 +23,31 @@ To prevent fraud, the owner should keep their private key secret.
 In your code, use the [`@semaphore-protocol/identity`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/identity) package to manage Semaphore identites.
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm install @semaphore-protocol/identity
+    ```
+  </TabItem>
 
-```bash
-npm install @semaphore-protocol/identity
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn add @semaphore-protocol/identity
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn add @semaphore-protocol/identity
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm add @semaphore-protocol/identity
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm add @semaphore-protocol/identity
+    ```
+  </TabItem>
 </Tabs>
 
 :::info
@@ -88,7 +85,7 @@ You may choose to delegate such functionality to existing wallets such as Metama
 1. In Metamask, a user signs a message with the private key of their Ethereum account.
 2. In your application, the user creates a deterministic identity with the signed message that acts as your Semaphore private key.
 3. The user can now recreate their Semaphore identity whenever they want by signing the same message with their Ethereum account in Metamask.
-:::
+   :::
 
 ## Sign and verify messages
 

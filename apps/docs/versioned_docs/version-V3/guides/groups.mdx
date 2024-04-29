@@ -11,70 +11,67 @@ import TabItem from "@theme/TabItem"
 A [Semaphore group](/V3/glossary/#semaphore-group) contains [identity commitments](/V3/glossary/#identity-commitment) of group members.
 Example uses of groups include the following:
 
--   poll question that attendees join to rate an event,
--   ballot that members join to vote on a proposal,
--   whistleblowers who are verified employees of an organization.
+- poll question that attendees join to rate an event,
+- ballot that members join to vote on a proposal,
+- whistleblowers who are verified employees of an organization.
 
 A Semaphore group is an [incremental Merkle tree](/V3/glossary/#merkle-tree), and group members (i.e., [identity commitments](/V3/glossary/#identity-commitment)) are tree leaves.
 Semaphore groups set the following three parameters:
 
--   **Group id**: a unique identifier for the group;
--   **Tree depth**: the maximum number of members a group can contain (`max size = 2 ^ tree depth`);
--   **Members**: the list of members to initialize the group.
+- **Group id**: a unique identifier for the group;
+- **Tree depth**: the maximum number of members a group can contain (`max size = 2 ^ tree depth`);
+- **Members**: the list of members to initialize the group.
 
 Learn how to work with groups.
 
--   [**Off-chain groups**](#off-chain-groups)
--   [**On-chain groups**](#on-chain-groups)
+- [**Off-chain groups**](#off-chain-groups)
+- [**On-chain groups**](#on-chain-groups)
 
 ## Off-chain groups
 
--   [Create a group](#create-a-group)
--   [Add members](#add-members)
--   [Remove or update members](#remove-or-update-members)
+- [Create a group](#create-a-group)
+- [Add members](#add-members)
+- [Remove or update members](#remove-or-update-members)
 
 ### Create a group
 
 Use the [`@semaphore-protocol/group`](https://github.com/semaphore-protocol/semaphore/blob/v3.15.2/packages/group) library `Group` class to create an off-chain group with the following parameters:
 
--   `Group id`: a unique identifier for the group;
--   `Tree depth`: (_default `20`_) the maximum number of members a group can contain (`max size = 2 ^ tree depth`).
--   `Members`: (_default `[]`_) the list of members to initialize the group.
+- `Group id`: a unique identifier for the group;
+- `Tree depth`: (*default `20`*) the maximum number of members a group can contain (`max size = 2 ^ tree depth`).
+- `Members`: (*default `[]`*) the list of members to initialize the group.
 
 #### Install library:
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm install @semaphore-protocol/group@^3
+    ```
+  </TabItem>
 
-```bash
-npm install @semaphore-protocol/group@^3
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn add @semaphore-protocol/group@^3
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn add @semaphore-protocol/group@^3
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm add @semaphore-protocol/group@^3
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm add @semaphore-protocol/group@^3
+    ```
+  </TabItem>
 </Tabs>
 
-To create a group with default _`treeDepth`_, call the `Group` constructor without the second parameter. For example:
+To create a group with default *`treeDepth`*, call the `Group` constructor without the second parameter. For example:
 
 ```ts
 import { Group } from "@semaphore-protocol/group"
@@ -82,7 +79,7 @@ import { Group } from "@semaphore-protocol/group"
 const group = new Group(1)
 ```
 
-The following example code passes _`treeDepth`_ to create a group for `2 ^ 30 = 1073741824` members:
+The following example code passes *`treeDepth`* to create a group for `2 ^ 30 = 1073741824` members:
 
 ```ts
 import { Group } from "@semaphore-protocol/group"
