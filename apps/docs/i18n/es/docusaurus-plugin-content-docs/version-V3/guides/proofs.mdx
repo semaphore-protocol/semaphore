@@ -10,56 +10,54 @@ import TabItem from "@theme/TabItem"
 
 Una vez que un usuario liga su [identidad Semaphore](/V3/glossary#identidad-semaphore) a un [grupo Semaphore](/V3/glossary#grupo-semaphore), el usuario puede emitir una señal anónima con una prueba de conocimiento cero (ZKP) que demuestre lo siguiente:
 
--   el usuario es un miembro del grupo,
--   el mismo usuario creo tanto la señal como la prueba.
+- el usuario es un miembro del grupo,
+- el mismo usuario creo tanto la señal como la prueba.
 
 Las y los desarrolladores pueden utilizar Semaphore para realizar las siguientes acciones:
 
--   [**Generar una prueba externa a la cadena (off-chain)**](#generar-una-prueba-off-chain)
--   [**Verificar una prueba externa a la cadena (off-chain)**](#verificar-una-prueba-off-chain)
--   [**Verificar una prueba interna a la cadena (on-chain)**](#verificar-una-prueba-on-chain)
+- [**Generar una prueba externa a la cadena (off-chain)**](#generar-una-prueba-off-chain)
+- [**Verificar una prueba externa a la cadena (off-chain)**](#verificar-una-prueba-off-chain)
+- [**Verificar una prueba interna a la cadena (on-chain)**](#verificar-una-prueba-on-chain)
 
 ## Generar una prueba off-chain
 
 Utilice la librería [`@semaphore-protocol/proof`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/proof) para generar una prueba off-chain.
 Para generar una prueba, transforme los siguientes parámetros con la función `generateProof`:
 
--   `identity`: la identidad Semaphore del usuario emitiendo la señal y generando la prueba;
--   `group`: el grupo al cual pertenece el usuario;
--   `externalNullifier`: el valor que impide la emisión de dos señales por el mismo usuario;
--   `signal`: la señal que el usuario quiere enviar de forma anónima;
--   `snarkArtifacts`: la `zkey` y `wasm` de los [archivos confiables de configuración](/V3/glossary/#archivos-confiables-de-configuración-trusted-setup-files).
+- `identity`: la identidad Semaphore del usuario emitiendo la señal y generando la prueba;
+- `group`: el grupo al cual pertenece el usuario;
+- `externalNullifier`: el valor que impide la emisión de dos señales por el mismo usuario;
+- `signal`: la señal que el usuario quiere enviar de forma anónima;
+- `snarkArtifacts`: la `zkey` y `wasm` de los [archivos confiables de configuración](/V3/glossary/#archivos-confiables-de-configuración-trusted-setup-files).
 
 #### Instalar librería:
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm install @semaphore-protocol/proof@^3
+    ```
+  </TabItem>
 
-```bash
-npm install @semaphore-protocol/proof@^3
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn add @semaphore-protocol/proof@^3
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn add @semaphore-protocol/proof@^3
-```
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm add @semaphore-protocol/proof@^3
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm add @semaphore-protocol/proof@^3
+    ```
+  </TabItem>
 </Tabs>
 
 En el caso de uso de un sistema de votación, una vez que todos los votantes hayan ligado sus [identidades](/V3/guides/identities#crear-identidades) al [grupo](/V3/guides/groups) de la votación,
@@ -86,6 +84,7 @@ Si estás generando la prueba en el lado del cliente, puedes evitar agregar los 
 ```ts
 const fullProof = await generateProof(identity, group, externalNullifier, signal)
 ```
+
 :::
 
 ## Verificar una prueba off-chain
@@ -93,8 +92,8 @@ const fullProof = await generateProof(identity, group, externalNullifier, signal
 Utilice la librería [`@semaphore-protocol/proof`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/proof) para verificar una prueba Semaphore off-chain.
 Para verificar una prueba, transforme los siguientes parámetros con la función `verifyProof`:
 
--   `fullProof`: la prueba Semaphore;
--   `treeDepth`: la profundidad del árbol de Merkle.
+- `fullProof`: la prueba Semaphore;
+- `treeDepth`: la profundidad del árbol de Merkle.
 
 La siguiente muestra de código demuestra cómo verificar la prueba generada previamente:
 
@@ -116,12 +115,12 @@ Vea nuestros [contratos desplegados](/V3/deployed-contracts) para encontrar las 
 
 Para verificar las pruebas Semaphore en su contrato, importe `ISemaphore.sol`, transfórmelo a la dirección `Semaphore.sol` y llame el método `verifyProof` con los siguientes parámetros:
 
--   `groupId`: el identificador del grupo;
--   `merkleTreeRoot`: la raíz del árbol de Merkle;
--   `signal`: la señal que el usuario quiere enviar de forma anónima ;
--   `nullifierHash`: un nullifier hash (hash anulador);
--   `externalNullifier`: el valor que impide la emisión de dos señales por el mismo usuario;
--   `proof`: una prueba Semaphore que es compatible con Solidity.
+- `groupId`: el identificador del grupo;
+- `merkleTreeRoot`: la raíz del árbol de Merkle;
+- `signal`: la señal que el usuario quiere enviar de forma anónima ;
+- `nullifierHash`: un nullifier hash (hash anulador);
+- `externalNullifier`: el valor que impide la emisión de dos señales por el mismo usuario;
+- `proof`: una prueba Semaphore que es compatible con Solidity.
 
 :::info
 Puede importar `ISemaphore.sol` y otros contratos Semaphore del módulo NPM [`@semaphore-protocol/contracts`](https://github.com/semaphore-protocol/semaphore/tree/main/packages/contracts).

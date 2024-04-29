@@ -18,34 +18,31 @@ There are two ways to do this, using [`SemaphoreSubgraph`](https://github.com/se
 ## Install library
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm install @semaphore-protocol/data@^3
+    ```
+  </TabItem>
 
-```bash
-npm install @semaphore-protocol/data@^3
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn add @semaphore-protocol/data@^3
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn add @semaphore-protocol/data@^3
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm add @semaphore-protocol/data@^3
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm add @semaphore-protocol/data@^3
+    ```
+  </TabItem>
 </Tabs>
 
 ## Fetch data using SemaphoreSubgraph
@@ -113,6 +110,7 @@ const semaphoreSubgraph = new SemaphoreSubgraph("sepolia")
 const { members } = await semaphoreSubgraph.getGroup(groupId, { members: true })
 const group = new Group(groupId, 20, members)
 ```
+
 :::
 
 ## Fetch data using SemaphoreEthers
@@ -178,4 +176,5 @@ const semaphoreEthers = new SemaphoreEthers("sepolia")
 const members = await semaphoreEthers.getGroupMembers(groupId)
 const group = new Group(groupId, 20, members)
 ```
+
 :::

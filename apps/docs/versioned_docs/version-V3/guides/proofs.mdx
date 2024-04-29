@@ -10,57 +10,54 @@ import TabItem from "@theme/TabItem"
 
 Once a user joins their [Semaphore identity](/V3/glossary#semaphore-identity) to a [Semaphore group](/V3/glossary#semaphore-group), the user can signal anonymously with a zero-knowledge proof that proves the following:
 
--   the user is a member of the group,
--   the same user created the signal and the proof.
+- the user is a member of the group,
+- the same user created the signal and the proof.
 
 Developers can use Semaphore for the following:
 
--   [**Generate a proof off-chain**](#generate-a-proof-off-chain)
--   [**Verify a proof off-chain**](#verify-a-proof-off-chain)
--   [**Verify a proof on-chain**](#verify-a-proof-on-chain)
+- [**Generate a proof off-chain**](#generate-a-proof-off-chain)
+- [**Verify a proof off-chain**](#verify-a-proof-off-chain)
+- [**Verify a proof on-chain**](#verify-a-proof-on-chain)
 
 ## Generate a proof off-chain
 
 Use the [`@semaphore-protocol/proof`](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/proof) library to generate an off-chain proof.
 To generate a proof, pass the following parameters to the `generateProof` function:
 
--   `identity`: the Semaphore identity of the user broadcasting the signal and generating the proof;
--   `group`: the group to which the user belongs;
--   `externalNullifier`: the value that prevents double-signaling;
--   `signal`: the signal the user wants to send anonymously;
--   `snarkArtifacts`: the `zkey` and `wasm` [trusted setup files](/V3/glossary/#trusted-setup-files).
+- `identity`: the Semaphore identity of the user broadcasting the signal and generating the proof;
+- `group`: the group to which the user belongs;
+- `externalNullifier`: the value that prevents double-signaling;
+- `signal`: the signal the user wants to send anonymously;
+- `snarkArtifacts`: the `zkey` and `wasm` [trusted setup files](/V3/glossary/#trusted-setup-files).
 
 #### Install library:
 
 <Tabs
-defaultValue="npm"
-groupId="package-managers"
-values={[
+  defaultValue="npm"
+  groupId="package-managers"
+  values={[
 {label: 'npm', value: 'npm'},
 {label: 'Yarn', value: 'yarn'},
 {label: 'pnpm', value: 'pnpm'}
-]}>
-<TabItem value="npm">
+]}
+>
+  <TabItem value="npm">
+    ```bash
+    npm install @semaphore-protocol/proof@^3
+    ```
+  </TabItem>
 
-```bash
-npm install @semaphore-protocol/proof@^3
-```
+  <TabItem value="yarn">
+    ```bash
+    yarn add @semaphore-protocol/proof@^3
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="yarn">
-
-```bash
-yarn add @semaphore-protocol/proof@^3
-```
-
-</TabItem>
-<TabItem value="pnpm">
-
-```bash
-pnpm add @semaphore-protocol/proof@^3
-```
-
-</TabItem>
+  <TabItem value="pnpm">
+    ```bash
+    pnpm add @semaphore-protocol/proof@^3
+    ```
+  </TabItem>
 </Tabs>
 
 In the voting system use case, once all the voters have joined their [identities](/V3/guides/identities#create-identities) to the ballot [group](/V3/guides/groups),
@@ -87,6 +84,7 @@ If you are generating the proof on the client side, you can avoid adding the sna
 ```ts
 const fullProof = await generateProof(identity, group, externalNullifier, signal)
 ```
+
 :::
 
 ## Verify a proof off-chain
@@ -94,8 +92,8 @@ const fullProof = await generateProof(identity, group, externalNullifier, signal
 Use the [`@semaphore-protocol/proof`](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/proof) library to verify a Semaphore proof off-chain.
 To verify a proof, pass the following to the `verifyProof` function:
 
--   `fullProof`: the Semaphore proof;
--   `treeDepth`: the Merkle tree depth.
+- `fullProof`: the Semaphore proof;
+- `treeDepth`: the Merkle tree depth.
 
 The following code sample shows how to verify the previously generated proof:
 
@@ -117,12 +115,12 @@ See our [deployed contracts](/V3/deployed-contracts) to find the addresses for y
 
 To verify Semaphore proofs in your contract, import `ISemaphore.sol`, pass it the `Semaphore.sol` address and call the `verifyProof` method with following parameters:
 
--   `groupId`: the identifier of the group;
--   `merkleTreeRoot`: the root of the Merkle tree;
--   `signal`: the signal the user wants to send anonymously;
--   `nullifierHash`: a nullifier hash;
--   `externalNullifier`: the value that prevents double-signaling;
--   `proof`: a Solidity-compatible Semaphore proof.
+- `groupId`: the identifier of the group;
+- `merkleTreeRoot`: the root of the Merkle tree;
+- `signal`: the signal the user wants to send anonymously;
+- `nullifierHash`: a nullifier hash;
+- `externalNullifier`: the value that prevents double-signaling;
+- `proof`: a Solidity-compatible Semaphore proof.
 
 :::info
 You can import `ISemaphore.sol` and other Semaphore contracts from the [`@semaphore-protocol/contracts`](https://github.com/semaphore-protocol/semaphore/tree/v3.15.2/packages/contracts) NPM module.
