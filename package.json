@@ -8,9 +8,9 @@
     "private": true,
     "scripts": {
         "build": "turbo build",
-        "build:libraries": "yarn workspaces foreach -A -t --no-private run build",
-        "build:subgraph": "yarn workspace semaphore-subgraph codegen sepolia && yarn workspace semaphore-subgraph build",
-        "compile:contracts": "yarn workspace semaphore-contracts compile",
+        "build:libraries": "turbo --filter='./packages/*' build",
+        "build:subgraph": "turbo --filter semaphore-subgraph build",
+        "build:contracts": "turbo --filter semaphore-contracts build",
         "test": "yarn test:libraries && yarn test:contracts && yarn test:circuits && yarn test:subgraph",
         "test:libraries": "jest --coverage",
         "test:library": "jest packages/${0}",
