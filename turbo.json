@@ -1,0 +1,20 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "pipeline": {
+        "build": {
+            "dependsOn": ["codegen:sepolia","^build"],
+            "inputs":[
+                "tsconfig.json",
+                "{apps,packages}/**/src/**/*.{circom,mdx,sol,ts,tsx,yaml,yml}",
+                "!packages/cli-template-*/**"
+            ],
+            "outputs": [
+                "{apps,packages}/**/{build,dist,generated}/*.{cjs,js,r1cs,sym,ts,wasm}"
+            ]
+        },
+        "codegen:sepolia": {
+            "inputs": ["apps/subgraph/scripts/generate-subgraph.ts", "apps/subgraph/src/semaphore.ts", "apps/subgraph/{schema.graphql,subgraph.yaml,subgraph.template.yaml}"],
+            "outputs": ["apps/subgraph/generated/**/*"]
+        }
+    }
+}

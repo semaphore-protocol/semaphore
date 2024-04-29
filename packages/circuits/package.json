@@ -16,7 +16,7 @@
         "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
     },
     "scripts": {
-        "compile": "circomkit compile semaphore",
+        "build": "circomkit compile semaphore",
         "setup": "circomkit setup semaphore",
         "test": "mocha"
     },

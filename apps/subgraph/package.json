@@ -5,7 +5,8 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-        "codegen": "node scripts/generate-subgraph.js ${0} && graph codegen",
+        "codegen": "node scripts/generate-subgraph ${0} && graph codegen",
+        "codegen:sepolia":"node scripts/generate-subgraph sepolia && graph codegen",
         "build": "graph build",
         "auth": "graph auth --studio",
         "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ ${0}",

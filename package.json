@@ -7,7 +7,7 @@
     "bugs": "https://github.com/semaphore-protocol/semaphore/issues",
     "private": true,
     "scripts": {
-        "build": "yarn build:libraries && yarn build:subgraph",
+        "build": "turbo build",
         "build:libraries": "yarn workspaces foreach -A -t --no-private run build",
         "build:subgraph": "yarn workspace semaphore-subgraph codegen sepolia && yarn workspace semaphore-subgraph build",
         "compile:contracts": "yarn workspace semaphore-contracts compile",
@@ -79,6 +79,7 @@
         "ts-jest": "^29.1.2",
         "ts-node": "^10.9.2",
         "tslib": "^2.6.2",
+        "turbo": "^1.13.3",
         "typedoc": "^0.25.8",
         "typescript": "^5.3.3"
     },

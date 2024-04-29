@@ -94,3 +94,6 @@ typechain-types
 
 # Other
 snark-artifacts
+
+# turbo cache
+.turbo
