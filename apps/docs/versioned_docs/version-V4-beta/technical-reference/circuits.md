@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Circuits
 
-The [Semaphore circuit](https://github.com/semaphore-protocol/semaphore/tree/main/packages/circuits/semaphore.circom) is the heart of the protocol and consists of three parts:
+The [Semaphore circuit](https://github.com/semaphore-protocol/semaphore/blob/main/packages/circuits/src/semaphore.circom) is the heart of the protocol and consists of three parts:
 
 -   [Proof of membership](#proof-of-membership)
 -   [Nullifier](#nullifier)
