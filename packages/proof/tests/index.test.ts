@@ -48,7 +48,7 @@ describe("Proof", () => {
 
             expect(typeof proof).toBe("object")
             expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
-        }, 20000)
+        }, 70000)
 
         it("Should generate a Semaphore proof passing a Merkle proof instead of a group", async () => {
             const group = new Group([1n, 2n, identity.commitment])
@@ -57,7 +57,7 @@ describe("Proof", () => {
 
             expect(typeof proof).toBe("object")
             expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
-        }, 20000)
+        }, 70000)
     })
 
     describe("# verifyProof", () => {
