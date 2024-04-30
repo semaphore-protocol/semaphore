@@ -28,7 +28,7 @@
         "clean:cli-templates": "ts-node scripts/clean-cli-templates.ts",
         "remove:stable-version-field": "ts-node scripts/remove-stable-version-field.ts && yarn format:write",
         "precommit": "lint-staged",
-        "postinstall": "husky install"
+        "postinstall": "husky && git config --local core.editor cat"
     },
     "keywords": [
         "ethereum",
