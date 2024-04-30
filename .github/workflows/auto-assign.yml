@@ -10,5 +10,5 @@ jobs:
         steps:
             - uses: wow-actions/auto-assign@v3
               with:
-                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   reviewers: org/core-devs
