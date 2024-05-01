@@ -28,7 +28,7 @@
         "clean:cli-templates": "ts-node scripts/clean-cli-templates.ts",
         "remove:stable-version-field": "ts-node scripts/remove-stable-version-field.ts && yarn format:write",
         "precommit": "lint-staged",
-        "postinstall": "husky install"
+        "postinstall": "husky && git config --local core.editor cat"
     },
     "keywords": [
         "ethereum",
@@ -58,8 +58,7 @@
         "@typescript-eslint/eslint-plugin": "^7.0.2",
         "@typescript-eslint/parser": "^7.0.2",
         "changelogithub": "0.12.7",
-        "commitizen": "^4.3.0",
-        "cz-git": "^1.9.0",
+        "czg": "^1.9.1",
         "dotenv": "^16.0.2",
         "eslint": "^8.56.0",
         "eslint-config-airbnb": "^19.0.4",
@@ -82,11 +81,6 @@
         "tslib": "^2.6.2",
         "typedoc": "^0.25.8",
         "typescript": "^5.3.3"
-    },
-    "config": {
-        "commitizen": {
-            "path": "./node_modules/cz-git"
-        }
     },
     "resolutions": {
         "changelogithub@0.12.7": "patch:changelogithub@npm:0.12.7#.yarn/patches/changelogithub-npm-0.12.7-72f348805d.patch"
