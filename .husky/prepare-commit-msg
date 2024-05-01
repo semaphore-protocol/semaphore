@@ -2,5 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 if [ "$NO_HOOK" != "1" ]; then
-  exec < /dev/tty && yarn cz --hook || true
+  exec < /dev/tty && npx czg --hook || true
 fi
