@@ -22,7 +22,8 @@ jobs:
             - name: Install dependencies
               run: yarn
 
-            - name: Build|Lint|Format
+            # Turbo will automatically build what's necessary first
+            - name: Lint|Format
               run: yarn style
 
     test:
@@ -50,11 +51,6 @@ jobs:
             - name: Install dependencies
               run: yarn
 
-            - name: Build libraries
-              run: yarn build:libraries
-
-            - name: Build subgraph
-              run: yarn build:subgraph
-
+            # turbo will automatically build what's necessary first
             - name: Test contracts, libraries, circuits and subgraph
               run: yarn test
