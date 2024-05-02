@@ -42,7 +42,7 @@
             "inputs": ["apps/docs/**/*.mdx"]
         },
         "//#_lint:eslint": {
-            "dependsOn": ["^build"],
+            "dependsOn": ["@semaphore-protocol/proof#build"],
             "inputs": [
                 "{apps,packages}/**/*.{js,ts,tsx}",
                 "!{apps,packages}/**/{build,dist,generated}/**/*",
