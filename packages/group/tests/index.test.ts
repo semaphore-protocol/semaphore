@@ -23,6 +23,12 @@ describe("Group", () => {
             expect(group.depth).toBe(2)
             expect(group.size).toBe(3)
         })
+
+        it("Should not create a group with a list of members if any value is 0", () => {
+            const fun = () => new Group([1n, 0n])
+
+            expect(fun).toThrow("Failed to add member: value cannot be 0")
+        })
     })
 
     describe("# addMember", () => {
