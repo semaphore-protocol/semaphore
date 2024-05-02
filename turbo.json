@@ -21,14 +21,14 @@
             ],
             "outputs": ["apps/subgraph/generated/**/*"]
         },
-        "//#format:prettier": {
+        "//#_format:prettier": {
             "inputs": [
                 "*.{js,json,md,ts,yml}",
                 "{apps,packages}/**/*.{json,md,mdx,sol,ts,ts,tsx,yaml,yml}",
                 "!{apps,packages}/**/{build,dist,generated}/**/*"
             ]
         },
-        "//#format:prettier:write": {
+        "//#_format:prettier:write": {
             "inputs": [
                 "*.{js,json,md,ts,yml}",
                 "{apps,packages}/**/*.{js,json,md,mdx,sol,ts,ts,tsx,yaml,yml}",
@@ -41,8 +41,8 @@
         "format:remark:write": {
             "inputs": ["apps/docs/**/*.mdx"]
         },
-        "//#lint:eslint": {
-            "dependsOn": ["@semaphore-protocol/proof#build"],
+        "//#_lint:eslint": {
+            "dependsOn": ["^build"],
             "inputs": [
                 "{apps,packages}/**/*.{js,ts,tsx}",
                 "!{apps,packages}/**/{build,dist,generated}/**/*",
