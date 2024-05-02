@@ -28,17 +28,18 @@
                 "!{apps,packages}/**/{build,dist,generated}/**/*"
             ]
         },
-        "//#format:write": {
+        "//#format:prettier:write": {
             "inputs": [
                 "*.{js,json,md,ts,yml}",
                 "{apps,packages}/**/*.{js,json,md,mdx,sol,ts,ts,tsx,yaml,yml}",
                 "!{apps,packages}/**/{build,dist,generated}/**/*"
-            ],
-            "outputs": [
-                "*.{js,json,md,ts,yml}",
-                "{apps,packages}/**/*.{md,mdx,js,json,sol,ts,tsx,yml,yaml}",
-                "!{apps,packages}/**/{build,dist,generated}/**/*"
             ]
+        },
+        "format:remark": {
+            "inputs": ["apps/docs/**/*.mdx"]
+        },
+        "format:remark:write": {
+            "inputs": ["apps/docs/**/*.mdx"]
         },
         "//#lint:eslint": {
             "dependsOn": ["@semaphore-protocol/proof#build"],

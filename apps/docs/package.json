@@ -11,8 +11,8 @@
         "serve": "docusaurus serve",
         "write-translations": "docusaurus write-translations",
         "write-heading-ids": "docusaurus write-heading-ids",
-        "format": "remark ./**/*.mdx --frail --quiet",
-        "format:write": "remark ./**/*.mdx --output"
+        "format:remark": "remark ./**/*.mdx --frail --quiet",
+        "format:remark:write": "remark ./**/*.mdx --output"
     },
     "dependencies": {
         "@docusaurus/core": "3.1.1",
