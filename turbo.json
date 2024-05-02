@@ -52,6 +52,29 @@
         "lint:solhint": {
             "dependsOn": ["^build"],
             "inputs": ["packages/contracts/*.sol"]
+        },
+        "test": {
+            "dependsOn": ["^build"],
+            "inputs": [
+                "apps/subgraph/**/*.{json,ts}",
+                "!apps/subgraph/{build,generated}/**/*",
+                "packages/circuits/src/**/*.circom",
+                "packages/circuits/tests/*.ts"
+            ]
+        },
+        "test:coverage": {
+            "dependsOn": ["^build"],
+            "inputs": ["packages/contracts/src/**/*.sol", "packages/contracts/test/**/*.ts"]
+        },
+        "//#_test:libraries": {
+            "dependsOn": [
+                "@semaphore-protocol/data#build",
+                "@semaphore-protocol/group#build",
+                "@semaphore-protocol/identity#build",
+                "@semaphore-protocol/proof#build",
+                "@semaphore-protocol/utils#build"
+            ],
+            "inputs": ["packages/{data,group,identity,proof,utils}/{src,tests}/*.{cjs,js,ts}"]
         }
     }
 }
