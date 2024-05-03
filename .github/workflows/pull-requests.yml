@@ -60,10 +60,10 @@ jobs:
               run: yarn build:subgraph
 
             - name: Format
-              run: yarn run prettier --check {{ steps.files-changed.outputs.all_changed_files }}
+              run: yarn run prettier --check ${{ steps.files-changed.outputs.all_changed_files }}
 
             - name: Run Eslint
-              run: yarn run eslint {{ steps.files-changed.outputs.all_changed_files }} --ext .js,.ts,.tsx
+              run: yarn run eslint ${{ steps.files-changed.outputs.all_changed_files }} --ext .js,.ts,.tsx
 
     test:
         runs-on: ubuntu-latest
