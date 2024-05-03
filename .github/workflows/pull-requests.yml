@@ -23,47 +23,53 @@ jobs:
               run: yarn
 
             - name: Get changed files
-              id: files-changed
+              id: changed-files
               uses: tj-actions/changed-files@v44
               with:
-                files_yaml: |
-                  circuits:
-                    - packages/circuits/**/*.{circom,json,ts}
-                  contracts:
-                    - packages/contracts/**/*.{js,json,ts,sol}
-                  docs:
-                    - apps/docs/**/*
-                  libraries:
-                    - packages/**/*.{js,json,ts}
-                    - '!packages/{circuits/contracts}/**/*'
-                  subgraph:
-                    - apps/subgraph/**/*
+                  files_yaml: |
+                      circuits:
+                        - packages/circuits/**/*.{circom,json,ts}
+                      contracts:
+                        - packages/contracts/**/*.{js,json,ts,sol}
+                      docs:
+                        - apps/docs/**/*
+                      libraries:
+                        - packages/**/*.{js,json,ts}
+                        - '!packages/{circuits/contracts}/**/*'
+                      subgraph:
+                        - apps/subgraph/**/*
+                      to_format:
+                        - '**/*.{cjs,js,json,jsx,md,mdx,sol,ts,tsx,yaml,yml}'
+                      to_lint:
+                        - '**/*.{cjs,js,jsx,ts,tsx}'
 
-            - if: steps.files-changed.outputs.contracts_any_changed == 'true'
+            - if: steps.changed-files.outputs.contracts_any_changed == 'true'
               name: Compile and lint contracts
               run: |
-                yarn compile:contracts
-                yarn workspace semaphore-contracts lint
+                  yarn compile:contracts
+                  yarn workspace semaphore-contracts lint
 
-            - if: steps.files-changed.outputs.docs_any_changed == 'true'
+            - if: steps.changed-files.outputs.docs_any_changed == 'true'
               name: Build and format docs
               run: |
-                yarn workspace semaphore-docs build
-                yarn workspace semaphore-docs format
+                  yarn workspace semaphore-docs build
+                  yarn workspace semaphore-docs format
 
-            - if: steps.files-changed.outputs.libraries_any_changed == 'true'
+            - if: steps.changed-files.outputs.libraries_any_changed == 'true'
               name: Build libraries
               run: yarn build:libraries
 
-            - if: steps.files-changed.outputs.subgraph_any_changed == 'true'
+            - if: steps.changed-files.outputs.subgraph_any_changed == 'true'
               name: Build subgraph
               run: yarn build:subgraph
 
-            - name: Format
-              run: yarn run prettier --check ${{ steps.files-changed.outputs.all_changed_files }}
+            - if: steps.changed-files.outputs.to_format_any_changed == 'true'
+              name: Format
+              run: yarn run prettier --check ${{ steps.changed-files.outputs.to_format_all_changed_files }}
 
-            - name: Run Eslint
-              run: yarn run eslint ${{ steps.files-changed.outputs.all_changed_files }} --ext .js,.ts,.tsx
+            - if: steps.changed-files.outputs.to_lint_any_changed == 'true'
+              name: Run Eslint
+              run: yarn run eslint ${{ steps.changed-files.outputs.to_lint_all_changed_files }} --ext .cjs,.js,.jsx,.ts,.tsx
 
     test:
         runs-on: ubuntu-latest
