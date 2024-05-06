@@ -21,15 +21,23 @@ import getEvents from "./getEvents"
 import SemaphoreABI from "./semaphoreABI.json"
 import { EthersNetwork, EthersOptions, GroupResponse } from "./types"
 
+/**
+ * The SemaphoreEthers class provides a high-level interface to interact with the Semaphore smart contract
+ * using the {@link https://docs.ethers.org/v5/ | ethers.js} library. It encapsulates all necessary functionalities to connect to Ethereum networks,
+ * manage contract instances, and perform operations such as retrieving group information or checking group memberships.
+ * This class simplifies the interaction with the Ethereum blockchain by abstracting the details of network connections
+ * and contract interactions.
+ */
 export default class SemaphoreEthers {
     private _network: EthersNetwork | string
     private _options: EthersOptions
     private _contract: Contract
 
     /**
-     * Initializes the Ethers object with an Ethereum network or custom URL.
-     * @param networkOrEthereumURL Ethereum network or custom URL.
-     * @param options Ethers options.
+     * Constructs a new SemaphoreEthers instance, initializing it with a network or a custom Ethereum node URL,
+     * and optional configuration settings for the ethers provider and contract.
+     * @param networkOrEthereumURL The Ethereum network name or a custom JSON-RPC URL to connect to.
+     * @param options Configuration options for the ethers provider and the Semaphore contract.
      */
     constructor(networkOrEthereumURL: EthersNetwork | string = defaultNetwork, options: EthersOptions = {}) {
         checkParameter(networkOrEthereumURL, "networkOrSubgraphURL", "string")
@@ -92,32 +100,32 @@ export default class SemaphoreEthers {
     }
 
     /**
-     * Returns the Ethereum network or custom URL.
-     * @returns Ethereum network or custom URL.
+     * Retrieves the Ethereum network or custom URL currently used by this instance.
+     * @returns The network or URL as a string.
      */
     get network(): EthersNetwork | string {
         return this._network
     }
 
     /**
-     * Returns the Ethers options.
-     * @returns Ethers options.
+     * Retrieves the options used for configuring the ethers provider and the Semaphore contract.
+     * @returns The configuration options.
      */
     get options(): EthersOptions {
         return this._options
     }
 
     /**
-     * Returns the contract object.
-     * @returns Contract object.
+     * Retrieves the ethers Contract instance used to interact with the Semaphore contract.
+     * @returns The Contract instance.
      */
     get contract(): Contract {
         return this._contract
     }
 
     /**
-     * Returns the list of group ids.
-     * @returns List of group ids.
+     * Fetches the list of group IDs from the Semaphore contract by querying the "GroupCreated" events.
+     * @returns A promise that resolves to an array of group IDs as strings.
      */
     async getGroupIds(): Promise<string[]> {
         const groups = await getEvents(this._contract, "GroupCreated", [], this._options.startBlock)
@@ -126,9 +134,10 @@ export default class SemaphoreEthers {
     }
 
     /**
-     * Returns a specific group.
-     * @param groupId Group id.
-     * @returns Specific group.
+     * Retrieves detailed information about a specific group by its ID. This method queries the Semaphore contract
+     * to get the group's admin, Merkle tree root, depth, and size.
+     * @param groupId The unique identifier of the group.
+     * @returns A promise that resolves to a GroupResponse object.
      */
     async getGroup(groupId: string): Promise<GroupResponse> {
         checkParameter(groupId, "groupId", "string")
@@ -157,9 +166,10 @@ export default class SemaphoreEthers {
     }
 
     /**
-     * Returns a list of group members.
-     * @param groupId Group id.
-     * @returns Group members.
+     * Fetches a list of members from a specific group. This method queries the Semaphore contract for events
+     * related to member additions and updates, and constructs the list of current group members.
+     * @param groupId The unique identifier of the group.
+     * @returns A promise that resolves to an array of member identity commitments as strings.
      */
     async getGroupMembers(groupId: string): Promise<string[]> {
         checkParameter(groupId, "groupId", "string")
@@ -241,9 +251,10 @@ export default class SemaphoreEthers {
     }
 
     /**
-     * Returns a list of group validated proofs.
-     * @param groupId Group id.
-     * @returns Group validated proofs.
+     * Retrieves a list of validated proofs for a specific group. This method queries the Semaphore contract
+     * for "ProofValidated" events and returns details about each proof.
+     * @param groupId The unique identifier of the group.
+     * @returns A promise that resolves to an array of validated proofs.
      */
     async getGroupValidatedProofs(groupId: string): Promise<any> {
         checkParameter(groupId, "groupId", "string")
@@ -272,10 +283,11 @@ export default class SemaphoreEthers {
     }
 
     /**
-     * Returns true if a member is part of group, and false otherwise.
-     * @param groupId Group id
-     * @param member Group member.
-     * @returns True if the member is part of the group, false otherwise.
+     * Checks whether a specific member is part of a group. This method queries the Semaphore contract
+     * to determine if the provided identity commitment is a member of the specified group.
+     * @param groupId The unique identifier of the group.
+     * @param member The identity commitment of the member to check.
+     * @returns A promise that resolves to true if the member is part of the group, otherwise false.
      */
     async isGroupMember(groupId: string, member: string): Promise<boolean> {
         checkParameter(groupId, "groupId", "string")
