@@ -46,6 +46,7 @@ jobs:
             - if: steps.changed-files.outputs.contracts_any_changed == 'true'
               name: Compile and lint contracts
               run: |
+                  yarn workspace @semaphore-protocol/utils build
                   yarn compile:contracts
                   yarn workspace semaphore-contracts lint
 
