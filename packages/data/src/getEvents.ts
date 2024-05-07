@@ -2,12 +2,12 @@
 import { Contract, EventLog } from "ethers/contract"
 
 /**
- * Returns the list of events of a contract with possible filters.
- * @param contract Contract instance.
- * @param eventName Name of the event.
- * @param filterArgs Filter arguments.
- * @param startBlock Block from which to start fetching.
- * @returns List of contract events.
+ * Fetches a list of blockchain events from a smart contract based on specified filters and starting block.
+ * @param contract An instance of an ethers Contract connected to the blockchain.
+ * @param eventName The name of the event to filter.
+ * @param filterArgs Optional arguments to further filter the events.
+ * @param startBlock The block number from which to start fetching events (defaults to 0).
+ * @returns A promise that resolves to an array of event logs, each including event arguments and the block number.
  */
 export default async function getEvents(
     contract: Contract,
