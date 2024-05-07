@@ -79,12 +79,10 @@ For detailed information on the functions provided by `@semaphore-protocol/data`
 ```typescript
 import { SemaphoreSubgraph } from "@semaphore-protocol/data"
 
-const supportedNetworks = getSupportedNetworks()
-
 const semaphoreSubgraph = new SemaphoreSubgraph()
 
 // or:
-const semaphoreSubgraphOnArbitrum = new SemaphoreSubgraph(supportedNetworks.arbitrum)
+const semaphoreSubgraphOnArbitrum = new SemaphoreSubgraph("arbitrum")
 
 // or:
 const customSubgraph = new SemaphoreSubgraph(
