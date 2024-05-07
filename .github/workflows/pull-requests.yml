@@ -97,7 +97,7 @@ jobs:
                         - packages/contracts/**/*.{js,json,ts,sol}
                       libraries:
                         - packages/**/*.{js,json,ts}
-                        - '!packages/{circuits/contracts}/**/*'
+                        - '!packages/{circuits,contracts}/**/*'
                       subgraph:
                         - apps/subgraph/**/*
 
