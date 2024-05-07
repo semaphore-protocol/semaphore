@@ -113,6 +113,7 @@ jobs:
                   yarn workspace @semaphore-protocol/group build
                   yarn workspace @semaphore-protocol/identity build
                   yarn workspace @semaphore-protocol/proof build
+                  yarn workspace @semaphore-protocol/utils build
                   yarn test:circuits
 
             - if: steps.changed-files.outputs.contracts_any_changed == 'true'
