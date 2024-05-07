@@ -120,6 +120,7 @@ jobs:
               run: |
                   yarn workspace @semaphore-protocol/group build
                   yarn workspace @semaphore-protocol/identity build
+                  yarn workspace @semaphore-protocol/proof build
                   yarn workspace @semaphore-protocol/utils build
                   yarn compile:contracts
                   yarn test:contracts
