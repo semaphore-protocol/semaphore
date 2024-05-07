@@ -33,5 +33,12 @@
         "date": "2023-10-30",
         "authors": ["Laszlo Fazekas"],
         "url": "https://hackernoon.com/brief-introduction-of-semaphore-a-zero-knowledge-group-membership-protocol"
+    },
+    {
+        "title": "Semaphore v3 overview + simplification",
+        "minRead": 7,
+        "date": "2024-01-01",
+        "authors": ["Vivek Bhupatiraju"],
+        "url": "https://vivs.wiki/Semaphore"
     }
 ]
