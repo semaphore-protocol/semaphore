@@ -35,7 +35,7 @@ jobs:
                         - apps/docs/**/*
                       libraries:
                         - packages/**/*.{js,json,ts}
-                        - '!packages/{circuits/contracts}/**/*'
+                        - '!packages/{circuits,contracts}/**/*'
                       subgraph:
                         - apps/subgraph/**/*
                       to_format:
