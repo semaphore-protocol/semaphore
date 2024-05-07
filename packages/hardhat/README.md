@@ -2,7 +2,7 @@
     <h1 align="center">
         Semaphore Hardhat plugin
     </h1>
-    <p align="center">A Semaphore Hardhat plugin to deploy Semaphore contracts.</p>
+    <p align="center">A Hardhat plugin to deploy Semaphore contracts.</p>
 </p>
 
 <p align="center">
@@ -46,14 +46,14 @@
     </h4>
 </div>
 
-| This Hardhat plugin provides two simple tasks that can be used to deploy Semaphore contracts without any additional configuration. |
-| ---------------------------------------------------------------------------------------------------------------------------------- |
+| The Semaphore Hardhat plugin simplifies the deployment of Semaphore contracts, reducing setup time and complexity. |
+| ------------------------------------------------------------------------------------------------------------------ |
 
 ## 🛠 Install
 
 ### npm or yarn
 
-Install the `@semaphore-protocol/hardhat` package with npm:
+To install the Semaphore Hardhat plugin, use npm or yarn:
 
 ```bash
 npm i @semaphore-protocol/hardhat
@@ -67,7 +67,7 @@ yarn add @semaphore-protocol/hardhat
 
 ## 📜 Usage
 
-Import the plugin in your `hardhat.config.ts` file:
+To use the plugin, import it in your Hardhat configuration file (`hardhat.config.ts`):
 
 ```typescript
 import "@semaphore-protocol/hardhat"
@@ -110,3 +110,13 @@ task("deploy", "Deploy a Greeter contract")
         return greeter
     })
 ```
+
+### Deploying Contracts
+
+Use the provided tasks to deploy your Semaphore contracts:
+
+```bash
+npx hardhat deploy
+```
+
+This command will deploy a Semaphore contract using the addresses provided or deploy necessary dependencies like Semaphore Verifier and Poseidon library.
