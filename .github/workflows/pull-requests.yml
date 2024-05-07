@@ -110,6 +110,9 @@ jobs:
                   sudo rm /etc/apt/sources.list.d/microsoft-prod.list
                   sudo apt-get update && sudo apt-get install -y wget nlohmann-json3-dev libgmp-dev nasm g++ build-essential
                   wget https://github.com/iden3/circom/releases/latest/download/circom-linux-amd64 && sudo mv ./circom-linux-amd64 /usr/bin/circom && sudo chmod +x /usr/bin/circom
+                  yarn workspace @semaphore-protocol/group build
+                  yarn workspace @semaphore-protocol/identity build
+                  yarn workspace @semaphore-protocol/proof build
                   yarn test:circuits
 
             - if: steps.changed-files.outputs.contracts_any_changed == 'true'
