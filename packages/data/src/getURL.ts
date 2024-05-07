@@ -3,6 +3,7 @@ import { isSupportedNetwork } from "@semaphore-protocol/utils/networks"
 
 /**
  * Returns the subgraph URL related to the network passed as a parameter.
+ * This function retrieves the URL of the Semaphore subgraph based on the provided network.
  * @param supportedNetwork Semaphore supported network.
  * @returns Subgraph URL.
  */

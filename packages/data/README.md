@@ -2,7 +2,7 @@
     <h1 align="center">
         Semaphore data
     </h1>
-    <p align="center">A library to query Semaphore contracts.</p>
+    <p align="center">A library for querying Semaphore smart contract.</p>
 </p>
 
 <p align="center">
@@ -49,8 +49,8 @@
     </h4>
 </div>
 
-| This library allows you to query the [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol) contract data (i.e. groups) using the [Semaphore subgraph](https://github.com/semaphore-protocol/subgraph) or Ethers. It can be used on Node.js and browsers. |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| This library provides tools for querying and interacting with the [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol) smart contract. It supports both the Semaphore subgraph and direct Ethereum network connections via Ethers. Designed for use in both Node.js and browser environments, it facilitates the management of group data and verification processes within the Semaphore protocol. |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## 🛠 Install
 
@@ -70,15 +70,11 @@ yarn add @semaphore-protocol/data
 
 ## 📜 Usage
 
-For more information on the functions provided by `@semaphore-protocol/data`, please refer to the [TypeDoc documentation](https://js.semaphore.pse.dev/modules/_semaphore_protocol_data).
+For detailed information on the functions provided by `@semaphore-protocol/data`, please refer to the [TypeDoc documentation](https://js.semaphore.pse.dev/modules/_semaphore_protocol_data).
 
-\# **getSupportedNetworks**(): _string[]_
+### Creating and Managing Subgraphs
 
-```typescript
-const supportedNetworks = getSupportedNetworks()
-```
-
-\# **new SemaphoreSubgraph**(networkOrSubgraphURL: SupportedNetwork | ValueOf\<SupportedNetwork> | string = "sepolia"): _SemaphoreSubgraph_
+**Initialize a Semaphore Subgraph instance**
 
 ```typescript
 import { SemaphoreSubgraph } from "@semaphore-protocol/data"
@@ -86,62 +82,53 @@ import { SemaphoreSubgraph } from "@semaphore-protocol/data"
 const semaphoreSubgraph = new SemaphoreSubgraph()
 
 // or:
-const semaphoreSubgraph = new SemaphoreSubgraph("arbitrum")
+const semaphoreSubgraphOnArbitrum = new SemaphoreSubgraph("arbitrum")
 
 // or:
-const semaphoreSubgraph = new SemaphoreSubgraph(
+const customSubgraph = new SemaphoreSubgraph(
     "https://api.studio.thegraph.com/query/14377/<your-subgraph>/<your-version>"
 )
 ```
 
-\# **getGroupIds**(): _Promise\<string[]>_
+With your SemaphoreSubgraph, you can:
+
+**Query Group IDs**
 
 ```typescript
 const groupIds = await semaphoreSubgraph.getGroupIds()
 ```
 
-\# **getGroups**(options?: _GroupOptions_): _Promise\<GroupResponse[]>_
-
-```typescript
-const groups = await semaphoreSubgraph.getGroups()
-
-// or
-
-const groups = await semaphoreSubgraph.getGroups({ members: true, verifiedProofs: true })
-```
-
-\# **getGroup**(groupId: _string_, options?: _GroupOptions_): _Promise\<GroupResponse>_
+**Query Group Details**
 
 ```typescript
 const group = await semaphoreSubgraph.getGroup("42")
-
-// or
-
-const { members, verifiedProofs } = semaphoreSubgraph.getGroup("42", { members: true, verifiedProofs: true })
+const { members, verifiedProofs } = await semaphoreSubgraph.getGroup("42", { members: true, verifiedProofs: true })
 ```
 
-\# **getGroupMembers**(groupId: _string_): _Promise\<string[]>_
+**Query Group Members**
 
 ```typescript
 const members = await semaphoreSubgraph.getGroupMembers("42")
 ```
 
-\# **getGroupVerifiedProofs**(groupId: _string_): _Promise\<any[]>_
+**Query Verified Proofs**
 
 ```typescript
 const verifiedProofs = await semaphoreSubgraph.getGroupVerifiedProofs("42")
 ```
 
-\# **isGroupMember**(groupId: _string_, member: _string_): _Promise\<boolean>_
+**Check Group Membership**
 
 ```typescript
-await semaphoreSubgraph.isGroupMember(
+const isMember = await semaphoreSubgraph.isGroupMember(
     "42",
     "16948514235341957898454876473214737047419402240398321289450170535251226167324"
 )
 ```
 
-\# **new Ethers**(networkOrEthereumURL: Network | string = "sepolia", options: EthersOptions = {}): _SemaphoreEthers_
+### Using Ethers for Direct Blockchain Interaction
+
+**Initialize a Semaphore Ethers instance**
 
 ```typescript
 import { SemaphoreEthers } from "@semaphore-protocol/data"
@@ -149,51 +136,53 @@ import { SemaphoreEthers } from "@semaphore-protocol/data"
 const semaphoreEthers = new SemaphoreEthers()
 
 // or:
-const semaphoreEthers = new SemaphoreEthers("homestead", {
+const semaphoreEthersOnHomestead = new SemaphoreEthers("homestead", {
     address: "semaphore-address",
     startBlock: 0
 })
 
 // or:
-const semaphoreEthers = new SemaphoreEthers("http://localhost:8545", {
+const localEthersInstance = new SemaphoreEthers("http://localhost:8545", {
     address: "semaphore-address"
 })
 ```
 
-\# **getGroupIds**(): _Promise\<string[]>_
+With your SemaphoreEthers instance, you can:
+
+**Fetch Group IDs**
 
 ```typescript
 const groupIds = await semaphoreEthers.getGroupIds()
 ```
 
-\# **getGroup**(groupId: _string_): _Promise\<GroupResponse>_
+**Fetch Group Details**
 
 ```typescript
 const group = await semaphoreEthers.getGroup("42")
 ```
 
-\# **getGroupAdmin**(groupId: _string_): _Promise\<string>_
+**Fetch Group Admin**
 
 ```typescript
 const admin = await semaphoreEthers.getGroupAdmin("42")
 ```
 
-\# **getGroupMembers**(groupId: _string_): _Promise\<string[]>_
+**Fetch Group Members**
 
 ```typescript
 const members = await semaphoreEthers.getGroupMembers("42")
 ```
 
-\# **getGroupVerifiedProofs**(groupId: _string_): _Promise\<any[]>_
+**Fetch Verified Proofs**
 
 ```typescript
 const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs("42")
 ```
 
-\# **isGroupMember**(groupId: _string_, member: _string_): _Promise\<boolean>_
+**Check Group Membership**
 
 ```typescript
-await semaphoreEthers.isGroupMember(
+const isMember = await semaphoreEthers.isGroupMember(
     "42",
     "16948514235341957898454876473214737047419402240398321289450170535251226167324"
 )

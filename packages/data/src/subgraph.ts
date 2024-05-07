@@ -6,12 +6,22 @@ import request from "./request"
 import { GroupOptions, GroupResponse } from "./types"
 import { jsDateToGraphqlDate } from "./utils"
 
+/**
+ * The SemaphoreSubgraph class provides an interface to interact with the Semaphore smart contract
+ * via subgraph queries. It enables operations such as retrieving lists of group members and validated proofs,
+ * as well as checking membership within groups.
+ * Each group in Semaphore is represented as a {@link https://zkkit.pse.dev/classes/_zk_kit_imt.LeanIMT.html | LeanIMT}
+ * (Lean Incremental Merkle Tree). This class supports interaction through either a
+ * {@link SupportedNetwork} or a direct URL to the subgraph. The subgraphs themselves are hosted on
+ * {@link https://thegraph.com/ | The Graph} protocol, facilitating efficient and decentralized query processing.
+ */
 export default class SemaphoreSubgraph {
     private _url: string
 
     /**
-     * Initializes the subgraph object with one of the supported networks or a custom URL.
-     * @param networkOrSubgraphURL Supported Semaphore network or custom Subgraph URL.
+     * Initializes the SemaphoreSubgraph instance with a supported network or a custom subgraph URL.
+     * This allows to interact with the Semaphore smart contract through the specified endpoint.
+     * @param networkOrSubgraphURL Either a supported network identifier or a direct URL to the subgraph.
      */
     constructor(networkOrSubgraphURL: SupportedNetwork | string = defaultNetwork) {
         checkParameter(networkOrSubgraphURL, "networkOrSubgraphURL", "string")
@@ -25,16 +35,18 @@ export default class SemaphoreSubgraph {
     }
 
     /**
-     * Returns the subgraph URL.
-     * @returns Subgraph URL.
+     * Retrieves the URL of the subgraph currently being used by the instance.
+     * This URL points to the specific subgraph where Semaphore data is stored.
+     * @returns The URL of the subgraph.
      */
     get url(): string {
         return this._url
     }
 
     /**
-     * Returns the list of group ids.
-     * @returns List of group ids.
+     * Fetches a list of all group IDs from the subgraph. This method queries the subgraph to retrieve
+     * identifiers for all groups managed by the Semaphore smart contract.
+     * @returns A promise that resolves to an array of group IDs.
      */
     async getGroupIds(): Promise<string[]> {
         const config: AxiosRequestConfig = {
@@ -54,9 +66,11 @@ export default class SemaphoreSubgraph {
     }
 
     /**
-     * Returns the list of groups.
-     * @param options Options to select the group parameters.
-     * @returns List of groups.
+     * Retrieves detailed information about groups from the subgraph based on the provided options.
+     * This method can filter groups by various parameters and include additional details like members
+     * and validated proofs if specified in the options.
+     * @param options Configuration options to filter groups and specify which additional details to fetch.
+     * @returns A promise that resolves to an array of group details.
      */
     async getGroups(options: GroupOptions = {}): Promise<GroupResponse[]> {
         checkParameter(options, "options", "object")
@@ -143,10 +157,11 @@ export default class SemaphoreSubgraph {
     }
 
     /**
-     * Returns a specific group.
-     * @param groupId Group id.
-     * @param options Options to select the group parameters.
-     * @returns Specific group.
+     * Fetches detailed information about a specific group by its ID. This method can also retrieve
+     * members and validated proofs for the group if requested via options.
+     * @param groupId The unique identifier of the group.
+     * @param options Configuration options to specify which details to fetch about the group.
+     * @returns A promise that resolves to the details of the specified group.
      */
     async getGroup(groupId: string, options: Omit<GroupOptions, "filters"> = {}): Promise<GroupResponse> {
         checkParameter(groupId, "groupId", "string")
@@ -204,9 +219,9 @@ export default class SemaphoreSubgraph {
     }
 
     /**
-     * Returns a list of group members.
-     * @param groupId Group id.
-     * @returns Group members.
+     * Retrieves a list of members from a specific group.
+     * @param groupId The unique identifier of the group.
+     * @returns A promise that resolves to an array of group members' identity commitments.
      */
     async getGroupMembers(groupId: string): Promise<string[]> {
         const group = await this.getGroup(groupId, { members: true }) // parameters are checked inside getGroup
@@ -214,9 +229,9 @@ export default class SemaphoreSubgraph {
     }
 
     /**
-     * Returns a list of validated proofs.
-     * @param groupId Group id.
-     * @returns Validated proofs.
+     * Fetches a list of validated proofs for a specific group.
+     * @param groupId The unique identifier of the group.
+     * @returns A promise that resolves to an array of validated proofs.
      */
     async getGroupValidatedProofs(groupId: string): Promise<any[]> {
         const group = await this.getGroup(groupId, { validatedProofs: true }) // parameters are checked inside getGroup
@@ -225,10 +240,11 @@ export default class SemaphoreSubgraph {
     }
 
     /**
-     * Returns true if a member is part of group, and false otherwise.
-     * @param groupId Group id
-     * @param member Group member.
-     * @returns True if the member is part of the group, false otherwise.
+     * Determines whether a specific member is part of a group. This method queries the subgraph to check
+     * if the provided member's identity commitment exists within the specified group.
+     * @param groupId The unique identifier of the group.
+     * @param member The identity commitment of the member to check.
+     * @returns A promise that resolves to true if the member is part of the group, otherwise false.
      */
     async isGroupMember(groupId: string, member: string): Promise<boolean> {
         checkParameter(groupId, "groupId", "string")
