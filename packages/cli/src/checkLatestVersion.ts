@@ -7,10 +7,10 @@ import { lt as semverLt } from "semver"
 const cliRegistryURL = "https://registry.npmjs.org/-/package/@semaphore-protocol/cli/dist-tags"
 
 /**
- * Checks the registry directly via the API, if that fails, tries the slower `npm view [package] version` command.
- * This is important for users in environments where direct access to npm is blocked by a firewall, and packages are
- * provided exclusively via a private registry.
- * @param currentVersion The current version of the CLI.
+ * Checks for the latest version of the CLI tool against the registry. It first attempts to fetch the version directly
+ * via an API call. If this fails, possibly due to network restrictions, it falls back to using the `npm view` command.
+ * This method ensures that users behind a firewall or using a private registry can still check for updates.
+ * @param currentVersion The current version of the CLI being used.
  */
 export default async function checkLatestVersion(currentVersion: string) {
     let latestVersion: string

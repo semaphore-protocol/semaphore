@@ -46,22 +46,24 @@
     </h4>
 </div>
 
-| Setting up a project, although not particularly complex, can be a lengthy process for some people. The Semaphore CLI reduces the set-up time from a few minutes to a few seconds. In addition, it can also be used to obtain on-chain group data. |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Semaphore CLI simplifies the process of setting up Semaphore projects and retrieving on-chain group data, reducing setup time from minutes to seconds. |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 
 ## 🛠 Install
 
-Install the `@semaphore-protocol/cli` package globally:
+To install Semaphore CLI globally:
 
 ```bash
 npm i -g @semaphore-protocol/cli
 ```
 
-or run specific commands with `npx`:
+Alternatively, you can use `npx` to run commands without installing the package globally:
 
 ```bash
 npx @semaphore-protocol/cli create my-app
 ```
+
+This command sets up a new project in the `my-app` directory using the `monorepo-ethers` template.
 
 ## 📜 Usage
 
@@ -82,3 +84,15 @@ Commands:
   get-proofs [options] [group-id]       Get the proofs of a group from a supported network (e.g. sepolia or arbitrum).
   help [command]                        Display help for a specific command.
 ```
+
+## 🌐 Supported Networks
+
+Semaphore CLI supports multiple Ethereum networks. Use the `get-groups` command to interact with groups on networks like Sepolia or Arbitrum.
+
+## 📦 Supported Templates
+
+When creating a new project, you can choose from several templates designed to integrate seamlessly with Semaphore's privacy protocols:
+
+-   **monorepo-ethers**: Hardhat + Next.js + SemaphoreEthers
+-   **monorepo-subgraph**: Hardhat + Next.js + SemaphoreSubgraph
+-   **contracts-hardhat**: Hardhat only, focused on smart contract development.
