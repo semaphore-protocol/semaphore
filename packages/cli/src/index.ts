@@ -14,9 +14,11 @@ import getGroupIds from "./getGroupIds.js"
 import { getGroupId, getProjectName, getSupportedNetwork, getSupportedTemplate } from "./inquirerPrompts.js"
 import Spinner from "./spinner.js"
 
+// Define the path to the package.json file to extract metadata for the CLI.
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
 const { description, version } = JSON.parse(readFileSync(`${packagePath}/package.json`, "utf8"))
 
+// List of supported templates for project creation.
 const supportedTemplates = [
     {
         value: "monorepo-ethers",
@@ -32,6 +34,7 @@ const supportedTemplates = [
     }
 ]
 
+// Setup the CLI program with basic information and help text.
 program
     .name("semaphore")
     .description(description)
@@ -46,6 +49,7 @@ program
         }
     })
 
+// Define the 'create' command to scaffold new Semaphore projects.
 program
     .command("create")
     .description("Create a Semaphore project with a supported template.")
@@ -78,15 +82,19 @@ program
 
         await checkLatestVersion(version)
 
+        // Extract the template package into the project directory.
         await pacote.extract(
             `@semaphore-protocol/cli-template-${template}@${version}`,
             `${currentDirectory}/${projectDirectory}`
         )
 
+        // Decompress the template files after extraction.
         await decompress(`${currentDirectory}/${projectDirectory}/files.tgz`, `${currentDirectory}/${projectDirectory}`)
 
+        // Clean up the compressed file after extraction.
         unlinkSync(`${currentDirectory}/${projectDirectory}/files.tgz`)
 
+        // Copy the example environment file to the actual environment file.
         copyFileSync(
             `${currentDirectory}/${projectDirectory}/.env.example`,
             `${currentDirectory}/${projectDirectory}/.env`
@@ -99,6 +107,7 @@ program
         console.info(`   ${chalk.cyan("cd")} ${projectDirectory}`)
         console.info(`   ${chalk.cyan("yarn install")}\n`)
 
+        // Read the package.json to list available npm scripts.
         const { scripts } = JSON.parse(readFileSync(`${currentDirectory}/${projectDirectory}/package.json`, "utf8"))
 
         if (scripts) {
