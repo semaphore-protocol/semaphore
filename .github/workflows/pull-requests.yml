@@ -104,7 +104,7 @@ jobs:
 
             # https://github.com/iden3/circuits/blob/8fffb6609ecad0b7bcda19bb908bdb544bdb3cf7/.github/workflows/main.yml#L18-L22
             # https://stackoverflow.com/a/78377916
-            - if: steps.changed-files.outputs.circuits_any_changed == true
+            - if: steps.changed-files.outputs.circuits_any_changed == 'true'
               name: Setup Circom and Test circuits
               run: |
                   sudo rm /etc/apt/sources.list.d/microsoft-prod.list
