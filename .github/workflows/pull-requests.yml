@@ -62,7 +62,9 @@ jobs:
 
             - if: steps.changed-files.outputs.subgraph_any_changed == 'true'
               name: Build subgraph
-              run: yarn build:subgraph
+              run: |
+                  yarn workspace @semaphore-protocol/utils build
+                  yarn build:subgraph
 
             - if: steps.changed-files.outputs.to_format_any_changed == 'true'
               name: Format
@@ -132,4 +134,7 @@ jobs:
 
             - if: steps.changed-files.outputs.subgraph_any_changed == 'true'
               name: Build and Test Subgraph
-              run: yarn build:subgraph && yarn test:subgraph
+              run: |
+                  yarn workspace @semaphore-protocol/utils build
+                  yarn build:subgraph
+                  yarn test:subgraph
