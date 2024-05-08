@@ -78,7 +78,7 @@ describe("Proof", () => {
         it("Should throw an error because the message value is incorrect", async () => {
             const group = new Group([1n, 2n, identity.commitment])
 
-            const fun = () => generateProof(identity, group, Number.MAX_VALUE + 1, scope, treeDepth)
+            const fun = () => generateProof(identity, group, Number.MAX_SAFE_INTEGER + 1, scope, treeDepth)
 
             await expect(fun).rejects.toThrow("overflow")
         })
