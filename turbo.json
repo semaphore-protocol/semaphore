@@ -54,7 +54,7 @@
             "inputs": ["packages/contracts/*.sol"]
         },
         "test": {
-            "dependsOn": ["^build"],
+            "dependsOn": ["^build", "build"],
             "inputs": [
                 "apps/subgraph/**/*.{json,ts}",
                 "!apps/subgraph/{build,generated}/**/*",
@@ -63,7 +63,7 @@
             ]
         },
         "test:coverage": {
-            "dependsOn": ["^build"],
+            "dependsOn": ["^build", "build"],
             "inputs": ["packages/contracts/src/**/*.sol", "packages/contracts/test/**/*.ts"]
         },
         "//#_test:libraries": {
