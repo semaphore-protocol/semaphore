@@ -1,14 +1,14 @@
 [
     {
-        "name": "ETHGlobal - Circuit Breaker",
-        "date": "Feb 2-21, 2024",
-        "description": "Semaphore team will deliver the online workshop  \"Semaphore: The power of anonymity\" about building ZK applications. It will also mention improvements on Semaphore v4 and ZK-KIT.",
-        "link": "https://ethglobal.com/events/circuitbreaker"
+        "name": "ETHRome",
+        "date": "Oct 4-6, 2024",
+        "description": "Semaphore team will deliver an in-person talk and sponsor prizes for the hackathon.",
+        "link": "https://www.ethrome.org/"
     },
     {
-        "name": "ETHDam",
-        "date": "Apr 12-14, 2024",
-        "description": "Semaphore team will deliver an in-person talk and sponsor prizes for the hackathon.",
-        "link": "https://www.ethdam.com/"
+        "name": "Devcon",
+        "date": "Nov 12-15, 2024",
+        "description": "Semaphore team will deliver an in-person talk and run workshops.",
+        "link": "https://devcon.org/en/"
     }
 ]
