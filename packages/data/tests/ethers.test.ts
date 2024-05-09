@@ -18,7 +18,8 @@ jest.mock("ethers/contract", () => ({
                 getMerkleTreeRoot: () => "222",
                 getMerkleTreeDepth: () => BigInt(3),
                 getMerkleTreeSize: () => BigInt(8),
-                getGroupAdmin: () => "0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F"
+                getGroupAdmin: () => "0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F",
+                hasMember: () => true
             }) as any
     )
 }))
@@ -233,6 +234,27 @@ describe("SemaphoreEthers", () => {
             const fun = () => semaphore.getGroupValidatedProofs("666")
 
             await expect(fun).rejects.toThrow("Group '666' not found")
+        })
+    })
+
+    describe("isGroupMember", () => {
+        it("Should return true because the member is part of the group", async () => {
+            const semaphore = new SemaphoreEthers()
+
+            const isMember = await semaphore.isGroupMember("42", "1")
+
+            expect(isMember).toBeTruthy()
+        })
+        it("Should return false because the member is not part of the group", async () => {
+            ContractMocked.mockReturnValueOnce({
+                hasMember: () => false
+            } as any)
+
+            const semaphore = new SemaphoreEthers()
+
+            const isMember = await semaphore.isGroupMember("48", "2")
+
+            expect(isMember).toBeFalsy()
         })
     })
 })
