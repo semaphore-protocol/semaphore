@@ -58,6 +58,30 @@ describe("Proof", () => {
             expect(typeof proof).toBe("object")
             expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
         }, 70000)
+
+        it("Should generate a Semaphore proof without passing the tree depth", async () => {
+            const group = new Group([1n, 2n, identity.commitment])
+
+            proof = await generateProof(identity, group, message, scope)
+
+            expect(typeof proof).toBe("object")
+            expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
+        }, 70000)
+
+        it("Should throw an error because snarkArtifacts is not an object", async () => {
+            const group = new Group([1n, 2n, identity.commitment])
+            const fun = () => generateProof(identity, group, message, scope, undefined, "hello" as any)
+
+            await expect(fun).rejects.toThrow("is not an object")
+        })
+
+        it("Should throw an error because the message value is incorrect", async () => {
+            const group = new Group([1n, 2n, identity.commitment])
+
+            const fun = () => generateProof(identity, group, Number.MAX_VALUE, scope, treeDepth)
+
+            await expect(fun).rejects.toThrow("overflow")
+        })
     })
 
     describe("# verifyProof", () => {
