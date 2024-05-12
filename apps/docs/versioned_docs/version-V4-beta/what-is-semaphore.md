@@ -40,11 +40,12 @@ and [JavaScript libraries](https://github.com/semaphore-protocol/semaphore/tree/
 
 ### Audits
 
-| Version | Auditors                          | Report                                                                                                                | Scope                    |
-| ------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| v2.0.0  | [PSE](https://pse.dev/)           | [Semaphore_2.0.0_Audit.pdf](https://github.com/semaphore-protocol/semaphore/files/9850441/Semaphore_2.0.0_Audit.pdf)  | `circuits`, `contracts`  |
-| v2.5.0  | [PSE](https://pse.dev/)           | [Semaphore_2.5.0_Audit.pdf](https://github.com/semaphore-protocol/semaphore/files/9845008/Semaphore_2.5.0_Audit.pdf)  | `contracts`, `libraries` |
-| v3.0.0  | [Veridise](https://veridise.com/) | [Semaphore_3.0.0_Audit.pdf](https://github.com/semaphore-protocol/semaphore/files/10513776/Semaphore_3.0.0_Audit.pdf) | `circuits`, `contracts`  |
+| Version | Auditors                          | Report                                                                           | Scope                                |
+| ------- | --------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------ |
+| v2.0.0  | [PSE](https://pse.dev/)           | [Semaphore_2.0.0_Audit.pdf](https://semaphore.pse.dev/Semaphore_2.0.0_Audit.pdf) | `circuits`, `contracts`              |
+| v2.5.0  | [PSE](https://pse.dev/)           | [Semaphore_2.5.0_Audit.pdf](https://semaphore.pse.dev/Semaphore_2.5.0_Audit.pdf) | `contracts`, `libraries`             |
+| v3.0.0  | [Veridise](https://veridise.com/) | [Semaphore_3.0.0_Audit.pdf](https://semaphore.pse.dev/Semaphore_3.0.0_Audit.pdf) | `circuits`, `contracts`              |
+| v4.0.0  | [PSE](https://pse.dev/)           | [Semaphore_4.0.0_Audit.pdf](https://semaphore.pse.dev/Semaphore_4.0.0_Audit.pdf) | `circuits`, `contracts`, `libraries` |
 
 :::caution
 Semaphore V4 is in early testing and might have bugs. Please, don't use it in production.
