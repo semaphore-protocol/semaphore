@@ -28,7 +28,7 @@ describe("Proof", () => {
         it("Should not generate a Semaphore proof if the tree depth is not supported", async () => {
             const group = new Group([1n, 2n, identity.commitment])
 
-            const fun = () => generateProof(identity, group, message, scope, 13)
+            const fun = () => generateProof(identity, group, message, scope, 33)
 
             await expect(fun).rejects.toThrow("tree depth must be")
         })
@@ -92,6 +92,10 @@ describe("Proof", () => {
         })
 
         it("Should verify a Semaphore proof", async () => {
+            const group = new Group([1n, 2n, identity.commitment])
+
+            proof = await generateProof(identity, group, message, scope, treeDepth)
+
             const response = await verifyProof(proof)
 
             expect(response).toBe(true)
