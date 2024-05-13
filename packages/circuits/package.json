@@ -24,7 +24,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@zk-kit/circuits": "0.2.4",
+        "@zk-kit/binary-merkle-root.circom": "1.0.0",
         "circomlib": "2.0.5"
     },
     "devDependencies": {
