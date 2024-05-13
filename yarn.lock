@@ -6261,7 +6261,7 @@ __metadata:
     "@semaphore-protocol/core": "workspace:^"
     "@types/mocha": "npm:^10.0.6"
     "@zk-kit/baby-jubjub": "npm:1.0.0-beta"
-    "@zk-kit/circuits": "npm:0.2.4"
+    "@zk-kit/binary-merkle-root.circom": "npm:1.0.0"
     circomkit: "npm:^0.0.19"
     circomlib: "npm:2.0.5"
     mocha: "npm:^10.2.0"
@@ -8520,12 +8520,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/circuits@npm:0.2.4":
-  version: 0.2.4
-  resolution: "@zk-kit/circuits@npm:0.2.4"
+"@zk-kit/binary-merkle-root.circom@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@zk-kit/binary-merkle-root.circom@npm:1.0.0"
   dependencies:
     circomlib: "npm:^2.0.5"
-  checksum: 10/6d203da9c8110dcc90bd33d593a21400a3a3b73e5194775282445ed06e93eca068aaa2c5ef7f1c0606d75c0c4d8753f7230f2cc2a4506126c3150eafd1f7a887
+  checksum: 10/3b3ab45b1bdb404b47ad1aef193b96490ad795fb31c2c3532f4b28198d305dd1ad409ba243feb4fa363ef83c5dfdd372728c5be6e3a02c633d6a2e0eb4458e39
   languageName: node
   linkType: hard
 
