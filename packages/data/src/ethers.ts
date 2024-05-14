@@ -16,6 +16,11 @@ import {
     PocketProvider,
     Provider
 } from "ethers/providers"
+import {
+    requireObject,
+    requireDefined,
+    requireString
+} from "@zk-kit/utils/error-handlers";
 import checkParameter from "./checkParameter"
 import getEvents from "./getEvents"
 import SemaphoreABI from "./semaphoreABI.json"
@@ -40,16 +45,16 @@ export default class SemaphoreEthers {
      * @param options Configuration options for the ethers provider and the Semaphore contract.
      */
     constructor(networkOrEthereumURL: EthersNetwork | string = defaultNetwork, options: EthersOptions = {}) {
-        checkParameter(networkOrEthereumURL, "networkOrSubgraphURL", "string")
+        requireString(networkOrEthereumURL, "networkOrSubgraphURL");
 
         if (options.provider) {
-            checkParameter(options.provider, "provider", "string")
+            requireString(options.provider, "provider");
         } else if (!networkOrEthereumURL.startsWith("http")) {
             options.provider = "infura"
         }
 
         if (options.apiKey) {
-            checkParameter(options.apiKey, "apiKey", "string")
+            requireString(options.apiKey, "apiKey");
         }
 
         if (isSupportedNetwork(networkOrEthereumURL)) {
@@ -140,7 +145,7 @@ export default class SemaphoreEthers {
      * @returns A promise that resolves to a GroupResponse object.
      */
     async getGroup(groupId: string): Promise<GroupResponse> {
-        checkParameter(groupId, "groupId", "string")
+        requireString(groupId, "groupId");
 
         const groupAdmin = await this._contract.getGroupAdmin(groupId)
 
@@ -172,7 +177,7 @@ export default class SemaphoreEthers {
      * @returns A promise that resolves to an array of member identity commitments as strings.
      */
     async getGroupMembers(groupId: string): Promise<string[]> {
-        checkParameter(groupId, "groupId", "string")
+        requireString(groupId, "groupId");
 
         const groupAdmin = await this._contract.getGroupAdmin(groupId)
 
@@ -257,7 +262,7 @@ export default class SemaphoreEthers {
      * @returns A promise that resolves to an array of validated proofs.
      */
     async getGroupValidatedProofs(groupId: string): Promise<any> {
-        checkParameter(groupId, "groupId", "string")
+        requireString(groupId, "groupId");
 
         const groupAdmin = await this._contract.getGroupAdmin(groupId)
 
@@ -290,8 +295,8 @@ export default class SemaphoreEthers {
      * @returns A promise that resolves to true if the member is part of the group, otherwise false.
      */
     async isGroupMember(groupId: string, member: string): Promise<boolean> {
-        checkParameter(groupId, "groupId", "string")
-        checkParameter(member, "member", "string")
+        requireString(groupId, "groupId");
+        requireString(member, "member");
 
         return this._contract.hasMember(groupId, member)
     }
