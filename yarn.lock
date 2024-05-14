@@ -6431,7 +6431,7 @@ __metadata:
     "@rollup/plugin-commonjs": "npm:^25.0.7"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@zk-kit/baby-jubjub": "npm:0.3.0"
+    "@zk-kit/baby-jubjub": "npm:1.0.0-beta"
     "@zk-kit/eddsa-poseidon": "npm:1.0.0-beta"
     "@zk-kit/utils": "npm:1.0.0-beta.4"
     poseidon-lite: "npm:0.2.0"
@@ -8502,15 +8502,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/baby-jubjub@npm:0.3.0":
-  version: 0.3.0
-  resolution: "@zk-kit/baby-jubjub@npm:0.3.0"
-  dependencies:
-    "@zk-kit/utils": "npm:0.6.0"
-  checksum: 10/a5b6f80e277c90be6874f60632cb3818ac3267434c52173474bc475798237e0c0fee92522a434cb2cb8b512b3246d5fb41ae38b117aeeb814b62f57875cfc6d9
-  languageName: node
-  linkType: hard
-
 "@zk-kit/baby-jubjub@npm:1.0.0-beta":
   version: 1.0.0-beta
   resolution: "@zk-kit/baby-jubjub@npm:1.0.0-beta"
@@ -8553,15 +8544,6 @@ __metadata:
   version: 2.0.0-beta.4
   resolution: "@zk-kit/imt@npm:2.0.0-beta.4"
   checksum: 10/9e042472c81bb362ad4580eb3ab69b4d07bacc224d920a5539ed326855e99c70824cc795732642318c6ea2533b48e980009968fe996e4bfde9dbfbbf4a3e14bb
-  languageName: node
-  linkType: hard
-
-"@zk-kit/utils@npm:0.6.0":
-  version: 0.6.0
-  resolution: "@zk-kit/utils@npm:0.6.0"
-  dependencies:
-    buffer: "npm:^6.0.3"
-  checksum: 10/7a88b1588df8791c9ea5cbbd5caafac4567127da4951ba1ee6d3f0d93e23aea3dbd9e45789b31f53e8c56637050ce41d520f176af368c4f815382bebb27b4856
   languageName: node
   linkType: hard
 
