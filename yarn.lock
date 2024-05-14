@@ -6360,7 +6360,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
-    "@zk-kit/imt.sol": "npm:2.0.0-beta.8"
+    "@zk-kit/imt.sol": "npm:^2.0.0-beta.12"
   languageName: unknown
   linkType: soft
 
@@ -6396,7 +6396,7 @@ __metadata:
     "@rollup/plugin-commonjs": "npm:^25.0.7"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@zk-kit/imt": "npm:2.0.0-beta.2"
+    "@zk-kit/imt": "npm:^2.0.0-beta.4"
     "@zk-kit/utils": "npm:1.0.0-beta"
     poseidon-lite: "npm:^0.2.0"
     rimraf: "npm:^5.0.5"
@@ -8540,19 +8540,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/imt.sol@npm:2.0.0-beta.8":
-  version: 2.0.0-beta.8
-  resolution: "@zk-kit/imt.sol@npm:2.0.0-beta.8"
+"@zk-kit/imt.sol@npm:^2.0.0-beta.12":
+  version: 2.0.0-beta.12
+  resolution: "@zk-kit/imt.sol@npm:2.0.0-beta.12"
   dependencies:
     poseidon-solidity: "npm:0.0.5"
-  checksum: 10/dee5241237fb9e8928bbef9b0016db07ba9e0151b7a3c46f322cb01bbee89228dc287ac586cf0a4f1b4664fa833594a9953b5f70a81c181e47ca877502b10380
+  checksum: 10/a568eb68e4065c20a03c09a85f4bc7fec7b3c28083da8a4cfc8109561ec09568b76d46daaedf9dce38a787fa007b32e52f390c30ef698c78b43527e16de96972
   languageName: node
   linkType: hard
 
-"@zk-kit/imt@npm:2.0.0-beta.2":
-  version: 2.0.0-beta.2
-  resolution: "@zk-kit/imt@npm:2.0.0-beta.2"
-  checksum: 10/b99ab587f4a5f147531160feb9b27e5505659d5bb34fe2cbbc8e3d3bedc95febb3cf1ffcd4f75570feb03a2d929063e9b5f9d638ac2c1bba0204ca9cdc1fa2c0
+"@zk-kit/imt@npm:^2.0.0-beta.4":
+  version: 2.0.0-beta.4
+  resolution: "@zk-kit/imt@npm:2.0.0-beta.4"
+  checksum: 10/9e042472c81bb362ad4580eb3ab69b4d07bacc224d920a5539ed326855e99c70824cc795732642318c6ea2533b48e980009968fe996e4bfde9dbfbbf4a3e14bb
   languageName: node
   linkType: hard
 
@@ -24879,7 +24879,7 @@ __metadata:
     "@types/chai": "npm:^4.2.0"
     "@types/mocha": "npm:^10.0.6"
     "@types/node": "npm:^20.10.7"
-    "@zk-kit/imt.sol": "npm:2.0.0-beta.8"
+    "@zk-kit/imt.sol": "npm:^2.0.0-beta.12"
     chai: "npm:^4.2.0"
     ethers: "npm:^6.4.0"
     hardhat: "npm:^2.19.4"
