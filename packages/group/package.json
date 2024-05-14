@@ -40,6 +40,6 @@
     },
     "dependencies": {
         "@zk-kit/imt": "^2.0.0-beta.4",
-        "@zk-kit/utils": "1.0.0-beta"
+        "@zk-kit/utils": "1.0.0-beta.4"
     }
 }
