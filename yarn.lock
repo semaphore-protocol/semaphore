@@ -6260,7 +6260,7 @@ __metadata:
   dependencies:
     "@semaphore-protocol/core": "workspace:^"
     "@types/mocha": "npm:^10.0.6"
-    "@zk-kit/baby-jubjub": "npm:1.0.0-beta"
+    "@zk-kit/baby-jubjub": "npm:1.0.0"
     "@zk-kit/binary-merkle-root.circom": "npm:1.0.0"
     circomkit: "npm:^0.0.19"
     circomlib: "npm:2.0.5"
@@ -6431,7 +6431,7 @@ __metadata:
     "@rollup/plugin-commonjs": "npm:^25.0.7"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@zk-kit/baby-jubjub": "npm:1.0.0-beta"
+    "@zk-kit/baby-jubjub": "npm:^1.0.0"
     "@zk-kit/eddsa-poseidon": "npm:1.0.0-beta"
     "@zk-kit/utils": "npm:1.0.0-beta.4"
     poseidon-lite: "npm:0.2.0"
@@ -8499,6 +8499,15 @@ __metadata:
   dependencies:
     "@zag-js/dom-query": "npm:0.16.0"
   checksum: 10/20c4520fd2d912a4d4d5d1c508c5891f9b8d3278f6a2739563732ca751b24b5bf5f78e92e71532b43e618f8b399ae978b033492cbe0d3be7b9699e5bb7f98899
+  languageName: node
+  linkType: hard
+
+"@zk-kit/baby-jubjub@npm:1.0.0, @zk-kit/baby-jubjub@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@zk-kit/baby-jubjub@npm:1.0.0"
+  dependencies:
+    "@zk-kit/utils": "npm:1.0.0-beta.4"
+  checksum: 10/5af2bc4c3232ade054636fc2990095efa8d9e156daa94757095eca7edd0da04e77b75c2d83908701e6aed7fce91ed60ce08701a454936cc06dcb7d8a1d3405c0
   languageName: node
   linkType: hard
 
