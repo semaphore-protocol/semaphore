@@ -1,7 +1,7 @@
 import type { Point } from "@zk-kit/baby-jubjub"
 import { EdDSAPoseidon, Signature, signMessage, verifySignature } from "@zk-kit/eddsa-poseidon"
 import type { BigNumberish } from "@zk-kit/utils"
-import { bufferToHexadecimal, hexadecimalToBuffer } from "@zk-kit/utils/conversions"
+import { hexadecimalToBuffer } from "@zk-kit/utils/conversions"
 import { requireString } from "@zk-kit/utils/error-handlers"
 import { isHexadecimal } from "@zk-kit/utils/type-checks"
 import { poseidon2 } from "poseidon-lite/poseidon2"
@@ -59,7 +59,7 @@ export class Identity {
         } else {
             eddsa = new EdDSAPoseidon()
 
-            this._privateKey = bufferToHexadecimal(eddsa.privateKey as any)
+            this._privateKey = eddsa.privateKey as string
         }
 
         this._secretScalar = eddsa.secretScalar
