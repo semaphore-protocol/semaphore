@@ -1,4 +1,4 @@
-import { Group } from "@semaphore-protocol/core"
+import { Group, Identity } from "@semaphore-protocol/core"
 import { Base8, mulPointEscalar } from "@zk-kit/baby-jubjub"
 import { WitnessTester } from "circomkit"
 import { poseidon2 } from "poseidon-lite"
@@ -93,5 +93,29 @@ describe("semaphore", () => {
         }
 
         await circuit.expectFail(INPUT)
+    })
+
+    it("Should calculate the root and the nullifier correctly using the Semaphore Identity library", async () => {
+        const { commitment, secretScalar: secret } = new Identity()
+
+        const group = new Group([commitment, 2n, 3n])
+
+        const { merkleProofSiblings, merkleProofIndices } = generateMerkleProof(group, 0, MAX_DEPTH)
+
+        const INPUT = {
+            secret,
+            merkleProofLength: group.depth,
+            merkleProofIndices,
+            merkleProofSiblings,
+            scope,
+            message
+        }
+
+        const OUTPUT = {
+            nullifier: poseidon2([scope, secret]),
+            merkleRoot: group.root
+        }
+
+        await circuit.expectPass(INPUT, OUTPUT)
     })
 })
