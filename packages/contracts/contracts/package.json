@@ -30,6 +30,6 @@
         "access": "public"
     },
     "dependencies": {
-        "@zk-kit/imt.sol": "2.0.0-beta.8"
+        "@zk-kit/imt.sol": "2.0.0-beta.12"
     }
 }
