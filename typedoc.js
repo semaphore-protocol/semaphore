@@ -2,15 +2,16 @@ const fs = require("fs")
 const path = require("path")
 
 const EXCLUDE_PKGS = [
+    "circuits",
+    "cli",
     "cli-template",
     "cli-template-contracts-hardhat",
     "cli-template-monorepo-ethers",
     "cli-template-monorepo-subgraph",
-    "core",
-    "circuits",
     "contracts",
+    "core",
     "hardhat",
-    "cli"
+    "heyauthn"
 ]
 const packagesDir = path.join(__dirname, "packages")
 const entryPoints = fs
@@ -20,6 +21,7 @@ const entryPoints = fs
 
 /** @type {import('typedoc').typedocoptions} */
 module.exports = {
+    cname: "js.semaphore.pse.dev",
     entryPoints,
     name: "Semaphore SDK",
     entryPointStrategy: "packages"

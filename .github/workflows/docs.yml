@@ -2,13 +2,19 @@ name: docs
 
 on:
     push:
-        branches:
-            - main
+        branches: [main]
+        paths:
+            [
+                "apps/docs/**",
+                "packages/data/**",
+                "packages/group/**",
+                "packages/identity/**",
+                "packages/proof/**",
+                "packages/utils/**"
+            ]
 
 jobs:
     gh-pages:
-        runs-on: ubuntu-latest
-
         steps:
             - uses: actions/checkout@v4
 
