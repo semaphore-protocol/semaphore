@@ -13,6 +13,7 @@ const projects: any = fs
         displayName: name,
         setupFiles: ["dotenv/config"],
         moduleNameMapper: {
+            "@zk-kit/artifacts": "<rootDir>/../../node_modules/@zk-kit/artifacts/dist/index.node.cjs",
             "@semaphore-protocol/(.*)/(.*)": "<rootDir>/../$1/src/$2",
             "@semaphore-protocol/(.*)": "<rootDir>/../$1/src"
         }
