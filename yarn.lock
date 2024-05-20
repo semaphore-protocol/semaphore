@@ -6322,7 +6322,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
-    "@zk-kit/imt.sol": "npm:2.0.0-beta.12"
+    "@zk-kit/lean-imt.sol": "npm:2.0.0"
   languageName: unknown
   linkType: soft
 
@@ -8498,12 +8498,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/imt.sol@npm:2.0.0-beta.12":
-  version: 2.0.0-beta.12
-  resolution: "@zk-kit/imt.sol@npm:2.0.0-beta.12"
+"@zk-kit/lean-imt.sol@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@zk-kit/lean-imt.sol@npm:2.0.0"
   dependencies:
     poseidon-solidity: "npm:0.0.5"
-  checksum: 10/a568eb68e4065c20a03c09a85f4bc7fec7b3c28083da8a4cfc8109561ec09568b76d46daaedf9dce38a787fa007b32e52f390c30ef698c78b43527e16de96972
+  checksum: 10/094a1788905c380ed5c767184938d3aa0d0b3ba8ad92e8d6efae1243e4d15103484ec1224163ae7d0c43e0095ae19f28e41a7877d37398ff60dcadbf1eb27a77
   languageName: node
   linkType: hard
 
@@ -24756,7 +24756,7 @@ __metadata:
     "@types/chai": "npm:^4.2.0"
     "@types/mocha": "npm:^10.0.6"
     "@types/node": "npm:^20.10.7"
-    "@zk-kit/imt.sol": "npm:2.0.0-beta.12"
+    "@zk-kit/lean-imt.sol": "npm:2.0.0"
     chai: "npm:^4.2.0"
     ethers: "npm:^6.4.0"
     hardhat: "npm:^2.19.4"
