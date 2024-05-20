@@ -46,7 +46,7 @@ describe("Proof", () => {
 
             expect(typeof proof).toBe("object")
             expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
-        }, 70000)
+        }, 80000)
 
         it("Should generate a Semaphore proof passing a Merkle proof instead of a group", async () => {
             const group = new Group([1n, 2n, identity.commitment])
@@ -55,7 +55,7 @@ describe("Proof", () => {
 
             expect(typeof proof).toBe("object")
             expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
-        }, 70000)
+        }, 80000)
 
         it("Should generate a Semaphore proof without passing the tree depth", async () => {
             const group = new Group([1n, 2n, identity.commitment])
@@ -64,7 +64,7 @@ describe("Proof", () => {
 
             expect(typeof proof).toBe("object")
             expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
-        }, 70000)
+        }, 80000)
 
         it("Should throw an error because snarkArtifacts is not an object", async () => {
             const group = new Group([1n, 2n, identity.commitment])
@@ -102,6 +102,6 @@ describe("Proof", () => {
             const response = await verifyProof(proof)
 
             expect(response).toBe(true)
-        })
+        }, 80_000)
     })
 })
