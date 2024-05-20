@@ -3,7 +3,7 @@ import type { Identity } from "@semaphore-protocol/identity"
 import { MAX_DEPTH, MIN_DEPTH } from "@semaphore-protocol/utils/constants"
 import { requireDefined, requireNumber, requireObject, requireTypes } from "@zk-kit/utils/error-handlers"
 import { packGroth16Proof } from "@zk-kit/utils/proof-packing"
-import { maybeGetSemaphoreSnarkArtifacts, type SnarkArtifacts } from "@zk-kit/utils"
+import { maybeGetSnarkArtifacts, Project, type SnarkArtifacts } from "@zk-kit/artifacts"
 import type { BigNumberish } from "ethers"
 import { type NumericString, groth16 } from "snarkjs"
 import hash from "./hash"
@@ -83,7 +83,7 @@ export default async function generateProof(
     }
 
     // If the Snark artifacts are not defined they will be automatically downloaded.
-    snarkArtifacts ??= await maybeGetSemaphoreSnarkArtifacts(merkleTreeDepth)
+    snarkArtifacts ??= await maybeGetSnarkArtifacts(Project.SEMAPHORE, { parameters: [merkleTreeDepth] })
     const { wasm, zkey } = snarkArtifacts
 
     // The index must be converted to a list of indices, 1 for each tree level.
