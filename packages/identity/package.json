@@ -39,8 +39,8 @@
         "rollup-plugin-cleanup": "^3.2.1"
     },
     "dependencies": {
-        "@zk-kit/baby-jubjub": "1.0.0",
-        "@zk-kit/eddsa-poseidon": "1.0.0",
+        "@zk-kit/baby-jubjub": "1.0.1",
+        "@zk-kit/eddsa-poseidon": "1.0.1",
         "@zk-kit/utils": "1.0.0-beta.5",
         "poseidon-lite": "0.2.0"
     }
