@@ -6359,7 +6359,7 @@ __metadata:
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@rollup/plugin-typescript": "npm:^11.1.6"
     "@zk-kit/lean-imt": "npm:2.0.1"
-    "@zk-kit/utils": "npm:1.0.0-beta.5"
+    "@zk-kit/utils": "npm:1.0.0"
     poseidon-lite: "npm:^0.2.0"
     rimraf: "npm:^5.0.5"
     rollup: "npm:^4.12.0"
@@ -6395,7 +6395,7 @@ __metadata:
     "@rollup/plugin-typescript": "npm:^11.1.6"
     "@zk-kit/baby-jubjub": "npm:1.0.1"
     "@zk-kit/eddsa-poseidon": "npm:1.0.1"
-    "@zk-kit/utils": "npm:1.0.0-beta.5"
+    "@zk-kit/utils": "npm:1.0.0"
     poseidon-lite: "npm:0.2.0"
     rimraf: "npm:^5.0.5"
     rollup: "npm:^4.12.0"
@@ -6413,7 +6413,7 @@ __metadata:
     "@semaphore-protocol/utils": "npm:4.0.0-beta.10"
     "@types/snarkjs": "npm:^0"
     "@zk-kit/artifacts": "npm:^1.3.2"
-    "@zk-kit/utils": "npm:1.0.0-beta.5"
+    "@zk-kit/utils": "npm:1.0.0"
     ethers: "npm:6.10.0"
     poseidon-lite: "npm:^0.2.0"
     rimraf: "npm:^5.0.5"
@@ -8522,15 +8522,6 @@ __metadata:
   dependencies:
     buffer: "npm:^6.0.3"
   checksum: 10/a471025ca4c69a825bebf2c68a0d83c55c345c8843f28eeb958f1e2aa549aaa982939c1d6d819dda337601163064f382e450d09103ba4d9a0525281a0a23696b
-  languageName: node
-  linkType: hard
-
-"@zk-kit/utils@npm:1.0.0-beta.5":
-  version: 1.0.0-beta.5
-  resolution: "@zk-kit/utils@npm:1.0.0-beta.5"
-  dependencies:
-    buffer: "npm:^6.0.3"
-  checksum: 10/9f658b04b461524a68d8594f72165b2d79d78fe3dfea9a3b555f44e5d8cc94faefad12820ce9d9f3f8137ac44187b5bcc731d3d9b56a2f0c8fabb2a2a6a90194
   languageName: node
   linkType: hard
 
