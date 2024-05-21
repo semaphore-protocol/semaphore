@@ -39,6 +39,6 @@
         "typescript": "^5.3.3"
     },
     "dependencies": {
-        "@zk-kit/imt.sol": "2.0.0-beta.12"
+        "@zk-kit/lean-imt.sol": "2.0.0"
     }
 }
