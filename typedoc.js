@@ -10,8 +10,7 @@ const EXCLUDE_PKGS = [
     "cli-template-monorepo-subgraph",
     "contracts",
     "core",
-    "hardhat",
-    "heyauthn"
+    "hardhat"
 ]
 const packagesDir = path.join(__dirname, "packages")
 const entryPoints = fs
