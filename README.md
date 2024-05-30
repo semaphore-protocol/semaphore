@@ -1,9 +1,9 @@
 <p align="center">
     <h1 align="center">
       <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/semaphore-protocol/.github/blob/main/assets/semaphore-logo-light.svg">
-        <source media="(prefers-color-scheme: light)" srcset="https://github.com/semaphore-protocol/.github/blob/main/assets/semaphore-logo-dark.svg">
-        <img width="250" alt="Semaphore icon" src="https://github.com/semaphore-protocol/.github/blob/main/assets/semaphore-logo-dark.svg">
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/semaphore-protocol/.github/main/assets/semaphore-logo-light.svg">
+        <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/semaphore-protocol/.github/main/assets/semaphore-logo-dark.svg">
+        <img width="250" alt="Semaphore icon" src="https://raw.githubusercontent.com/semaphore-protocol/.github/main/assets/semaphore-logo-dark.svg">
       </picture>
     </h1>
 </p>
@@ -55,6 +55,10 @@
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
         <a href="https://semaphore.pse.dev/discord">
             🗣️ Chat &amp; Support
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://js.semaphore.pse.dev">
+            💻 API Reference
         </a>
     </h4>
 </div>
