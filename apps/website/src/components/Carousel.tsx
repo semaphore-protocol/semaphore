@@ -45,6 +45,10 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
         }
     }, [index, size])
 
+    const resetIndex = useCallback(() => {
+        setIndex(0)
+    }, [])
+
     return (
         <VStack align="left" w="full" spacing="16" {...props}>
             <HStack justify={type === "projects" ? "center" : "space-between"}>
@@ -68,7 +72,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                 )}
             </HStack>
 
-            <Box w="full" overflowX="auto">
+            <Box w="full" overflowX="auto" onScroll={resetIndex}>
                 <HStack
                     w="full"
                     transition="transform 0.4s ease-in-out"
