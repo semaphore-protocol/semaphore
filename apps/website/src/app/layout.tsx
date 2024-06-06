@@ -34,7 +34,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <Banner>
                         Semaphore V4
                         <Link
-                            _hover={{ color: "primary.600", textDecoration: "underline" }}
+                            _hover={{
+                                textDecoration: "underline",
+                                textDecorationColor: "primary.600"
+                            }}
                             href="https://ceremony.pse.dev/projects/Semaphore%20V4%20Trusted%20Setup%20Ceremony"
                             ml="1"
                             isExternal
