@@ -1,7 +1,7 @@
 [
     {
         "name": "Trusted Setup ceremony",
-        "date": "June X-Y, 2024",
+        "date": "June 10 - July 10, 2024",
         "description": "The Semaphore team will perform the Phase 2 MPC Trusted Setup ceremony to secure V4 circuit variants from 1 to 32 tree depths.",
         "link": "https://docs.semaphore.pse.dev/trusted-setup"
     },

@@ -41,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         >
                             <b>Trusted Setup</b>
                         </Link>{" "}
-                        ceremony is open for contributions until <b>June Y</b>.
+                        ceremony is open for contributions until <b>July 10</b>.
                     </Banner>
                     <Navbar />
                     <Container maxW="1440px" px={{ base: "5", md: "10" }}>
