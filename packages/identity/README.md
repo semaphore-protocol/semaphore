@@ -84,6 +84,28 @@ const { privateKey, publicKey, commitment } = new Identity()
 const identity = new Identity("your-private-key")
 ```
 
+\# **identity.export**(): _string_
+
+```typescript
+import { Identity } from "@semaphore-protocol/identity"
+
+const identity = new Identity()
+
+const privateKey = identity.export()
+```
+
+\# **identity.import**(privateKey: _string_): _Identity_
+
+```typescript
+import { Identity } from "@semaphore-protocol/identity"
+
+const identity = new Identity()
+
+const privateKey = identity.export()
+
+const identity2 = Identity.import(privateKey)
+```
+
 \# **identity.signMessage**(message: _BigNumberish_): _Signature\<string>_
 
 ```typescript

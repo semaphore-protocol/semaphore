@@ -6394,7 +6394,7 @@ __metadata:
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@rollup/plugin-typescript": "npm:^11.1.6"
     "@zk-kit/baby-jubjub": "npm:1.0.1"
-    "@zk-kit/eddsa-poseidon": "npm:1.0.1"
+    "@zk-kit/eddsa-poseidon": "npm:1.0.2"
     "@zk-kit/utils": "npm:1.0.0"
     poseidon-lite: "npm:0.2.0"
     rimraf: "npm:^5.0.5"
@@ -8487,14 +8487,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/eddsa-poseidon@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@zk-kit/eddsa-poseidon@npm:1.0.1"
+"@zk-kit/eddsa-poseidon@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@zk-kit/eddsa-poseidon@npm:1.0.2"
   dependencies:
     "@zk-kit/baby-jubjub": "npm:1.0.1"
     "@zk-kit/utils": "npm:1.0.0"
     buffer: "npm:6.0.3"
-  checksum: 10/337db4a73bd58680e462b6a82f95321406b3cffce7dce0413f7c857159798b8d85120750de5f5e4c7f2bcc102a02a5e3145302aeb9110a3b6172e6bd3bc29f43
+  checksum: 10/4b4e984a96c5dbc95a8cf36ceb8b3712e37291c1473d01b0e22c15a33311e9cf88c86175d878dacda1852cc905cd2074aaa76defeaed33490be3964ca7a53372
   languageName: node
   linkType: hard
 
