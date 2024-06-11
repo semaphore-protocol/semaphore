@@ -4,7 +4,7 @@ sidebar_position: 6
 
 # Trusted Setup
 
-gm, everyone 🕶️ we are excited to announce the upcoming Multi-Party Computation (MPC) Phase 2 Trusted Setup ceremony for the Semaphore V4 circuit - this is crucial for establishing a robust security foundation for the cryptographic protocol 🎉
+gm, everyone 😎 we are excited to announce the upcoming Multi-Party Computation (MPC) Phase 2 Trusted Setup ceremony for the Semaphore V4 circuit - this is crucial for establishing a robust security foundation for the cryptographic protocol 🎉
 
 The ceremony will take place from **June 10** to **July 10**. If all goes to plan, finalization should take place on **July 15** with the announcement of the final beacon on **July 12**.
 
