@@ -12,7 +12,7 @@ The ceremony will take place from **June 10** to **July 10**. If all goes to pla
 
 To contribute to this ceremony, you will just need your browser!
 
-1. Visit [ceremony.pse.dev](https://ceremony.pse.dev/projects/Semaphore%20V4%20Trusted%20Setup%20Ceremony).
+1. Visit [ceremony.pse.dev](https://ceremony.pse.dev/projects/Semaphore%20V4%20Ceremony).
 2. Login and associate your **Github** account.
 3. Hit the `contribute` button and wait for your turn.
 

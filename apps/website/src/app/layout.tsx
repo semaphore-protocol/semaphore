@@ -38,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                                 textDecoration: "underline",
                                 textDecorationColor: "primary.600"
                             }}
-                            href="https://ceremony.pse.dev/projects/Semaphore%20V4%20Trusted%20Setup%20Ceremony"
+                            href="https://ceremony.pse.dev/projects/Semaphore%20V4%20Ceremony"
                             ml="1"
                             isExternal
                         >
