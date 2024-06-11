@@ -30,7 +30,7 @@ export default function Navbar() {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     return (
-        <HStack zIndex="1" py="7" top="0" left="0" right="0" position="fixed" bgColor="darkBlueBg">
+        <HStack zIndex="1" py="7" top="42px" left="0" right="0" position="fixed" bgColor="darkBlueBg">
             <Container maxW="1440px" px={{ base: "5", md: "10" }}>
                 <HStack justify="space-between">
                     <Link as={NextLink} href="/">
