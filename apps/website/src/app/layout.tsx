@@ -1,9 +1,10 @@
-import { Box, Container } from "@chakra-ui/react"
+import { Box, Container, Link } from "@chakra-ui/react"
 import type { Metadata } from "next"
 import Script from "next/script"
 import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
 import Providers from "./providers"
+import Banner from "@/components/Banner"
 
 export const metadata: Metadata = {
     title: "Semaphore",
@@ -30,9 +31,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en" suppressHydrationWarning>
             <body suppressHydrationWarning>
                 <Providers>
+                    <Banner>
+                        Semaphore V4
+                        <Link
+                            _hover={{
+                                textDecoration: "underline",
+                                textDecorationColor: "primary.600"
+                            }}
+                            href="https://ceremony.pse.dev/projects/Semaphore%20V4%20Ceremony"
+                            ml="1"
+                            isExternal
+                        >
+                            <b>Trusted Setup</b>
+                        </Link>{" "}
+                        ceremony is open for contributions until <b>July 10</b>.
+                    </Banner>
                     <Navbar />
                     <Container maxW="1440px" px={{ base: "5", md: "10" }}>
-                        <Box h="96px" />
+                        <Box h="146px" /> {/* Adjusted to account for TopBanner and Navbar */}
                         {children}
                         <Footer />
                     </Container>
