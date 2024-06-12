@@ -39,6 +39,17 @@ describe("Identity", () => {
 
             expect(fun).toThrow("Parameter 'privateKey' is not a string, received type: number")
         })
+
+        it("Should be able to recreate identity from randomly generated identity", () => {
+            const identity = new Identity()
+
+            const identity2 = new Identity(identity.privateKey)
+
+            expect(identity.privateKey).toBe(identity2.privateKey)
+            expect(identity.secretScalar).toBe(identity2.secretScalar)
+            expect(identity.commitment).toEqual(identity2.commitment)
+            expect(identity.publicKey).toEqual(identity2.publicKey)
+        })
     })
 
     describe("# signMessage", () => {
