@@ -6395,7 +6395,7 @@ __metadata:
     "@rollup/plugin-typescript": "npm:^11.1.6"
     "@zk-kit/baby-jubjub": "npm:1.0.1"
     "@zk-kit/eddsa-poseidon": "npm:1.0.2"
-    "@zk-kit/utils": "npm:1.0.0"
+    "@zk-kit/utils": "npm:1.1.0"
     poseidon-lite: "npm:0.2.0"
     rimraf: "npm:^5.0.5"
     rollup: "npm:^4.12.0"
@@ -8522,6 +8522,15 @@ __metadata:
   dependencies:
     buffer: "npm:^6.0.3"
   checksum: 10/a471025ca4c69a825bebf2c68a0d83c55c345c8843f28eeb958f1e2aa549aaa982939c1d6d819dda337601163064f382e450d09103ba4d9a0525281a0a23696b
+  languageName: node
+  linkType: hard
+
+"@zk-kit/utils@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@zk-kit/utils@npm:1.1.0"
+  dependencies:
+    buffer: "npm:^6.0.3"
+  checksum: 10/6d936024a1992f09e9691671f6e3975c2b3bd6201982e1ee8402eadbf89c758354083488bb5cd08a904a4ff2df3e5b194137778959519e5089011683035481fa
   languageName: node
   linkType: hard
 

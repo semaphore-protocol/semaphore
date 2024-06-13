@@ -56,7 +56,7 @@ describe("Identity", () => {
             const privateKey = identity.export()
 
             expect(typeof privateKey).toBe("string")
-            expect(Buffer.from(privateKey, "hex")).toStrictEqual(privateKeyBuffer)
+            expect(Buffer.from(privateKey, "base64")).toStrictEqual(privateKeyBuffer)
         })
 
         it("Should export an identity where the private key is text", () => {
@@ -65,7 +65,7 @@ describe("Identity", () => {
             const privateKey = identity.export()
 
             expect(typeof privateKey).toBe("string")
-            expect(Buffer.from(privateKey, "hex")).toStrictEqual(privateKeyBuffer)
+            expect(Buffer.from(privateKey, "base64")).toStrictEqual(privateKeyBuffer)
         })
     })
 

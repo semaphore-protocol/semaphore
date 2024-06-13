@@ -1,8 +1,8 @@
 import type { Point } from "@zk-kit/baby-jubjub"
 import { EdDSAPoseidon, Signature, signMessage, verifySignature } from "@zk-kit/eddsa-poseidon"
 import type { BigNumberish } from "@zk-kit/utils"
-import { bufferToHexadecimal, hexadecimalToBuffer } from "@zk-kit/utils/conversions"
-import { isHexadecimal, isString } from "@zk-kit/utils/type-checks"
+import { base64ToBuffer, bufferToBase64, textToBase64 } from "@zk-kit/utils/conversions"
+import { isString } from "@zk-kit/utils/type-checks"
 import { poseidon2 } from "poseidon-lite/poseidon2"
 
 /**
@@ -82,28 +82,25 @@ export class Identity {
     }
 
     /**
-     * Returns the private key encoded as a hexadecimal string or text.
-     * @returns The private key as a hexadecimal string.
+     * Returns the private key encoded as a base64 string.
+     * @returns The private key as a base64 string.
      */
     public export(): string {
         if (isString(this._privateKey)) {
-            return Buffer.from(this._privateKey as string, "utf8").toString("hex")
+            return textToBase64(this._privateKey as string)
         }
 
-        return bufferToHexadecimal(this.privateKey as Buffer | Uint8Array)
+        return bufferToBase64(this.privateKey as Buffer | Uint8Array)
     }
 
     /**
-     * Returns a Semaphore identity based on a private key encoded as a hexadecimal string or text.
-     * @param privateKey The private key as a hexadecimal string.
+     * Returns a Semaphore identity based on a private key encoded as a base64 string.
+     * The private key will be converted to a buffer, regardless of its original type.
+     * @param privateKey The private key as a base64 string.
      * @returns The Semaphore identity.
      */
     static import(privateKey: string): Identity {
-        if (isHexadecimal(privateKey, false)) {
-            return new Identity(hexadecimalToBuffer(privateKey))
-        }
-
-        return new Identity(privateKey)
+        return new Identity(base64ToBuffer(privateKey))
     }
 
     /**
