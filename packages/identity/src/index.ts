@@ -12,7 +12,7 @@ import { poseidon2 } from "poseidon-lite/poseidon2"
  * and {@link https://www.poseidon-hash.info | Poseidon} for signatures.
  * In addition, the commitment, i.e. the hash of the public key, is used to represent
  * Semaphore identities in groups, adding an additional layer of privacy and security.
- * The private key of the identity can be exported as a hexadecimal string.
+ * The private key of the identity can be exported as a base64 string.
  */
 export class Identity {
     // The EdDSA private key, passed as a parameter or generated randomly.
