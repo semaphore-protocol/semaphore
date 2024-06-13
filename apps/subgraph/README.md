@@ -134,5 +134,5 @@ yarn deploy-local
 Once the subgraph is published it will start indexing. You can query the subgraph using the following GraphQL endpoint:
 
 ```
-http://127.0.0.1:8000/subgraphs/name/sempahore/graphql
+http://127.0.0.1:8000/subgraphs/name/semaphore/graphql
 ```
