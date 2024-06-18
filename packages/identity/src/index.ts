@@ -1,9 +1,8 @@
 import type { Point } from "@zk-kit/baby-jubjub"
 import { EdDSAPoseidon, Signature, signMessage, verifySignature } from "@zk-kit/eddsa-poseidon"
 import type { BigNumberish } from "@zk-kit/utils"
-import { hexadecimalToBuffer } from "@zk-kit/utils/conversions"
-import { requireString } from "@zk-kit/utils/error-handlers"
-import { isHexadecimal } from "@zk-kit/utils/type-checks"
+import { base64ToBuffer, bufferToBase64, textToBase64 } from "@zk-kit/utils/conversions"
+import { isString } from "@zk-kit/utils/type-checks"
 import { poseidon2 } from "poseidon-lite/poseidon2"
 
 /**
@@ -13,12 +12,11 @@ import { poseidon2 } from "poseidon-lite/poseidon2"
  * and {@link https://www.poseidon-hash.info | Poseidon} for signatures.
  * In addition, the commitment, i.e. the hash of the public key, is used to represent
  * Semaphore identities in groups, adding an additional layer of privacy and security.
- * The private key of the identity is stored as a hexadecimal string or text.
- * The other attributes are stored as stringified bigint.
+ * The private key of the identity can be exported as a base64 string.
  */
 export class Identity {
     // The EdDSA private key, passed as a parameter or generated randomly.
-    private _privateKey: string
+    private _privateKey: string | Buffer | Uint8Array
     // The secret scalar derived from the private key.
     // It is used in circuits to derive the public key.
     private _secretScalar: bigint
@@ -28,9 +26,8 @@ export class Identity {
     private _commitment: bigint
 
     /**
-     * Initializes the class attributes based on a given private key, which must be a hexadecimal string or a text.
-     * Hexadecimal strings must not start with '0x' or '0X'.
-     * If the private key is not passed as a parameter, a random hexadecimal key will be generated.
+     * Initializes the class attributes based on a given private key, which must be text or a buffer.
+     * If the private key is not passed as a parameter, a random private key will be generated.
      * The EdDSAPoseidon class is used to generate the secret scalar and the public key.
      * Additionally, the constructor computes a commitment of the public key using a hash function (Poseidon).
      *
@@ -43,25 +40,10 @@ export class Identity {
      *
      * @param privateKey The private key used to derive the public key (hexadecimal or string).
      */
-    constructor(privateKey?: string) {
-        let eddsa: EdDSAPoseidon
+    constructor(privateKey?: string | Buffer | Uint8Array) {
+        const eddsa = new EdDSAPoseidon(privateKey)
 
-        if (privateKey) {
-            requireString(privateKey, "privateKey")
-
-            this._privateKey = privateKey
-
-            if (isHexadecimal(privateKey, false)) {
-                eddsa = new EdDSAPoseidon(hexadecimalToBuffer(privateKey))
-            } else {
-                eddsa = new EdDSAPoseidon(privateKey)
-            }
-        } else {
-            eddsa = new EdDSAPoseidon()
-
-            this._privateKey = eddsa.privateKey as string
-        }
-
+        this._privateKey = eddsa.privateKey
         this._secretScalar = eddsa.secretScalar
         this._publicKey = eddsa.publicKey
         this._commitment = poseidon2(this._publicKey)
@@ -69,9 +51,9 @@ export class Identity {
 
     /**
      * Returns the private key.
-     * @returns The private key as a string (hexadecimal or text).
+     * @returns The private key as a buffer or text.
      */
-    public get privateKey(): string {
+    public get privateKey(): string | Buffer | Uint8Array {
         return this._privateKey
     }
 
@@ -100,6 +82,28 @@ export class Identity {
     }
 
     /**
+     * Returns the private key encoded as a base64 string.
+     * @returns The private key as a base64 string.
+     */
+    public export(): string {
+        if (isString(this._privateKey)) {
+            return textToBase64(this._privateKey as string)
+        }
+
+        return bufferToBase64(this.privateKey as Buffer | Uint8Array)
+    }
+
+    /**
+     * Returns a Semaphore identity based on a private key encoded as a base64 string.
+     * The private key will be converted to a buffer, regardless of its original type.
+     * @param privateKey The private key as a base64 string.
+     * @returns The Semaphore identity.
+     */
+    static import(privateKey: string): Identity {
+        return new Identity(base64ToBuffer(privateKey))
+    }
+
+    /**
      * Generates a signature for a given message using the private key.
      * This method demonstrates how to sign a message and could be used
      * for authentication or data integrity.
@@ -112,11 +116,7 @@ export class Identity {
      * @returns A {@link https://zkkit.pse.dev/types/_zk_kit_eddsa_poseidon.Signature.html | Signature} object containing the signature components.
      */
     public signMessage(message: BigNumberish): Signature<bigint> {
-        const privateKey = isHexadecimal(this.privateKey, false)
-            ? hexadecimalToBuffer(this.privateKey)
-            : this.privateKey
-
-        return signMessage(privateKey, message)
+        return signMessage(this.privateKey, message)
     }
 
     /**
