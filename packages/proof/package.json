@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/proof",
-    "version": "4.0.0-beta.13",
+    "version": "4.0.0-beta.14",
     "description": "A library to generate and verify Semaphore proofs.",
     "type": "module",
     "license": "MIT",
@@ -48,11 +48,11 @@
         "rollup-plugin-cleanup": "^3.2.1"
     },
     "peerDependencies": {
-        "@semaphore-protocol/group": "4.0.0-beta.13",
-        "@semaphore-protocol/identity": "4.0.0-beta.13"
+        "@semaphore-protocol/group": "4.0.0-beta.14",
+        "@semaphore-protocol/identity": "4.0.0-beta.14"
     },
     "dependencies": {
-        "@semaphore-protocol/utils": "4.0.0-beta.13",
+        "@semaphore-protocol/utils": "4.0.0-beta.14",
         "@zk-kit/artifacts": "1.8.0",
         "@zk-kit/utils": "1.0.0",
         "ethers": "6.10.0",
