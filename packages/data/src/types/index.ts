@@ -2,7 +2,7 @@ export type EthersNetwork =
     | "mainnet"
     | "sepolia"
     | "matic"
-    | "matic-mumbai"
+    | "matic-amoy"
     | "arbitrum"
     | "arbitrum-sepolia"
     | "optimism"

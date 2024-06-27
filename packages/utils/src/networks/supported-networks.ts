@@ -17,10 +17,10 @@ export default {
         chainId: 11155420,
         explorer: "https://sepolia-optimism.etherscan.io"
     },
-    "matic-mumbai": {
-        name: "Matic Mumbai",
-        url: "https://rpc-mumbai.polygon.technology",
-        chainId: 80001,
-        explorer: "https://mumbai.polygonscan.com"
+    "matic-amoy": {
+        name: "Matic Amoy",
+        url: "https://rpc-amoy.polygon.technology",
+        chainId: 80002,
+        explorer: "https://amoy.polygonscan.com"
     }
 }
