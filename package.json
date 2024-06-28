@@ -11,7 +11,7 @@
         "build:libraries": "yarn workspaces foreach -Apt --no-private run build",
         "build:subgraph": "yarn workspace semaphore-subgraph build",
         "compile:contracts": "yarn workspace semaphore-contracts compile",
-        "test": "concurrently -c auto \"yarn:test:*\"",
+        "test": "concurrently -g -c auto \"yarn:test:*\"",
         "test:libraries": "jest --coverage",
         "test.library": "jest packages/${0}",
         "test:subgraph": "yarn workspace semaphore-subgraph test",
