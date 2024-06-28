@@ -7,8 +7,8 @@
     "scripts": {
         "codegen": "node scripts/generate-subgraph.js ${0} && graph codegen",
         "build": "graph build",
-        "auth": "graph auth --studio",
-        "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ ${0}",
+        "auth": "graph auth --studio ${0}",
+        "deploy": "graph deploy --studio ${0}",
         "start-ipfs": "node scripts/start-ipfs.js",
         "create-local": "graph create --node http://localhost:8020/ semaphore",
         "remove-local": "graph remove --node http://localhost:8020/ semaphore",
@@ -16,8 +16,8 @@
         "test": "graph test Semaphore -v 0.5.0"
     },
     "dependencies": {
-        "@graphprotocol/graph-cli": "0.67.0",
-        "@graphprotocol/graph-ts": "0.32.0",
+        "@graphprotocol/graph-cli": "0.77.0",
+        "@graphprotocol/graph-ts": "0.35.1",
         "@semaphore-protocol/utils": "workspace:packages/utils"
     },
     "devDependencies": {

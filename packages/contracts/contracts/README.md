@@ -95,13 +95,13 @@ yarn test:report-gas
 Deploy the `Semaphore.sol` contract without any parameter:
 
 ```bash
-yarn deploy:semaphore
+yarn deploy
 ```
 
 or deploy it by providing the addresses of the contracts/libraries on which it depends:
 
 ```bash
-yarn deploy:semaphore --semaphoreVerifier <address>
+yarn deploy --semaphoreVerifier <address>
 ```
 
 > **Note**  
@@ -110,11 +110,11 @@ yarn deploy:semaphore --semaphoreVerifier <address>
 If you want to deploy your contract in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, sepolia, arbitrum). Or you can specify it as an option:
 
 ```bash
-yarn deploy:semaphore --network sepolia
-yarn deploy:semaphore --network mumbai
-yarn deploy:semaphore --network optimism-sepolia
-yarn deploy:semaphore --network arbitrum-sepolia
-yarn deploy:semaphore --network arbitrum
+yarn deploy --network sepolia
+yarn deploy --network mumbai
+yarn deploy --network optimism-sepolia
+yarn deploy --network arbitrum-sepolia
+yarn deploy --network arbitrum
 ```
 
 If you want to deploy contracts on Sepolia or Arbitrum, remember to provide a valid private key and an Infura API in your `.env` file.
