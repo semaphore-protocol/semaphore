@@ -55,6 +55,10 @@ interface ISemaphore {
         uint256[8] points
     );
 
+    /// @dev Returns the current value of the group counter.
+    /// @return The current group counter value.
+    function groupCounter() external view returns (uint256);
+
     /// @dev See {SemaphoreGroups-_createGroup}.
     function createGroup() external returns (uint256);
 
