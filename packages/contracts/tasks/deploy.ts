@@ -67,7 +67,7 @@ task("deploy", "Deploy a Semaphore contract")
             )
 
             return {
-                semaphore: ethers.getContractAt("Semaphore", semaphoreAddress),
+                semaphore: await ethers.getContractAt("Semaphore", semaphoreAddress),
                 verifierAddress: semaphoreVerifierAddress,
                 poseidonAddress: poseidonT3Address
             }

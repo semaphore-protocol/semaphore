@@ -29,15 +29,15 @@ export async function deploy(
     args: any[] = [],
     opts?: FactoryOptions
 ): Promise<string> {
-    // Proxy address got from https://github.com/Arachnid/deterministic-deployment-proxy.
-    const proxyAddress = "0x4e59b44847b379578588920ca78fbf26c0b4956c"
-    // For the moment, salt will always be zero.
-    const salt = `0x${"0".repeat(64)}`
-
     const ContractFactory = await ethers.getContractFactory(contractName, opts)
 
     // If the network is not a local one and it's supported, it deploys contracts deterministically.
     if (network && isSupportedNetwork(network)) {
+        // Proxy address got from https://github.com/Arachnid/deterministic-deployment-proxy.
+        const proxyAddress = "0x4e59b44847b379578588920ca78fbf26c0b4956c"
+        // For the moment, salt will always be zero.
+        const salt = `0x${"0".repeat(64)}`
+
         const { bytecode, interface: abi } = ContractFactory
         const [signer] = await ethers.getSigners()
 
