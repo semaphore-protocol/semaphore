@@ -92,6 +92,20 @@ const message = 1
 const proof = await generateProof(identity, group, message, scope)
 ```
 
+### 5. Generate Solidity calldata
+
+If you're using Foundry, you might need to generate the appropriate calldata for your proof.
+
+```ts
+import { generateProof, encodeSolidityCalldata } from "@semaphore-protocol/proof"
+
+const scope = group.root
+const message = 1
+
+const proof = await generateProof(identity, group, message, scope)
+const calldata = encodeSolidityCalldata(proof)
+```
+
 ## Verify a proof
 
 To verify a proof, pass the proof you generated to the `verifyProof` function. For example:

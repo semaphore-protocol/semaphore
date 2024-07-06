@@ -6,6 +6,7 @@ import { packGroth16Proof } from "@zk-kit/utils/proof-packing"
 import { maybeGetSnarkArtifacts, Project, type SnarkArtifacts } from "@zk-kit/artifacts"
 import type { BigNumberish } from "ethers"
 import { type NumericString, groth16 } from "snarkjs"
+import { AbiCoder } from "ethers"
 import hash from "./hash"
 import toBigInt from "./to-bigint"
 import type { SemaphoreProof } from "./types"
@@ -120,4 +121,20 @@ export default async function generateProof(
         scope: scope.toString() as NumericString,
         points: packGroth16Proof(proof)
     }
+}
+
+/**
+ * Generates the Solidity calldata to be passed to the verifyProof function
+ * @param proof The Semaphore proof.
+ * @returns The calldata to be sent
+ */
+export function encodeSolidityCalldata(proof: SemaphoreProof): string {
+    const abiCoder = new AbiCoder()
+    const proofEncodedCallData = abiCoder.encode(
+        [
+            "(uint256 merkleTreeDepth, uint256 merkleTreeRoot, uint256 nullifier, uint256 message, uint256 scope, uint256[8] points)"
+        ],
+        [[proof.merkleTreeDepth, proof.merkleTreeRoot, proof.nullifier, proof.message, proof.scope, proof.points]]
+    )
+    return proofEncodedCallData
 }
