@@ -29,7 +29,7 @@
     },
     "overrides": [
         {
-            "files": ["./scripts/version.ts"],
+            "files": ["./scripts/*"],
             "rules": {
                 "no-console": "off"
             }
