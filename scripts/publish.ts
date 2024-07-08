@@ -5,15 +5,15 @@ import contractsPkgJson from "@semaphore-protocol/contracts/package.json"
 
 const { version: contractsLocalVersion } = contractsPkgJson
 
-async function getContractsLatestPublishedVersion() {
-    const response = await fetch("https://registry.npmjs.org/@semaphore-protocol/contracts")
-    const data = await response.json()
-    return data["dist-tags"].latest
-}
-
 async function maybePushToSoldeer() {
-    const contractsLatestPublishedVersion = await getContractsLatestPublishedVersion()
-    if (compare(contractsLocalVersion, contractsLatestPublishedVersion) === 1)
+    // api not documented, may change, found by inspecting the network tab
+    const response = await fetch(
+        "https://api.soldeer.xyz/api/v1/revision?project_name=semaphore-protocol-contracts&limit=1"
+    )
+    const { data, status } = await response.json()
+
+    // fail status is no version published at all yet
+    if (status === "fail" || compare(contractsLocalVersion, data[0].version) === 1)
         await execa(
             "soldeer",
             ["push", `semaphore-protocol-contracts~${contractsLocalVersion}`, "packages/contracts/contracts"],
