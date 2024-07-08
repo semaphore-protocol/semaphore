@@ -1,3 +1,4 @@
+#!node_modules/.bin/ts-node
 import { readFileSync, readdirSync, writeFileSync } from "node:fs"
 
 const folderName = "packages"
@@ -19,9 +20,7 @@ async function main() {
     }
 }
 
-main()
-    .then(() => process.exit(0))
-    .catch((error) => {
-        console.error(error)
-        process.exit(1)
-    })
+main().catch((error) => {
+    console.error(error)
+    process.exit(1)
+})
