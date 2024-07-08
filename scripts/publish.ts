@@ -1,6 +1,6 @@
-import { execa } from "execa"
+#!node_modules/.bin/ts-node
 import compare from "semver/functions/compare"
-
+import { execSync } from "child_process"
 import contractsPkgJson from "@semaphore-protocol/contracts/package.json"
 
 const { version: contractsLocalVersion } = contractsPkgJson
@@ -14,41 +14,20 @@ async function maybePushToSoldeer() {
 
     // fail status is no version published at all yet
     if (status === "fail" || compare(contractsLocalVersion, data[0].version) === 1)
-        await execa(
-            "soldeer",
-            ["push", `semaphore-protocol-contracts~${contractsLocalVersion}`, "packages/contracts/contracts"],
-            { stdio: "inherit" }
-        )
+        execSync(`soldeer push semaphore-protocol-contracts~${contractsLocalVersion} packages/contracts/contracts`)
 }
 
 async function main() {
-    try {
-        await execa("yarn", ["build:libraries"], { stdio: "inherit" })
-        await execa("yarn", ["clean:cli-templates"], { stdio: "inherit" })
-        await execa(
-            "yarn",
-            [
-                "workspaces",
-                "foreach",
-                "-A",
-                "--no-private",
-                "npm",
-                "publish",
-                "--tolerate-republish",
-                "--access",
-                "public"
-            ],
-            { stdio: "inherit" }
-        )
+    execSync(`yarn build:libraries`)
+    execSync(`yarn clean:cli-templates`)
+    execSync(`yarn workspaces foreach -A --no-private npm publish --tolerate-republish --access public -n`)
 
-        await maybePushToSoldeer()
-
-        // read
-        console.log("Build and publish script completed successfully.")
-    } catch (error) {
-        console.error("An error occurred:", error)
-        process.exit(1)
-    }
+    await maybePushToSoldeer()
 }
 
 main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error)
+        process.exit(1)
+    })
