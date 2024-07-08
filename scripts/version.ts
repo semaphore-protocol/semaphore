@@ -7,12 +7,11 @@ async function main() {
     // Perform the workspaces version update
     execSync(`yarn workspaces foreach -A --no-private version -d ${version}`)
 
-    console.log("updated versions")
     // Apply the versions
     execSync("yarn version apply --all")
-    console.log("applied versions")
+
     await import("./remove-stable-version-field")
-    console.log("remove stable version")
+
     execSync("yarn format:write")
     execSync(`NO_HOOK=1 git commit -am 'chore: v${version}'`)
     execSync(`git tag v${version}`)
