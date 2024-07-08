@@ -5,10 +5,10 @@ async function main() {
     const version = process.argv[2]
 
     // Perform the workspaces version update
-    execSync(`yarn workspaces foreach -A --no-private version -d ${version}`)
+    execSync(`yarn workspaces foreach -A --no-private version -d ${version}`, { stdio: "inherit" })
 
     // Apply the versions
-    execSync("yarn version apply --all")
+    execSync("yarn version apply --all", { stdio: "inherit" })
 
     await import("./remove-stable-version-field")
 

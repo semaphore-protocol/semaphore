@@ -14,13 +14,18 @@ async function maybePushToSoldeer() {
 
     // fail status is no version published at all yet
     if (status === "fail" || compare(contractsLocalVersion, data[0].version) === 1)
-        execSync(`soldeer push semaphore-protocol-contracts~${contractsLocalVersion} packages/contracts/contracts`)
+        execSync(
+            `soldeer push semaphore-protocol-contracts~${contractsLocalVersion} packages/contracts/contracts --dry-run true`,
+            { stdio: "inherit" }
+        )
 }
 
 async function main() {
-    execSync(`yarn build:libraries`)
-    execSync(`yarn clean:cli-templates`)
-    execSync(`yarn workspaces foreach -A --no-private npm publish --tolerate-republish --access public -n`)
+    // execSync(`yarn build:libraries`, { stdio: "inherit" })
+    // execSync(`yarn clean:cli-templates`)
+    execSync(`yarn workspaces foreach --dry-run -A --no-private npm publish --tolerate-republish --access public`, {
+        stdio: "inherit"
+    })
 
     await maybePushToSoldeer()
 }
