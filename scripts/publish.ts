@@ -14,7 +14,11 @@ async function getContractsLatestPublishedVersion() {
 async function maybePushToSoldeer() {
     const contractsLatestPublishedVersion = await getContractsLatestPublishedVersion()
     if (compare(contractsLocalVersion, contractsLatestPublishedVersion) === 1)
-        await execa("soldeer", ["push", "packages/contracts", contractsLocalVersion], { stdio: "inherit" })
+        await execa(
+            "soldeer",
+            ["push", `semaphore-protocol-contracts~${contractsLocalVersion}`, "packages/contracts/contracts"],
+            { stdio: "inherit" }
+        )
 }
 
 async function main() {
