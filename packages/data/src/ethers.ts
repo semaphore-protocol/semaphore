@@ -16,10 +16,10 @@ import {
     PocketProvider,
     Provider
 } from "ethers/providers"
+import { SemaphoreABI } from "@semaphore-protocol/utils/constants"
+import { EthersNetwork, EthersOptions, GroupResponse } from "./types"
 import checkParameter from "./checkParameter"
 import getEvents from "./getEvents"
-import SemaphoreABI from "./semaphoreABI.json"
-import { EthersNetwork, EthersOptions, GroupResponse } from "./types"
 
 /**
  * The SemaphoreEthers class provides a high-level interface to interact with the Semaphore smart contract
