@@ -4,7 +4,7 @@
     "scripts": {
         "start": "hardhat node",
         "copy:abi": "ncp  artifacts/contracts/Semaphore.sol/Semaphore.json ../utils/src/semaphore-abi.json",
-        "compile": "hardhat compile",
+        "compile": "hardhat compile && yarn copy:abi",
         "deploy": "hardhat deploy",
         "verify": "hardhat run scripts/verify-contracts.ts",
         "mock": "hardhat run scripts/create-mock-groups.ts",
