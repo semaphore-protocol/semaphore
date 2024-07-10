@@ -68,6 +68,9 @@
 
 The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/scheme.png). However, Semaphore also provides [Solidity contracts](/packages/contracts) and JavaScript libraries to make the steps for offchain proof creation and onchain/offchain verification easier. To learn more about Semaphore visit [semaphore.pse.dev](https://semaphore.pse.dev).
 
+> [!IMPORTANT]  
+> Help Semaphore prosper by sharing your ideas with the PSE [acceleration program](https://github.com/privacy-scaling-explorations/acceleration-program).
+
 ## 📦 Packages
 
 <table>

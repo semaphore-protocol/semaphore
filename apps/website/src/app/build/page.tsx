@@ -45,18 +45,15 @@ export default function Build() {
 
     const linksInfo = [
         {
+            title: "PSE acceleration program",
+            href: "https://github.com/privacy-scaling-explorations/acceleration-program"
+        },
+        {
             title: "Good first issues",
             href: "https://github.com/semaphore-protocol/semaphore/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22"
-        },
-        {
-            title: "Enhance the protocol",
-            href: "https://github.com/semaphore-protocol/semaphore/discussions/new?category=ideas"
-        },
-        {
-            title: "Give feedback about the website",
-            href: "https://github.com/semaphore-protocol/semaphore/discussions/new?category=website"
         }
     ]
+
     return (
         <VStack justify="center">
             <VStack pt="170px" pb="128px">
