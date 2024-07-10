@@ -7,9 +7,11 @@
     "bugs": "https://github.com/semaphore-protocol/semaphore/issues",
     "private": true,
     "scripts": {
-        "build": "yarn workspaces foreach -Ap --topological-dev run build",
+        "build": "yarn build:libraries && yarn build:subgraph && yarn build:website && yarn build:docs",
         "build:libraries": "yarn workspaces foreach -Apt --no-private run build",
-        "build:subgraph": "yarn workspace semaphore-subgraph build",
+        "build:subgraph": "yarn workspace semaphore-subgraph build:sepolia",
+        "build:website": "yarn workspace semaphore-website build",
+        "build:docs": "yarn workspace semaphore-docs build",
         "compile:contracts": "yarn workspace semaphore-contracts compile",
         "test": "concurrently -g -c auto -n circuits,contracts,libraries,subgraph \"yarn:test:circuits\" \"yarn:test:contracts\" \"yarn:test:libraries\" \"yarn test:subgraph\"",
         "test:libraries": "jest --coverage",

@@ -18,7 +18,7 @@ dataSources:
               - Member
           abis:
               - name: Semaphore
-                file: ./abis/Semaphore.json
+                file: ../../node_modules/@semaphore-protocol/utils/src/semaphore-interface.json
           eventHandlers:
               - event: GroupCreated(indexed uint256)
                 handler: createGroup
