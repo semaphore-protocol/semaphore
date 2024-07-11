@@ -24,14 +24,8 @@ jobs:
             - name: Install dependencies
               run: yarn
 
-            - name: Build libraries
-              run: yarn build:libraries
-
-            - name: Compile contracts
-              run: yarn compile:contracts
-
-            - name: Build subgraph
-              run: yarn build:subgraph
+            - name: Build packages and apps
+              run: yarn build
 
             - name: Format
               run: yarn format
