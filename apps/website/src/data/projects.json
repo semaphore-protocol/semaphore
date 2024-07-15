@@ -526,5 +526,16 @@
         "links": {
             "website": "https://medium.com/remix-ide/remix-release-v0-37-0-dbc750f7ab15"
         }
+    },
+    {
+        "name": "AsteriskDAO",
+        "tagline": "Women’s health data lake dAPP for OCD to give researchers access to female-specific data",
+        "categories": ["Health", "Data"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/AsteriskDAO",
+            "website": "https://ethglobal.com/showcase/asteriskdao-4hvhf"
+        }
     }
 ]
