@@ -83,7 +83,10 @@ export default async function generateProof(
     }
 
     // If the Snark artifacts are not defined they will be automatically downloaded.
-    snarkArtifacts ??= await maybeGetSnarkArtifacts(Project.SEMAPHORE, { parameters: [merkleTreeDepth] })
+    snarkArtifacts ??= await maybeGetSnarkArtifacts(Project.SEMAPHORE, {
+        parameters: [merkleTreeDepth],
+        version: "4.0.0-beta.18"
+    })
     const { wasm, zkey } = snarkArtifacts
 
     // The index must be converted to a list of indices, 1 for each tree level.
