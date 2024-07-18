@@ -20,7 +20,7 @@
     "dependencies": {
         "@graphprotocol/graph-cli": "0.78.0",
         "@graphprotocol/graph-ts": "0.35.1",
-        "@semaphore-protocol/utils": "4.0.0-beta.16"
+        "@semaphore-protocol/utils": "4.0.0-beta.17"
     },
     "devDependencies": {
         "@types/mustache": "^4.2.2",
