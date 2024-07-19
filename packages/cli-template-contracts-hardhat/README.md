@@ -52,14 +52,11 @@ cp .env.example .env
 3. And deploy your contract.
 
 ```bash
-yarn deploy --semaphore <semaphore-address> --group <group-id> --network sepolia
+yarn deploy --semaphore <semaphore-address> --network sepolia
 ```
 
 > **Note**  
-> Check the Semaphore contract addresses [here](https://docs.semaphore.pse.dev/deployed-contracts#semaphore).
-
-> **Warning**  
-> The group id is a number!
+> Check the Semaphore contract addresses [here](https://docs.semaphore.pse.dev/deployed-contracts).
 
 ### Code quality and formatting
 

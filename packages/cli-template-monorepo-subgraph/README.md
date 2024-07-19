@@ -25,18 +25,15 @@ yarn dev
 1. Go to the `apps/contracts` directory and deploy your contract:
 
 ```bash
-yarn deploy --semaphore <semaphore-address> --group <group-id> --network arbitrum-sepolia
+yarn deploy --semaphore <semaphore-address> --network sepolia
 ```
 
-2. Update your `.env` file with your new contract address, the group id and the semaphore contract address.
+2. Update your `apps/web-app/.env.production` file with your new contract address and the group id.
 
 3. Copy your contract artifacts from `apps/contracts/artifacts/contracts/` folder to `apps/web-app/contract-artifacts` folder manually.
 
 > **Note**  
 > Check the Semaphore contract addresses [here](https://docs.semaphore.pse.dev/deployed-contracts).
-
-> **Warning**  
-> The group id is a number!
 
 ### Code quality and formatting
 
