@@ -24,13 +24,13 @@ export default function ProofsPage() {
         }
 
         setIdentity(new Identity(privateKey))
-    }, [])
+    }, [router])
 
     useEffect(() => {
         if (_feedback.length > 0) {
             setLogs(`${_feedback.length} feedback retrieved from the group 🤙🏽`)
         }
-    }, [_feedback])
+    }, [_feedback, setLogs])
 
     const sendFeedback = useCallback(async () => {
         if (!_identity) {
@@ -105,7 +105,7 @@ export default function ProofsPage() {
                 setLoading(false)
             }
         }
-    }, [_identity, _users])
+    }, [_identity, _users, addFeedback, setLogs])
 
     return (
         <>
