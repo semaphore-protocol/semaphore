@@ -22,6 +22,7 @@ import type { SemaphoreProof } from "./types"
  * If it is not defined, it will be inferred from the group or Merkle proof passed as the second parameter.
  * Finally, the artifacts themselves can be passed manually with file paths,
  * or they will be automatically fetched.
+ * Please keep in mind that groups with 1 member or 2 members cannot be considered anonymous.
  * @param identity The Semaphore identity.
  * @param groupOrMerkleProof The Semaphore group or its Merkle proof.
  * @param message The Semaphore message.
@@ -79,7 +80,7 @@ export default async function generateProof(
             throw new TypeError(`The tree depth must be a number between ${MIN_DEPTH} and ${MAX_DEPTH}`)
         }
     } else {
-        merkleTreeDepth = merkleProofLength
+        merkleTreeDepth = merkleProofLength !== 0 ? merkleProofLength : 1
     }
 
     // If the Snark artifacts are not defined they will be automatically downloaded.
