@@ -41,11 +41,6 @@ export default function ProofsPage() {
             throw new Error("Please, define NEXT_PUBLIC_GROUP_ID in your .env file")
         }
 
-        if (_users && _users.length < 2) {
-            alert("No anonymity in a group of one!")
-            return
-        }
-
         const feedback = prompt("Please enter your feedback:")
 
         if (feedback && _users) {
