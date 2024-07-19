@@ -21,7 +21,7 @@ export default function PageContainer({
     useEffect(() => {
         semaphore.refreshUsers()
         semaphore.refreshFeedback()
-    }, [])
+    }, [semaphore])
 
     function getExplorerLink(network: SupportedNetwork, address: string) {
         switch (network) {

@@ -23,7 +23,7 @@ export default function IdentitiesPage() {
         } else {
             setLogs("Create your Semaphore identity 👆🏽")
         }
-    }, [])
+    }, [setLogs])
 
     const createIdentity = useCallback(async () => {
         const identity = new Identity()
@@ -33,7 +33,7 @@ export default function IdentitiesPage() {
         localStorage.setItem("identity", identity.privateKey.toString())
 
         setLogs("Your new Semaphore identity has just been created 🎉")
-    }, [])
+    }, [setLogs])
 
     return (
         <>

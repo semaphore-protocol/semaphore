@@ -4,7 +4,7 @@ import LogsContext from "@/context/LogsContext"
 import SemaphoreContext from "@/context/SemaphoreContext"
 import useSemaphore from "@/hooks/useSemaphore"
 import shortenString from "@/utils/shortenString"
-import { SupportedNetwork } from "@semaphore-protocol/data"
+import { SupportedNetwork } from "@semaphore-protocol/utils"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import Link from "next/link"
@@ -21,7 +21,7 @@ export default function PageContainer({
     useEffect(() => {
         semaphore.refreshUsers()
         semaphore.refreshFeedback()
-    }, [])
+    }, [semaphore])
 
     function getExplorerLink(network: SupportedNetwork, address: string) {
         switch (network) {
