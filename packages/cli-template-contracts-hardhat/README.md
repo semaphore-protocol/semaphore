@@ -55,7 +55,7 @@ cp .env.example .env
 yarn deploy --semaphore <semaphore-address> --network sepolia
 ```
 
-> [!NOTE] 
+> [!NOTE]
 > Check the Semaphore contract addresses [here](https://docs.semaphore.pse.dev/deployed-contracts).
 
 ### Code quality and formatting
