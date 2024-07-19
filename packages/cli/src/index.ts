@@ -4,7 +4,7 @@ import chalk from "chalk"
 import { program } from "commander"
 import decompress from "decompress"
 import figlet from "figlet"
-import { copyFileSync, existsSync, readFileSync, unlinkSync } from "fs"
+import { copyFileSync, existsSync, readFileSync, unlinkSync, writeFileSync } from "fs"
 import logSymbols from "log-symbols"
 import pacote from "pacote"
 import { dirname } from "path"
@@ -99,6 +99,9 @@ program
             `${currentDirectory}/${projectDirectory}/.env.example`,
             `${currentDirectory}/${projectDirectory}/.env`
         )
+
+        // Create an empty yarn.lock file to install dependencies successfully
+        writeFileSync(`${currentDirectory}/${projectDirectory}/yarn.lock`, "")
 
         spinner.stop()
 
