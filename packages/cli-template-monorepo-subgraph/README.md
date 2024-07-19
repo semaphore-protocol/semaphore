@@ -32,7 +32,7 @@ yarn deploy --semaphore <semaphore-address> --network sepolia
 
 3. Copy your contract artifacts from `apps/contracts/artifacts/contracts/` folder to `apps/web-app/contract-artifacts` folder manually.
 
-> **Note**  
+> [!NOTE]
 > Check the Semaphore contract addresses [here](https://docs.semaphore.pse.dev/deployed-contracts).
 
 ### Code quality and formatting

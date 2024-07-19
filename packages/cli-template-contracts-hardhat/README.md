@@ -46,7 +46,7 @@ cp .env.example .env
 
 2. Add your environment variables.
 
-> **Note**  
+> [!NOTE]
 > You should at least set a valid Ethereum URL (e.g. Infura) and a private key with some ethers.
 
 3. And deploy your contract.
