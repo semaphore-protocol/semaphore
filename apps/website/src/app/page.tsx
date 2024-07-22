@@ -231,6 +231,7 @@ export default function Home() {
                     <HStack w="full" mt="60px">
                         {roadmap.map((milestone, i) => (
                             <Box
+                                key={milestone.name}
                                 borderBottomWidth={i % 2 === 0 ? "5px" : "0px"}
                                 borderTopWidth={i % 2 !== 0 ? "5px" : "0px"}
                                 borderLeftWidth="1px"
