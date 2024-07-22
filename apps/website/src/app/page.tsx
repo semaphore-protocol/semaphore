@@ -1,11 +1,13 @@
 import { Box, Button, Card, CardBody, HStack, Heading, Image, Link, Stack, Text, VStack } from "@chakra-ui/react"
-import NextLink from "next/link"
 import { Sora } from "next/font/google"
+import NextLink from "next/link"
 import Carousel from "../components/Carousel"
 import ProjectCard from "../components/ProjectCard"
 import events from "../data/events.json"
 import allProjects from "../data/projects.json"
+import roadmap from "../data/roadmap.json"
 import IconDiscord from "../icons/IconDiscord"
+import IconInnerCheck from "../icons/IconInnerCheck"
 
 const sora = Sora({
     subsets: ["latin"]
@@ -220,6 +222,81 @@ export default function Home() {
                 </Card>
             </HStack>
 
+            <VStack mb="32" spacing="32">
+                <VStack w="full" maxW="1110px">
+                    <Heading fontSize={{ base: "30px", md: "44px" }} pb="90px">
+                        2024 Roadmap
+                    </Heading>
+
+                    <HStack w="full" mt="60px">
+                        {roadmap.map((milestone, i) => (
+                            <Box
+                                borderBottomWidth={i % 2 === 0 ? "5px" : "0px"}
+                                borderTopWidth={i % 2 !== 0 ? "5px" : "0px"}
+                                borderLeftWidth="1px"
+                                borderColor="#1E46F2"
+                                transform={i % 2 === 0 ? "translateY(-74px)" : ""}
+                                h="80px"
+                                w="full"
+                                pos="relative"
+                            >
+                                {milestone.done ? (
+                                    <IconInnerCheck
+                                        pos="absolute"
+                                        top={i % 2 !== 0 ? "-14px" : "inherit"}
+                                        bottom={i % 2 === 0 ? "-14px" : "inherit"}
+                                        left="-12px"
+                                        bg="#1E46F2"
+                                        borderRadius="50px"
+                                        p="7px"
+                                        w="24px"
+                                        h="24px"
+                                        color="white"
+                                    />
+                                ) : (
+                                    <Box
+                                        pos="absolute"
+                                        top={i % 2 !== 0 ? "-14px" : "inherit"}
+                                        bottom={i % 2 === 0 ? "-14px" : "inherit"}
+                                        left="-12px"
+                                        bg="darkBlueBg"
+                                        borderWidth="5px"
+                                        borderColor="#1E46F2"
+                                        borderRadius="50px"
+                                        w="24px"
+                                        h="24px"
+                                    />
+                                )}
+                                <Text
+                                    pos="absolute"
+                                    bg="darkBlueBg"
+                                    fontSize="14px"
+                                    py="5px"
+                                    top={i % 2 === 0 ? "-35px" : "inherit"}
+                                    bottom={i % 2 !== 0 ? "-35px" : "inherit"}
+                                    left="-1px"
+                                >
+                                    {milestone.name}
+                                </Text>
+                            </Box>
+                        ))}
+                    </HStack>
+                </VStack>
+
+                <VStack maxW="650" align="center" spacing="8">
+                    <Heading fontSize={{ base: "30px", md: "44px" }}>Join the Semaphore community</Heading>
+                    <Text fontSize={{ base: "16px", md: "18px" }} textAlign="center">
+                        Ask questions, suggest ideas, stay up-to-date, and meet other people building privacy
+                        applications with Zero Knowledge.
+                    </Text>
+                    <Link href="https://semaphore.pse.dev/discord" isExternal>
+                        <Button leftIcon={<IconDiscord />} size="lg">
+                            Discord
+                        </Button>
+                    </Link>
+                </VStack>
+            </VStack>
+
             <VStack justify="center" spacing="40" py="32" position="relative">
                 <Box
                     zIndex="-1"
@@ -239,27 +316,16 @@ export default function Home() {
                     />
                 </Box>
 
-                <Stack direction={{ base: "column", md: "row" }} px={{ base: "0", md: "12" }} spacing="32">
-                    <VStack maxW="450" align="left" spacing="8">
-                        <Heading fontSize={{ base: "30px", md: "44px" }}>Join the Semaphore community</Heading>
-                        <Text fontSize={{ base: "16px", md: "18px" }}>
-                            Ask questions, suggest ideas, stay up-to-date, and meet other people building privacy
-                            applications with Zero Knowledge.
-                        </Text>
-                        <Link href="https://semaphore.pse.dev/discord" isExternal>
-                            <Button leftIcon={<IconDiscord />} size="lg">
-                                Discord
-                            </Button>
-                        </Link>
-                    </VStack>
+                <Stack direction={{ base: "column", md: "row" }} px={{ base: "0", md: "12" }} w="full">
+                    <Box flex="1" />
 
                     <Card
-                        bg="inherit"
+                        flex="1"
+                        bg="darkBlue"
                         color="white"
-                        backdropFilter="blur(4px)"
                         borderRadius="18px"
                         border="1px"
-                        borderColor="white"
+                        borderColor="text.900"
                         padding="50px"
                     >
                         <CardBody padding="0">
