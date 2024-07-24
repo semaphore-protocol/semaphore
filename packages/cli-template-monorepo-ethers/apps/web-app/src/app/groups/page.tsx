@@ -124,7 +124,7 @@ export default function GroupsPage() {
                 <div>
                     {_users.map((user, i) => (
                         <div key={i}>
-                            <p className="box box-text">{user}</p>
+                            <p className="box box-text">{user.toString()}</p>
                         </div>
                     ))}
                 </div>
