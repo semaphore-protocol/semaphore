@@ -67,7 +67,7 @@ const config: Config = {
         announcementBar: {
             id: "semaphore-v4-beta",
             content:
-                '<b>Semaphore V4-beta is out 🎉 <a href="/getting-started">Try it out</a> and contribute to the <a href="/trusted-setup">Trusted Setup ceremony</a>. Let us know for any feedback on <a href="https://semaphore.pse.dev/discord" target="_blank">Discord</a> or <a href="https://github.com/orgs/semaphore-protocol/discussions" target="_blank">Github</a>!</b>',
+                '<b><a href="https://github.com/semaphore-protocol/semaphore/releases/tag/v4.0.0" target="_blank">Semaphore V4</a> is out 🎉 <a href="/getting-started">Try it out</a> and let us know for any feedback on <a href="https://semaphore.pse.dev/discord" target="_blank">Discord</a> or <a href="https://github.com/orgs/semaphore-protocol/discussions" target="_blank">Github</a>!</b>',
             backgroundColor: "#dde6fc",
             textColor: "#000000"
         },
