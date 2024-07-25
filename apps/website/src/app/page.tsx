@@ -1,11 +1,13 @@
 import { Box, Button, Card, CardBody, HStack, Heading, Image, Link, Stack, Text, VStack } from "@chakra-ui/react"
-import NextLink from "next/link"
 import { Sora } from "next/font/google"
+import NextLink from "next/link"
 import Carousel from "../components/Carousel"
 import ProjectCard from "../components/ProjectCard"
 import events from "../data/events.json"
 import allProjects from "../data/projects.json"
 import IconDiscord from "../icons/IconDiscord"
+import HRoadmap from "@/components/HRoadmap"
+import VRoadmap from "@/components/VRoadmap"
 
 const sora = Sora({
     subsets: ["latin"]
@@ -220,6 +222,35 @@ export default function Home() {
                 </Card>
             </HStack>
 
+            <VStack mb="32" spacing="32">
+                <VStack w="full" maxW="1110px">
+                    <Heading fontSize={{ base: "30px", md: "44px" }} pb="90px">
+                        2024 Roadmap
+                    </Heading>
+
+                    <HStack display={{ base: "none", md: "flex" }} w="full" mt="60px">
+                        <HRoadmap />
+                    </HStack>
+
+                    <VStack display={{ base: "flex", md: "none" }}>
+                        <VRoadmap />
+                    </VStack>
+                </VStack>
+
+                <VStack maxW="650" align="center" spacing="8">
+                    <Heading fontSize={{ base: "30px", md: "44px" }}>Join the Semaphore community</Heading>
+                    <Text fontSize={{ base: "16px", md: "18px" }} textAlign="center">
+                        Ask questions, suggest ideas, stay up-to-date, and meet other people building privacy
+                        applications with Zero Knowledge.
+                    </Text>
+                    <Link href="https://semaphore.pse.dev/discord" isExternal>
+                        <Button leftIcon={<IconDiscord />} size="lg">
+                            Discord
+                        </Button>
+                    </Link>
+                </VStack>
+            </VStack>
+
             <VStack justify="center" spacing="40" py="32" position="relative">
                 <Box
                     zIndex="-1"
@@ -239,27 +270,16 @@ export default function Home() {
                     />
                 </Box>
 
-                <Stack direction={{ base: "column", md: "row" }} px={{ base: "0", md: "12" }} spacing="32">
-                    <VStack maxW="450" align="left" spacing="8">
-                        <Heading fontSize={{ base: "30px", md: "44px" }}>Join the Semaphore community</Heading>
-                        <Text fontSize={{ base: "16px", md: "18px" }}>
-                            Ask questions, suggest ideas, stay up-to-date, and meet other people building privacy
-                            applications with Zero Knowledge.
-                        </Text>
-                        <Link href="https://semaphore.pse.dev/discord" isExternal>
-                            <Button leftIcon={<IconDiscord />} size="lg">
-                                Discord
-                            </Button>
-                        </Link>
-                    </VStack>
+                <Stack direction={{ base: "column", md: "row" }} px={{ base: "0", md: "12" }} w="full">
+                    <Box flex="1" />
 
                     <Card
-                        bg="inherit"
+                        flex="1"
+                        bg="darkBlue"
                         color="white"
-                        backdropFilter="blur(4px)"
                         borderRadius="18px"
                         border="1px"
-                        borderColor="white"
+                        borderColor="text.900"
                         padding="50px"
                     >
                         <CardBody padding="0">

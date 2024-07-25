@@ -32,19 +32,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body suppressHydrationWarning>
                 <Providers>
                     <Banner>
-                        Semaphore V4
                         <Link
                             _hover={{
                                 textDecoration: "underline",
                                 textDecorationColor: "primary.600"
                             }}
-                            href="https://ceremony.pse.dev/projects/Semaphore%20V4%20Ceremony"
+                            href="https://github.com/semaphore-protocol/semaphore/releases/tag/v4.0.0"
                             ml="1"
                             isExternal
                         >
-                            <b>Trusted Setup</b>
+                            <b>Semaphore V4</b>
                         </Link>{" "}
-                        ceremony is open for contributions until <b>July 10</b>.
+                        has been released 🚀
                     </Banner>
                     <Navbar />
                     <Container maxW="1440px" px={{ base: "5", md: "10" }}>

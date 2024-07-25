@@ -1,0 +1,34 @@
+[
+    {
+        "name": "Launched New Website",
+        "done": true
+    },
+    {
+        "name": "V4 Audit",
+        "done": true
+    },
+    {
+        "name": "V4 Trusted Setup",
+        "done": true
+    },
+    {
+        "name": "V4 Stable Release",
+        "done": true
+    },
+    {
+        "name": "LeanIMT Paper",
+        "done": false
+    },
+    {
+        "name": "RLN extension",
+        "done": false
+    },
+    {
+        "name": "Support more Testnets/Mainnets",
+        "done": false
+    },
+    {
+        "name": "Documentation Revamp",
+        "done": false
+    }
+]
