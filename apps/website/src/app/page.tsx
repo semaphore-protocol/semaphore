@@ -5,9 +5,9 @@ import Carousel from "../components/Carousel"
 import ProjectCard from "../components/ProjectCard"
 import events from "../data/events.json"
 import allProjects from "../data/projects.json"
-import roadmap from "../data/roadmap.json"
 import IconDiscord from "../icons/IconDiscord"
-import IconInnerCheck from "../icons/IconInnerCheck"
+import HRoadmap from "@/components/HRoadmap"
+import VRoadmap from "@/components/VRoadmap"
 
 const sora = Sora({
     subsets: ["latin"]
@@ -228,60 +228,13 @@ export default function Home() {
                         2024 Roadmap
                     </Heading>
 
-                    <HStack w="full" mt="60px">
-                        {roadmap.map((milestone, i) => (
-                            <Box
-                                key={milestone.name}
-                                borderBottomWidth={i % 2 === 0 ? "5px" : "0px"}
-                                borderTopWidth={i % 2 !== 0 ? "5px" : "0px"}
-                                borderLeftWidth="1px"
-                                borderColor="#1E46F2"
-                                transform={i % 2 === 0 ? "translateY(-74px)" : ""}
-                                h="80px"
-                                w="full"
-                                pos="relative"
-                            >
-                                {milestone.done ? (
-                                    <IconInnerCheck
-                                        pos="absolute"
-                                        top={i % 2 !== 0 ? "-14px" : "inherit"}
-                                        bottom={i % 2 === 0 ? "-14px" : "inherit"}
-                                        left="-12px"
-                                        bg="#1E46F2"
-                                        borderRadius="50px"
-                                        p="7px"
-                                        w="24px"
-                                        h="24px"
-                                        color="white"
-                                    />
-                                ) : (
-                                    <Box
-                                        pos="absolute"
-                                        top={i % 2 !== 0 ? "-14px" : "inherit"}
-                                        bottom={i % 2 === 0 ? "-14px" : "inherit"}
-                                        left="-12px"
-                                        bg="darkBlueBg"
-                                        borderWidth="5px"
-                                        borderColor="#1E46F2"
-                                        borderRadius="50px"
-                                        w="24px"
-                                        h="24px"
-                                    />
-                                )}
-                                <Text
-                                    pos="absolute"
-                                    bg="darkBlueBg"
-                                    fontSize="14px"
-                                    py="5px"
-                                    top={i % 2 === 0 ? "-35px" : "inherit"}
-                                    bottom={i % 2 !== 0 ? "-35px" : "inherit"}
-                                    left="-1px"
-                                >
-                                    {milestone.name}
-                                </Text>
-                            </Box>
-                        ))}
+                    <HStack display={{ base: "none", md: "flex" }} w="full" mt="60px">
+                        <HRoadmap />
                     </HStack>
+
+                    <VStack display={{ base: "flex", md: "none" }}>
+                        <VRoadmap />
+                    </VStack>
                 </VStack>
 
                 <VStack maxW="650" align="center" spacing="8">
