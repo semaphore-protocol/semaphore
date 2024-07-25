@@ -38,6 +38,10 @@ In addition to circuits,
 Semaphore provides [Solidity contracts](https://github.com/semaphore-protocol/semaphore/tree/main/packages/contracts)
 and [JavaScript libraries](https://github.com/semaphore-protocol/semaphore/tree/main#-packages) that allow developers to generate zero-knowledge proofs and verify them with minimal effort.
 
+## Trusted Setup Ceremony
+
+The [secure parameters](https://snark-artifacts.pse.dev) for generating valid proofs with Semaphore circuits were generated in a [Trusted Setup Ceremony](https://ceremony.pse.dev/projects/Semaphore%20V4%20Ceremony) that was completed with over 400 participants on [13 July 2024](https://etherscan.io/block/20300394).
+
 ### Audits
 
 | Version | Auditors                          | Report                                                                           | Scope                                |
@@ -46,7 +50,3 @@ and [JavaScript libraries](https://github.com/semaphore-protocol/semaphore/tree/
 | v2.5.0  | [PSE](https://pse.dev/)           | [Semaphore_2.5.0_Audit.pdf](https://semaphore.pse.dev/Semaphore_2.5.0_Audit.pdf) | `contracts`, `libraries`             |
 | v3.0.0  | [Veridise](https://veridise.com/) | [Semaphore_3.0.0_Audit.pdf](https://semaphore.pse.dev/Semaphore_3.0.0_Audit.pdf) | `circuits`, `contracts`              |
 | v4.0.0  | [PSE](https://pse.dev/)           | [Semaphore_4.0.0_Audit.pdf](https://semaphore.pse.dev/Semaphore_4.0.0_Audit.pdf) | `circuits`, `contracts`, `libraries` |
-
-:::caution
-Semaphore V4 is in early testing and might have bugs. Please, don't use it in production.
-:::
