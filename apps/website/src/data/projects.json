@@ -547,5 +547,16 @@
             "github": "https://github.com/AsteriskDAO",
             "website": "https://ethglobal.com/showcase/asteriskdao-4hvhf"
         }
+    },
+    {
+        "name": "Pairwise",
+        "tagline": "A fun pseudonymous way to signal in Retro Funding 4.",
+        "categories": ["Retro Funding", "Public Goods", "Privacy", "Community"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/GeneralMagicio/pairwise-RPGF4",
+            "website": "https://www.pairwise.vote/"
+        }
     }
 ]
