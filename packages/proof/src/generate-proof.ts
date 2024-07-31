@@ -1,11 +1,11 @@
 import type { Group, MerkleProof } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
 import { MAX_DEPTH, MIN_DEPTH } from "@semaphore-protocol/utils/constants"
+import { Project, maybeGetSnarkArtifacts, type SnarkArtifacts } from "@zk-kit/artifacts"
 import { requireDefined, requireNumber, requireObject, requireTypes } from "@zk-kit/utils/error-handlers"
 import { packGroth16Proof } from "@zk-kit/utils/proof-packing"
-import { maybeGetSnarkArtifacts, Project, type SnarkArtifacts } from "@zk-kit/artifacts"
 import type { BigNumberish } from "ethers"
-import { type NumericString, groth16 } from "snarkjs"
+import { groth16, type NumericString } from "snarkjs"
 import hash from "./hash"
 import toBigInt from "./to-bigint"
 import type { SemaphoreProof } from "./types"
@@ -118,7 +118,7 @@ export default async function generateProof(
 
     return {
         merkleTreeDepth,
-        merkleTreeRoot: publicSignals[0],
+        merkleTreeRoot: merkleProof.root.toString(),
         nullifier: publicSignals[1],
         message: message.toString() as NumericString,
         scope: scope.toString() as NumericString,
