@@ -26,5 +26,13 @@
         "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
         "@typescript-eslint/lines-between-class-members": "off",
         "no-param-reassign": "off"
-    }
+    },
+    "overrides": [
+        {
+            "files": ["./scripts/*"],
+            "rules": {
+                "no-console": "off"
+            }
+        }
+    ]
 }

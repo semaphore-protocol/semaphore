@@ -1,3 +1,4 @@
+#!node_modules/.bin/ts-node
 import { readdirSync, rmSync } from "fs"
 
 const folderName = "packages"
