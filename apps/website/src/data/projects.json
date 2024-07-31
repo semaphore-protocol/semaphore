@@ -11,15 +11,14 @@
         }
     },
     {
-        "name": "Unirep",
-        "tagline": "Private and nonrepudiable reputation system based on ZKP.",
-        "categories": ["Reputation", "Identity", "Social"],
-        "pse": true,
+        "name": "Worldcoin",
+        "categories": ["Identity"],
+        "tagline": "A global digital currency offering universal access to a more inclusive financial system.",
+        "pse": false,
         "icon": "",
         "links": {
-            "website": "https://developer.unirep.io",
-            "github": "https://github.com/Unirep",
-            "discord": "https://discord.gg/VzMMDJmYc5"
+            "github": "https://github.com/worldcoin",
+            "website": "https://worldcoin.org"
         }
     },
     {
@@ -31,6 +30,16 @@
         "links": {
             "github": "https://github.com/privacy-scaling-explorations/bandada",
             "website": "https://bandada.pse.dev"
+        }
+    },
+    {
+        "name": "Super Secret ZK Ballot",
+        "tagline": "A Solidity contract for anonymous voting.",
+        "categories": ["Voting"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/dutragustavo/super-secret-zkballot"
         }
     },
     {
@@ -487,14 +496,15 @@
         }
     },
     {
-        "name": "Worldcoin",
-        "categories": ["Identity"],
-        "tagline": "A global digital currency offering universal access to a more inclusive financial system.",
-        "pse": false,
+        "name": "Unirep",
+        "tagline": "Private and nonrepudiable reputation system based on ZKP.",
+        "categories": ["Reputation", "Identity", "Social"],
+        "pse": true,
         "icon": "",
         "links": {
-            "github": "https://github.com/worldcoin",
-            "website": "https://worldcoin.org"
+            "website": "https://developer.unirep.io",
+            "github": "https://github.com/Unirep",
+            "discord": "https://discord.gg/VzMMDJmYc5"
         }
     },
     {
