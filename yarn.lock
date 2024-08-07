@@ -13882,21 +13882,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^6.11.0":
-  version: 6.13.2
-  resolution: "ethers@npm:6.13.2"
-  dependencies:
-    "@adraffy/ens-normalize": "npm:1.10.1"
-    "@noble/curves": "npm:1.2.0"
-    "@noble/hashes": "npm:1.3.2"
-    "@types/node": "npm:18.15.13"
-    aes-js: "npm:4.0.0-beta.5"
-    tslib: "npm:2.4.0"
-    ws: "npm:8.17.1"
-  checksum: 10/e611c2e2c5340982dfd1f004895f55abda11748a7edec9e6315226dec42d58aa61b827dd389ec904db5f9a244c475ae795e528da579251fdf62e914bde12809e
-  languageName: node
-  linkType: hard
-
 "ethers@npm:^6.11.1, ethers@npm:^6.4.0":
   version: 6.12.1
   resolution: "ethers@npm:6.12.1"
@@ -20323,7 +20308,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo-ethers-web-app@workspace:packages/cli-template-monorepo-ethers/apps/web-app"
   dependencies:
-  "@chakra-ui/next-js": "npm:^2.2.0"
+    "@chakra-ui/next-js": "npm:^2.2.0"
     "@chakra-ui/react": "npm:^2.8.2"
     "@chakra-ui/theme": "npm:^3.3.1"
     "@chakra-ui/theme-tools": "npm:^2.1.2"
@@ -20393,7 +20378,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo-subgraph-web-app@workspace:packages/cli-template-monorepo-subgraph/apps/web-app"
   dependencies:
-  "@chakra-ui/next-js": "npm:^2.2.0"
+    "@chakra-ui/next-js": "npm:^2.2.0"
     "@chakra-ui/react": "npm:^2.8.2"
     "@chakra-ui/theme": "npm:^3.3.1"
     "@chakra-ui/theme-tools": "npm:^2.1.2"
@@ -20408,7 +20393,7 @@ __metadata:
     dotenv: "npm:^16.4.4"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.1.0"
-    ethers: "npm:^6.11.0"
+    ethers: "npm:^6.11.1"
     framer-motion: "npm:^11.0.5"
     next: "npm:14.1.0"
     next-pwa: "npm:^5.6.0"
@@ -28665,21 +28650,6 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: 10/150e3f917b7cde568d833a5ea6ccc4132e59c38d04218afcf2b6c7b845752bd011a9e0dc1303c8694d3c402a0bdec5893661a390b71ff88f0fc81a4e4e66b09c
-  languageName: node
-  linkType: hard
-
-"ws@npm:8.17.1":
-  version: 8.17.1
-  resolution: "ws@npm:8.17.1"
-  peerDependencies:
-    bufferutil: ^4.0.1
-    utf-8-validate: ">=5.0.2"
-  peerDependenciesMeta:
-    bufferutil:
-      optional: true
-    utf-8-validate:
-      optional: true
-  checksum: 10/4264ae92c0b3e59c7e309001e93079b26937aab181835fb7af79f906b22cd33b6196d96556dafb4e985742dd401e99139572242e9847661fdbc96556b9e6902d
   languageName: node
   linkType: hard
 
