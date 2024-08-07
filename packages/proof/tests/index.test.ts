@@ -55,7 +55,7 @@ describe("Proof", () => {
 
             expect(typeof proof).toBe("object")
             expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
-        }, 80000)
+        })
 
         it("Should generate a Semaphore proof passing a Merkle proof instead of a group", async () => {
             const group = new Group([1n, 2n, identity.commitment])
@@ -64,7 +64,7 @@ describe("Proof", () => {
 
             expect(typeof proof).toBe("object")
             expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
-        }, 80000)
+        })
 
         it("Should generate a Semaphore proof without passing the tree depth", async () => {
             const group = new Group([1n, 2n, identity.commitment])
@@ -73,7 +73,7 @@ describe("Proof", () => {
 
             expect(typeof proof).toBe("object")
             expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
-        }, 80000)
+        })
 
         it("Should throw an error because snarkArtifacts is not an object", async () => {
             const group = new Group([1n, 2n, identity.commitment])
@@ -103,7 +103,7 @@ describe("Proof", () => {
             await expect(fun).rejects.toThrow("tree depth must be")
         })
 
-        it("Should verify a Semaphore proof", async () => {
+        it("Should return true if the proof is valid", async () => {
             const group = new Group([1n, 2n, identity.commitment])
 
             const proof = await generateProof(identity, group, message, scope, treeDepth)
@@ -111,6 +111,16 @@ describe("Proof", () => {
             const response = await verifyProof(proof)
 
             expect(response).toBe(true)
-        }, 80_000)
+        })
+
+        it("Should return false if the proof is not valid", async () => {
+            const group = new Group([1n, 2n, identity.commitment])
+
+            const proof = await generateProof(identity, group.generateMerkleProof(0), message, scope, treeDepth)
+
+            const response = await verifyProof(proof)
+
+            expect(response).toBe(false)
+        })
     })
 })
