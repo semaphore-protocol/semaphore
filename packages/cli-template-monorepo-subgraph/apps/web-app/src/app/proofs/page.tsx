@@ -1,78 +1,96 @@
 "use client"
 
-import { Group, Identity, generateProof } from "@semaphore-protocol/core"
+import Stepper from "@/components/Stepper"
+import { useLogContext } from "@/context/LogContext"
+import { useSemaphoreContext } from "@/context/SemaphoreContext"
+import IconRefreshLine from "@/icons/IconRefreshLine"
+import { Box, Button, Divider, Heading, HStack, Link, Text, useBoolean, VStack } from "@chakra-ui/react"
+import { generateProof, Group } from "@semaphore-protocol/core"
+import { encodeBytes32String, ethers } from "ethers"
 import { useRouter } from "next/navigation"
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import Feedback from "../../../contract-artifacts/Feedback.json"
-import Stepper from "../../components/Stepper"
-import LogsContext from "../../context/LogsContext"
-import SemaphoreContext from "../../context/SemaphoreContext"
+import useSemaphoreIdentity from "@/hooks/useSemaphoreIdentity"
 
 export default function ProofsPage() {
     const router = useRouter()
-    const { setLogs } = useContext(LogsContext)
-    const { _users, _feedback, refreshFeedback, addFeedback } = useContext(SemaphoreContext)
-    const [_loading, setLoading] = useState(false)
-    const [_identity, setIdentity] = useState<Identity>()
-
-    useEffect(() => {
-        const privateKey = localStorage.getItem("identity")
-
-        if (!privateKey) {
-            router.push("/")
-            return
-        }
-
-        setIdentity(new Identity(privateKey))
-    }, [router])
+    const { setLog } = useLogContext()
+    const { _users, _feedback, refreshFeedback, addFeedback } = useSemaphoreContext()
+    const [_loading, setLoading] = useBoolean()
+    const { _identity } = useSemaphoreIdentity()
 
     useEffect(() => {
         if (_feedback.length > 0) {
-            setLogs(`${_feedback.length} feedback retrieved from the group 🤙🏽`)
+            setLog(`${_feedback.length} feedback retrieved from the group 🤙🏽`)
         }
-    }, [_feedback, setLogs])
+    }, [_feedback, setLog])
+
+    const feedback = useMemo(() => [..._feedback].reverse(), [_feedback])
 
     const sendFeedback = useCallback(async () => {
         if (!_identity) {
             return
         }
 
-        if (typeof process.env.NEXT_PUBLIC_GROUP_ID !== "string") {
-            throw new Error("Please, define NEXT_PUBLIC_GROUP_ID in your .env file")
-        }
-
         const feedback = prompt("Please enter your feedback:")
 
         if (feedback && _users) {
-            setLoading(true)
+            setLoading.on()
 
-            setLogs(`Posting your anonymous feedback...`)
+            setLog(`Posting your anonymous feedback...`)
 
             try {
                 const group = new Group(_users)
 
-                const { points, merkleTreeDepth, merkleTreeRoot, nullifier, message } = await generateProof(
+                const message = encodeBytes32String(feedback)
+
+                const { points, merkleTreeDepth, merkleTreeRoot, nullifier } = await generateProof(
                     _identity,
                     group,
-                    feedback,
+                    message,
                     process.env.NEXT_PUBLIC_GROUP_ID as string
                 )
 
-                let response: any
-
-                if (process.env.OPENZEPPELIN_AUTOTASK_WEBHOOK) {
-                    response = await fetch(process.env.OPENZEPPELIN_AUTOTASK_WEBHOOK, {
+                let feedbackSent: boolean = false
+                const params = [merkleTreeDepth, merkleTreeRoot, nullifier, message, points]
+                if (process.env.NEXT_PUBLIC_OPENZEPPELIN_AUTOTASK_WEBHOOK) {
+                    const response = await fetch(process.env.NEXT_PUBLIC_OPENZEPPELIN_AUTOTASK_WEBHOOK, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                             abi: Feedback.abi,
-                            address: process.env.FEEDBACK_CONTRACT_ADDRESS,
+                            address: process.env.NEXT_PUBLIC_FEEDBACK_CONTRACT_ADDRESS,
                             functionName: "sendFeedback",
-                            functionParameters: [merkleTreeDepth, merkleTreeRoot, nullifier, message, points]
+                            functionParameters: params
                         })
                     })
+
+                    if (response.status === 200) {
+                        feedbackSent = true
+                    }
+                } else if (
+                    process.env.NEXT_PUBLIC_GELATO_RELAYER_ENDPOINT &&
+                    process.env.NEXT_PUBLIC_GELATO_RELAYER_CHAIN_ID &&
+                    process.env.GELATO_RELAYER_API_KEY
+                ) {
+                    const iface = new ethers.Interface(Feedback.abi)
+                    const request = {
+                        chainId: process.env.NEXT_PUBLIC_GELATO_RELAYER_CHAIN_ID,
+                        target: process.env.NEXT_PUBLIC_FEEDBACK_CONTRACT_ADDRESS,
+                        data: iface.encodeFunctionData("sendFeedback", params),
+                        sponsorApiKey: process.env.GELATO_RELAYER_API_KEY
+                    }
+                    const response = await fetch(process.env.NEXT_PUBLIC_GELATO_RELAYER_ENDPOINT, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(request)
+                    })
+
+                    if (response.status === 201) {
+                        feedbackSent = true
+                    }
                 } else {
-                    response = await fetch("api/feedback", {
+                    const response = await fetch("api/feedback", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
@@ -83,71 +101,80 @@ export default function ProofsPage() {
                             points
                         })
                     })
+
+                    if (response.status === 200) {
+                        feedbackSent = true
+                    }
                 }
 
-                if (response.status === 200) {
+                if (feedbackSent) {
                     addFeedback(feedback)
 
-                    setLogs(`Your feedback has been posted 🎉`)
+                    setLog(`Your feedback has been posted 🎉`)
                 } else {
-                    setLogs("Some error occurred, please try again!")
+                    setLog("Some error occurred, please try again!")
                 }
             } catch (error) {
                 console.error(error)
 
-                setLogs("Some error occurred, please try again!")
+                setLog("Some error occurred, please try again!")
             } finally {
-                setLoading(false)
+                setLoading.off()
             }
         }
-    }, [_identity, _users, addFeedback, setLogs])
+    }, [_identity, _users, addFeedback, setLoading, setLog])
 
     return (
         <>
-            <h2>Proofs</h2>
+            <Heading as="h2" size="xl">
+                Proofs
+            </Heading>
 
-            <p>
+            <Text pt="2" fontSize="md">
                 Semaphore members can anonymously{" "}
-                <a
-                    href="https://docs.semaphore.pse.dev/guides/proofs"
-                    target="_blank"
-                    rel="noreferrer noopener nofollow"
-                >
+                <Link href="https://docs.semaphore.pse.dev/guides/proofs" isExternal>
                     prove
-                </a>{" "}
+                </Link>{" "}
                 that they are part of a group and send their anonymous messages. Messages could be votes, leaks,
-                reviews, feedback, etc.
-            </p>
+                reviews, or feedback.
+            </Text>
 
-            <div className="divider"></div>
+            <Divider pt="5" borderColor="gray.500" />
 
-            <div className="text-top">
-                <h3>Feedback messages ({_feedback.length})</h3>
-                <button className="button-link" onClick={refreshFeedback}>
+            <HStack py="5" justify="space-between">
+                <Text fontWeight="bold" fontSize="lg">
+                    Feedback ({_feedback.length})
+                </Text>
+                <Button
+                    leftIcon={<IconRefreshLine />}
+                    variant="link"
+                    color="text.300"
+                    onClick={refreshFeedback}
+                    size="lg"
+                >
                     Refresh
-                </button>
-            </div>
-
-            <div>
-                <button className="button" onClick={sendFeedback} disabled={_loading}>
-                    <span>Send Feedback</span>
-                    {_loading && <div className="loader"></div>}
-                </button>
-            </div>
+                </Button>
+            </HStack>
 
             {_feedback.length > 0 && (
-                <div>
-                    {_feedback.map((f, i) => (
-                        <div key={i}>
-                            <p className="box box-text">{f}</p>
-                        </div>
+                <VStack spacing="3" pb="3" align="left" maxHeight="300px" overflowY="scroll">
+                    {feedback.map((f, i) => (
+                        <HStack key={i} pb="3" borderBottomWidth={i < _feedback.length - 1 ? 1 : 0}>
+                            <Text>{f}</Text>
+                        </HStack>
                     ))}
-                </div>
+                </VStack>
             )}
 
-            <div className="divider"></div>
+            <Box pb="5">
+                <Button w="full" colorScheme="primary" isDisabled={_loading} onClick={sendFeedback}>
+                    Send feedback
+                </Button>
+            </Box>
 
-            <Stepper step={3} onPrevClick={() => router.push("/groups")} />
+            <Divider pt="3" borderColor="gray" />
+
+            <Stepper step={3} onPrevClick={() => router.push("/group")} />
         </>
     )
 }

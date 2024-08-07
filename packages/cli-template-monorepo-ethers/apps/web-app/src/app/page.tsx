@@ -1,93 +1,94 @@
 "use client"
 
+import { Box, Button, Divider, Heading, HStack, Link, Text } from "@chakra-ui/react"
 import { Identity } from "@semaphore-protocol/core"
 import { useRouter } from "next/navigation"
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Stepper from "../components/Stepper"
-import LogsContext from "../context/LogsContext"
+import { useLogContext } from "../context/LogContext"
 
 export default function IdentitiesPage() {
     const router = useRouter()
-    const { setLogs } = useContext(LogsContext)
+    const { setLog } = useLogContext()
     const [_identity, setIdentity] = useState<Identity>()
 
     useEffect(() => {
         const privateKey = localStorage.getItem("identity")
 
         if (privateKey) {
-            const identity = new Identity(privateKey)
+            const identity = Identity.import(privateKey)
 
             setIdentity(identity)
 
-            setLogs("Your Semaphore identity has been retrieved from the browser cache 👌🏽")
+            setLog("Your Semaphore identity has been retrieved from the browser cache 👌🏽")
         } else {
-            setLogs("Create your Semaphore identity 👆🏽")
+            setLog("Create your Semaphore identity 👆🏽")
         }
-    }, [setLogs])
+    }, [setLog])
 
     const createIdentity = useCallback(async () => {
         const identity = new Identity()
 
         setIdentity(identity)
 
-        localStorage.setItem("identity", identity.privateKey.toString())
+        localStorage.setItem("identity", identity.export())
 
-        setLogs("Your new Semaphore identity has just been created 🎉")
-    }, [setLogs])
+        setLog("Your new Semaphore identity has just been created 🎉")
+    }, [setLog])
 
     return (
         <>
-            <h2 className="font-size: 3rem;">Identities</h2>
+            <Heading as="h2" size="xl">
+                Identities
+            </Heading>
 
-            <p>
+            <Text pt="2" fontSize="md">
                 The identity of a user in the Semaphore protocol. A{" "}
-                <a
-                    href="https://docs.semaphore.pse.dev/guides/identities"
-                    target="_blank"
-                    rel="noreferrer noopener nofollow"
-                >
+                <Link href="https://docs.semaphore.pse.dev/guides/identities" isExternal>
                     Semaphore identity
-                </a>{" "}
+                </Link>{" "}
                 consists of an{" "}
-                <a
+                <Link
                     href="https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/eddsa-poseidon"
-                    target="_blank"
-                    rel="noreferrer noopener nofollow"
+                    isExternal
                 >
                     EdDSA
-                </a>{" "}
+                </Link>{" "}
                 public/private key pair and a commitment, used as the public identifier of the identity.
-            </p>
+            </Text>
 
-            <div className="divider"></div>
+            <Divider pt="5" borderColor="gray.500" />
 
-            <div className="text-top">
-                <h3>Identity</h3>
-                {_identity && (
-                    <button className="button-link" onClick={createIdentity}>
-                        New
-                    </button>
-                )}
-            </div>
+            <HStack py="5">
+                <Text fontWeight="bold" fontSize="lg">
+                    Identity
+                </Text>
+            </HStack>
 
-            {_identity ? (
-                <div>
-                    <div className="box">
-                        <p className="box-text">Private Key: {_identity.privateKey.toString()}</p>
-                        <p className="box-text">Commitment: {_identity.commitment.toString()}</p>
-                    </div>
-                </div>
-            ) : (
-                <div>
-                    <button className="button" onClick={createIdentity}>
-                        Create identity
-                    </button>
-                </div>
+            {_identity && (
+                <Box pb="6" pl="2">
+                    <Text>
+                        <b>Private Key (base64)</b>:<br /> {_identity.export()}
+                    </Text>
+                    <Text>
+                        <b>Public Key</b>:<br /> [{_identity.publicKey[0].toString()},{" "}
+                        {_identity.publicKey[1].toString()}]
+                    </Text>
+                    <Text>
+                        <b>Commitment</b>:<br /> {_identity.commitment.toString()}
+                    </Text>
+                </Box>
             )}
 
-            <div className="divider"></div>
+            <Box pb="5">
+                <Button w="full" colorScheme="primary" onClick={createIdentity}>
+                    Create identity
+                </Button>
+            </Box>
 
-            <Stepper step={1} onNextClick={_identity && (() => router.push("/groups"))} />
+            <Divider pt="3" borderColor="gray.500" />
+
+            <Stepper step={1} onNextClick={_identity && (() => router.push("/group"))} />
         </>
     )
 }
