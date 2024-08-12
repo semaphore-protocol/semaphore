@@ -125,7 +125,7 @@ import { Identity } from "@semaphore-protocol/identity"
 const message = "message"
 const identity = new Identity()
 
-const signature = identity.signMessage("message")
+const signature = identity.signMessage(message)
 
 Identity.verifySignature(message, signature, identity.publicKey)
 ```
