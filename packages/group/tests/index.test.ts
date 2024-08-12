@@ -158,6 +158,7 @@ describe("Group", () => {
             expect(group2.depth).toBe(group1.depth)
             expect(group2.size).toBe(group1.size)
             expect(group2.root).toBe(group1.root)
+            expect(group2.indexOf(2n)).toBe(group1.indexOf(2n))
         })
     })
 })
