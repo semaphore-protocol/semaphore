@@ -6386,7 +6386,7 @@ __metadata:
     "@rollup/plugin-commonjs": "npm:^25.0.7"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@zk-kit/lean-imt": "npm:2.0.1"
+    "@zk-kit/lean-imt": "npm:2.1.0"
     "@zk-kit/utils": "npm:1.0.0"
     poseidon-lite: "npm:^0.2.0"
     rimraf: "npm:^5.0.5"
@@ -8544,12 +8544,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/lean-imt@npm:2.0.1":
-  version: 2.0.1
-  resolution: "@zk-kit/lean-imt@npm:2.0.1"
+"@zk-kit/lean-imt@npm:2.1.0":
+  version: 2.1.0
+  resolution: "@zk-kit/lean-imt@npm:2.1.0"
   dependencies:
-    "@zk-kit/utils": "npm:1.0.0"
-  checksum: 10/33d03a20c3ce6270036d4cc0a96100b4f6e17f373688595937d2a0863883562b648a768c11ab938fd83ed65d7a70b542db647e3d9e0b5e050c02efc5df0543ce
+    "@zk-kit/utils": "npm:1.2.0"
+  checksum: 10/897f88204c9ee548a2a977ef1efac8e4c0d2efdf284c88f759fdefd53b2c51a36b536130eb3241e68bd14e5039bcb8d6d788e7fca46fe442cfa3eceeb9c0eddf
   languageName: node
   linkType: hard
 
