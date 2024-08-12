@@ -153,7 +153,7 @@ export class Group {
     static import(nodes: string): Group {
         const group = new Group()
 
-        group.leanIMT.import(nodes)
+        group.leanIMT = LeanIMT.import((a, b) => poseidon2([a, b]), nodes)
 
         return group
     }

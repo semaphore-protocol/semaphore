@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/group",
-    "version": "4.0.1",
+    "version": "4.0.2",
     "description": "A library to create and manage Semaphore groups.",
     "type": "module",
     "license": "MIT",
@@ -39,7 +39,7 @@
         "rollup-plugin-cleanup": "^3.2.1"
     },
     "dependencies": {
-        "@zk-kit/lean-imt": "2.0.1",
+        "@zk-kit/lean-imt": "2.1.0",
         "@zk-kit/utils": "1.0.0"
     }
 }
