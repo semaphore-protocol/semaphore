@@ -10,8 +10,8 @@ An identity is comprised of the following information:
 
 1. An [EdDSA](https://en.wikipedia.org/wiki/EdDSA) private key. Note that it is
    _not_ an Ethereum private key.
-2. An identity nullifier, whih is a random 32-byte value.
-3. An identity trapdoor, whih is a random 32-byte value.
+2. An identity nullifier, which is a random 32-byte value.
+3. An identity trapdoor, which is a random 32-byte value.
 
 An identity commitment is the Pedersen hash of:
 

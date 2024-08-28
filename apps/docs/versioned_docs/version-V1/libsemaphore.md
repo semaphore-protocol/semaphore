@@ -204,7 +204,7 @@ It returns an object as such:
 -   `msg`: The hash of the external nullifier and the signal hash
 -   `signature`: The signature on the above msg.
 -   `tree`: The Merkle tree object after it has been updated with the identity commitment
--   `identityPath`: The Merkle path to the identity commmitment
+-   `identityPath`: The Merkle path to the identity commitment
 -   `identityPathIndex`: The leaf index of the identity commitment
 -   `identityPathElements`: The elements along the above Merkle path
 
