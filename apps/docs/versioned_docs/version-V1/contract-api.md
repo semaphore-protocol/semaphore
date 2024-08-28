@@ -21,7 +21,7 @@ The first external nullifier will be added as an external nullifier to the
 contract, and this external nullifier will be active once the deployment
 completes.
 
-## Add, deactivate, or reactivate external nullifiiers
+## Add, deactivate, or reactivate external nullifiers
 
 **Contract ABI**:
 
