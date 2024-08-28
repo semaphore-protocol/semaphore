@@ -12,7 +12,7 @@ async function maybePushToSoldeer() {
     )
     const { data, status } = await response.json()
 
-    // fail status is no version published at all yet
+    // fail status if no version published at all yet
     if (status === "fail" || compare(contractsLocalVersion, data[0].version) === 1)
         execSync(`soldeer push semaphore-protocol-contracts~${contractsLocalVersion} packages/contracts/contracts`, {
             stdio: "inherit"
