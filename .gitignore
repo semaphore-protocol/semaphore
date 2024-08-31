@@ -94,3 +94,5 @@ typechain-types
 
 # Other
 snark-artifacts
+
+*.zip
