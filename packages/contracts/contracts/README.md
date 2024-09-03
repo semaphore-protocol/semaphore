@@ -34,7 +34,7 @@
             🔎 Issues
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://semaphore.pse.dev/discord">
+        <a href="https://semaphore.pse.dev/telegram">
             🗣️ Chat &amp; Support
         </a>
     </h4>

@@ -6,7 +6,7 @@ sidebar_position: 11
 
 ## Where can I ask questions about Semaphore?
 
-You can ask questions about Semaphore on [Discord](https://semaphore.pse.dev/discord) or by opening a [Semaphore Discussion](https://github.com/semaphore-protocol/semaphore/discussions). The most frequent questions will be listed below.
+You can ask questions about Semaphore on [Telegram](https://semaphore.pse.dev/telegram) or by opening a [Semaphore Discussion](https://github.com/semaphore-protocol/semaphore/discussions). The most frequent questions will be listed below.
 
 ## Why should I prevent proofs from being verified twice?
 
