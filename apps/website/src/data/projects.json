@@ -115,20 +115,7 @@
         "icon": "",
         "links": {
             "website": "https://explorer.semaphore.pse.dev",
-            "github": "https://github.com/semaphore-protocol/explorer",
-            "discord": "https://semaphore.pse.dev/discord"
-        }
-    },
-    {
-        "name": "Semaphore Discord Bot",
-        "tagline": "A Discord Bot for Semaphore",
-        "categories": ["Development"],
-        "pse": true,
-        "icon": "",
-        "links": {
-            "website": "https://discord.com/api/oauth2/authorize?client_id=1082429985496772628&permissions=1024&scope=bot",
-            "github": "https://github.com/semaphore-protocol/discord-bot",
-            "discord": "https://semaphore.pse.dev/discord"
+            "github": "https://github.com/semaphore-protocol/explorer"
         }
     },
     {

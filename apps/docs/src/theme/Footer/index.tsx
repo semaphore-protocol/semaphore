@@ -32,7 +32,7 @@ function Footer() {
                                     id: "footer.right.connect.title"
                                 })}
                             </h3>
-                            <Link href="https://semaphore.pse.dev/discord" target="_blank">
+                            <Link href="https://semaphore.pse.dev/telegram" target="_blank">
                                 {translate({
                                     id: "footer.right.connect.link1"
                                 })}
