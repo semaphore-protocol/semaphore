@@ -10,3 +10,6 @@
 [submodule "packages/cli-template-contracts-foundry/lib/poseidon-solidity"]
 	path = packages/cli-template-contracts-foundry/lib/poseidon-solidity
 	url = https://github.com/chancehudson/poseidon-solidity
+[submodule "packages/cli-template-contracts-foundry/lib/openzeppelin-contracts"]
+	path = packages/cli-template-contracts-foundry/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
