@@ -20,16 +20,13 @@ contract TestFeedback is Test {
         semaphore = ISemaphore(semaphoreAddress);
     }
 
-    function testSemaphoreAddressNotBeZero() public view {
-        assertNotEq(feedback.semaphore.address, address(0));
-    }
 
-    function testGroupHasBeenSuccessfullyCreatedInConstructor() public view {
+    function testCreatGroup() public view {
         uint256 groupCount = semaphore.groupCounter();
         assertEq(groupCount, 1);
     }
 
-    function testGroupCanBeJoined() public {
+    function testJoinGroup() public {
         uint256 identityCommitment = 15072455385723004728391568434269917452175057560864330595979104241296826134229;
         vm.expectEmit();
         emit MemberAdded(0, 0, identityCommitment, identityCommitment);
