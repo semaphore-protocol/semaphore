@@ -1,0 +1,15 @@
+{
+    "scopeMap": {},
+    "types": {
+        "feat": { "title": "🚀 Features" },
+        "fix": { "title": "🐞 Bug Fixes" },
+        "refactor": { "title": "♻️  Refactoring" },
+        "perf": { "title": "🏎 Performance" }
+    },
+    "titles": {
+        "breakingChanges": "🚨 Breaking Changes"
+    },
+    "contributors": true,
+    "capitalize": true,
+    "group": true
+}

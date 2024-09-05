@@ -1,0 +1,47 @@
+# dependencies
+node_modules
+package-lock.json
+yarn.lock
+.yarn
+
+# testing
+coverage
+coverage.json
+
+# hardhat
+artifacts
+cache
+typechain-types
+
+# types
+types
+
+# circuits
+circuits
+
+# production
+dist
+build
+/docs
+
+# subgraph
+subgraph.template.yaml
+generated
+
+# Docusaurus cache and generated files
+.docusaurus
+.cache-loader
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# packages
+cli-template-*
+
+!apps/website/src/app/build

@@ -1,0 +1,140 @@
+name: pull-requests
+
+on:
+    pull_request:
+
+env:
+    TREE_DEPTH: 10
+
+jobs:
+    style:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: yarn
+
+            - name: Install dependencies
+              run: yarn
+
+            - name: Get changed files
+              id: changed-files
+              uses: tj-actions/changed-files@v44
+              with:
+                  files_yaml: |
+                      circuits:
+                        - packages/circuits/**/*.{circom,json,ts}
+                      contracts:
+                        - packages/contracts/**/*.{js,json,ts,sol}
+                      docs:
+                        - apps/docs/**/*
+                      libraries:
+                        - packages/**/*.{js,json,ts}
+                        - '!packages/{circuits,contracts}/**/*'
+                      subgraph:
+                        - apps/subgraph/**/*
+                      to_format:
+                        - '**/*.{cjs,js,json,jsx,md,mdx,sol,ts,tsx,yaml,yml}'
+                      to_lint:
+                        - '**/*.{cjs,js,jsx,ts,tsx}'
+
+            - if: steps.changed-files.outputs.contracts_any_changed == 'true'
+              name: Compile and lint contracts
+              run: |
+                  yarn workspace @semaphore-protocol/utils build
+                  yarn compile:contracts
+                  yarn workspace semaphore-contracts lint
+
+            - if: steps.changed-files.outputs.docs_any_changed == 'true'
+              name: Build and format docs
+              run: |
+                  yarn workspace semaphore-docs build
+                  yarn workspace semaphore-docs format
+
+            - if: steps.changed-files.outputs.libraries_any_changed == 'true'
+              name: Build libraries
+              run: yarn build:libraries
+
+            - if: steps.changed-files.outputs.subgraph_any_changed == 'true'
+              name: Build subgraph
+              run: |
+                  yarn workspace @semaphore-protocol/utils build
+                  yarn build:subgraph
+
+            - if: steps.changed-files.outputs.to_format_any_changed == 'true'
+              name: Format
+              run: yarn run prettier --check ${{ steps.changed-files.outputs.to_format_all_changed_files }}
+
+            - if: steps.changed-files.outputs.to_lint_any_changed == 'true'
+              name: Run Eslint
+              run: yarn run eslint ${{ steps.changed-files.outputs.to_lint_all_changed_files }} --ext .cjs,.js,.jsx,.ts,.tsx
+
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: yarn
+
+            - name: Install dependencies
+              run: yarn
+
+            - name: Get changed files
+              id: changed-files
+              uses: tj-actions/changed-files@v44
+              with:
+                  files_yaml: |
+                      circuits:
+                        - packages/circuits/**/*.{circom,json,ts}
+                      contracts:
+                        - packages/contracts/**/*.{js,json,ts,sol}
+                      libraries:
+                        - packages/**/*.{js,json,ts}
+                        - '!packages/{circuits,contracts}/**/*'
+                      subgraph:
+                        - apps/subgraph/**/*
+
+            # https://github.com/iden3/circuits/blob/8fffb6609ecad0b7bcda19bb908bdb544bdb3cf7/.github/workflows/main.yml#L18-L22
+            # https://stackoverflow.com/a/78377916
+            - if: steps.changed-files.outputs.circuits_any_changed == 'true'
+              name: Setup Circom and Test circuits
+              run: |
+                  sudo rm /etc/apt/sources.list.d/microsoft-prod.list
+                  sudo apt-get update && sudo apt-get install -y wget nlohmann-json3-dev libgmp-dev nasm g++ build-essential
+                  wget https://github.com/iden3/circom/releases/latest/download/circom-linux-amd64 && sudo mv ./circom-linux-amd64 /usr/bin/circom && sudo chmod +x /usr/bin/circom
+                  yarn workspace @semaphore-protocol/group build
+                  yarn workspace @semaphore-protocol/identity build
+                  yarn workspace @semaphore-protocol/proof build
+                  yarn workspace @semaphore-protocol/utils build
+                  yarn test:circuits
+
+            - if: steps.changed-files.outputs.contracts_any_changed == 'true'
+              name: Build and Test contracts
+              run: |
+                  yarn workspace @semaphore-protocol/group build
+                  yarn workspace @semaphore-protocol/identity build
+                  yarn workspace @semaphore-protocol/proof build
+                  yarn workspace @semaphore-protocol/utils build
+                  yarn compile:contracts
+                  yarn test:contracts
+
+            - if: steps.changed-files.outputs.libraries_any_changed == 'true'
+              name: Build and Test libraries
+              run: yarn build:libraries && yarn test:libraries
+
+            - if: steps.changed-files.outputs.subgraph_any_changed == 'true'
+              name: Build and Test Subgraph
+              run: |
+                  yarn workspace @semaphore-protocol/utils build
+                  yarn build:subgraph
+                  yarn test:subgraph

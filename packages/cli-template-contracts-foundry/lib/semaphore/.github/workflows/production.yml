@@ -1,0 +1,115 @@
+name: production
+
+on:
+    push:
+        branches:
+            - main
+
+env:
+    TREE_DEPTH: 10
+
+jobs:
+    style:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: yarn
+
+            - name: Install dependencies
+              run: yarn
+
+            - name: Build packages and apps
+              run: yarn build
+
+            - name: Format
+              run: yarn format
+
+            - name: Run Eslint
+              run: yarn lint
+
+    test-subgraph:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: yarn
+
+            - name: Install dependencies
+              run: yarn
+
+            - name: Build libraries
+              run: yarn build:libraries
+
+            - name: Build subgraph
+              run: yarn build:subgraph
+
+            - name: Test subgraph
+              run: yarn test:subgraph
+
+    test:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                type:
+                    - circuits
+                    - libraries
+                    - contracts
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: yarn
+
+            # https://github.com/iden3/circuits/blob/8fffb6609ecad0b7bcda19bb908bdb544bdb3cf7/.github/workflows/main.yml#L18-L22
+            # https://stackoverflow.com/a/78377916
+            - name: Setup Circom deps
+              run: |
+                  sudo rm /etc/apt/sources.list.d/microsoft-prod.list
+                  sudo apt-get update && sudo apt-get install -y wget nlohmann-json3-dev libgmp-dev nasm g++ build-essential
+
+            - name: Setup Circom
+              run: wget https://github.com/iden3/circom/releases/latest/download/circom-linux-amd64 && sudo mv ./circom-linux-amd64 /usr/bin/circom && sudo chmod +x /usr/bin/circom
+
+            - name: Install dependencies
+              run: yarn
+
+            - name: Build libraries
+              run: yarn build:libraries
+
+            - name: Test libraries, contracts and circuits
+              run: yarn test:${{ matrix.type }}
+
+            - name: Coveralls
+              if: matrix.type != 'circuits'
+              uses: coverallsapp/github-action@master
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  flag-name: run-${{ matrix.type }}
+                  path-to-lcov: ./coverage/${{ matrix.type }}/lcov.info
+                  parallel: true
+
+    coverage:
+        runs-on: ubuntu-latest
+        needs: test
+
+        steps:
+            - name: Coveralls Finished
+              uses: coverallsapp/github-action@master
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  parallel-finished: true

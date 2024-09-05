@@ -1,0 +1,549 @@
+[
+    {
+        "name": "Zupass",
+        "tagline": "Open source, experimental personal cryptography manager.",
+        "categories": ["Identity", "Authenticity", "Ticketing"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://zupass.org",
+            "github": "https://github.com/proofcarryingdata/zupass"
+        }
+    },
+    {
+        "name": "Worldcoin",
+        "categories": ["Identity"],
+        "tagline": "A global digital currency offering universal access to a more inclusive financial system.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/worldcoin",
+            "website": "https://worldcoin.org"
+        }
+    },
+    {
+        "name": "Bandada",
+        "categories": ["Infra", "Data"],
+        "tagline": "An open-source system for managing privacy-preserving groups of anonymous individuals.",
+        "pse": true,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/privacy-scaling-explorations/bandada",
+            "website": "https://bandada.pse.dev"
+        }
+    },
+    {
+        "name": "Super Secret ZK Ballot",
+        "tagline": "A Solidity contract for anonymous voting.",
+        "categories": ["Voting"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/dutragustavo/super-secret-zkballot"
+        }
+    },
+    {
+        "name": "ZK Proof of Humanity",
+        "tagline": "A project that allows humans, registered in Proof of Humanity, to prove their humanity without doxing.",
+        "categories": ["Identity", "Authenticity"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://zk-proof-of-humanity.vercel.app",
+            "github": "https://github.com/elmol/zk-proof-of-humanity"
+        }
+    },
+    {
+        "name": "Signary",
+        "tagline": "Signary is a discussion platform with advanced privacy and reliable membership verification.",
+        "categories": ["Interoperability", "Identity", "Social"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://signary.poc-innovation.com",
+            "github": "https://github.com/RezaRahemtola/ETHGlobal-Paris2023"
+        }
+    },
+    {
+        "name": "Key Passport",
+        "tagline": "Key Passport offers secure identity and key management via Ethereum with Metamask Snaps, ensuring control and sovereignty.",
+        "categories": ["Identity", "Data"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://key-passport.vercel.app/",
+            "github": "https://github.com/wslyvh/key-passport"
+        }
+    },
+    {
+        "name": "Sharknado",
+        "tagline": "A platform for anonymous surveys, NFT authentication with zk proofs, and reward-based bounties.",
+        "categories": ["NFT", "Identity", "Coordination"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://sharknado.vercel.app",
+            "github": "https://github.com/Squalome"
+        }
+    },
+    {
+        "name": "zkPoo",
+        "tagline": "Secure voting delegation and privacy protection for impactful democratic participation.",
+        "categories": ["Voting", "Social"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://zkpoo.vercel.app",
+            "github": "https://github.com/zkPOO/zkPOO"
+        }
+    },
+    {
+        "name": "Cicada",
+        "tagline": "A private on-chain voting protocol based on homomorphic time-lock puzzles.",
+        "categories": ["Voting"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/a16z/cicada"
+        }
+    },
+    {
+        "name": "Semaphore Explorer",
+        "tagline": "Semaphore explorer for on-chain groups.",
+        "categories": ["Data", "Development"],
+        "pse": true,
+        "icon": "",
+        "links": {
+            "website": "https://explorer.semaphore.pse.dev",
+            "github": "https://github.com/semaphore-protocol/explorer"
+        }
+    },
+    {
+        "name": "Plurality",
+        "tagline": "Plurality boosts web3 retention by simplifying onboarding and personalizing web3 accounts using data from user's social profiles whilst ensuring privacy.",
+        "categories": ["Identity", "Trust"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://plurality.network",
+            "github": "https://github.com/Web3-Plurality"
+        }
+    },
+    {
+        "name": "ZeroTherapy",
+        "tagline": "AMA privacy application built with Semaphore.",
+        "categories": ["Voting", "Health"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://zerotherapy.vercel.app",
+            "github": "https://github.com/Pushpit07/ZeroTherapy"
+        }
+    },
+    {
+        "name": "Block Qualified",
+        "tagline": "On-chain and privacy preserving education platform built on Semaphore.",
+        "categories": ["Education"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://bq2.netlify.app/",
+            "github": "https://github.com/0xdeenz/bq2"
+        }
+    },
+    {
+        "name": "StealthComms",
+        "tagline": "A project that allows users to prove their membership in a group and send messages/signals without revealing their original identity.",
+        "categories": ["Messaging"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://stealthcomms.surge.sh/",
+            "github": "https://github.com/atomniketh/zk-app"
+        }
+    },
+    {
+        "name": "n-per-epoch",
+        "categories": ["Data", "Infra"],
+        "tagline": "Simple contract modifier to add the ability to rate limit humans on any smart contract function call.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/rsproule/n-per-epoch",
+            "website": "https://blockchain.capital/privacy-preserving-smart-contract-rate-limiting"
+        }
+    },
+    {
+        "name": "Clique",
+        "categories": ["Data", "Identity", "Infra"],
+        "tagline": "Clique proves arbitrary user data that's accessible with TLS sessions with ZKPs, TEE, and MPC.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/CliqueOfficial/linea-attestations-registry/tree/main/lib",
+            "website": "https://clique.social/intro/attestor"
+        }
+    },
+    {
+        "name": "Interep",
+        "categories": ["Identity"],
+        "tagline": "A system that allows DApps or services to verify users' reputation without exposing their identities.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/interep-project"
+        }
+    },
+    {
+        "name": "Ballotbox",
+        "categories": ["Voting"],
+        "tagline": "Exploiting ZKP technology and IPFS to make the future of data by the user, for the user.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/KingGizzard/Ballotbox"
+        }
+    },
+    {
+        "name": "TAZ",
+        "categories": ["Identity"],
+        "tagline": "No-labels zone where Devcon VI attendees can learn through experience about privacy and anonymity.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/privacy-scaling-explorations/taz-apps"
+        }
+    },
+    {
+        "name": "DERP",
+        "categories": ["Authenticity", "Trust"],
+        "tagline": "An anonymous research peer-review-system.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/calebanderson526/peer-review-system",
+            "website": "https://www.youtube.com/watch?v=L_bzztshewA"
+        }
+    },
+    {
+        "name": "zmorph",
+        "categories": ["Identity", "IoT", "NFT"],
+        "tagline": "Pseudonymous, seamless zk-based token-gating solution.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/a42io/ETHBogota",
+            "website": "https://eth-bogota.web.app"
+        }
+    },
+    {
+        "name": "Zktokenproof",
+        "categories": ["NFT", "Ticketing"],
+        "tagline": "Decentralized private ZK based ticketing.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/hiroism007/zktp",
+            "website": "https://polygon.zktokenproof.xyz"
+        }
+    },
+    {
+        "name": "heyanoun",
+        "categories": ["Coordination", "Identity"],
+        "tagline": "Credible pseudonymous messages for noun governance prop discussion.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/personaelabs/heyanoun",
+            "website": "https://www.heyanoun.xyz"
+        }
+    },
+    {
+        "name": "Iris-Bound Tokens",
+        "categories": ["Identity"],
+        "tagline": "A non-transferrable token that is bound to a person's Iris.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/kevincharm/iris-bound-token",
+            "website": "https://irisbound.vercel.app/ https://ethglobal.com/showcase/iris-bound-tokens-3neee"
+        }
+    },
+    {
+        "name": "ClubSpace",
+        "categories": ["Social"],
+        "tagline": "A live listening party for creators to share their curated music NFTs with their Lens frens.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://ethglobal.com/showcase/clubspace-cwzqx"
+        }
+    },
+    {
+        "name": "Truth",
+        "categories": ["Authenticity"],
+        "tagline": "A photo-sharing app using ZKP for secure, accessible content verification.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/ETHBogotaTeam/truth",
+            "website": "https://ethglobal.com/showcase/truth-2wbd7"
+        }
+    },
+    {
+        "name": "Terrarium",
+        "categories": ["NFT"],
+        "tagline": "Protecting endangered species from poachers and enabling wildlife conservation.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://ethglobal.com/showcase/terrarium-ztoes"
+        }
+    },
+    {
+        "name": "zkVoice",
+        "categories": ["Coordination"],
+        "tagline": "A coordination tool that allows community members with less voting power to secretly signal their disapproval.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/santteegt/Baal",
+            "website": "https://ethglobal.com/showcase/zkvoice-fighting-plutocrat-dao-communities-ptrzp"
+        }
+    },
+    {
+        "name": "Menshen",
+        "categories": ["Identity"],
+        "tagline": "An app that turns selfies into private, secure NFTs without needing IDs, accessible to most people worldwide.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/jasonwcfan/menshen",
+            "website": "https://ethglobal.com/showcase/menshen-i2kq1"
+        }
+    },
+    {
+        "name": "Chain Statements",
+        "categories": ["Identity"],
+        "tagline": "A way to generate Statements for your crypto funds using ZK , privately and permissionlessly.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://ethglobal.com/showcase/chain-statements-kdurw"
+        }
+    },
+    {
+        "name": "Mina World ID",
+        "categories": ["Identity"],
+        "tagline": "Bringing Worldcoins World ID to Mina zero-knowledge apps.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/mitschabaude/mina-world-id",
+            "website": "https://ethglobal.com/showcase/world-id-mina-embt9"
+        }
+    },
+    {
+        "name": "Semaphore ZK3 - Lens",
+        "categories": ["Social"],
+        "tagline": "Lens Protocol + Semaphore integration to create zero-knowledge proofs using Semaphore on Lens.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/monemetrics/lensbot-docs/blob/master/docs/zk3.md"
+        }
+    },
+    {
+        "name": "zkIdentity",
+        "categories": ["Identity", "NFT"],
+        "tagline": "Private identity claim system with zero-knowledge for Dark Forest.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/sigridjineth/zkIdentity",
+            "website": "http://zk-identity.s3-website.ap-northeast-2.amazonaws.com"
+        }
+    },
+    {
+        "name": "Coeo",
+        "categories": ["Coordination"],
+        "tagline": "A privacy-focused collaboration tool.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/coeo",
+            "website": "https://showcase.ethglobal.com/hackfs/coeo"
+        }
+    },
+    {
+        "name": "Tampopo",
+        "categories": ["Social"],
+        "tagline": "A space in Web3 where everyone can share their stories freely.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/thisispalash/tampopo"
+        }
+    },
+    {
+        "name": "Continuum",
+        "categories": ["Identity"],
+        "tagline": "Proof of concept for a background checker that verifies data using Zero Knowledge proofs without exposing any personal information.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/tomoima525/continuum",
+            "website": "https://continuum.tomoima525.com"
+        }
+    },
+    {
+        "name": "Notebook Labs",
+        "categories": ["Identity"],
+        "tagline": "Utilizing cutting edge cryptography to democratize financial infrastructure.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/Notebook-Labs",
+            "website": "https://www.notebooklabs.xyz"
+        }
+    },
+    {
+        "name": "PreciDatos",
+        "categories": ["Climate", "Whistleblowing"],
+        "tagline": "A blockchain-based system for incentivizing actors to disclose accurate climate data.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/datadrivenenvirolab/PreciDatos"
+        }
+    },
+    {
+        "name": "Semaphore Demo",
+        "categories": ["Education"],
+        "tagline": "A simple demo to explain the main Semaphore concepts.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/VGLoic/semaphore-demo-frontend",
+            "website": "https://semaphore-demo.netlify.app"
+        }
+    },
+    {
+        "name": "zkVote",
+        "categories": ["Voting"],
+        "tagline": "A zero-knowledge voting app based on Semaphore.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/KimiWu123/zkvote"
+        }
+    },
+    {
+        "name": "Arbor",
+        "categories": ["NFT"],
+        "tagline": "A collaborative, music-making NFT platform for artists and collectors, built on Ethereum.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/arbor-protocol/ui",
+            "website": "https://arbor.audio"
+        }
+    },
+    {
+        "name": "Emergence",
+        "categories": ["Coordination"],
+        "tagline": "An on-chain video platform rewarding token participation, automating DAO documentation, and enhancing DAO health and onboarding.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/orgs/Emergence-Dapp",
+            "website": "https://ethglobal.com/showcase/emergence-o3tns"
+        }
+    },
+    {
+        "name": "heyanon",
+        "categories": ["Social"],
+        "tagline": "A tool to broadcast messages anonymously on Twitter.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/personaelabs/heyanon",
+            "website": "https://www.heyanon.xyz"
+        }
+    },
+    {
+        "name": "Om",
+        "categories": ["Data", "Identity"],
+        "tagline": "A DAO platform with a decentralized and private data storage layer.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/OmHackFS/om",
+            "website": "https://om-rose.vercel.app"
+        }
+    },
+    {
+        "name": "Unirep",
+        "tagline": "Private and nonrepudiable reputation system based on ZKP.",
+        "categories": ["Reputation", "Identity", "Social"],
+        "pse": true,
+        "icon": "",
+        "links": {
+            "website": "https://developer.unirep.io",
+            "github": "https://github.com/Unirep",
+            "discord": "https://discord.gg/VzMMDJmYc5"
+        }
+    },
+    {
+        "name": "Sacred",
+        "tagline": "Engage in anonymous DAO forums with Sacred Lógos to voice your opinions and vote discreetly.",
+        "categories": [""],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://www.thatsacred.place"
+        }
+    },
+    {
+        "name": "Zero Voting",
+        "tagline": "Submit new proposals or cast your vote on existing ones.",
+        "categories": ["Voting"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://zkvote.vercel.app"
+        }
+    },
+    {
+        "name": "Remix",
+        "tagline": "Circom Plugin and ZKP Circom Semaphore Template.",
+        "categories": ["Development", "Infra"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://medium.com/remix-ide/remix-release-v0-37-0-dbc750f7ab15"
+        }
+    },
+    {
+        "name": "AsteriskDAO",
+        "tagline": "Women’s health data lake dAPP for OCD to give researchers access to female-specific data",
+        "categories": ["Health", "Data"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/AsteriskDAO",
+            "website": "https://ethglobal.com/showcase/asteriskdao-4hvhf"
+        }
+    },
+    {
+        "name": "Pairwise",
+        "tagline": "A fun pseudonymous way to signal in Retro Funding 4.",
+        "categories": ["Retro Funding", "Public Goods", "Privacy", "Community"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/GeneralMagicio/pairwise-RPGF4",
+            "website": "https://pairwise.vote"
+        }
+    }
+]

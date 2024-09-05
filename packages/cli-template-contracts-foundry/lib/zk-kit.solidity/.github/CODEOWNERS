@@ -1,0 +1,12 @@
+# These owners will be the default owners for everything in the repo.
+# They will be added as reviewers for PR related to configuration files.
+*       @cedoor @sripwoud
+
+# When someone opens a pull request that only modifies specific packages,
+# only the following users and not the default owners defined above will be
+# requested for a review.
+/packages/excubiae/ @0xjei
+/packages/imt/ @cedoor
+/packages/lazy-imt/ @vimwitch
+/packages/lazytower/ @LCamel
+/packages/lean-imt/ @cedoor @vplasencia

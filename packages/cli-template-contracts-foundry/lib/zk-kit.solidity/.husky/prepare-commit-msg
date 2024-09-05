@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+if [ "$NO_HOOK" != "1" ]; then
+  exec < /dev/tty && npx czg --hook || true
+fi

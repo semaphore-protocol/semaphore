@@ -1,0 +1,97 @@
+import { Divider, Heading, HStack, Link, Stack, Text, VStack } from "@chakra-ui/react"
+import Image from "next/image"
+import NextLink from "next/link"
+import IconArrowUpRight from "../icons/IconArrowUpRight"
+import IconTelegram from "../icons/IconTelegram"
+import IconThumbsUp from "../icons/IconThumbsUp"
+import IconX from "@/icons/IconX"
+
+export default function Footer() {
+    return (
+        <VStack py="7" justify="space-between" pt="28" pb="10" spacing="14">
+            <Image width="75" height="158" src="./semaphore-icon.svg" alt="Semaphore logo" />
+
+            <Stack direction={{ base: "column", md: "row" }} align="center" fontSize="18px" spacing="10">
+                <Link as={NextLink} href="/projects">
+                    <Heading fontSize="18px" fontWeight="normal">
+                        Projects
+                    </Heading>
+                </Link>
+                <Link as={NextLink} href="/learn">
+                    <Heading fontSize="18px" fontWeight="normal">
+                        Learn
+                    </Heading>
+                </Link>
+                <Link as={NextLink} href="/build">
+                    <Heading fontSize="18px" fontWeight="normal">
+                        Build
+                    </Heading>
+                </Link>
+                <Link href="https://docs.semaphore.pse.dev" isExternal>
+                    <HStack spacing="3">
+                        <Heading fontSize="18px" fontWeight="normal">
+                            Documentation
+                        </Heading>
+                        <IconArrowUpRight width="10px" mb={1} />
+                    </HStack>
+                </Link>
+                <Link href="https://github.com/semaphore-protocol" isExternal>
+                    <HStack spacing="3">
+                        <Heading fontSize="18px" fontWeight="normal">
+                            Github
+                        </Heading>
+                        <IconArrowUpRight width="10px" mb={1} />
+                    </HStack>
+                </Link>
+                <Link
+                    href="https://pse-team.notion.site/Semaphore-Identity-Kit-ebbfe6ac0a824fb0a65e8783caf9b330"
+                    isExternal
+                >
+                    <HStack spacing="3">
+                        <Heading fontSize="18px" fontWeight="normal">
+                            Design Kit
+                        </Heading>
+                        <IconArrowUpRight width="10px" mb={1} />
+                    </HStack>
+                </Link>
+            </Stack>
+
+            <Divider />
+            <VStack spacing="5">
+                <HStack spacing="5">
+                    <Link href="https://semaphore.pse.dev/telegram" isExternal>
+                        <HStack>
+                            <IconTelegram boxSize={{ base: "16px", md: "24px" }} />
+                            <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
+                                Telegram
+                            </Heading>
+                        </HStack>
+                    </Link>
+                    <Link href="https://x.com/SemaphoreDevs" isExternal>
+                        <HStack>
+                            <IconX boxSize={{ base: "16px", md: "24px" }} />
+                            <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
+                                X (Twitter)
+                            </Heading>
+                        </HStack>
+                    </Link>
+                </HStack>
+
+                <VStack spacing="8">
+                    <Link href="https://github.com/orgs/semaphore-protocol/discussions/new?category=website" isExternal>
+                        <HStack>
+                            <IconThumbsUp boxSize={{ base: "16px", md: "24px" }} />
+                            <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
+                                Give feedback about the website
+                            </Heading>
+                        </HStack>
+                    </Link>
+
+                    <Text fontSize={{ base: "12px", md: "14px" }} color="text.500" pt="2">
+                        Copyright © 2024 Ethereum Foundation
+                    </Text>
+                </VStack>
+            </VStack>
+        </VStack>
+    )
+}

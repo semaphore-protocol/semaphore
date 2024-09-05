@@ -1,0 +1,33 @@
+version: 2.1
+workflows:
+    test:
+        jobs:
+            - contracts-test
+
+# Just for reusing below
+step_defs:
+    - run: &node_version
+          name: Set Node version
+          command: |
+              nvm install v16
+              nvm alias default v16
+              echo "nvm use default" >> $BASH_ENV
+    - run: &check_version
+          name: Check Node version
+          command: node -v | grep v16
+
+jobs:
+    contracts-test:
+        resource_class: medium
+        machine:
+            image: ubuntu-2204:2022.04.1
+        steps:
+            - checkout
+            - run: *node_version
+            - run: *check_version
+            - run:
+                  name: Install Packages
+                  command: npm i
+            - run:
+                  name: Test
+                  command: npm test
