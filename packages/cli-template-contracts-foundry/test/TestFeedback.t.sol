@@ -4,8 +4,8 @@ pragma solidity ^0.8.23;
 import {Feedback} from "../src/Feedback.sol";
 import {DeployFeedback} from "../script/DeployFeedback.s.sol";
 import {ISemaphore} from "@semaphore/contracts/contracts/interfaces/ISemaphore.sol";
-import {Test, console} from "forge-std/Test.sol";
-import {Vm} from "forge-std/Vm.sol";
+import "forge-std/Test.sol";
+import "forge-std/Vm.sol";
 
 contract TestFeedback is Test {
     event MemberAdded(uint256 indexed groupId, uint256 index, uint256 identityCommitment, uint256 merkleTreeRoot);
