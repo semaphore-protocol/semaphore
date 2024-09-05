@@ -1,0 +1,36 @@
+type MerkleTree @entity {
+    id: ID!
+    depth: Int!
+    root: BigInt
+    size: Int!
+    group: Group!
+}
+
+type Group @entity {
+    id: ID!
+    timestamp: BigInt!
+    merkleTree: MerkleTree!
+    admin: Bytes
+    members: [Member!] @derivedFrom(field: "group")
+    validatedProofs: [ValidatedProof!] @derivedFrom(field: "group")
+}
+
+type Member @entity {
+    id: ID!
+    timestamp: BigInt!
+    identityCommitment: BigInt!
+    index: Int!
+    group: Group!
+}
+
+type ValidatedProof @entity {
+    id: ID!
+    timestamp: BigInt!
+    message: BigInt!
+    scope: BigInt!
+    merkleTreeRoot: BigInt!
+    merkleTreeDepth: Int!
+    nullifier: BigInt!
+    points: [BigInt!]!
+    group: Group!
+}

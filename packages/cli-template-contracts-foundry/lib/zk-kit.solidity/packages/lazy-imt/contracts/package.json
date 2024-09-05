@@ -1,0 +1,30 @@
+{
+    "name": "@zk-kit/lazy-imt.sol",
+    "version": "2.0.0-beta.12",
+    "description": "Lazy Incremental Merkle tree implementation in Solidity.",
+    "license": "MIT",
+    "files": [
+        "*.sol",
+        "!test/*",
+        "README.md",
+        "LICENSE"
+    ],
+    "keywords": [
+        "blockchain",
+        "ethereum",
+        "hardhat",
+        "smart-contracts",
+        "solidity",
+        "libraries",
+        "merkle-tree",
+        "incremental-merkle-tree"
+    ],
+    "repository": "git@github.com:privacy-scaling-explorations/zk-kit.solidity.git",
+    "homepage": "https://github.com/privacy-scaling-explorations/zk-kit.solidity/tree/main/packages/lazy-imt",
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "poseidon-solidity": "0.0.5"
+    }
+}

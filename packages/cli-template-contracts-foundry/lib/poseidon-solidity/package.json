@@ -1,0 +1,43 @@
+{
+  "name": "poseidon-solidity",
+  "version": "0.0.5",
+  "description": "Poseidon hash function implemented in Solidity",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vimwitch/poseidon-solidity.git"
+  },
+  "keywords": [
+    "poseidon",
+    "solidity",
+    "zk",
+    "ethereum",
+    "hash"
+  ],
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "lint": "prettier {test/*,src/*.mjs,deploy/*.js}",
+    "pre": "node scripts/pre.mjs",
+    "build": "node src/build.mjs && hardhat compile",
+    "compile": "hardhat compile",
+    "size": "hardhat size-contracts",
+    "test": "hardhat test"
+  },
+  "author": "Chance Hudson",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.2",
+    "big-integer": "^1.6.51",
+    "circomlibjs": "^0.0.8",
+    "hardhat": "^2.12.7",
+    "hardhat-contract-sizer": "^2.8.0",
+    "poseidon-lite": "^0.0.2",
+    "prettier": "^2.8.4",
+    "prettier-plugin-solidity": "^1.1.2"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
+  }
+}

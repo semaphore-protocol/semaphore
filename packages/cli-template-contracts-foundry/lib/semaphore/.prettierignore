@@ -1,0 +1,51 @@
+# dependencies
+node_modules
+package-lock.json
+yarn.lock
+.yarn
+
+# testing
+coverage
+coverage.json
+
+# hardhat
+artifacts
+cache
+typechain-types
+
+# production
+dist
+build
+/docs
+
+# subgraph
+subgraph.template.yaml
+generated
+
+# github
+.github/ISSUE_TEMPLATE
+
+# Docusaurus cache and generated files
+.docusaurus
+.cache-loader
+
+# mdx file
+*.mdx
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# other
+snark-artifacts
+
+# Next.js
+.next/
+public
+
+!apps/website/src/app/build

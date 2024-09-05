@@ -1,0 +1,49 @@
+{
+    "name": "@semaphore-protocol/core",
+    "version": "4.0.3",
+    "description": "Core library for the essential Semaphore features.",
+    "type": "module",
+    "license": "MIT",
+    "main": "src/index.js",
+    "types": "src/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./src/types/index.d.ts",
+            "require": "./src/index.cjs",
+            "default": "./src/index.js"
+        },
+        "./identity": {
+            "types": "./src/identity/types/index.d.ts",
+            "require": "./src/identity/index.cjs",
+            "default": "./src/identity/index.js"
+        },
+        "./group": {
+            "types": "./src/identity/types/index.d.ts",
+            "require": "./src/group/index.cjs",
+            "default": "./src/group/index.js"
+        },
+        "./proof": {
+            "types": "./src/identity/types/index.d.ts",
+            "require": "./src/proof/index.cjs",
+            "default": "./src/proof/index.js"
+        }
+    },
+    "files": [
+        "src/",
+        "LICENSE",
+        "README.md"
+    ],
+    "repository": "https://github.com/semaphore-protocol/semaphore",
+    "homepage": "https://github.com/semaphore-protocol/semaphore/tree/main/packages/core",
+    "bugs": {
+        "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@semaphore-protocol/group": "4.0.3",
+        "@semaphore-protocol/identity": "4.0.3",
+        "@semaphore-protocol/proof": "4.0.3"
+    }
+}

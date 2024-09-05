@@ -1,0 +1,10 @@
+# Generate output
+generated
+
+# The Graph
+subgraph.yaml
+
+# Tests
+/tests/.bin
+
+/data

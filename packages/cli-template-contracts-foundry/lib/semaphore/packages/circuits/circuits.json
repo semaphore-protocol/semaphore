@@ -1,0 +1,8 @@
+{
+    "semaphore": {
+        "file": "semaphore",
+        "template": "Semaphore",
+        "pubs": ["message", "scope"],
+        "params": [10]
+    }
+}

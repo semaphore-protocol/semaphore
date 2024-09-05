@@ -1,0 +1,45 @@
+{
+    "name": "@semaphore-protocol/group",
+    "version": "4.0.3",
+    "description": "A library to create and manage Semaphore groups.",
+    "type": "module",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "types": "dist/types/index.d.ts",
+    "exports": {
+        "types": "./dist/types/index.d.ts",
+        "require": "./dist/index.cjs",
+        "default": "./dist/index.js"
+    },
+    "files": [
+        "dist/",
+        "src/",
+        "LICENSE",
+        "README.md"
+    ],
+    "repository": "https://github.com/semaphore-protocol/semaphore",
+    "homepage": "https://github.com/semaphore-protocol/semaphore/tree/main/packages/group",
+    "bugs": {
+        "url": "https://github.com/semaphore-protocol/semaphore.git/issues"
+    },
+    "scripts": {
+        "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
+        "prepublishOnly": "yarn build"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^25.0.7",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-typescript": "^11.1.6",
+        "poseidon-lite": "^0.2.0",
+        "rimraf": "^5.0.5",
+        "rollup": "^4.12.0",
+        "rollup-plugin-cleanup": "^3.2.1"
+    },
+    "dependencies": {
+        "@zk-kit/lean-imt": "2.1.0",
+        "@zk-kit/utils": "1.0.0"
+    }
+}

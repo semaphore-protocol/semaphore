@@ -1,0 +1,43 @@
+name: release
+
+permissions:
+    contents: write
+
+on:
+    push:
+        tags:
+            - "v*"
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: yarn
+                  registry-url: "https://registry.npmjs.org"
+
+            - name: Authentication
+              run: |
+                  echo npmAuthToken: "$NODE_AUTH_TOKEN" >> ./.yarnrc.yml
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+            - name: Install dependencies
+              run: yarn
+
+            - name: Publish packages
+              run: yarn version:publish
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+            - run: yarn version:release
+              env:
+                  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

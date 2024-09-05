@@ -1,0 +1,32 @@
+# dependencies
+node_modules
+package-lock.json
+yarn.lock
+.yarn
+
+# testing
+coverage
+coverage.json
+
+# hardhat
+cache
+typechain-types
+
+# production
+dist
+build
+
+# github
+.github/ISSUE_TEMPLATE
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# others
+target

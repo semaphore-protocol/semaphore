@@ -1,0 +1,23 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 8d005a0e1896ec10e6d09755b5859587882e3f93..580cb17bb6be135b45e8060155d0eb5c2614b02c 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -192,7 +192,7 @@ function formatLine(commit, options) {
+ function formatTitle(name, options) {
+   if (!options.emoji)
+     name = name.replace(emojisRE, "");
+-  return `### &nbsp;&nbsp;&nbsp;${name.trim()}`;
++  return `## &nbsp;&nbsp;&nbsp;${name.trim()}`;
+ }
+ function formatSection(commits, sectionName, options) {
+   if (!commits.length)
+@@ -209,7 +209,8 @@ function formatSection(commits, sectionName, options) {
+   Object.keys(scopes).sort().forEach((scope) => {
+     let padding = "";
+     let prefix = "";
+-    const scopeText = `**${options.scopeMap[scope] || scope}**`;
++    const url = `https://github.com/${options.repo}/tree/main/packages/${scope}`;
++    const scopeText = `[**@${options.repo.split("/")[1]}/${options.scopeMap[scope] || scope}**](${url})`;
+     if (scope && (useScopeGroup === true || useScopeGroup === "multiple" && scopes[scope].length > 1)) {
+       lines.push(`- ${scopeText}:`);
+       padding = "  ";

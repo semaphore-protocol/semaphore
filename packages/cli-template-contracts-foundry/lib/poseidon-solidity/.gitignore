@@ -1,0 +1,10 @@
+artifacts/
+cache/
+node_modules/
+*.swp
+*.tmp
+
+poseidon_constants_opt.js
+
+build/
+.DS_Store
