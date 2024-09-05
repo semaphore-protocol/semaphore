@@ -4,3 +4,6 @@
 [submodule "packages/cli-template-contracts-foundry/lib/semaphore"]
 	path = packages/cli-template-contracts-foundry/lib/semaphore
 	url = https://github.com/semaphore-protocol/semaphore
+[submodule "packages/cli-template-contracts-foundry/lib/zk-kit.solidity"]
+	path = packages/cli-template-contracts-foundry/lib/zk-kit.solidity
+	url = https://github.com/privacy-scaling-explorations/zk-kit.solidity
