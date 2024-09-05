@@ -21,7 +21,7 @@ contract TestFeedback is Test {
     }
 
     function testSemaphoreAddressNotBeZero() public view {
-        assertEq(feedback.semaphore.address, address(0));
+        assertNotEq(feedback.semaphore.address, address(0));
     }
 
     function testGroupHasBeenSuccessfullyCreatedInConstructor() public view {
