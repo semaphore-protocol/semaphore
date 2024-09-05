@@ -5,7 +5,7 @@ import {Feedback} from "../src/Feedback.sol";
 import {Semaphore} from "@semaphore/contracts/contracts/Semaphore.sol";
 import {SemaphoreVerifier} from "@semaphore/contracts/contracts/base/SemaphoreVerifier.sol";
 import {ISemaphoreVerifier} from "@semaphore/contracts/contracts/interfaces/ISemaphoreVerifier.sol";
-import {Script, console} from "forge-std/Script.sol";
+import "forge-std/Script.sol";
 
 contract DeployFeedback is Script {
     function run() external returns (address, address) {
