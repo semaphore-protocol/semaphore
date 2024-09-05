@@ -7,3 +7,6 @@
 [submodule "packages/cli-template-contracts-foundry/lib/zk-kit.solidity"]
 	path = packages/cli-template-contracts-foundry/lib/zk-kit.solidity
 	url = https://github.com/privacy-scaling-explorations/zk-kit.solidity
+[submodule "packages/cli-template-contracts-foundry/lib/poseidon-solidity"]
+	path = packages/cli-template-contracts-foundry/lib/poseidon-solidity
+	url = https://github.com/chancehudson/poseidon-solidity
