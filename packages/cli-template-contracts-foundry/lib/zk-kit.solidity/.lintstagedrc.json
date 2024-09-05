@@ -1,3 +1,0 @@
-{
-    "**/*.{js,ts,md,json,sol,yml,yaml}": "yarn prettier --write"
-}

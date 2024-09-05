@@ -1,7 +1,0 @@
-{
-    "types": {
-        "feat": { "title": "🚀 Features" },
-        "fix": { "title": "🐞 Bug Fixes" },
-        "refactor": { "title": "♻️ Refactoring" }
-    }
-}
