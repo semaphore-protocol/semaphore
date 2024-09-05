@@ -15,9 +15,9 @@ clean  :; forge clean
 # Remove modules
 remove :; rm -rf .gitmodules && rm -rf .git/modules/* && rm -rf lib && touch .gitmodules && git add . && git commit -m "modules"
 
-install :; forge install semaphore-protocol/semaphore privacy-scaling-explorations/zk-kit.solidity chancehudson/poseidon-solidity OpenZeppelin/openzeppelin-contracts
+install :; forge install semaphore-protocol/semaphore privacy-scaling-explorations/zk-kit.solidity chancehudson/poseidon-solidity OpenZeppelin/openzeppelin-contracts foundry-rs/forge-std
 
-install-no-git :; forge install --no-git semaphore-protocol/semaphore privacy-scaling-explorations/zk-kit.solidity chancehudson/poseidon-solidity OpenZeppelin/openzeppelin-contracts
+install-no-git :; forge install --no-git semaphore-protocol/semaphore privacy-scaling-explorations/zk-kit.solidity chancehudson/poseidon-solidity OpenZeppelin/openzeppelin-contracts foundry-rs/forge-std
 
 # Update Dependencies
 update :; forge update
