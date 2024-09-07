@@ -6,7 +6,8 @@ import {DeployFeedback} from "../script/DeployFeedback.s.sol";
 import {ISemaphore} from "@semaphore/contracts/contracts/interfaces/ISemaphore.sol";
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
-import "forge-std/StdAssertions.sol"; 
+import "forge-std/StdAssertions.sol";
+
 contract TestFeedback is Test {
     event MemberAdded(uint256 indexed groupId, uint256 index, uint256 identityCommitment, uint256 merkleTreeRoot);
 
@@ -20,8 +21,7 @@ contract TestFeedback is Test {
         semaphore = ISemaphore(semaphoreAddress);
     }
 
-
-    function testCreatGroup() public view {
+    function testGroupCanBeSuccessfullyCreatedInConstructor() public view {
         uint256 groupCount = semaphore.groupCounter();
         assertEq(groupCount, 1);
     }
@@ -53,5 +53,4 @@ contract TestFeedback is Test {
         feedback.joinGroup(identityCommitment);
         feedback.sendFeedback(merkleTreeDepth, merkleTreeRoot, nullifier, _feedback, points);
     }
-
 }
