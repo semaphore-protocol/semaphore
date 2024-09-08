@@ -72,14 +72,14 @@ h2 {
 }
 
 h3 {
-    font-size: 1.125rem;
+    font-size: 1.5rem;
     font-weight: 500;
 }
 
 .divider {
     height: 1px;
     background: var(--slate500);
-    margin: 2rem 0;
+    margin: 0.5rem 0;
 }
 
 .stepper {
@@ -93,7 +93,7 @@ a {
 }
 
 .button {
-    background-color: var(--blue800);
+    background-color: var(--blue600);
     width: 100%;
     padding: 0.8rem 1rem;
     border: 1px;
