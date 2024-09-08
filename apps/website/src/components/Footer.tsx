@@ -2,7 +2,7 @@ import { Divider, Heading, HStack, Link, Stack, Text, VStack } from "@chakra-ui/
 import Image from "next/image"
 import NextLink from "next/link"
 import IconArrowUpRight from "../icons/IconArrowUpRight"
-import IconDiscord from "../icons/IconDiscord"
+import IconTelegram from "../icons/IconTelegram"
 import IconThumbsUp from "../icons/IconThumbsUp"
 import IconX from "@/icons/IconX"
 
@@ -59,11 +59,11 @@ export default function Footer() {
             <Divider />
             <VStack spacing="5">
                 <HStack spacing="5">
-                    <Link href="https://semaphore.pse.dev/discord" isExternal>
+                    <Link href="https://semaphore.pse.dev/telegram" isExternal>
                         <HStack>
-                            <IconDiscord boxSize={{ base: "16px", md: "24px" }} />
+                            <IconTelegram boxSize={{ base: "16px", md: "24px" }} />
                             <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
-                                Discord
+                                Telegram
                             </Heading>
                         </HStack>
                     </Link>

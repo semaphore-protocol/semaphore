@@ -7,7 +7,7 @@ import TabItem from "@theme/TabItem"
 
 # Troubleshooting
 
-If these suggestions do not work, feel free to ask for more help and support on [Github Discussions](https://github.com/semaphore-protocol/semaphore/discussions) or [Discord](https://semaphore.pse.dev/discord) ("dev-chat" channel).
+If these suggestions do not work, feel free to ask for more help and support on [Github Discussions](https://github.com/semaphore-protocol/semaphore/discussions) or [Telegram](https://semaphore.pse.dev/telegram).
 
 ## Transaction reverted when using the same nullifier
 

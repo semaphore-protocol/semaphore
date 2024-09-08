@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react"
 import Image from "next/image"
 import NextLink from "next/link"
-import IconDiscord from "../icons/IconDiscord"
+import IconTelegram from "../icons/IconTelegram"
 import IconMenu from "../icons/IconMenu"
 import IconThumbsUp from "../icons/IconThumbsUp"
 import NavbarLinks from "./NavbarLinks"
@@ -71,11 +71,11 @@ export default function Navbar() {
 
                                 <VStack w="full" justify="center" spacing="5">
                                     <HStack spacing="5">
-                                        <Link href="https://semaphore.pse.dev/discord" isExternal>
+                                        <Link href="https://semaphore.pse.dev/telegram" isExternal>
                                             <HStack>
-                                                <IconDiscord boxSize={{ base: "16px", md: "24px" }} />
+                                                <IconTelegram boxSize={{ base: "16px", md: "24px" }} />
                                                 <Heading fontSize={{ base: "14px", md: "18px" }} fontWeight="normal">
-                                                    Discord
+                                                    Telegram
                                                 </Heading>
                                             </HStack>
                                         </Link>

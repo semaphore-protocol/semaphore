@@ -14,7 +14,7 @@ También proporciona un mecanismo simple para evitar la doble señalización, lo
 
 ## ¿Dónde puedo hacer preguntas sobre Semaphore?
 
-Puede hacer preguntas sobre Semaphore en [Discord](https://semaphore.pse.dev/discord) o abriendo un [Semaphore Discussion](https://github.com/semaphore-protocol/semaphore/discussions).
+Puede hacer preguntas sobre Semaphore en [Telegram](https://semaphore.pse.dev/telegram) o abriendo un [Semaphore Discussion](https://github.com/semaphore-protocol/semaphore/discussions).
 
 ## ¿Por qué las identidades requieren tanto `identity trapdoor` como `identity nullifier`?
 

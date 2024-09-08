@@ -5,7 +5,7 @@ import Carousel from "../components/Carousel"
 import ProjectCard from "../components/ProjectCard"
 import events from "../data/events.json"
 import allProjects from "../data/projects.json"
-import IconDiscord from "../icons/IconDiscord"
+import IconTelegram from "../icons/IconTelegram"
 import HRoadmap from "@/components/HRoadmap"
 import VRoadmap from "@/components/VRoadmap"
 
@@ -243,9 +243,9 @@ export default function Home() {
                         Ask questions, suggest ideas, stay up-to-date, and meet other people building privacy
                         applications with Zero Knowledge.
                     </Text>
-                    <Link href="https://semaphore.pse.dev/discord" isExternal>
-                        <Button leftIcon={<IconDiscord />} size="lg">
-                            Discord
+                    <Link href="https://semaphore.pse.dev/telegram" isExternal>
+                        <Button leftIcon={<IconTelegram />} size="lg">
+                            Telegram
                         </Button>
                     </Link>
                 </VStack>
