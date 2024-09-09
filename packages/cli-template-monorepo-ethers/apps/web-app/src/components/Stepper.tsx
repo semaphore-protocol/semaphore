@@ -1,9 +1,5 @@
 "use client"
 
-import { Button, HStack, Text } from "@chakra-ui/react"
-import IconChevronLeft from "../icons/IconChevronLeft"
-import IconChevronRight from "../icons/IconChevronRight"
-
 export type StepperProps = {
     step: number
     onPrevClick?: () => void
@@ -12,38 +8,34 @@ export type StepperProps = {
 
 export default function Stepper({ step, onPrevClick, onNextClick }: StepperProps) {
     return (
-        <HStack width="full" justify="space-between" pt="6">
-            <Button
-                flex="1"
-                leftIcon={<IconChevronLeft />}
-                justifyContent="left"
-                colorScheme="primary"
-                variant="link"
-                disabled={!onPrevClick}
-                onClick={onPrevClick || undefined}
-                size="lg"
-                visibility={onPrevClick ? "visible" : "hidden"}
-            >
-                Prev
-            </Button>
+        <div className="stepper">
+            {onPrevClick !== undefined ? (
+                <button
+                    className="button-stepper"
+                    disabled={!onPrevClick}
+                    onClick={onPrevClick || undefined}
+                    type="button"
+                >
+                    Prev
+                </button>
+            ) : (
+                <span />
+            )}
 
-            <Text textAlign="center" flex="1">
-                {step.toString()}/3
-            </Text>
+            <p>{step.toString()}/3</p>
 
-            <Button
-                flex="1"
-                rightIcon={<IconChevronRight />}
-                justifyContent="right"
-                colorScheme="primary"
-                variant="link"
-                disabled={!onNextClick}
-                onClick={onNextClick || undefined}
-                size="lg"
-                visibility={onNextClick ? "visible" : "hidden"}
-            >
-                Next
-            </Button>
-        </HStack>
+            {onNextClick !== undefined ? (
+                <button
+                    className="button-stepper"
+                    disabled={!onNextClick}
+                    onClick={onNextClick || undefined}
+                    type="button"
+                >
+                    Next
+                </button>
+            ) : (
+                <span />
+            )}
+        </div>
     )
 }
