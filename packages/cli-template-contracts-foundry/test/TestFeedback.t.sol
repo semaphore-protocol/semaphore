@@ -27,14 +27,20 @@ contract TestFeedback is Test {
     }
 
     function testJoinGroup() public {
+        // The commitment below is generated with private key of the first account in Anvil
         uint256 identityCommitment = 15072455385723004728391568434269917452175057560864330595979104241296826134229;
-        vm.expectEmit();
+
+        vm.expectEmit();    
         emit MemberAdded(0, 0, identityCommitment, identityCommitment);
+
         feedback.joinGroup(identityCommitment);
     }
 
     function testSendFeedback() public {
+        // The commitment below is generated with private key of the first account in Anvil
         uint256 identityCommitment = 15072455385723004728391568434269917452175057560864330595979104241296826134229;
+
+        // proof
         uint256 merkleTreeDepth = 1;
         uint256 merkleTreeRoot = 15072455385723004728391568434269917452175057560864330595979104241296826134229;
         uint256 nullifier = 19686122779422310562166284157356225273555811832250923548604308577995736533741;

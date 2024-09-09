@@ -12,16 +12,20 @@ contract DeployFeedback is Script {
 
         vm.startBroadcast();
 
+        // Deploy SemaphoreVerifier for Semaphore
         SemaphoreVerifier semaphoreVerifier = new SemaphoreVerifier();
-        ISemaphoreVerifier IsemaphoreVerifier=ISemaphoreVerifier(address(semaphoreVerifier));
+        ISemaphoreVerifier IsemaphoreVerifier = ISemaphoreVerifier(address(semaphoreVerifier));
 
-        Semaphore semaphore=new Semaphore(IsemaphoreVerifier);
-        Feedback feedback=new Feedback(address(semaphore));
+        // Deploy Semaphore for Feedback
+        Semaphore semaphore = new Semaphore(IsemaphoreVerifier);
+
+        // Deploy Feedback
+        Feedback feedback = new Feedback(address(semaphore));
 
         vm.stopBroadcast();
 
         console.log("Feedback contract has been deployed to:", address(feedback));
 
-        return (address(feedback),  address(semaphore));
+        return (address(feedback), address(semaphore));
     }
 }
