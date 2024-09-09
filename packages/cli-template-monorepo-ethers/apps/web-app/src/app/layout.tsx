@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import Providers from "./providers"
 import { LogContextProvider } from "@/context/LogContext"
 import { SemaphoreContextProvider } from "@/context/SemaphoreContext"
+import "./globals.css"
 
 export const metadata: Metadata = {
     title: "Semaphore Demo",
