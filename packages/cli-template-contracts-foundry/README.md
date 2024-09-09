@@ -1,66 +1,89 @@
-## Foundry
+# Semaphore Foundry Template
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This project demonstrates a basic Semaphore use case. It comes with a sample contract, a test for that contract and a sample script that deploys that contract.
 
-Foundry consists of:
+## Install  
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+### Install dependencies
 
-## Documentation
-
-https://book.getfoundry.sh/
+```bash
+make install
+```
 
 ## Usage
 
-### Build
+### Compile contracts
 
-```shell
-$ forge build
+```bash
+make build
 ```
 
 ### Test
 
-```shell
-$ forge test
+```bash
+make test
 ```
 
-### Format
+You can also generate a test coverage report:
 
-```shell
-$ forge fmt
+```bash
+make coverage
 ```
 
-### Gas Snapshots
+Or a test gas report:
 
-```shell
-$ forge snapshot
+```bash  
+make gas-report
 ```
 
-### Anvil
+### Deploy contracts
 
-```shell
-$ anvil
+1. Copy the `.env.example` file as `.env`.
+
+```bash
+cp .env.example .env
 ```
 
-### Deploy
+2. Add your environment variables.
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+> [!NOTE]
+> You should at least set a valid Ethereum URL (e.g. Infura) and a private key with some ethers.
+
+3. And deploy your contract.
+
+```bash
+make deploy
 ```
 
-### Cast
+4. You can also deploy your contract in Sepolia test chain.
 
-```shell
-$ cast <subcommand>
+```bash
+make deploy-sepolia
 ```
 
-### Help
+```bash
+make deploy-sepolia-verify
+```
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+> [!NOTE]
+> Check the Semaphore contract addresses [here](https://docs.semaphore.pse.dev/deployed-contracts).
+
+### Code quality and formatting
+
+Run [ESLint](https://eslint.org/) and [solhint](https://github.com/protofire/solhint) to analyze the code and catch bugs:
+
+```bash
+yarn lint
+```
+
+Run [Prettier](https://prettier.io/) to check formatting rules:
+
+```bash
+yarn prettier
+```
+
+Or to automatically format the code:
+
+```bash
+yarn prettier:write
 ```
