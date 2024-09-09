@@ -27,6 +27,8 @@ test :; forge test -vvv
 
 gas-report :; forge test --gas-report
 
+coverage :; forge coverage
+
 snapshot :; forge snapshot
 
 format :; forge fmt
