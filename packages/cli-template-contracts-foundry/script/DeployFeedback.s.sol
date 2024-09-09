@@ -10,22 +10,33 @@ import "forge-std/Script.sol";
 contract DeployFeedback is Script {
     function run() external returns (address, address) {
 
+        address semaphoreVerifierAddress;
+        address semaphoreAddress;
+
+        if (block.chainid == 11155111) {
+            semaphoreVerifierAddress = 0xe538f9DeeE04A397decb1E7dc5D16fD6f123c043;
+            semaphoreAddress = 0x1e0d7FF1610e480fC93BdEC510811ea2Ba6d7c2f;
+        }
+
         vm.startBroadcast();
 
-        // Deploy SemaphoreVerifier for Semaphore
-        SemaphoreVerifier semaphoreVerifier = new SemaphoreVerifier();
-        ISemaphoreVerifier IsemaphoreVerifier = ISemaphoreVerifier(address(semaphoreVerifier));
-
-        // Deploy Semaphore for Feedback
-        Semaphore semaphore = new Semaphore(IsemaphoreVerifier);
+        if (semaphoreAddress == address(0)) {
+            // Deploy SemaphoreVerifier for Semaphore
+            SemaphoreVerifier semaphoreVerifier = new SemaphoreVerifier();
+            semaphoreVerifierAddress = address(semaphoreVerifier);
+            ISemaphoreVerifier IsemaphoreVerifier = ISemaphoreVerifier(address(semaphoreVerifier));
+            // Deploy Semaphore for Feedback
+            Semaphore semaphore = new Semaphore(IsemaphoreVerifier);
+            semaphoreAddress = address(semaphore);
+        }
 
         // Deploy Feedback
-        Feedback feedback = new Feedback(address(semaphore));
+        Feedback feedback = new Feedback(semaphoreAddress);
 
         vm.stopBroadcast();
 
         console.log("Feedback contract has been deployed to:", address(feedback));
 
-        return (address(feedback), address(semaphore));
+        return (address(feedback), semaphoreAddress);
     }
 }
