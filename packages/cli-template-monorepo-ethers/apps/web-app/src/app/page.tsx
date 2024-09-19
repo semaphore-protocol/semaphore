@@ -66,7 +66,7 @@ export default function IdentitiesPage() {
             </div>
 
             {_identity && (
-                <div>
+                <div className="key-wrapper">
                     <p>
                         <b>Private Key (base64)</b>:<br /> {_identity.export()}
                     </p>

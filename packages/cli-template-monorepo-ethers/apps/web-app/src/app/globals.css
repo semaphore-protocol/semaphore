@@ -2,15 +2,19 @@
     --slate100: #f1f5f9;
     --slate200: #e2e8f0;
     --slate300: #cbd5e1;
-    --slate400: #94a3b8;
+    --slate400: #718096;
     --slate500: #64748b;
     --slate700: #334155;
-    --blue200: #bfdbfe;
-    --blue500: #3b82f6;
-    --blue600: #2563eb;
-    --blue700: #1d4ed8;
-    --blue800: #1e40af;
-    --blue900: #1e3a8a;
+    --blue100: #dde6fc;
+    --blue200: #c3d4fa;
+    --blue300: #9abaf6;
+    --blue400: #6a95f0;
+    --blue500: #4771ea;
+    --blue600: #3555df;
+    --blue700: #2940cc;
+    --blue800: #2735a6;
+    --blue900: #253183;
+    --blue950: #1b2050;
     --darkBlueBg: #00020d;
 }
 
@@ -18,6 +22,7 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    font-family:"Outfit", sans-serif;;
 }
 
 html,
@@ -33,13 +38,26 @@ body {
 
 p {
     line-height: 1.5rem;
+    font-weight: 300;
+    overflow-wrap: break-word;
+    font-size: 1rem;
+}
+
+b {
+    font-weight: 600;
+}
+
+.key-wrapper {
+    padding-bottom: 1.5rem;
+    padding-left: 0.5rem;
 }
 
 .container {
     display: flex;
     flex-direction: column;
     height: 100%;
-    max-width: 32rem;
+    max-width: 40vw;
+    min-width: 35rem;
 
     margin: auto;
     padding: 1rem;
@@ -69,17 +87,23 @@ h2 {
     font-size: 2.25rem;
     font-weight: 500;
     margin-bottom: 1rem;
+    line-height: 1.2;
 }
 
 h3 {
-    font-size: 1.5rem;
+    font-size: 1.15rem;
     font-weight: 500;
+    margin-bottom: 1.5rem;
 }
 
 .divider {
-    height: 1px;
-    background: var(--slate500);
-    margin: 0.5rem 0;
+    opacity: 0.6;
+    border: 0;
+    border-style: solid;
+    border-bottom-width: 1px;
+    width: 100%;
+    border-color: var(--slate400);
+    margin: 2rem 0;
 }
 
 .stepper {
@@ -89,31 +113,41 @@ h3 {
 }
 
 a {
-    color: var(--blue500);
+    color: var(--blue400);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--blue400);
 }
 
 .button {
-    background-color: var(--blue600);
-    width: 100%;
-    padding: 0.8rem 1rem;
-    border: 1px;
     border-radius: 100px;
-    cursor: pointer;
-    color: var(--slate100);
-    font-size: 1.125rem;
-    font-weight: 500;
-    transition: all 200ms linear;
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-    opacity: 0.9;
-    display: flex;
-    justify-content: center;
-    height: 3rem;
-    align-items: center;
+    font-weight: 400;
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-duration: 200ms;
+    padding-left: 18px!important;
+    padding-right: 18px!important;
+    height: 2.5rem;
+    min-width: 2.5rem;
+    font-size: 1rem;
+    -webkit-padding-start: 1rem;
+    padding-inline-start: 1rem;
+    -webkit-padding-end: 1rem;
+    padding-inline-end: 1rem;
+    background: var(--blue500);
+    color: white;
+    background-image: linear-gradient(to right, var(--blue500), var(--blue800));
+    transition-timing-function: linear;
+    width: 100%;
+    border: none;
 }
 
 .button:hover {
-    background-color: var(--blue900);
+    background-color: var(--blue800);
+    background-image: none;
+    cursor: pointer;
 }
 
 .button:disabled {
@@ -123,14 +157,19 @@ a {
 
 .button:disabled:hover {
     background-color: var(--blue800);
+    background-image: none;
 }
 
 .button-stepper {
     cursor: pointer;
-    color: var(--blue600);
+    color: var(--blue500);
     font-size: 1.1rem;
     border: none;
     background: none;
+    min-width: 3rem;
+    margin: 0 1rem;
+    display: flex;
+    justify-content: center;
 }
 
 .button-link {
@@ -141,19 +180,39 @@ a {
     background: none;
 }
 
+.icon-next {
+    display: inline-flex;
+    align-self: flex-start;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    -webkit-margin-start: 0.5rem;
+    margin-inline-start: 0.5rem;
+}
+
+.icon-next svg {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    line-height: 1em;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    color: currentColor;
+    vertical-align:super
+}
+
 .box {
-    padding: 0.8rem;
-    border-style: solid;
-    border-width: 1px;
-    border-color: var(--slate500);
-    border-radius: 4px;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid white;
 }
 
 .box-text {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    margin: 0.5rem;
+    margin: 0.5rem 0;
+    font-size: 1rem;
 }
 
 .header {
@@ -203,4 +262,9 @@ a {
     to {
         transform: rotate(360deg);
     }
+}
+
+.feedback-wrapper {
+    max-height: 50vh;
+    overflow-y: scroll;
 }

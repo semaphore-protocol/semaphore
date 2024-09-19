@@ -28,9 +28,9 @@ export default function PageContainer({
         <>
             <div className="header">
                 <div className="header-left">
-                    <Link href="/" className="header-left">
+                    {/* <Link href="/" className="header-left">
                         Feedback
-                    </Link>
+                    </Link> */}
                 </div>
                 <div className="header-right">
                     <a
