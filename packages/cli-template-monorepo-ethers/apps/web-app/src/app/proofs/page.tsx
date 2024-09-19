@@ -3,7 +3,6 @@
 import Stepper from "@/components/Stepper"
 import { useLogContext } from "@/context/LogContext"
 import { useSemaphoreContext } from "@/context/SemaphoreContext"
-import IconRefreshLine from "@/icons/IconRefreshLine"
 import { Box, Button, Divider, Heading, HStack, Link, Text, useBoolean, VStack } from "@chakra-ui/react"
 import { generateProof, Group } from "@semaphore-protocol/core"
 import { encodeBytes32String, ethers } from "ethers"
@@ -126,53 +125,48 @@ export default function ProofsPage() {
 
     return (
         <>
-            <Heading as="h2" size="xl">
-                Proofs
-            </Heading>
+            <h2>Proofs</h2>
 
-            <Text pt="2" fontSize="md">
+            <p>
                 Semaphore members can anonymously{" "}
-                <Link href="https://docs.semaphore.pse.dev/guides/proofs" isExternal>
-                    prove
-                </Link>{" "}
-                that they are part of a group and send their anonymous messages. Messages could be votes, leaks,
-                reviews, or feedback.
-            </Text>
-
-            <Divider pt="5" borderColor="gray.500" />
-
-            <HStack py="5" justify="space-between">
-                <Text fontWeight="bold" fontSize="lg">
-                    Feedback ({_feedback.length})
-                </Text>
-                <Button
-                    leftIcon={<IconRefreshLine />}
-                    variant="link"
-                    color="text.300"
-                    onClick={refreshFeedback}
-                    size="lg"
+                <a
+                    href="https://docs.semaphore.pse.dev/guides/proofs"
+                    target="_blank"
+                    rel="noreferrer noopener nofollow"
                 >
+                    prove
+                </a>{" "}
+                that they are part of a group and send their anonymous messages. Messages could be votes, leaks,
+                reviews, feedback, etc.
+            </p>
+
+            <div className="divider"></div>
+
+            <div className="text-top">
+                <h3>Feedback ({_feedback.length})</h3>
+                <button className="button-link" onClick={refreshFeedback}>
                     Refresh
-                </Button>
-            </HStack>
+                </button>
+            </div>
 
             {_feedback.length > 0 && (
-                <VStack spacing="3" pb="3" align="left" maxHeight="300px" overflowY="scroll">
-                    {feedback.map((f, i) => (
-                        <HStack key={i} pb="3" borderBottomWidth={i < _feedback.length - 1 ? 1 : 0}>
-                            <Text>{f}</Text>
-                        </HStack>
+                <div className="feedback-wrapper">
+                    {_feedback.map((f, i) => (
+                        <div key={i}>
+                            <p className="box box-text">{f}</p>
+                        </div>
                     ))}
-                </VStack>
+                </div>
             )}
 
-            <Box pb="5">
-                <Button w="full" colorScheme="primary" isDisabled={_loading} onClick={sendFeedback}>
-                    Send feedback
-                </Button>
-            </Box>
+            <div>
+                <button className="button" onClick={sendFeedback} disabled={_loading}>
+                    <span>Send Feedback</span>
+                    {_loading && <div className="loader"></div>}
+                </button>
+            </div>
 
-            <Divider pt="3" borderColor="gray" />
+            <div className="divider"></div>
 
             <Stepper step={3} onPrevClick={() => router.push("/group")} />
         </>
