@@ -2,19 +2,18 @@
 import Stepper from "@/components/Stepper"
 import { useLogContext } from "@/context/LogContext"
 import { useSemaphoreContext } from "@/context/SemaphoreContext"
-import IconRefreshLine from "@/icons/IconRefreshLine"
-import { Box, Button, Divider, Heading, HStack, Link, Text, useBoolean, VStack } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useMemo } from "react"
 import Feedback from "../../../contract-artifacts/Feedback.json"
 import { ethers } from "ethers"
 import useSemaphoreIdentity from "@/hooks/useSemaphoreIdentity"
+import { useState } from "react"
 
 export default function GroupsPage() {
     const router = useRouter()
     const { setLog } = useLogContext()
     const { _users, refreshUsers, addUser } = useSemaphoreContext()
-    const [_loading, setLoading] = useBoolean()
+    const [_loading, setLoading] = useState(false)
     const { _identity } = useSemaphoreIdentity()
 
     useEffect(() => {
@@ -30,7 +29,7 @@ export default function GroupsPage() {
             return
         }
 
-        setLoading.on()
+        setLoading(true)
         setLog(`Joining the Feedback group...`)
 
         let joinedGroup: boolean = false
@@ -93,7 +92,7 @@ export default function GroupsPage() {
             setLog("Some error occurred, please try again!")
         }
 
-        setLoading.off()
+        setLoading(false)
     }, [_identity, addUser, setLoading, setLog])
 
     const userHasJoined = useMemo(
@@ -103,63 +102,64 @@ export default function GroupsPage() {
 
     return (
         <>
-            <Heading as="h2" size="xl">
-                Groups
-            </Heading>
+            <h2>Groups</h2>
 
-            <Text pt="2" fontSize="md">
-                <Link href="https://docs.semaphore.pse.dev/guides/groups" isExternal>
+            <p>
+                <a
+                    href="https://docs.semaphore.pse.dev/guides/groups"
+                    target="_blank"
+                    rel="noreferrer noopener nofollow"
+                >
                     Semaphore groups
-                </Link>{" "}
+                </a>{" "}
                 are{" "}
-                <Link href="https://zkkit.pse.dev/modules/_zk_kit_lean_imt.html" isExternal>
+                <a
+                    href="https://zkkit.pse.dev/classes/_zk_kit_imt.LeanIMT.html"
+                    target="_blank"
+                    rel="noreferrer noopener nofollow"
+                >
                     Lean incremental Merkle trees
-                </Link>{" "}
+                </a>{" "}
                 in which each leaf contains an identity commitment for a user. Groups can be abstracted to represent
                 events, polls, or organizations.
-            </Text>
+            </p>
 
-            <Divider pt="5" borderColor="gray.500" />
+            <div className="divider"></div>
 
-            <HStack py="5" justify="space-between">
-                <Text fontWeight="bold" fontSize="lg">
-                    Group users ({_users.length})
-                </Text>
-                <Button leftIcon={<IconRefreshLine />} variant="link" color="text.300" onClick={refreshUsers} size="lg">
+            <div className="text-top">
+                <h3>Group users ({_users.length})</h3>
+                <button className="button-link" onClick={refreshUsers}>
                     Refresh
-                </Button>
-            </HStack>
+                </button>
+            </div>
 
             {_users.length > 0 && (
-                <VStack spacing="3" pb="3" align="left" maxHeight="300px" overflowY="scroll">
+                <div>
                     {users.map((user, i) => (
-                        <HStack key={i} pb="3" borderBottomWidth={i < _users.length - 1 ? 1 : 0} whiteSpace="nowrap">
-                            <Text textOverflow="ellipsis" overflow="hidden">
+                        <div key={i}>
+                            <p className="box box-text">
                                 {_identity?.commitment.toString() === user ? <b>{user}</b> : user}
-                            </Text>
-                        </HStack>
+                            </p>
+                        </div>
                     ))}
-                </VStack>
+                </div>
             )}
 
-            <Box pb="5">
-                <Button
-                    w="full"
-                    colorScheme="primary"
-                    isDisabled={_loading || !_identity || userHasJoined}
+            <div>
+                <button
+                    className="button"
                     onClick={joinGroup}
+                    disabled={_loading || !_identity || userHasJoined}
+                    type="button"
                 >
-                    Join group
-                </Button>
-            </Box>
+                    <span>Join group</span>
+                    {_loading && <div className="loader" />}
+                </button>
+            </div>
 
-            <Divider pt="3" borderColor="gray.500" />
+            <div className="divider" />
 
-            <Stepper
-                step={2}
-                onPrevClick={() => router.push("/")}
-                onNextClick={userHasJoined ? () => router.push("/proofs") : undefined}
-            />
+            <Stepper step={2} onPrevClick={() => router.push("/")} onNextClick={() => router.push("/proofs")} />
         </>
     )
 }
