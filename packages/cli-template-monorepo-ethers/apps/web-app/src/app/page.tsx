@@ -61,7 +61,7 @@ export default function IdentitiesPage() {
 
             <div className="divider" />
 
-            <div>
+            <div className="keys-header">
                 <h3>Identity</h3>
             </div>
 
