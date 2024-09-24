@@ -16,6 +16,14 @@ export default function Stepper({ step, onPrevClick, onNextClick }: StepperProps
                     onClick={onPrevClick || undefined}
                     type="button"
                 >
+                    <span className="stepper-icon left-pad">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path
+                                fill="currentColor"
+                                d="M16.2425 6.34317L14.8283 4.92896L7.75732 12L14.8284 19.0711L16.2426 17.6569L10.5857 12L16.2425 6.34317Z"
+                            ></path>
+                        </svg>
+                    </span>
                     Prev
                 </button>
             ) : (
@@ -32,7 +40,7 @@ export default function Stepper({ step, onPrevClick, onNextClick }: StepperProps
                     type="button"
                 >
                     Next
-                    <span className="icon-next">
+                    <span className="stepper-icon right-pad">
                         <svg viewBox="0 0 24 24" focusable="false">
                             <path
                                 fill="currentColor"
@@ -42,7 +50,7 @@ export default function Stepper({ step, onPrevClick, onNextClick }: StepperProps
                     </span>
                 </button>
             ) : (
-                <span />
+                <span className="button-stepper" />
             )}
         </div>
     )
