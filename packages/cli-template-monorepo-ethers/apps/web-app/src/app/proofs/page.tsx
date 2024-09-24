@@ -156,9 +156,9 @@ export default function ProofsPage() {
                 </button>
             </div>
 
-            {_feedback.length > 0 && (
+            {feedback.length > 0 && (
                 <div className="feedback-wrapper">
-                    {_feedback.map((f, i) => (
+                    {feedback.map((f, i) => (
                         <div key={i}>
                             <p className="box box-text">{f}</p>
                         </div>
