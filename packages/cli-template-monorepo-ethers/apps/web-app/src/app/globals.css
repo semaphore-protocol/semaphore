@@ -1,10 +1,4 @@
 :root {
-    --slate100: #f1f5f9;
-    --slate200: #e2e8f0;
-    --slate300: #cbd5e1;
-    --slate400: #718096;
-    --slate500: #64748b;
-    --slate700: #334155;
     --blue100: #dde6fc;
     --blue200: #c3d4fa;
     --blue300: #9abaf6;
@@ -16,6 +10,17 @@
     --blue900: #253183;
     --blue950: #1b2050;
     --darkBlueBg: #00020d;
+    --slate50: #f7f7f8;
+    --slate100: #eeeef0;
+    --slate200: #d9d9de;
+    --slate300: #b8b9c1;
+    --slate400: #92939e;
+    --slate500: #747583;
+    --slate600: #5e5f6b;
+    --slate700: #4d4e57;
+    --slate800: #42424a;
+    --slate900: #3a3a40;
+    --slate950: #26262b;
 }
 
 * {
@@ -63,6 +68,7 @@ b {
     padding: 1rem;
 
     min-height: calc(100vh - 3.5rem);
+    padding-bottom: 5rem;
 }
 
 .container #body {
@@ -75,14 +81,6 @@ b {
     margin-bottom: 1rem;
 }
 
-ol {
-    padding: 1rem;
-}
-
-li {
-    margin-top: 1rem;
-}
-
 h2 {
     font-size: 2.25rem;
     font-weight: 500;
@@ -93,7 +91,6 @@ h2 {
 h3 {
     font-size: 1.15rem;
     font-weight: 500;
-    margin-bottom: 1.5rem;
 }
 
 .divider {
@@ -166,31 +163,74 @@ a:hover {
     font-size: 1.1rem;
     border: none;
     background: none;
-    min-width: 3rem;
+    width: 4rem;
     margin: 0 1rem;
     display: flex;
     justify-content: center;
 }
 
-.button-link {
+.button-stepper:hover {
+    text-decoration: underline;
+}
+
+.refresh-wrapper {
+    color: var(--slate400);
+    display: flex;
+    align-items: center;
+}
+
+.refresh-wrapper:hover {
+    text-decoration: underline;
+}
+
+.refresh-button {
     cursor: pointer;
     color: var(--slate300);
     font-size: 1.1rem;
     border: none;
     background: none;
+    padding-right: 1rem;
+    display: flex;
+    align-items: center;
 }
 
-.icon-next {
-    display: inline-flex;
-    align-self: flex-start;
+.refresh-button:hover {
+    text-decoration: underline;
+}
+
+.refresh-span {
+    width: 1.5em;
+    height: 1em;
+    display: inline-block;
+    line-height: 1em;
     -webkit-flex-shrink: 0;
     -ms-flex-negative: 0;
     flex-shrink: 0;
-    -webkit-margin-start: 0.5rem;
+    color: currentColor;
+    vertical-align: middle;
+}
+
+.refresh-icon {
+    margin-inline-end: 0.5rem
+}
+
+.stepper-icon {
+    display: inline-flex;
+    align-self: center;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+
+.left-pad {
+    margin-inline-end: 0.5rem;
+}
+
+.right-pad {
     margin-inline-start: 0.5rem;
 }
 
-.icon-next svg {
+.stepper-icon svg {
     width: 1em;
     height: 1em;
     display: inline-block;
@@ -203,15 +243,15 @@ a:hover {
 }
 
 .box {
-    padding: 0.7rem 0;
     border-bottom: 1px solid white;
+    padding: 0.8rem 0;
+    max-height: 50px;
 }
 
 .box-text {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    margin: 0.5rem 0;
     font-size: 1rem;
 }
 
@@ -230,6 +270,7 @@ a:hover {
 .header-right {
     display: flex;
     gap: 1.5rem;
+    align-items: center;
 }
 
 .footer {
@@ -247,24 +288,43 @@ a:hover {
     background: var(--slate500);
 }
 
-.loader {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    border-top: 2px solid var(--slate100);
-    border-right: 2px solid transparent;
-    animation: spin 1s linear infinite;
-    z-index: 20;
-    margin-left: 1rem;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.feedback-wrapper {
-    max-height: 50vh;
+.users-wrapper,.feedback-wrapper {
+    max-height: 300px;
     overflow-y: scroll;
+}
+
+.keys-header {
+    margin-bottom: 1.5rem;
+}
+
+.users-header {
+    font-weight: 700;
+    font-size: 1.125rem;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.join-group-button, .send-feedback-button {
+    margin-top: 1.5rem;
+}
+
+.github-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: inline-block;
+    line-height: 1em;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    color: currentColor;
+}
+
+.github-button {
+    cursor: pointer;
+    color: var(--slate100);
+    font-size: 1.1rem;
+    border: none;
+    background: none;
+    padding-right: 1rem;
+    display: flex;
+    align-items: center;
 }
