@@ -20308,10 +20308,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo-ethers-web-app@workspace:packages/cli-template-monorepo-ethers/apps/web-app"
   dependencies:
-    "@chakra-ui/next-js": "npm:^2.2.0"
-    "@chakra-ui/react": "npm:^2.8.2"
-    "@chakra-ui/theme": "npm:^3.3.1"
-    "@chakra-ui/theme-tools": "npm:^2.1.2"
     "@emotion/react": "npm:^11.11.3"
     "@emotion/styled": "npm:^11.11.0"
     "@semaphore-protocol/core": "npm:4.0.3"
