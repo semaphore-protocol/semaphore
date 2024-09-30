@@ -28,5 +28,11 @@ export default {
         url: "https://rpc-amoy.polygon.technology",
         chainId: 80002,
         explorer: "https://amoy.polygonscan.com"
+    },
+    matic: {
+        name: "Matic",
+        url: "https://polygon-rpc.com",
+        chainId: 137,
+        explorer: "https://polygonscan.com"
     }
 }

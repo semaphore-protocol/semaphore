@@ -50,6 +50,7 @@ Supported networks:
 -   `optimism-sepolia`
 -   `arbitrum-one`
 -   `arbitrum-sepolia`
+-   `matic`
 -   `polygon-amoy`
 
 ## 🛠 Install
