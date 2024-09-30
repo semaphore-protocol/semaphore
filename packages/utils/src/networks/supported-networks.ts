@@ -23,6 +23,12 @@ export default {
         chainId: 11155420,
         explorer: "https://sepolia-optimism.etherscan.io"
     },
+    optimism: {
+        name: "Optimism",
+        url: "https://mainnet.optimism.io ",
+        chainId: 10,
+        explorer: "https://optimistic.etherscan.io"
+    },
     "matic-amoy": {
         name: "Matic Amoy",
         url: "https://rpc-amoy.polygon.technology",

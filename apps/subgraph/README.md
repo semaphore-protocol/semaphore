@@ -47,6 +47,7 @@ You can access any subgraph supported by Semaphore with the following URL: https
 Supported networks:
 
 -   `sepolia`
+-   `optimism`
 -   `optimism-sepolia`
 -   `arbitrum-one`
 -   `arbitrum-sepolia`
