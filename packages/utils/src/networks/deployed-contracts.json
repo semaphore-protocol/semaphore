@@ -78,5 +78,25 @@
                 "startBlock": 9636193
             }
         ]
+    },
+    {
+        "network": "arbitrum",
+        "contracts": [
+            {
+                "name": "SemaphoreVerifier",
+                "address": "0xe538f9DeeE04A397decb1E7dc5D16fD6f123c043",
+                "startBlock": 258951463
+            },
+            {
+                "name": "PoseidonT3",
+                "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
+                "startBlock": 258951463
+            },
+            {
+                "name": "Semaphore",
+                "address": "0x1e0d7FF1610e480fC93BdEC510811ea2Ba6d7c2f",
+                "startBlock": 258951463
+            }
+        ]
     }
 ]

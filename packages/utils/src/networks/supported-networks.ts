@@ -11,6 +11,12 @@ export default {
         chainId: 421614,
         explorer: "https://sepolia.arbiscan.io"
     },
+    arbitrum: {
+        name: "Arbitrum",
+        url: "https://arb1.arbitrum.io/rpc",
+        chainId: 42161,
+        explorer: "https://arbiscan.io"
+    },
     "optimism-sepolia": {
         name: "Optimism Sepolia",
         url: "https://sepolia.optimism.io",
