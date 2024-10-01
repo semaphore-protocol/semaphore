@@ -40,5 +40,11 @@ export default {
         url: "https://polygon-rpc.com",
         chainId: 137,
         explorer: "https://polygonscan.com"
+    },
+    "base-sepolia": {
+        name: "Base Sepolia",
+        url: "https://sepolia.base.org",
+        chainId: 84532,
+        explorer: "https://sepolia.basescan.org"
     }
 }
