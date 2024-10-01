@@ -53,6 +53,8 @@ Supported networks:
 -   `arbitrum-sepolia`
 -   `matic`
 -   `polygon-amoy`
+-   `base-sepolia`
+-   `linea-sepolia`
 
 ## 🛠 Install
 
