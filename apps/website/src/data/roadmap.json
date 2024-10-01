@@ -17,18 +17,18 @@
     },
     {
         "name": "LeanIMT Paper",
-        "done": false
+        "done": true
+    },
+    {
+        "name": "Support more Testnets/Mainnets",
+        "done": true
     },
     {
         "name": "RLN extension",
         "done": false
     },
     {
-        "name": "Support more Testnets/Mainnets",
-        "done": false
-    },
-    {
-        "name": "Documentation Revamp",
+        "name": "Documentation improvements",
         "done": false
     }
 ]
