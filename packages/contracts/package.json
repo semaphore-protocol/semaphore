@@ -3,7 +3,7 @@
     "private": true,
     "scripts": {
         "start": "hardhat node",
-        "copy:abi": "ncp artifacts/contracts/Semaphore.sol/Semaphore.json ../utils/src/semaphore-abi.json",
+        "copy:abi": "ncp artifacts/contracts/Semaphore.sol/Semaphore.json ../utils/src/semaphore-interface.json",
         "compile": "hardhat compile",
         "deploy": "hardhat deploy",
         "verify": "hardhat run scripts/verify-contracts.ts",
