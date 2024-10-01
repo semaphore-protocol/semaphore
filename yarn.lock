@@ -5389,8 +5389,8 @@ __metadata:
   linkType: hard
 
 "@nomicfoundation/hardhat-verify@npm:^2.0.8":
-  version: 2.0.8
-  resolution: "@nomicfoundation/hardhat-verify@npm:2.0.8"
+  version: 2.0.11
+  resolution: "@nomicfoundation/hardhat-verify@npm:2.0.11"
   dependencies:
     "@ethersproject/abi": "npm:^5.1.2"
     "@ethersproject/address": "npm:^5.0.2"
@@ -5403,7 +5403,7 @@ __metadata:
     undici: "npm:^5.14.0"
   peerDependencies:
     hardhat: ^2.0.4
-  checksum: 10/f49d6615a45d063e8d361ea2029c80c351d4377925de6c229095619384353d3fa9463751beceae0d6ceaf26f60a99797a19abd16ae22258fba37aee26ee5576e
+  checksum: 10/edad30efeb0ab7c26fd0c5fd3f1d161733d51276435f77d9c58edaa4307171be40e8c65a24a8fb11481e1032e4eb72ac99cd11c6eaa0bbfabb493455e387e2e9
   languageName: node
   linkType: hard
 
@@ -24717,7 +24717,7 @@ __metadata:
   dependencies:
     "@graphprotocol/graph-cli": "npm:0.78.0"
     "@graphprotocol/graph-ts": "npm:0.35.1"
-    "@semaphore-protocol/utils": "npm:4.1.0"
+    "@semaphore-protocol/utils": "workspace:packages/utils"
     "@types/mustache": "npm:^4.2.2"
     matchstick-as: "npm:0.5.0"
     mustache: "npm:^4.2.0"
