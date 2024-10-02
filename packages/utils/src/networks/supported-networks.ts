@@ -58,5 +58,11 @@ export default {
         url: "https://rpc.sepolia.linea.build",
         chainId: 59141,
         explorer: "https://sepolia.lineascan.build"
+    },
+    linea: {
+        name: "Linea",
+        url: "https://rpc.linea.build",
+        chainId: 59144,
+        explorer: "https://lineascan.build"
     }
 }

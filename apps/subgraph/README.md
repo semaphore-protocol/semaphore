@@ -56,6 +56,7 @@ Supported networks:
 -   `base-sepolia`
 -   `base`
 -   `linea-sepolia`
+-   `linea`
 
 ## 🛠 Install
 
