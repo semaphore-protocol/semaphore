@@ -54,7 +54,9 @@ Supported networks:
 -   `matic`
 -   `polygon-amoy`
 -   `base-sepolia`
+-   `base`
 -   `linea-sepolia`
+-   `linea`
 
 ## 🛠 Install
 

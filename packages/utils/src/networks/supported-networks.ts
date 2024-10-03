@@ -47,10 +47,22 @@ export default {
         chainId: 84532,
         explorer: "https://sepolia.basescan.org"
     },
+    base: {
+        name: "Base",
+        url: "https://mainnet.base.org",
+        chainId: 8453,
+        explorer: "https://basescan.org"
+    },
     "linea-sepolia": {
         name: "Linea Sepolia",
         url: "https://rpc.sepolia.linea.build",
         chainId: 59141,
         explorer: "https://sepolia.lineascan.build"
+    },
+    linea: {
+        name: "Linea",
+        url: "https://rpc.linea.build",
+        chainId: 59144,
+        explorer: "https://lineascan.build"
     }
 }
