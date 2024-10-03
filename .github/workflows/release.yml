@@ -17,6 +17,11 @@ jobs:
               with:
                   fetch-depth: 0
 
+            - name: Install soldeer
+              uses: taiki-e/install-action@v2
+              with:
+                tool: soldeer
+
             - name: Install Node.js
               uses: actions/setup-node@v4
               with:
