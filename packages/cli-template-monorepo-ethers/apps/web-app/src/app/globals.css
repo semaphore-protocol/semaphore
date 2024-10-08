@@ -34,6 +34,7 @@ html,
 body {
     max-width: 100vw;
     overflow-x: hidden;
+    height: 100vh;
 }
 
 body {
@@ -63,11 +64,9 @@ b {
     height: 100%;
     max-width: 40vw;
     min-width: 35rem;
-
     margin: auto;
     padding: 1rem;
-
-    min-height: calc(100vh - 3.5rem);
+    height: calc(100vh - 7rem - 1px);
     padding-bottom: 5rem;
 }
 
@@ -139,6 +138,9 @@ a:hover {
     transition-timing-function: linear;
     width: 100%;
     border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .button:hover {
@@ -258,7 +260,8 @@ a:hover {
 .header {
     display: flex;
     justify-content: space-between;
-    padding: 1.5rem;
+    padding: 0 1.5rem;
+    height: 3.5rem;
 }
 
 .header-left {
@@ -327,4 +330,29 @@ a:hover {
     padding-right: 1rem;
     display: flex;
     align-items: center;
+    box-sizing: border-box;
+    display: inline-block;
+    overflow: visible !important;
+    fill: currentColor;
+    color: #f0f6fc !important;
+    vertical-align: middle !important;
+    width: 2rem;
+    height: 2rem;
+}
+
+.loader {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border-top: 2px solid var(--slate100);
+    border-right: 2px solid transparent;
+    animation: spin 1s linear infinite;
+    z-index: 20;
+    margin-left: 0.5rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
