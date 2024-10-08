@@ -1,9 +1,5 @@
 "use client"
 
-import { Button, HStack, Text } from "@chakra-ui/react"
-import IconChevronLeft from "../icons/IconChevronLeft"
-import IconChevronRight from "../icons/IconChevronRight"
-
 export type StepperProps = {
     step: number
     onPrevClick?: () => void
@@ -12,38 +8,50 @@ export type StepperProps = {
 
 export default function Stepper({ step, onPrevClick, onNextClick }: StepperProps) {
     return (
-        <HStack width="full" justify="space-between" pt="6">
-            <Button
-                flex="1"
-                leftIcon={<IconChevronLeft />}
-                justifyContent="left"
-                colorScheme="primary"
-                variant="link"
-                disabled={!onPrevClick}
-                onClick={onPrevClick || undefined}
-                size="lg"
-                visibility={onPrevClick ? "visible" : "hidden"}
-            >
-                Prev
-            </Button>
+        <div className="stepper">
+            {onPrevClick !== undefined ? (
+                <button
+                    className="button-stepper"
+                    disabled={!onPrevClick}
+                    onClick={onPrevClick || undefined}
+                    type="button"
+                >
+                    <span className="stepper-icon left-pad">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path
+                                fill="currentColor"
+                                d="M16.2425 6.34317L14.8283 4.92896L7.75732 12L14.8284 19.0711L16.2426 17.6569L10.5857 12L16.2425 6.34317Z"
+                            ></path>
+                        </svg>
+                    </span>
+                    Prev
+                </button>
+            ) : (
+                <button className="button-stepper"></button>
+            )}
 
-            <Text textAlign="center" flex="1">
-                {step.toString()}/3
-            </Text>
+            <p>{step.toString()}/3</p>
 
-            <Button
-                flex="1"
-                rightIcon={<IconChevronRight />}
-                justifyContent="right"
-                colorScheme="primary"
-                variant="link"
-                disabled={!onNextClick}
-                onClick={onNextClick || undefined}
-                size="lg"
-                visibility={onNextClick ? "visible" : "hidden"}
-            >
-                Next
-            </Button>
-        </HStack>
+            {onNextClick !== undefined ? (
+                <button
+                    className="button-stepper"
+                    disabled={!onNextClick}
+                    onClick={onNextClick || undefined}
+                    type="button"
+                >
+                    Next
+                    <span className="stepper-icon right-pad">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path
+                                fill="currentColor"
+                                d="M10.5859 6.34317L12.0001 4.92896L19.0712 12L12.0001 19.0711L10.5859 17.6569L16.2428 12L10.5859 6.34317Z"
+                            ></path>
+                        </svg>
+                    </span>
+                </button>
+            ) : (
+                <span className="button-stepper" />
+            )}
+        </div>
     )
 }

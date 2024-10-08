@@ -1,8 +1,11 @@
 import PageContainer from "@/components/PageContainer"
 import type { Metadata } from "next"
-import Providers from "./providers"
 import { LogContextProvider } from "@/context/LogContext"
 import { SemaphoreContextProvider } from "@/context/SemaphoreContext"
+import "./globals.css"
+
+import { Inter } from "next/font/google"
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
     title: "Semaphore Demo",
@@ -31,14 +34,20 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body suppressHydrationWarning>
-                <Providers>
-                    <SemaphoreContextProvider>
-                        <LogContextProvider>
-                            <PageContainer>{children}</PageContainer>
-                        </LogContextProvider>
-                    </SemaphoreContextProvider>
-                </Providers>
+            <head>
+                <link rel="preconnect" href="https://fonts.googleapis.com"></link>
+                <link rel="preconnect" href="https://fonts.gstatic.com"></link>
+                <link
+                    href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap"
+                    rel="stylesheet"
+                ></link>
+            </head>
+            <body suppressHydrationWarning className={inter.className}>
+                <SemaphoreContextProvider>
+                    <LogContextProvider>
+                        <PageContainer>{children}</PageContainer>
+                    </LogContextProvider>
+                </SemaphoreContextProvider>
             </body>
         </html>
     )

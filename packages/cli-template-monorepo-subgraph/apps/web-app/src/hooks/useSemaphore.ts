@@ -1,4 +1,4 @@
-import { SemaphoreSubgraph } from "@semaphore-protocol/data"
+import { SemaphoreEthers } from "@semaphore-protocol/data"
 import { decodeBytes32String, toBeHex } from "ethers"
 import { useCallback, useState } from "react"
 import { SemaphoreContextType } from "../context/SemaphoreContext"
@@ -9,15 +9,17 @@ const ethereumNetwork =
         : process.env.NEXT_PUBLIC_DEFAULT_NETWORK
 
 export default function useSemaphore(): SemaphoreContextType {
-    const [_users, setUsers] = useState<any[]>([])
+    const [_users, setUsers] = useState<string[]>([])
     const [_feedback, setFeedback] = useState<string[]>([])
 
     const refreshUsers = useCallback(async (): Promise<void> => {
-        const semaphore = new SemaphoreSubgraph(ethereumNetwork)
+        const semaphore = new SemaphoreEthers(ethereumNetwork, {
+            address: process.env.NEXT_PUBLIC_SEMAPHORE_CONTRACT_ADDRESS
+        })
 
-        const group = await semaphore.getGroup(process.env.NEXT_PUBLIC_GROUP_ID as string, { members: true })
+        const members = await semaphore.getGroupMembers(process.env.NEXT_PUBLIC_GROUP_ID as string)
 
-        setUsers(group.members!)
+        setUsers(members)
     }, [])
 
     const addUser = useCallback(
@@ -28,13 +30,13 @@ export default function useSemaphore(): SemaphoreContextType {
     )
 
     const refreshFeedback = useCallback(async (): Promise<void> => {
-        const semaphore = new SemaphoreSubgraph(ethereumNetwork)
-
-        const group = await semaphore.getGroup(process.env.NEXT_PUBLIC_GROUP_ID as string, {
-            validatedProofs: true
+        const semaphore = new SemaphoreEthers(ethereumNetwork, {
+            address: process.env.NEXT_PUBLIC_SEMAPHORE_CONTRACT_ADDRESS
         })
 
-        setFeedback(group.validatedProofs!.map(({ message }: any) => decodeBytes32String(toBeHex(message, 32))))
+        const proofs = await semaphore.getGroupValidatedProofs(process.env.NEXT_PUBLIC_GROUP_ID as string)
+
+        setFeedback(proofs.map(({ message }: any) => decodeBytes32String(toBeHex(message, 32))))
     }, [])
 
     const addFeedback = useCallback(

@@ -3,12 +3,10 @@
 import Stepper from "@/components/Stepper"
 import { useLogContext } from "@/context/LogContext"
 import { useSemaphoreContext } from "@/context/SemaphoreContext"
-import IconRefreshLine from "@/icons/IconRefreshLine"
-import { Box, Button, Divider, Heading, HStack, Link, Text, useBoolean, VStack } from "@chakra-ui/react"
 import { generateProof, Group } from "@semaphore-protocol/core"
 import { encodeBytes32String, ethers } from "ethers"
 import { useRouter } from "next/navigation"
-import { useCallback, useEffect, useMemo } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import Feedback from "../../../contract-artifacts/Feedback.json"
 import useSemaphoreIdentity from "@/hooks/useSemaphoreIdentity"
 
@@ -16,7 +14,7 @@ export default function ProofsPage() {
     const router = useRouter()
     const { setLog } = useLogContext()
     const { _users, _feedback, refreshFeedback, addFeedback } = useSemaphoreContext()
-    const [_loading, setLoading] = useBoolean()
+    const [_loading, setLoading] = useState(false)
     const { _identity } = useSemaphoreIdentity()
 
     useEffect(() => {
@@ -35,7 +33,7 @@ export default function ProofsPage() {
         const feedback = prompt("Please enter your feedback:")
 
         if (feedback && _users) {
-            setLoading.on()
+            setLoading(true)
 
             setLog(`Posting your anonymous feedback...`)
 
@@ -119,60 +117,63 @@ export default function ProofsPage() {
 
                 setLog("Some error occurred, please try again!")
             } finally {
-                setLoading.off()
+                setLoading(false)
             }
         }
     }, [_identity, _users, addFeedback, setLoading, setLog])
 
     return (
         <>
-            <Heading as="h2" size="xl">
-                Proofs
-            </Heading>
+            <h2>Proofs</h2>
 
-            <Text pt="2" fontSize="md">
+            <p>
                 Semaphore members can anonymously{" "}
-                <Link href="https://docs.semaphore.pse.dev/guides/proofs" isExternal>
-                    prove
-                </Link>{" "}
-                that they are part of a group and send their anonymous messages. Messages could be votes, leaks,
-                reviews, or feedback.
-            </Text>
-
-            <Divider pt="5" borderColor="gray.500" />
-
-            <HStack py="5" justify="space-between">
-                <Text fontWeight="bold" fontSize="lg">
-                    Feedback ({_feedback.length})
-                </Text>
-                <Button
-                    leftIcon={<IconRefreshLine />}
-                    variant="link"
-                    color="text.300"
-                    onClick={refreshFeedback}
-                    size="lg"
+                <a
+                    href="https://docs.semaphore.pse.dev/guides/proofs"
+                    target="_blank"
+                    rel="noreferrer noopener nofollow"
                 >
-                    Refresh
-                </Button>
-            </HStack>
+                    prove
+                </a>{" "}
+                that they are part of a group and send their anonymous messages. Messages could be votes, leaks,
+                reviews, feedback, etc.
+            </p>
 
-            {_feedback.length > 0 && (
-                <VStack spacing="3" pb="3" align="left" maxHeight="300px" overflowY="scroll">
+            <div className="divider"></div>
+
+            <div className="text-top">
+                <h3>Feedback ({_feedback.length})</h3>
+                <button className="refresh-button" onClick={refreshFeedback}>
+                    <span className="refresh-span">
+                        <svg viewBox="0 0 24 24" focusable="false" className="refresh-icon">
+                            <path
+                                fill="currentColor"
+                                d="M5.463 4.43301C7.27756 2.86067 9.59899 1.99666 12 2.00001C17.523 2.00001 22 6.47701 22 12C22 14.136 21.33 16.116 20.19 17.74L17 12H20C20.0001 10.4316 19.5392 8.89781 18.6747 7.58927C17.8101 6.28072 16.5799 5.25517 15.1372 4.64013C13.6944 4.0251 12.1027 3.84771 10.56 4.13003C9.0172 4.41234 7.59145 5.14191 6.46 6.22801L5.463 4.43301ZM18.537 19.567C16.7224 21.1393 14.401 22.0034 12 22C6.477 22 2 17.523 2 12C2 9.86401 2.67 7.88401 3.81 6.26001L7 12H4C3.99987 13.5684 4.46075 15.1022 5.32534 16.4108C6.18992 17.7193 7.42007 18.7449 8.86282 19.3599C10.3056 19.9749 11.8973 20.1523 13.44 19.87C14.9828 19.5877 16.4085 18.8581 17.54 17.772L18.537 19.567Z"
+                            ></path>
+                        </svg>
+                    </span>
+                    Refresh
+                </button>
+            </div>
+
+            {feedback.length > 0 && (
+                <div className="feedback-wrapper">
                     {feedback.map((f, i) => (
-                        <HStack key={i} pb="3" borderBottomWidth={i < _feedback.length - 1 ? 1 : 0}>
-                            <Text>{f}</Text>
-                        </HStack>
+                        <div key={i}>
+                            <p className="box box-text">{f}</p>
+                        </div>
                     ))}
-                </VStack>
+                </div>
             )}
 
-            <Box pb="5">
-                <Button w="full" colorScheme="primary" isDisabled={_loading} onClick={sendFeedback}>
-                    Send feedback
-                </Button>
-            </Box>
+            <div className="send-feedback-button">
+                <button className="button" onClick={sendFeedback} disabled={_loading}>
+                    <span>Send Feedback</span>
+                    {_loading && <div className="loader"></div>}
+                </button>
+            </div>
 
-            <Divider pt="3" borderColor="gray" />
+            <div className="divider"></div>
 
             <Stepper step={3} onPrevClick={() => router.push("/group")} />
         </>
