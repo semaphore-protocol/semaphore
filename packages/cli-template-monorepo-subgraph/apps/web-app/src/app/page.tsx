@@ -2,42 +2,42 @@
 
 import { Identity } from "@semaphore-protocol/core"
 import { useRouter } from "next/navigation"
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Stepper from "../components/Stepper"
-import LogsContext from "../context/LogsContext"
+import { useLogContext } from "../context/LogContext"
 
 export default function IdentitiesPage() {
     const router = useRouter()
-    const { setLogs } = useContext(LogsContext)
+    const { setLog } = useLogContext()
     const [_identity, setIdentity] = useState<Identity>()
 
     useEffect(() => {
         const privateKey = localStorage.getItem("identity")
 
         if (privateKey) {
-            const identity = new Identity(privateKey)
+            const identity = Identity.import(privateKey)
 
             setIdentity(identity)
 
-            setLogs("Your Semaphore identity has been retrieved from the browser cache 👌🏽")
+            setLog("Your Semaphore identity has been retrieved from the browser cache 👌🏽")
         } else {
-            setLogs("Create your Semaphore identity 👆🏽")
+            setLog("Create your Semaphore identity 👆🏽")
         }
-    }, [setLogs])
+    }, [setLog])
 
     const createIdentity = useCallback(async () => {
         const identity = new Identity()
 
         setIdentity(identity)
 
-        localStorage.setItem("identity", identity.privateKey.toString())
+        localStorage.setItem("identity", identity.export())
 
-        setLogs("Your new Semaphore identity has just been created 🎉")
-    }, [setLogs])
+        setLog("Your new Semaphore identity has just been created 🎉")
+    }, [setLog])
 
     return (
         <>
-            <h2 className="font-size: 3rem;">Identities</h2>
+            <h2>Identities</h2>
 
             <p>
                 The identity of a user in the Semaphore protocol. A{" "}
@@ -59,35 +59,36 @@ export default function IdentitiesPage() {
                 public/private key pair and a commitment, used as the public identifier of the identity.
             </p>
 
-            <div className="divider"></div>
+            <div className="divider" />
 
-            <div className="text-top">
+            <div className="keys-header">
                 <h3>Identity</h3>
-                {_identity && (
-                    <button className="button-link" onClick={createIdentity}>
-                        New
-                    </button>
-                )}
             </div>
 
-            {_identity ? (
-                <div>
-                    <div className="box">
-                        <p className="box-text">Private Key: {_identity.privateKey.toString()}</p>
-                        <p className="box-text">Commitment: {_identity.commitment.toString()}</p>
-                    </div>
-                </div>
-            ) : (
-                <div>
-                    <button className="button" onClick={createIdentity}>
-                        Create identity
-                    </button>
+            {_identity && (
+                <div className="key-wrapper">
+                    <p>
+                        <b>Private Key (base64)</b>:<br /> {_identity.export()}
+                    </p>
+                    <p>
+                        <b>Public Key</b>:<br /> [{_identity.publicKey[0].toString()},{" "}
+                        {_identity.publicKey[1].toString()}]
+                    </p>
+                    <p>
+                        <b>Commitment</b>:<br /> {_identity.commitment.toString()}
+                    </p>
                 </div>
             )}
 
-            <div className="divider"></div>
+            <div>
+                <button className="button" onClick={createIdentity} type="button">
+                    Create identity
+                </button>
+            </div>
 
-            <Stepper step={1} onNextClick={_identity && (() => router.push("/groups"))} />
+            <div className="divider" />
+
+            <Stepper step={1} onNextClick={_identity && (() => router.push("/group"))} />
         </>
     )
 }
