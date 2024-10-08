@@ -161,6 +161,7 @@ export default function GroupsPage() {
                     type="button"
                 >
                     <span>Join group</span>
+                    {_loading && <div className="loader"></div>}
                 </button>
             </div>
 
