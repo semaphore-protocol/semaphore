@@ -42,7 +42,6 @@
         "@rollup/plugin-json": "^6.1.0",
         "@rollup/plugin-typescript": "^11.1.6",
         "@types/snarkjs": "^0",
-        "poseidon-lite": "^0.2.0",
         "rimraf": "^5.0.5",
         "rollup": "^4.12.0",
         "rollup-plugin-cleanup": "^3.2.1"
@@ -54,7 +53,7 @@
     "dependencies": {
         "@semaphore-protocol/utils": "4.3.0",
         "@zk-kit/artifacts": "1.8.0",
-        "@zk-kit/utils": "1.0.0",
+        "@zk-kit/utils": "1.2.1",
         "ethers": "6.10.0",
         "snarkjs": "0.7.4"
     }

@@ -4861,7 +4861,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/sourcemap-codec@npm:^1.4.10, @jridgewell/sourcemap-codec@npm:^1.4.14, @jridgewell/sourcemap-codec@npm:^1.4.15":
+"@jridgewell/sourcemap-codec@npm:^1.4.10, @jridgewell/sourcemap-codec@npm:^1.4.14":
   version: 1.4.15
   resolution: "@jridgewell/sourcemap-codec@npm:1.4.15"
   checksum: 10/89960ac087781b961ad918978975bcdf2051cd1741880469783c42de64239703eab9db5230d776d8e6a09d73bb5e4cb964e07d93ee6e2e7aea5a7d726e865c09
@@ -5948,25 +5948,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/plugin-commonjs@npm:^25.0.7":
-  version: 25.0.7
-  resolution: "@rollup/plugin-commonjs@npm:25.0.7"
-  dependencies:
-    "@rollup/pluginutils": "npm:^5.0.1"
-    commondir: "npm:^1.0.1"
-    estree-walker: "npm:^2.0.2"
-    glob: "npm:^8.0.3"
-    is-reference: "npm:1.2.1"
-    magic-string: "npm:^0.30.3"
-  peerDependencies:
-    rollup: ^2.68.0||^3.0.0||^4.0.0
-  peerDependenciesMeta:
-    rollup:
-      optional: true
-  checksum: 10/89b108e245d1af6e7878ac949bfcd44e48f7d0c1eda0cb0b7e89c231ae73de455ffe2ac65eb03a398da4e8c300ce404f997fe66f8dde3d4d4794ffd2c1241fc3
-  languageName: node
-  linkType: hard
-
 "@rollup/plugin-json@npm:^6.1.0":
   version: 6.1.0
   resolution: "@rollup/plugin-json@npm:6.1.0"
@@ -5994,25 +5975,6 @@ __metadata:
   peerDependencies:
     rollup: ^1.20.0||^2.0.0
   checksum: 10/8007f6a01d709da1078df19bb5ecb1339f43042786a68d98645e0a4c1765064d1500a1b86b65e12de6ae35d9b1ae693e22e63b3ebb69a627ce81172ea21cc228
-  languageName: node
-  linkType: hard
-
-"@rollup/plugin-node-resolve@npm:^15.2.3":
-  version: 15.2.3
-  resolution: "@rollup/plugin-node-resolve@npm:15.2.3"
-  dependencies:
-    "@rollup/pluginutils": "npm:^5.0.1"
-    "@types/resolve": "npm:1.20.2"
-    deepmerge: "npm:^4.2.2"
-    is-builtin-module: "npm:^3.2.1"
-    is-module: "npm:^1.0.0"
-    resolve: "npm:^1.22.1"
-  peerDependencies:
-    rollup: ^2.78.0||^3.0.0||^4.0.0
-  peerDependenciesMeta:
-    rollup:
-      optional: true
-  checksum: 10/d36a6792fbe9d8673d3a7c7dc88920be669ac54fba02ac0093d3c00fc9463fce2e87da1906a2651016742709c3d202b367fb49a62acd0d98f18409343f27b8b4
   languageName: node
   linkType: hard
 
@@ -6060,7 +6022,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/pluginutils@npm:^5.0.1, @rollup/pluginutils@npm:^5.1.0":
+"@rollup/pluginutils@npm:^5.1.0":
   version: 5.1.0
   resolution: "@rollup/pluginutils@npm:5.1.0"
   dependencies:
@@ -6383,12 +6345,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/group@workspace:packages/group"
   dependencies:
-    "@rollup/plugin-commonjs": "npm:^25.0.7"
-    "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@zk-kit/lean-imt": "npm:2.1.0"
-    "@zk-kit/utils": "npm:1.0.0"
-    poseidon-lite: "npm:^0.2.0"
+    "@zk-kit/lean-imt": "npm:2.2.1"
+    "@zk-kit/utils": "npm:1.2.1"
+    poseidon-lite: "npm:0.3.0"
     rimraf: "npm:^5.0.5"
     rollup: "npm:^4.12.0"
     rollup-plugin-cleanup: "npm:^3.2.1"
@@ -6418,13 +6378,11 @@ __metadata:
   resolution: "@semaphore-protocol/identity@workspace:packages/identity"
   dependencies:
     "@rollup/plugin-alias": "npm:^5.1.0"
-    "@rollup/plugin-commonjs": "npm:^25.0.7"
-    "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@zk-kit/baby-jubjub": "npm:1.0.1"
-    "@zk-kit/eddsa-poseidon": "npm:1.0.2"
-    "@zk-kit/utils": "npm:1.2.0"
-    poseidon-lite: "npm:0.2.0"
+    "@zk-kit/baby-jubjub": "npm:1.0.3"
+    "@zk-kit/eddsa-poseidon": "npm:1.0.4"
+    "@zk-kit/utils": "npm:1.2.1"
+    poseidon-lite: "npm:0.3.0"
     rimraf: "npm:^5.0.5"
     rollup: "npm:^4.12.0"
     rollup-plugin-cleanup: "npm:^3.2.1"
@@ -6441,9 +6399,8 @@ __metadata:
     "@semaphore-protocol/utils": "npm:4.3.0"
     "@types/snarkjs": "npm:^0"
     "@zk-kit/artifacts": "npm:1.8.0"
-    "@zk-kit/utils": "npm:1.0.0"
+    "@zk-kit/utils": "npm:1.2.1"
     ethers: "npm:6.10.0"
-    poseidon-lite: "npm:^0.2.0"
     rimraf: "npm:^5.0.5"
     rollup: "npm:^4.12.0"
     rollup-plugin-cleanup: "npm:^3.2.1"
@@ -7840,13 +7797,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/resolve@npm:1.20.2":
-  version: 1.20.2
-  resolution: "@types/resolve@npm:1.20.2"
-  checksum: 10/1bff0d3875e7e1557b6c030c465beca9bf3b1173ebc6937cac547654b0af3bb3ff0f16470e9c4d7c5dc308ad9ac8627c38dbff24ef698b66673ff5bd4ead7f7e
-  languageName: node
-  linkType: hard
-
 "@types/retry@npm:0.12.0":
   version: 0.12.0
   resolution: "@types/retry@npm:0.12.0"
@@ -8515,6 +8465,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@zk-kit/baby-jubjub@npm:1.0.3":
+  version: 1.0.3
+  resolution: "@zk-kit/baby-jubjub@npm:1.0.3"
+  dependencies:
+    "@zk-kit/utils": "npm:1.2.1"
+  checksum: 10/ae64d27f43ed53df15eebfb3468dadc202a587201a711b8716f1b855ea3b83e01e7eb5769eaa5c030979099c353396a0b1bf12dfa9c7575adce402ca64989e12
+  languageName: node
+  linkType: hard
+
 "@zk-kit/binary-merkle-root.circom@npm:1.0.0":
   version: 1.0.0
   resolution: "@zk-kit/binary-merkle-root.circom@npm:1.0.0"
@@ -8524,14 +8483,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/eddsa-poseidon@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@zk-kit/eddsa-poseidon@npm:1.0.2"
+"@zk-kit/eddsa-poseidon@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@zk-kit/eddsa-poseidon@npm:1.0.4"
   dependencies:
-    "@zk-kit/baby-jubjub": "npm:1.0.1"
-    "@zk-kit/utils": "npm:1.0.0"
+    "@zk-kit/baby-jubjub": "npm:1.0.3"
+    "@zk-kit/utils": "npm:1.2.1"
     buffer: "npm:6.0.3"
-  checksum: 10/4b4e984a96c5dbc95a8cf36ceb8b3712e37291c1473d01b0e22c15a33311e9cf88c86175d878dacda1852cc905cd2074aaa76defeaed33490be3964ca7a53372
+    poseidon-lite: "npm:0.3.0"
+  checksum: 10/f8c9603b8985813ad3ad09130306c529a754fa97f952a50ccf2762227c1e256cfce1c9f2b8bf5ed570d82a443a86ced56ce3f6fc30b57501c5e2a584be8f3b03
   languageName: node
   linkType: hard
 
@@ -8544,12 +8504,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/lean-imt@npm:2.1.0":
-  version: 2.1.0
-  resolution: "@zk-kit/lean-imt@npm:2.1.0"
+"@zk-kit/lean-imt@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@zk-kit/lean-imt@npm:2.2.1"
   dependencies:
-    "@zk-kit/utils": "npm:1.2.0"
-  checksum: 10/897f88204c9ee548a2a977ef1efac8e4c0d2efdf284c88f759fdefd53b2c51a36b536130eb3241e68bd14e5039bcb8d6d788e7fca46fe442cfa3eceeb9c0eddf
+    "@zk-kit/utils": "npm:1.2.1"
+  checksum: 10/f57ba0ab15ff38609c352862b21023d370bd250c37c7ef15d4ee7724c8179a7fdd6647ac8a555e6cf523032d1c769fb9eae6de5364a97574224ff7de1a34f8a8
   languageName: node
   linkType: hard
 
@@ -8562,12 +8522,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/utils@npm:1.2.0":
-  version: 1.2.0
-  resolution: "@zk-kit/utils@npm:1.2.0"
+"@zk-kit/utils@npm:1.2.1":
+  version: 1.2.1
+  resolution: "@zk-kit/utils@npm:1.2.1"
   dependencies:
     buffer: "npm:^6.0.3"
-  checksum: 10/4c0b37d64b28a6cc33c901a0c59325b1fe9c31e6519eaefe4aa6028ae9cb85e97f047976942875face030a1835d5c955ea546d7dc4fcf9d35df79192ee2502f3
+  checksum: 10/05cb209adadad753ae9ca9be7a1664fb4c3259a703f64e8b0af637e5fa4b2a9099c21b80a30df62cfe826b165941e1dfe0e95decde5a4eafd53328692cb0a4b8
   languageName: node
   linkType: hard
 
@@ -10034,7 +9994,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"builtin-modules@npm:^3.1.0, builtin-modules@npm:^3.3.0":
+"builtin-modules@npm:^3.1.0":
   version: 3.3.0
   resolution: "builtin-modules@npm:3.3.0"
   checksum: 10/62e063ab40c0c1efccbfa9ffa31873e4f9d57408cb396a2649981a0ecbce56aabc93c28feaccbc5658c95aab2703ad1d11980e62ec2e5e72637404e1eb60f39e
@@ -16583,15 +16543,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-builtin-module@npm:^3.2.1":
-  version: 3.2.1
-  resolution: "is-builtin-module@npm:3.2.1"
-  dependencies:
-    builtin-modules: "npm:^3.3.0"
-  checksum: 10/e8f0ffc19a98240bda9c7ada84d846486365af88d14616e737d280d378695c8c448a621dcafc8332dbf0fcd0a17b0763b845400709963fa9151ddffece90ae88
-  languageName: node
-  linkType: hard
-
 "is-callable@npm:^1.1.3, is-callable@npm:^1.1.4, is-callable@npm:^1.2.7":
   version: 1.2.7
   resolution: "is-callable@npm:1.2.7"
@@ -16944,15 +16895,6 @@ __metadata:
   dependencies:
     isobject: "npm:^3.0.1"
   checksum: 10/2a401140cfd86cabe25214956ae2cfee6fbd8186809555cd0e84574f88de7b17abacb2e477a6a658fa54c6083ecbda1e6ae404c7720244cd198903848fca70ca
-  languageName: node
-  linkType: hard
-
-"is-reference@npm:1.2.1":
-  version: 1.2.1
-  resolution: "is-reference@npm:1.2.1"
-  dependencies:
-    "@types/estree": "npm:*"
-  checksum: 10/e7b48149f8abda2c10849ea51965904d6a714193d68942ad74e30522231045acf06cbfae5a4be2702fede5d232e61bf50b3183acdc056e6e3afe07fcf4f4b2bc
   languageName: node
   linkType: hard
 
@@ -18720,15 +18662,6 @@ __metadata:
   dependencies:
     sourcemap-codec: "npm:^1.4.8"
   checksum: 10/87a14b944bd169821cbd54b169a7ab6b0348fd44b5497266dc555dd70280744e9e88047da9dcb95675bdc23b1ce33f13398b0f70b3be7b858225ccb1d185ff51
-  languageName: node
-  linkType: hard
-
-"magic-string@npm:^0.30.3":
-  version: 0.30.10
-  resolution: "magic-string@npm:0.30.10"
-  dependencies:
-    "@jridgewell/sourcemap-codec": "npm:^1.4.15"
-  checksum: 10/9f8bf6363a14c98a9d9f32ef833b194702a5c98fb931b05ac511b76f0b06fd30ed92beda6ca3261d2d52d21e39e891ef1136fbd032023f6cbb02d0b7d5767201
   languageName: node
   linkType: hard
 
@@ -21824,7 +21757,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"poseidon-lite@npm:0.2.0, poseidon-lite@npm:^0.2.0":
+"poseidon-lite@npm:0.3.0":
+  version: 0.3.0
+  resolution: "poseidon-lite@npm:0.3.0"
+  checksum: 10/1e7294f7fed91e1cdc3aee7bd0380461bfdba74ba34d100c2fc4e3d5434d09af0644f6c889b749b9511fd3867216a1aa6d575f070b716c6756b1f56c0067b71d
+  languageName: node
+  linkType: hard
+
+"poseidon-lite@npm:^0.2.0":
   version: 0.2.0
   resolution: "poseidon-lite@npm:0.2.0"
   checksum: 10/63c7668b480ee3d57aaca0eda7e56d563ab2bfcc40bbce0e4bccdc9deed4c0d68255749356e328b622ce8715b1f1ba689fe1a86ca78eb1056a51a18daa252ee1

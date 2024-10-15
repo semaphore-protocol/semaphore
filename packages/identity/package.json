@@ -31,17 +31,15 @@
     },
     "devDependencies": {
         "@rollup/plugin-alias": "^5.1.0",
-        "@rollup/plugin-commonjs": "^25.0.7",
-        "@rollup/plugin-node-resolve": "^15.2.3",
         "@rollup/plugin-typescript": "^11.1.6",
         "rimraf": "^5.0.5",
         "rollup": "^4.12.0",
         "rollup-plugin-cleanup": "^3.2.1"
     },
     "dependencies": {
-        "@zk-kit/baby-jubjub": "1.0.1",
-        "@zk-kit/eddsa-poseidon": "1.0.2",
-        "@zk-kit/utils": "1.2.0",
-        "poseidon-lite": "0.2.0"
+        "@zk-kit/baby-jubjub": "1.0.3",
+        "@zk-kit/eddsa-poseidon": "1.0.4",
+        "@zk-kit/utils": "1.2.1",
+        "poseidon-lite": "0.3.0"
     }
 }
