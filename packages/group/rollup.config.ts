@@ -1,5 +1,3 @@
-import commonjs from "@rollup/plugin-commonjs"
-import { nodeResolve } from "@rollup/plugin-node-resolve"
 import typescript from "@rollup/plugin-typescript"
 import * as fs from "fs"
 import cleanup from "rollup-plugin-cleanup"
@@ -20,13 +18,11 @@ export default {
         { file: pkg.exports.require, format: "cjs", banner, exports: "auto" },
         { file: pkg.exports.default, format: "es", banner }
     ],
-    external: Object.keys(pkg.dependencies),
+    external: [...Object.keys(pkg.dependencies), "poseidon-lite/poseidon2"],
     plugins: [
         typescript({
             tsconfig: "./build.tsconfig.json"
         }),
-        commonjs(),
-        nodeResolve(),
         cleanup({ comments: "jsdoc" })
     ]
 }
