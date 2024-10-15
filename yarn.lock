@@ -6214,7 +6214,7 @@ __metadata:
     "@types/mocha": "npm:^10.0.6"
     "@zk-kit/baby-jubjub": "npm:1.0.3"
     "@zk-kit/binary-merkle-root.circom": "npm:1.0.0"
-    circomkit: "npm:^0.3.1"
+    circomkit: "npm:0.0.19"
     circomlib: "npm:2.0.5"
     mocha: "npm:^10.2.0"
     poseidon-lite: "npm:^0.3.0"
@@ -10249,6 +10249,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chai@npm:^4.3.7":
+  version: 4.5.0
+  resolution: "chai@npm:4.5.0"
+  dependencies:
+    assertion-error: "npm:^1.1.0"
+    check-error: "npm:^1.0.3"
+    deep-eql: "npm:^4.1.3"
+    get-func-name: "npm:^2.0.2"
+    loupe: "npm:^2.3.6"
+    pathval: "npm:^1.1.1"
+    type-detect: "npm:^4.1.0"
+  checksum: 10/cde341aee15b0a51559c7cfc20788dcfb4d586a498cfb93b937bb568fd45c777b73b1461274be6092b6bf868adb4e3a63f3fec13c89f7d8fb194f84c6fa42d5f
+  languageName: node
+  linkType: hard
+
 "chalk@npm:3.0.0":
   version: 3.0.0
   resolution: "chalk@npm:3.0.0"
@@ -10592,19 +10607,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"circomkit@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "circomkit@npm:0.3.1"
+"circomkit@npm:0.0.19":
+  version: 0.0.19
+  resolution: "circomkit@npm:0.0.19"
   dependencies:
+    chai: "npm:^4.3.7"
     circom_tester: "npm:^0.0.19"
-    commander: "npm:^12.0.0"
     loglevel: "npm:^1.8.1"
-  peerDependencies:
-    "@types/snarkjs": ^0.7.x
-    snarkjs: ^0.7.x
+    snarkjs: "npm:^0.7.0"
   bin:
-    circomkit: dist/cli.js
-  checksum: 10/b84f15aae13338a9af47ceba4355df7995401b8b275ce70510d25b05e96076fa94fca221abd9042b500af9eb97a5d55ce0d14e193de91cfc6c940da3cc43b34f
+    circomkit: dist/bin/index.js
+  checksum: 10/eaed7b3494d1269c4fa347e9eeef2efb8e119870e14a06b1adeca5b0d58c60d05730f23d9b5aa4bc917ee482ebb13334098b0a8d5a1ada27b3b0f18b42b2f5dc
   languageName: node
   linkType: hard
 
@@ -25116,7 +25129,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"snarkjs@npm:0.7.4":
+"snarkjs@npm:0.7.4, snarkjs@npm:^0.7.0":
   version: 0.7.4
   resolution: "snarkjs@npm:0.7.4"
   dependencies:
@@ -26677,6 +26690,13 @@ __metadata:
   version: 4.0.8
   resolution: "type-detect@npm:4.0.8"
   checksum: 10/5179e3b8ebc51fce1b13efb75fdea4595484433f9683bbc2dca6d99789dba4e602ab7922d2656f2ce8383987467f7770131d4a7f06a26287db0615d2f4c4ce7d
+  languageName: node
+  linkType: hard
+
+"type-detect@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "type-detect@npm:4.1.0"
+  checksum: 10/e363bf0352427a79301f26a7795a27718624c49c576965076624eb5495d87515030b207217845f7018093adcbe169b2d119bb9b7f1a31a92bfbb1ab9639ca8dd
   languageName: node
   linkType: hard
 
