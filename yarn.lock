@@ -6214,7 +6214,7 @@ __metadata:
     "@types/mocha": "npm:^10.0.6"
     "@zk-kit/baby-jubjub": "npm:1.0.3"
     "@zk-kit/binary-merkle-root.circom": "npm:1.0.0"
-    circomkit: "npm:^0.0.19"
+    circomkit: "npm:^0.3.1"
     circomlib: "npm:2.0.5"
     mocha: "npm:^10.2.0"
     poseidon-lite: "npm:^0.3.0"
@@ -10234,7 +10234,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chai@npm:^4.2.0, chai@npm:^4.3.6, chai@npm:^4.3.7":
+"chai@npm:^4.2.0, chai@npm:^4.3.6":
   version: 4.4.1
   resolution: "chai@npm:4.4.1"
   dependencies:
@@ -10592,17 +10592,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"circomkit@npm:^0.0.19":
-  version: 0.0.19
-  resolution: "circomkit@npm:0.0.19"
+"circomkit@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "circomkit@npm:0.3.1"
   dependencies:
-    chai: "npm:^4.3.7"
     circom_tester: "npm:^0.0.19"
+    commander: "npm:^12.0.0"
     loglevel: "npm:^1.8.1"
-    snarkjs: "npm:^0.7.0"
+  peerDependencies:
+    "@types/snarkjs": ^0.7.x
+    snarkjs: ^0.7.x
   bin:
-    circomkit: dist/bin/index.js
-  checksum: 10/eaed7b3494d1269c4fa347e9eeef2efb8e119870e14a06b1adeca5b0d58c60d05730f23d9b5aa4bc917ee482ebb13334098b0a8d5a1ada27b3b0f18b42b2f5dc
+    circomkit: dist/cli.js
+  checksum: 10/b84f15aae13338a9af47ceba4355df7995401b8b275ce70510d25b05e96076fa94fca221abd9042b500af9eb97a5d55ce0d14e193de91cfc6c940da3cc43b34f
   languageName: node
   linkType: hard
 
@@ -25114,7 +25116,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"snarkjs@npm:0.7.4, snarkjs@npm:^0.7.0":
+"snarkjs@npm:0.7.4":
   version: 0.7.4
   resolution: "snarkjs@npm:0.7.4"
   dependencies:
