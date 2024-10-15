@@ -6212,12 +6212,12 @@ __metadata:
   dependencies:
     "@semaphore-protocol/core": "workspace:^"
     "@types/mocha": "npm:^10.0.6"
-    "@zk-kit/baby-jubjub": "npm:1.0.1"
+    "@zk-kit/baby-jubjub": "npm:1.0.3"
     "@zk-kit/binary-merkle-root.circom": "npm:1.0.0"
     circomkit: "npm:^0.0.19"
     circomlib: "npm:2.0.5"
     mocha: "npm:^10.2.0"
-    poseidon-lite: "npm:^0.2.0"
+    poseidon-lite: "npm:^0.3.0"
   languageName: unknown
   linkType: soft
 
@@ -8456,15 +8456,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/baby-jubjub@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@zk-kit/baby-jubjub@npm:1.0.1"
-  dependencies:
-    "@zk-kit/utils": "npm:1.0.0"
-  checksum: 10/d9b97b773351c0524cbac3e4cb5721762865198483ea91ffdc7cd05bc4a7c4f3d1ec0b639a04cdcad4e71c60eed82bb1e32060531e2e7b11df6c1172024e03d1
-  languageName: node
-  linkType: hard
-
 "@zk-kit/baby-jubjub@npm:1.0.3":
   version: 1.0.3
   resolution: "@zk-kit/baby-jubjub@npm:1.0.3"
@@ -8510,15 +8501,6 @@ __metadata:
   dependencies:
     "@zk-kit/utils": "npm:1.2.1"
   checksum: 10/f57ba0ab15ff38609c352862b21023d370bd250c37c7ef15d4ee7724c8179a7fdd6647ac8a555e6cf523032d1c769fb9eae6de5364a97574224ff7de1a34f8a8
-  languageName: node
-  linkType: hard
-
-"@zk-kit/utils@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@zk-kit/utils@npm:1.0.0"
-  dependencies:
-    buffer: "npm:^6.0.3"
-  checksum: 10/a471025ca4c69a825bebf2c68a0d83c55c345c8843f28eeb958f1e2aa549aaa982939c1d6d819dda337601163064f382e450d09103ba4d9a0525281a0a23696b
   languageName: node
   linkType: hard
 
@@ -21757,17 +21739,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"poseidon-lite@npm:0.3.0":
+"poseidon-lite@npm:0.3.0, poseidon-lite@npm:^0.3.0":
   version: 0.3.0
   resolution: "poseidon-lite@npm:0.3.0"
   checksum: 10/1e7294f7fed91e1cdc3aee7bd0380461bfdba74ba34d100c2fc4e3d5434d09af0644f6c889b749b9511fd3867216a1aa6d575f070b716c6756b1f56c0067b71d
-  languageName: node
-  linkType: hard
-
-"poseidon-lite@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "poseidon-lite@npm:0.2.0"
-  checksum: 10/63c7668b480ee3d57aaca0eda7e56d563ab2bfcc40bbce0e4bccdc9deed4c0d68255749356e328b622ce8715b1f1ba689fe1a86ca78eb1056a51a18daa252ee1
   languageName: node
   linkType: hard
 
