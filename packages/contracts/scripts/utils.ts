@@ -3,7 +3,7 @@ import { readFileSync, writeFileSync } from "fs"
 import { FactoryOptions } from "hardhat/types"
 
 export type NetworkDeployedContracts = {
-    name: "Semaphore" | "SemaphoreVerifier" | "PoseidonT3" | "SemaphoreVerifierKeyPts"
+    name: "Semaphore" | "SemaphoreVerifier" | "PoseidonT3"
     address: string
     startBlock: number
 }[]

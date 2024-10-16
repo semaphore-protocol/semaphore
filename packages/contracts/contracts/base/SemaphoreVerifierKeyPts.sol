@@ -974,7 +974,7 @@ library SemaphoreVerifierKeyPts {
         hex"1ff343732becbc72450b2faedef7112b951edf2ee03bebe4b71365755e6d5518"
         hex"10e06fbbc2176bff93433750bcbfec05aea120f193a1e4c5bf5993e098916f96";
 
-    function get_pts(uint256 merkleTreeDepth) public pure returns (uint256[SET_SIZE] memory pts) {
+    function get_pts(uint256 merkleTreeDepth) internal pure returns (uint256[SET_SIZE] memory pts) {
         bytes memory pt_bytes = VK_POINT_BYTES;
         uint256 byte_offset = 32 + (merkleTreeDepth - 1) * SET_SIZE * 32;
 
