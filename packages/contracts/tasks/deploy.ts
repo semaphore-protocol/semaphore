@@ -15,6 +15,7 @@ task("deploy", "Deploy a Semaphore contract")
 
             if (!semaphoreVerifierAddress) {
                 semaphoreVerifierAddress = await deploy(ethers, "SemaphoreVerifier", hardhatArguments.network)
+
                 if (logs) {
                     console.info(`SemaphoreVerifier contract has been deployed to: ${semaphoreVerifierAddress}`)
                 }
