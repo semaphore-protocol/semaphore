@@ -35,7 +35,7 @@
         "mocha": "^10.2.0",
         "poseidon-lite": "^0.3.0"
     },
-    "overrides": {
+    "resolutions": {
         "circom_runtime": "iden3/circom_runtime#fix/addMissingPrintDebug"
     }
 }
