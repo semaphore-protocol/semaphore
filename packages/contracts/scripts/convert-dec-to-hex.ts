@@ -1,7 +1,7 @@
 #!/usr/bin/env node_modules/.bin/ts-node
 // Run the script from project root directory
 
-// copied from SemaphoreVerifier.sol
+// Copied from SemaphoreVerifier.sol
 const VK_POINTS = [
     [
         18358547564487905095688479908858987846616998213156437518686067355563592118237n,
@@ -517,19 +517,15 @@ const VK_POINTS = [
     ]
 ]
 
-const SET_SIZE = 14
-
 async function main() {
     const array = VK_POINTS.flat()
-    array.forEach((v, idx) => {
-        const set = `set ${Math.floor(idx / SET_SIZE)}-${idx % SET_SIZE}: `
+    array.forEach((v) => {
         // convert to 32 bytes, 64-char string
         let bytes = v.toString(16)
         if (bytes.length < 64) {
             bytes = `${"0".repeat(64 - bytes.length)}${bytes}`
         }
-        console.log(`// ${set}${v}`)
-        console.log(`hex"${bytes}"`)
+        console.info(`hex"${bytes}"`)
     })
 }
 

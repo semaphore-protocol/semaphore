@@ -21,7 +21,9 @@ task("deploy", "Deploy a Semaphore contract")
 
             if (!verifierKeyPtsAddress) {
                 verifierKeyPtsAddress = await deploy(ethers, "SemaphoreVerifierKeyPts", hardhatArguments.network)
-                logs && console.info(`SemaphoreVerifierKeyPts library has been deployed to: ${verifierKeyPtsAddress}`)
+                if (logs) {
+                    console.info(`SemaphoreVerifierKeyPts library has been deployed to: ${verifierKeyPtsAddress}`)
+                }
             }
 
             if (!semaphoreVerifierAddress) {
@@ -30,12 +32,16 @@ task("deploy", "Deploy a Semaphore contract")
                         SemaphoreVerifierKeyPts: verifierKeyPtsAddress
                     }
                 })
-                logs && console.info(`SemaphoreVerifier contract has been deployed to: ${semaphoreVerifierAddress}`)
+                if (logs) {
+                    console.info(`SemaphoreVerifier contract has been deployed to: ${semaphoreVerifierAddress}`)
+                }
             }
 
             if (!poseidonT3Address) {
                 poseidonT3Address = await deploy(ethers, "PoseidonT3", hardhatArguments.network)
-                logs && console.info(`PoseidonT3 library has been deployed to: ${poseidonT3Address}`)
+                if (logs) {
+                    console.info(`PoseidonT3 library has been deployed to: ${poseidonT3Address}`)
+                }
             }
 
             const semaphoreAddress = await deploy(
@@ -49,7 +55,9 @@ task("deploy", "Deploy a Semaphore contract")
                     }
                 }
             )
-            logs && console.info(`Semaphore contract has been deployed to: ${semaphoreAddress}`)
+            if (logs) {
+                console.info(`Semaphore contract has been deployed to: ${semaphoreAddress}`)
+            }
 
             saveDeployedContracts(
                 [
