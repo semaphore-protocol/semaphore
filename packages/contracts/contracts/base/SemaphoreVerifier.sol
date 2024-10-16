@@ -30,6 +30,10 @@ contract SemaphoreVerifier {
 
     uint16 constant pLastMem = 896;
 
+    constructor() {
+        SemaphoreVerifierKeyPts.checkInvariant(MAX_DEPTH);
+    }
+
     function verifyProof(
         uint[2] calldata _pA,
         uint[2][2] calldata _pB,
@@ -37,7 +41,7 @@ contract SemaphoreVerifier {
         uint[4] calldata _pubSignals,
         uint merkleTreeDepth
     ) external view returns (bool) {
-        uint[14] memory _vkPoints = SemaphoreVerifierKeyPts.get_pts(merkleTreeDepth);
+        uint[14] memory _vkPoints = SemaphoreVerifierKeyPts.getPts(merkleTreeDepth);
 
         assembly {
             function checkField(v) {
