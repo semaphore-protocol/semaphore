@@ -138,4 +138,20 @@ export class Identity {
     static verifySignature(message: BigNumberish, signature: Signature, publicKey: Point): boolean {
         return verifySignature(message, signature, publicKey)
     }
+
+    /**
+     * Generates the commitment from the given public key.
+     * This static method is particularly useful after signature verification,
+     * as it allows retrieval of the corresponding commitment associated with the public key.
+     *
+     * @example
+     * const identity = new Identity()
+     * Identity.generateCommitment(identity.publicKey)
+     *
+     * @param publicKey The public key to generate the commitment.
+     * @returns The Semaphore identity commitment.
+     */
+    static generateCommitment(publicKey: Point): bigint {
+        return poseidon2(publicKey)
+    }
 }
