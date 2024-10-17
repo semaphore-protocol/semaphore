@@ -1,0 +1,13 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+
+remappings = [
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+    "@zk-kit/lean-imt.sol=lib/zk-kit.solidity/packages/lean-imt/contracts/",
+    "@semaphore/contracts/=lib/semaphore/packages/contracts/",
+    "poseidon-solidity/=lib/poseidon-solidity/contracts/"
+]
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
