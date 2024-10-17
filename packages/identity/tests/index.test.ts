@@ -138,4 +138,14 @@ describe("Identity", () => {
             expect(Identity.verifySignature("message", signature, identity.publicKey)).toBeTruthy()
         })
     })
+
+    describe("# generateCommitment", () => {
+        it("Should generate the identity commitment from the public key", () => {
+            const identity = new Identity(privateKeyText)
+
+            const commitment = Identity.generateCommitment(identity.publicKey)
+
+            expect(identity.commitment).toBe(commitment)
+        })
+    })
 })
