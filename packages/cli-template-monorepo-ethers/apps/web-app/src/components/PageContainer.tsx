@@ -3,6 +3,7 @@
 import { useLogContext } from "@/context/LogContext"
 import shortenString from "@/utils/shortenString"
 import { usePathname } from "next/navigation"
+import Link from "next/link"
 
 export default function PageContainer({
     children
@@ -26,11 +27,9 @@ export default function PageContainer({
     return (
         <>
             <div className="header">
-                <div className="header-left">
-                    {/* <Link href="/" className="header-left">
-                        Feedback
-                    </Link> */}
-                </div>
+                <Link href="/" className="header-left">
+                    Feedback
+                </Link>
                 <div className="header-right">
                     <a
                         href={getExplorerLink(
