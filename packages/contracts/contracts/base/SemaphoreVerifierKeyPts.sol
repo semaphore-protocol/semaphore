@@ -3,6 +3,8 @@
 pragma solidity 0.8.23;
 
 library SemaphoreVerifierKeyPts {
+    error Semaphore__VKPtBytesMaxDepthInvariantViolated(uint256 actual, uint256 expected);
+
     // Verification Key points.
     // These values are taken from the verification key json file generated with snarkjs.
     // It allows to use the same verifier to verify proofs for all the tree depths supported by Semaphore.
@@ -472,6 +474,9 @@ library SemaphoreVerifierKeyPts {
     }
 
     function checkInvariant(uint8 maxDepth) internal pure {
-        assert(VK_POINT_BYTES.length == maxDepth * SET_SIZE * 32);
+        uint256 expected = maxDepth * SET_SIZE * 32;
+        if (VK_POINT_BYTES.length != expected) {
+            revert Semaphore__VKPtBytesMaxDepthInvariantViolated(VK_POINT_BYTES.length, expected);
+        }
     }
 }
