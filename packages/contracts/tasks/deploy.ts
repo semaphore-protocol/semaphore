@@ -3,8 +3,8 @@ import { task, types } from "hardhat/config"
 import { deploy, saveDeployedContracts } from "../scripts/utils"
 
 task("deploy", "Deploy a Semaphore contract")
-    .addOptionalParam<boolean>("verifier", "Verifier contract address", undefined, types.string)
-    .addOptionalParam<boolean>("poseidon", "Poseidon library address", undefined, types.string)
+    .addOptionalParam<string>("verifier", "Verifier contract address", undefined, types.string)
+    .addOptionalParam<string>("poseidon", "Poseidon library address", undefined, types.string)
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
     .setAction(
         async (
