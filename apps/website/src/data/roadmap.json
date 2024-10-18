@@ -24,11 +24,15 @@
         "done": true
     },
     {
-        "name": "RLN extension",
+        "name": "Documentation improvements",
         "done": false
     },
     {
-        "name": "Documentation improvements",
+        "name": "New Explorer",
+        "done": false
+    },
+    {
+        "name": "RLN extension",
         "done": false
     }
 ]
