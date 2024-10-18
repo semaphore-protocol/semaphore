@@ -1,8 +1,10 @@
 import PageContainer from "@/components/PageContainer"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { LogContextProvider } from "@/context/LogContext"
+import { SemaphoreContextProvider } from "@/context/SemaphoreContext"
 import "./globals.css"
 
+import { Inter } from "next/font/google"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
@@ -32,8 +34,20 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
+            <head>
+                <link rel="preconnect" href="https://fonts.googleapis.com"></link>
+                <link rel="preconnect" href="https://fonts.gstatic.com"></link>
+                <link
+                    href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap"
+                    rel="stylesheet"
+                ></link>
+            </head>
             <body suppressHydrationWarning className={inter.className}>
-                <PageContainer>{children}</PageContainer>
+                <SemaphoreContextProvider>
+                    <LogContextProvider>
+                        <PageContainer>{children}</PageContainer>
+                    </LogContextProvider>
+                </SemaphoreContextProvider>
             </body>
         </html>
     )

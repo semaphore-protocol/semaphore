@@ -1,12 +1,8 @@
 "use client"
 
-import LogsContext from "@/context/LogsContext"
-import SemaphoreContext from "@/context/SemaphoreContext"
-import useSemaphore from "@/hooks/useSemaphore"
+import { useLogContext } from "@/context/LogContext"
 import shortenString from "@/utils/shortenString"
-import { SupportedNetwork } from "@semaphore-protocol/utils"
 import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
 import Link from "next/link"
 
 export default function PageContainer({
@@ -15,15 +11,9 @@ export default function PageContainer({
     children: React.ReactNode
 }>) {
     const pathname = usePathname()
-    const semaphore = useSemaphore()
-    const [_logs, setLogs] = useState<string>("")
+    const { log } = useLogContext()
 
-    useEffect(() => {
-        semaphore.refreshUsers()
-        semaphore.refreshFeedback()
-    }, [])
-
-    function getExplorerLink(network: SupportedNetwork, address: string) {
+    function getExplorerLink(network: string, address: string) {
         switch (network) {
             case "sepolia":
                 return `https://sepolia.etherscan.io/address/${address}`
@@ -35,7 +25,7 @@ export default function PageContainer({
     }
 
     return (
-        <div>
+        <>
             <div className="header">
                 <Link href="/" className="header-left">
                     Feedback
@@ -43,7 +33,7 @@ export default function PageContainer({
                 <div className="header-right">
                     <a
                         href={getExplorerLink(
-                            process.env.NEXT_PUBLIC_DEFAULT_NETWORK as SupportedNetwork,
+                            process.env.NEXT_PUBLIC_DEFAULT_NETWORK as string,
                             process.env.NEXT_PUBLIC_FEEDBACK_CONTRACT_ADDRESS as string
                         )}
                         target="_blank"
@@ -52,47 +42,34 @@ export default function PageContainer({
                         <div>{shortenString(process.env.NEXT_PUBLIC_FEEDBACK_CONTRACT_ADDRESS as string, [6, 4])}</div>
                     </a>
                     <a
-                        href="https://github.com/semaphore-protocol/semaphore"
+                        href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli-template-monorepo-subgraph"
                         target="_blank"
                         rel="noreferrer noopener nofollow"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="feather feather-github"
-                        >
-                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                        </svg>
+                        <button type="button" className="github-button" aria-label="Github repository">
+                            <svg
+                                height="32"
+                                aria-hidden="true"
+                                viewBox="0 0 24 24"
+                                version="1.1"
+                                width="32"
+                                data-view-component="true"
+                            >
+                                <path d="M12.5.75C6.146.75 1 5.896 1 12.25c0 5.089 3.292 9.387 7.863 10.91.575.101.79-.244.79-.546 0-.273-.014-1.178-.014-2.142-2.889.532-3.636-.704-3.866-1.35-.13-.331-.69-1.352-1.18-1.625-.402-.216-.977-.748-.014-.762.906-.014 1.553.834 1.769 1.179 1.035 1.74 2.688 1.25 3.349.948.1-.747.402-1.25.733-1.538-2.559-.287-5.232-1.279-5.232-5.678 0-1.25.445-2.285 1.178-3.09-.115-.288-.517-1.467.115-3.048 0 0 .963-.302 3.163 1.179.92-.259 1.897-.388 2.875-.388.977 0 1.955.13 2.875.388 2.2-1.495 3.162-1.179 3.162-1.179.633 1.581.23 2.76.115 3.048.733.805 1.179 1.825 1.179 3.09 0 4.413-2.688 5.39-5.247 5.678.417.36.776 1.05.776 2.128 0 1.538-.014 2.774-.014 3.162 0 .302.216.662.79.547C20.709 21.637 24 17.324 24 12.25 24 5.896 18.854.75 12.5.75Z"></path>
+                            </svg>
+                        </button>
                     </a>
                 </div>
             </div>
 
-            <div className="container">
-                <SemaphoreContext.Provider value={semaphore}>
-                    <LogsContext.Provider
-                        value={{
-                            _logs,
-                            setLogs
-                        }}
-                    >
-                        {children}
-                    </LogsContext.Provider>
-                </SemaphoreContext.Provider>
-            </div>
+            <div className="container">{children}</div>
 
-            <div className="divider-footer"></div>
+            <div className="divider-footer" />
 
             <div className="footer">
-                {_logs.endsWith("...")}
-                <p>{_logs || `Current step: ${pathname}`}</p>
+                {log.endsWith("...")}
+                <p>{log || `Current step: ${pathname}`}</p>
             </div>
-        </div>
+        </>
     )
 }
