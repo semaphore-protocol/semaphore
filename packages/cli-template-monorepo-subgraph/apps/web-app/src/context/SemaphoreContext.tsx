@@ -1,7 +1,7 @@
 "use client"
 
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react"
-import { SemaphoreEthers } from "@semaphore-protocol/data"
+import { SemaphoreSubgraph } from "@semaphore-protocol/data"
 import { decodeBytes32String, toBeHex } from "ethers"
 
 export type SemaphoreContextType = {
@@ -29,10 +29,7 @@ export const SemaphoreContextProvider: React.FC<ProviderProps> = ({ children }) 
     const [_feedback, setFeedback] = useState<string[]>([])
 
     const refreshUsers = useCallback(async (): Promise<void> => {
-        const semaphore = new SemaphoreEthers(ethereumNetwork, {
-            address: process.env.NEXT_PUBLIC_SEMAPHORE_CONTRACT_ADDRESS,
-            projectId: process.env.NEXT_PUBLIC_INFURA_API_KEY
-        })
+        const semaphore = new SemaphoreSubgraph(ethereumNetwork)
 
         const members = await semaphore.getGroupMembers(process.env.NEXT_PUBLIC_GROUP_ID as string)
 
@@ -47,10 +44,7 @@ export const SemaphoreContextProvider: React.FC<ProviderProps> = ({ children }) 
     )
 
     const refreshFeedback = useCallback(async (): Promise<void> => {
-        const semaphore = new SemaphoreEthers(ethereumNetwork, {
-            address: process.env.NEXT_PUBLIC_SEMAPHORE_CONTRACT_ADDRESS,
-            projectId: process.env.NEXT_PUBLIC_INFURA_API_KEY
-        })
+        const semaphore = new SemaphoreSubgraph(ethereumNetwork)
 
         const proofs = await semaphore.getGroupValidatedProofs(process.env.NEXT_PUBLIC_GROUP_ID as string)
 
