@@ -42,7 +42,7 @@ export default function PageContainer({
                         <div>{shortenString(process.env.NEXT_PUBLIC_FEEDBACK_CONTRACT_ADDRESS as string, [6, 4])}</div>
                     </a>
                     <a
-                        href="https://github.com/semaphore-protocol/semaphore/blob/main/packages/cli-template-monorepo-ethers/apps/web-app"
+                        href="https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli-template-monorepo-ethers"
                         target="_blank"
                         rel="noreferrer noopener nofollow"
                     >
