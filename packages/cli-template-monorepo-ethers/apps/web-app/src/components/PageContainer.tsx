@@ -38,6 +38,9 @@ export default function PageContainer({
         <div>
             <div className="header">
                 <Link href="/" className="header-left">
+                    Home
+                </Link>
+                <Link href="/" className="header-left">
                     Feedback
                 </Link>
                 <div className="header-right">
