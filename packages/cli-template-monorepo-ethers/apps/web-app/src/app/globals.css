@@ -27,7 +27,7 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-family:"Outfit", sans-serif;;
+    font-family: "Outfit", sans-serif;
 }
 
 html,
@@ -124,8 +124,8 @@ a:hover {
     font-weight: 400;
     transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
     transition-duration: 200ms;
-    padding-left: 18px!important;
-    padding-right: 18px!important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
     height: 2.5rem;
     min-width: 2.5rem;
     font-size: 1rem;
@@ -214,7 +214,7 @@ a:hover {
 }
 
 .refresh-icon {
-    margin-inline-end: 0.5rem
+    margin-inline-end: 0.5rem;
 }
 
 .stepper-icon {
@@ -242,7 +242,7 @@ a:hover {
     -ms-flex-negative: 0;
     flex-shrink: 0;
     color: currentColor;
-    vertical-align:super
+    vertical-align: super;
 }
 
 .box {
@@ -294,7 +294,8 @@ a:hover {
     background: var(--slate500);
 }
 
-.users-wrapper,.feedback-wrapper {
+.users-wrapper,
+.feedback-wrapper {
     max-height: 300px;
     overflow-y: scroll;
 }
@@ -306,10 +307,11 @@ a:hover {
 .users-header {
     font-weight: 700;
     font-size: 1.125rem;
-    font-family: 'DM Sans', sans-serif;
+    font-family: "DM Sans", sans-serif;
 }
 
-.join-group-button, .send-feedback-button {
+.join-group-button,
+.send-feedback-button {
     margin-top: 1.5rem;
 }
 
