@@ -18,7 +18,7 @@ jobs:
             - name: Install soldeer
               uses: taiki-e/install-action@v2
               with:
-                tool: soldeer
+                  tool: soldeer
 
             - name: Install Node.js
               uses: actions/setup-node@v4
