@@ -5,6 +5,8 @@ permissions:
 
 on:
     push:
+        tags:
+            - "v*"
 
 jobs:
     release:
@@ -23,7 +25,6 @@ jobs:
               env:
                   SOLDEER_TOKEN: ${{ secrets.SOLDEER_TOKEN }}
               run: |
-                  mkdir -p "$GITHUB_WORKSPACE"/.soldeer
                   echo "$SOLDEER_TOKEN" > "$GITHUB_WORKSPACE"/soldeer_login
 
             - name: Install Node.js
