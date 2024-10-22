@@ -20,11 +20,11 @@ async function maybePushToSoldeer() {
 }
 
 async function main() {
-    // execSync(`yarn build:libraries`, { stdio: "inherit" })
-    // execSync(`yarn clean:cli-templates`)
-    // execSync(`yarn workspaces foreach -A --no-private npm publish --tolerate-republish --access public`, {
-    //  stdio: "inherit"
-    // })
+    execSync(`yarn build:libraries`, { stdio: "inherit" })
+    execSync(`yarn clean:cli-templates`)
+    execSync(`yarn workspaces foreach -A --no-private npm publish --tolerate-republish --access public`, {
+        stdio: "inherit"
+    })
 
     await maybePushToSoldeer()
 }
