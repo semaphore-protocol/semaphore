@@ -13,6 +13,7 @@ import checkLatestVersion from "./checkLatestVersion.js"
 import getGroupIds from "./getGroupIds.js"
 import { getGroupId, getProjectName, getSupportedNetwork, getSupportedTemplate } from "./inquirerPrompts.js"
 import Spinner from "./spinner.js"
+import removePrePublishScript from "./removePrePublishScript.js"
 
 // Define the path to the package.json file to extract metadata for the CLI.
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
@@ -33,23 +34,6 @@ const supportedTemplates = [
         name: "Hardhat"
     }
 ]
-
-// Remove the prepublish script from the package.json file when creating a new project using the Semaphore CLI.
-function removePrePublishScript(packageJsonContent: string): string {
-    try {
-        const packageJson = JSON.parse(packageJsonContent)
-        if (packageJson.scripts && "prepublish" in packageJson.scripts) {
-            delete packageJson.scripts.prepublish
-            if (Object.keys(packageJson.scripts).length === 0) {
-                delete packageJson.scripts
-            }
-        }
-        return JSON.stringify(packageJson, null, 2)
-    } catch (error) {
-        console.error("Error processing package.json:", error)
-        return packageJsonContent
-    }
-}
 
 // Setup the CLI program with basic information and help text.
 program
