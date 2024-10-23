@@ -34,6 +34,22 @@ const supportedTemplates = [
     }
 ]
 
+function removePrePublishScript(packageJsonContent: string): string {
+    try {
+        const packageJson = JSON.parse(packageJsonContent)
+        if (packageJson.scripts && "prepublish" in packageJson.scripts) {
+            delete packageJson.scripts.prepublish
+            if (Object.keys(packageJson.scripts).length === 0) {
+                delete packageJson.scripts
+            }
+        }
+        return JSON.stringify(packageJson, null, 2)
+    } catch (error) {
+        console.error("Error processing package.json:", error)
+        return packageJsonContent
+    }
+}
+
 // Setup the CLI program with basic information and help text.
 program
     .name("semaphore")
@@ -102,6 +118,12 @@ program
 
         // Create an empty yarn.lock file to install dependencies successfully
         writeFileSync(`${currentDirectory}/${projectDirectory}/yarn.lock`, "")
+
+        // Read and modify package.json to remove prepublish script
+        const packageJsonPath = `${currentDirectory}/${projectDirectory}/package.json`
+        const packageJsonContent = readFileSync(packageJsonPath, "utf8")
+        const updatedPackageJsonContent = removePrePublishScript(packageJsonContent)
+        writeFileSync(packageJsonPath, updatedPackageJsonContent)
 
         spinner.stop()
 
