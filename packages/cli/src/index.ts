@@ -118,7 +118,7 @@ program
         console.info(`   ${chalk.cyan("yarn install")}\n`)
 
         // Read the package.json to list available npm scripts.
-        const { scripts } = JSON.parse(readFileSync(`${currentDirectory}/${projectDirectory}/package.json`, "utf8"))
+        const { scripts } = JSON.parse(updatedPackageJsonContent)
 
         if (scripts) {
             console.info(` Available scripts:\n`)
