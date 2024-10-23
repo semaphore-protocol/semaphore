@@ -1,4 +1,4 @@
-#!node_modules/.bin/ts-node
+#!/usr/bin/env ts-node
 import { rmSync } from "fs"
 
 const folderName = "packages"
