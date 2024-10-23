@@ -34,6 +34,7 @@ const supportedTemplates = [
     }
 ]
 
+// Remove the prepublish script from the package.json file when creating a new project using the Semaphore CLI.
 function removePrePublishScript(packageJsonContent: string): string {
     try {
         const packageJson = JSON.parse(packageJsonContent)
