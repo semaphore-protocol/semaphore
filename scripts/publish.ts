@@ -1,4 +1,4 @@
-#!node_modules/.bin/ts-node
+#!/usr/bin/env ts-node
 import compare from "semver/functions/compare"
 import { execSync } from "child_process"
 import contractsPkgJson from "@semaphore-protocol/contracts/package.json"

@@ -1,4 +1,4 @@
-#!node_modules/.bin/ts-node
+#!/usr/bin/env ts-node
 import { readFileSync, readdirSync, writeFileSync } from "node:fs"
 
 const folderName = "packages"
