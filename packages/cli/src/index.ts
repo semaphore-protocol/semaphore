@@ -13,6 +13,7 @@ import checkLatestVersion from "./checkLatestVersion.js"
 import getGroupIds from "./getGroupIds.js"
 import { getGroupId, getProjectName, getSupportedNetwork, getSupportedTemplate } from "./inquirerPrompts.js"
 import Spinner from "./spinner.js"
+import removePrePublishScript from "./removePrePublishScript.js"
 
 // Define the path to the package.json file to extract metadata for the CLI.
 const packagePath = `${dirname(fileURLToPath(import.meta.url))}/..`
@@ -103,6 +104,12 @@ program
         // Create an empty yarn.lock file to install dependencies successfully
         writeFileSync(`${currentDirectory}/${projectDirectory}/yarn.lock`, "")
 
+        // Read and modify package.json to remove prepublish script
+        const packageJsonPath = `${currentDirectory}/${projectDirectory}/package.json`
+        const packageJsonContent = readFileSync(packageJsonPath, "utf8")
+        const updatedPackageJsonContent = removePrePublishScript(packageJsonContent)
+        writeFileSync(packageJsonPath, updatedPackageJsonContent)
+
         spinner.stop()
 
         console.info(`\n ${logSymbols.success}`, `Your project is ready!\n`)
@@ -111,7 +118,7 @@ program
         console.info(`   ${chalk.cyan("yarn install")}\n`)
 
         // Read the package.json to list available npm scripts.
-        const { scripts } = JSON.parse(readFileSync(`${currentDirectory}/${projectDirectory}/package.json`, "utf8"))
+        const { scripts } = JSON.parse(updatedPackageJsonContent)
 
         if (scripts) {
             console.info(` Available scripts:\n`)
