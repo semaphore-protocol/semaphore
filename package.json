@@ -9,7 +9,8 @@
     "scripts": {
         "build": "yarn build:libraries && yarn build:subgraph && yarn build:website && yarn build:docs",
         "build:libraries": "yarn workspaces foreach -Apt --no-private run build",
-        "build:subgraph": "yarn workspace semaphore-subgraph build:sepolia",
+        "clean:subgraph": "rimraf apps/subgraph/node_modules",
+        "build:subgraph": "yarn clean:subgraph && yarn workspace semaphore-subgraph build:sepolia",
         "build:website": "yarn workspace semaphore-website build",
         "build:docs": "yarn workspace semaphore-docs build",
         "compile:contracts": "yarn workspace semaphore-contracts compile",
@@ -27,6 +28,7 @@
         "version:publish": "scripts/publish.ts",
         "version:release": "changelogithub",
         "clean": "scripts/clean-apps.ts && scripts/clean-packages.ts && yarn clean:cli-templates && rimraf node_modules",
+        "clean:branch": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
         "clean:cli-templates": "scripts/clean-cli-templates.ts",
         "remove:stable-version-field": "scripts/remove-stable-version-field.ts && yarn format:write",
         "precommit": "lint-staged",
@@ -45,11 +47,16 @@
         "proof-of-membership",
         "monorepo"
     ],
-    "workspaces": [
-        "apps/*",
-        "packages/*",
-        "packages/contracts/contracts"
-    ],
+    "workspaces": {
+        "packages": [
+            "packages/*",
+            "apps/*",
+            "packages/contracts/contracts"
+        ],
+        "nohoist": [
+            "**/semaphore-subgraph/**"
+        ]
+    },
     "packageManager": "yarn@4.1.0",
     "devDependencies": {
         "@commitlint/cli": "^18.6.1",
