@@ -129,3 +129,11 @@ const signature = identity.signMessage(message)
 
 Identity.verifySignature(message, signature, identity.publicKey)
 ```
+
+\# **Identity.generateCommitment**(publicKey: _Point_): _bigint_
+
+```typescript
+import { Identity } from "@semaphore-protocol/identity"
+
+Identity.generateCommitment(identity.publicKey)
+```
