@@ -555,5 +555,15 @@
             "github": "https://github.com/GeneralMagicio/pairwise-RPGF4",
             "website": "https://pairwise.vote"
         }
+    },
+    {
+        "name": "VeilEscrow",
+        "categories": ["Privacy", "Coordination"],
+        "tagline": "Secure, private, and decentralized escrows for anonymous transactions",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/evgongora/VeilEscrow"
+        }
     }
 ]
