@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // Part of this file was generated with [snarkJS](https://github.com/iden3/snarkjs).
-pragma solidity 0.8.23;
+pragma solidity >=0.8.23 <=0.8.28;
 
 library SemaphoreVerifierKeyPts {
     error Semaphore__VKPtBytesMaxDepthInvariantViolated(uint256 actual, uint256 expected);
