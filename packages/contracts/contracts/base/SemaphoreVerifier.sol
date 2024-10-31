@@ -59,11 +59,10 @@ contract SemaphoreVerifier {
                 mstore(add(mIn, 32), y)
                 mstore(add(mIn, 64), s)
 
-                // ref: https://www.evm.codes/precompiled 0x07 ecMul
-                // If inputs are valid, fixed gas cost 6000 is consumed.
-                // If inputs are invalid, all gas is consumed but is limited to 6000 in this case.
-                // `iszero(success)` will be true afterwards.
-                success := staticcall(6000, 7, mIn, 96, mIn, 64)
+                // ecMul gas cost is fixed at 6000. Add 33.3% gas for safety buffer.
+                // Last checked in 2024 Oct, evm codename Cancun
+                // ref: https://www.evm.codes/precompiled?fork=cancun#0x07
+                success := staticcall(8000, 7, mIn, 96, mIn, 64)
 
                 if iszero(success) {
                     mstore(0, 0)
@@ -73,11 +72,10 @@ contract SemaphoreVerifier {
                 mstore(add(mIn, 64), mload(pR))
                 mstore(add(mIn, 96), mload(add(pR, 32)))
 
-                // ref: https://www.evm.codes/precompiled 0x06 ecAdd
-                // If inputs are valid, fixed gas cost 150 is consumed.
-                // If inputs are invalid, all gas is consumed but is limited to 150 in this case.
-                // `iszero(success)` will be true afterwards.
-                success := staticcall(150, 6, mIn, 128, pR, 64)
+                // ecAdd gas cost is fixed at 150. Add 33.3% gas for safety buffer.
+                // Last checked in 2024 Oct, evm codename Cancun
+                // ref: https://www.evm.codes/precompiled?fork=cancun#0x06
+                success := staticcall(200, 6, mIn, 128, pR, 64)
 
                 if iszero(success) {
                     mstore(0, 0)
@@ -157,9 +155,10 @@ contract SemaphoreVerifier {
                 mstore(add(_pPairing, 704), mload(add(vkPoints, 64)))
                 mstore(add(_pPairing, 736), mload(add(vkPoints, 96)))
 
-                // ref: https://www.evm.codes/precompiled 0x08 ecPairing
-                // Given the input size 768 bytes, gas cost is computed from the above web page.
-                let success := staticcall(181000, 8, _pPairing, 768, _pPairing, 0x20)
+                // ecPairing gas cost at 181000 given 768 bytes input. Add 33.3% gas for safety buffer.
+                // Last checked in 2024 Oct, evm codename Cancun
+                // ref: https://www.evm.codes/precompiled?fork=cancun#0x08
+                let success := staticcall(241333, 8, _pPairing, 768, _pPairing, 0x20)
 
                 isOk := and(success, mload(_pPairing))
             }
