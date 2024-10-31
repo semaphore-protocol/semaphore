@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.23;
+pragma solidity >=0.8.23 <=0.8.28;
 
 import {ISemaphore} from "./interfaces/ISemaphore.sol";
 import {ISemaphoreVerifier} from "./interfaces/ISemaphoreVerifier.sol";
