@@ -28,7 +28,6 @@
         "version:publish": "scripts/publish.ts",
         "version:release": "changelogithub",
         "clean": "scripts/clean-apps.ts && scripts/clean-packages.ts && yarn clean:cli-templates && rimraf node_modules",
-        "clean:branch": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
         "clean:cli-templates": "scripts/clean-cli-templates.ts",
         "remove:stable-version-field": "scripts/remove-stable-version-field.ts && yarn format:write",
         "precommit": "lint-staged",
