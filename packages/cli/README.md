@@ -1,9 +1,7 @@
-<p align="center">
-    <h1 align="center">
-        Semaphore CLI
-    </h1>
-    <p align="center">A command line tool to set up your Semaphore project and get group data.</p>
-</p>
+<h1 align="center">
+    Semaphore CLI
+</h1>
+<p align="center">A command line tool to set up your Semaphore project and get group data.</p>
 
 <p align="center">
     <a href="https://github.com/semaphore-protocol">
