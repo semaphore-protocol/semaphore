@@ -264,7 +264,7 @@ The core of the Semaphore protocol is in the [circuit logic](/packages/circuits/
                 </a>
             </td>
         </tr>
-    <tbody>
+    </tbody>
 </table>
 
 ## 🛠 Install
