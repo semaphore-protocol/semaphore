@@ -51,9 +51,6 @@
             "packages/*",
             "apps/*",
             "packages/contracts/contracts"
-        ],
-        "nohoist": [
-            "**/semaphore-subgraph/**"
         ]
     },
     "packageManager": "yarn@4.1.0",
