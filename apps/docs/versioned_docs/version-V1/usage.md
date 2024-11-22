@@ -26,7 +26,7 @@ With the Client contract as the owner of the Semaphore contract, the Client
 contract may call owner-only Semaphore functions such as
 `addExternalNullifier()`.
 
-## Add, deactivate, or reactivate external nullifiiers
+## Add, deactivate, or reactivate external nullifiers
 
 These functions add, deactivate, and reactivate an external nullifier respectively.
 As each identity can only signal once to an external nullifier, and as a signal
