@@ -42,17 +42,17 @@
 
 ## Networks
 
-You can access any subgraph supported by Semaphore with the following URL: https://api.studio.thegraph.com/query/14377/semaphore-<network-name>/v4.0.0-beta.17.
+You can access any subgraph supported by Semaphore with the following URL: https://api.studio.thegraph.com/query/14377/semaphore-<network-name>/v4.1.0.
 
 Supported networks:
 
 -   `sepolia`
 -   `optimism`
 -   `optimism-sepolia`
--   `arbitrum-one`
+-   `arbitrum`
 -   `arbitrum-sepolia`
 -   `matic`
--   `polygon-amoy`
+-   `matic-amoy`
 -   `base-sepolia`
 -   `base`
 -   `linea-sepolia`
