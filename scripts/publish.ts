@@ -10,10 +10,12 @@ async function maybePushToSoldeer() {
     const response = await fetch(
         "https://api.soldeer.xyz/api/v1/revision?project_name=semaphore-protocol-contracts&limit=1"
     )
-    const { data, status } = await response.json()
+    const { data } = await response.json()
 
-    // fail status if no version published at all yet
-    if (status === "fail" || compare(contractsLocalVersion, data[0].version) === 1)
+    if (
+        data.length === 0 || // data = [] if no version has ever been published yet
+        compare(contractsLocalVersion, data[0].version) === 1
+    )
         execSync(`soldeer push semaphore-protocol-contracts~${contractsLocalVersion} packages/contracts/contracts`, {
             stdio: "inherit"
         })
