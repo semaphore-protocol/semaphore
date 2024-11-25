@@ -37,7 +37,7 @@ For more information, see [Merkle tree in Wikipedia](https://en.wikipedia.org/wi
 
 ## Nullifier
 
-A value used to prevent double entry or double signalling.
+A value used to prevent double entry or double signaling.
 
 See [Circuit nullifier hash](/V3/technical-reference/circuits/#nullifier-hash).
 
