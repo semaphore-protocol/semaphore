@@ -67,8 +67,8 @@ export default {
     },
     "scroll-sepolia": {
         name: "Scroll Sepolia",
-        url: "https://eth-sepolia-public.unifra.io",
-        chainId: 11155111,
+        url: "https://sepolia-rpc.scroll.io",
+        chainId: 534351,
         explorer: "https://sepolia.scrollscan.com"
     }
 }
