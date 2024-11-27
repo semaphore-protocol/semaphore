@@ -7333,6 +7333,7 @@ __metadata:
     "@semaphore-protocol/contracts": "npm:^4.7.0"
     "@zk-kit/lean-imt.sol": "npm:^2.0.0"
     forge-std: "github:foundry-rs/forge-std#v1.9.4"
+    poseidon-solidity: "npm:0.0.5"
   languageName: unknown
   linkType: soft
 

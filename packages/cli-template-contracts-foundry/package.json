@@ -6,7 +6,8 @@
     "devDependencies": {
         "@semaphore-protocol/contracts": "^4.7.0",
         "@zk-kit/lean-imt.sol": "^2.0.0",
-        "forge-std": "github:foundry-rs/forge-std#v1.9.4"
+        "forge-std": "github:foundry-rs/forge-std#v1.9.4",
+        "poseidon-solidity": "0.0.5"
     },
     "scripts": {
         "build": "forge build",
