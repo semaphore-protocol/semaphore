@@ -40,7 +40,7 @@ export default class SemaphoreEthers {
      * @param options Configuration options for the ethers provider and the Semaphore contract.
      */
     constructor(networkOrEthereumURL: EthersNetwork | string = defaultNetwork, options: EthersOptions = {}) {
-        checkParameter(networkOrEthereumURL, "networkOrSubgraphURL", "string")
+        checkParameter(networkOrEthereumURL, "networkOrEthereumURL", "string")
 
         if (options.provider) {
             checkParameter(options.provider, "provider", "string")
