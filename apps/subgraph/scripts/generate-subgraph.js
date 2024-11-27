@@ -6,8 +6,20 @@ const network = process.argv.at(2)
 
 const template = readFileSync("./subgraph.template.yaml", "utf-8")
 
+function mapNetwork(n) {
+    if (n === "matic-amoy") {
+        return "polygon-amoy"
+    }
+
+    if (n === "arbitrum") {
+        return "arbitrum-one"
+    }
+
+    return network
+}
+
 const subgraph = Mustache.render(template, {
-    network: network === "matic-amoy" ? "polygon-amoy" : network,
+    network: mapNetwork(network),
     ...getDeployedContract(network)
 })
 

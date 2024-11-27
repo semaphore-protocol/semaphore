@@ -17,18 +17,22 @@
     },
     {
         "name": "LeanIMT Paper",
+        "done": true
+    },
+    {
+        "name": "Support more Testnets/Mainnets",
+        "done": true
+    },
+    {
+        "name": "Documentation improvements",
+        "done": false
+    },
+    {
+        "name": "New Explorer",
         "done": false
     },
     {
         "name": "RLN extension",
-        "done": false
-    },
-    {
-        "name": "Support more Testnets/Mainnets",
-        "done": false
-    },
-    {
-        "name": "Documentation Revamp",
         "done": false
     }
 ]

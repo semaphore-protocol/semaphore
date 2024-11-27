@@ -1,9 +1,12 @@
 import type { Point } from "@zk-kit/baby-jubjub"
-import { EdDSAPoseidon, Signature, signMessage, verifySignature } from "@zk-kit/eddsa-poseidon"
+import { EdDSAPoseidon, type Signature, signMessage, verifySignature } from "@zk-kit/eddsa-poseidon"
 import type { BigNumberish } from "@zk-kit/utils"
 import { base64ToBuffer, bufferToBase64, textToBase64 } from "@zk-kit/utils/conversions"
 import { isString } from "@zk-kit/utils/type-checks"
 import { poseidon2 } from "poseidon-lite/poseidon2"
+
+export type { Point }
+export type { Signature }
 
 /**
  * The Semaphore identity is essentially an {@link https://www.rfc-editor.org/rfc/rfc8032 | EdDSA}
@@ -137,5 +140,21 @@ export class Identity {
      */
     static verifySignature(message: BigNumberish, signature: Signature, publicKey: Point): boolean {
         return verifySignature(message, signature, publicKey)
+    }
+
+    /**
+     * Generates the commitment from the given public key.
+     * This static method is particularly useful after signature verification,
+     * as it allows retrieval of the corresponding commitment associated with the public key.
+     *
+     * @example
+     * const identity = new Identity()
+     * Identity.generateCommitment(identity.publicKey)
+     *
+     * @param publicKey The public key to generate the commitment.
+     * @returns The Semaphore identity commitment.
+     */
+    static generateCommitment(publicKey: Point): bigint {
+        return poseidon2(publicKey)
     }
 }

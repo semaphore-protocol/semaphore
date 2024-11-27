@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.23;
+pragma solidity >=0.8.23 <=0.8.28;
 
 /// @dev Minimum supported tree depth.
 uint8 constant MIN_DEPTH = 1;

@@ -109,3 +109,33 @@ After a message is signed, anyone can verify the signature using the message its
 // Static method.
 Identity.verifySignature(message, signature, identity1.publicKey)
 ```
+
+## Export and import an identity
+
+A Semaphore Identity can be exported and then imported later for reuse.
+
+### Export an identity
+
+Returns the private key encoded as a base64 string.
+
+```ts
+import { Identity } from "@semaphore-protocol/identity"
+
+const identity = new Identity()
+
+const privateKey = identity.export()
+```
+
+### Import an identity
+
+Returns a Semaphore identity based on a private key encoded as a base64 string.
+
+```ts
+import { Identity } from "@semaphore-protocol/identity"
+
+const identity = new Identity()
+
+const privateKey = identity.export()
+
+const identity2 = Identity.import(privateKey)
+```

@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/group",
-    "version": "4.0.3",
+    "version": "4.6.0",
     "description": "A library to create and manage Semaphore groups.",
     "type": "module",
     "license": "MIT",
@@ -30,16 +30,14 @@
         "access": "public"
     },
     "devDependencies": {
-        "@rollup/plugin-commonjs": "^25.0.7",
-        "@rollup/plugin-node-resolve": "^15.2.3",
         "@rollup/plugin-typescript": "^11.1.6",
-        "poseidon-lite": "^0.2.0",
         "rimraf": "^5.0.5",
         "rollup": "^4.12.0",
         "rollup-plugin-cleanup": "^3.2.1"
     },
     "dependencies": {
-        "@zk-kit/lean-imt": "2.1.0",
-        "@zk-kit/utils": "1.0.0"
+        "@zk-kit/lean-imt": "2.2.1",
+        "@zk-kit/utils": "1.2.1",
+        "poseidon-lite": "0.3.0"
     }
 }

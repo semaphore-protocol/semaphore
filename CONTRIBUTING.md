@@ -42,7 +42,7 @@ When you submit your PR (or later change that code), a CI build will automatical
 
 We always use ESLint and Prettier. To check that your code follows the rules, simply run the npm script `yarn lint`.
 
-### Commits rules
+### Commit rules
 
 For commits it is recommended to use [Conventional Commits](https://www.conventionalcommits.org).
 

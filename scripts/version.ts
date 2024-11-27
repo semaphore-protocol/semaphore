@@ -1,4 +1,4 @@
-#!node_modules/.bin/ts-node
+#!/usr/bin/env ts-node
 import { execSync } from "child_process"
 
 async function main() {

@@ -4,6 +4,7 @@ permissions:
     contents: write
 
 on:
+    workflow_dispatch:
     push:
         tags:
             - "v*"
@@ -16,6 +17,16 @@ jobs:
             - uses: actions/checkout@v4
               with:
                   fetch-depth: 0
+
+            - name: Install soldeer
+              uses: taiki-e/install-action@v2
+              with:
+                  tool: soldeer
+            - name: Store soldeer login credential
+              env:
+                  SOLDEER_TOKEN: ${{ secrets.SOLDEER_TOKEN }}
+              run: |
+                  echo "$SOLDEER_TOKEN" > "$GITHUB_WORKSPACE"/soldeer_login
 
             - name: Install Node.js
               uses: actions/setup-node@v4
@@ -37,6 +48,7 @@ jobs:
               run: yarn version:publish
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  SOLDEER_LOGIN_FILE: ${{ github.workspace }}/soldeer_login
 
             - run: yarn version:release
               env:
