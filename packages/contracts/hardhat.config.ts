@@ -64,6 +64,14 @@ const hardhatConfig: HardhatUserConfig = {
                     apiURL: "https://api.lineascan.build/api",
                     browserURL: "https://lineascan.build"
                 }
+            },
+            {
+                network: "scroll-sepolia",
+                chainId: 534351,
+                urls: {
+                    apiURL: "https://api-sepolia.scrollscan.com/api",
+                    browserURL: "https://sepolia.scrollscan.com"
+                }
             }
         ]
     },

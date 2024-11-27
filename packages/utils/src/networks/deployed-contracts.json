@@ -218,5 +218,25 @@
                 "startBlock": 11459722
             }
         ]
+    },
+    {
+        "network": "scroll-sepolia",
+        "contracts": [
+            {
+                "name": "SemaphoreVerifier",
+                "address": "0x6C42599435B82121794D835263C846384869502d",
+                "startBlock": 7397758
+            },
+            {
+                "name": "PoseidonT3",
+                "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
+                "startBlock": 7397758
+            },
+            {
+                "name": "Semaphore",
+                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
+                "startBlock": 7397758
+            }
+        ]
     }
 ]
