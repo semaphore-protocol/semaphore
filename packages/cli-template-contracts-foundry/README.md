@@ -2,7 +2,11 @@
 
 This project demonstrates a basic Semaphore use case. It comes with a sample contract, a test for that contract and a sample script that deploys that contract.
 
-## Install  
+## Prerequisites
+
+This project requires [**Foundry**](https://getfoundry.sh/), and thus a [**Rust environment**](https://www.rust-lang.org/), installed in the machine.
+
+## Install
 
 ### Install dependencies
 

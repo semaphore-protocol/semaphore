@@ -7326,6 +7326,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@semaphore-protocol/cli-template-contracts-foundry@workspace:packages/cli-template-contracts-foundry":
+  version: 0.0.0-use.local
+  resolution: "@semaphore-protocol/cli-template-contracts-foundry@workspace:packages/cli-template-contracts-foundry"
+  dependencies:
+    "@semaphore-protocol/contracts": "npm:^4.7.0"
+    "@zk-kit/lean-imt.sol": "npm:^2.0.0"
+    forge-std: "github:foundry-rs/forge-std#v1.9.4"
+  languageName: unknown
+  linkType: soft
+
 "@semaphore-protocol/cli-template-contracts-hardhat@workspace:packages/cli-template-contracts-hardhat":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/cli-template-contracts-hardhat@workspace:packages/cli-template-contracts-hardhat"
@@ -7413,7 +7423,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/contracts@npm:4.7.0, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
+"@semaphore-protocol/contracts@npm:4.7.0, @semaphore-protocol/contracts@npm:^4.7.0, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
@@ -9580,7 +9590,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/lean-imt.sol@npm:2.0.0":
+"@zk-kit/lean-imt.sol@npm:2.0.0, @zk-kit/lean-imt.sol@npm:^2.0.0":
   version: 2.0.0
   resolution: "@zk-kit/lean-imt.sol@npm:2.0.0"
   dependencies:
@@ -15602,6 +15612,13 @@ __metadata:
     cross-spawn: "npm:^7.0.0"
     signal-exit: "npm:^4.0.1"
   checksum: 10/087edd44857d258c4f73ad84cb8df980826569656f2550c341b27adf5335354393eec24ea2fabd43a253233fb27cee177ebe46bd0b7ea129c77e87cb1e9936fb
+  languageName: node
+  linkType: hard
+
+"forge-std@github:foundry-rs/forge-std#v1.9.4":
+  version: 1.9.4
+  resolution: "forge-std@https://github.com/foundry-rs/forge-std.git#commit=1eea5bae12ae557d589f9f0f0edae2faa47cb262"
+  checksum: 10/7076c68c066e3831963a485543816f3c0381b626c1e365e71f1c8ad28ef06265f6e49d7e1f37118064c93751c68971561dfaab2f77fad87b9c2e8901aa7bfe10
   languageName: node
   linkType: hard
 

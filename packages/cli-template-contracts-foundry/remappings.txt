@@ -1,0 +1,3 @@
+@semaphore/contracts/=../../node_modules/@semaphore-protocol/contracts/
+forge-std/=../../node_modules/forge-std/src/
+@zk-kit/lean-imt.sol/=../../node_modules/@zk-kit/lean-imt.sol/

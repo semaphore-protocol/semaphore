@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
-import {ISemaphore} from "@semaphore/contracts/contracts/interfaces/ISemaphore.sol";
+import {ISemaphore} from "@semaphore/contracts/interfaces/ISemaphore.sol";
 
 contract Feedback {
     ISemaphore public semaphore;

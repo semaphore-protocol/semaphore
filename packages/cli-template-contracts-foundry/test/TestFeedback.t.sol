@@ -3,7 +3,7 @@ pragma solidity ^0.8.23;
 
 import {Feedback} from "../src/Feedback.sol";
 import {DeployFeedback} from "../script/DeployFeedback.s.sol";
-import {ISemaphore} from "@semaphore/contracts/contracts/interfaces/ISemaphore.sol";
+import {ISemaphore} from "@semaphore/contracts/interfaces/ISemaphore.sol";
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 import "forge-std/StdAssertions.sol";
