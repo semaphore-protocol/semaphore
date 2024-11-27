@@ -60,6 +60,12 @@ or yarn:
 yarn add @semaphore-protocol/contracts
 ```
 
+or [soldeer](https://github.com/mario-eth/soldeer):
+
+```commandline
+soldeer install semaphore-protocol-contracts~4.6.0
+```
+
 ## 📜 Usage
 
 ### Compile contracts
