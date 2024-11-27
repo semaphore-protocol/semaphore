@@ -64,5 +64,11 @@ export default {
         url: "https://rpc.linea.build",
         chainId: 59144,
         explorer: "https://lineascan.build"
+    },
+    "scroll-sepolia": {
+        name: "Scroll Sepolia",
+        url: "https://eth-sepolia-public.unifra.io",
+        chainId: 11155111,
+        explorer: "https://sepolia.scrollscan.com"
     }
 }
