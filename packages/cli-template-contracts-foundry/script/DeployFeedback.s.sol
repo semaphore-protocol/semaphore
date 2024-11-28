@@ -12,12 +12,6 @@ contract DeployFeedback is Script {
         address semaphoreVerifierAddress;
         address semaphoreAddress;
 
-        // Targeting Ethereum Sepolia
-        if (block.chainid == 11155111) {
-            semaphoreVerifierAddress = 0xe538f9DeeE04A397decb1E7dc5D16fD6f123c043;
-            semaphoreAddress = 0x1e0d7FF1610e480fC93BdEC510811ea2Ba6d7c2f;
-        }
-
         vm.startBroadcast();
 
         if (semaphoreAddress == address(0)) {

@@ -16,7 +16,7 @@
         "compile": "forge build",
         "deploy": "",
         "clean": "forge clean",
-        "test": "forge test",
+        "test": "forge test -vvv",
         "test:report-gas": "forge test --gas-report",
         "test:coverage": "forge coverage",
         "lint": "yarn solhint \"{script,src,test}/**/*.sol\"",
