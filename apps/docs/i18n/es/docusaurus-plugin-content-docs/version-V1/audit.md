@@ -12,6 +12,6 @@ as well as relevant circuits in
 which the Semaphore zk-SNARK uses.
 
 The summary of the audit results can be found
-[here](https://github.com/appliedzkp/semaphore/tree/master/audit). After three
+[here](https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V1/audit.md). After three
 rounds of fixes, all security and performance issues were fixed, and the few
 remaining issues are minor and do not affect security.
