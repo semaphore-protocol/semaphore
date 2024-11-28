@@ -287,7 +287,7 @@ export default function Home() {
                                 Upcoming Events
                             </Heading>
 
-                            <VStack align="left" spacing="10" maxH="600" overflowY="auto">
+                            <VStack align="left" spacing="10" maxH="600px" overflowY="auto">
                                 {events.map((event) => (
                                     <Link href={event.link} key={event.name} isExternal>
                                         <VStack align="left">
