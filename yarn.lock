@@ -7334,6 +7334,8 @@ __metadata:
     "@zk-kit/lean-imt.sol": "npm:^2.0.0"
     forge-std: "github:foundry-rs/forge-std#v1.9.4"
     poseidon-solidity: "npm:0.0.5"
+    prettier: "npm:^3.2.5"
+    prettier-plugin-solidity: "npm:^1.3.1"
     solhint: "npm:^4.1.1"
   languageName: unknown
   linkType: soft
