@@ -26,7 +26,7 @@ export default function Build() {
             url: "https://github.com/semaphore-protocol/boilerplate",
             details: [
                 "Begin your projects with a ready-to-use example template",
-                "Create identity, join group, send anonmous feedback",
+                "Create identity, join group, send anonymous feedback",
                 "Easily modify to align with specific project goals"
             ]
         },
@@ -133,7 +133,7 @@ export default function Build() {
                     </VStack>
                 </Flex>
 
-                <Box position="relative" w={{ base: "full", xl: "727px" }} h="630" overflow="hidden">
+                <Box position="relative" w={{ base: "full", xl: "727px" }} h="630px" overflow="hidden">
                     <Image
                         src="https://semaphore.cedoor.dev/flower-shadow.jpg"
                         alt=""
