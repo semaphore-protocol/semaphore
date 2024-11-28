@@ -1,18 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
+import {Test} from "forge-std/Test.sol";
+import {ISemaphore} from "@semaphore/contracts/interfaces/ISemaphore.sol";
 import {Feedback} from "../src/Feedback.sol";
 import {DeployFeedback} from "../script/DeployFeedback.s.sol";
-import {ISemaphore} from "@semaphore/contracts/interfaces/ISemaphore.sol";
-import "forge-std/Test.sol";
-import "forge-std/Vm.sol";
-import "forge-std/StdAssertions.sol";
 
 contract TestFeedback is Test {
     event MemberAdded(uint256 indexed groupId, uint256 index, uint256 identityCommitment, uint256 merkleTreeRoot);
 
-    Feedback feedback;
-    ISemaphore semaphore;
+    Feedback internal feedback;
+    ISemaphore internal semaphore;
 
     function setUp() external {
         DeployFeedback deployFeedback = new DeployFeedback();
@@ -30,7 +28,7 @@ contract TestFeedback is Test {
         // The commitment below is generated with private key of the first account in Anvil
         uint256 identityCommitment = 15072455385723004728391568434269917452175057560864330595979104241296826134229;
 
-        vm.expectEmit();    
+        vm.expectEmit();
         emit MemberAdded(0, 0, identityCommitment, identityCommitment);
 
         feedback.joinGroup(identityCommitment);

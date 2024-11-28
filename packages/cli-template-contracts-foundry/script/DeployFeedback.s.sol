@@ -5,11 +5,10 @@ import {Feedback} from "../src/Feedback.sol";
 import {Semaphore} from "@semaphore/contracts/Semaphore.sol";
 import {SemaphoreVerifier} from "@semaphore/contracts/base/SemaphoreVerifier.sol";
 import {ISemaphoreVerifier} from "@semaphore/contracts/interfaces/ISemaphoreVerifier.sol";
-import "forge-std/Script.sol";
+import {console, Script} from "forge-std/Script.sol";
 
 contract DeployFeedback is Script {
     function run() external returns (address, address) {
-
         address semaphoreVerifierAddress;
         address semaphoreAddress;
 
@@ -21,12 +20,12 @@ contract DeployFeedback is Script {
         vm.startBroadcast();
 
         if (semaphoreAddress == address(0)) {
-            // Deploy SemaphoreVerifier for Semaphore
+            // Deploy SemaphoreVerifier
             SemaphoreVerifier semaphoreVerifier = new SemaphoreVerifier();
             semaphoreVerifierAddress = address(semaphoreVerifier);
-            ISemaphoreVerifier IsemaphoreVerifier = ISemaphoreVerifier(address(semaphoreVerifier));
-            // Deploy Semaphore for Feedback
-            Semaphore semaphore = new Semaphore(IsemaphoreVerifier);
+
+            // Deploy Semaphore
+            Semaphore semaphore = new Semaphore(ISemaphoreVerifier(semaphoreVerifierAddress));
             semaphoreAddress = address(semaphore);
         }
 
@@ -35,6 +34,7 @@ contract DeployFeedback is Script {
 
         vm.stopBroadcast();
 
+        // solhint-disable-next-line no-console
         console.log("Feedback contract has been deployed to:", address(feedback));
 
         return (address(feedback), semaphoreAddress);
