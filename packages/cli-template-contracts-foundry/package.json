@@ -13,16 +13,18 @@
         "solhint": "^4.1.1"
     },
     "scripts": {
-        "build": "forge build",
+        "compile": "forge build",
+        "deploy": "",
         "clean": "forge clean",
+        "test": "forge test",
+        "test:report-gas": "forge test --gas-report",
+        "test:coverage": "forge coverage",
         "fmt": "forge fmt --check",
         "fmt:write": "forge fmt",
         "lint": "yarn fmt && yarn solhint \"{script,src,test}/**/*.sol\"",
         "prettier": "prettier -c \"**/*.{json,md,svg,yml}\"",
         "prettier:write": "prettier -w \"**/*.{json,md,svg,yml}\"",
-        "test": "forge test",
-        "test:report-gas": "forge test --gas-report --mp \"./test/integration/**/*.sol\" --nmt \"test(Fuzz)?_RevertWhen_\\w{1,}?\"",
-        "test:optimized": "pnpm run build:optimized && FOUNDRY_PROFILE=test-optimized forge test"
+        "check": "yarn test & yarn lint & yarn prettier"
     },
     "files": [
         "src",

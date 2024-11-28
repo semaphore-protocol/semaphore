@@ -1,6 +1,3 @@
-# Compiler files
+# Foundry artifact
 cache/
 out/
-
-# Dotenv file
-.env
