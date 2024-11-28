@@ -19,11 +19,9 @@
         "test": "forge test",
         "test:report-gas": "forge test --gas-report",
         "test:coverage": "forge coverage",
-        "fmt": "forge fmt --check",
-        "fmt:write": "forge fmt",
-        "lint": "yarn fmt && yarn solhint \"{script,src,test}/**/*.sol\"",
-        "prettier": "prettier -c \"**/*.{json,md,svg,yml}\"",
-        "prettier:write": "prettier -w \"**/*.{json,md,svg,yml}\"",
+        "lint": "yarn solhint \"{script,src,test}/**/*.sol\"",
+        "prettier": "prettier -c \"**/*.{json,md,svg,yml,sol}\"",
+        "prettier:write": "prettier -w \"**/*.{json,md,svg,yml,sol}\"",
         "check": "yarn test & yarn lint & yarn prettier"
     },
     "files": [
@@ -32,7 +30,8 @@
         "script",
         "package.json",
         "foundry.toml",
-        "remappings.txt"
+        "remappings.txt",
+        "README.md"
     ],
     "publishConfig": {
         "access": "public"

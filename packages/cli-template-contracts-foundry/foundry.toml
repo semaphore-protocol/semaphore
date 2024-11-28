@@ -3,7 +3,6 @@ src = "src"
 out = "out"
 script = "script"
 libs = ["node_modules"]
-fs_permissions = [{ access = "read", path = "out-optimized" }, { access = "read-write", path = "gas_calculations" }]
 allow_paths = ["*", "../.."]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
