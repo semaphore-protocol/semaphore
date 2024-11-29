@@ -10,11 +10,12 @@
         "poseidon-solidity": "0.0.5",
         "prettier": "^3.2.5",
         "prettier-plugin-solidity": "^1.3.1",
-        "solhint": "^4.1.1"
+        "solhint": "^4.1.1",
+        "wait-on": "^8.0.1"
     },
     "scripts": {
+        "dev": "anvil --no-mining & (wait-on tcp:8545 && LOG=true forge script script/DeployFeedback.s.sol --chain 31337 --broadcast)",
         "compile": "forge build",
-        "deploy": "",
         "clean": "forge clean",
         "test": "forge test -vvv",
         "test:report-gas": "forge test --gas-report",

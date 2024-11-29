@@ -11,7 +11,7 @@ This project requires [**Foundry**](https://getfoundry.sh/), and thus a [**Rust 
 ### Install dependencies
 
 ```bash
-make install
+yarn
 ```
 
 ## Usage
@@ -19,62 +19,36 @@ make install
 ### Compile contracts
 
 ```bash
-make build
+yarn compile
 ```
 
-### Test
+### Test contracts
 
 ```bash
-make test
+yarn test
 ```
 
 You can also generate a test coverage report:
 
 ```bash
-make coverage
+yarn test:coverage
 ```
 
 Or a test gas report:
 
-```bash  
-make gas-report
+```bash
+yarn test:gas-report
 ```
 
-### Deploy contracts
-
-1. Copy the `.env.example` file as `.env`.
+### Start a local anvil node
 
 ```bash
-cp .env.example .env
+yarn dev
 ```
-
-2. Add your environment variables.
-
-> [!NOTE]
-> You should at least set a valid Ethereum URL (e.g. Infura) and a private key with some ethers.
-
-3. And deploy your contract.
-
-```bash
-make deploy
-```
-
-4. You can also deploy your contract in Sepolia test chain.
-
-```bash
-make deploy-sepolia
-```
-
-```bash
-make deploy-sepolia-verify
-```
-
-> [!NOTE]
-> Check the Semaphore contract addresses [here](https://docs.semaphore.pse.dev/deployed-contracts).
 
 ### Code quality and formatting
 
-Run [ESLint](https://eslint.org/) and [solhint](https://github.com/protofire/solhint) to analyze the code and catch bugs:
+Run [solhint](https://github.com/protofire/solhint) to analyze the code and catch bugs:
 
 ```bash
 yarn lint
