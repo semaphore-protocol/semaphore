@@ -7330,8 +7330,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/cli-template-contracts-foundry@workspace:packages/cli-template-contracts-foundry"
   dependencies:
-    "@semaphore-protocol/contracts": "npm:^4.7.0"
-    "@zk-kit/lean-imt.sol": "npm:^2.0.0"
+    "@semaphore-protocol/contracts": "npm:4.7.0"
+    "@zk-kit/lean-imt.sol": "npm:2.0.0"
     forge-std: "github:foundry-rs/forge-std#v1.9.4"
     poseidon-solidity: "npm:0.0.5"
     prettier: "npm:^3.2.5"
@@ -7428,7 +7428,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/contracts@npm:4.7.0, @semaphore-protocol/contracts@npm:^4.7.0, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
+"@semaphore-protocol/contracts@npm:4.7.0, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
@@ -9595,7 +9595,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/lean-imt.sol@npm:2.0.0, @zk-kit/lean-imt.sol@npm:^2.0.0":
+"@zk-kit/lean-imt.sol@npm:2.0.0":
   version: 2.0.0
   resolution: "@zk-kit/lean-imt.sol@npm:2.0.0"
   dependencies:
