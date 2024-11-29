@@ -1,10 +1,9 @@
-<p align="center">
+<div align="center">
     <h1 align="center">
         Semaphore Website
     </h1>
     <p align="center">The official website of Semaphore.</p>
-</p>
-
+</div>
 <p align="center">
     <a href="https://github.com/semaphore-protocol" target="_blank">
         <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
