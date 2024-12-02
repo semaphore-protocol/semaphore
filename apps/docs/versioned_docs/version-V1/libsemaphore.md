@@ -145,7 +145,7 @@ Returns `false` otherwise.
 
 **`signMsg(privKey: EddsaPrivateKey, msg: SnarkBigInt): EdDSAMiMcSpongeSignature)`**
 
-Encapsualtes `circomlib.eddsa.signMiMCSponge` to sign a message `msg` using private key `privKey`.
+Encapsulates `circomlib.eddsa.signMiMCSponge` to sign a message `msg` using private key `privKey`.
 
 **`verifySignature(msg: SnarkBigInt, signature: EdDSAMiMcSpongeSignature, pubKey: EddsaPublicKey)`: boolean**
 
@@ -190,7 +190,7 @@ const genWitness = async (
 -   `circuit` is the output of `genCircuit()`.
 -   `identity` is the `Identity` whose identity commitment you want to prove is
     in the set of registered identities.
--   `idCommitments` is an array of registered identity commmitments; i.e. the
+-   `idCommitments` is an array of registered identity commitments; i.e. the
     leaves of the tree.
 -   `treeDepth` is the number of levels which the Merkle tree used has
 -   `externalNullifier` is the current external nullifier
@@ -212,7 +212,7 @@ Only `witness` is essential to generate the proof; the other data is only
 useful for debugging and additional off-chain checks, such as verifying the
 signature and the Merkle tree root.
 
-**`formatForVerifierContract = (proof: SnarkProof, publicSignals: SnarkPublicSignals`**
+**`formatForVerifierContract = (proof: SnarkProof, publicSignals: SnarkPublicSignals)`**
 
 Converts the data in `proof` and `publicSignals` to strings and rearranges
 elements of `proof.pi_b` so that `snarkjs`'s `verifier.sol` will accept it.
