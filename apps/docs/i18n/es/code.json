@@ -42,7 +42,7 @@
         "message": "Valores públicos"
     },
     "section.identities.box2.description": {
-        "message": "Semaphore utiliza la función hash Poseidon para crear el identtity commitment a partir de los valores privados. Los identity commitments se pueden compartir públicamente, de forma similar a las direcciones Ethereum."
+        "message": "Semaphore utiliza la función hash Poseidon para crear el identity commitment a partir de los valores privados. Los identity commitments se pueden compartir públicamente, de forma similar a las direcciones Ethereum."
     },
     "section.identities.box3.title": {
         "message": "Generar identidades"
