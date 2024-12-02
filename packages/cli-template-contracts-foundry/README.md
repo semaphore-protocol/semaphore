@@ -40,7 +40,7 @@ Or a test gas report:
 yarn test:gas-report
 ```
 
-### Start a local anvil node
+You can also start a local [Anvil node](https://book.getfoundry.sh/anvil/) with Semaphore and Feedback contracts deployed on it with:
 
 ```bash
 yarn dev
