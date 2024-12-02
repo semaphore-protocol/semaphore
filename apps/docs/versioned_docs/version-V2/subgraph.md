@@ -9,7 +9,7 @@ Site owners publish _subgraphs_ that expose site data for anyone to query.
 Semaphore's subgraph allows you to retrieve data from the [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/tree/v2.6.1/packages/contracts/Semaphore.sol) smart contract.
 
 :::tip
-The Graph protocol uses the [GraphQL](https://graphql.org/) query lanaguage. For examples, see the [GraphQL API documentation](https://thegraph.com/docs/developer/graphql-api). Visit the [subgraph repository](https://github.com/semaphore-protocol/subgraph) to see the list of Semaphore subgraphs.
+The Graph protocol uses the [GraphQL](https://graphql.org/) query language. For examples, see the [GraphQL API documentation](https://thegraph.com/docs/developer/graphql-api). Visit the [subgraph repository](https://github.com/semaphore-protocol/subgraph) to see the list of Semaphore subgraphs.
 :::
 
 ## Schema
