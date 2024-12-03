@@ -121,7 +121,7 @@ authenticity of the signal and prevents front-running attacks.
 
 ## Cryptographic primitives
 
-Semaphore uses MiMC for the Merkle tree, Pedersen commmitments for the identity
+Semaphore uses MiMC for the Merkle tree, Pedersen commitments for the identity
 commitments, Blake2 for the nullifiers hash, and EdDSA for the signature.
 
 MiMC is a relatively new hash function. We use the recommended MiMC
