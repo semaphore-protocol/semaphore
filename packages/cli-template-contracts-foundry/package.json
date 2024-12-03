@@ -14,7 +14,7 @@
         "wait-on": "^8.0.1"
     },
     "scripts": {
-        "dev": "anvil --no-mining & (wait-on tcp:8545 && LOG=true forge script script/DeployFeedback.s.sol --chain 31337 --broadcast)",
+        "dev": "anvil & (wait-on tcp:8545 && forge script script/DeployFeedback.s.sol --rpc-url anvil --broadcast --sender 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266)",
         "compile": "forge build",
         "clean": "forge clean",
         "test": "forge test -vvv",

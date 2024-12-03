@@ -1,3 +1,6 @@
 # Foundry artifact
 cache/
 out/
+
+# artifact for deploying on local Anvil node
+**/31337

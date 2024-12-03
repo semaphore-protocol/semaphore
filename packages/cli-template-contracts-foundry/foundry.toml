@@ -6,6 +6,7 @@ libs = ["node_modules"]
 allow_paths = ["*", "../.."]
 
 [rpc_endpoints]
+anvil = "http://127.0.0.1:8545"
 # sepolia = "${SEPOLIA_RPC_URL}"
 
 [etherscan]

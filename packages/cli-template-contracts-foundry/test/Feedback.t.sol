@@ -17,7 +17,7 @@ contract FeedbackTest is Test {
 
     function setUp() external {
         DeployFeedback deployFeedback = new DeployFeedback();
-        (address feedbackAddress, address semaphoreAddress) = deployFeedback.run();
+        (address feedbackAddress, address semaphoreAddress, ) = deployFeedback.run();
         feedbackContract = Feedback(feedbackAddress);
         semaphoreContract = ISemaphore(semaphoreAddress);
         semaphoreGroups = ISemaphoreGroups(semaphoreAddress);
