@@ -476,24 +476,20 @@ describe("Semaphore", () => {
             const group = new Group(members)
 
             // Create a group and add 3 members.
-            let transaction = await semaphoreContract["createGroup(address)"](accountAddresses[0])
+            await semaphoreContract["createGroup(address)"](accountAddresses[0])
 
-            const { logs } = (await transaction.wait()) as any
-
-            const [groupId] = logs[0].args
+            const groupId = 2
 
             // Adding members to group
 
-            transaction = await semaphoreContract.addMembers(groupId, members)
-            await transaction.wait()
+            await semaphoreContract.addMembers(groupId, members)
 
             // Remove the third member.
             {
                 group.removeMember(2)
                 const { siblings } = group.generateMerkleProof(2)
 
-                transaction = await semaphoreContract.removeMember(groupId, members[2], siblings)
-                await transaction.wait()
+                await semaphoreContract.removeMember(groupId, members[2], siblings)
             }
 
             // Update the second member.
@@ -501,14 +497,14 @@ describe("Semaphore", () => {
                 group.updateMember(1, members[2])
                 const { siblings } = group.generateMerkleProof(1)
 
-                transaction = await semaphoreContract.updateMember(groupId, members[1], members[2], siblings)
-                await transaction.wait()
+                await semaphoreContract.updateMember(groupId, members[1], members[2], siblings)
             }
 
             // Validate a proof.
+
             const proof = await generateProof(identity, group, 42, group.root)
 
-            transaction = await semaphoreContract.validateProof(groupId, proof)
+            const transaction = await semaphoreContract.validateProof(groupId, proof)
 
             await expect(transaction)
                 .to.emit(semaphoreContract, "ProofValidated")
