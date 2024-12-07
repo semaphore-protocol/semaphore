@@ -463,8 +463,61 @@ describe("Semaphore", () => {
 
             const proof = await generateProof(identity, group, message, group.root, merkleTreeDepth)
 
-            return { semaphoreContract, groupId, proof }
+            return { semaphoreContract, groupId, proof, accountAddresses }
         }
+
+        it("Should insert members,remove member,update member and verifyProof", async () => {
+            const { semaphoreContract, accountAddresses } = await loadFixture(deployValidateProofFixture)
+
+            const identity = new Identity("0")
+            const members = Array.from({ length: 3 }, (_, i) => new Identity(i.toString())).map(
+                ({ commitment }) => commitment
+            )
+            const group = new Group(members)
+
+            // Create a group and add 3 members.
+            await semaphoreContract["createGroup(address)"](accountAddresses[0])
+
+            const groupId = 2
+
+            // Adding members to group
+
+            await semaphoreContract.addMembers(groupId, members)
+
+            // Remove the third member.
+            {
+                group.removeMember(2)
+                const { siblings } = group.generateMerkleProof(2)
+
+                await semaphoreContract.removeMember(groupId, members[2], siblings)
+            }
+
+            // Update the second member.
+            {
+                group.updateMember(1, members[2])
+                const { siblings } = group.generateMerkleProof(1)
+
+                await semaphoreContract.updateMember(groupId, members[1], members[2], siblings)
+            }
+
+            // Validate a proof.
+
+            const proof = await generateProof(identity, group, 42, group.root)
+
+            const transaction = await semaphoreContract.validateProof(groupId, proof)
+
+            await expect(transaction)
+                .to.emit(semaphoreContract, "ProofValidated")
+                .withArgs(
+                    groupId,
+                    proof.merkleTreeDepth,
+                    proof.merkleTreeRoot,
+                    proof.nullifier,
+                    proof.message,
+                    proof.merkleTreeRoot,
+                    proof.points
+                )
+        })
 
         it("Should throw an exception if the proof is not valid", async () => {
             const { semaphoreContract, groupId, proof } = await loadFixture(deployValidateProofFixture)
