@@ -7451,7 +7451,7 @@ __metadata:
   resolution: "@semaphore-protocol/group@workspace:packages/group"
   dependencies:
     "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@zk-kit/lean-imt": "npm:2.2.1"
+    "@zk-kit/lean-imt": "npm:2.2.2"
     "@zk-kit/utils": "npm:1.2.1"
     poseidon-lite: "npm:0.3.0"
     rimraf: "npm:^5.0.5"
@@ -9589,12 +9589,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/lean-imt@npm:2.2.1":
-  version: 2.2.1
-  resolution: "@zk-kit/lean-imt@npm:2.2.1"
+"@zk-kit/lean-imt@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@zk-kit/lean-imt@npm:2.2.2"
   dependencies:
     "@zk-kit/utils": "npm:1.2.1"
-  checksum: 10/f57ba0ab15ff38609c352862b21023d370bd250c37c7ef15d4ee7724c8179a7fdd6647ac8a555e6cf523032d1c769fb9eae6de5364a97574224ff7de1a34f8a8
+  checksum: 10/321e1964a4a0b7a19083c01743f5ee2a7311b1eede6775ce952a6fecf07d347dc4cdb250a557ff459bc6d3bff030e2a571f5116510c2392ca523f50c4d02311d
   languageName: node
   linkType: hard
 
