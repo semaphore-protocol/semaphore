@@ -36,7 +36,7 @@
         "rollup-plugin-cleanup": "^3.2.1"
     },
     "dependencies": {
-        "@zk-kit/lean-imt": "2.2.1",
+        "@zk-kit/lean-imt": "2.2.2",
         "@zk-kit/utils": "1.2.1",
         "poseidon-lite": "0.3.0"
     }
