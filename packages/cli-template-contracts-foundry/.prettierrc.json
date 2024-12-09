@@ -1,0 +1,6 @@
+{
+    "semi": false,
+    "arrowParens": "always",
+    "trailingComma": "none",
+    "plugins": ["prettier-plugin-solidity"]
+}
