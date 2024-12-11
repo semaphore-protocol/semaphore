@@ -58,11 +58,11 @@ export default class SemaphoreEthers {
             options.address ??= address
             options.startBlock ??= startBlock
         } else {
-            if (options.address === undefined) {
-                throw new Error(`Network '${networkOrEthereumURL}' needs a Semaphore contract address`)
-            }
-
             options.startBlock ??= 0
+        }
+
+        if (options.address === undefined) {
+            throw new Error(`Network '${networkOrEthereumURL}' needs a Semaphore contract address`)
         }
 
         let provider: Provider

@@ -275,10 +275,16 @@ Clone this repository:
 git clone https://github.com/semaphore-protocol/semaphore.git
 ```
 
-And install the dependencies:
+Install the dependencies:
 
 ```bash
 cd semaphore && yarn
+```
+
+And build the repositiory:
+
+```bash
+yarn build
 ```
 
 ## 📜 Usage
