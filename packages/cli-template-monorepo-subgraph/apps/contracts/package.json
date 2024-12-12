@@ -38,7 +38,7 @@
         "eslint-config-airbnb-typescript": "^17.1.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-import": "^2.29.1",
-        "ethers": "^6.4.0",
+        "ethers": "^6.13.4",
         "hardhat": "^2.20.1",
         "hardhat-gas-reporter": "^1.0.8",
         "prettier": "^3.2.5",

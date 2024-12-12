@@ -54,7 +54,7 @@
         "@semaphore-protocol/utils": "4.7.2",
         "@zk-kit/artifacts": "1.8.0",
         "@zk-kit/utils": "1.2.1",
-        "ethers": "6.10.0",
+        "ethers": "6.13.4",
         "snarkjs": "0.7.4"
     }
 }
