@@ -54,6 +54,6 @@
         "rollup-plugin-cleanup": "^3.2.1"
     },
     "dependencies": {
-        "ethers": "^6.11.1"
+        "ethers": "^6.13.4"
     }
 }
