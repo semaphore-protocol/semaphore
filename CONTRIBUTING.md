@@ -22,7 +22,7 @@ Pull requests are great if you want to add a feature or fix a bug. Here's a quic
 
 3. Add a test for your change. Only refactoring and documentation changes require no new tests.
 
-4. Make sure to check out the [Style Guide](/CONTRIBUTING#style-guide) and ensure that your code complies with the rules.
+4. Make sure to check out the [Style Guide](/CONTRIBUTING.md#style-guide) and ensure that your code complies with the rules.
 
 5. Make the test pass.
 
