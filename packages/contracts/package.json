@@ -29,7 +29,7 @@
         "@types/ncp": "^2",
         "@types/node": "^20.10.7",
         "chai": "^4.2.0",
-        "ethers": "^6.4.0",
+        "ethers": "^6.13.4",
         "hardhat": "^2.19.4",
         "hardhat-gas-reporter": "^1.0.8",
         "ncp": "^2.0.0",

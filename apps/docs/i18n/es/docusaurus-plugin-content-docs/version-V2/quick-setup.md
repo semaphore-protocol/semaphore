@@ -58,7 +58,7 @@ Hardhat includes the Hardhat Network, a local Ethereum network for development.
 
 ## Install Semaphore packages
 
-Semaphore provides contracts, JavaScript libraries and an Hardhat plugin for developers building zero-knowledge applications.
+Semaphore provides contracts, JavaScript libraries and a Hardhat plugin for developers building zero-knowledge applications.
 
 -   `@semaphore-protocol/contracts` provides contracts to manage groups and verify Semaphore proofs on-chain.
 -   JavaScript libraries help developers build zero-knowledge applications.

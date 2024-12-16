@@ -20,9 +20,9 @@
         "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
         "@nomicfoundation/hardhat-toolbox": "^4.0.0",
         "@nomicfoundation/hardhat-verify": "^2.0.0",
-        "@semaphore-protocol/core": "4.7.0",
-        "@semaphore-protocol/hardhat": "4.7.0",
-        "@semaphore-protocol/utils": "4.7.0",
+        "@semaphore-protocol/core": "4.7.3",
+        "@semaphore-protocol/hardhat": "4.7.3",
+        "@semaphore-protocol/utils": "4.7.3",
         "@typechain/ethers-v6": "^0.5.0",
         "@typechain/hardhat": "^9.0.0",
         "@types/chai": "^4.2.0",
@@ -38,7 +38,7 @@
         "eslint-config-airbnb-typescript": "^17.1.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-import": "^2.29.1",
-        "ethers": "^6.4.0",
+        "ethers": "^6.13.4",
         "hardhat": "^2.20.1",
         "hardhat-gas-reporter": "^1.0.8",
         "prettier": "^3.2.5",
@@ -50,7 +50,7 @@
         "typescript": "^5.3.3"
     },
     "dependencies": {
-        "@semaphore-protocol/contracts": "4.7.0"
+        "@semaphore-protocol/contracts": "4.7.3"
     },
     "packageManager": "yarn@4.1.0"
 }
