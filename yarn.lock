@@ -7323,7 +7323,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/cli-template-contracts-foundry@workspace:packages/cli-template-contracts-foundry"
   dependencies:
-    "@semaphore-protocol/contracts": "npm:4.7.0"
+    "@semaphore-protocol/contracts": "npm:4.7.3"
     "@zk-kit/lean-imt.sol": "npm:2.0.0"
     forge-std: "github:foundry-rs/forge-std#v1.9.4"
     poseidon-solidity: "npm:0.0.5"
