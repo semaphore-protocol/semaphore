@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/core",
-    "version": "4.7.3",
+    "version": "4.8.0",
     "description": "Core library for the essential Semaphore features.",
     "type": "module",
     "license": "MIT",
@@ -42,8 +42,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@semaphore-protocol/group": "4.7.3",
-        "@semaphore-protocol/identity": "4.7.3",
-        "@semaphore-protocol/proof": "4.7.3"
+        "@semaphore-protocol/group": "4.8.0",
+        "@semaphore-protocol/identity": "4.8.0",
+        "@semaphore-protocol/proof": "4.8.0"
     }
 }
