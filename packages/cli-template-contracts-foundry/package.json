@@ -1,0 +1,41 @@
+{
+    "name": "@semaphore-protocol/cli-template-contracts-foundry",
+    "version": "4.7.3",
+    "description": "Semaphore Foundry template.",
+    "license": "Unlicense",
+    "devDependencies": {
+        "@semaphore-protocol/contracts": "4.7.3",
+        "@zk-kit/lean-imt.sol": "2.0.0",
+        "forge-std": "github:foundry-rs/forge-std#v1.9.4",
+        "poseidon-solidity": "0.0.5",
+        "prettier": "^3.2.5",
+        "prettier-plugin-solidity": "^1.3.1",
+        "solhint": "^4.1.1",
+        "wait-on": "^8.0.1"
+    },
+    "scripts": {
+        "dev": "anvil & (wait-on tcp:8545 && forge script script/DeployFeedback.s.sol --rpc-url anvil --broadcast --sender 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266)",
+        "compile": "forge build",
+        "clean": "forge clean",
+        "test": "forge test -vvv",
+        "test:report-gas": "forge test --gas-report",
+        "test:coverage": "forge coverage",
+        "lint": "yarn solhint \"{script,src,test}/**/*.sol\"",
+        "prettier": "prettier -c \"**/*.{json,md,svg,yml,sol}\"",
+        "prettier:write": "prettier -w \"**/*.{json,md,svg,yml,sol}\"",
+        "check": "yarn test & yarn lint & yarn prettier"
+    },
+    "files": [
+        "src",
+        "test",
+        "script",
+        "package.json",
+        "foundry.toml",
+        "remappings.txt",
+        "README.md"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "packageManager": "yarn@4.1.0"
+}
