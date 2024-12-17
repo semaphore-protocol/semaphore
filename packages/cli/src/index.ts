@@ -32,6 +32,10 @@ const supportedTemplates = [
     {
         value: "contracts-hardhat",
         name: "Hardhat"
+    },
+    {
+        value: "contracts-foundry",
+        name: "Foundry"
     }
 ]
 

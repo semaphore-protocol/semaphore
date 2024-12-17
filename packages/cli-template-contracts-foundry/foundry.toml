@@ -1,0 +1,15 @@
+[profile.default]
+src = "src"
+out = "out"
+script = "script"
+libs = ["node_modules"]
+allow_paths = ["*", "../.."]
+
+[rpc_endpoints]
+anvil = "http://127.0.0.1:8545"
+# sepolia = "${SEPOLIA_RPC_URL}"
+
+[etherscan]
+# sepolia = { key = "${ETHERSCAN_API_KEY}" }
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
