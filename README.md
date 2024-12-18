@@ -281,7 +281,7 @@ Install the dependencies:
 cd semaphore && yarn
 ```
 
-And build the repositiory:
+And build the repository:
 
 ```bash
 yarn build
