@@ -38,7 +38,8 @@
         ".editorconfig",
         ".env.example",
         ".prettierignore",
-        ".prettierrc.json"
+        ".prettierrc.json",
+        ".solhint.json"
     ],
     "packageManager": "yarn@4.1.0"
 }
