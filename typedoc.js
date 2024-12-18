@@ -8,6 +8,7 @@ const EXCLUDE_PKGS = [
     "cli-template-contracts-hardhat",
     "cli-template-monorepo-ethers",
     "cli-template-monorepo-subgraph",
+    "cli-template-contracts-foundry",
     "contracts",
     "core",
     "hardhat"
