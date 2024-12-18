@@ -16,7 +16,8 @@
         ".prettierrc.json",
         "hardhat.config.ts",
         "tsconfig.json",
-        "README.md"
+        "README.md",
+        ".solhint.json"
     ],
     "publishConfig": {
         "access": "public"
