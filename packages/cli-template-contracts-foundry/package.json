@@ -23,7 +23,8 @@
         "lint": "yarn solhint \"{script,src,test}/**/*.sol\"",
         "prettier": "prettier -c \"**/*.{json,md,svg,yml,sol}\"",
         "prettier:write": "prettier -w \"**/*.{json,md,svg,yml,sol}\"",
-        "check": "yarn test & yarn lint & yarn prettier"
+        "check": "yarn test & yarn lint & yarn prettier",
+        "prepublish": "tar -czf files.tgz .gitignore .yarn .yarnrc.yml"
     },
     "files": [
         "src",
@@ -32,10 +33,12 @@
         "package.json",
         "foundry.toml",
         "remappings.txt",
-        "README.md"
+        "README.md",
+        "files.tgz",
+        ".editorconfig",
+        ".env.example",
+        ".prettierignore",
+        ".prettierrc.json"
     ],
-    "publishConfig": {
-        "access": "public"
-    },
     "packageManager": "yarn@4.1.0"
 }
