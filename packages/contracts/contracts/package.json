@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/contracts",
-    "version": "4.8.1",
+    "version": "4.8.2",
     "description": "Semaphore contracts to manage groups and broadcast anonymous signals.",
     "license": "MIT",
     "files": [
