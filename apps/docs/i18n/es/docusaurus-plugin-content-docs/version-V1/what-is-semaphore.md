@@ -16,7 +16,7 @@ include private voting, whistleblowing, mixers, and anonymous authentication.
 Finally, it provides a simple built-in mechanism to prevent double-signalling
 or double-spending.
 
-This gadget comprises of smart contracts and
+This gadget comprises smart contracts and
 [zero-knowledge](https://z.cash/technology/zksnarks/) components which work in
 tandem. The Semaphore smart contract handles state, permissions, and proof
 verification on-chain. The zero-knowledge components work off-chain to allow
@@ -55,7 +55,7 @@ In sum, Semaphore provides the ability to:
 ### External nullifiers
 
 Think of an external nullifier as a voting booth where each user may only cast
-one vote. If they try to cast a second vote a the same booth, that vote is
+one vote. If they try to cast a second vote at the same booth, that vote is
 invalid.
 
 An external nullifier is any 29-byte value. Semaphore always starts with one
@@ -71,8 +71,8 @@ the same `n`, however, her transaction will fail.
 Additionally, all signals broadcast transactions to a deactivated external
 nullifier will fail.
 
-Each client application must use the above features of Semaphore in a unique
-way to achieve its privacy goals. A mixer, for instance, would use one external
+Each client application must use the above features of Semaphore uniquely 
+to achieve its privacy goals. A mixer, for instance, would use one external
 nullifier as such:
 
 | Signal                                                                        | External nullifier           |
