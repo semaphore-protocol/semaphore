@@ -55,7 +55,7 @@ In sum, Semaphore provides the ability to:
 ### External nullifiers
 
 Think of an external nullifier as a voting booth where each user may only cast
-one vote. If they try to cast a second vote a the same booth, that vote is
+one vote. If they try to cast a second vote at the same booth, that vote is
 invalid.
 
 An external nullifier is any 29-byte value. Semaphore always starts with one
