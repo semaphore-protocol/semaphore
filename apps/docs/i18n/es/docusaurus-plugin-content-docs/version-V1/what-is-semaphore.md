@@ -16,7 +16,7 @@ include private voting, whistleblowing, mixers, and anonymous authentication.
 Finally, it provides a simple built-in mechanism to prevent double-signalling
 or double-spending.
 
-This gadget comprises of smart contracts and
+This gadget comprises smart contracts and
 [zero-knowledge](https://z.cash/technology/zksnarks/) components which work in
 tandem. The Semaphore smart contract handles state, permissions, and proof
 verification on-chain. The zero-knowledge components work off-chain to allow
