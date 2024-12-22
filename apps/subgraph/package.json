@@ -6,7 +6,8 @@
     "private": true,
     "scripts": {
         "codegen": "node scripts/generate-subgraph.js ${0} && graph codegen",
-        "codegen:sepolia": "yarn codegen sepolia",
+        "clean": "rimraf node_modules/@semaphore-protocol/utils",
+        "codegen:sepolia": "yarn clean && yarn codegen sepolia",
         "build": "graph build",
         "build:sepolia": "yarn codegen:sepolia && graph build",
         "auth": "graph auth --studio",
@@ -20,7 +21,8 @@
     "dependencies": {
         "@graphprotocol/graph-cli": "0.78.0",
         "@graphprotocol/graph-ts": "0.35.1",
-        "@semaphore-protocol/utils": "workspace:packages/utils"
+        "@semaphore-protocol/utils": "workspace:packages/utils",
+        "rimraf": "^6.0.1"
     },
     "devDependencies": {
         "@types/mustache": "^4.2.2",
