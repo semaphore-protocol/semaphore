@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Inserting identities
 
-An identity is comprised of the following information:
+An identity comprises the following information:
 
 1. An [EdDSA](https://en.wikipedia.org/wiki/EdDSA) private key. Note that it is
    _not_ an Ethereum private key.
