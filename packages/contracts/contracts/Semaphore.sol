@@ -23,7 +23,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
     uint256 public groupCounter;
 
     /// @dev Initializes the Semaphore verifier used to verify the user's ZK proofs.
-    /// @param _verifier: Semaphore verifier addresse.
+    /// @param _verifier: Semaphore verifier address.
     constructor(ISemaphoreVerifier _verifier) {
         verifier = _verifier;
     }
@@ -57,7 +57,7 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         _updateGroupAdmin(groupId, newAdmin);
     }
 
-    /// @dev See {SemaphoreGroups- acceptGroupAdmin}.
+    /// @dev See {SemaphoreGroups-acceptGroupAdmin}.
     function acceptGroupAdmin(uint256 groupId) external override {
         _acceptGroupAdmin(groupId);
     }
