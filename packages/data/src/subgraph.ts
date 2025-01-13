@@ -1,6 +1,6 @@
 import { defaultNetwork, SupportedNetwork } from "@semaphore-protocol/utils/networks"
 import { AxiosRequestConfig } from "axios"
-import checkParameter from "./checkParameter"
+import { errorHandlers } from "@zk-kit/utils"
 import getURL from "./getURL"
 import request from "./request"
 import { GroupOptions, GroupResponse } from "./types"
@@ -24,7 +24,7 @@ export default class SemaphoreSubgraph {
      * @param networkOrSubgraphURL Either a supported network identifier or a direct URL to the subgraph.
      */
     constructor(networkOrSubgraphURL: SupportedNetwork | string = defaultNetwork) {
-        checkParameter(networkOrSubgraphURL, "networkOrSubgraphURL", "string")
+        errorHandlers.requireString(networkOrSubgraphURL, "networkOrSubgraphURL")
 
         if (typeof networkOrSubgraphURL === "string" && networkOrSubgraphURL.startsWith("http")) {
             this._url = networkOrSubgraphURL
@@ -73,12 +73,14 @@ export default class SemaphoreSubgraph {
      * @returns A promise that resolves to an array of group details.
      */
     async getGroups(options: GroupOptions = {}): Promise<GroupResponse[]> {
-        checkParameter(options, "options", "object")
+        errorHandlers.requireObject(options, "options")
 
         const { members = false, validatedProofs = false } = options
 
-        checkParameter(members, "members", "boolean")
-        checkParameter(validatedProofs, "validatedProofs", "boolean")
+        // NOTE: There is no function to check if a parameter is a boolean, so currently we are just checking if it is defined or not
+        // Once requireBoolean is implemented, we can use it here
+        errorHandlers.requireDefined(members, "members")
+        errorHandlers.requireDefined(validatedProofs, "validatedProofs")
 
         let filtersQuery = ""
 
@@ -164,13 +166,15 @@ export default class SemaphoreSubgraph {
      * @returns A promise that resolves to the details of the specified group.
      */
     async getGroup(groupId: string, options: Omit<GroupOptions, "filters"> = {}): Promise<GroupResponse> {
-        checkParameter(groupId, "groupId", "string")
-        checkParameter(options, "options", "object")
+        errorHandlers.requireString(groupId, "groupId")
+        errorHandlers.requireObject(options, "options")
 
         const { members = false, validatedProofs = false } = options
 
-        checkParameter(members, "members", "boolean")
-        checkParameter(validatedProofs, "validatedProofs", "boolean")
+        // NOTE: There is no function to check if a parameter is a boolean, so currently we are just checking if it is defined or not
+        // Once requireBoolean is implemented, we can use it here
+        errorHandlers.requireDefined(members, "members")
+        errorHandlers.requireDefined(validatedProofs, "validatedProofs")
 
         const config: AxiosRequestConfig = {
             method: "post",
@@ -247,8 +251,8 @@ export default class SemaphoreSubgraph {
      * @returns A promise that resolves to true if the member is part of the group, otherwise false.
      */
     async isGroupMember(groupId: string, member: string): Promise<boolean> {
-        checkParameter(groupId, "groupId", "string")
-        checkParameter(member, "member", "string")
+        errorHandlers.requireString(groupId, "groupId")
+        errorHandlers.requireString(member, "member")
 
         const config: AxiosRequestConfig = {
             method: "post",
