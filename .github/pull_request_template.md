@@ -29,10 +29,12 @@
 
 <!-- Please check if the PR fulfills these requirements. -->
 
--   [ ] My code follows the style guidelines of this project
 -   [ ] I have performed a self-review of my code
 -   [ ] I have commented my code, particularly in hard-to-understand areas
 -   [ ] My changes generate no new warnings
 -   [ ] I have run `yarn format` and `yarn lint` without getting any errors
 -   [ ] I have added tests that prove my fix is effective or that my feature works
 -   [ ] New and existing unit tests pass locally with my changes
+
+> [!IMPORTANT]
+> We do not accept minor grammatical fixes (e.g., correcting typos, rewording sentences) unless they significantly improve clarity in technical documentation. These contributions, while appreciated, are not a priority for merging. If there is a grammatical error feel free to message the team.
