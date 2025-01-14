@@ -30,6 +30,9 @@ Pull requests are great if you want to add a feature or fix a bug. Here's a quic
 
 7. Push to your fork and submit a pull request on our `main` branch. Please provide us with some explanation of why you made the changes you made. For new features make sure to explain a standard use case to us.
 
+> [!IMPORTANT]
+> We do not accept minor grammatical fixes (e.g., correcting typos, rewording sentences) unless they significantly improve clarity in technical documentation. These contributions, while appreciated, are not a priority for merging. If there is a grammatical error feel free to message the team.
+
 ## CI (Github Actions) Tests
 
 We use GitHub Actions to test each PR before it is merged.
