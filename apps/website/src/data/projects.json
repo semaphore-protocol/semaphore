@@ -565,5 +565,15 @@
         "links": {
             "github": "https://github.com/evgongora/VeilEscrow"
         }
+    },
+    {
+        "name": "Obscurus",
+        "categories": ["Voting", "Privacy"],
+        "tagline": "An anonymity layer for Safe Wallet owners, built using Semaphore and Zodiac.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/quartz-technology/obscurus"
+        }
     }
 ]
