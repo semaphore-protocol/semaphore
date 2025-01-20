@@ -19,7 +19,7 @@ Para utilizar los contratos e interfaces Semaphore en su proyecto, instale el pa
 
 Semaphore ofrece los siguientes contratos base:
 
--   [`SemaphoreVerifier.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/base/SemaphoreVerifier.sol): contiene una función para verificar pruebas Semaphore;
+-   [`SemaphoreVerifier.sol`](https://github.com/semaphore-protocol/semaphore/blob/v3.15.2/packages/contracts/contracts/base/SemaphoreVerifier.sol): contiene una función para verificar pruebas Semaphore;
 -   [`SemaphoreGroups.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/base/SemaphoreGroups.sol): contiene las funciones para crear grupos y añadir/remover/actualizar miembros.
 
 Los contratos base están relacionados de forma muy cercana al protocolo.
