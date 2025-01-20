@@ -225,7 +225,7 @@ export default function Home() {
             <VStack mb="32" spacing="32">
                 <VStack w="full" maxW="1110px">
                     <Heading fontSize={{ base: "30px", md: "44px" }} pb="90px">
-                        2024 Roadmap
+                        2024-2025 Roadmap
                     </Heading>
 
                     <HStack display={{ base: "none", md: "flex" }} w="full" mt="60px">
