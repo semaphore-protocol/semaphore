@@ -5547,15 +5547,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-ts@npm:^0.27.0":
-  version: 0.27.0
-  resolution: "@graphprotocol/graph-ts@npm:0.27.0"
-  dependencies:
-    assemblyscript: "npm:0.19.10"
-  checksum: 10/a745c2692ca8a187a043f2001c99380478258deab4fe41ed8858d8ec7365b68732254acd5437d766835a0ec2f65b5d4c60fd4dcaee330a909cf785807933cc29
-  languageName: node
-  linkType: hard
-
 "@hapi/hoek@npm:^9.0.0, @hapi/hoek@npm:^9.3.0":
   version: 9.3.0
   resolution: "@hapi/hoek@npm:9.3.0"
@@ -10320,7 +10311,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"assemblyscript@npm:0.19.23, assemblyscript@npm:^0.19.20":
+"assemblyscript@npm:0.19.23":
   version: 0.19.23
   resolution: "assemblyscript@npm:0.19.23"
   dependencies:
@@ -19987,14 +19978,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"matchstick-as@npm:0.5.0":
-  version: 0.5.0
-  resolution: "matchstick-as@npm:0.5.0"
+"matchstick-as@npm:0.6.0":
+  version: 0.6.0
+  resolution: "matchstick-as@npm:0.6.0"
   dependencies:
-    "@graphprotocol/graph-ts": "npm:^0.27.0"
-    assemblyscript: "npm:^0.19.20"
     wabt: "npm:1.0.24"
-  checksum: 10/299c66c3990dc0379d7172ddad6878e657b2e23ab39ff98eab315f3a55144882d3f3911ab6135ff2725293835acea17ec83fe169459d157ecacfc6f41d15b6cc
+  checksum: 10/340025caf2fe677675d9e388f2726b9517dcd977e13c1d5d13517d3d72ebfe561ea849e5859df74e1ccf48559d5fe3a9bb7cce107187102ec9a3d0d677c596ff
   languageName: node
   linkType: hard
 
@@ -25960,7 +25949,7 @@ __metadata:
     "@graphprotocol/graph-ts": "npm:0.35.1"
     "@semaphore-protocol/utils": "workspace:packages/utils"
     "@types/mustache": "npm:^4.2.2"
-    matchstick-as: "npm:0.5.0"
+    matchstick-as: "npm:0.6.0"
     mustache: "npm:^4.2.0"
   languageName: unknown
   linkType: soft
