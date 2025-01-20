@@ -88,7 +88,7 @@ export default function Footer() {
                     </Link>
 
                     <Text fontSize={{ base: "12px", md: "14px" }} color="text.500" pt="2">
-                        Copyright © 2024 Ethereum Foundation
+                        Copyright © {new Date().getFullYear()} Ethereum Foundation
                     </Text>
                 </VStack>
             </VStack>

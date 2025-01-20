@@ -54,11 +54,7 @@ function Footer() {
                 <hr />
 
                 <div>
-                    <p>
-                        {translate({
-                            id: "footer.copyright"
-                        })}
-                    </p>
+                    <p>Copyright © {new Date().getFullYear()} Ethereum Foundation</p>
 
                     <Logo
                         style={{ marginRight: -8 }}
