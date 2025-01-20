@@ -24,15 +24,15 @@
         "done": true
     },
     {
-        "name": "Documentation improvements",
-        "done": false
-    },
-    {
         "name": "New Explorer",
+        "done": true
+    },
+    {
+        "name": "Semaphore Spec",
         "done": false
     },
     {
-        "name": "RLN extension",
+        "name": "Semaphore Rust Implementation",
         "done": false
     }
 ]
