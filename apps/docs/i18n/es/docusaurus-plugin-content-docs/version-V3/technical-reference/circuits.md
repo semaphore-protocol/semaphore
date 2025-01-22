@@ -12,7 +12,7 @@ El [circuito Semaphore](https://github.com/semaphore-protocol/semaphore/tree/mai
 
 ![Semaphore circuit](https://github.com/semaphore-protocol/semaphore/raw/main/packages/circuits/scheme.png)
 
-El diagrama anterior muestra cómo se utilizan las señales de entrada en el circuito Semaphore y cómo se calculan los resultados.
+El diagram anterior muestra cómo se utilizan las señales de entrada en el circuito Semaphore y cómo se calculan los resultados.
 
 ## Prueba de membresía
 

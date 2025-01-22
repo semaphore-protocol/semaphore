@@ -89,7 +89,7 @@ An anonymous voting app would be configured differently:
 | ----------------------------------- | ------------------------ |
 | The hash of the respondent's answer | The hash of the question |
 
-This allows any user to vote with an arbitary response (e.g. yes, no, or maybe)
+This allows any user to vote with an arbitrary response (e.g. yes, no, or maybe)
 to any question. The user, however, can only vote once per question.
 
 ## About the code
