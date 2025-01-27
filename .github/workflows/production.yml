@@ -34,7 +34,7 @@ jobs:
               run: yarn lint
 
     test-subgraph:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-22.04 # Context: https://github.com/graphprotocol/graph-tooling/issues/1546#issuecomment-2589680195
 
         steps:
             - uses: actions/checkout@v4
