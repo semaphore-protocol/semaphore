@@ -10,7 +10,7 @@ import { jsDateToGraphqlDate } from "./utils"
  * The SemaphoreSubgraph class provides an interface to interact with the Semaphore smart contract
  * via subgraph queries. It enables operations such as retrieving lists of group members and validated proofs,
  * as well as checking membership within groups.
- * Each group in Semaphore is represented as a {@link https://zkkit.pse.dev/classes/_zk_kit_imt.LeanIMT.html | LeanIMT}
+ * Each group in Semaphore is represented as a {@link https://zkkit.pse.dev/classes/_zk_kit_lean_imt.LeanIMT.html | LeanIMT}
  * (Lean Incremental Merkle Tree). This class supports interaction through either a
  * {@link SupportedNetwork} or a direct URL to the subgraph. The subgraphs themselves are hosted on
  * {@link https://thegraph.com/ | The Graph} protocol, facilitating efficient and decentralized query processing.
