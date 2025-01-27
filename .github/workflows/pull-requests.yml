@@ -8,7 +8,7 @@ env:
 
 jobs:
     style:
-        runs-on: ubuntu-22.04 # For 24.04+, see https://github.com/graphprotocol/graph-tooling/issues/1546#issuecomment-2589680195
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v4
@@ -75,7 +75,7 @@ jobs:
               run: yarn run eslint ${{ steps.changed-files.outputs.to_lint_all_changed_files }} --ext .cjs,.js,.jsx,.ts,.tsx
 
     test:
-        runs-on: ubuntu-22.04 # For 24.04+, see https://github.com/graphprotocol/graph-tooling/issues/1546#issuecomment-2589680195
+        runs-on: ubuntu-22.04 # Context: https://github.com/graphprotocol/graph-tooling/issues/1546#issuecomment-2589680195
 
         steps:
             - uses: actions/checkout@v4
