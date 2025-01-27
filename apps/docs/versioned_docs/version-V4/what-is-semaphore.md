@@ -33,7 +33,7 @@ Semaphore is designed to be a simple and generic _privacy layer_ for decentraliz
 
 ## About the code
 
-The core of the protocol is the [circuit logic](https://github.com/semaphore-protocol/semaphore/tree/main/packages/circuits/semaphore.circom).
+The core of the protocol is the [circuit logic](https://github.com/semaphore-protocol/semaphore/tree/main/packages/circuits/src/semaphore.circom).
 In addition to circuits,
 Semaphore provides [Solidity contracts](https://github.com/semaphore-protocol/semaphore/tree/main/packages/contracts)
 and [JavaScript libraries](https://github.com/semaphore-protocol/semaphore/tree/main#-packages) that allow developers to generate zero-knowledge proofs and verify them with minimal effort.
