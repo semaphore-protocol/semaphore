@@ -8,7 +8,7 @@ env:
 
 jobs:
     style:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-22.04 # For 24.04+, see https://github.com/graphprotocol/graph-tooling/issues/1546#issuecomment-2589680195
 
         steps:
             - uses: actions/checkout@v4
@@ -21,9 +21,6 @@ jobs:
 
             - name: Install dependencies
               run: yarn
-
-            - name: Install build tools
-              run: sudo apt-get update && sudo apt-get install -y build-essential
 
             - name: Get changed files
               id: changed-files
