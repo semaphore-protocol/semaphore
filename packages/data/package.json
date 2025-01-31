@@ -38,6 +38,7 @@
     },
     "dependencies": {
         "@semaphore-protocol/utils": "4.8.2",
+        "@zk-kit/utils": "^1.3.0",
         "axios": "1.6.6",
         "ethers": "6.13.4"
     }
