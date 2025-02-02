@@ -6,7 +6,8 @@
     "private": true,
     "scripts": {
         "codegen": "node scripts/generate-subgraph.js ${0} && graph codegen",
-        "codegen:sepolia": "yarn codegen sepolia",
+        "clean": "yarn && rimraf node_modules/@semaphore-protocol/utils",
+        "codegen:sepolia": "yarn clean && yarn codegen sepolia",
         "build": "graph build",
         "build:sepolia": "yarn codegen:sepolia && graph build",
         "auth": "graph auth --studio",
