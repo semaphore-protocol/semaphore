@@ -9,8 +9,7 @@
     "scripts": {
         "build": "yarn build:libraries && yarn build:subgraph && yarn build:website && yarn build:docs",
         "build:libraries": "yarn workspaces foreach -Apt --no-private run build",
-        "clean:subgraph": "rimraf apps/subgraph/node_modules",
-        "build:subgraph": "yarn clean:subgraph && yarn workspace semaphore-subgraph build:sepolia",
+        "build:subgraph": "yarn workspace semaphore-subgraph build:sepolia",
         "build:website": "yarn workspace semaphore-website build",
         "build:docs": "yarn workspace semaphore-docs build",
         "compile:contracts": "yarn workspace semaphore-contracts compile",
