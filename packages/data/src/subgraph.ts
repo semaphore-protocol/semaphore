@@ -1,6 +1,6 @@
 import { defaultNetwork, SupportedNetwork } from "@semaphore-protocol/utils/networks"
 import { AxiosRequestConfig } from "axios"
-import checkParameter from "./checkParameter"
+import { requireString, requireObject, requireBoolean } from "@zk-kit/utils/error-handlers"
 import getURL from "./getURL"
 import request from "./request"
 import { GroupOptions, GroupResponse } from "./types"
@@ -24,7 +24,7 @@ export default class SemaphoreSubgraph {
      * @param networkOrSubgraphURL Either a supported network identifier or a direct URL to the subgraph.
      */
     constructor(networkOrSubgraphURL: SupportedNetwork | string = defaultNetwork) {
-        checkParameter(networkOrSubgraphURL, "networkOrSubgraphURL", "string")
+        requireString(networkOrSubgraphURL, "networkOrSubgraphURL")
 
         if (typeof networkOrSubgraphURL === "string" && networkOrSubgraphURL.startsWith("http")) {
             this._url = networkOrSubgraphURL
@@ -73,12 +73,12 @@ export default class SemaphoreSubgraph {
      * @returns A promise that resolves to an array of group details.
      */
     async getGroups(options: GroupOptions = {}): Promise<GroupResponse[]> {
-        checkParameter(options, "options", "object")
+        requireObject(options, "options")
 
         const { members = false, validatedProofs = false } = options
 
-        checkParameter(members, "members", "boolean")
-        checkParameter(validatedProofs, "validatedProofs", "boolean")
+        requireBoolean(members, "members")
+        requireBoolean(validatedProofs, "validatedProofs")
 
         let filtersQuery = ""
 
@@ -164,13 +164,13 @@ export default class SemaphoreSubgraph {
      * @returns A promise that resolves to the details of the specified group.
      */
     async getGroup(groupId: string, options: Omit<GroupOptions, "filters"> = {}): Promise<GroupResponse> {
-        checkParameter(groupId, "groupId", "string")
-        checkParameter(options, "options", "object")
+        requireString(groupId, "groupId")
+        requireObject(options, "options")
 
         const { members = false, validatedProofs = false } = options
 
-        checkParameter(members, "members", "boolean")
-        checkParameter(validatedProofs, "validatedProofs", "boolean")
+        requireBoolean(members, "members")
+        requireBoolean(validatedProofs, "validatedProofs")
 
         const config: AxiosRequestConfig = {
             method: "post",
@@ -247,8 +247,8 @@ export default class SemaphoreSubgraph {
      * @returns A promise that resolves to true if the member is part of the group, otherwise false.
      */
     async isGroupMember(groupId: string, member: string): Promise<boolean> {
-        checkParameter(groupId, "groupId", "string")
-        checkParameter(member, "member", "string")
+        requireString(groupId, "groupId")
+        requireString(member, "member")
 
         const config: AxiosRequestConfig = {
             method: "post",
