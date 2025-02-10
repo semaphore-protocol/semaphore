@@ -276,7 +276,7 @@
         "description": "The sentence used to display when a page has been last updated, and by who"
     },
     "theme.navbar.mobileVersionsDropdown.label": {
-        "message": "Versiones",
+        "message": "Versions",
         "description": "The label for the navbar versions dropdown on mobile view"
     },
     "theme.tags.tagsListLabel": {
