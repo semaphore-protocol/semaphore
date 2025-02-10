@@ -190,7 +190,7 @@ const genWitness = async (
 -   `circuit` is the output of `genCircuit()`.
 -   `identity` is the `Identity` whose identity commitment you want to prove is
     in the set of registered identities.
--   `idCommitments` is an array of registered identity commmitments; i.e. the
+-   `idCommitments` is an array of registered identity commitments; i.e. the
     leaves of the tree.
 -   `treeDepth` is the number of levels which the Merkle tree used has
 -   `externalNullifier` is the current external nullifier
