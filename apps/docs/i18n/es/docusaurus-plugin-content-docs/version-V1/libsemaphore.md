@@ -145,7 +145,7 @@ Returns `false` otherwise.
 
 **`signMsg(privKey: EddsaPrivateKey, msg: SnarkBigInt): EdDSAMiMcSpongeSignature)`**
 
-Encapsualtes `circomlib.eddsa.signMiMCSponge` to sign a message `msg` using private key `privKey`.
+Encapsulates `circomlib.eddsa.signMiMCSponge` to sign a message `msg` using private key `privKey`.
 
 **`verifySignature(msg: SnarkBigInt, signature: EdDSAMiMcSpongeSignature, pubKey: EddsaPublicKey)`: boolean**
 
