@@ -14,7 +14,7 @@ The public [Semaphore identity](#identity) value used in [Semaphore groups](#gro
 
 ## Group
 
-A group is a [Merkle tree](#merkle-tree) in which each leaf is an [identity commitment](#identity-commitment) for a user. Semaphore uses the [LeanIMT](https://zkkit.pse.dev/classes/_zk_kit_imt.LeanIMT.html) implementation, which is an optimized binary incremental Merkle tree. The tree nodes are calculated using [Poseidon](https://www.poseidon-hash.info).
+A group is a [Merkle tree](#merkle-tree) in which each leaf is an [identity commitment](#identity-commitment) for a user. Semaphore uses the [LeanIMT](https://zkkit.pse.dev/classes/_zk_kit_lean_imt.LeanIMT.html) implementation, which is an optimized binary incremental Merkle tree. The tree nodes are calculated using [Poseidon](https://www.poseidon-hash.info).
 
 ## Merkle tree
 
