@@ -90,7 +90,7 @@ export default function GroupsPage() {
                 </a>{" "}
                 are{" "}
                 <a
-                    href="https://zkkit.pse.dev/classes/_zk_kit_imt.LeanIMT.html"
+                    href="https://zkkit.pse.dev/classes/_zk_kit_lean_imt.LeanIMT.html"
                     target="_blank"
                     rel="noreferrer noopener nofollow"
                 >

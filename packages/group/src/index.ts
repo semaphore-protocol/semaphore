@@ -3,7 +3,7 @@ import type { BigNumber } from "@zk-kit/utils"
 import { poseidon2 } from "poseidon-lite/poseidon2"
 
 /**
- * The Semaphore group is a {@link https://zkkit.pse.dev/classes/_zk_kit_imt.LeanIMT.html | LeanIMT}
+ * The Semaphore group is a {@link https://zkkit.pse.dev/classes/_zk_kit_lean_imt.LeanIMT.html | LeanIMT}
  * (Lean Incremental Merkle Tree), i.e. an optimized version of the incremental binary Merkle tree
  * used by Semaphore V3. The new tree does not use zero hashes, and its depth is dynamic.
  * The members of a Semaphore group, or the leaves of a tree, are the identity commitments.
@@ -13,7 +13,7 @@ import { poseidon2 } from "poseidon-lite/poseidon2"
  * generation and verification. Groups can also be exported or imported.
  */
 export class Group {
-    // The {@link https://zkkit.pse.dev/classes/_zk_kit_imt.LeanIMT.html | LeanIMT} instance.
+    // The {@link https://zkkit.pse.dev/classes/_zk_kit_lean_imt.LeanIMT.html | LeanIMT} instance.
     public leanIMT: LeanIMT
 
     /**
