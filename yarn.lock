@@ -9726,7 +9726,7 @@ __metadata:
   version: 1.0.3
   resolution: "@zk-kit/baby-jubjub@npm:1.0.3"
   dependencies:
-    "@zk-kit/utils": "npm:1.2.1"
+    "@zk-kit/utils": "npm:1.3.0"
   checksum: 10/ae64d27f43ed53df15eebfb3468dadc202a587201a711b8716f1b855ea3b83e01e7eb5769eaa5c030979099c353396a0b1bf12dfa9c7575adce402ca64989e12
   languageName: node
   linkType: hard
@@ -9745,7 +9745,7 @@ __metadata:
   resolution: "@zk-kit/eddsa-poseidon@npm:1.0.4"
   dependencies:
     "@zk-kit/baby-jubjub": "npm:1.0.3"
-    "@zk-kit/utils": "npm:1.2.1"
+    "@zk-kit/utils": "npm:1.3.0"
     buffer: "npm:6.0.3"
     poseidon-lite: "npm:0.3.0"
   checksum: 10/f8c9603b8985813ad3ad09130306c529a754fa97f952a50ccf2762227c1e256cfce1c9f2b8bf5ed570d82a443a86ced56ce3f6fc30b57501c5e2a584be8f3b03
@@ -9770,9 +9770,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/utils@npm:1.2.1":
+"@zk-kit/utils@npm:1.3.0":
   version: 1.2.1
-  resolution: "@zk-kit/utils@npm:1.2.1"
+  resolution: "@zk-kit/utils@npm:1.3.0"
   dependencies:
     buffer: "npm:^6.0.3"
   checksum: 10/05cb209adadad753ae9ca9be7a1664fb4c3259a703f64e8b0af637e5fa4b2a9099c21b80a30df62cfe826b165941e1dfe0e95decde5a4eafd53328692cb0a4b8
