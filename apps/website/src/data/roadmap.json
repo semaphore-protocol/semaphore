@@ -28,8 +28,8 @@
         "done": true
     },
     {
-        "name": "Semaphore Spec",
-        "done": false
+        "name": "Semaphore V4 Specification",
+        "done": true
     },
     {
         "name": "Semaphore Rust Implementation",
