@@ -34,5 +34,9 @@
     {
         "name": "Semaphore Rust Implementation",
         "done": false
+    },
+    {
+        "name": "Semaphore Noir Implementation",
+        "done": false
     }
 ]

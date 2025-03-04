@@ -56,7 +56,7 @@ template Semaphore(MAX_DEPTH) {
     // Proof of membership verification.
     // The Merkle root passed as output must be equal to that calculated within
     // the circuit through the inputs of the Merkle proof.
-    // See https://github.com/privacy-scaling-explorations/zk-kit/blob/main/packages/circuits/circom/binary-merkle-root.circom
+    // See https://github.com/privacy-scaling-explorations/zk-kit.circom/blob/main/packages/binary-merkle-root/src/binary-merkle-root.circom
     // to know more about how the 'BinaryMerkleRoot' template works.
     merkleRoot <== BinaryMerkleRoot(MAX_DEPTH)(identityCommitment, merkleProofLength, merkleProofIndices, merkleProofSiblings);
 
