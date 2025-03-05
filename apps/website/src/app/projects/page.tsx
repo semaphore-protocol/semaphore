@@ -5,7 +5,7 @@ import ProjectsList from "../../components/ProjectsList"
 export default function Projects() {
     return (
         <>
-            <VStack pt="170px" pb="56px" w="100%" justify="end" align="left" spacing="40" position="relative">
+            <VStack pt="170px" pb="56px" w="100%" justify="end" align="start" spacing="40" position="relative">
                 <Box
                     zIndex="-1"
                     top="0"
@@ -25,7 +25,7 @@ export default function Projects() {
                     />
                 </Box>
 
-                <VStack align="left" spacing="4" pb="16">
+                <VStack align="start" spacing="4" pb="16">
                     <Heading fontSize={{ base: "40px", sm: "46px", md: "72px" }}>Built with Semaphore</Heading>
 
                     <Text fontSize={{ base: "16px", sm: "18px", md: "20px" }}>
@@ -35,7 +35,7 @@ export default function Projects() {
                 </VStack>
             </VStack>
 
-            <ProjectsList w="100%" align="left" pt="16" spacing="14" />
+            <ProjectsList w="100%" align="start" pt="16" spacing="14" />
 
             <VStack my="128px">
                 <ActionCard
