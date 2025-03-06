@@ -11,6 +11,8 @@ slug: /
 Additionally, it provides a simple mechanism to prevent double-signaling.
 Use cases include private voting, whistleblowing, anonymous DAOs and mixers.
 
+For in-depth technical details about Semaphore, refer to the [Semaphore V4 Specification](https://github.com/zkspecs/zkspecs/blob/main/specs/3/README.md).
+
 ## Features
 
 With Semaphore, you can allow your users to do the following:

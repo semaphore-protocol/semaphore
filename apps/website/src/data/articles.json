@@ -47,5 +47,12 @@
         "date": "2024-12-09",
         "authors": ["glasswing"],
         "url": "https://mirror.xyz/0xBE98D44c29D179588b7E717Db8898529e5cD770F/5Xlv1jzwJKfKgP-m257kjivBlUIM_cwTzsmpf9F0Su8"
+    },
+    {
+        "title": "Semaphore V4 Specification",
+        "minRead": 10,
+        "date": "2025-03-01",
+        "authors": ["Semaphore Team"],
+        "url": "https://github.com/zkspecs/zkspecs/blob/main/specs/3/README.md"
     }
 ]
