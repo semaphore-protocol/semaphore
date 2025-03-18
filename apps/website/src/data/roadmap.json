@@ -38,5 +38,9 @@
     {
         "name": "Semaphore Noir Implementation",
         "done": false
+    },
+    {
+        "name": "Scaling Semaphore with PIR",
+        "done": false
     }
 ]
