@@ -7502,7 +7502,7 @@ __metadata:
   resolution: "@semaphore-protocol/cli-template-contracts-foundry@workspace:packages/cli-template-contracts-foundry"
   dependencies:
     "@semaphore-protocol/contracts": "npm:4.9.1"
-    "@zk-kit/lean-imt.sol": "npm:2.0.0"
+    "@zk-kit/lean-imt.sol": "npm:2.0.1"
     forge-std: "github:foundry-rs/forge-std#v1.9.4"
     poseidon-solidity: "npm:0.0.5"
     prettier: "npm:^3.2.5"
@@ -7603,7 +7603,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
-    "@zk-kit/lean-imt.sol": "npm:2.0.0"
+    "@zk-kit/lean-imt.sol": "npm:2.0.1"
   languageName: unknown
   linkType: soft
 
@@ -9752,12 +9752,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/lean-imt.sol@npm:2.0.0":
-  version: 2.0.0
-  resolution: "@zk-kit/lean-imt.sol@npm:2.0.0"
+"@zk-kit/lean-imt.sol@npm:2.0.1":
+  version: 2.0.1
+  resolution: "@zk-kit/lean-imt.sol@npm:2.0.1"
   dependencies:
     poseidon-solidity: "npm:0.0.5"
-  checksum: 10/094a1788905c380ed5c767184938d3aa0d0b3ba8ad92e8d6efae1243e4d15103484ec1224163ae7d0c43e0095ae19f28e41a7877d37398ff60dcadbf1eb27a77
+  checksum: 10/debfd6caa46c6b4ff5dfa9a98d50656311ed5ba999417ae23f1b279c1c171d722de9b396bfbbf56705e7041bc3cc4f7d579f97653c97544fd160a834c1e427dd
   languageName: node
   linkType: hard
 
@@ -26073,7 +26073,7 @@ __metadata:
     "@types/mocha": "npm:^10.0.6"
     "@types/ncp": "npm:^2"
     "@types/node": "npm:^20.10.7"
-    "@zk-kit/lean-imt.sol": "npm:2.0.0"
+    "@zk-kit/lean-imt.sol": "npm:2.0.1"
     chai: "npm:^4.2.0"
     ethers: "npm:^6.13.4"
     hardhat: "npm:^2.19.4"
