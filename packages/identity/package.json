@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/identity",
-    "version": "4.9.1",
+    "version": "4.9.2",
     "description": "A library to create Semaphore identities.",
     "type": "module",
     "license": "MIT",
