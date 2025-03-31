@@ -373,7 +373,9 @@ The output will be placed on the `docs` folder.
 
 ### Releases
 
-Bump a new version with:
+Steps:
+
+1. Bump a new version with:
 
 ```bash
 yarn version:bump <version>
