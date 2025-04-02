@@ -1,3 +1,5 @@
+import { Chain, Transport } from "viem"
+
 export type EthersNetwork =
     | "mainnet"
     | "sepolia"
@@ -11,6 +13,8 @@ export type EthersNetwork =
     | "base-sepolia"
     | "linea"
     | "linea-sepolia"
+
+export type ViemNetwork = EthersNetwork
 
 export type GroupOptions = {
     members?: boolean
@@ -53,4 +57,12 @@ export type EthersOptions = {
     projectSecret?: string // Infura
     applicationId?: string // Pocket
     applicationSecret?: string // Pocket
+}
+
+export type ViemOptions = {
+    address?: string
+    startBlock?: bigint | number
+    transport?: Transport // Transport from viem
+    chain?: Chain // Chain from viem
+    apiKey?: string
 }
