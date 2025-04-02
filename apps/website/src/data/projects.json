@@ -575,5 +575,16 @@
         "links": {
             "github": "https://github.com/quartz-technology/obscurus"
         }
+    },
+    {
+        "name": "Semaphore Modular Smart Account Modules",
+        "categories": ["Wallet", "Privacy"],
+        "tagline": "Anonymous multi-sig wallet with Semaphore",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/jimmychu0807/semaphore-msa-modules",
+            "website": "https://semaphore-msa-modules.jimmychu0807.hk"
+        }
     }
 ]
