@@ -22,7 +22,7 @@ The [nullifier](/glossary#nullifier) is the hash of the private key of the ident
 
 In the case of a voting application, if you have a group and you want all members of this group to vote only once, you can use the id of the group as the scope. When a user votes the first time, you can store the hash of voter's private key and the group id (i.e., the nullifier) and prevent double-voting by checking if that hash already exists.
 
-See the [Semaphore circuits](/technical-reference/circuits) for more technical information, or the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/main) for a real use-case.
+See the [Semaphore circuits](/packages/circuits) for more technical information, or the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/main) for a real use-case.
 
 ## Where can I find examples of applications using Semaphore?
 
@@ -30,7 +30,7 @@ You can find a complete list of applications that are using Semaphore on the [Se
 
 ## How can I start a project using Semaphore?
 
-There are three ways you can start using Semaphore in your project: using the [CLI](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli), using the [boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/main) as a template or forking it, or installing the Semaphore [packages](/guides/identities) manually.
+There are three ways you can start using Semaphore in your project: using the [CLI](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli), using the [boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/main) as a template or forking it, or installing the Semaphore [packages](/apps/docs/versioned_docs/version-V4/guides/identities.mdx) manually.
 
 ## How can I contribute to the protocol?
 
