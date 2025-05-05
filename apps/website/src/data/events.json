@@ -1,20 +1,20 @@
 [
     {
-        "name": "DIF - Decentralized Identity Foundation",
-        "date": "Oct 1 - Nov 4, 2024",
-        "description": "Semaphore team will deliver a talk and sponsor prizes for the online hackathon.",
-        "link": "https://identity.foundation/"
+        "name": "ETHDam",
+        "date": "May 9-11, 2025",
+        "description": "Semaphore team will deliver an in-person talk.",
+        "link": "https://www.ethdam.com/"
     },
     {
-        "name": "Devcon",
-        "date": "Nov 12-15, 2024",
+        "name": "ZuBerlin",
+        "date": "June 14-22, 2025",
+        "description": "Semaphore team will deliver an in-person talk.",
+        "link": "https://zuberlin.city/"
+    },
+    {
+        "name": "Devconnect",
+        "date": "Nov 17-22, 2025",
         "description": "Semaphore team will deliver an in-person talk and run workshops.",
-        "link": "https://devcon.org/en/"
-    },
-    {
-        "name": "ETHIndia",
-        "date": "Dec 6-8, 2024",
-        "description": "Semaphore team will deliver an in-person talk on Semaphore and Bandada.",
-        "link": "https://ethindia.co"
+        "link": "https://devconnect.org/"
     }
 ]
