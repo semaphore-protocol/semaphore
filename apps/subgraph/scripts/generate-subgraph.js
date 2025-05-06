@@ -15,6 +15,10 @@ function mapNetwork(n) {
         return "arbitrum-one"
     }
 
+    if (n === "ethereum") {
+        return "mainnet"
+    }
+
     return network
 }
 

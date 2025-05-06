@@ -5,17 +5,37 @@
             {
                 "name": "SemaphoreVerifier",
                 "address": "0x6C42599435B82121794D835263C846384869502d",
-                "startBlock": 6983614
+                "startBlock": 8263690
             },
             {
                 "name": "PoseidonT3",
                 "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
-                "startBlock": 6983614
+                "startBlock": 8263690
             },
             {
                 "name": "Semaphore",
-                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
-                "startBlock": 6983614
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 8263690
+            }
+        ]
+    },
+    {
+        "network": "ethereum",
+        "contracts": [
+            {
+                "name": "SemaphoreVerifier",
+                "address": "0x6C42599435B82121794D835263C846384869502d",
+                "startBlock": 22424592
+            },
+            {
+                "name": "PoseidonT3",
+                "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
+                "startBlock": 22424592
+            },
+            {
+                "name": "Semaphore",
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 22424592
             }
         ]
     },
@@ -25,17 +45,17 @@
             {
                 "name": "SemaphoreVerifier",
                 "address": "0x6C42599435B82121794D835263C846384869502d",
-                "startBlock": 93258221
+                "startBlock": 149903019
             },
             {
                 "name": "PoseidonT3",
                 "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
-                "startBlock": 93258221
+                "startBlock": 149903019
             },
             {
                 "name": "Semaphore",
-                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
-                "startBlock": 93258221
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 149903019
             }
         ]
     },
@@ -45,17 +65,17 @@
             {
                 "name": "SemaphoreVerifier",
                 "address": "0x6C42599435B82121794D835263C846384869502d",
-                "startBlock": 19289434
+                "startBlock": 27341051
             },
             {
                 "name": "PoseidonT3",
                 "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
-                "startBlock": 19289434
+                "startBlock": 27341051
             },
             {
                 "name": "Semaphore",
-                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
-                "startBlock": 19289434
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 27341051
             }
         ]
     },
@@ -65,17 +85,17 @@
             {
                 "name": "SemaphoreVerifier",
                 "address": "0x6C42599435B82121794D835263C846384869502d",
-                "startBlock": 13850778
+                "startBlock": 21308099
             },
             {
                 "name": "PoseidonT3",
                 "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
-                "startBlock": 13850778
+                "startBlock": 21308099
             },
             {
                 "name": "Semaphore",
-                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
-                "startBlock": 13850778
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 21308099
             }
         ]
     },
@@ -85,17 +105,17 @@
             {
                 "name": "SemaphoreVerifier",
                 "address": "0x6C42599435B82121794D835263C846384869502d",
-                "startBlock": 269586534
+                "startBlock": 333645515
             },
             {
                 "name": "PoseidonT3",
                 "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
-                "startBlock": 269586534
+                "startBlock": 333645515
             },
             {
                 "name": "Semaphore",
-                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
-                "startBlock": 269586534
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 333645515
             }
         ]
     },
@@ -105,17 +125,17 @@
             {
                 "name": "SemaphoreVerifier",
                 "address": "0x6C42599435B82121794D835263C846384869502d",
-                "startBlock": 63715311
+                "startBlock": 71158898
             },
             {
                 "name": "PoseidonT3",
                 "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
-                "startBlock": 63715311
+                "startBlock": 71158898
             },
             {
                 "name": "Semaphore",
-                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
-                "startBlock": 63715311
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 71158898
             }
         ]
     },
@@ -125,17 +145,17 @@
             {
                 "name": "SemaphoreVerifier",
                 "address": "0x6C42599435B82121794D835263C846384869502d",
-                "startBlock": 127391657
+                "startBlock": 135443119
             },
             {
                 "name": "PoseidonT3",
                 "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
-                "startBlock": 127391657
+                "startBlock": 135443119
             },
             {
                 "name": "Semaphore",
-                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
-                "startBlock": 127391657
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 135443119
             }
         ]
     },
@@ -145,17 +165,17 @@
             {
                 "name": "SemaphoreVerifier",
                 "address": "0x6C42599435B82121794D835263C846384869502d",
-                "startBlock": 17307202
+                "startBlock": 25358716
             },
             {
                 "name": "PoseidonT3",
                 "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
-                "startBlock": 17307202
+                "startBlock": 25358716
             },
             {
                 "name": "Semaphore",
-                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
-                "startBlock": 17307202
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 25358716
             }
         ]
     },
@@ -165,17 +185,17 @@
             {
                 "name": "SemaphoreVerifier",
                 "address": "0x6C42599435B82121794D835263C846384869502d",
-                "startBlock": 5225214
+                "startBlock": 12757656
             },
             {
                 "name": "PoseidonT3",
                 "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
-                "startBlock": 5225214
+                "startBlock": 12757656
             },
             {
                 "name": "Semaphore",
-                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
-                "startBlock": 5225214
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 12757656
             }
         ]
     },
@@ -185,17 +205,17 @@
             {
                 "name": "SemaphoreVerifier",
                 "address": "0x6C42599435B82121794D835263C846384869502d",
-                "startBlock": 21796660
+                "startBlock": 29848242
             },
             {
                 "name": "PoseidonT3",
                 "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
-                "startBlock": 21796660
+                "startBlock": 29848242
             },
             {
                 "name": "Semaphore",
-                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
-                "startBlock": 21796660
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 29848242
             }
         ]
     },
@@ -205,17 +225,17 @@
             {
                 "name": "SemaphoreVerifier",
                 "address": "0x6C42599435B82121794D835263C846384869502d",
-                "startBlock": 11459722
+                "startBlock": 18707811
             },
             {
                 "name": "PoseidonT3",
                 "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
-                "startBlock": 11459722
+                "startBlock": 18707811
             },
             {
                 "name": "Semaphore",
-                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
-                "startBlock": 11459722
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 18707811
             }
         ]
     },
@@ -225,17 +245,17 @@
             {
                 "name": "SemaphoreVerifier",
                 "address": "0x6C42599435B82121794D835263C846384869502d",
-                "startBlock": 7397758
+                "startBlock": 9604960
             },
             {
                 "name": "PoseidonT3",
                 "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
-                "startBlock": 7397758
+                "startBlock": 9604960
             },
             {
                 "name": "Semaphore",
-                "address": "0x06d1530c829366A7fff0069e77c5af6A6FA7db2E",
-                "startBlock": 7397758
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 9604960
             }
         ]
     }
