@@ -20,6 +20,26 @@
         ]
     },
     {
+        "network": "ethereum",
+        "contracts": [
+            {
+                "name": "SemaphoreVerifier",
+                "address": "0x6C42599435B82121794D835263C846384869502d",
+                "startBlock": 22424592
+            },
+            {
+                "name": "PoseidonT3",
+                "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
+                "startBlock": 22424592
+            },
+            {
+                "name": "Semaphore",
+                "address": "0x697c80d1F2654e88d52B16154929EB976568DB04",
+                "startBlock": 22424592
+            }
+        ]
+    },
+    {
         "network": "arbitrum-sepolia",
         "contracts": [
             {

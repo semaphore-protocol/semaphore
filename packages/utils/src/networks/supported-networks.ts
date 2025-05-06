@@ -5,6 +5,12 @@ export default {
         chainId: 11155111,
         explorer: "https://sepolia.etherscan.io"
     },
+    ethereum: {
+        name: "Ethereum",
+        url: "https://eth-mainnet.g.alchemy.com/v2/<your-api-key>",
+        chainId: 1,
+        explorer: "https://etherscan.io"
+    },
     "arbitrum-sepolia": {
         name: "Arbitrum Sepolia",
         url: "https://sepolia-rollup.arbitrum.io/rpc",
