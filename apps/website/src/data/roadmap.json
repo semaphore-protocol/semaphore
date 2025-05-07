@@ -33,7 +33,7 @@
     },
     {
         "name": "Semaphore Rust Implementation",
-        "done": false
+        "done": true
     },
     {
         "name": "Semaphore Noir Implementation",
