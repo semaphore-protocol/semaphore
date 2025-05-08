@@ -19,7 +19,7 @@ describe("SemaphoreSubgraph", () => {
         })
 
         it("Should instantiate a SemaphoreSubgraph object using URL", () => {
-            const url = "https://api.studio.thegraph.com/query/14377/semaphore-arbitrum/v3.2.0"
+            const url = `https://api.studio.thegraph.com/query/14377/semaphore-arbitrum/v3.2.0`
             const semaphore1 = new SemaphoreSubgraph(url)
 
             expect(semaphore1.url).toBe(url)
