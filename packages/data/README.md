@@ -49,8 +49,8 @@
     </h4>
 </div>
 
-| This library provides tools for querying and interacting with the [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol) smart contract. It supports both the Semaphore subgraph and direct Ethereum network connections via Ethers. Designed for use in both Node.js and browser environments, it facilitates the management of group data and verification processes within the Semaphore protocol. |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| This library provides tools for querying and interacting with the [`Semaphore.sol`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/Semaphore.sol) smart contract. It supports the Semaphore subgraph and direct Ethereum network connections via Ethers or Viem. Designed for use in both Node.js and browser environments, it facilitates the management of group data and verification processes within the Semaphore protocol. |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## 🛠 Install
 
@@ -183,6 +183,62 @@ const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs("42")
 
 ```typescript
 const isMember = await semaphoreEthers.isGroupMember(
+    "42",
+    "16948514235341957898454876473214737047419402240398321289450170535251226167324"
+)
+```
+
+### Using Viem for Direct Blockchain Interaction
+
+**Initialize a Semaphore Viem instance**
+
+```typescript
+import { SemaphoreViem } from "@semaphore-protocol/data"
+
+const semaphoreViem = new SemaphoreViem()
+
+// or:
+const semaphoreViemOnSepolia = new SemaphoreViem("sepolia", {
+    address: "semaphore-address",
+    startBlock: 0n
+})
+
+// or:
+const localViemInstance = new SemaphoreViem("http://localhost:8545", {
+    address: "semaphore-address"
+})
+```
+
+With your SemaphoreViem instance, you can:
+
+**Fetch Group IDs**
+
+```typescript
+const groupIds = await semaphoreViem.getGroupIds()
+```
+
+**Fetch Group Details**
+
+```typescript
+const group = await semaphoreViem.getGroup("42")
+```
+
+**Fetch Group Members**
+
+```typescript
+const members = await semaphoreViem.getGroupMembers("42")
+```
+
+**Fetch Validated Proofs**
+
+```typescript
+const validatedProofs = await semaphoreViem.getGroupValidatedProofs("42")
+```
+
+**Check Group Membership**
+
+```typescript
+const isMember = await semaphoreViem.isGroupMember(
     "42",
     "16948514235341957898454876473214737047419402240398321289450170535251226167324"
 )
