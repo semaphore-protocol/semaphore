@@ -87,6 +87,11 @@ You may choose to delegate such functionality to existing wallets such as Metama
 3. The user can now recreate their Semaphore identity whenever they want by signing the same message with their Ethereum account in Metamask.
    :::
 
+:::warning Privacy risk
+If a user signs the **same message** on multiple websites using MetaMask, all those websites will be able to **generate the same Semaphore identity**. This undermines anonymity and may allow third parties to **link identities across platforms** or even **gain control over a user's identity**.  
+To mitigate this, encourage users to sign **unique messages per application** or implement safeguards that detect and warn about reuse.
+:::
+
 ## Sign and verify messages
 
 Semaphore V4 uses asymmetric cryptography and in particular EdDSA to generate the identity keys. It is therefore also possible to sign messages and verify their signatures.
