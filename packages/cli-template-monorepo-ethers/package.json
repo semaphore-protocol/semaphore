@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/cli-template-monorepo-ethers",
-    "version": "4.10.0",
+    "version": "4.11.0",
     "description": "Semaphore Hardhat + Next.js + SemaphoreEthers template.",
     "license": "Unlicense",
     "files": [

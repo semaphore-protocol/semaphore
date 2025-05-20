@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/circuits",
-    "version": "4.10.0",
+    "version": "4.11.0",
     "description": "Semaphore Circom circuits to generate zero-knowledge proofs.",
     "license": "MIT",
     "files": [
