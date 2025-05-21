@@ -173,10 +173,10 @@ const admin = await semaphoreEthers.getGroupAdmin("42")
 const members = await semaphoreEthers.getGroupMembers("42")
 ```
 
-**Fetch Verified Proofs**
+**Fetch Validated Proofs**
 
 ```typescript
-const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs("42")
+const verifiedProofs = await semaphoreEthers.getGroupValidatedProofs("42")
 ```
 
 **Check Group Membership**

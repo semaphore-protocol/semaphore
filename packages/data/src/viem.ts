@@ -108,7 +108,7 @@ export default class SemaphoreViem {
             const { address, startBlock } = getDeployedContract(networkOrEthereumURL as SupportedNetwork)
 
             options.address ??= address
-            options.startBlock ??= BigInt(startBlock || 0)
+            options.startBlock ??= BigInt(startBlock)
         } else {
             options.startBlock ??= 0n
         }
@@ -244,7 +244,7 @@ export default class SemaphoreViem {
             abi: SemaphoreABI,
             eventName: "MemberRemoved",
             args: {
-                groupId
+                groupId: BigInt(groupId)
             },
             fromBlock: BigInt(this._options.startBlock || 0)
         })) as MemberRemovedLog[]
@@ -255,7 +255,7 @@ export default class SemaphoreViem {
             abi: SemaphoreABI,
             eventName: "MemberUpdated",
             args: {
-                groupId
+                groupId: BigInt(groupId)
             },
             fromBlock: BigInt(this._options.startBlock || 0)
         })) as MemberUpdatedLog[]
@@ -287,7 +287,7 @@ export default class SemaphoreViem {
             abi: SemaphoreABI,
             eventName: "MembersAdded",
             args: {
-                groupId
+                groupId: BigInt(groupId)
             },
             fromBlock: BigInt(this._options.startBlock || 0)
         })) as MembersAddedLog[]
@@ -309,7 +309,7 @@ export default class SemaphoreViem {
             abi: SemaphoreABI,
             eventName: "MemberAdded",
             args: {
-                groupId
+                groupId: BigInt(groupId)
             },
             fromBlock: BigInt(this._options.startBlock || 0)
         })) as MemberAddedLog[]
@@ -328,12 +328,10 @@ export default class SemaphoreViem {
                 index += identityCommitments.length
             } else {
                 const currentIndex = index // Create a closure to capture the current index value
-                const event = memberAddedEvents.find((e) => e.args.index && Number(e.args.index) === currentIndex)
+                const event = memberAddedEvents.find((e) => Number(e.args.index) === currentIndex)
 
                 if (event && event.args.identityCommitment) {
                     members.push(event.args.identityCommitment.toString())
-                } else {
-                    members.push("0") // Placeholder for missing member
                 }
 
                 index += 1
@@ -372,7 +370,7 @@ export default class SemaphoreViem {
             abi: SemaphoreABI,
             eventName: "ProofValidated",
             args: {
-                groupId
+                groupId: BigInt(groupId)
             },
             fromBlock: BigInt(this._options.startBlock || 0)
         })) as ProofValidatedLog[]
