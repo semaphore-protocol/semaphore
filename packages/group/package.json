@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/group",
-    "version": "4.11.0",
+    "version": "4.11.1",
     "description": "A library to create and manage Semaphore groups.",
     "type": "module",
     "license": "MIT",

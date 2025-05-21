@@ -9,9 +9,9 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@semaphore-protocol/core": "4.11.0",
-        "@semaphore-protocol/data": "4.11.0",
-        "@semaphore-protocol/utils": "4.11.0",
+        "@semaphore-protocol/core": "4.11.1",
+        "@semaphore-protocol/data": "4.11.1",
+        "@semaphore-protocol/utils": "4.11.1",
         "ethers": "^6.13.4",
         "next": "14.1.0",
         "next-pwa": "^5.6.0",

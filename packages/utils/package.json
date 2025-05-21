@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/utils",
-    "version": "4.11.0",
+    "version": "4.11.1",
     "description": "A library to provide utility functions to the other Semaphore packages.",
     "type": "module",
     "license": "MIT",
