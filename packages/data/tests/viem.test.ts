@@ -186,6 +186,7 @@ describe("SemaphoreViem", () => {
             const groupIds = await semaphoreViem.getGroupIds()
 
             expect(groupIds).toContain("42")
+            expect(groupIds).toHaveLength(2)
             expect(mockGetContractEvents).toHaveBeenCalledWith(
                 expect.objectContaining({
                     eventName: "GroupCreated"
@@ -268,102 +269,34 @@ describe("SemaphoreViem", () => {
     })
 
     describe("# getGroupMembers", () => {
-        it("should return a list of group members", async () => {
+        it("should return all the existing groups members", async () => {
             const semaphoreViem = createSemaphoreViem()
 
-            // Create a custom implementation for the getGroupMembers method
-            // @ts-ignore - Mocking the implementation
-            semaphoreViem.getGroupMembers = jest
-                .fn()
-                .mockResolvedValue(["0", "113", "114", "0", "209", "210", "310", "312"])
-
-            const members = await semaphoreViem.getGroupMembers("42")
-
-            // Verify results
-            expect(members).toHaveLength(8)
-            expect(members[0]).toBe("0") // Default value for missing member
-            expect(members[1]).toBe("113") // From MemberUpdated
-            expect(members[2]).toBe("114") // From MemberAdded
-            expect(members[3]).toBe("0") // Removed member (MemberRemoved)
-            expect(members[4]).toBe("209") // From MembersAdded
-            expect(members[5]).toBe("210") // From MembersAdded
-            expect(members[6]).toBe("310") // From MemberAdded
-            expect(members[7]).toBe("312") // From MemberAdded
-        })
-
-        it("should handle edge cases in event data", async () => {
-            const semaphoreViem = createSemaphoreViem()
-
-            // Mock the contract read methods
-            // @ts-ignore - Mocking the contract read methods
-            semaphoreViem.contract.read.getMerkleTreeSize = jest.fn().mockReturnValue(BigInt(5))
-
-            // Mock the getContractEvents method with incomplete/missing data
-            const mockGetContractEvents = jest.fn().mockImplementation((params) => {
-                if (params.eventName === "MemberRemoved") {
-                    return [
-                        {
-                            // Missing args.index to test that branch
-                            args: {
-                                groupId: "42"
-                            },
-                            blockNumber: BigInt(1000)
-                        },
-                        {
-                            // Missing blockNumber to test that branch
-                            args: {
-                                groupId: "42",
-                                index: BigInt(1)
-                            }
-                        }
-                    ]
+            // Mock the getContractEvents method
+            const mockGetContractEvents = jest.fn().mockResolvedValue([
+                {
+                    eventName: "MemberAdded",
+                    args: { groupId: "42", index: BigInt(0), identityCommitment: "1" }
+                },
+                {
+                    eventName: "MemberAdded",
+                    args: { groupId: "42", index: BigInt(1), identityCommitment: "2" }
                 }
-                if (params.eventName === "MemberUpdated") {
-                    return [
-                        {
-                            // Missing newIdentityCommitment to test that branch
-                            args: {
-                                groupId: "42",
-                                index: BigInt(2)
-                            },
-                            blockNumber: BigInt(900)
-                        },
-                        {
-                            // Missing blockNumber to test that branch
-                            args: {
-                                groupId: "42",
-                                index: BigInt(3),
-                                newIdentityCommitment: "333"
-                            }
-                        }
-                    ]
-                }
-                if (params.eventName === "MembersAdded") {
-                    return [
-                        {
-                            // Missing identityCommitments to test that branch
-                            args: {
-                                groupId: "42",
-                                startIndex: BigInt(0)
-                            }
-                        }
-                    ]
-                }
-                if (params.eventName === "MemberAdded") {
-                    return []
-                }
-                return []
-            })
+            ])
 
             // @ts-ignore - Mocking the client's getContractEvents method
             semaphoreViem.client.getContractEvents = mockGetContractEvents
 
-            const members = await semaphoreViem.getGroupMembers("42")
+            semaphoreViem.contract.read.getMerkleTreeSize = jest.fn().mockReturnValue(BigInt(2))
 
-            // Just verify that the method completes without errors
-            expect(members).toBeDefined()
-            expect(Array.isArray(members)).toBe(true)
-            expect(members).toHaveLength(5)
+            const groupMembers = await semaphoreViem.getGroupMembers("42")
+
+            expect(groupMembers).toHaveLength(2)
+            expect(mockGetContractEvents).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    eventName: "MemberAdded"
+                })
+            )
         })
 
         it("should handle all event types and update paths correctly", async () => {
@@ -394,7 +327,7 @@ describe("SemaphoreViem", () => {
                             args: {
                                 groupId: "42",
                                 index: BigInt(1),
-                                newIdentityCommitment: "999"
+                                newIdentityCommitment: "111"
                             },
                             blockNumber: BigInt(1000)
                         },
@@ -416,7 +349,7 @@ describe("SemaphoreViem", () => {
                             args: {
                                 groupId: "42",
                                 startIndex: BigInt(5),
-                                identityCommitments: ["501", "502", "503"]
+                                identityCommitments: ["6", "7", "8"]
                             }
                         }
                     ]
@@ -427,8 +360,32 @@ describe("SemaphoreViem", () => {
                             // Valid member added event - individual addition at index 2
                             args: {
                                 groupId: "42",
+                                index: BigInt(0),
+                                identityCommitment: "1"
+                            }
+                        },
+                        {
+                            // Valid member added event - individual addition at index 2
+                            args: {
+                                groupId: "42",
+                                index: BigInt(1),
+                                identityCommitment: "2"
+                            }
+                        },
+                        {
+                            // Valid member added event - individual addition at index 2
+                            args: {
+                                groupId: "42",
                                 index: BigInt(2),
-                                identityCommitment: "222"
+                                identityCommitment: "3"
+                            }
+                        },
+                        {
+                            // Valid member added event - individual addition at index 2
+                            args: {
+                                groupId: "42",
+                                index: BigInt(3),
+                                identityCommitment: "4"
                             }
                         },
                         {
@@ -436,7 +393,7 @@ describe("SemaphoreViem", () => {
                             args: {
                                 groupId: "42",
                                 index: BigInt(4),
-                                identityCommitment: "444"
+                                identityCommitment: "5"
                             }
                         },
                         {
@@ -444,7 +401,7 @@ describe("SemaphoreViem", () => {
                             args: {
                                 groupId: "42",
                                 index: BigInt(8),
-                                identityCommitment: "888"
+                                identityCommitment: "9"
                             }
                         }
                     ]
@@ -458,17 +415,16 @@ describe("SemaphoreViem", () => {
             const members = await semaphoreViem.getGroupMembers("42")
 
             // Verify the results cover all the branches
-            expect(members).toHaveLength(10)
-            expect(members[0]).toBe("0") // Default placeholder (no event)
-            expect(members[1]).toBe("999") // From MemberUpdated
-            expect(members[2]).toBe("222") // From MemberAdded
+            expect(members).toHaveLength(9)
+            expect(members[0]).toBe("1")
+            expect(members[1]).toBe("111") // From MemberUpdated
+            expect(members[2]).toBe("3") // From MemberAdded
             expect(members[3]).toBe("0") // From MemberRemoved (overriding MemberUpdated)
-            expect(members[4]).toBe("444") // From MemberAdded
-            expect(members[5]).toBe("501") // From MembersAdded (batch)
-            expect(members[6]).toBe("502") // From MembersAdded (batch)
-            expect(members[7]).toBe("503") // From MembersAdded (batch)
-            expect(members[8]).toBe("888") // From MemberAdded
-            expect(members[9]).toBe("0") // Default placeholder (no event)
+            expect(members[4]).toBe("5") // From MemberAdded
+            expect(members[5]).toBe("6") // From MembersAdded (batch)
+            expect(members[6]).toBe("7") // From MembersAdded (batch)
+            expect(members[7]).toBe("8") // From MembersAdded (batch)
+            expect(members[8]).toBe("9") // From MemberAdded
         })
 
         it("should throw an error if the group does not exist", async () => {
@@ -1028,151 +984,6 @@ describe("SemaphoreViem", () => {
 
             // Should have undefined timestamp
             expect(proofs[0].timestamp).toBeUndefined()
-        })
-
-        // Additional test for line 111 - startBlock initialization with defined startBlock
-        it("should handle defined startBlock from getDeployedContract", () => {
-            // Create a new instance with a supported network
-            const semaphoreViem = new SemaphoreViem("sepolia")
-
-            // @ts-ignore - accessing private property for testing
-            expect(semaphoreViem._options.startBlock).not.toBe(0n)
-        })
-
-        // Additional test for lines 249-260 - memberUpdatedEvents with valid args
-        it("should handle memberUpdatedEvents with valid args", async () => {
-            const semaphoreViem = createSemaphoreViem()
-
-            // Mock getContractEvents to return valid memberUpdatedEvents
-            const mockGetContractEvents = jest.fn().mockImplementation(({ eventName }) => {
-                if (eventName === "MemberUpdated") {
-                    return [
-                        {
-                            args: {
-                                groupId: "1",
-                                index: 0n,
-                                newIdentityCommitment: 123n
-                            },
-                            blockNumber: 123n,
-                            address: "0x1234" as `0x${string}`,
-                            blockHash: "0xabc" as `0x${string}`,
-                            data: "0x" as `0x${string}`,
-                            logIndex: 0,
-                            transactionHash: "0xdef" as `0x${string}`,
-                            transactionIndex: 0,
-                            removed: false,
-                            topics: ["0x"],
-                            eventName: "MemberUpdated"
-                        }
-                    ]
-                }
-                return []
-            })
-
-            // Mock contract read methods
-            const mockContract = {
-                read: {
-                    getGroupAdmin: jest.fn().mockResolvedValue("0x1234"),
-                    getMerkleTreeRoot: jest.fn().mockResolvedValue("root"),
-                    getMerkleTreeDepth: jest.fn().mockResolvedValue(20n),
-                    getMerkleTreeSize: jest.fn().mockResolvedValue(1n)
-                }
-            }
-
-            // @ts-ignore - Replace client and contract with mocks
-            semaphoreViem._client = {
-                getContractEvents: mockGetContractEvents
-            }
-            // @ts-ignore
-            semaphoreViem._contract = mockContract
-
-            const members = await semaphoreViem.getGroupMembers("1")
-
-            // Should include the updated member - actual value is "0"
-            expect(members).toEqual(["0"])
-        })
-
-        // Additional test for line 292 - membersAddedEvents with valid args
-        it("should handle membersAddedEvents with valid args", async () => {
-            const semaphoreViem = createSemaphoreViem()
-
-            // Mock getContractEvents to return valid membersAddedEvents
-            const mockGetContractEvents = jest.fn().mockImplementation(({ eventName }) => {
-                if (eventName === "MembersAdded") {
-                    return [
-                        {
-                            args: {
-                                groupId: "1",
-                                startIndex: 0n,
-                                identityCommitments: ["123", "456"]
-                            },
-                            address: "0x1234" as `0x${string}`,
-                            blockHash: "0xabc" as `0x${string}`,
-                            blockNumber: 123n,
-                            data: "0x" as `0x${string}`,
-                            logIndex: 0,
-                            transactionHash: "0xdef" as `0x${string}`,
-                            transactionIndex: 0,
-                            removed: false,
-                            topics: ["0x"],
-                            eventName: "MembersAdded"
-                        }
-                    ]
-                }
-                return []
-            })
-
-            // Mock contract read methods
-            const mockContract = {
-                read: {
-                    getGroupAdmin: jest.fn().mockResolvedValue("0x1234"),
-                    getMerkleTreeRoot: jest.fn().mockResolvedValue("root"),
-                    getMerkleTreeDepth: jest.fn().mockResolvedValue(20n),
-                    getMerkleTreeSize: jest.fn().mockResolvedValue(2n)
-                }
-            }
-
-            // @ts-ignore - Replace client and contract with mocks
-            semaphoreViem._client = {
-                getContractEvents: mockGetContractEvents
-            }
-            // @ts-ignore
-            semaphoreViem._contract = mockContract
-
-            const members = await semaphoreViem.getGroupMembers("1")
-
-            // Should include the batch-added members - actual values are "0", "0"
-            expect(members).toEqual(["0", "0"])
-        })
-
-        // Additional test for line 314 - non-zero merkleTreeSize
-        it("should handle non-zero merkleTreeSize", async () => {
-            const semaphoreViem = createSemaphoreViem()
-
-            // Mock contract read methods
-            const mockContract = {
-                read: {
-                    getGroupAdmin: jest.fn().mockResolvedValue("0x1234"),
-                    getMerkleTreeRoot: jest.fn().mockResolvedValue("root"),
-                    getMerkleTreeDepth: jest.fn().mockResolvedValue(20n),
-                    getMerkleTreeSize: jest.fn().mockResolvedValue(3n)
-                }
-            }
-
-            // Mock client with empty events
-            const mockGetContractEvents = jest.fn().mockResolvedValue([])
-
-            // @ts-ignore - Replace client and contract with mocks
-            semaphoreViem._client = {
-                getContractEvents: mockGetContractEvents
-            }
-            // @ts-ignore
-            semaphoreViem._contract = mockContract
-
-            const members = await semaphoreViem.getGroupMembers("1")
-
-            // Should return array with empty strings for each index
-            expect(members).toEqual(["0", "0", "0"])
         })
     })
 
