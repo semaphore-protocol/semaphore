@@ -37,4 +37,4 @@
 -   [ ] New and existing unit tests pass locally with my changes
 
 > [!IMPORTANT]
-> We do not accept pull requests for minor grammatical fixes (e.g., correcting typos, rewording sentences) or for fixing broken links, unless they significantly improve clarity or functionality. These contributions, while appreciated, are not a priority for merging. If you notice any of these issues, please create a GitHub Issue to report them so they can be properly tracked and addressed.
+> We do not accept pull requests for minor grammatical fixes (e.g., correcting typos, rewording sentences) or for fixing broken links, unless they significantly improve clarity or functionality. These contributions, while appreciated, are not a priority for merging. If you notice any of these issues, please create a [GitHub Issue](https://github.com/semaphore-protocol/semaphore/issues/new?template=BLANK_ISSUE) to report them so they can be properly tracked and addressed.
