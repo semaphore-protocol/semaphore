@@ -46,7 +46,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
     }, [index, size])
 
     return (
-        <VStack align="left" w="full" spacing="16" {...props}>
+        <VStack align="start" w="full" spacing="16" {...props}>
             <HStack justify={type === "projects" ? "center" : "space-between"}>
                 <Heading fontSize={{ base: "30px", md: "44px" }}>{title}</Heading>
 
