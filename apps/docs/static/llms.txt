@@ -1,0 +1,1035 @@
+TITLE: Generating Semaphore Proof in TypeScript
+DESCRIPTION: This snippet demonstrates how to generate a Semaphore proof using the `generateProof` function. It initializes multiple identities and a group, then generates proofs with different configurations: automatic SNARK artifact download, specifying a Merkle tree depth, and overriding default SNARK artifact paths. The function requires an identity, a group, a message, a scope, and optionally a Merkle tree depth and SNARK artifacts.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/proof/README.md#_snippet_2
+
+LANGUAGE: typescript
+CODE:
+```
+import { Identity } from "@semaphore-protocol/identity"
+import { Group } from "@semaphore-protocol/group"
+import { generateProof } from "@semaphore-protocol/proof"
+
+const identity1 = new Identity()
+const identity2 = new Identity()
+const identity3 = new Identity()
+
+const group = new Group([identity1.commitment, identity2.commitment, identity3.commitment])
+
+const message = "Hello world"
+const scope = "Semaphore"
+
+// snarkArtifacts are not provided.
+// So they will be automatically downloaded (see https://github.com/privacy-scaling-explorations/snark-artifacts).
+const proof1 = await generateProof(identity1, group, message, scope)
+
+// You can also specify the maximum tree depth supported by the proof.
+const proof2 = await generateProof(identity2, group, message, scope, 20)
+
+// You can also override our default zkey/wasm files.
+const proof3 = await generateProof(identity3, group, message, scope, 20, {
+    wasm: "./semaphore.wasm",
+    zkey: "./semaphore.zkey"
+})
+```
+
+----------------------------------------
+
+TITLE: Invoking Semaphore `broadcastSignal` (TypeScript)
+DESCRIPTION: This snippet demonstrates how to call the `broadcastSignal()` function on the deployed Semaphore client contract. It sends the signal, proof, Merkle root, nullifiers hash, and external nullifier to the blockchain, completing the anonymous broadcast.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V1/usage.md#_snippet_9
+
+LANGUAGE: TypeScript
+CODE:
+```
+const tx = await semaphoreClientContract.broadcastSignal(
+    ethers.utils.toUtf8Bytes(signal),
+    params.proof,
+    params.root,
+    params.nullifiersHash,
+    external_nullifier,
+    { gasLimit: 500000 }
+)
+```
+
+----------------------------------------
+
+TITLE: Broadcasting Signals in Semaphore Contract (Solidity)
+DESCRIPTION: This Solidity function allows users to broadcast a signal on the Semaphore contract. It requires a zk-SNARK proof, the current identity tree root, a unique nullifiers hash to prevent double-signaling, and an external nullifier. The `_signal` parameter represents the actual message to be broadcasted.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V1/howitworks.md#_snippet_0
+
+LANGUAGE: Solidity
+CODE:
+```
+broadcastSignal(
+    bytes memory _signal,
+    uint256[8] memory _proof,
+    uint256 _root,
+    uint256 _nullifiersHash,
+    uint232 _externalNullifier
+)
+```
+
+----------------------------------------
+
+TITLE: Broadcasting Signals with Semaphore Contract (Solidity)
+DESCRIPTION: This Solidity function `broadcastSignal` is used to anonymously broadcast a signal on the Semaphore protocol. It requires a zk-SNARK proof (`_proof`) to verify the user's identity and ensure the signal is broadcasted only once. Key parameters include the signal itself (`_signal`), the identity tree root (`_root`), a unique nullifiers hash (`_nullifiersHash`) to prevent double-signaling, and an external nullifier (`_externalNullifier`) defining the context of the broadcast.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V1/howitworks.md#_snippet_0
+
+LANGUAGE: Solidity
+CODE:
+```
+broadcastSignal(
+    bytes memory _signal,
+    uint256[8] memory _proof,
+    uint256 _root,
+    uint256 _nullifiersHash,
+    uint232 _externalNullifier
+)
+```
+
+----------------------------------------
+
+TITLE: Validating a Semaphore Proof On-Chain (Solidity)
+DESCRIPTION: This Solidity snippet provides an example of how to validate a Semaphore proof directly on-chain within a smart contract. It uses the `validateProof` function, typically found in the `Semaphore.sol` contract, to verify the proof against a specified `groupId`.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V4/guides/proofs.mdx#_snippet_6
+
+LANGUAGE: solidity
+CODE:
+```
+function validateProof(ISemaphore.SemaphoreProof calldata proof) external {
+    semaphore.validateProof(groupId, proof);
+}
+```
+
+----------------------------------------
+
+TITLE: Creating a New Semaphore Identity in TypeScript
+DESCRIPTION: This code demonstrates how to instantiate a new `Identity` object. It shows two ways: generating a random identity with its private key, public key, and commitment, or initializing an identity with a specific private key.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/identity/README.md#_snippet_2
+
+LANGUAGE: typescript
+CODE:
+```
+import { Identity } from "@semaphore-protocol/identity"
+
+// The identity will be generated randomly.
+const { privateKey, publicKey, commitment } = new Identity()
+
+// Alternatively, you can pass your private key.
+const identity = new Identity("your-private-key")
+```
+
+----------------------------------------
+
+TITLE: Create Project with NPX
+DESCRIPTION: Uses NPX to create a new Semaphore project named 'my-app' with the 'monorepo-ethers' template. This method is recommended for NPM versions 5.2 or higher.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V4/getting-started.mdx#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npx @semaphore-protocol/cli create my-app --template monorepo-ethers
+```
+
+----------------------------------------
+
+TITLE: Installing Semaphore Contracts with Package Managers
+DESCRIPTION: This snippet demonstrates how to install the @semaphore-protocol/contracts package using various Node.js package managers (bun, npm, pnpm, yarn) and the Solidity package manager (soldeer). For soldeer, an explicit version is required.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/README.md#_snippet_0
+
+LANGUAGE: commandline
+CODE:
+```
+bun add @semaphore-protocol/contracts
+npm i @semaphore-protocol/contracts
+pnpm add @semaphore-protocol/contracts
+yarn add @semaphore-protocol/contracts
+
+# for soldeer, an explicit version is required, e.g:
+soldeer install semaphore-protocol-contracts~4.6.0
+```
+
+----------------------------------------
+
+TITLE: Generating an Anonymous Semaphore Proof (TypeScript)
+DESCRIPTION: This TypeScript snippet illustrates how to generate a zero-knowledge proof using the `generateProof` function from `@semaphore-protocol/proof`. It requires a Semaphore identity, a group containing the identity's commitment, an anonymous message, and a unique scope to prevent double-spending.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V4/guides/proofs.mdx#_snippet_4
+
+LANGUAGE: typescript
+CODE:
+```
+import { generateProof } from "@semaphore-protocol/proof"
+
+const scope = group.root
+const message = 1
+
+const proof = await generateProof(identity, group, message, scope)
+```
+
+----------------------------------------
+
+TITLE: Broadcasting Signal with ZK-SNARK Proof (Solidity)
+DESCRIPTION: This Solidity function allows users to broadcast a signal, verifying a ZK-SNARK proof against the identity tree root and an external nullifier. The `_nullifiersHash` ensures a user can only broadcast once per external nullifier.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V1/contract-api.md#_snippet_9
+
+LANGUAGE: Solidity
+CODE:
+```
+broadcastSignal(
+    bytes memory _signal,
+    uint256[8] memory _proof,
+    uint256 _root,
+    uint256 _nullifiersHash,
+    uint232 _externalNullifier
+)
+```
+
+----------------------------------------
+
+TITLE: Creating a New Semaphore Project with npx
+DESCRIPTION: This command uses `npx` to execute the Semaphore CLI's `create` command without a global installation. It initializes a new Semaphore project named 'my-app' in the current directory, utilizing the default `monorepo-ethers` template for project setup.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/cli/README.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+npx @semaphore-protocol/cli create my-app
+```
+
+----------------------------------------
+
+TITLE: Cloning and Building Semaphore Project (Bash)
+DESCRIPTION: This snippet outlines the initial steps to set up the Semaphore project: cloning the repository, navigating into the directory, installing Node.js dependencies using 'npm i' and 'npm run bootstrap' (due to Lerna monorepo management), and finally building the entire source code. It's crucial not to run 'npm install' within subpackages.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V1/quickstart.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+git clone git@github.com:kobigurk/semaphore.git && \
+cd semaphore && \
+npm i && \
+npm run bootstrap && \
+npm run build
+```
+
+----------------------------------------
+
+TITLE: Verifying an Off-Chain Semaphore Proof (TypeScript)
+DESCRIPTION: This snippet illustrates how to verify a Semaphore proof off-chain using the `verifyProof` function from `@semaphore-protocol/proof`. It takes the generated proof and a `verificationKey` object, which is parsed from the `semaphore.json` trusted setup file. The function returns a Promise that resolves to `true` for a valid proof or `false` otherwise.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V2/guides/proofs.md#_snippet_1
+
+LANGUAGE: TypeScript
+CODE:
+```
+import { verifyProof } from "@semaphore-protocol/proof"
+
+const verificationKey = JSON.parse(fs.readFileSync("./semaphore.json", "utf-8"))
+
+await verifyProof(verificationKey, fullProof) // true or false.
+```
+
+----------------------------------------
+
+TITLE: Cloning and Installing Semaphore Boilerplate (Git, Yarn)
+DESCRIPTION: These commands clone the Semaphore Boilerplate repository and install its dependencies. This sets up the frontend project for integration with the contracts.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/cli-template-contracts-foundry/README.md#_snippet_10
+
+LANGUAGE: sh
+CODE:
+```
+git clone https://github.com/semaphore-protocol/boilerplate.git
+cd boilerplate
+yarn install
+```
+
+----------------------------------------
+
+TITLE: Verifying Semaphore Proof Off-chain (TypeScript)
+DESCRIPTION: This TypeScript snippet shows how to verify a Semaphore proof off-chain using the `verifyProof` function from `@semaphore-protocol/proof`. It takes the `fullProof` object and the `treeDepth` of the Merkle tree as parameters, returning a Promise that resolves to `true` or `false` indicating the proof's validity.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V3/guides/proofs.mdx#_snippet_5
+
+LANGUAGE: typescript
+CODE:
+```
+import { verifyProof } from "@semaphore-protocol/proof"
+
+await verifyProof(fullProof, 20) // true or false.
+```
+
+----------------------------------------
+
+TITLE: Creating an Empty Semaphore Group (Off-chain) - TypeScript
+DESCRIPTION: This TypeScript snippet demonstrates how to create a new, empty off-chain Semaphore group. It imports the `Group` class from `@semaphore-protocol/group` and instantiates it without any initial parameters.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V4/guides/groups.mdx#_snippet_1
+
+LANGUAGE: typescript
+CODE:
+```
+import { Group } from "@semaphore-protocol/group"
+
+const group1 = new Group()
+```
+
+----------------------------------------
+
+TITLE: Creating Random Semaphore Identity (TypeScript)
+DESCRIPTION: This TypeScript snippet demonstrates how to create a new, random Semaphore identity by instantiating the `Identity` class without any parameters. The resulting identity object contains the generated private key, public key, and commitment.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V4/guides/identities.mdx#_snippet_3
+
+LANGUAGE: ts
+CODE:
+```
+import { Identity } from "@semaphore-protocol/identity"
+
+const { privateKey, publicKey, commitment } = new Identity()
+```
+
+----------------------------------------
+
+TITLE: Verifying a Semaphore Proof Off-Chain (TypeScript)
+DESCRIPTION: This TypeScript snippet demonstrates how to verify a generated Semaphore proof off-chain using the `verifyProof` function from the `@semaphore-protocol/proof` package. The function takes the proof object as input and returns a boolean value indicating whether the proof is valid.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V4/guides/proofs.mdx#_snippet_5
+
+LANGUAGE: typescript
+CODE:
+```
+import { verifyProof } from "@semaphore-protocol/proof"
+
+await verifyProof(proof) // true or false.
+```
+
+----------------------------------------
+
+TITLE: Verifying a Semaphore Proof Off-Chain (TypeScript)
+DESCRIPTION: This snippet illustrates how to verify a Semaphore proof off-chain using the `@semaphore-protocol/proof` library's `verifyProof` function. It requires the `verificationKey` parsed from the `semaphore.json` trusted setup file and the `fullProof` object. The function returns a Promise that resolves to `true` or `false` indicating the proof's validity.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V2/guides/proofs.md#_snippet_1
+
+LANGUAGE: TypeScript
+CODE:
+```
+import { verifyProof } from "@semaphore-protocol/proof"
+
+const verificationKey = JSON.parse(fs.readFileSync("./semaphore.json", "utf-8"))
+
+await verifyProof(verificationKey, fullProof) // true or false.
+```
+
+----------------------------------------
+
+TITLE: Installing Project Dependencies (Yarn)
+DESCRIPTION: This command installs all necessary project dependencies using Yarn. It's a prerequisite for compiling, testing, and running the project.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/cli-template-contracts-foundry/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+yarn
+```
+
+----------------------------------------
+
+TITLE: Installing Project Dependencies (Yarn) - Bash
+DESCRIPTION: This command installs all necessary project dependencies as defined in the `package.json` file. It is a prerequisite for running any other project commands.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/cli-template-monorepo-ethers/README.md#_snippet_0
+
+LANGUAGE: Bash
+CODE:
+```
+yarn
+```
+
+----------------------------------------
+
+TITLE: Adding a Single Member to a Group in Semaphore Protocol (TypeScript)
+DESCRIPTION: This example illustrates how to add a single member commitment to an existing `Group` instance using the `addMember` method. It shows adding an `Identity`'s commitment and then logging the first member of the group.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/group/README.md#_snippet_3
+
+LANGUAGE: TypeScript
+CODE:
+```
+import { Group } from "@semaphore-protocol/group"
+import { Identity } from "@semaphore-protocol/identity"
+
+const group = new Group()
+
+const { commitment } = new Identity()
+
+group.addMember(commitment)
+
+// 12989101133047504182892154686643420754368236204022364847543591045056549053997n
+console.log(group.members[0])
+```
+
+----------------------------------------
+
+TITLE: Verifying a Semaphore Identity Signature (TypeScript)
+DESCRIPTION: This TypeScript snippet demonstrates how to verify a message's signature using the static `Identity.verifySignature` method. It requires the original message, the generated signature, and the signer's public key to confirm authenticity.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V4/guides/identities.mdx#_snippet_6
+
+LANGUAGE: ts
+CODE:
+```
+// Static method.
+Identity.verifySignature(message, signature, identity1.publicKey)
+```
+
+----------------------------------------
+
+TITLE: Verifying Semaphore Zero-Knowledge Proof (TypeScript)
+DESCRIPTION: This function verifies the validity of a given `SnarkProof`. It returns `true` if the proof is cryptographically sound when checked against the provided verifying key and public signals, and `false` otherwise.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V1/libsemaphore.md#_snippet_10
+
+LANGUAGE: TypeScript
+CODE:
+```
+verifyProof(verifyingKey: SnarkVerifyingKey, proof: SnarkProof, publicSignals: SnarkPublicSignals): boolean
+```
+
+----------------------------------------
+
+TITLE: Generating Semaphore Proof Off-chain Client-side (TypeScript)
+DESCRIPTION: This TypeScript snippet illustrates a simplified way to generate a Semaphore proof on the client side. When generating proofs in a client-side environment, the snark artifacts are automatically fetched, allowing the `generateProof` function to be called without explicitly providing file paths.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V3/guides/proofs.mdx#_snippet_4
+
+LANGUAGE: typescript
+CODE:
+```
+const fullProof = await generateProof(identity, group, externalNullifier, signal)
+```
+
+----------------------------------------
+
+TITLE: Creating Random Semaphore Identities (TypeScript)
+DESCRIPTION: This snippet demonstrates how to create a random Semaphore identity by instantiating the `Identity` class without any parameters. It generates unique `trapdoor`, `nullifier`, and `commitment` values, which are essential for Semaphore operations. The `trapdoor` and `nullifier` are secret, while the `commitment` is public.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V2/guides/identities.md#_snippet_0
+
+LANGUAGE: TypeScript
+CODE:
+```
+import { Identity } from "@semaphore-protocol/identity"
+
+const { trapdoor, nullifier, commitment } = new Identity()
+```
+
+----------------------------------------
+
+TITLE: Testing Semaphore Greeter Contract (JavaScript)
+DESCRIPTION: This Hardhat test file verifies the functionality of a Semaphore-integrated Greeter smart contract. It demonstrates how to deploy the contract, manage user identities and groups, allow users to join a group, and generate/verify zero-knowledge proofs for private greetings, ensuring events are emitted correctly.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V2/quick-setup.md#_snippet_10
+
+LANGUAGE: javascript
+CODE:
+```
+const { Identity } = require("@semaphore-protocol/identity")
+const { Group } = require("@semaphore-protocol/group")
+const { generateProof, packToSolidityProof, verifyProof } = require("@semaphore-protocol/proof")
+const { expect } = require("chai")
+const { run, ethers } = require("hardhat")
+
+describe("Greeter", function () {
+    let greeter
+
+    const users = []
+    const groupId = 42
+    const group = new Group()
+
+    before(async () => {
+        greeter = await run("deploy", { logs: false, group: groupId })
+
+        users.push({
+            identity: new Identity(),
+            username: ethers.utils.formatBytes32String("anon1")
+        })
+
+        users.push({
+            identity: new Identity(),
+            username: ethers.utils.formatBytes32String("anon2")
+        })
+
+        group.addMember(users[0].identity.generateCommitment())
+        group.addMember(users[1].identity.generateCommitment())
+    })
+
+    describe("# joinGroup", () => {
+        it("Should allow users to join the group", async () => {
+            for (let i = 0; i < group.members.length; i++) {
+                const transaction = greeter.joinGroup(group.members[i], users[i].username)
+
+                await expect(transaction).to.emit(greeter, "NewUser").withArgs(group.members[i], users[i].username)
+            }
+        })
+    })
+
+    describe("# greet", () => {
+        const wasmFilePath = "./static/semaphore.wasm"
+        const zkeyFilePath = "./static/semaphore.zkey"
+
+        it("Should allow users to greet", async () => {
+            const greeting = ethers.utils.formatBytes32String("Hello World")
+
+            const fullProof = await generateProof(users[1].identity, group, groupId, greeting, {
+                wasmFilePath,
+                zkeyFilePath
+            })
+            const solidityProof = packToSolidityProof(fullProof.proof)
+
+            const transaction = greeter.greet(
+                greeting,
+                fullProof.publicSignals.merkleRoot,
+                fullProof.publicSignals.nullifierHash,
+                solidityProof
+            )
+
+            await expect(transaction).to.emit(greeter, "NewGreeting").withArgs(greeting)
+        })
+    })
+})
+```
+
+----------------------------------------
+
+TITLE: Generating Identity and Commitment in TypeScript
+DESCRIPTION: This snippet demonstrates how to generate a new Semaphore identity and its corresponding identity commitment using `libsemaphore` functions. The `identity` object should be stored securely for future use, while the `identityCommitment` is used for on-chain interactions.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V1/usage.md#_snippet_0
+
+LANGUAGE: TypeScript
+CODE:
+```
+const identity: Identity = genIdentity()
+const identityCommitment = genIdentityCommitment(identity)
+```
+
+----------------------------------------
+
+TITLE: Generating Semaphore Identity and Commitment (TypeScript)
+DESCRIPTION: This snippet demonstrates how to generate a new Semaphore identity and its corresponding identity commitment using `libsemaphore` functions. The `identity` object should be stored securely, as it's crucial for future operations like signal broadcasting.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V1/usage.md#_snippet_0
+
+LANGUAGE: TypeScript
+CODE:
+```
+const identity: Identity = genIdentity()
+const identityCommitment = genIdentityCommitment(identity)
+```
+
+----------------------------------------
+
+TITLE: Deploying Semaphore Contracts to Specific Networks
+DESCRIPTION: These commands demonstrate how to deploy the Semaphore contracts to various blockchain networks (sepolia, mumbai, optimism-sepolia, arbitrum-sepolia, arbitrum) by specifying the --network option. This allows targeting different environments for testing or production.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/contracts/README.md#_snippet_7
+
+LANGUAGE: bash
+CODE:
+```
+yarn deploy --network sepolia
+yarn deploy --network mumbai
+yarn deploy --network optimism-sepolia
+yarn deploy --network arbitrum-sepolia
+yarn deploy --network arbitrum
+```
+
+----------------------------------------
+
+TITLE: Demonstrating Core Semaphore Protocol Usage in TypeScript
+DESCRIPTION: This example illustrates the basic workflow of the Semaphore protocol. It involves creating identities, forming a group, generating a zero-knowledge proof for a message within a specific scope, and then verifying that proof. This showcases the `Identity`, `Group`, `generateProof`, and `verifyProof` functions from `@semaphore-protocol/core`.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/core/README.md#_snippet_2
+
+LANGUAGE: typescript
+CODE:
+```
+import { Identity, Group, generateProof, verifyProof } from "@semaphore-protocol/core"
+
+const identity1 = new Identity()
+const identity2 = new Identity()
+const identity3 = new Identity()
+
+const group = new Group([identity1.commitment, identity2.commitment, identity3.commitment])
+
+const message = "Hello world"
+const scope = "Semaphore"
+
+const proof = await generateProof(identity1, group, message, scope)
+
+await verifyProof(proof)
+```
+
+----------------------------------------
+
+TITLE: Installing Project Dependencies with Yarn
+DESCRIPTION: After creating the project, navigate into the new 'my-app' directory and use Yarn to install all required project dependencies. This prepares the project for development and execution.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V3/quick-setup.mdx#_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+cd my-app
+yarn
+```
+
+----------------------------------------
+
+TITLE: Fetching On-Chain Group Members for Off-Chain Proof Generation (TypeScript)
+DESCRIPTION: This TypeScript snippet demonstrates how to fetch group members from a Semaphore subgraph (e.g., Sepolia) and reconstruct an off-chain group. This is necessary when your Semaphore group exists on-chain but you need to generate proofs off-chain, utilizing the `@semaphore-protocol/data` and `@semaphore-protocol/group` libraries.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V4/guides/proofs.mdx#_snippet_3
+
+LANGUAGE: typescript
+CODE:
+```
+import { SemaphoreSubgraph } from "@semaphore-protocol/data"
+import { Group } from "@semaphore-protocol/group"
+
+const semaphoreSubgraph = new SemaphoreSubgraph("sepolia")
+
+const { members } = await semaphoreSubgraph.getGroup("42", { members: true })
+
+const group = new Group(members)
+```
+
+----------------------------------------
+
+TITLE: Reusing Saved Semaphore Identity from JSON (TypeScript)
+DESCRIPTION: This snippet demonstrates how to reconstruct a Semaphore identity from a previously saved JSON string. By passing the JSON string (obtained via `identity.toString()`) to the `Identity` constructor, the identity's `trapdoor` and `nullifier` are restored, allowing the identity to be reused in subsequent operations.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V2/guides/identities.md#_snippet_3
+
+LANGUAGE: TypeScript
+CODE:
+```
+const identity2 = new Identity(identity.toString())
+```
+
+----------------------------------------
+
+TITLE: Adding a Single Member to an Off-chain Semaphore Group (TypeScript)
+DESCRIPTION: This code demonstrates how to add a single `identityCommitment` as a member to an existing off-chain Semaphore group. The `addMember` function appends the new member to the group's internal Merkle tree structure.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V2/guides/groups.md#_snippet_3
+
+LANGUAGE: typescript
+CODE:
+```
+group.addMember(identityCommitment)
+```
+
+----------------------------------------
+
+TITLE: Generating Semaphore Proof Off-chain with Snark Artifacts (TypeScript)
+DESCRIPTION: This TypeScript snippet demonstrates how to generate a Semaphore proof off-chain using the `generateProof` function. It requires the identity, group, an external nullifier to prevent double-signaling, the signal itself, and explicit paths to the `zkey` and `wasm` trusted setup files.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V3/guides/proofs.mdx#_snippet_3
+
+LANGUAGE: typescript
+CODE:
+```
+import { generateProof } from "@semaphore-protocol/proof"
+
+const externalNullifier = group.root
+const signal = 1
+
+const fullProof = await generateProof(identity, group, externalNullifier, signal, {
+    zkeyFilePath: "./semaphore.zkey",
+    wasmFilePath: "./semaphore.wasm"
+})
+```
+
+----------------------------------------
+
+TITLE: Fetching Group Details with Semaphore Viem - TypeScript
+DESCRIPTION: This snippet demonstrates fetching the details of a specific group by its ID using the `getGroup()` method on a `SemaphoreViem` instance. It requires a group ID as input.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/README.md#_snippet_17
+
+LANGUAGE: typescript
+CODE:
+```
+const group = await semaphoreViem.getGroup("42")
+```
+
+----------------------------------------
+
+TITLE: Defining a Greeter Smart Contract with Semaphore Integration
+DESCRIPTION: This Solidity smart contract, `Greeter.sol`, demonstrates how to integrate with the Semaphore protocol. It allows users to join a group by adding their identity commitment and username, and to 'greet' by verifying a zero-knowledge proof using the `ISemaphore` interface. The contract emits events for new greetings and new users.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V2/quick-setup.md#_snippet_5
+
+LANGUAGE: solidity
+CODE:
+```
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
+
+/// @title Greeter contract.
+/// @dev The following code is just an example to show how Semaphore can be used.
+contract Greeter {
+    event NewGreeting(bytes32 greeting);
+    event NewUser(uint256 identityCommitment, bytes32 username);
+
+    ISemaphore public semaphore;
+
+    uint256 groupId;
+    mapping(uint256 => bytes32) users;
+
+    constructor(address semaphoreAddress, uint256 _groupId) {
+        semaphore = ISemaphore(semaphoreAddress);
+        groupId = _groupId;
+
+        semaphore.createGroup(groupId, 20, 0, address(this));
+    }
+
+    function joinGroup(uint256 identityCommitment, bytes32 username) external {
+        semaphore.addMember(groupId, identityCommitment);
+
+        users[identityCommitment] = username;
+
+        emit NewUser(identityCommitment, username);
+    }
+
+    function greet(
+        bytes32 greeting,
+        uint256 merkleTreeRoot,
+        uint256 nullifierHash,
+        uint256[8] calldata proof
+    ) external {
+        semaphore.verifyProof(groupId, merkleTreeRoot, greeting, nullifierHash, groupId, proof);
+
+        emit NewGreeting(greeting);
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Greeter Solidity Smart Contract with Semaphore Integration
+DESCRIPTION: This Solidity contract, `Greeter.sol`, demonstrates how to integrate with the Semaphore protocol. It allows users to join a predefined group and send greetings, leveraging Semaphore for on-chain membership verification and proof validation. The contract depends on the `ISemaphore.sol` interface and requires a Semaphore contract address and a group ID during its deployment.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V2/quick-setup.md#_snippet_5
+
+LANGUAGE: solidity
+CODE:
+```
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
+
+/// @title Greeter contract.
+/// @dev The following code is just an example to show how Semaphore can be used.
+contract Greeter {
+    event NewGreeting(bytes32 greeting);
+    event NewUser(uint256 identityCommitment, bytes32 username);
+
+    ISemaphore public semaphore;
+
+    uint256 groupId;
+    mapping(uint256 => bytes32) users;
+
+    constructor(address semaphoreAddress, uint256 _groupId) {
+        semaphore = ISemaphore(semaphoreAddress);
+        groupId = _groupId;
+
+        semaphore.createGroup(groupId, 20, 0, address(this));
+    }
+
+    function joinGroup(uint256 identityCommitment, bytes32 username) external {
+        semaphore.addMember(groupId, identityCommitment);
+
+        users[identityCommitment] = username;
+
+        emit NewUser(identityCommitment, username);
+    }
+
+    function greet(
+        bytes32 greeting,
+        uint256 merkleTreeRoot,
+        uint256 nullifierHash,
+        uint256[8] calldata proof
+    ) external {
+        semaphore.verifyProof(groupId, merkleTreeRoot, greeting, nullifierHash, groupId, proof);
+
+        emit NewGreeting(greeting);
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Signing a Message with Semaphore Identity (TypeScript)
+DESCRIPTION: This TypeScript snippet shows how a Semaphore identity can sign a message using its `signMessage` method. The message can be a string, number, or buffer, and the method returns a unique signature.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V4/guides/identities.mdx#_snippet_5
+
+LANGUAGE: ts
+CODE:
+```
+const message = "Hello World"
+
+const signature = identity1.signMessage(message)
+```
+
+----------------------------------------
+
+TITLE: Signing a Message with Semaphore Identity in TypeScript
+DESCRIPTION: This snippet demonstrates how to sign a message using an `Identity` instance. The `signMessage()` method takes a message (of type `BigNumberish`) and produces a digital signature, proving the identity's ownership.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/identity/README.md#_snippet_5
+
+LANGUAGE: typescript
+CODE:
+```
+import { Identity } from "@semaphore-protocol/identity"
+
+const message = "message"
+const identity = new Identity()
+
+const signature = identity.signMessage(message)
+```
+
+----------------------------------------
+
+TITLE: Verifying a Semaphore Signature in TypeScript
+DESCRIPTION: This code illustrates how to verify a digital signature using the static `Identity.verifySignature()` method. It checks if a given signature is valid for a specific message and public key, returning a boolean result.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/identity/README.md#_snippet_6
+
+LANGUAGE: typescript
+CODE:
+```
+import { Identity } from "@semaphore-protocol/identity"
+
+const message = "message"
+const identity = new Identity()
+
+const signature = identity.signMessage(message)
+
+Identity.verifySignature(message, signature, identity.publicKey)
+```
+
+----------------------------------------
+
+TITLE: Creating a Random Semaphore Identity in TypeScript
+DESCRIPTION: This snippet shows how to create a random Semaphore identity by instantiating the `Identity` class without parameters. It generates unique `trapdoor`, `nullifier`, and `commitment` values.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V3/guides/identities.mdx#_snippet_3
+
+LANGUAGE: typescript
+CODE:
+```
+import { Identity } from "@semaphore-protocol/identity"
+
+const { trapdoor, nullifier, commitment } = new Identity()
+```
+
+----------------------------------------
+
+TITLE: Packing Proof for Solidity Compatibility (TypeScript)
+DESCRIPTION: This snippet shows how to transform a generated Semaphore proof into a format compatible with Solidity smart contracts. The `packToSolidityProof` utility function from `@semaphore-protocol/proof` takes the `fullProof.proof` object and returns a new instance of the proof structured for on-chain verification.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V2/guides/proofs.md#_snippet_2
+
+LANGUAGE: TypeScript
+CODE:
+```
+import { packToSolidityProof } from "@semaphore-protocol/proof"
+
+const solidityProof = packToSolidityProof(fullProof.proof)
+```
+
+----------------------------------------
+
+TITLE: Installing Semaphore Identity Package (npm)
+DESCRIPTION: This snippet provides the command to install the `@semaphore-protocol/identity` package using npm, which is required for managing Semaphore identities in your project.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V4/guides/identities.mdx#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install @semaphore-protocol/identity
+```
+
+----------------------------------------
+
+TITLE: Adding Multiple Members to an Off-chain Semaphore Group (TypeScript)
+DESCRIPTION: This snippet shows how to efficiently add a batch of `identityCommitment`s to an off-chain Semaphore group. The `addMembers` function accepts an array of commitments, allowing for bulk insertion into the group.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V2/guides/groups.md#_snippet_4
+
+LANGUAGE: typescript
+CODE:
+```
+group.addMembers([identityCommitment1, identityCommitment2])
+```
+
+----------------------------------------
+
+TITLE: Generating Semaphore Zero-Knowledge Proof (TypeScript)
+DESCRIPTION: This asynchronous function generates a `SnarkProof` using a provided witness and proving key. The resulting proof can be submitted to the Semaphore contract's `broadcastSignal()` function on-chain or verified off-chain using `verifyProof()`.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V1/libsemaphore.md#_snippet_8
+
+LANGUAGE: TypeScript
+CODE:
+```
+async genProof(witness: SnarkWitness, provingKey: SnarkProvingKey): SnarkProof
+```
+
+----------------------------------------
+
+TITLE: Updating a Member in a Semaphore Group (Off-chain) - TypeScript
+DESCRIPTION: This TypeScript snippet shows how to update an existing member within an off-chain Semaphore group. The `updateMember` method requires both the index of the member to be updated and its new value.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V4/guides/groups.mdx#_snippet_6
+
+LANGUAGE: typescript
+CODE:
+```
+group.updateMember(0, 2n)
+```
+
+----------------------------------------
+
+TITLE: Deploying Semaphore Contracts to Specific Networks
+DESCRIPTION: These commands demonstrate how to deploy the Semaphore contracts to various Ethereum-compatible networks by specifying the --network option. This allows for deployment to testnets like Sepolia, Mumbai, Optimism Sepolia, Arbitrum Sepolia, or mainnets like Arbitrum, requiring a valid private key and Infura API key in the .env file for public networks.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/contracts/README.md#_snippet_7
+
+LANGUAGE: bash
+CODE:
+```
+yarn deploy --network sepolia
+yarn deploy --network mumbai
+yarn deploy --network optimism-sepolia
+yarn deploy --network arbitrum-sepolia
+yarn deploy --network arbitrum
+```
+
+----------------------------------------
+
+TITLE: Generating a Merkle Proof for a Semaphore Group Member (Off-chain) - TypeScript
+DESCRIPTION: This TypeScript snippet demonstrates how to generate a Merkle proof for a specific member within an off-chain Semaphore group. The `generateMerkleProof` method is invoked with the index of the desired member, returning its corresponding proof.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V4/guides/groups.mdx#_snippet_7
+
+LANGUAGE: typescript
+CODE:
+```
+group.generateMerkleProof(0)
+```
+
+----------------------------------------
+
+TITLE: Packing a Semaphore Proof for Solidity (TypeScript)
+DESCRIPTION: This snippet shows how to transform an off-chain generated Semaphore proof into a Solidity-compatible format using the `packToSolidityProof` utility function from the `@semaphore-protocol/proof` library. This packed proof can then be passed to on-chain Solidity contracts for verification.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V2/guides/proofs.md#_snippet_2
+
+LANGUAGE: TypeScript
+CODE:
+```
+import { packToSolidityProof } from "@semaphore-protocol/proof"
+
+const solidityProof = packToSolidityProof(fullProof.proof)
+```
+
+----------------------------------------
+
+TITLE: Initializing a Semaphore Group with Defaults (TypeScript)
+DESCRIPTION: This snippet demonstrates how to create an off-chain Semaphore group using the `@semaphore-protocol/group` library's `Group` class. It initializes a group with default parameters: a tree depth of 20 (supporting 2^20 members) and a zero value of `BigInt(0)` for empty nodes.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V2/guides/groups.md#_snippet_0
+
+LANGUAGE: typescript
+CODE:
+```
+import { Group } from "@semaphore-protocol/group"
+
+// Default parameters: treeDepth = 20, zeroValue = BigInt(0).
+const group = new Group()
+```
+
+----------------------------------------
+
+TITLE: Creating a Semaphore Group with Default Parameters (TypeScript)
+DESCRIPTION: This snippet demonstrates how to create an off-chain Semaphore group using the `@semaphore-protocol/group` library's `Group` class. It initializes a group with default parameters: a tree depth of 20 and a zero value of `BigInt(0)`, suitable for groups up to 2^20 members.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/i18n/es/docusaurus-plugin-content-docs/version-V2/guides/groups.md#_snippet_0
+
+LANGUAGE: typescript
+CODE:
+```
+import { Group } from "@semaphore-protocol/group"
+
+// Default parameters: treeDepth = 20, zeroValue = BigInt(0).
+const group = new Group()
+```
+
+----------------------------------------
+
+TITLE: Creating Deterministic Semaphore Identities in TypeScript
+DESCRIPTION: This snippet shows how to create a deterministic Semaphore identity by passing a 'secret-message' string to the `Identity` constructor. The `trapdoor` and `nullifier` are derived from the SHA256 hash of this message, allowing the identity to be recreated later with the same message. It's crucial to keep the message secret.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V2/guides/identities.md#_snippet_1
+
+LANGUAGE: TypeScript
+CODE:
+```
+const identity = new Identity("secret-message")
+```
+
+----------------------------------------
+
+TITLE: Querying Group Details with Semaphore Subgraph in TypeScript
+DESCRIPTION: This code demonstrates fetching comprehensive details for a specific group using its ID via `getGroup()`. It also shows how to selectively retrieve members and verified proofs by passing an options object, allowing for granular data retrieval.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/packages/data/README.md#_snippet_4
+
+LANGUAGE: typescript
+CODE:
+```
+const group = await semaphoreSubgraph.getGroup("42")
+const { members, verifiedProofs } = await semaphoreSubgraph.getGroup("42", { members: true, verifiedProofs: true })
+```
+
+----------------------------------------
+
+TITLE: Creating Off-chain Group with SemaphoreSubgraph (TypeScript)
+DESCRIPTION: This snippet demonstrates how to create an off-chain group using members fetched from the Semaphore subgraph. It initializes `SemaphoreSubgraph`, retrieves group members for a specific `groupId`, and then constructs a `Group` object from `@semaphore-protocol/group`.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V3/guides/fetching-data.mdx#_snippet_6
+
+LANGUAGE: typescript
+CODE:
+```
+import { Group } from "@semaphore-protocol/group"
+import { SemaphoreSubgraph } from "@semaphore-protocol/data"
+
+const groupId = "3"
+const semaphoreSubgraph = new SemaphoreSubgraph("sepolia")
+const { members } = await semaphoreSubgraph.getGroup(groupId, { members: true })
+const group = new Group(groupId, 20, members)
+```
+
+----------------------------------------
+
+TITLE: Deploying Greeter Contract with Hardhat Task (JavaScript)
+DESCRIPTION: This Hardhat task, named 'deploy', automates the deployment of a `Greeter` smart contract. It optionally deploys a Semaphore contract and its associated verifier if not provided, then deploys the `Greeter` contract with the specified Semaphore address and group ID. It logs the deployed address if `logs` is enabled.
+SOURCE: https://github.com/semaphore-protocol/semaphore/blob/main/apps/docs/versioned_docs/version-V2/quick-setup.md#_snippet_6
+
+LANGUAGE: JavaScript
+CODE:
+```
+const { task, types } = require("hardhat/config")
+
+task("deploy", "Deploy a Greeter contract")
+    .addOptionalParam("semaphore", "Semaphore contract address", undefined, types.address)
+    .addParam("group", "Group identifier", 42, types.int)
+    .addOptionalParam("logs", "Print the logs", true, types.boolean)
+    .setAction(async ({ logs, semaphore: semaphoreAddress, group: groupId }, { ethers, run }) => {
+        if (!semaphoreAddress) {
+            const { address: verifierAddress } = await run("deploy:verifier", { logs, merkleTreeDepth: 20 })
+
+            const { address } = await run("deploy:semaphore", {
+                logs,
+                verifiers: [
+                    {
+                        merkleTreeDepth: 20,
+                        contractAddress: verifierAddress
+                    }
+                ]
+            })
+
+            semaphoreAddress = address
+        }
+
+        const Greeter = await ethers.getContractFactory("Greeter")
+
+        const greeter = await Greeter.deploy(semaphoreAddress, groupId)
+
+        await greeter.deployed()
+
+        if (logs) {
+            console.log(`Greeter contract has been deployed to: ${greeter.address}`)
+        }
+
+        return greeter
+    })
+```
