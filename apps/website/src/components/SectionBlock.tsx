@@ -23,7 +23,7 @@ export default function SectionBlock({ title, description, linkText, linkUrl, co
     return (
         <VStack w="full">
             <Flex flexDir={{ base: "column", lg: "row" }} gap="52px" w="full">
-                <VStack align="left" gap="32px" flex="1">
+                <VStack align="start" gap="32px" flex="1">
                     <Text fontSize={{ base: "40px", md: "44px" }} fontWeight={{ base: "400", md: "500" }}>
                         {title}
                     </Text>
