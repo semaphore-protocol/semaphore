@@ -12,7 +12,7 @@ const r = 2188824287183927522224640574525727508854836440041603434369820418657580
 
 describe("semaphore", () => {
     let circuit: WitnessTester<
-        ["secret", "merkleProofLength", "merkleProofIndices", "merkleProofSiblings", "scope", "message"],
+        ["secret", "merkleProofLength", "merkleProofIndex", "merkleProofSiblings", "scope", "message"],
         ["nullifier", "merkleRoot"]
     >
 
@@ -36,12 +36,12 @@ describe("semaphore", () => {
 
         const group = new Group([commitment, 2n, 3n])
 
-        const { merkleProofSiblings, merkleProofIndices } = generateMerkleProof(group, 0, MAX_DEPTH)
+        const { merkleProofSiblings, merkleProofIndex } = generateMerkleProof(group, 0, MAX_DEPTH)
 
         const INPUT = {
             secret,
             merkleProofLength: group.depth,
-            merkleProofIndices,
+            merkleProofIndex,
             merkleProofSiblings,
             scope,
             message
@@ -61,12 +61,12 @@ describe("semaphore", () => {
         const commitment = poseidon2(mulPointEscalar(Base8, secret))
         const group = new Group([commitment, 2n, 3n])
 
-        const { merkleProofSiblings, merkleProofIndices } = generateMerkleProof(group, 0, MAX_DEPTH)
+        const { merkleProofSiblings, merkleProofIndex } = generateMerkleProof(group, 0, MAX_DEPTH)
 
         const INPUT = {
             secret,
             merkleProofLength: group.depth,
-            merkleProofIndices,
+            merkleProofIndex,
             merkleProofSiblings,
             scope,
             message
@@ -81,12 +81,12 @@ describe("semaphore", () => {
         const commitment = poseidon2(mulPointEscalar(Base8, secret))
         const group = new Group([commitment, 2n, 3n])
 
-        const { merkleProofSiblings, merkleProofIndices } = generateMerkleProof(group, 0, MAX_DEPTH)
+        const { merkleProofSiblings, merkleProofIndex } = generateMerkleProof(group, 0, MAX_DEPTH)
 
         const INPUT = {
             secret,
             merkleProofLength: group.depth,
-            merkleProofIndices,
+            merkleProofIndex,
             merkleProofSiblings,
             scope,
             message
@@ -100,12 +100,12 @@ describe("semaphore", () => {
 
         const group = new Group([commitment, 2n, 3n])
 
-        const { merkleProofSiblings, merkleProofIndices } = generateMerkleProof(group, 0, MAX_DEPTH)
+        const { merkleProofSiblings, merkleProofIndex } = generateMerkleProof(group, 0, MAX_DEPTH)
 
         const INPUT = {
             secret,
             merkleProofLength: group.depth,
-            merkleProofIndices,
+            merkleProofIndex,
             merkleProofSiblings,
             scope,
             message
