@@ -131,10 +131,12 @@ export default class SemaphoreViem {
         this._options = options
 
         // Create the public client
-        this._client = createPublicClient({
-            transport,
-            chain: options.chain as Chain
-        })
+        this._client =
+            options.publicClient ??
+            createPublicClient({
+                transport,
+                chain: options.chain as Chain
+            })
 
         // Create the contract instance
         this._contract = getContract({
