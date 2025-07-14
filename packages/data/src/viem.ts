@@ -117,7 +117,6 @@ export default class SemaphoreViem {
             throw new Error(`Network '${networkOrEthereumURL}' needs a Semaphore contract address`)
         }
 
-        // Create the public client
         let transport: Transport
 
         if (options.transport) {
