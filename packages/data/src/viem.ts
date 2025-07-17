@@ -93,13 +93,6 @@ export default class SemaphoreViem {
     constructor(networkOrEthereumURL: ViemNetwork | string = defaultNetwork, options: ViemOptions = {}) {
         requireString(networkOrEthereumURL, "networkOrEthereumURL")
 
-        if (options.transport) {
-            // Transport is provided directly
-        } else if (!networkOrEthereumURL.startsWith("http")) {
-            // Default to http transport if no transport is provided and network is not a URL
-            options.transport = http()
-        }
-
         if (options.apiKey) {
             requireString(options.apiKey, "apiKey")
         }
@@ -118,11 +111,11 @@ export default class SemaphoreViem {
         }
 
         let transport: Transport
-
         if (options.transport) {
             transport = options.transport
+        } else if (!networkOrEthereumURL.startsWith("http")) {
+            transport = http()
         } else {
-            // If no transport is provided, use http transport with the URL
             transport = http(networkOrEthereumURL)
         }
 
