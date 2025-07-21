@@ -1,0 +1,49 @@
+# dependencies
+node_modules
+package-lock.json
+yarn.lock
+.yarn
+
+# testing
+coverage
+coverage.json
+
+# docs
+docs
+
+# production
+dist
+build
+contract-artifacts
+
+# Hardhat files
+artifacts
+cache
+typechain-types
+
+# github
+.github/ISSUE_TEMPLATE
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js
+.next/
+out/
+
+# The Graph
+generated
+
+# Auto Generated PWA files
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map

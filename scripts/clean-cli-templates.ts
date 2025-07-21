@@ -11,7 +11,7 @@ const gitIgnored = [
     "web-app/.next"
 ]
 
-const folders = ["cli-template-monorepo-ethers", "cli-template-monorepo-subgraph"]
+const folders = ["cli-template-monorepo-ethers", "cli-template-monorepo-subgraph", "cli-template-monorepo-viem"]
 
 async function main() {
     folders.map((pkg) =>

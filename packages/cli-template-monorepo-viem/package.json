@@ -1,0 +1,30 @@
+{
+    "name": "@semaphore-protocol/cli-template-monorepo-viem",
+    "version": "4.12.0",
+    "description": "Semaphore Hardhat + Next.js + SemaphoreViem template.",
+    "license": "Unlicense",
+    "files": [
+        "files.tgz",
+        ".editorconfig",
+        ".env.example",
+        ".prettierignore",
+        ".prettierrc.json",
+        "README.md"
+    ],
+    "scripts": {
+        "dev": "yarn workspaces foreach -A -pi run dev",
+        "dev:web-app": "yarn workspace monorepo-viem-web-app dev",
+        "dev:contracts": "yarn workspace monorepo-viem-contracts dev",
+        "lint": "yarn workspaces foreach -A -pi run lint",
+        "prettier": "prettier -c . && yarn workspaces foreach -A -pi run prettier",
+        "prettier:write": "prettier -w . && yarn workspaces foreach -A -pi run prettier:write",
+        "prepublish": "tar --exclude typechain-types --exclude artifacts --exclude cache  --exclude node_modules --exclude out --exclude .next --exclude build -czf files.tgz .gitignore .yarn .yarnrc.yml apps"
+    },
+    "workspaces": [
+        "apps/*"
+    ],
+    "packageManager": "yarn@4.1.0",
+    "devDependencies": {
+        "prettier": "^3.2.5"
+    }
+}
