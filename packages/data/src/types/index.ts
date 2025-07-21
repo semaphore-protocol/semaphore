@@ -1,4 +1,4 @@
-import { Chain, Transport } from "viem"
+import { Chain, PublicClient, Transport } from "viem"
 
 export type EthersNetwork =
     | "mainnet"
@@ -65,4 +65,5 @@ export type ViemOptions = {
     transport?: Transport // Transport from viem
     chain?: Chain // Chain from viem
     apiKey?: string
+    publicClient?: PublicClient
 }

@@ -1,10 +1,10 @@
 {
     "name": "@semaphore-protocol/cli-template-contracts-foundry",
-    "version": "4.11.1",
+    "version": "4.12.1",
     "description": "Semaphore Foundry template.",
     "license": "Unlicense",
     "devDependencies": {
-        "@semaphore-protocol/contracts": "4.11.1",
+        "@semaphore-protocol/contracts": "4.12.1",
         "@zk-kit/lean-imt.sol": "2.0.1",
         "forge-std": "github:foundry-rs/forge-std#v1.9.4",
         "poseidon-solidity": "0.0.5",
