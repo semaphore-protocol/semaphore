@@ -12,21 +12,18 @@ export const circomkit = new Circomkit({
 })
 
 export function generateMerkleProof(group: Group, _index: number, maxDepth: number) {
-    const { siblings: merkleProofSiblings, index } = group.generateMerkleProof(_index)
+    const { siblings: merkleProofSiblings, index: merkleProofIndex } = group.generateMerkleProof(_index)
 
-    // The index must be converted to a list of indices, 1 for each tree level.
-    // The circuit tree depth is 20, so the number of siblings must be 20, even if
-    // the tree depth is actually 3. The missing siblings can be set to 0, as they
-    // won't be used to calculate the root in the circuit.
-    const merkleProofIndices: number[] = []
+    // For example, if the circuit expects a Merkle tree of depth 20,
+    // the input must always include 20 sibling nodes, even if the actual
+    // tree depth is smaller (e.g., 3). The unused sibling positions can be
+    // filled with 0, as they won't affect the root calculation in the circuit.
 
     for (let i = 0; i < maxDepth; i += 1) {
-        merkleProofIndices.push((index >> i) & 1)
-
         if (merkleProofSiblings[i] === undefined) {
             merkleProofSiblings[i] = BigInt(0)
         }
     }
 
-    return { merkleProofSiblings, merkleProofIndices }
+    return { merkleProofSiblings, merkleProofIndex }
 }

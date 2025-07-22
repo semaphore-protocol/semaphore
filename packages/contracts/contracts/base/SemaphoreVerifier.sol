@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Part of this file was generated with [snarkJS](https://github.com/iden3/snarkjs).
 
-pragma solidity >=0.8.23 <=0.8.28;
+pragma solidity >=0.8.23 <0.9.0;
 
 import {MAX_DEPTH} from "./Constants.sol";
 import {SemaphoreVerifierKeyPts} from "./SemaphoreVerifierKeyPts.sol";

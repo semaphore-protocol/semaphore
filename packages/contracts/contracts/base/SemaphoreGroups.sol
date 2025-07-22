@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity >=0.8.23 <=0.8.28;
+pragma solidity >=0.8.23 <0.9.0;
 
 import {ISemaphoreGroups} from "../interfaces/ISemaphoreGroups.sol";
 import {InternalLeanIMT, LeanIMTData} from "@zk-kit/lean-imt.sol/InternalLeanIMT.sol";

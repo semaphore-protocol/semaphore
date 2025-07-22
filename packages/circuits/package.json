@@ -24,14 +24,14 @@
         "access": "public"
     },
     "dependencies": {
-        "@zk-kit/binary-merkle-root.circom": "1.0.0",
+        "@zk-kit/binary-merkle-root.circom": "2.0.0",
         "circomlib": "2.0.5"
     },
     "devDependencies": {
         "@semaphore-protocol/core": "workspace:^",
         "@types/mocha": "^10.0.6",
         "@zk-kit/baby-jubjub": "1.0.3",
-        "circomkit": "0.0.19",
+        "circomkit": "0.3.3",
         "mocha": "^10.2.0",
         "poseidon-lite": "^0.3.0"
     }

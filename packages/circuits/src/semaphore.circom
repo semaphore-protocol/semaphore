@@ -27,7 +27,7 @@ template Semaphore(MAX_DEPTH) {
     // See the Semaphore identity package to know more about how the identity is generated:
     // https://github.com/semaphore-protocol/semaphore/tree/main/packages/identity.
     signal input secret;
-    signal input merkleProofLength, merkleProofIndices[MAX_DEPTH], merkleProofSiblings[MAX_DEPTH];
+    signal input merkleProofLength, merkleProofIndex, merkleProofSiblings[MAX_DEPTH];
     signal input message;
     signal input scope;
 
@@ -58,7 +58,7 @@ template Semaphore(MAX_DEPTH) {
     // the circuit through the inputs of the Merkle proof.
     // See https://github.com/privacy-scaling-explorations/zk-kit.circom/blob/main/packages/binary-merkle-root/src/binary-merkle-root.circom
     // to know more about how the 'BinaryMerkleRoot' template works.
-    merkleRoot <== BinaryMerkleRoot(MAX_DEPTH)(identityCommitment, merkleProofLength, merkleProofIndices, merkleProofSiblings);
+    merkleRoot <== BinaryMerkleRoot(MAX_DEPTH)(identityCommitment, merkleProofLength, merkleProofIndex, merkleProofSiblings);
 
     // Nullifier generation.
     // The nullifier is a value that essentially identifies the proof generated in a specific scope
