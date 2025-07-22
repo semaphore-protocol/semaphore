@@ -93,13 +93,6 @@ export default class SemaphoreViem {
     constructor(networkOrEthereumURL: ViemNetwork | string = defaultNetwork, options: ViemOptions = {}) {
         requireString(networkOrEthereumURL, "networkOrEthereumURL")
 
-        if (options.transport) {
-            // Transport is provided directly
-        } else if (!networkOrEthereumURL.startsWith("http")) {
-            // Default to http transport if no transport is provided and network is not a URL
-            options.transport = http()
-        }
-
         if (options.apiKey) {
             requireString(options.apiKey, "apiKey")
         }
@@ -117,13 +110,12 @@ export default class SemaphoreViem {
             throw new Error(`Network '${networkOrEthereumURL}' needs a Semaphore contract address`)
         }
 
-        // Create the public client
         let transport: Transport
-
         if (options.transport) {
             transport = options.transport
+        } else if (!networkOrEthereumURL.startsWith("http")) {
+            transport = http()
         } else {
-            // If no transport is provided, use http transport with the URL
             transport = http(networkOrEthereumURL)
         }
 
@@ -131,10 +123,12 @@ export default class SemaphoreViem {
         this._options = options
 
         // Create the public client
-        this._client = createPublicClient({
-            transport,
-            chain: options.chain as Chain
-        })
+        this._client =
+            options.publicClient ??
+            createPublicClient({
+                transport,
+                chain: options.chain as Chain
+            })
 
         // Create the contract instance
         this._contract = getContract({

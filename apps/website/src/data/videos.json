@@ -118,5 +118,13 @@
         "speakers": ["Vivian Plasencia"],
         "url": "https://youtu.be/ux5Xy_lpiYk",
         "thumbnail": "https://img.youtube.com/vi/ux5Xy_lpiYk/0.jpg"
+    },
+    {
+        "title": "Scaling Semaphore",
+        "eventName": "ETHDam",
+        "date": "2025-05-10",
+        "speakers": ["Vivian Plasencia"],
+        "url": "https://youtu.be/IkYtKSQLR-A",
+        "thumbnail": "https://img.youtube.com/vi/IkYtKSQLR-A/0.jpg"
     }
 ]
