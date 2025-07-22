@@ -4088,6 +4088,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@commander-js/extra-typings@npm:^12.1.0":
+  version: 12.1.0
+  resolution: "@commander-js/extra-typings@npm:12.1.0"
+  peerDependencies:
+    commander: ~12.1.0
+  checksum: 10/489ef40dcf18508da5d8db288fa1536e294773b8d07e4c1edee6709972fe4310e3713819ef10bdc1d234615c5cf42df6acf9ddce0b31c6c8114be704fd626971
+  languageName: node
+  linkType: hard
+
 "@commitlint/cli@npm:^18.6.1":
   version: 18.6.1
   resolution: "@commitlint/cli@npm:18.6.1"
@@ -5663,6 +5672,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@inquirer/core@npm:^9.1.0":
+  version: 9.2.1
+  resolution: "@inquirer/core@npm:9.2.1"
+  dependencies:
+    "@inquirer/figures": "npm:^1.0.6"
+    "@inquirer/type": "npm:^2.0.0"
+    "@types/mute-stream": "npm:^0.0.4"
+    "@types/node": "npm:^22.5.5"
+    "@types/wrap-ansi": "npm:^3.0.0"
+    ansi-escapes: "npm:^4.3.2"
+    cli-width: "npm:^4.1.0"
+    mute-stream: "npm:^1.0.0"
+    signal-exit: "npm:^4.1.0"
+    strip-ansi: "npm:^6.0.1"
+    wrap-ansi: "npm:^6.2.0"
+    yoctocolors-cjs: "npm:^2.1.2"
+  checksum: 10/bf35e46e70add8ffa9e9d4ae6b528ac660484afca082bca31af95ce8a145a2f8c8d0d07cc7a8627771452e68ade9849c9c9c450a004133ed10ac2d6730900452
+  languageName: node
+  linkType: hard
+
 "@inquirer/editor@npm:^4.2.3":
   version: 4.2.3
   resolution: "@inquirer/editor@npm:4.2.3"
@@ -5696,10 +5725,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@inquirer/figures@npm:^1.0.5, @inquirer/figures@npm:^1.0.6":
+  version: 1.0.13
+  resolution: "@inquirer/figures@npm:1.0.13"
+  checksum: 10/725bdfa08dffa69861fdca57cfccdb8573c2ea95f9803e8bb16f4789fa4290043775c9286c7d810241bd8c1ea938521649fdf8e776a96cf2a701f9d77613f807
+  languageName: node
+  linkType: hard
+
 "@inquirer/figures@npm:^1.0.9":
   version: 1.0.9
   resolution: "@inquirer/figures@npm:1.0.9"
   checksum: 10/7ced1275a5826cdeb61797d6c068417e7d52aa87894de18cedd259f783f42d731226c3f8b92cab27b8e7b0e31ab1dd3cd77f16935b67ebe1cbb271e5972d7758
+  languageName: node
+  linkType: hard
+
+"@inquirer/input@npm:^2.1.8":
+  version: 2.3.0
+  resolution: "@inquirer/input@npm:2.3.0"
+  dependencies:
+    "@inquirer/core": "npm:^9.1.0"
+    "@inquirer/type": "npm:^1.5.3"
+  checksum: 10/1b6291f49be4e0ba6150b1b9971676cc5aec0271a946b9115975da21c7e32ee8bea6edd7b72689ed403f79f759d12e909920cca44684c02173ad9524de143341
   languageName: node
   linkType: hard
 
@@ -5787,6 +5833,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@inquirer/select@npm:^2.3.4":
+  version: 2.5.0
+  resolution: "@inquirer/select@npm:2.5.0"
+  dependencies:
+    "@inquirer/core": "npm:^9.1.0"
+    "@inquirer/figures": "npm:^1.0.5"
+    "@inquirer/type": "npm:^1.5.3"
+    ansi-escapes: "npm:^4.3.2"
+    yoctocolors-cjs: "npm:^2.1.2"
+  checksum: 10/c47ec8ad1133bd7218d3c62e0fa62ecd2476ac291c87535e37956f47d12e2c1c2e4232fcc7b90de036bfe111bb9071a690d8d6d34b9839eb4c5c236bac309a6e
+  languageName: node
+  linkType: hard
+
 "@inquirer/select@npm:^4.0.6":
   version: 4.0.6
   resolution: "@inquirer/select@npm:4.0.6"
@@ -5799,6 +5858,24 @@ __metadata:
   peerDependencies:
     "@types/node": ">=18"
   checksum: 10/c005904e7b691bf891a82b4dbb1e6475b7410547d64ffdcbee56ba3175f26655c89efa8ae29f4843f9b3300870e096043269528dad1054c1b9a44f9063fc5cd4
+  languageName: node
+  linkType: hard
+
+"@inquirer/type@npm:^1.5.3":
+  version: 1.5.5
+  resolution: "@inquirer/type@npm:1.5.5"
+  dependencies:
+    mute-stream: "npm:^1.0.0"
+  checksum: 10/bd3f3d7510785af4ad599e042e99e4be6380f52f79f3db140fe6fed0a605acf27b1a0a20fb5cc688eaf7b8aa0c36dacb1d89c7bba4586f38cbf58ba9f159e7b5
+  languageName: node
+  linkType: hard
+
+"@inquirer/type@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@inquirer/type@npm:2.0.0"
+  dependencies:
+    mute-stream: "npm:^1.0.0"
+  checksum: 10/e85f359866c28cce06272d2d51cc17788a5c9de9fda7f181c27775dd26821de0dacbc947b521cfe2009cd2965ec54696799035ef3a25a9a5794e47d8e8bdf794
   languageName: node
   linkType: hard
 
@@ -7726,7 +7803,7 @@ __metadata:
     "@rollup/plugin-typescript": "npm:^11.1.6"
     "@semaphore-protocol/utils": "npm:4.12.1"
     "@types/snarkjs": "npm:^0"
-    "@zk-kit/artifacts": "npm:1.8.0"
+    "@zk-kit/artifacts": "npm:2.0.1"
     "@zk-kit/utils": "npm:1.3.0"
     ethers: "npm:6.13.4"
     rimraf: "npm:^5.0.5"
@@ -8863,6 +8940,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mute-stream@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@types/mute-stream@npm:0.0.4"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10/af8d83ad7b68ea05d9357985daf81b6c9b73af4feacb2f5c2693c7fd3e13e5135ef1bd083ce8d5bdc8e97acd28563b61bb32dec4e4508a8067fcd31b8a098632
+  languageName: node
+  linkType: hard
+
 "@types/ncp@npm:^2":
   version: 2.0.8
   resolution: "@types/ncp@npm:2.0.8"
@@ -8926,6 +9012,15 @@ __metadata:
   version: 17.0.45
   resolution: "@types/node@npm:17.0.45"
   checksum: 10/b45fff7270b5e81be19ef91a66b764a8b21473a97a8d211218a52e3426b79ad48f371819ab9153370756b33ba284e5c875463de4d2cf48a472e9098d7f09e8a2
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.5.5":
+  version: 22.16.5
+  resolution: "@types/node@npm:22.16.5"
+  dependencies:
+    undici-types: "npm:~6.21.0"
+  checksum: 10/ba45b5c9113cbc5edb12960fcfe7e80db2c998af5c1931264240695b27d756570d92462150b95781bd67a03aa82111cc970ab0f4504eb99213edff8bf425354e
   languageName: node
   linkType: hard
 
@@ -9244,6 +9339,13 @@ __metadata:
   version: 2.0.10
   resolution: "@types/unist@npm:2.0.10"
   checksum: 10/e2924e18dedf45f68a5c6ccd6015cd62f1643b1b43baac1854efa21ae9e70505db94290434a23da1137d9e31eb58e54ca175982005698ac37300a1c889f6c4aa
+  languageName: node
+  linkType: hard
+
+"@types/wrap-ansi@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@types/wrap-ansi@npm:3.0.0"
+  checksum: 10/8aa644946ca4e859668c36b8e2bcf2ac4bdee59dac760414730ea57be8a93ae9166ebd40a088f2ab714843aaea2a2a67f0e6e6ec11cfc9c8701b2466ca1c4089
   languageName: node
   linkType: hard
 
@@ -9751,10 +9853,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zk-kit/artifacts@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@zk-kit/artifacts@npm:1.8.0"
-  checksum: 10/f2eedd395d1662dc77780366edbbfbb9e543a82880dccfdc39dbf412010b65dabce9a64903218e64b9059fe7d9c02214e0f7817250a7ff4342836353d75d02dd
+"@zk-kit/artifacts@npm:2.0.1":
+  version: 2.0.1
+  resolution: "@zk-kit/artifacts@npm:2.0.1"
+  dependencies:
+    "@commander-js/extra-typings": "npm:^12.1.0"
+    "@inquirer/input": "npm:^2.1.8"
+    "@inquirer/select": "npm:^2.3.4"
+    circomkit: "npm:^0.2.1"
+    ora: "npm:^5.4.1"
+    snarkjs: "npm:^0.7.4"
+  bin:
+    snarkli: dist/cli/index.js
+  checksum: 10/d579eefaedd178934a215e06bfbf02174f0926d96b1f0285eef652be05cde0743a56142ced8e99effb71ed63a8977c6e12d5808956c725dd499950f768cb363a
   languageName: node
   linkType: hard
 
@@ -11980,6 +12091,22 @@ __metadata:
   bin:
     circomkit: dist/cli.js
   checksum: 10/c9509c7b64da8d05677ccd409185d0572a09117c9a43e28b0ca0d12a80847fa84db5b7e72af2d68f531b8e38446b3ade5cd16ed63af3590e5a2e759d19aae02b
+  languageName: node
+  linkType: hard
+
+"circomkit@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "circomkit@npm:0.2.1"
+  dependencies:
+    circom_tester: "npm:^0.0.19"
+    commander: "npm:^12.0.0"
+    loglevel: "npm:^1.8.1"
+  peerDependencies:
+    "@types/snarkjs": ^0.7.x
+    snarkjs: ^0.7.x
+  bin:
+    circomkit: dist/cli.js
+  checksum: 10/c5a0c50b66a3e5cdb4136234a95bbebecdc0b38cb37e669a65dd05444a5f9b4f8c77edc3b632d834d47eb1c0e08964e8e7bdbb59f880c7dd1b90893ea28cbb6a
   languageName: node
   linkType: hard
 
@@ -20024,7 +20151,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loglevel@npm:^1.9.2":
+"loglevel@npm:^1.8.1, loglevel@npm:^1.9.2":
   version: 1.9.2
   resolution: "loglevel@npm:1.9.2"
   checksum: 10/6153d8db308323f7ee20130bc40309e7a976c30a10379d8666b596d9c6441965c3e074c8d7ee3347fe5cfc059c0375b6f3e8a10b93d5b813cc5547f5aa412a29
@@ -21788,7 +21915,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mute-stream@npm:1.0.0":
+"mute-stream@npm:1.0.0, mute-stream@npm:^1.0.0":
   version: 1.0.0
   resolution: "mute-stream@npm:1.0.0"
   checksum: 10/36fc968b0e9c9c63029d4f9dc63911950a3bdf55c9a87f58d3a266289b67180201cade911e7699f8b2fa596b34c9db43dad37649e3f7fdd13c3bb9edb0017ee7
@@ -26758,7 +26885,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"snarkjs@npm:0.7.5":
+"snarkjs@npm:0.7.5, snarkjs@npm:^0.7.4":
   version: 0.7.5
   resolution: "snarkjs@npm:0.7.5"
   dependencies:
@@ -28629,6 +28756,13 @@ __metadata:
   version: 6.19.8
   resolution: "undici-types@npm:6.19.8"
   checksum: 10/cf0b48ed4fc99baf56584afa91aaffa5010c268b8842f62e02f752df209e3dea138b372a60a963b3b2576ed932f32329ce7ddb9cb5f27a6c83040d8cd74b7a70
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.21.0":
+  version: 6.21.0
+  resolution: "undici-types@npm:6.21.0"
+  checksum: 10/ec8f41aa4359d50f9b59fa61fe3efce3477cc681908c8f84354d8567bb3701fafdddf36ef6bff307024d3feb42c837cf6f670314ba37fc8145e219560e473d14
   languageName: node
   linkType: hard
 

@@ -86,18 +86,14 @@ export default async function generateProof(
     // If the Snark artifacts are not defined they will be automatically downloaded.
     snarkArtifacts ??= await maybeGetSnarkArtifacts(Project.SEMAPHORE, {
         parameters: [merkleTreeDepth],
-        version: "4.0.0"
+        version: "4.13.0-beta.0"
     })
     const { wasm, zkey } = snarkArtifacts
 
-    // The index must be converted to a list of indices, 1 for each tree level.
     // The missing siblings can be set to 0, as they won't be used in the circuit.
-    const merkleProofIndices = []
     const merkleProofSiblings = merkleProof.siblings
 
     for (let i = 0; i < merkleTreeDepth; i += 1) {
-        merkleProofIndices.push((merkleProof.index >> i) & 1)
-
         if (merkleProofSiblings[i] === undefined) {
             merkleProofSiblings[i] = 0n
         }
@@ -107,7 +103,7 @@ export default async function generateProof(
         {
             secret: identity.secretScalar,
             merkleProofLength,
-            merkleProofIndices,
+            merkleProofIndex: merkleProof.index,
             merkleProofSiblings,
             scope: hash(scope),
             message: hash(message)
