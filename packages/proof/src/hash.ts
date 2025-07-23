@@ -9,5 +9,5 @@ import { NumericString } from "snarkjs"
  * @returns The message digest.
  */
 export default function hash(message: BigNumberish): NumericString {
-    return (BigInt(keccak256(toBeHex(message, 32))) >> BigInt(8)).toString()
+    return (BigInt(keccak256(toBeHex(message, 32))) >> 8n).toString()
 }
