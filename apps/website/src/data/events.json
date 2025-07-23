@@ -12,6 +12,12 @@
         "link": "https://zuberlin.city/"
     },
     {
+        "name": "Trusted Setup Ceremony",
+        "date": "Jul 23 - Aug 6, 2024",
+        "description": "The Semaphore team will perform the Phase 2 MPC Trusted Setup Ceremony to secure V4 circuit variants from 1 to 32 tree depths, following a bug fix in the BinaryMerkleRoot circuit in ZK-Kit.",
+        "link": "https://docs.semaphore.pse.dev/trusted-setup"
+    },
+    {
         "name": "Devconnect",
         "date": "Nov 17-22, 2025",
         "description": "Semaphore team will deliver an in-person talk and run workshops.",
