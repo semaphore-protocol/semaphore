@@ -1,0 +1,196 @@
+# Semaphore V4 - llms.txt
+
+> Zero-knowledge protocol for anonymous group membership and signaling
+
+## Quick Reference
+
+### Core Concept
+Semaphore allows users to cast messages (votes, endorsements) as provable group members without revealing identity, with built-in double-signaling prevention.
+
+**Key Components:**
+- **Identity**: User's cryptographic identity (private key, public key, commitment)
+- **Group**: Merkle tree of identity commitments  
+- **Proof**: Zero-knowledge proof of group membership + message
+- **Nullifier**: Unique identifier preventing double-signaling
+- **Scope**: Topic/context that limits one proof per user
+
+### Essential Packages
+```bash
+# Core functionality
+npm install @semaphore-protocol/core
+
+# Individual packages
+npm install @semaphore-protocol/identity
+npm install @semaphore-protocol/group  
+npm install @semaphore-protocol/proof
+npm install @semaphore-protocol/contracts
+```
+
+## Common Patterns
+
+### 1. Identity Management
+```javascript
+import { Identity } from "@semaphore-protocol/identity"
+
+// Random identity
+const identity = new Identity()
+const { privateKey, publicKey, commitment } = identity
+
+// Deterministic identity (from secret)
+const deterministicIdentity = new Identity("secret-value")
+
+// Sign/verify messages
+const message = "Hello World"
+const signature = identity.signMessage(message)
+const isValid = Identity.verifySignature(message, signature, identity.publicKey)
+
+// Export/import
+const exported = identity.export() // base64 private key
+const imported = Identity.import(exported)
+```
+
+### 2. Group Operations
+```javascript
+import { Group } from "@semaphore-protocol/group"
+
+// Create group
+const group = new Group()
+const groupWithMembers = new Group([commitment1, commitment2])
+
+// Manage members
+group.addMember(identity.commitment)
+group.addMembers([commitment1, commitment2])
+group.removeMember(0) // sets to 0, doesn't change size
+group.updateMember(0, newCommitment)
+
+// Generate Merkle proof
+const merkleProof = group.generateMerkleProof(0)
+```
+
+### 3. Proof Generation & Verification
+```javascript
+import { generateProof, verifyProof } from "@semaphore-protocol/proof"
+
+// Generate proof
+const scope = group.root // or any unique scope
+const message = 1
+const proof = await generateProof(identity, group, message, scope)
+
+// Verify proof
+const isValid = await verifyProof(proof)
+```
+
+### 4. On-Chain Integration
+```solidity
+// Contract setup
+import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
+
+contract YourContract {
+    ISemaphore public semaphore;
+    uint256 public groupId;
+
+    constructor(ISemaphore _semaphore) {
+        semaphore = _semaphore;
+        groupId = semaphore.createGroup();
+    }
+
+    // Validate proof on-chain
+    function validateProof(ISemaphore.SemaphoreProof calldata proof) external {
+        semaphore.validateProof(groupId, proof);
+    }
+}
+```
+
+## Configuration Reference
+
+### Circuit Parameters
+- **MAX_DEPTH**: 1-32 (Merkle tree depth)
+- **Default proof validity**: 1 hour for old Merkle roots
+
+### Key Security Settings
+- **Identity reuse warning**: Same identity across groups compromises all groups
+- **Nullifier uniqueness**: Prevents double-signaling within same scope
+- **Message tampering**: Circuit calculates dummy square to prevent tampering
+
+## Troubleshooting
+
+### Common Issues
+
+**"Proof verification failed"**
+- Check group contains identity commitment
+- Verify scope matches between generation and verification
+- Ensure Merkle proof is current (within validity window)
+
+**"Nullifier already exists"**
+- User already submitted proof with this scope
+- Use different scope or implement nullifier tracking
+
+**"Identity commitment not found"**
+- Add identity to group before generating proof
+- Verify correct group is being used
+
+## Architecture Overview
+
+### Circuit Structure
+The Semaphore circuit proves three things:
+1. **Membership**: User belongs to group (Merkle proof verification)
+2. **Authorization**: Same user created message and proof (nullifier check)  
+3. **Message integrity**: Message hasn't been tampered with
+
+### Contract Architecture
+- **SemaphoreVerifier.sol**: Groth16 proof verification
+- **SemaphoreGroups.sol**: Group management (abstract)
+- **Semaphore.sol**: Complete implementation with proof validation
+
+## Extended Resources
+
+### 📚 Complete Guides
+- [Getting Started Tutorial](https://docs.semaphore.pse.dev/getting-started) - Full project setup with CLI
+- [Identities Deep Dive](https://docs.semaphore.pse.dev/guides/identities) - Advanced identity management
+- [Groups Management](https://docs.semaphore.pse.dev/guides/groups) - Comprehensive group operations
+- [Proof Generation](https://docs.semaphore.pse.dev/guides/proofs) - Detailed proof workflows
+
+### 🔧 Technical References  
+- [Semaphore V4 Specification](https://github.com/zkspecs/zkspecs/blob/main/specs/3/README.md) - Protocol specification
+- [Circuit Documentation](https://docs.semaphore.pse.dev/technical-reference/circuits) - Circuit internals
+- [Contract Reference](https://docs.semaphore.pse.dev/technical-reference/contracts) - Solidity implementation details
+- [Deployed Contracts](https://docs.semaphore.pse.dev/deployed-contracts) - Network addresses
+
+### 🛠️ Development Tools
+- [GitHub Repository](https://github.com/semaphore-protocol/semaphore) - Source code and examples  
+- [CLI Templates](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli) - Project boilerplates
+- [Boilerplate App](https://github.com/semaphore-protocol/boilerplate) - Complete example application
+
+### 🔐 Security & Audits
+- [Trusted Setup Ceremony](https://ceremony.pse.dev/projects/Semaphore%20V4%20Ceremony) - 400+ participants, July 2024
+- [Security Audits](https://docs.semaphore.pse.dev/#audits) - PSE and Veridise audit reports
+- [Best Practices Guide](https://docs.semaphore.pse.dev/) - Security considerations section
+
+### 🌐 Community & Support
+- [Documentation](https://docs.semaphore.pse.dev/) - Complete documentation
+- [GitHub Discussions](https://github.com/semaphore-protocol/semaphore/discussions) - Community support
+- [PSE Website](https://pse.dev/) - Privacy & Scaling Explorations team
+
+### 📊 Data & Indexing
+- [@semaphore-protocol/data](https://github.com/semaphore-protocol/semaphore/tree/main/packages/data) - On-chain data fetching
+- [Subgraph Templates](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli-template-monorepo-subgraph) - Graph Protocol integration
+
+## Quick Start Commands
+
+```bash
+# Create new project
+npx @semaphore-protocol/cli create my-app --template monorepo-ethers
+
+# Get on-chain groups
+semaphore get-groups --network sepolia
+
+# Deploy contract
+yarn deploy --semaphore <address> --group <id> --network sepolia
+```
+
+## Use Cases
+- **Private Voting**: Anonymous ballots with double-vote prevention
+- **Whistleblowing**: Anonymous reporting with verified membership
+- **Anonymous DAOs**: Governance without identity disclosure  
+- **Mixers**: Privacy-preserving value transfers
+- **Anonymous Authentication**: Prove membership without revealing identity
