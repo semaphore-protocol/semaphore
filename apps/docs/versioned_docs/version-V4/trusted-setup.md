@@ -38,7 +38,7 @@ We are committed to transparency on ceremony setup, execution, finalization, and
 
 ### Ceremony Settings
 
-To protect the ceremony from sybils, in order to contribute you must have a GitHub account such that you have: 1 public repository, at least 1 follower, following at least 5 other accounts and, your account is at least 1 month old. While to protect from fake contributors or people hanging due to connection/machine resources, we are going to set a 10 minutes time-window on contributions (+ 1 hour verification) - after this amount of time, you will be kicked out and will have to wait **1 day** before you can contribute again.
+To protect the ceremony from sybils, in order to contribute you must have a GitHub account such that you have: 1 public repository, at least 1 follower, following at least 5 other accounts and, your account is at least 1 month old. While to protect from fake contributors or people hanging due to connection/machine resources, we are going to set a 10 minutes time-window on contributions (+ 1 hour verification) - after this amount of time, you will be kicked out and will have to wait **10 minutes** before you can contribute again.
 
 ## Troubleshooting
 
