@@ -32,18 +32,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body suppressHydrationWarning>
                 <Providers>
                     <Banner>
+                        Semaphore V4
                         <Link
                             _hover={{
                                 textDecoration: "underline",
                                 textDecorationColor: "primary.600"
                             }}
-                            href="https://github.com/semaphore-protocol/semaphore/releases/tag/v4.0.0"
+                            href="https://ceremony.pse.dev/projects/Semaphore%20Binary%20Merkle%20Root%20Fix"
                             ml="1"
                             isExternal
+                            color="primary.500"
                         >
-                            <b>Semaphore V4</b>
+                            <b>Trusted Setup Ceremony</b>
                         </Link>{" "}
-                        has been released 🚀
+                        is open for contributions until <b>August 6</b>!
                     </Banner>
                     <Navbar />
                     <Container maxW="1440px" px={{ base: "5", md: "10" }}>
