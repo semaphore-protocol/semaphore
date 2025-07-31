@@ -109,3 +109,101 @@ function validateProof(ISemaphore.SemaphoreProof calldata proof) external {
     semaphore.validateProof(groupId, proof);
 }
 ```
+
+## Memory management and bn128 curve termination
+
+When working with Semaphore proofs, especially in Node.js environments, tests, or scripts, it's important to properly manage memory by terminating the bn128 elliptic curve when you're done using it. The curve operations use WebAssembly and require explicit cleanup to prevent memory leaks.
+
+### Why is curve termination necessary?
+
+Semaphore uses the bn128 (also known as BN254) elliptic curve for cryptographic operations through the `ffjavascript` library. This library creates WebAssembly instances that consume memory and need to be properly cleaned up when no longer needed.
+
+Without proper termination:
+- Memory leaks may occur in long-running applications
+- Node.js processes might not exit cleanly
+- Test suites may encounter memory issues
+
+### When to terminate the curve
+
+You should terminate the bn128 curve in the following scenarios:
+
+- **Test environments**: After running tests that generate or verify proofs
+- **Scripts and batch operations**: When your script finishes processing proofs
+- **Server applications**: During application shutdown or when done with proof operations
+- **Node.js applications**: Before process exit
+
+### How to terminate the curve
+
+Here's the recommended pattern for working with the bn128 curve:
+
+```ts
+import { getCurveFromName } from "ffjavascript"
+
+let curve: any
+
+async function setupCurve() {
+    curve = await getCurveFromName("bn128")
+}
+
+async function cleanupCurve() {
+    if (curve) {
+        await curve.terminate()
+    }
+}
+
+// Usage in your application
+async function main() {
+    try {
+        await setupCurve()
+
+        // Your proof generation/verification code here
+        // const proof = await generateProof(...)
+        // const isValid = await verifyProof(...)
+
+    } finally {
+        await cleanupCurve()
+    }
+}
+```
+
+### Example in test environments
+
+Here's how to properly manage the curve in a test suite:
+
+```ts
+import { getCurveFromName } from "ffjavascript"
+import { generateProof, verifyProof } from "@semaphore-protocol/proof"
+
+describe("Semaphore Proofs", () => {
+    let curve: any
+
+    beforeAll(async () => {
+        curve = await getCurveFromName("bn128")
+    })
+
+    afterAll(async () => {
+        await curve.terminate()
+    })
+
+    it("should generate and verify a proof", async () => {
+        const proof = await generateProof(identity, group, message, scope)
+        const isValid = await verifyProof(proof)
+        expect(isValid).toBe(true)
+    })
+})
+```
+
+### Best practices
+
+1. **Always use try/finally blocks**: Ensure curve termination happens even if errors occur
+2. **Terminate in cleanup hooks**: Use `beforeExit`, `SIGINT`, or similar process handlers
+3. **One curve per application**: Reuse the same curve instance across multiple operations
+4. **Don't forget in scripts**: Scripts should always terminate the curve before exiting
+
+:::warning Important
+Forgetting to terminate the bn128 curve can lead to memory leaks and prevent Node.js processes from exiting cleanly. Always ensure proper cleanup in your applications.
+:::
+
+:::tip
+The Semaphore test suite demonstrates proper curve termination patterns. You can refer to the [test files](https://github.com/semaphore-protocol/semaphore/tree/main/packages/proof/tests) for examples of correct implementation.
+:::
