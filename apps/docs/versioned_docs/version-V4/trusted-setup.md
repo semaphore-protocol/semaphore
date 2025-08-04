@@ -6,7 +6,7 @@ sidebar_position: 6
 
 We are excited to announce the upcoming Multi-Party Computation (MPC) Phase 2 Trusted Setup ceremony for the Semaphore V4 circuit, following a [bug fix in the BinaryMerkleRoot circuit](https://pse.dev/blog/under-constrained-bug-in-binary-merkle-root-circuit-fixed-in-v200) in ZK-Kit. This is crucial for establishing a robust security foundation for the cryptographic protocol.
 
-The ceremony will take place from **July 23** to **August 6**. If all goes to plan, finalization should take place on **August 8** with the announcement of the final beacon on **August 7**.
+The ceremony will take place from **July 23** to **August 20**. If all goes to plan, finalization should take place on **August 22** with the announcement of the final beacon on **August 21**.
 
 ## Securing Semaphore V4
 
