@@ -126,5 +126,13 @@
         "speakers": ["Vivian Plasencia"],
         "url": "https://youtu.be/IkYtKSQLR-A",
         "thumbnail": "https://img.youtube.com/vi/IkYtKSQLR-A/0.jpg"
+    },
+    {
+        "title": "Scaling Semaphore: Noir in Action",
+        "eventName": "NoirCon2",
+        "date": "2025-06-19",
+        "speakers": ["Vivian Plasencia"],
+        "url": "https://youtu.be/vfL7z74jGyU",
+        "thumbnail": "https://img.youtube.com/vi/vfL7z74jGyU/0.jpg"
     }
 ]
