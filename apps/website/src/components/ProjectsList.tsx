@@ -52,7 +52,7 @@ export default function ProjectsList(props: any) {
 
     return (
         <VStack {...props}>
-            <VStack align="left" spacing="6">
+            <VStack align="start" spacing="6">
                 <Text fontSize="20">Projects created by</Text>
 
                 <HStack spacing="4" flexWrap="wrap">
@@ -83,7 +83,7 @@ export default function ProjectsList(props: any) {
                 </HStack>
             </VStack>
 
-            <VStack align="left" spacing="6" ref={viewToScrollRef}>
+            <VStack align="start" spacing="6" ref={viewToScrollRef}>
                 <Text fontSize="20">Category</Text>
                 <HStack spacing="3" flexWrap="wrap">
                     {getProjectCategories(sortedProjects).map((category) => (

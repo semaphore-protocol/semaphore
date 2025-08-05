@@ -131,7 +131,7 @@ export default function Home() {
                                     >
                                         1
                                     </Heading>
-                                    <VStack align="left">
+                                    <VStack align="start">
                                         <Text
                                             fontSize={{ base: "18px", md: "20px" }}
                                             fontFamily={sora.style.fontFamily}
@@ -152,7 +152,7 @@ export default function Home() {
                                     >
                                         3
                                     </Heading>
-                                    <VStack align="left">
+                                    <VStack align="start">
                                         <Text
                                             fontSize={{ base: "18px", md: "20px" }}
                                             fontFamily={sora.style.fontFamily}
@@ -181,7 +181,7 @@ export default function Home() {
                                     >
                                         2
                                     </Heading>
-                                    <VStack align="left">
+                                    <VStack align="start">
                                         <Text
                                             fontSize={{ base: "18px", md: "20px" }}
                                             fontFamily={sora.style.fontFamily}
@@ -203,7 +203,7 @@ export default function Home() {
                                     >
                                         4
                                     </Heading>
-                                    <VStack align="left">
+                                    <VStack align="start">
                                         <Text
                                             fontSize={{ base: "18px", md: "20px" }}
                                             fontFamily={sora.style.fontFamily}
@@ -287,10 +287,10 @@ export default function Home() {
                                 Upcoming Events
                             </Heading>
 
-                            <VStack align="left" spacing="10" maxH="600px" overflowY="auto">
+                            <VStack align="start" spacing="10" maxH="600px" overflowY="auto">
                                 {events.map((event) => (
                                     <Link href={event.link} key={event.name} isExternal>
-                                        <VStack align="left">
+                                        <VStack align="start">
                                             <Heading fontSize={{ base: "20px", md: "24px" }}>
                                                 {event.date} | {event.name}
                                             </Heading>
