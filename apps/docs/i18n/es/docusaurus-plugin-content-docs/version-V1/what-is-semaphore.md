@@ -25,7 +25,7 @@ if these proofs are valid.
 
 For a formal description of Semaphore and its underlying cryptographic
 mechanisms, also see this document
-[here](https://github.com/appliedzkp/semaphore/tree/master/spec).
+[here](https://docs.semaphore.pse.dev/).
 
 Semaphore is designed for smart contract and dApp developers, not end users.
 Developers should abstract its features away in order to provide user-friendly
