@@ -15,6 +15,6 @@ export default function toBigInt(value: BigNumberish | Uint8Array | string): big
             return _toBigInt(encodeBytes32String(value))
         }
 
-        throw TypeError(error.message)
+        throw TypeError(error instanceof Error ? error.message : error.toString())
     }
 }
