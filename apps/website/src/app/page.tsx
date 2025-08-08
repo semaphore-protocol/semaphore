@@ -237,7 +237,7 @@ export default function Home() {
                     </VStack>
                 </VStack>
 
-                <VStack maxW="650" align="center" spacing="8">
+                <VStack maxW="650px" align="center" spacing="8">
                     <Heading fontSize={{ base: "30px", md: "44px" }}>Join the Semaphore community</Heading>
                     <Text fontSize={{ base: "16px", md: "18px" }} textAlign="center">
                         Ask questions, suggest ideas, stay up-to-date, and meet other people building privacy
