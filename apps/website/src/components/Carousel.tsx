@@ -141,7 +141,7 @@ export default function Carousel({ title, sizes, type, ...props }: CarouselProps
                         />
                     </HStack>
 
-                    <HStack flex="1" justify="right" fontSize="12px">
+                    <HStack flex="1" justify="end" fontSize="12px">
                         <Link
                             as={NextLink}
                             href="/projects"
