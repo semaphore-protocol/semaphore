@@ -13,7 +13,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
 
             - name: Install Node.js
               uses: actions/setup-node@v4
@@ -37,7 +37,7 @@ jobs:
         runs-on: ubuntu-22.04 # Context: https://github.com/graphprotocol/graph-tooling/issues/1546#issuecomment-2589680195
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
 
             - name: Install Node.js
               uses: actions/setup-node@v4
@@ -67,7 +67,7 @@ jobs:
                     - contracts
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
 
             - name: Install Node.js
               uses: actions/setup-node@v4
