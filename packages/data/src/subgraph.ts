@@ -122,7 +122,7 @@ export default class SemaphoreSubgraph {
                         admin
                         ${
                             members === true
-                                ? `members(orderBy: index) {
+                                ? `members(where: { identityCommitment_not: "0" }, orderBy: index) {
                             identityCommitment
                         }`
                                 : ""
@@ -186,7 +186,7 @@ export default class SemaphoreSubgraph {
                         admin
                         ${
                             members === true
-                                ? `members(orderBy: index) {
+                                ? `members(where: { identityCommitment_not: "0" }, orderBy: index) {
                             identityCommitment
                         }`
                                 : ""
