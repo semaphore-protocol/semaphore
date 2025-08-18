@@ -135,7 +135,7 @@ export class Group {
 
     /**
      * Enables the conversion of the group into a JSON string that
-     * can be re-used for future imports. This approach is beneficial for
+     * can be reused for future imports. This approach is beneficial for
      * large groups, as it avoids re-calculating the tree hashes.
      * @returns The stringified JSON of the group.
      */

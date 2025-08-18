@@ -34,7 +34,7 @@ The [Semaphore circuit](https://github.com/semaphore-protocol/semaphore/blob/mai
 
 ### Transparency and Fairness
 
-We are committed to transparency on ceremony setup, execution, finalization, and later verification. Our primary goal is to **engage as many contributors as possible** to ensure the circuit is **secure** and **production-ready**. To this end, the ceremony is designed to _maximize contributor inclusion_, monitor & troubleshoot whenever is needed, _lower the entry barriers_, _making contributiong as effortless as possible_. A key step towards achieving these goals is running the ceremony w/ [p0tion](https://github.com/privacy-scaling-explorations/p0tion): an in-house developed, open-source, battle-tested tool that is fully equipped to meet our needs.
+We are committed to transparency on ceremony setup, execution, finalization, and later verification. Our primary goal is to **engage as many contributors as possible** to ensure the circuit is **secure** and **production-ready**. To this end, the ceremony is designed to _maximize contributor inclusion_, monitor & troubleshoot whenever is needed, _lower the entry barriers_, _making contributing as effortless as possible_. A key step towards achieving these goals is running the ceremony w/ [p0tion](https://github.com/privacy-scaling-explorations/p0tion): an in-house developed, open-source, battle-tested tool that is fully equipped to meet our needs.
 
 ### Ceremony Settings
 
