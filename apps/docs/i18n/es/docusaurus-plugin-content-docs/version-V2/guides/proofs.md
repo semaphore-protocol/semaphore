@@ -87,7 +87,7 @@ To verify Semaphore proofs in your contract, import `SemaphoreCore` and pass the
 
 Remember to save the `nullifierHash` on-chain to avoid double-signaling.
 
-Alternatively, you can use an already deployed [`Semaphore`](https://github.com/semaphore-protocol/semaphore/tree/v2.6.1/packages/contracts/Semaphore.sol) contract and use its `verifiyProof` external function.
+Alternatively, you can use an already deployed [`Semaphore`](https://github.com/semaphore-protocol/semaphore/tree/v2.6.1/packages/contracts/Semaphore.sol) contract and use its `verifyProof` external function.
 
 ### Generate a Solidity-compatible proof
 

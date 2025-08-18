@@ -269,7 +269,7 @@ declare module "ffjavascript" {
 
         add(...args: any[]): void
 
-        computeVanishingPolinomial(...args: any[]): void
+        computeVanishingPolynomial(...args: any[]): void
 
         div(...args: any[]): void
 
