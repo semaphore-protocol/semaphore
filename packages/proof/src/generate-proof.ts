@@ -86,7 +86,7 @@ export default async function generateProof(
     // If the Snark artifacts are not defined they will be automatically downloaded.
     snarkArtifacts ??= await maybeGetSnarkArtifacts(Project.SEMAPHORE, {
         parameters: [merkleTreeDepth],
-        version: "4.13.0-beta.0"
+        version: "4.13.0"
     })
     const { wasm, zkey } = snarkArtifacts
 
