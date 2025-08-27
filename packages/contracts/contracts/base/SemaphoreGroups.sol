@@ -6,7 +6,7 @@ import {InternalLeanIMT, LeanIMTData} from "@zk-kit/lean-imt.sol/InternalLeanIMT
 
 /// @title Semaphore groups contract.
 /// @dev This contract allows you to create groups, add, remove and update members.
-/// You can use getters to obtain informations about groups (root, depth, number of leaves).
+/// You can use getters to obtain information about groups (root, depth, number of leaves).
 abstract contract SemaphoreGroups is ISemaphoreGroups {
     using InternalLeanIMT for LeanIMTData;
 
