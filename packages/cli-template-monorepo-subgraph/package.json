@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/cli-template-monorepo-subgraph",
-    "version": "4.13.0-beta.1",
+    "version": "4.13.0",
     "description": "Semaphore Hardhat + Next.js + SemaphoreSubgraph template.",
     "license": "Unlicense",
     "files": [

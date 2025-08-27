@@ -7613,7 +7613,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/cli-template-contracts-foundry@workspace:packages/cli-template-contracts-foundry"
   dependencies:
-    "@semaphore-protocol/contracts": "npm:4.13.0-beta.1"
+    "@semaphore-protocol/contracts": "npm:4.13.0"
     "@zk-kit/lean-imt.sol": "npm:2.0.1"
     forge-std: "github:foundry-rs/forge-std#v1.9.4"
     poseidon-solidity: "npm:0.0.5"
@@ -7633,10 +7633,10 @@ __metadata:
     "@nomicfoundation/hardhat-network-helpers": "npm:^1.0.0"
     "@nomicfoundation/hardhat-toolbox": "npm:^4.0.0"
     "@nomicfoundation/hardhat-verify": "npm:^2.0.0"
-    "@semaphore-protocol/contracts": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/core": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/hardhat": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/utils": "npm:4.13.0-beta.1"
+    "@semaphore-protocol/contracts": "npm:4.13.0"
+    "@semaphore-protocol/core": "npm:4.13.0"
+    "@semaphore-protocol/hardhat": "npm:4.13.0"
+    "@semaphore-protocol/utils": "npm:4.13.0"
     "@typechain/ethers-v6": "npm:^0.5.0"
     "@typechain/hardhat": "npm:^9.0.0"
     "@types/chai": "npm:^4.2.0"
@@ -7686,8 +7686,8 @@ __metadata:
   resolution: "@semaphore-protocol/cli@workspace:packages/cli"
   dependencies:
     "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@semaphore-protocol/data": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/utils": "npm:4.13.0-beta.1"
+    "@semaphore-protocol/data": "npm:4.13.0"
+    "@semaphore-protocol/utils": "npm:4.13.0"
     "@types/figlet": "npm:^1.5.8"
     "@types/inquirer": "npm:^9.0.7"
     "@types/pacote": "npm:^11.1.8"
@@ -7711,7 +7711,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/contracts@npm:4.13.0-beta.1, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
+"@semaphore-protocol/contracts@npm:4.13.0, @semaphore-protocol/contracts@workspace:packages/contracts/contracts":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/contracts@workspace:packages/contracts/contracts"
   dependencies:
@@ -7719,23 +7719,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/core@npm:4.13.0-beta.1, @semaphore-protocol/core@workspace:^, @semaphore-protocol/core@workspace:packages/core":
+"@semaphore-protocol/core@npm:4.13.0, @semaphore-protocol/core@workspace:^, @semaphore-protocol/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/core@workspace:packages/core"
   dependencies:
-    "@semaphore-protocol/group": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/identity": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/proof": "npm:4.13.0-beta.1"
+    "@semaphore-protocol/group": "npm:4.13.0"
+    "@semaphore-protocol/identity": "npm:4.13.0"
+    "@semaphore-protocol/proof": "npm:4.13.0"
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/data@npm:4.13.0-beta.1, @semaphore-protocol/data@workspace:packages/data":
+"@semaphore-protocol/data@npm:4.13.0, @semaphore-protocol/data@workspace:packages/data":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/data@workspace:packages/data"
   dependencies:
     "@rollup/plugin-json": "npm:^6.1.0"
     "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@semaphore-protocol/utils": "npm:4.13.0-beta.1"
+    "@semaphore-protocol/utils": "npm:4.13.0"
     "@zk-kit/utils": "npm:1.3.0"
     axios: "npm:1.6.6"
     ethers: "npm:6.13.4"
@@ -7746,7 +7746,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/group@npm:4.13.0-beta.1, @semaphore-protocol/group@workspace:packages/group":
+"@semaphore-protocol/group@npm:4.13.0, @semaphore-protocol/group@workspace:packages/group":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/group@workspace:packages/group"
   dependencies:
@@ -7760,13 +7760,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/hardhat@npm:4.13.0-beta.1, @semaphore-protocol/hardhat@workspace:packages/hardhat":
+"@semaphore-protocol/hardhat@npm:4.13.0, @semaphore-protocol/hardhat@workspace:packages/hardhat":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/hardhat@workspace:packages/hardhat"
   dependencies:
     "@nomicfoundation/hardhat-ethers": "npm:^3.0.0"
     "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@semaphore-protocol/contracts": "npm:4.13.0-beta.1"
+    "@semaphore-protocol/contracts": "npm:4.13.0"
     ethers: "npm:^6.13.4"
     hardhat: "npm:^2.19.4"
     hardhat-dependency-compiler: "npm:^1.1.3"
@@ -7778,7 +7778,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/identity@npm:4.13.0-beta.1, @semaphore-protocol/identity@workspace:packages/identity":
+"@semaphore-protocol/identity@npm:4.13.0, @semaphore-protocol/identity@workspace:packages/identity":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/identity@workspace:packages/identity"
   dependencies:
@@ -7794,14 +7794,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/proof@npm:4.13.0-beta.1, @semaphore-protocol/proof@workspace:packages/proof":
+"@semaphore-protocol/proof@npm:4.13.0, @semaphore-protocol/proof@workspace:packages/proof":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/proof@workspace:packages/proof"
   dependencies:
     "@rollup/plugin-alias": "npm:^5.1.0"
     "@rollup/plugin-json": "npm:^6.1.0"
     "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@semaphore-protocol/utils": "npm:4.13.0-beta.1"
+    "@semaphore-protocol/utils": "npm:4.13.0"
     "@types/snarkjs": "npm:^0"
     "@zk-kit/artifacts": "npm:2.0.1"
     "@zk-kit/utils": "npm:1.3.0"
@@ -7811,12 +7811,12 @@ __metadata:
     rollup-plugin-cleanup: "npm:^3.2.1"
     snarkjs: "npm:0.7.5"
   peerDependencies:
-    "@semaphore-protocol/group": 4.13.0-beta.1
-    "@semaphore-protocol/identity": 4.13.0-beta.1
+    "@semaphore-protocol/group": 4.13.0
+    "@semaphore-protocol/identity": 4.13.0
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/utils@npm:4.13.0-beta.1, @semaphore-protocol/utils@workspace:packages/utils":
+"@semaphore-protocol/utils@npm:4.13.0, @semaphore-protocol/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/utils@workspace:packages/utils"
   dependencies:
@@ -21721,10 +21721,10 @@ __metadata:
     "@nomicfoundation/hardhat-network-helpers": "npm:^1.0.0"
     "@nomicfoundation/hardhat-toolbox": "npm:^4.0.0"
     "@nomicfoundation/hardhat-verify": "npm:^2.0.0"
-    "@semaphore-protocol/contracts": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/core": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/hardhat": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/utils": "npm:4.13.0-beta.1"
+    "@semaphore-protocol/contracts": "npm:4.13.0"
+    "@semaphore-protocol/core": "npm:4.13.0"
+    "@semaphore-protocol/hardhat": "npm:4.13.0"
+    "@semaphore-protocol/utils": "npm:4.13.0"
     "@typechain/ethers-v6": "npm:^0.5.0"
     "@typechain/hardhat": "npm:^9.0.0"
     "@types/chai": "npm:^4.2.0"
@@ -21757,9 +21757,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo-ethers-web-app@workspace:packages/cli-template-monorepo-ethers/apps/web-app"
   dependencies:
-    "@semaphore-protocol/core": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/data": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/utils": "npm:4.13.0-beta.1"
+    "@semaphore-protocol/core": "npm:4.13.0"
+    "@semaphore-protocol/data": "npm:4.13.0"
+    "@semaphore-protocol/utils": "npm:4.13.0"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
@@ -21784,10 +21784,10 @@ __metadata:
     "@nomicfoundation/hardhat-network-helpers": "npm:^1.0.0"
     "@nomicfoundation/hardhat-toolbox": "npm:^4.0.0"
     "@nomicfoundation/hardhat-verify": "npm:^2.0.0"
-    "@semaphore-protocol/contracts": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/core": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/hardhat": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/utils": "npm:4.13.0-beta.1"
+    "@semaphore-protocol/contracts": "npm:4.13.0"
+    "@semaphore-protocol/core": "npm:4.13.0"
+    "@semaphore-protocol/hardhat": "npm:4.13.0"
+    "@semaphore-protocol/utils": "npm:4.13.0"
     "@typechain/ethers-v6": "npm:^0.5.0"
     "@typechain/hardhat": "npm:^9.0.0"
     "@types/chai": "npm:^4.2.0"
@@ -21820,9 +21820,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo-subgraph-web-app@workspace:packages/cli-template-monorepo-subgraph/apps/web-app"
   dependencies:
-    "@semaphore-protocol/core": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/data": "npm:4.13.0-beta.1"
-    "@semaphore-protocol/utils": "npm:4.13.0-beta.1"
+    "@semaphore-protocol/core": "npm:4.13.0"
+    "@semaphore-protocol/data": "npm:4.13.0"
+    "@semaphore-protocol/utils": "npm:4.13.0"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
@@ -26328,7 +26328,7 @@ __metadata:
     "@docusaurus/preset-classic": "npm:3.5.2"
     "@docusaurus/tsconfig": "npm:3.5.2"
     "@mdx-js/react": "npm:^3.0.0"
-    "@semaphore-protocol/utils": "npm:4.13.0-beta.1"
+    "@semaphore-protocol/utils": "npm:4.13.0"
     "@svgr/webpack": "npm:^5.5.0"
     "@types/react": "npm:^18.2.29"
     clsx: "npm:^1.2.1"
