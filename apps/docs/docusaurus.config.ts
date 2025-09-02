@@ -67,7 +67,7 @@ const config: Config = {
         announcementBar: {
             id: "semaphore-v4-beta",
             content:
-                '<b>New Semaphore V4 <a href="https://ceremony.pse.dev/projects/Semaphore%20Binary%20Merkle%20Root%20Fix" target="_blank">Trusted Setup Ceremony</a> is open for contributions until August 20!</b>',
+                '<b><a href="https://github.com/semaphore-protocol/semaphore/releases/tag/v4.0.0" target="_blank">Semaphore V4</a> is out 🎉 <a href="/getting-started">Try it out</a> and let us know if you have any feedback on <a href="https://semaphore.pse.dev/telegram" target="_blank">Telegram</a> or <a href="https://github.com/orgs/semaphore-protocol/discussions" target="_blank">Github</a>!</b>',
             backgroundColor: "#dde6fc",
             textColor: "#000000"
         },
