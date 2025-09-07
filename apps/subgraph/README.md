@@ -42,7 +42,7 @@
 
 ## Networks
 
-You can access any subgraph supported by Semaphore with the following URL: `https://api.studio.thegraph.com/query/14377/semaphore-<network-name>/v4.2.0`.
+You can access any subgraph supported by Semaphore with the following URL: `https://api.studio.thegraph.com/query/14377/semaphore-<network-name>/v4.5.0`.
 
 Supported networks:
 
