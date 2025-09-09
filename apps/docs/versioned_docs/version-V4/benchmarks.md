@@ -121,7 +121,7 @@ style={{ width: '300px', height: 'auto' }}
 <img
 src={require('../../assets/img-benchmarks/contracts/contract-benchmarks.png').default}
 alt="Contract Benchmarks"
-style={{ width: '590px', height: 'auto' }}
+style={{ width: '560px', height: 'auto' }}
 />
 
 ### Semaphore V3 gas report
