@@ -42,13 +42,13 @@ Chip: Apple M2 Pro
 
 Memory (RAM): 16 GB
 
-Operating System: macOS Sequoia version 15.0.1
+Operating System: macOS Sequoia version 15.6.1
 
 **Software environment**
 
-Node.js version: 20.18.0
+Node.js version: 23.10.0
 
-Browser: Google Chrome Version 130.0.6723.92 (Official Build) (arm64)
+Browser: Google Chrome Version 139.0.7258.156 (Official Build) (arm64)
 
 ## Running the benchmarks
 
@@ -59,6 +59,8 @@ GitHub repository to the run Node.js, browser and Circom benchmarks: https://git
 ### Solidity
 
 GitHub repository to run the Solidity benchmarks: https://github.com/semaphore-protocol/semaphore
+
+Semaphore V3 benchmarks were obtained using the code from the latest v3 Git tag (`v3.15.2`), with the Solidity optimizer enabled.
 
 ## Node.js benchmarks
 
@@ -98,6 +100,8 @@ Main functions used in the browser.
 
 ## Circuit benchmarks
 
+Tree depth = 20
+
 ### Semaphore V3
 
 <img
@@ -119,7 +123,7 @@ style={{ width: '300px', height: 'auto' }}
 <img
 src={require('../../assets/img-benchmarks/contracts/contract-benchmarks.png').default}
 alt="Contract Benchmarks"
-style={{ width: '590px', height: 'auto' }}
+style={{ width: '560px', height: 'auto' }}
 />
 
 ### Semaphore V3 gas report
