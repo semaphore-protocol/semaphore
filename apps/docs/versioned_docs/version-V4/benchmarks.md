@@ -60,6 +60,8 @@ GitHub repository to the run Node.js, browser and Circom benchmarks: https://git
 
 GitHub repository to run the Solidity benchmarks: https://github.com/semaphore-protocol/semaphore
 
+Semaphore V3 benchmarks were obtained using the code from the latest v3 Git tag (`v3.15.2`), with the Solidity optimizer enabled.
+
 ## Node.js benchmarks
 
 ### Identities
