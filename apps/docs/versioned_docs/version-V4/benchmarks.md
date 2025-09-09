@@ -42,13 +42,13 @@ Chip: Apple M2 Pro
 
 Memory (RAM): 16 GB
 
-Operating System: macOS Sequoia version 15.0.1
+Operating System: macOS Sequoia version 15.6.1
 
 **Software environment**
 
-Node.js version: 20.18.0
+Node.js version: 23.10.0
 
-Browser: Google Chrome Version 130.0.6723.92 (Official Build) (arm64)
+Browser: Google Chrome Version 139.0.7258.156 (Official Build) (arm64)
 
 ## Running the benchmarks
 
@@ -97,6 +97,8 @@ Main functions used in the browser.
 ![Browser benchmarks](../../assets/img-benchmarks/browser/browser-benchmarks.png)
 
 ## Circuit benchmarks
+
+Tree depth = 20
 
 ### Semaphore V3
 
