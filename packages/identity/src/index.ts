@@ -62,7 +62,7 @@ export class Identity {
 
     /**
      * Returns the secret scalar.
-     * @returns The secret scalar as a string.
+     * @returns The secret scalar as a bigint.
      */
     public get secretScalar(): bigint {
         return this._secretScalar
@@ -78,7 +78,7 @@ export class Identity {
 
     /**
      * Returns the commitment hash of the public key.
-     * @returns The commitment as a string.
+     * @returns The commitment as a bigint.
      */
     public get commitment(): bigint {
         return this._commitment
