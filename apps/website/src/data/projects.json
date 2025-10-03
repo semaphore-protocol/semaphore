@@ -586,5 +586,15 @@
             "github": "https://github.com/jimmychu0807/semaphore-msa-modules",
             "website": "https://semaphore-msa-modules.jimmychu0807.hk"
         }
+    },
+    {
+        "name": "Poll.cc",
+        "categories": ["Voting", "Social"],
+        "tagline": "Public online voting on social and political issues. Semaphore is used for anonymous voting while proving you're a real human verified by KYC.",
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://poll.cc"
+        }
     }
 ]
