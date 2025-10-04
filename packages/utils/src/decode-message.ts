@@ -12,6 +12,12 @@ import { toBeHex } from "ethers/utils"
  * @param message The Semaphore message as a bigint.
  * @returns The Semaphore message as a text.
  */
-export default function decodeMessage(message: BigNumberish) {
-    return decodeBytes32String(toBeHex(message, 32))
+export default function decodeMessage(message: BigNumberish): string {
+    const hex = toBeHex(message, 32)
+
+    try {
+        return decodeBytes32String(hex)
+    } catch {
+        return hex
+    }
 }
