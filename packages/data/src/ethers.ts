@@ -208,7 +208,7 @@ export default class SemaphoreEthers {
 
         const membersAddedEvents = await getEvents(this._contract, "MembersAdded", [groupId], this._options.startBlock)
 
-        const membersAddedEventsMap = new Map<string, [string]>()
+        const membersAddedEventsMap = new Map<string, string[]>()
 
         for (const [, startIndex, identityCommitments] of membersAddedEvents) {
             membersAddedEventsMap.set(
