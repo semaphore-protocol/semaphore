@@ -72,6 +72,22 @@ const hardhatConfig: HardhatUserConfig = {
                     apiURL: "https://api-sepolia.scrollscan.com/api",
                     browserURL: "https://sepolia.scrollscan.com"
                 }
+            },
+            {
+                network: "gnosis-chiado",
+                chainId: 10200,
+                urls: {
+                    apiURL: "https://gnosis-chiado.blockscout.com/api",
+                    browserURL: "https://gnosis-chiado.blockscout.com"
+                }
+            },
+            {
+                network: "gnosis",
+                chainId: 100,
+                urls: {
+                    apiURL: "https://api.etherscan.io/v2/api?chainid=100",
+                    browserURL: "https://gnosisscan.io"
+                }
             }
         ]
     },

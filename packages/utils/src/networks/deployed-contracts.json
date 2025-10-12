@@ -258,5 +258,45 @@
                 "startBlock": 11979239
             }
         ]
+    },
+    {
+        "network": "gnosis-chiado",
+        "contracts": [
+            {
+                "name": "SemaphoreVerifier",
+                "address": "0x4DeC9E3784EcC1eE002001BfE91deEf4A48931f8",
+                "startBlock": 18246899
+            },
+            {
+                "name": "PoseidonT3",
+                "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
+                "startBlock": 18246899
+            },
+            {
+                "name": "Semaphore",
+                "address": "0x8A1fd199516489B0Fb7153EB5f075cDAC83c693D",
+                "startBlock": 18246899
+            }
+        ]
+    },
+    {
+        "network": "gnosis",
+        "contracts": [
+            {
+                "name": "SemaphoreVerifier",
+                "address": "0x4DeC9E3784EcC1eE002001BfE91deEf4A48931f8",
+                "startBlock": 42592252
+            },
+            {
+                "name": "PoseidonT3",
+                "address": "0xB43122Ecb241DD50062641f089876679fd06599a",
+                "startBlock": 42592252
+            },
+            {
+                "name": "Semaphore",
+                "address": "0x8A1fd199516489B0Fb7153EB5f075cDAC83c693D",
+                "startBlock": 42592252
+            }
+        ]
     }
 ]

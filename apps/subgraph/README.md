@@ -59,6 +59,8 @@ Supported networks:
 -   `linea-sepolia`
 -   `linea`
 -   `scroll-sepolia`
+-   `gnosis-chiado`
+-   `gnosis`
 
 ## 🛠 Install
 
