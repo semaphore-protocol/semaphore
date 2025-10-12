@@ -76,5 +76,17 @@ export default {
         url: "https://sepolia-rpc.scroll.io",
         chainId: 534351,
         explorer: "https://sepolia.scrollscan.com"
+    },
+    "gnosis-chiado": {
+        name: "Gnosis Chiado",
+        url: "https://rpc.chiadochain.net",
+        chainId: 10200,
+        explorer: "https://blockscout.com/gnosis/chiado"
+    },
+    gnosis: {
+        name: "Gnosis",
+        url: "https://rpc.gnosischain.com",
+        chainId: 100,
+        explorer: "https://gnosisscan.io"
     }
 }
