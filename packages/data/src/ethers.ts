@@ -295,4 +295,42 @@ export default class SemaphoreEthers {
 
         return this._contract.hasMember(groupId, member)
     }
+
+    /**
+     * Listens to the GroupCreated event.
+     * @param callback Called with the groupId of the newly created group.
+     */
+    onGroup(callback: (groupId: string) => void): void {
+        this._contract.on("GroupCreated", (groupId: string) => {
+            callback(groupId.toString())
+        })
+    }
+
+    offGroup(): void {
+        this._contract.removeAllListeners("GroupCreated")
+    }
+
+    /**
+     * Listens to member-related events (MemberAdded, MemberRemoved, MemberUpdated).
+     * @param callback Called with member data depending on the event type.
+     */
+    onMember(callback: (eventType: string, identityCommitment: string, oldIdentityCommitment?: string) => void): void {
+        this._contract.on("MemberAdded", (_groupId, _index, identityCommitment) => {
+            callback("added", identityCommitment.toString())
+        })
+
+        this._contract.on("MemberUpdated", (_groupId, _index, oldIdentityCommitment, newIdentityCommitment) => {
+            callback("updated", newIdentityCommitment.toString(), oldIdentityCommitment.toString())
+        })
+
+        this._contract.on("MemberRemoved", (_groupId, _index, identityCommitment) => {
+            callback("removed", identityCommitment.toString())
+        })
+    }
+
+    offMember(): void {
+        this._contract.removeAllListeners("MemberAdded")
+        this._contract.removeAllListeners("MemberUpdated")
+        this._contract.removeAllListeners("MemberRemoved")
+    }
 }

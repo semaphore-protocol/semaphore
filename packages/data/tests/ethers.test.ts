@@ -257,4 +257,54 @@ describe("SemaphoreEthers", () => {
             expect(isMember).toBeFalsy()
         })
     })
+
+    describe("Event listeners", () => {
+        let mockOn: jest.Mock
+        let mockRemove: jest.Mock
+
+        beforeEach(() => {
+            mockOn = jest.fn()
+            mockRemove = jest.fn()
+
+            ContractMocked.mockImplementation(
+                () =>
+                    ({
+                        on: mockOn,
+                        removeAllListeners: mockRemove
+                    }) as any
+            )
+        })
+
+        it("onGroup should call the callback with groupId", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            const cb = jest.fn()
+
+            semaphore.onGroup(cb)
+            const handler = mockOn.mock.calls.find(([e]) => e === "GroupCreated")![1]
+            handler("42")
+
+            expect(cb).toHaveBeenCalledWith("42")
+        })
+
+        it("onMember should handle added, updated, and removed events", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            const cb = jest.fn()
+
+            semaphore.onMember(cb)
+
+            // simulamos las tres variantes
+            const added = mockOn.mock.calls.find(([e]) => e === "MemberAdded")![1]
+            added("g1", 0, "111")
+
+            const updated = mockOn.mock.calls.find(([e]) => e === "MemberUpdated")![1]
+            updated("g1", 0, "111", "222")
+
+            const removed = mockOn.mock.calls.find(([e]) => e === "MemberRemoved")![1]
+            removed("g1", 0, "333")
+
+            expect(cb).toHaveBeenNthCalledWith(1, "added", "111")
+            expect(cb).toHaveBeenNthCalledWith(2, "updated", "222", "111")
+            expect(cb).toHaveBeenNthCalledWith(3, "removed", "333")
+        })
+    })
 })
