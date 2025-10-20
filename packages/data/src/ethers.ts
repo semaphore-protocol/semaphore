@@ -333,4 +333,53 @@ export default class SemaphoreEthers {
         this._contract.removeAllListeners("MemberUpdated")
         this._contract.removeAllListeners("MemberRemoved")
     }
+
+    /**
+     * Listens to the ProofValidated event.
+     * @param callback Called with proof parameters.
+     */
+    onValidatedProof(
+        callback: (proof: {
+            groupId: string
+            merkleTreeDepth: number
+            merkleTreeRoot: string
+            nullifier: string
+            message: string
+            scope: string
+            points: string[]
+        }) => void
+    ): void {
+        this._contract.on(
+            "ProofValidated",
+            (groupId, merkleTreeDepth, merkleTreeRoot, nullifier, message, scope, points) => {
+                callback({
+                    groupId: groupId.toString(),
+                    merkleTreeDepth: Number(merkleTreeDepth),
+                    merkleTreeRoot: merkleTreeRoot.toString(),
+                    nullifier: nullifier.toString(),
+                    message: message.toString(),
+                    scope: scope.toString(),
+                    points: points.map((p: any) => p.toString())
+                })
+            }
+        )
+    }
+
+    offValidatedProof(): void {
+        this._contract.removeAllListeners("ProofValidated")
+    }
+
+    /**
+     * Listens to the GroupAdminUpdated event.
+     * @param callback Called with the old admin and new admin addresses.
+     */
+    onGroupAdmin(callback: (oldAdmin: string, newAdmin: string) => void): void {
+        this._contract.on("GroupAdminUpdated", (_groupId, oldAdmin, newAdmin) => {
+            callback(oldAdmin.toString(), newAdmin.toString())
+        })
+    }
+
+    offGroupAdmin(): void {
+        this._contract.removeAllListeners("GroupAdminUpdated")
+    }
 }

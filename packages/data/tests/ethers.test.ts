@@ -306,5 +306,51 @@ describe("SemaphoreEthers", () => {
             expect(cb).toHaveBeenNthCalledWith(2, "updated", "222", "111")
             expect(cb).toHaveBeenNthCalledWith(3, "removed", "333")
         })
+
+        it("onValidatedProof should call the callback with proof data", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            const cb = jest.fn()
+
+            semaphore.onValidatedProof(cb)
+
+            const handler = mockOn.mock.calls.find(([e]) => e === "ProofValidated")![1]
+            handler("g1", 3, "root", "null", "msg", "scope", ["1", "2"])
+
+            expect(cb).toHaveBeenCalledWith({
+                groupId: "g1",
+                merkleTreeDepth: 3,
+                merkleTreeRoot: "root",
+                nullifier: "null",
+                message: "msg",
+                scope: "scope",
+                points: ["1", "2"]
+            })
+        })
+        it("onGroupAdmin should call the callback with old and new admin", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            const cb = jest.fn()
+
+            semaphore.onGroupAdmin(cb)
+            const handler = mockOn.mock.calls.find(([e]) => e === "GroupAdminUpdated")![1]
+            handler("g1", "0xOLD", "0xNEW")
+
+            expect(cb).toHaveBeenCalledWith("0xOLD", "0xNEW")
+        })
+
+        it("off functions should remove all listeners", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+
+            semaphore.offGroup()
+            semaphore.offMember()
+            semaphore.offValidatedProof()
+            semaphore.offGroupAdmin()
+
+            expect(mockRemove).toHaveBeenCalledWith("GroupCreated")
+            expect(mockRemove).toHaveBeenCalledWith("MemberAdded")
+            expect(mockRemove).toHaveBeenCalledWith("MemberUpdated")
+            expect(mockRemove).toHaveBeenCalledWith("MemberRemoved")
+            expect(mockRemove).toHaveBeenCalledWith("ProofValidated")
+            expect(mockRemove).toHaveBeenCalledWith("GroupAdminUpdated")
+        })
     })
 })
