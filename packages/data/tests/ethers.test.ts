@@ -292,7 +292,7 @@ describe("SemaphoreEthers", () => {
 
             semaphore.onMember(cb)
 
-            // simulamos las tres variantes
+            // Simulate three variants
             const added = mockOn.mock.calls.find(([e]) => e === "MemberAdded")![1]
             added("g1", 0, "111")
 
