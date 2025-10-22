@@ -20,7 +20,7 @@
         "done": true
     },
     {
-        "name": "Support more Testnets/Mainnets",
+        "name": "Support more Testnets & Mainnets",
         "done": true
     },
     {
@@ -37,10 +37,14 @@
     },
     {
         "name": "Semaphore Noir Implementation",
-        "done": false
+        "done": true
     },
     {
         "name": "Scaling Semaphore with PIR",
+        "done": true
+    },
+    {
+        "name": "Maintenance",
         "done": false
     }
 ]
