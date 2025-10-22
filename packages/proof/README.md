@@ -116,3 +116,25 @@ import { verifyProof } from "@semaphore-protocol/proof"
 
 await verifyProof(proof1)
 ```
+
+## Resource management: Terminating the bn128 curve
+
+When using the Semaphore proof library in Node.js environments, especially in tests or scripts that create and use the `bn128` curve (for example, via `getCurveFromName("bn128")` from the `ffjavascript` package), it is important to properly release resources associated with the curve after use. Failing to do so can result in leaked handles (such as `MessagePort` handles), which may prevent Node.js from exiting cleanly. This is particularly relevant when running test suites.
+
+**How to terminate the bn128 curve:**
+
+If you create a curve instance using `getCurveFromName("bn128")`, you should call its `terminate()` method when you are done with it. For example:
+
+```typescript
+import { getCurveFromName } from "ffjavascript"
+
+let curve
+beforeAll(async () => {
+    curve = await getCurveFromName("bn128")
+})
+afterAll(async () => {
+    await curve.terminate()
+})
+```
+
+This ensures that all resources are properly released and Node.js can exit cleanly after your script or tests finish.
