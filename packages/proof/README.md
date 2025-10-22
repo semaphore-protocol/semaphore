@@ -126,15 +126,15 @@ When using the Semaphore proof library in Node.js environments, especially in te
 If you create a curve instance using `getCurveFromName("bn128")`, you should call its `terminate()` method when you are done with it. For example:
 
 ```typescript
-import { getCurveFromName } from "ffjavascript";
+import { getCurveFromName } from "ffjavascript"
 
-let curve;
+let curve
 beforeAll(async () => {
-    curve = await getCurveFromName("bn128");
-});
+    curve = await getCurveFromName("bn128")
+})
 afterAll(async () => {
-    await curve.terminate();
-});
+    await curve.terminate()
+})
 ```
 
 This ensures that all resources are properly released and Node.js can exit cleanly after your script or tests finish.
