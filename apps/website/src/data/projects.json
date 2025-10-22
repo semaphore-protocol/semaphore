@@ -596,5 +596,16 @@
         "links": {
             "website": "https://poll.cc"
         }
+    },
+    {
+        "name": "BringID",
+        "tagline": "Privacy-preserving proof of humanity using verifiable Internet credentials",
+        "categories": ["Identity", "Authenticity", "Trust"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "website": "https://www.bringid.org",
+            "github": "https://github.com/BringID/whitepaper"
+        }
     }
 ]
