@@ -374,11 +374,11 @@ describe("SemaphoreEthers", () => {
             expect(mockRemove).toHaveBeenCalledWith("ProofValidated")
         })
 
-        it("onGroupAdmin should call callback with groupId, oldAdmin, newAdmin and event", () => {
+        it("onGroupAdminUpdated should call callback with groupId, oldAdmin, newAdmin and event", () => {
             const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
             const cb = jest.fn()
 
-            semaphore.onGroupAdmin(cb)
+            semaphore.onGroupAdminUpdated(cb)
             const handler = mockOn.mock.calls.find(([e]) => e === "GroupAdminUpdated")![1]
             const fakeEvent = { txHash: "0xbeef" }
 
@@ -387,9 +387,9 @@ describe("SemaphoreEthers", () => {
             expect(cb).toHaveBeenCalledWith("0xOLD", "0xNEW", fakeEvent)
         })
 
-        it("offGroupAdmin should remove all GroupAdminUpdated listeners", () => {
+        it("offGroupAdminUpdated should remove all GroupAdminUpdated listeners", () => {
             const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
-            semaphore.offGroupAdmin()
+            semaphore.offGroupAdminUpdated()
             expect(mockRemove).toHaveBeenCalledWith("GroupAdminUpdated")
         })
     })
