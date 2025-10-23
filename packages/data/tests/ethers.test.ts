@@ -281,7 +281,6 @@ describe("SemaphoreEthers", () => {
 
             semaphore.onGroupCreated(cb)
 
-            // Simulamos la emisión del evento
             const handler = mockOn.mock.calls.find(([e]) => e === "GroupCreated")![1]
             const fakeEvent = { blockNumber: 123 }
             handler("42", fakeEvent)
