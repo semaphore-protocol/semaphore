@@ -303,9 +303,9 @@ describe("SemaphoreEthers", () => {
             const handler = mockOn.mock.calls.find(([e]) => e === "MemberAdded")![1]
             const fakeEvent = { txHash: "0xabc" }
 
-            handler("group1", 0, "identity123", fakeEvent)
+            handler("group1", 0, "identity123", "root111", fakeEvent)
 
-            expect(cb).toHaveBeenCalledWith("group1", "identity123", fakeEvent)
+            expect(cb).toHaveBeenCalledWith("group1", "identity123", "root111", fakeEvent)
         })
 
         it("onMemberUpdated should call callback with groupId, old and new identity commitments", () => {
@@ -316,9 +316,9 @@ describe("SemaphoreEthers", () => {
             const handler = mockOn.mock.calls.find(([e]) => e === "MemberUpdated")![1]
             const fakeEvent = { blockNumber: 200 }
 
-            handler("groupX", 1, "old123", "new456", fakeEvent)
+            handler("groupX", 1, "old123", "new456", "root111", fakeEvent)
 
-            expect(cb).toHaveBeenCalledWith("groupX", "old123", "new456", fakeEvent)
+            expect(cb).toHaveBeenCalledWith("groupX", "old123", "new456", "root111", fakeEvent)
         })
 
         it("onMemberRemoved should call callback with groupId, identityCommitment and event", () => {
@@ -329,9 +329,9 @@ describe("SemaphoreEthers", () => {
             const handler = mockOn.mock.calls.find(([e]) => e === "MemberRemoved")![1]
             const fakeEvent = { txHash: "0xdeadbeef" }
 
-            handler("groupZ", 2, "identity999", fakeEvent)
+            handler("groupZ", 2, "identity999", "root111", fakeEvent)
 
-            expect(cb).toHaveBeenCalledWith("groupZ", "identity999", fakeEvent)
+            expect(cb).toHaveBeenCalledWith("groupZ", "identity999", "root111", fakeEvent)
         })
 
         it("offMemberAdded/Updated/Removed should remove all corresponding listeners", () => {
@@ -346,11 +346,11 @@ describe("SemaphoreEthers", () => {
             expect(mockRemove).toHaveBeenCalledWith("MemberRemoved")
         })
 
-        it("onValidatedProof should call callback with proof object", () => {
+        it("onProofValidated should call callback with proof object", () => {
             const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
             const cb = jest.fn()
 
-            semaphore.onValidatedProof(cb)
+            semaphore.onProofValidated(cb)
             const handler = mockOn.mock.calls.find(([e]) => e === "ProofValidated")![1]
 
             const fakeEvent = { blockNumber: 400 }
@@ -368,9 +368,9 @@ describe("SemaphoreEthers", () => {
             })
         })
 
-        it("offValidatedProof should remove all ProofValidated listeners", () => {
+        it("offProofValidated should remove all ProofValidated listeners", () => {
             const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
-            semaphore.offValidatedProof()
+            semaphore.offProofValidated()
             expect(mockRemove).toHaveBeenCalledWith("ProofValidated")
         })
 

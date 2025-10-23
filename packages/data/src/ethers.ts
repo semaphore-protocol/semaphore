@@ -314,9 +314,11 @@ export default class SemaphoreEthers {
      * Listens to MemberAdded events.
      * @param callback Receives the groupId, identityCommitment and event metadata.
      */
-    onMemberAdded(callback: (groupId: string, identityCommitment: string, event: any) => void): void {
-        this._contract.on("MemberAdded", (groupId, _index, identityCommitment, event) => {
-            callback(groupId.toString(), identityCommitment.toString(), event)
+    onMemberAdded(
+        callback: (groupId: string, identityCommitment: string, merkleTreeRoot: string, event: any) => void
+    ): void {
+        this._contract.on("MemberAdded", (groupId, _index, identityCommitment, merkleTreeRoot, event) => {
+            callback(groupId.toString(), identityCommitment.toString(), merkleTreeRoot.toString(), event)
         })
     }
 
@@ -329,11 +331,26 @@ export default class SemaphoreEthers {
      * @param callback Receives the groupId, old identityCommitment, new identityCommitment, and event metadata.
      */
     onMemberUpdated(
-        callback: (groupId: string, oldIdentityCommitment: string, newIdentityCommitment: string, event: any) => void
+        callback: (
+            groupId: string,
+            oldIdentityCommitment: string,
+            newIdentityCommitment: string,
+            merkleTreeRoot: string,
+            event: any
+        ) => void
     ): void {
-        this._contract.on("MemberUpdated", (groupId, _index, oldIdentityCommitment, newIdentityCommitment, event) => {
-            callback(groupId.toString(), oldIdentityCommitment.toString(), newIdentityCommitment.toString(), event)
-        })
+        this._contract.on(
+            "MemberUpdated",
+            (groupId, _index, oldIdentityCommitment, newIdentityCommitment, merkleTreeRoot, event) => {
+                callback(
+                    groupId.toString(),
+                    oldIdentityCommitment.toString(),
+                    newIdentityCommitment.toString(),
+                    merkleTreeRoot.toString(),
+                    event
+                )
+            }
+        )
     }
 
     offMemberUpdated(): void {
@@ -344,9 +361,11 @@ export default class SemaphoreEthers {
      * Listens to MemberRemoved events.
      * @param callback Receives the groupId, identityCommitment and event metadata.
      */
-    onMemberRemoved(callback: (groupId: string, identityCommitment: string, event: any) => void): void {
-        this._contract.on("MemberRemoved", (groupId, _index, identityCommitment, event) => {
-            callback(groupId.toString(), identityCommitment.toString(), event)
+    onMemberRemoved(
+        callback: (groupId: string, identityCommitment: string, merkleTreeRoot: string, event: any) => void
+    ): void {
+        this._contract.on("MemberRemoved", (groupId, _index, identityCommitment, merkleTreeRoot, event) => {
+            callback(groupId.toString(), identityCommitment.toString(), merkleTreeRoot.toString(), event)
         })
     }
 
@@ -358,7 +377,7 @@ export default class SemaphoreEthers {
      * Listens to the ProofValidated event.
      * @param callback Called with proof parameters.
      */
-    onValidatedProof(
+    onProofValidated(
         callback: (proof: {
             groupId: string
             merkleTreeDepth: number
@@ -387,7 +406,7 @@ export default class SemaphoreEthers {
         )
     }
 
-    offValidatedProof(): void {
+    offProofValidated(): void {
         this._contract.removeAllListeners("ProofValidated")
     }
 
