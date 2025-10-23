@@ -414,9 +414,9 @@ export default class SemaphoreEthers {
      * Listens to the GroupAdminUpdated event.
      * @param callback Called with the old admin and new admin addresses.
      */
-    onGroupAdminUpdated(callback: (oldAdmin: string, newAdmin: string, event: any) => void): void {
-        this._contract.on("GroupAdminUpdated", (oldAdmin, newAdmin, event) => {
-            callback(oldAdmin.toString(), newAdmin.toString(), event)
+    onGroupAdminUpdated(callback: (groupId: string, oldAdmin: string, newAdmin: string, event: any) => void): void {
+        this._contract.on("GroupAdminUpdated", (groupId, oldAdmin, newAdmin, event) => {
+            callback(groupId.toString(), oldAdmin.toString(), newAdmin.toString(), event)
         })
     }
 

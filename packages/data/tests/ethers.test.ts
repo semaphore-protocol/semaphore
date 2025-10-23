@@ -382,9 +382,9 @@ describe("SemaphoreEthers", () => {
             const handler = mockOn.mock.calls.find(([e]) => e === "GroupAdminUpdated")![1]
             const fakeEvent = { txHash: "0xbeef" }
 
-            handler("0xOLD", "0xNEW", fakeEvent)
+            handler("group1", "0xOLD", "0xNEW", fakeEvent)
 
-            expect(cb).toHaveBeenCalledWith("0xOLD", "0xNEW", fakeEvent)
+            expect(cb).toHaveBeenCalledWith("group1", "0xOLD", "0xNEW", fakeEvent)
         })
 
         it("offGroupAdminUpdated should remove all GroupAdminUpdated listeners", () => {
