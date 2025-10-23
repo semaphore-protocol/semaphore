@@ -14,8 +14,8 @@ const gitIgnored = [
 const folders = ["cli-template-monorepo-ethers", "cli-template-monorepo-subgraph"]
 
 async function main() {
-    folders.map((pkg) =>
-        gitIgnored.map((f) => rmSync(`${folderName}/${pkg}/apps/${f}`, { recursive: true, force: true }))
+    folders.forEach((pkg) =>
+        gitIgnored.forEach((f) => rmSync(`${folderName}/${pkg}/apps/${f}`, { recursive: true, force: true }))
     )
 }
 

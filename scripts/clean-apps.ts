@@ -20,7 +20,9 @@ async function main() {
         .filter((file) => file.isDirectory())
         .map((dir) => dir.name)
 
-    folders.map((app) => gitIgnored.map((f) => rmSync(`${folderName}/${app}/${f}`, { recursive: true, force: true })))
+    folders.forEach((app) =>
+        gitIgnored.forEach((f) => rmSync(`${folderName}/${app}/${f}`, { recursive: true, force: true }))
+    )
 }
 
 main()
