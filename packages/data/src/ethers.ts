@@ -375,7 +375,7 @@ export default class SemaphoreEthers {
 
     /**
      * Listens to the ProofValidated event.
-     * @param callback Called with proof parameters.
+     * @param callback Called with proof parameters and event metadata.
      */
     onProofValidated(
         callback: (proof: {
@@ -412,7 +412,7 @@ export default class SemaphoreEthers {
 
     /**
      * Listens to the GroupAdminUpdated event.
-     * @param callback Called with the old admin and new admin addresses.
+     * @param callback callback Receives the groupId, old admin and new admin addresses and event metadata.
      */
     onGroupAdminUpdated(callback: (groupId: string, oldAdmin: string, newAdmin: string, event: any) => void): void {
         this._contract.on("GroupAdminUpdated", (groupId, oldAdmin, newAdmin, event) => {
