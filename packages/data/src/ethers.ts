@@ -306,6 +306,10 @@ export default class SemaphoreEthers {
         })
     }
 
+    /**
+     * Removes all listeners for the GroupCreated event.
+     * Stop receiving group creation notifications.
+     */
     offGropupCreated(): void {
         this._contract.removeAllListeners("GroupCreated")
     }
@@ -322,6 +326,10 @@ export default class SemaphoreEthers {
         })
     }
 
+    /**
+     * Removes all listeners for the MemberAdded event.
+     * Stop tracking when new members are added.
+     */
     offMemberAdded(): void {
         this._contract.removeAllListeners("MemberAdded")
     }
@@ -353,6 +361,10 @@ export default class SemaphoreEthers {
         )
     }
 
+    /**
+     * Removes all listeners for the MemberUpdated event.
+     * Stop receiving updates when members change their commitment.
+     */
     offMemberUpdated(): void {
         this._contract.removeAllListeners("MemberUpdated")
     }
@@ -369,6 +381,10 @@ export default class SemaphoreEthers {
         })
     }
 
+    /**
+     * Removes all listeners for the MemberRemoved event.
+     * Stop listening for member removals.
+     */
     offMemberRemoved(): void {
         this._contract.removeAllListeners("MemberRemoved")
     }
@@ -406,6 +422,10 @@ export default class SemaphoreEthers {
         )
     }
 
+    /**
+     * Removes all listeners for the ProofValidated event.
+     * Stop receiving proof validation notifications.
+     */
     offProofValidated(): void {
         this._contract.removeAllListeners("ProofValidated")
     }
@@ -420,6 +440,10 @@ export default class SemaphoreEthers {
         })
     }
 
+    /**
+     * Removes all listeners for the GroupAdminUpdated event.
+     * Stop tracking when a group's admin is updated.
+     */
     offGroupAdminUpdated(): void {
         this._contract.removeAllListeners("GroupAdminUpdated")
     }
