@@ -295,4 +295,156 @@ export default class SemaphoreEthers {
 
         return this._contract.hasMember(groupId, member)
     }
+
+    /**
+     * Listens to the GroupCreated event.
+     * @param callback Called with the groupId of the newly created group.
+     */
+    onGroupCreated(callback: (groupId: string, event: any) => void): void {
+        this._contract.on("GroupCreated", (groupId, event) => {
+            callback(groupId.toString(), event)
+        })
+    }
+
+    /**
+     * Removes all listeners for the GroupCreated event.
+     * Stop receiving group creation notifications.
+     */
+    offGropupCreated(): void {
+        this._contract.removeAllListeners("GroupCreated")
+    }
+
+    /**
+     * Listens to MemberAdded events.
+     * @param callback Receives the groupId, identityCommitment and event metadata.
+     */
+    onMemberAdded(
+        callback: (groupId: string, identityCommitment: string, merkleTreeRoot: string, event: any) => void
+    ): void {
+        this._contract.on("MemberAdded", (groupId, _index, identityCommitment, merkleTreeRoot, event) => {
+            callback(groupId.toString(), identityCommitment.toString(), merkleTreeRoot.toString(), event)
+        })
+    }
+
+    /**
+     * Removes all listeners for the MemberAdded event.
+     * Stop tracking when new members are added.
+     */
+    offMemberAdded(): void {
+        this._contract.removeAllListeners("MemberAdded")
+    }
+
+    /**
+     * Listens to MemberUpdated events.
+     * @param callback Receives the groupId, old identityCommitment, new identityCommitment, and event metadata.
+     */
+    onMemberUpdated(
+        callback: (
+            groupId: string,
+            oldIdentityCommitment: string,
+            newIdentityCommitment: string,
+            merkleTreeRoot: string,
+            event: any
+        ) => void
+    ): void {
+        this._contract.on(
+            "MemberUpdated",
+            (groupId, _index, oldIdentityCommitment, newIdentityCommitment, merkleTreeRoot, event) => {
+                callback(
+                    groupId.toString(),
+                    oldIdentityCommitment.toString(),
+                    newIdentityCommitment.toString(),
+                    merkleTreeRoot.toString(),
+                    event
+                )
+            }
+        )
+    }
+
+    /**
+     * Removes all listeners for the MemberUpdated event.
+     * Stop receiving updates when members change their commitment.
+     */
+    offMemberUpdated(): void {
+        this._contract.removeAllListeners("MemberUpdated")
+    }
+
+    /**
+     * Listens to MemberRemoved events.
+     * @param callback Receives the groupId, identityCommitment and event metadata.
+     */
+    onMemberRemoved(
+        callback: (groupId: string, identityCommitment: string, merkleTreeRoot: string, event: any) => void
+    ): void {
+        this._contract.on("MemberRemoved", (groupId, _index, identityCommitment, merkleTreeRoot, event) => {
+            callback(groupId.toString(), identityCommitment.toString(), merkleTreeRoot.toString(), event)
+        })
+    }
+
+    /**
+     * Removes all listeners for the MemberRemoved event.
+     * Stop listening for member removals.
+     */
+    offMemberRemoved(): void {
+        this._contract.removeAllListeners("MemberRemoved")
+    }
+
+    /**
+     * Listens to the ProofValidated event.
+     * @param callback Called with proof parameters and event metadata.
+     */
+    onProofValidated(
+        callback: (proof: {
+            groupId: string
+            merkleTreeDepth: number
+            merkleTreeRoot: string
+            nullifier: string
+            message: string
+            scope: string
+            points: string[]
+            event: any
+        }) => void
+    ): void {
+        this._contract.on(
+            "ProofValidated",
+            (groupId, merkleTreeDepth, merkleTreeRoot, nullifier, message, scope, points, event) => {
+                callback({
+                    groupId: groupId.toString(),
+                    merkleTreeDepth: Number(merkleTreeDepth),
+                    merkleTreeRoot: merkleTreeRoot.toString(),
+                    nullifier: nullifier.toString(),
+                    message: message.toString(),
+                    scope: scope.toString(),
+                    points: points.map((p: any) => p.toString()),
+                    event
+                })
+            }
+        )
+    }
+
+    /**
+     * Removes all listeners for the ProofValidated event.
+     * Stop receiving proof validation notifications.
+     */
+    offProofValidated(): void {
+        this._contract.removeAllListeners("ProofValidated")
+    }
+
+    /**
+     * Listens to the GroupAdminUpdated event.
+     * @param callback Receives the groupId, old admin and new admin addresses and event metadata.
+     */
+    onGroupAdminUpdated(callback: (groupId: string, oldAdmin: string, newAdmin: string, event: any) => void): void {
+        this._contract.on("GroupAdminUpdated", (groupId, oldAdmin, newAdmin, event) => {
+            callback(groupId.toString(), oldAdmin.toString(), newAdmin.toString(), event)
+        })
+    }
+
+    /**
+     * Removes all listeners for the GroupAdminUpdated event.
+     * Stop tracking when a group's admin is updated.
+     */
+    offGroupAdminUpdated(): void {
+        this._contract.removeAllListeners("GroupAdminUpdated")
+    }
 }

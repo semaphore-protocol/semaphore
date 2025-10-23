@@ -257,4 +257,140 @@ describe("SemaphoreEthers", () => {
             expect(isMember).toBeFalsy()
         })
     })
+
+    describe("Event listeners", () => {
+        let mockOn: jest.Mock
+        let mockRemove: jest.Mock
+
+        beforeEach(() => {
+            mockOn = jest.fn()
+            mockRemove = jest.fn()
+
+            ContractMocked.mockImplementation(
+                () =>
+                    ({
+                        on: mockOn,
+                        removeAllListeners: mockRemove
+                    }) as any
+            )
+        })
+
+        it("onGroupCreated should call the callback with groupId and event", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            const cb = jest.fn()
+
+            semaphore.onGroupCreated(cb)
+
+            const handler = mockOn.mock.calls.find(([e]) => e === "GroupCreated")![1]
+            const fakeEvent = { blockNumber: 123 }
+            handler("42", fakeEvent)
+
+            expect(cb).toHaveBeenCalledWith("42", fakeEvent)
+            expect(mockOn).toHaveBeenCalledWith("GroupCreated", expect.any(Function))
+        })
+
+        it("offGroupCreated should remove all listeners for GroupCreated", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            semaphore.offGropupCreated()
+            expect(mockRemove).toHaveBeenCalledWith("GroupCreated")
+        })
+
+        it("onMemberAdded should call callback with groupId, identityCommitment and event", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            const cb = jest.fn()
+
+            semaphore.onMemberAdded(cb)
+            const handler = mockOn.mock.calls.find(([e]) => e === "MemberAdded")![1]
+            const fakeEvent = { txHash: "0xabc" }
+
+            handler("group1", 0, "identity123", "root111", fakeEvent)
+
+            expect(cb).toHaveBeenCalledWith("group1", "identity123", "root111", fakeEvent)
+        })
+
+        it("onMemberUpdated should call callback with groupId, old and new identity commitments", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            const cb = jest.fn()
+
+            semaphore.onMemberUpdated(cb)
+            const handler = mockOn.mock.calls.find(([e]) => e === "MemberUpdated")![1]
+            const fakeEvent = { blockNumber: 200 }
+
+            handler("groupX", 1, "old123", "new456", "root111", fakeEvent)
+
+            expect(cb).toHaveBeenCalledWith("groupX", "old123", "new456", "root111", fakeEvent)
+        })
+
+        it("onMemberRemoved should call callback with groupId, identityCommitment and event", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            const cb = jest.fn()
+
+            semaphore.onMemberRemoved(cb)
+            const handler = mockOn.mock.calls.find(([e]) => e === "MemberRemoved")![1]
+            const fakeEvent = { txHash: "0xdeadbeef" }
+
+            handler("groupZ", 2, "identity999", "root111", fakeEvent)
+
+            expect(cb).toHaveBeenCalledWith("groupZ", "identity999", "root111", fakeEvent)
+        })
+
+        it("offMemberAdded/Updated/Removed should remove all corresponding listeners", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+
+            semaphore.offMemberAdded()
+            semaphore.offMemberUpdated()
+            semaphore.offMemberRemoved()
+
+            expect(mockRemove).toHaveBeenCalledWith("MemberAdded")
+            expect(mockRemove).toHaveBeenCalledWith("MemberUpdated")
+            expect(mockRemove).toHaveBeenCalledWith("MemberRemoved")
+        })
+
+        it("onProofValidated should call callback with proof object", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            const cb = jest.fn()
+
+            semaphore.onProofValidated(cb)
+            const handler = mockOn.mock.calls.find(([e]) => e === "ProofValidated")![1]
+
+            const fakeEvent = { blockNumber: 400 }
+            handler("group1", 3, "root123", "nullifierXYZ", "msg1", "scope1", ["p1", "p2"], fakeEvent)
+
+            expect(cb).toHaveBeenCalledWith({
+                groupId: "group1",
+                merkleTreeDepth: 3,
+                merkleTreeRoot: "root123",
+                nullifier: "nullifierXYZ",
+                message: "msg1",
+                scope: "scope1",
+                points: ["p1", "p2"],
+                event: fakeEvent
+            })
+        })
+
+        it("offProofValidated should remove all ProofValidated listeners", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            semaphore.offProofValidated()
+            expect(mockRemove).toHaveBeenCalledWith("ProofValidated")
+        })
+
+        it("onGroupAdminUpdated should call callback with groupId, oldAdmin, newAdmin and event", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            const cb = jest.fn()
+
+            semaphore.onGroupAdminUpdated(cb)
+            const handler = mockOn.mock.calls.find(([e]) => e === "GroupAdminUpdated")![1]
+            const fakeEvent = { txHash: "0xbeef" }
+
+            handler("group1", "0xOLD", "0xNEW", fakeEvent)
+
+            expect(cb).toHaveBeenCalledWith("group1", "0xOLD", "0xNEW", fakeEvent)
+        })
+
+        it("offGroupAdminUpdated should remove all GroupAdminUpdated listeners", () => {
+            const semaphore = new SemaphoreEthers("sepolia", { address: "0x0000" })
+            semaphore.offGroupAdminUpdated()
+            expect(mockRemove).toHaveBeenCalledWith("GroupAdminUpdated")
+        })
+    })
 })
