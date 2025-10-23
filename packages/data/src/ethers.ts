@@ -300,37 +300,57 @@ export default class SemaphoreEthers {
      * Listens to the GroupCreated event.
      * @param callback Called with the groupId of the newly created group.
      */
-    onGroup(callback: (groupId: string) => void): void {
-        this._contract.on("GroupCreated", (groupId: string) => {
-            callback(groupId.toString())
+    onGroupCreated(callback: (groupId: string, event: any) => void): void {
+        this._contract.on("GroupCreated", (groupId, event) => {
+            callback(groupId.toString(), event)
         })
     }
 
-    offGroup(): void {
+    offGropupCreated(): void {
         this._contract.removeAllListeners("GroupCreated")
     }
 
     /**
-     * Listens to member-related events (MemberAdded, MemberRemoved, MemberUpdated).
-     * @param callback Called with member data depending on the event type.
+     * Listens to MemberAdded events.
+     * @param callback Receives the groupId, identityCommitment and event metadata.
      */
-    onMember(callback: (eventType: string, identityCommitment: string, oldIdentityCommitment?: string) => void): void {
-        this._contract.on("MemberAdded", (_groupId, _index, identityCommitment) => {
-            callback("added", identityCommitment.toString())
-        })
-
-        this._contract.on("MemberUpdated", (_groupId, _index, oldIdentityCommitment, newIdentityCommitment) => {
-            callback("updated", newIdentityCommitment.toString(), oldIdentityCommitment.toString())
-        })
-
-        this._contract.on("MemberRemoved", (_groupId, _index, identityCommitment) => {
-            callback("removed", identityCommitment.toString())
+    onMemberAdded(callback: (groupId: string, identityCommitment: string, event: any) => void): void {
+        this._contract.on("MemberAdded", (groupId, _index, identityCommitment, event) => {
+            callback(groupId.toString(), identityCommitment.toString(), event)
         })
     }
 
-    offMember(): void {
+    offMemberAdded(): void {
         this._contract.removeAllListeners("MemberAdded")
+    }
+
+    /**
+     * Listens to MemberUpdated events.
+     * @param callback Receives the groupId, old identityCommitment, new identityCommitment, and event metadata.
+     */
+    onMemberUpdated(
+        callback: (groupId: string, oldIdentityCommitment: string, newIdentityCommitment: string, event: any) => void
+    ): void {
+        this._contract.on("MemberUpdated", (groupId, _index, oldIdentityCommitment, newIdentityCommitment, event) => {
+            callback(groupId.toString(), oldIdentityCommitment.toString(), newIdentityCommitment.toString(), event)
+        })
+    }
+
+    offMemberUpdated(): void {
         this._contract.removeAllListeners("MemberUpdated")
+    }
+
+    /**
+     * Listens to MemberRemoved events.
+     * @param callback Receives the groupId, identityCommitment and event metadata.
+     */
+    onMemberRemoved(callback: (groupId: string, identityCommitment: string, event: any) => void): void {
+        this._contract.on("MemberRemoved", (groupId, _index, identityCommitment, event) => {
+            callback(groupId.toString(), identityCommitment.toString(), event)
+        })
+    }
+
+    offMemberRemoved(): void {
         this._contract.removeAllListeners("MemberRemoved")
     }
 
@@ -347,11 +367,12 @@ export default class SemaphoreEthers {
             message: string
             scope: string
             points: string[]
+            event: any
         }) => void
     ): void {
         this._contract.on(
             "ProofValidated",
-            (groupId, merkleTreeDepth, merkleTreeRoot, nullifier, message, scope, points) => {
+            (groupId, merkleTreeDepth, merkleTreeRoot, nullifier, message, scope, points, event) => {
                 callback({
                     groupId: groupId.toString(),
                     merkleTreeDepth: Number(merkleTreeDepth),
@@ -359,7 +380,8 @@ export default class SemaphoreEthers {
                     nullifier: nullifier.toString(),
                     message: message.toString(),
                     scope: scope.toString(),
-                    points: points.map((p: any) => p.toString())
+                    points: points.map((p: any) => p.toString()),
+                    event
                 })
             }
         )
@@ -373,9 +395,9 @@ export default class SemaphoreEthers {
      * Listens to the GroupAdminUpdated event.
      * @param callback Called with the old admin and new admin addresses.
      */
-    onGroupAdmin(callback: (oldAdmin: string, newAdmin: string) => void): void {
-        this._contract.on("GroupAdminUpdated", (_groupId, oldAdmin, newAdmin) => {
-            callback(oldAdmin.toString(), newAdmin.toString())
+    onGroupAdmin(callback: (oldAdmin: string, newAdmin: string, event: any) => void): void {
+        this._contract.on("GroupAdminUpdated", (oldAdmin, newAdmin, event) => {
+            callback(oldAdmin.toString(), newAdmin.toString(), event)
         })
     }
 
