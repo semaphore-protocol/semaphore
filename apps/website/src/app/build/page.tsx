@@ -98,7 +98,7 @@ export default function Build() {
                     mb={{ base: "120px", xl: "109px" }}
                     w={{ base: "auto", xl: "445px" }}
                 >
-                    <VStack alignItems="left">
+                    <VStack alignItems="start">
                         <Text fontSize={{ base: "30px", md: "44px" }} fontWeight="500">
                             Contribute to Semaphore
                         </Text>
@@ -106,7 +106,7 @@ export default function Build() {
                             Semaphore is open source with dozens of community contributors. You can propose improvements
                             to the protocol or take good first issues to get started.
                         </Text>
-                        <VStack mt="40px" alignItems="left">
+                        <VStack mt="40px" alignItems="start">
                             {linksInfo.map((linkInfo) => (
                                 <Link
                                     display="flex"
