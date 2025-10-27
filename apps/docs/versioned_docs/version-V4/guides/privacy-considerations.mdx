@@ -1,0 +1,331 @@
+---
+sidebar_position: 4
+title: Privacy Considerations
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Privacy considerations
+
+Semaphore is designed to provide anonymous signaling and group membership proofs, but the strength of your privacy depends on how you use it. This guide explains the privacy properties of Semaphore and best practices for building privacy-preserving applications.
+
+## Understanding anonymity sets
+
+An [anonymity set](https://en.wikipedia.org/wiki/Anonymity#Anonymity_and_pseudonymity) is the group of users among whom you are hiding. In Semaphore, the anonymity set is the [group](/glossary#group) to which your [identity](/glossary#identity) belongs.
+
+**Key principle**: You can only be as anonymous as the size of your group allows.
+
+### How anonymity sets work
+
+When you generate a Semaphore [proof](/glossary#message), you prove that you are _one of the members_ of the group without revealing _which member_ you are. The larger the group, the more difficult it is to identify you.
+
+**Example**: If you are in a group of 3 people, an observer knows you are one of those 3 people (33% chance). If you are in a group of 1,000 people, you are one of 1,000 possibilities (0.1% chance).
+
+### Group size recommendations
+
+Different applications require different group sizes to provide meaningful privacy:
+
+| Use Case | Recommended Minimum Size | Rationale |
+|----------|-------------------------|-----------|
+| **Anonymous feedback** | 10-20 members | Small teams need basic anonymity |
+| **Anonymous voting** | 50-100 members | Sufficient for most organizational votes |
+| **Whistleblowing** | 500+ members | High-stakes privacy requires larger sets |
+| **Public signaling** | 1,000+ members | Maximum privacy for public applications |
+
+:::caution Small groups reduce privacy
+Groups with fewer than 10 members provide minimal privacy protection. Consider whether Semaphore is appropriate for very small groups, or combine multiple small groups into a larger one when possible.
+:::
+
+:::info Dynamic group sizes
+With Semaphore V4's [LeanIMT](https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/imt) implementation, groups can grow dynamically without a fixed maximum size. This allows you to start with a smaller group and improve privacy as more members join.
+:::
+
+## Privacy properties
+
+### What Semaphore protects
+
+Semaphore's zero-knowledge proofs guarantee:
+
+1. **Group membership privacy**: No one can determine which specific group member created a proof
+2. **Message authenticity**: Only group members can create valid proofs
+3. **Double-signaling prevention**: The [nullifier](/glossary#nullifier) system prevents the same identity from creating multiple proofs for the same [scope](/glossary#scope)
+4. **Unlinkability across scopes**: Proofs from the same identity on different scopes cannot be linked together
+
+### What Semaphore does NOT protect
+
+Semaphore's cryptographic guarantees do not automatically protect against:
+
+1. **Network-level metadata**:
+   - Your IP address when submitting a proof
+   - Transaction timing patterns
+   - Browser fingerprinting
+
+2. **Application-level leaks**:
+   - Message content that reveals your identity
+   - Predictable voting patterns
+   - Unique writing styles or behaviors
+
+3. **Side-channel information**:
+   - When you come online or offline
+   - Correlation with other activities
+   - Physical or social context
+
+:::warning Transaction privacy
+When you submit a proof directly to the blockchain using your Ethereum wallet, your wallet address becomes publicly associated with that proof. Use a [relay](/glossary#relay) to submit transactions on your behalf to preserve anonymity.
+:::
+
+## Privacy risks and mitigations
+
+### Risk 1: Transaction linkability
+
+**Risk**: If you submit multiple proofs from the same Ethereum address, an observer can link all those proofs to the same person, even if the proofs themselves are anonymous.
+
+**Mitigation**: Use a [relay](/glossary#relay) service to submit transactions on your behalf. Relays forward your proof to the blockchain so your address remains private.
+
+**Example implementation**:
+```ts
+// Instead of submitting directly:
+await semaphoreContract.validateProof(groupId, proof)
+
+// Use a relay service:
+await fetch("https://relay.example.com/submit", {
+  method: "POST",
+  body: JSON.stringify({ groupId, proof })
+})
+```
+
+### Risk 2: Timing attacks
+
+**Risk**: If you submit a proof immediately after a specific event (e.g., right after a meeting), observers may correlate the timing to identify you.
+
+**Mitigation**:
+- Introduce random delays before submitting proofs
+- Batch multiple proofs together
+- Use the Merkle root expiry window to submit proofs at different times
+
+```ts
+// Add random delay before submitting
+const randomDelay = Math.floor(Math.random() * 300000) // 0-5 minutes
+await new Promise(resolve => setTimeout(resolve, randomDelay))
+await submitProof(proof)
+```
+
+### Risk 3: Message content deanonymization
+
+**Risk**: The content of your message might reveal your identity (e.g., "I'm the CEO and I think...").
+
+**Mitigation**:
+- Educate users about what information reveals identity
+- Implement content filters or warnings
+- Use structured messages instead of free text when possible
+- Consider encrypting message content
+
+:::caution Message privacy
+The `message` field in a Semaphore proof is public by default. If your message contains identifying information, your anonymity is compromised regardless of the cryptographic guarantees.
+:::
+
+### Risk 4: Cross-group identity linking
+
+**Risk**: Using the same Semaphore identity in multiple groups creates two distinct privacy risks:
+
+1. **Membership linking**: With on-chain groups, your identity commitment is publicly visible on the blockchain. If the same commitment appears in multiple groups, anyone can link your group memberships together. For example, observers can see that the same commitment belongs to both the "Engineering Team" group and the "DAO Members" group.
+
+2. **Activity linking**: If you use the same [scope](/glossary#scope) in different groups, your activities become linkable because the [nullifier](/glossary#nullifier) formula is `Poseidon(scope, secret)`. The nullifier does not include the group ID, so identical scopes across groups produce identical nullifiers. Different scopes, however, produce different nullifiers that cannot be cryptographically linked.
+
+**Mitigation**: Use different identities for different contexts or groups. If you must use the same identity, ensure each group uses unique scopes to prevent activity linking.
+
+```ts
+// Bad: Same identity for work and personal groups
+const identity = new Identity()
+workGroup.addMember(identity.commitment)  // Commitment visible on-chain
+personalGroup.addMember(identity.commitment)  // Same commitment - membership linkable!
+
+// Good: Separate identities for different contexts
+const workIdentity = new Identity("work-secret")
+const personalIdentity = new Identity("personal-secret")
+workGroup.addMember(workIdentity.commitment)
+personalGroup.addMember(personalIdentity.commitment)
+
+// Also risky: Same identity + same scope in different groups
+const proof1 = await generateProof(identity, workGroup, "vote-yes", "poll-2025")
+const proof2 = await generateProof(identity, personalGroup, "vote-no", "poll-2025")
+// Both proofs have identical nullifiers - activities are linkable!
+```
+
+:::tip Identity management
+If you are using a deterministic identity generation method (e.g., signing a message with MetaMask), ensure that the message is unique for each application or group to prevent identity reuse. See the [identities guide](/guides/identities#create-deterministic-identities) for more information.
+:::
+
+### Risk 5: Nullifier uniqueness
+
+**Risk**: Since nullifiers are deterministic (hash of scope and private key), if you use the same identity and scope in different applications, those applications can see that the same person participated.
+
+**Mitigation**: Use different scopes for different contexts, or use different identities.
+
+```ts
+// Each application or voting round should use a unique scope
+const scope1 = "poll-2025-q1-employee-satisfaction"
+const scope2 = "poll-2025-q2-employee-satisfaction"
+
+// Different scopes produce different nullifiers for the same identity
+const proof1 = await generateProof(identity, group, message1, scope1)
+const proof2 = await generateProof(identity, group, message2, scope2)
+```
+
+### Risk 6: Group membership inference
+
+**Risk**: If group membership is public, observers know that every proof from that group was created by one of the known members.
+
+**Mitigation**:
+- Keep group membership lists private when possible
+- Use larger groups to increase the anonymity set
+- Consider using multiple groups to dilute the information
+
+:::info On-chain groups
+When using on-chain groups, group membership is publicly visible on the blockchain. Anyone can see which identity commitments belong to which group. This is why using different identities for different contexts is important.
+:::
+
+## Best practices for privacy-preserving applications
+
+### 1. Choose appropriate group sizes
+
+- Evaluate your privacy requirements before designing your group structure
+- Aim for groups of at least 50-100 members for meaningful privacy
+- Consider combining related groups to increase anonymity set size
+- Monitor group size and warn users when privacy may be compromised
+
+### 2. Use relays for transaction submission
+
+- Never submit proofs directly from user wallets when anonymity is required
+- Implement or use existing relay services
+- Consider using multiple relays to prevent a single point of trust
+- Ensure relays do not log IP addresses or other metadata
+
+### 3. Implement identity hygiene
+
+- Use separate identities for different applications or contexts
+- Never reuse the same deterministic secret across platforms
+- Provide clear guidance to users about identity management
+- Consider implementing automatic identity rotation for different scopes
+
+### 4. Protect against timing attacks
+
+- Add random delays to proof submissions
+- Use batching to submit multiple proofs together
+- Leverage the Merkle root expiry window (default 1 hour) to allow submissions at different times
+- Avoid real-time proof generation patterns that could be observed
+
+### 5. Secure message content
+
+- Warn users about including identifying information in messages
+- Use structured data formats instead of free text when possible
+- Consider encrypting messages when privacy is critical
+- Implement automated checks for potential identity leaks in message content
+
+### 6. Minimize metadata leakage
+
+- Use privacy-preserving networking (e.g., VPNs, Tor) when appropriate
+- Implement client-side proof generation to avoid server-side identity knowledge
+- Avoid logging or analytics that could compromise user privacy
+- Use end-to-end encryption for communication with relays
+
+### 7. Educate your users
+
+- Clearly communicate what privacy guarantees your application provides
+- Explain what privacy protections Semaphore does NOT provide
+- Provide guidance on operational security (IP addresses, timing, etc.)
+- Make privacy considerations visible in your user interface
+
+## Privacy checklist for developers
+
+Before launching a Semaphore application, verify:
+
+- [ ] Group sizes are large enough for your privacy requirements
+- [ ] Users submit proofs through relays, not directly from their wallets
+- [ ] Users are guided to use different identities for different contexts
+- [ ] Message content is validated to prevent identity leaks
+- [ ] Timing attacks are mitigated with random delays or batching
+- [ ] Your application does not log or track information that could deanonymize users
+- [ ] Privacy limitations are clearly communicated to users
+- [ ] You have a threat model and understand potential attacks
+
+## Privacy threat model
+
+When building with Semaphore, consider these potential adversaries:
+
+### Passive observer
+- **Capabilities**: Can see blockchain transactions, group membership, proof messages
+- **Limitations**: Cannot break cryptographic guarantees
+- **Mitigations**: Use relays, large groups, and avoid metadata leaks
+
+### Network-level adversary
+- **Capabilities**: Can monitor IP addresses, timing, and network traffic
+- **Limitations**: Cannot see encrypted proof content
+- **Mitigations**: Use VPNs/Tor, relays, random delays
+
+### Application operator
+- **Capabilities**: May see user interactions, timing patterns, and metadata
+- **Limitations**: Cannot determine which group member created a proof
+- **Mitigations**: Client-side proof generation, minimal logging, open-source verification
+
+### Malicious group member
+- **Capabilities**: Can generate proofs, see public group information
+- **Limitations**: Cannot impersonate other members or link their proofs
+- **Mitigations**: Proper scope usage, nullifier checking
+
+## Advanced privacy considerations
+
+### Message and scope hashing
+
+The `message` and `scope` values you provide are hashed using Keccak256 (truncated to fit the SNARK scalar field modulus) before being used in the zero-knowledge circuit. This hashing is handled automatically by the Semaphore libraries and ensures compatibility with the circuit constraints. You can pass strings, numbers, or Uint8Arrays as message/scope values, and they will be converted correctly.
+
+This hashing means:
+- The circuit never sees your original message/scope values, only their hashes
+- The hash is deterministic: the same input always produces the same hash
+- The hash is one-way: observers cannot reverse it to find the original value
+- For compatibility, hashes are truncated to fit within the SNARK scalar field
+
+### Merkle proof privacy
+
+When updating or removing members from an on-chain group, you must provide a Merkle proof. This Merkle proof reveals structural information about the group tree. For maximum privacy:
+
+- Batch member updates to reduce information leakage
+- Consider the timing of member additions and removals
+- Use off-chain groups when possible to avoid revealing group structure
+
+### Merkle root expiry
+
+Semaphore allows proofs using old Merkle tree roots within a configured expiry window (default 1 hour). This provides two privacy benefits:
+
+1. **Timing flexibility**: Users don't need to submit proofs immediately, reducing timing attack correlation
+2. **Root diversity**: Multiple valid roots exist simultaneously, making it harder to link proofs to specific group states
+
+```solidity
+// Create group with custom root expiry (in seconds)
+groupId = semaphore.createGroup(adminAddress, 3600) // 1 hour
+```
+
+### Nullifier hashing
+
+The nullifier is computed as:
+```
+nullifier = Poseidon(scope, privateKey)
+```
+
+This means:
+- Same identity + same scope = same nullifier (prevents double-signaling)
+- Same identity + different scope = different nullifier (unlinkable)
+- Different identity + same scope = different nullifier (unlinkable)
+
+Design your scopes carefully to achieve the desired privacy properties.
+
+## Additional resources
+
+- [Semaphore Technical Reference](/technical-reference/circuits) - Understanding the cryptographic guarantees
+- [Privacy & Scaling Explorations](https://appliedzkp.org/) - Research on privacy-preserving protocols
+- [Anonymity Bibliography](https://www.freehaven.net/anonbib/) - Academic research on anonymity systems
+
+:::tip Need help?
+If you have questions about privacy considerations for your specific use case, ask on [Telegram](https://semaphore.pse.dev/telegram) or open a [discussion on GitHub](https://github.com/semaphore-protocol/semaphore/discussions).
+:::
