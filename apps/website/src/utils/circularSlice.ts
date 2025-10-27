@@ -10,6 +10,10 @@
  * @returns A new array containing the extracted elements.
  */
 export function circularSlice(list: any[], index: number, numberOfItems: number): any[] {
+    // Return empty array for empty input or non-positive count to avoid NaN index access
+    if (list.length === 0 || numberOfItems <= 0) {
+        return []
+    }
     const result = []
 
     for (let i = 0; i < numberOfItems; i += 1) {
