@@ -119,11 +119,11 @@ export default function Home() {
                         <VStack spacing="16">
                             <Stack
                                 direction={{ base: "column", md: "row" }}
-                                align="top"
+                                align="start"
                                 justify="space-between"
                                 spacing="16"
                             >
-                                <HStack flex="1" align="top" spacing="6">
+                                <HStack flex="1" align="start" spacing="6">
                                     <Heading
                                         fontSize={{ base: "30px", md: "38px" }}
                                         color="#1E46F2"
@@ -144,7 +144,7 @@ export default function Home() {
                                         </Text>
                                     </VStack>
                                 </HStack>
-                                <HStack flex="1" align="top" spacing="6">
+                                <HStack flex="1" align="start" spacing="6">
                                     <Heading
                                         fontSize={{ base: "30px", md: "38px" }}
                                         color="#1E46F2"
@@ -169,11 +169,11 @@ export default function Home() {
                             </Stack>
                             <Stack
                                 direction={{ base: "column", md: "row" }}
-                                align="top"
+                                align="start"
                                 justify="space-between"
                                 spacing="16"
                             >
-                                <HStack flex="1" align="top" spacing="6">
+                                <HStack flex="1" align="start" spacing="6">
                                     <Heading
                                         fontSize={{ base: "30px", md: "38px" }}
                                         color="#1E46F2"
@@ -195,7 +195,7 @@ export default function Home() {
                                         </Text>
                                     </VStack>
                                 </HStack>
-                                <HStack flex="1" align="top" spacing="6">
+                                <HStack flex="1" align="start" spacing="6">
                                     <Heading
                                         fontSize={{ base: "30px", md: "38px" }}
                                         color="#1E46F2"
@@ -237,7 +237,7 @@ export default function Home() {
                     </VStack>
                 </VStack>
 
-                <VStack maxW="650" align="center" spacing="8">
+                <VStack maxW="650px" align="center" spacing="8">
                     <Heading fontSize={{ base: "30px", md: "44px" }}>Join the Semaphore community</Heading>
                     <Text fontSize={{ base: "16px", md: "18px" }} textAlign="center">
                         Ask questions, suggest ideas, stay up-to-date, and meet other people building privacy
