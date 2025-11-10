@@ -222,10 +222,7 @@ export function addValidatedProof(event: ProofValidated): void {
         validatedProof.nullifier = event.params.nullifier
         validatedProof.points = event.params.points
         validatedProof.timestamp = event.block.timestamp
-
         validatedProof.save()
-
-        group.save()
 
         log.info("Validated proof with message '{}' in the onchain group '{}' has been added", [
             event.params.message.toHexString(),
