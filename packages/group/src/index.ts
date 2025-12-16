@@ -34,7 +34,7 @@ export class Group {
 
     /**
      * Returns the root hash of the tree.
-     * @returns The root hash as a string.
+     * @returns The root hash as a bigint.
      */
     public get root(): bigint {
         return this.leanIMT.root ? this.leanIMT.root : 0n
