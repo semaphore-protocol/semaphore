@@ -23,12 +23,6 @@ export class Group {
      * @param members A list of identity commitments.
      */
     constructor(members: BigNumber[] = []) {
-        for (const member of members) {
-            if (member === 0n || member === "0") {
-                throw new Error("Failed to add member: value cannot be 0")
-            }
-        }
-
         this.leanIMT = new LeanIMT((a, b) => poseidon2([a, b]), members.map(BigInt))
     }
 

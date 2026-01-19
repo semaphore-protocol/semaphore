@@ -24,10 +24,12 @@ describe("Group", () => {
             expect(group.size).toBe(3)
         })
 
-        it("Should not create a group with a list of members if any value is 0", () => {
-            const fun = () => new Group([1n, 0n])
-
-            expect(fun).toThrow("Failed to add member: value cannot be 0")
+        it("Should reconstruct a group after removing a member", () => {
+            const group = new Group([1n, 2n, 3n])
+            group.removeMember(1)
+            const { members } = group
+            const newGroup = new Group(members)
+            expect(newGroup.members).toEqual([1n, 0n, 3n])
         })
     })
 
