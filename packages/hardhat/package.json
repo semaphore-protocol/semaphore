@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-protocol/hardhat",
-    "version": "4.14.0",
+    "version": "4.14.1",
     "description": "A Hardhat plugin to deploy Semaphore contracts.",
     "type": "module",
     "license": "MIT",
@@ -41,7 +41,7 @@
     },
     "dependencies": {
         "@nomicfoundation/hardhat-ethers": "^3.0.0",
-        "@semaphore-protocol/contracts": "4.14.0",
+        "@semaphore-protocol/contracts": "4.14.1",
         "ethers": "^6.13.4",
         "hardhat-dependency-compiler": "^1.1.3"
     }
