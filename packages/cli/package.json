@@ -1,7 +1,7 @@
 {
     "name": "@semaphore-protocol/cli",
     "type": "module",
-    "version": "4.14.1",
+    "version": "4.14.2",
     "description": "A command line tool to set up your Semaphore project and get group data.",
     "license": "MIT",
     "bin": {
@@ -41,8 +41,8 @@
         "rollup-plugin-cleanup": "^3.2.1"
     },
     "dependencies": {
-        "@semaphore-protocol/data": "4.14.1",
-        "@semaphore-protocol/utils": "4.14.1",
+        "@semaphore-protocol/data": "4.14.2",
+        "@semaphore-protocol/utils": "4.14.2",
         "axios": "^1.6.7",
         "boxen": "^7.1.1",
         "chalk": "^5.3.0",
