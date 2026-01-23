@@ -219,6 +219,13 @@ export default class SemaphoreEthers {
 
         const memberAddedEvents = await getEvents(this._contract, "MemberAdded", [groupId], this._options.startBlock)
 
+        // Create a map from member index to identity commitment for single additions
+        const memberAddedEventsMap = new Map<string, string>()
+
+        for (const [, index, identityCommitment] of memberAddedEvents) {
+            memberAddedEventsMap.set(index.toString(), identityCommitment.toString())
+        }
+
         const members: string[] = []
 
         const merkleTreeSize = await this._contract.getMerkleTreeSize(groupId)
@@ -226,14 +233,18 @@ export default class SemaphoreEthers {
         let i = 0
 
         while (i < Number(merkleTreeSize)) {
-            const identityCommitments = membersAddedEventsMap.get(i.toString())
+            const batchIdentityCommitments = membersAddedEventsMap.get(i.toString())
 
-            if (identityCommitments) {
-                members.push(...identityCommitments)
+            if (batchIdentityCommitments) {
+                members.push(...batchIdentityCommitments)
 
-                i += identityCommitments.length
+                i += batchIdentityCommitments.length
             } else {
-                members.push(memberAddedEvents[i][2])
+                const singleIdentityCommitment = memberAddedEventsMap.get(i.toString())
+
+                if (singleIdentityCommitment) {
+                    members.push(singleIdentityCommitment)
+                }
 
                 i += 1
             }

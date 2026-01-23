@@ -171,10 +171,10 @@ describe("SemaphoreEthers", () => {
             )
             getEventsMocked.mockReturnValueOnce(
                 Promise.resolve([
-                    [, , "110"],
-                    [, , "111"],
-                    [, , "112"],
-                    [, , "113"]
+                    [, "0", "110"],
+                    [, "1", "111"],
+                    [, "2", "112"],
+                    [, "3", "113"]
                 ])
             )
 
@@ -198,6 +198,33 @@ describe("SemaphoreEthers", () => {
             const fun = () => semaphore.getGroupMembers("666")
 
             await expect(fun).rejects.toThrow("Group '666' not found")
+        })
+
+        it("Should correctly handle mixed batch and single additions where single additions don't align with array index", async () => {
+            // Scenario: Batch add members at index 0-1, then single add at index 2
+            // The MemberAdded events array will have only 1 element (for index 2),
+            ContractMocked.mockReturnValueOnce({
+                getGroupAdmin: () => "0xA9C2B639a28cDa8b59C4377e980F75A93dD8605F",
+                getMerkleTreeSize: () => BigInt(3)
+            } as any)
+
+            const semaphore = new SemaphoreEthers()
+
+            // MemberRemoved events - none
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([]))
+            // MemberUpdated events - none
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([]))
+            // MembersAdded events - batch add at index 0
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([[, "0", ["100", "101"]]]))
+            // MemberAdded events - single add at index 2 (only 1 event, but index is 2)
+            getEventsMocked.mockReturnValueOnce(Promise.resolve([[, "2", "102"]]))
+
+            const members = await semaphore.getGroupMembers("42")
+
+            expect(members).toHaveLength(3)
+            expect(members[0]).toBe("100")
+            expect(members[1]).toBe("101")
+            expect(members[2]).toBe("102")
         })
     })
 
