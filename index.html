@@ -1,0 +1,334 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Semaphore SDK</title><meta name="description" content="Documentation for Semaphore SDK"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">Semaphore SDK</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>Semaphore SDK</h2></div><div class="tsd-panel tsd-typography"><p align="center">
+    <h1 align="center">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/semaphore-protocol/.github/main/assets/semaphore-logo-light.svg">
+        <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/semaphore-protocol/.github/main/assets/semaphore-logo-dark.svg">
+        <img width="250" alt="Semaphore icon" src="https://raw.githubusercontent.com/semaphore-protocol/.github/main/assets/semaphore-logo-dark.svg">
+      </picture>
+    </h1>
+</p>
+
+<p align="center">
+    <a href="https://github.com/semaphore-protocol" target="_blank">
+        <img src="https://img.shields.io/badge/project-Semaphore-blue.svg?style=flat-square">
+    </a>
+    <a href="/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/semaphore-protocol/semaphore.svg?style=flat-square">
+    </a>
+    <a href="https://github.com/semaphore-protocol/semaphore/actions?query=workflow%3Aproduction">
+        <img alt="GitHub Workflow test" src="https://img.shields.io/github/actions/workflow/status/semaphore-protocol/semaphore/production.yml?branch=main&label=test&style=flat-square&logo=github">
+    </a>
+    <a href="https://coveralls.io/github/semaphore-protocol/semaphore">
+        <img alt="Coveralls" src="https://img.shields.io/coveralls/github/semaphore-protocol/semaphore?style=flat-square&logo=coveralls">
+    </a>
+    <a href="https://deepscan.io/dashboard#view=project&tid=16502&pid=22324&bid=657461">
+        <img src="https://deepscan.io/api/teams/16502/projects/22324/branches/657461/badge/grade.svg" alt="DeepScan grade">
+    </a>
+    <a href="https://eslint.org/">
+        <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint">
+    </a>
+    <a href="https://prettier.io/">
+        <img alt="Code style prettier" src="https://img.shields.io/badge/code%20style-prettier-f8bc45?style=flat-square&logo=prettier">
+    </a>
+    <img alt="Repository top language" src="https://img.shields.io/github/languages/top/semaphore-protocol/semaphore?style=flat-square">
+    <a href="https://www.gitpoap.io/gh/semaphore-protocol/semaphore" target="_blank">
+        <img src="https://public-api.gitpoap.io/v1/repo/semaphore-protocol/semaphore/badge">
+    </a>
+    <a href="http://commitizen.github.io/cz-cli/">
+        <img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-586D76?style=flat-square">
+    </a>
+</p>
+
+<div align="center">
+    <h4>
+        <a href="/CONTRIBUTING.md">
+            👥 Contributing
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="/CODE_OF_CONDUCT.md">
+            🤝 Code of conduct
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://github.com/semaphore-protocol/semaphore/contribute">
+            🔎 Issues
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://semaphore.pse.dev/telegram">
+            🗣️ Chat &amp; Support
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://js.semaphore.pse.dev">
+            💻 API Reference
+        </a>
+    </h4>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Semaphore is a generic privacy layer. Leveraging zero-knowledge technology, users can prove their membership in groups and send messages (extending from votes to endorsements) off-chain or across EVM-compatible blockchains, all without revealing their personal identity.</th>
+</tr>
+</thead>
+</table>
+<p>The core of the Semaphore protocol is in the <a href="/packages/circuits/scheme.png">circuit logic</a>. However, Semaphore also provides <a href="/packages/contracts">Solidity contracts</a> and JavaScript libraries to make the steps for offchain proof creation and onchain/offchain verification easier. To learn more about Semaphore visit <a href="https://semaphore.pse.dev">semaphore.pse.dev</a>.</p>
+<blockquote>
+<p>[!IMPORTANT]<br>Help Semaphore prosper by sharing your ideas with the PSE <a href="https://github.com/privacy-scaling-explorations/acceleration-program">acceleration program</a>.</p>
+</blockquote>
+<a id="md:📦-packages" class="tsd-anchor"></a><h2><a href="#md:📦-packages">📦 Packages</a></h2><table>
+    <th>Package</th>
+    <th>Version</th>
+    <th>Downloads</th>
+    <tbody>
+        <tr>
+            <td>
+                <a href="/packages/core">
+                    @semaphore-protocol/core
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/core">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/core.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/core">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/core.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/packages/contracts">
+                    @semaphore-protocol/contracts
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/contracts">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/contracts.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/contracts">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/contracts.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/packages/identity">
+                    @semaphore-protocol/identity
+                </a>
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_identity">
+                    (docs)
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/identity">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/identity.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/identity">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/identity.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/packages/group">
+                    @semaphore-protocol/group
+                </a>
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_group">
+                    (docs)
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/group">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/group.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/group">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/group.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/packages/proof">
+                    @semaphore-protocol/proof
+                </a>
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_proof">
+                    (docs)
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/proof">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/proof.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/proof">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/proof.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/packages/data">
+                    @semaphore-protocol/data
+                </a>
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_data">
+                    (docs)
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/data">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/data.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/data">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/data.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/packages/hardhat">
+                    @semaphore-protocol/hardhat
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/hardhat">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/hardhat.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/hardhat">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/hardhat.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/packages/cli">
+                    @semaphore-protocol/cli
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/cli">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/cli.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/cli">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/cli.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/packages/utils">
+                    @semaphore-protocol/utils
+                </a>
+                <a href="https://js.semaphore.pse.dev/modules/_semaphore_protocol_utils">
+                    (docs)
+                </a>
+            </td>
+            <td>
+                <!-- NPM version -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/utils">
+                    <img src="https://img.shields.io/npm/v/@semaphore-protocol/utils.svg?style=flat-square" alt="NPM version" />
+                </a>
+            </td>
+            <td>
+                <!-- Downloads -->
+                <a href="https://npmjs.org/package/@semaphore-protocol/utils">
+                    <img src="https://img.shields.io/npm/dm/@semaphore-protocol/utils.svg?style=flat-square" alt="Downloads" />
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<a id="md:🛠-install" class="tsd-anchor"></a><h2><a href="#md:🛠-install">🛠 Install</a></h2><p>Clone this repository:</p>
+<pre><code class="language-bash"><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">clone</span><span class="hl-1"> </span><span class="hl-2">https://github.com/semaphore-protocol/semaphore.git</span>
+</code><button>Copy</button></pre>
+<p>Install the dependencies:</p>
+<pre><code class="language-bash"><span class="hl-0">cd</span><span class="hl-1"> </span><span class="hl-2">semaphore</span><span class="hl-1"> &amp;&amp; </span><span class="hl-0">yarn</span>
+</code><button>Copy</button></pre>
+<p>And build the repository:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">build</span>
+</code><button>Copy</button></pre>
+<a id="md:📜-usage" class="tsd-anchor"></a><h2><a href="#md:📜-usage">📜 Usage</a></h2><p>Copy the <code>.env.example</code> file as <code>.env</code>:</p>
+<pre><code class="language-bash"><span class="hl-0">cp</span><span class="hl-1"> </span><span class="hl-2">.env.example</span><span class="hl-1"> </span><span class="hl-2">.env</span>
+</code><button>Copy</button></pre>
+<p>And add your environment variables.</p>
+<a id="md:code-quality-and-formatting" class="tsd-anchor"></a><h3><a href="#md:code-quality-and-formatting">Code quality and formatting</a></h3><p>Run <a href="https://eslint.org/">ESLint</a> to analyze the code and catch bugs:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">lint</span>
+</code><button>Copy</button></pre>
+<p>Run <a href="https://prettier.io/">Prettier</a> to check formatting rules:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">format</span>
+</code><button>Copy</button></pre>
+<p>Or to automatically format the code:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">format:write</span>
+</code><button>Copy</button></pre>
+<a id="md:conventional-commits" class="tsd-anchor"></a><h3><a href="#md:conventional-commits">Conventional commits</a></h3><p>Semaphore uses <a href="https://www.conventionalcommits.org/en/v1.0.0/">conventional commits</a>. A <a href="https://github.com/commitizen/cz-cli">command line utility</a> to commit using the correct syntax can be used by running:</p>
+<pre><code class="language-bash"><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">commit</span>
+</code><button>Copy</button></pre>
+<p>It will also automatically check that the modified files comply with ESLint and Prettier rules.</p>
+<a id="md:testing" class="tsd-anchor"></a><h3><a href="#md:testing">Testing</a></h3><p>Run <a href="https://jestjs.io/">Jest</a> to test the JS libraries:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">test:libraries</span>
+</code><button>Copy</button></pre>
+<p>Run <a href="https://mochajs.org/">Mocha</a> to test the contracts:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">test:contracts</span>
+</code><button>Copy</button></pre>
+<p>Or test everything with:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">test</span>
+</code><button>Copy</button></pre>
+<a id="md:build-libraries-amp-compile-contracts" class="tsd-anchor"></a><h3><a href="#md:build-libraries-amp-compile-contracts">Build libraries &amp; compile contracts</a></h3><p>Run <a href="https://www.rollupjs.org">Rollup</a> and <a href="https://www.npmjs.com/package/@graphprotocol/graph-cli">TheGraph</a> to build all the packages and the subgraph:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">build</span>
+</code><button>Copy</button></pre>
+<p>Compile the smart contracts with <a href="https://hardhat.org/">Hardhat</a>:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">compile:contracts</span>
+</code><button>Copy</button></pre>
+<a id="md:documentation-js-libraries" class="tsd-anchor"></a><h3><a href="#md:documentation-js-libraries">Documentation (JS libraries)</a></h3><p>Run <a href="https://typedoc.org/">TypeDoc</a> to generate a documentation website for each package:</p>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">docs</span>
+</code><button>Copy</button></pre>
+<p>The output will be placed on the <code>docs</code> folder.</p>
+<a id="md:releases" class="tsd-anchor"></a><h3><a href="#md:releases">Releases</a></h3><p>Steps:</p>
+<ol>
+<li>Bump a new version with:</li>
+</ol>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">version:bump</span><span class="hl-1"> &lt;</span><span class="hl-2">versio</span><span class="hl-1">n&gt;</span><br/><span class="hl-3"># e.g. yarn version:bump 2.0.0</span>
+</code><button>Copy</button></pre>
+<p>This step creates a commit and a git tag.</p>
+<ol start="2">
+<li>Push the changes to main:</li>
+</ol>
+<pre><code class="language-bash"><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">push</span><span class="hl-1"> </span><span class="hl-2">origin</span><span class="hl-1"> </span><span class="hl-2">main</span>
+</code><button>Copy</button></pre>
+<ol start="3">
+<li>Push the new git tag:</li>
+</ol>
+<pre><code class="language-bash"><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">push</span><span class="hl-1"> </span><span class="hl-2">origin</span><span class="hl-1"> &lt;</span><span class="hl-2">versio</span><span class="hl-1">n&gt;</span><br/><span class="hl-3"># e.g. git push origin v2.0.0</span>
+</code><button>Copy</button></pre>
+<p>After pushing the new git tag, a workflow will be triggered to publish the Semaphore packages on <a href="https://www.npmjs.com/">npm</a> and release a new version on GitHub with its changelogs automatically.</p>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-index-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><h4 class="uppercase">Member Visibility</h4><form><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div><div class="tsd-theme-toggle"><h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:📦-packages"><span>📦 <wbr/>Packages</span></a><a href="#md:🛠-install"><span>🛠 <wbr/>Install</span></a><a href="#md:📜-usage"><span>📜 <wbr/>Usage</span></a><ul><li><a href="#md:code-quality-and-formatting"><span>Code quality and formatting</span></a></li><li><a href="#md:conventional-commits"><span>Conventional commits</span></a></li><li><a href="#md:testing"><span>Testing</span></a></li><li><a href="#md:build-libraries-amp-compile-contracts"><span>Build libraries &amp; compile contracts</span></a></li><li><a href="#md:documentation-js-libraries"><span>Documentation (JS libraries)</span></a></li><li><a href="#md:releases"><span>Releases</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="index.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>Semaphore SDK</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
