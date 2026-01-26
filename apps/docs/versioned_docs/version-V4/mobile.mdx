@@ -1,0 +1,414 @@
+---
+sidebar_position: 6
+title: Mobile SDKs
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+import Admonition from "@theme/Admonition"
+
+# Mobile SDKs
+
+:::info Community Packages
+These mobile SDKs are maintained by [zkmopro](https://zkmopro.org/), a community project focused on bringing ZK proofs to mobile devices. While not part of the core Semaphore repository, they provide native mobile implementations of the Semaphore protocol.
+:::
+
+## Overview
+
+The mobile SDKs enable native ZK proof generation on iOS, Android, React Native, and Flutter platforms, delivering significantly faster results than WASM-based alternatives.
+
+All SDKs follow the same core workflow:
+1. Create an [identity](/glossary#identity)
+2. Create a [group](/glossary#group) with members
+3. Generate a [proof](/glossary#proof) of group membership
+4. Verify the proof
+
+## Installation
+
+<Tabs
+  defaultValue="swift"
+  groupId="mobile-platforms"
+  values={[
+{label: 'Swift (iOS)', value: 'swift'},
+{label: 'Kotlin (Android)', value: 'kotlin'},
+{label: 'React Native', value: 'react-native'},
+{label: 'Flutter', value: 'flutter'}
+]}
+>
+  <TabItem value="swift">
+    <Admonition type="note" title="Swift Package">
+      For detailed setup and API reference, see the [GitHub repository](https://github.com/zkmopro/SemaphoreSwift).
+    </Admonition>
+
+    **Xcode (Swift Package Manager)**
+
+    1. In Xcode, go to **File > Add Package Dependencies**
+    2. Enter the repository URL: `https://github.com/zkmopro/SemaphoreSwift`
+
+    **Package.swift**
+
+    ```swift
+    dependencies: [
+        .package(url: "https://github.com/zkmopro/SemaphoreSwift", from: "0.1.0")
+    ]
+    ```
+
+    **CocoaPods**
+
+    ```ruby
+    pod 'Semaphore', :git => 'https://github.com/zkmopro/SemaphoreSwift'
+    ```
+  </TabItem>
+
+  <TabItem value="kotlin">
+    <Admonition type="note" title="Kotlin Package">
+      For detailed setup and API reference, see the [GitHub repository](https://github.com/zkmopro/SemaphoreKotlin).
+    </Admonition>
+
+    Add [JitPack](https://jitpack.io/#zkmopro/semaphore) repository to your `settings.gradle.kts`:
+
+    ```kotlin
+    dependencyResolutionManagement {
+        repositories {
+            maven { url = uri("https://jitpack.io") }
+        }
+    }
+    ```
+
+    Add the dependency to your `build.gradle.kts`:
+
+    ```kotlin
+    dependencies {
+        implementation("com.github.zkmopro:semaphore-kotlin:Tag")
+    }
+    ```
+
+    Replace `Tag` with the desired version (e.g., `0.1.0`).
+  </TabItem>
+
+  <TabItem value="react-native">
+    <Admonition type="note" title="React Native Package">
+      For detailed setup and API reference, see the [GitHub repository](https://github.com/zkmopro/SemaphoreReactNative).
+    </Admonition>
+
+    ```bash
+    npm install https://github.com/zkmopro/SemaphoreReactNative
+    ```
+
+    <Admonition type="caution">
+      This package requires native modules. If you're using Expo, you'll need to use a [development build](https://docs.expo.dev/develop/development-builds/introduction/) or run `npx expo prebuild` to generate the native project files.
+    </Admonition>
+  </TabItem>
+
+  <TabItem value="flutter">
+    <Admonition type="note" title="Flutter Package">
+      For detailed setup and API reference, see the [GitHub repository](https://github.com/zkmopro/semaphore_flutter).
+    </Admonition>
+
+    Add to your `pubspec.yaml`:
+
+    ```yaml
+    dependencies:
+      semaphore:
+        git:
+          url: https://github.com/zkmopro/semaphore_flutter.git
+    ```
+
+    Then run:
+
+    ```bash
+    flutter pub get
+    ```
+  </TabItem>
+</Tabs>
+
+## Create an Identity
+
+A [Semaphore identity](/glossary#identity) is required to join groups and generate proofs. See the [identities guide](/guides/identities) for more details on the concept.
+
+<Tabs
+  defaultValue="swift"
+  groupId="mobile-platforms"
+  values={[
+{label: 'Swift (iOS)', value: 'swift'},
+{label: 'Kotlin (Android)', value: 'kotlin'},
+{label: 'React Native', value: 'react-native'},
+{label: 'Flutter', value: 'flutter'}
+]}
+>
+  <TabItem value="swift">
+    ```swift
+    import Semaphore
+
+    // Create a random identity
+    let identity = Identity()
+
+    // Or create a deterministic identity from a private key
+    let identity = Identity(privateKey: privateKey)
+
+    // Access the commitment (public identifier)
+    let commitment = identity.commitment()
+    ```
+  </TabItem>
+
+  <TabItem value="kotlin">
+    ```kotlin
+    import com.example.semaphore.Identity
+
+    // Create a random identity
+    val identity = Identity()
+
+    // Or create a deterministic identity from a private key
+    val identity = Identity(privateKey)
+
+    // Access the commitment (public identifier)
+    val commitment = identity.commitment()
+    ```
+  </TabItem>
+
+  <TabItem value="react-native">
+    ```typescript
+    import { Identity } from "semaphore-react-native"
+
+    // Create a random identity
+    const identity = new Identity()
+
+    // Or create a deterministic identity from a private key
+    const identity = new Identity(privateKey)
+
+    // Access the commitment (public identifier)
+    const commitment = identity.commitment()
+    ```
+  </TabItem>
+
+  <TabItem value="flutter">
+    ```dart
+    import 'package:semaphore/semaphore.dart';
+
+    // Create a random identity
+    final identity = await Identity.newInstance();
+
+    // Or create a deterministic identity from a private key
+    final identity = await Identity.newInstance(privateKey: privateKey);
+
+    // Access the commitment (public identifier)
+    final commitment = await identity.commitment();
+    ```
+  </TabItem>
+</Tabs>
+
+## Create a Group
+
+A [Semaphore group](/glossary#group) is a Merkle tree containing identity commitments. See the [groups guide](/guides/groups) for more details.
+
+<Tabs
+  defaultValue="swift"
+  groupId="mobile-platforms"
+  values={[
+{label: 'Swift (iOS)', value: 'swift'},
+{label: 'Kotlin (Android)', value: 'kotlin'},
+{label: 'React Native', value: 'react-native'},
+{label: 'Flutter', value: 'flutter'}
+]}
+>
+  <TabItem value="swift">
+    ```swift
+    import Semaphore
+
+    // Create a group with the identity's element
+    let group = Group(members: [identity.toElement()])
+
+    // Or create a group with multiple members
+    let group = Group(members: [identity1.toElement(), identity2.toElement()])
+    ```
+  </TabItem>
+
+  <TabItem value="kotlin">
+    ```kotlin
+    import com.example.semaphore.Group
+
+    // Create a group with the identity's element
+    val group = Group(listOf(identity.toElement()))
+
+    // Or create a group with multiple members
+    val group = Group(listOf(identity1.toElement(), identity2.toElement()))
+    ```
+  </TabItem>
+
+  <TabItem value="react-native">
+    ```typescript
+    import { Group } from "semaphore-react-native"
+
+    // Create a group with the identity's element
+    const group = new Group([identity.toElement()])
+
+    // Or create a group with multiple members
+    const group = new Group([identity1.toElement(), identity2.toElement()])
+    ```
+  </TabItem>
+
+  <TabItem value="flutter">
+    ```dart
+    import 'package:semaphore/semaphore.dart';
+
+    // Create a group with the identity's element
+    final group = await Group.newInstance(members: [await identity.toElement()]);
+
+    // Or create a group with multiple members
+    final group = await Group.newInstance(members: [
+      await identity1.toElement(),
+      await identity2.toElement()
+    ]);
+    ```
+  </TabItem>
+</Tabs>
+
+## Generate a Proof
+
+Generate a ZK proof that demonstrates group membership without revealing your identity. See the [proofs guide](/guides/proofs) for more details on scopes and messages.
+
+<Tabs
+  defaultValue="swift"
+  groupId="mobile-platforms"
+  values={[
+{label: 'Swift (iOS)', value: 'swift'},
+{label: 'Kotlin (Android)', value: 'kotlin'},
+{label: 'React Native', value: 'react-native'},
+{label: 'Flutter', value: 'flutter'}
+]}
+>
+  <TabItem value="swift">
+    ```swift
+    import Semaphore
+
+    let proof = try generateSemaphoreProof(
+        identity: identity,
+        group: group,
+        message: "Hello World",
+        scope: "app-scope",
+        merkleTreeDepth: 16
+    )
+    ```
+  </TabItem>
+
+  <TabItem value="kotlin">
+    ```kotlin
+    import com.example.semaphore.generateSemaphoreProof
+
+    val proof = generateSemaphoreProof(
+        identity = identity,
+        group = group,
+        message = "Hello World",
+        scope = "app-scope",
+        merkleTreeDepth = 16.toUShort()
+    )
+    ```
+  </TabItem>
+
+  <TabItem value="react-native">
+    ```typescript
+    import { generateSemaphoreProof } from "semaphore-react-native"
+
+    const proof = await generateSemaphoreProof(
+        identity,
+        group,
+        "Hello World",
+        "app-scope",
+        16
+    )
+    ```
+  </TabItem>
+
+  <TabItem value="flutter">
+    ```dart
+    import 'package:semaphore/semaphore.dart';
+
+    // Convert identity and group to Arc references for proof generation
+    final arcIdentity = await identity.toArc();
+    final arcGroup = await group.toArc();
+
+    final proof = await generateSemaphoreProof(
+      identity: arcIdentity,
+      group: arcGroup,
+      message: "Hello World",
+      scope: "app-scope",
+      merkleTreeDepth: 16,
+    );
+    ```
+  </TabItem>
+</Tabs>
+
+:::tip
+The `merkleTreeDepth` parameter determines the maximum group size (2^depth members). A depth of 16 supports up to 65,536 members. Match this value with your on-chain group configuration.
+:::
+
+## Verify a Proof
+
+Verify that a proof is valid. This can be done locally on the device or on a server.
+
+<Tabs
+  defaultValue="swift"
+  groupId="mobile-platforms"
+  values={[
+{label: 'Swift (iOS)', value: 'swift'},
+{label: 'Kotlin (Android)', value: 'kotlin'},
+{label: 'React Native', value: 'react-native'},
+{label: 'Flutter', value: 'flutter'}
+]}
+>
+  <TabItem value="swift">
+    ```swift
+    import Semaphore
+
+    let isValid = try verifySemaphoreProof(proof: proof)
+    ```
+  </TabItem>
+
+  <TabItem value="kotlin">
+    ```kotlin
+    import com.example.semaphore.verifySemaphoreProof
+
+    val isValid = verifySemaphoreProof(proof)
+    ```
+  </TabItem>
+
+  <TabItem value="react-native">
+    ```typescript
+    import { verifySemaphoreProof } from "semaphore-react-native"
+
+    const isValid = await verifySemaphoreProof(proof)
+    ```
+  </TabItem>
+
+  <TabItem value="flutter">
+    ```dart
+    import 'package:semaphore/semaphore.dart';
+
+    final isValid = await verifySemaphoreProof(proof: proof);
+    ```
+  </TabItem>
+</Tabs>
+
+:::info
+For on-chain verification, you can send the proof to your backend and use the Semaphore smart contract's `validateProof` function. See the [proofs guide](/guides/proofs#verify-a-proof) for details.
+:::
+
+## Performance
+
+By proving natively, the mobile SDKs deliver significantly faster proof generation performance than WASM-based alternatives.
+
+The benchmarks below were measured using the [Semaphore-32 circuit](https://github.com/zkmopro/circuit-registry/tree/main/semaphore-32) with [rapidsnark](https://github.com/iden3/rapidsnark), which supports groups with up to 2^32 members. For detailed performance comparisons across different devices, proving systems, and circuits, see the [performance section of zkmopro docs](https://zkmopro.org/docs/performance/).
+
+| Platform | Device | Proof Generation Time |
+|----------|--------|----------------------|
+| iOS | iPhone 16 Pro (2024) | ~143 ms |
+| Android | Samsung S23 Ultra (2023) | ~166 ms |
+
+## Resources
+
+- **iOS (Swift)**: https://github.com/zkmopro/SemaphoreSwift
+- **Android (Kotlin)**: https://github.com/zkmopro/SemaphoreKotlin
+- **React Native**: https://github.com/zkmopro/SemaphoreReactNative
+- **Flutter**: https://github.com/zkmopro/semaphore_flutter
+- **Rust Bindings**: https://github.com/vivianjeng/semaphore-bindings
+- **zkmopro Documentation**: https://zkmopro.org/docs/intro
