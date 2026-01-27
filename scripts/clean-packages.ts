@@ -13,9 +13,6 @@ async function main() {
     folders.forEach((app) =>
         gitIgnored.forEach((f) => rmSync(`${folderName}/${app}/${f}`, { recursive: true, force: true }))
     )
-
-    rmSync(`${folderName}/circuit/main`, { recursive: true, force: true })
-    rmSync(`${folderName}/circuit/test`, { recursive: true, force: true })
 }
 
 main()
