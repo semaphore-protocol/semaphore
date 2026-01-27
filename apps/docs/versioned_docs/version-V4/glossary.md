@@ -16,6 +16,12 @@ The public [Semaphore identity](#identity) value used in [Semaphore groups](#gro
 
 A group is a [Merkle tree](#merkle-tree) in which each leaf is an [identity commitment](#identity-commitment) for a user. Semaphore uses the [LeanIMT](https://zkkit.pse.dev/classes/_zk_kit_lean_imt.LeanIMT.html) implementation, which is an optimized binary incremental Merkle tree. The tree nodes are calculated using [Poseidon](https://www.poseidon-hash.info).
 
+Groups also serve as [anonymity sets](#anonymity-set) in Semaphore. When you generate a proof, you prove you are _one of the group members_ without revealing _which member_ you are. The size of the group directly affects your privacy - larger groups provide stronger anonymity.
+
+## Anonymity set
+
+The set of users among whom an individual is hiding. In Semaphore, the anonymity set is the [group](#group) to which your [identity](#identity) belongs. When you generate a proof, observers know the proof came from _someone in the group_, but cannot determine _which specific member_ created it. The larger the anonymity set (group size), the stronger your privacy protection. For example, in a group of 100 members, you are one of 100 possibilities (1% chance of identification), whereas in a group of 10 members, you are one of 10 possibilities (10% chance).
+
 ## Merkle tree
 
 A [tree](https://en.wikipedia.org/wiki/Merkle_tree) in which every leaf (i.e., a node that doesn't have children) is labelled with the cryptographic hash of a data block,
@@ -37,8 +43,11 @@ The term "message" in Semaphore refers to the value the user broadcasts when vot
 
 ## Relay
 
-A third-party who could receive a fee for including relayed transactions in the blockchain (McMenamin, Daza, and Fitz. https://eprint.iacr.org/2022/155.pdf, p.3).
-To preserve the anonymity of the user broadcasting a message with Semaphore, an application may use a relayer to send the transaction to Ethereum on behalf of the user.
+A third-party service that submits blockchain transactions on behalf of users. Relays are essential for privacy in Semaphore because they prevent your Ethereum address from being publicly linked to your proofs.
+
+**Privacy role**: Without a relay, submitting a proof directly from your wallet creates a public connection between your Ethereum address and the proof. Even though the proof itself is anonymous, observers can link all proofs submitted from the same address. Relays break this link by submitting transactions from their own address.
+
+Relays may receive a fee for their service. For more details, see McMenamin, Daza, and Fitz's research on relayers: https://eprint.iacr.org/2022/155.pdf
 
 ## Trusted setup
 
