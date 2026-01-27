@@ -28,7 +28,7 @@ describe("Proof", () => {
 
             const fun = () => generateProof(identity, group, message, scope, 33)
 
-            await expect(fun).rejects.toThrow("tree depth must be")
+            await expect(fun()).rejects.toThrow("tree depth must be")
         })
 
         it("Should not generate Semaphore proofs if the identity is not part of the group", async () => {
@@ -36,7 +36,7 @@ describe("Proof", () => {
 
             const fun = () => generateProof(identity, group, message, scope, treeDepth)
 
-            await expect(fun).rejects.toThrow("does not exist")
+            await expect(fun()).rejects.toThrow("does not exist")
         })
 
         it("Should generate a Semaphore proof", async () => {
@@ -80,7 +80,7 @@ describe("Proof", () => {
 
             const fun = () => generateProof(identity, group, message, scope, undefined, "hello" as any)
 
-            await expect(fun).rejects.toThrow("is not an object")
+            await expect(fun()).rejects.toThrow("is not an object")
         })
 
         it("Should throw an error because the message value is incorrect", async () => {
@@ -88,7 +88,7 @@ describe("Proof", () => {
 
             const fun = () => generateProof(identity, group, Number.MAX_VALUE, scope, treeDepth)
 
-            await expect(fun).rejects.toThrow("overflow")
+            await expect(fun()).rejects.toThrow("overflow")
         })
     })
 
@@ -100,7 +100,7 @@ describe("Proof", () => {
 
             const fun = () => verifyProof({ ...proof, merkleTreeDepth: 40 })
 
-            await expect(fun).rejects.toThrow("tree depth must be")
+            await expect(fun()).rejects.toThrow("tree depth must be")
         })
 
         it("Should return true if the proof is valid", async () => {
