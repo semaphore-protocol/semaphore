@@ -8,7 +8,7 @@ import type { BigNumberish } from "ethers"
 import { groth16, type NumericString } from "snarkjs"
 import hash from "./hash"
 import toBigInt from "./to-bigint"
-import type { SemaphoreProof } from "./types"
+import type { GenerateProofOptions, SemaphoreProof } from "./types"
 
 /**
  * It generates a Semaphore proof, i.e. a zero-knowledge proof that an identity that
@@ -29,6 +29,7 @@ import type { SemaphoreProof } from "./types"
  * @param scope The Semaphore scope.
  * @param merkleTreeDepth The depth of the tree with which the circuit was compiled.
  * @param snarkArtifacts See {@link https://zkkit.pse.dev/interfaces/_zk_kit_utils.SnarkArtifacts.html | SnarkArtifacts}.
+ * @param options The proof generation options.
  * @returns The Semaphore proof ready to be verified.
  */
 export default async function generateProof(
@@ -37,7 +38,8 @@ export default async function generateProof(
     message: BigNumberish | Uint8Array | string,
     scope: BigNumberish | Uint8Array | string,
     merkleTreeDepth?: number,
-    snarkArtifacts?: SnarkArtifacts
+    snarkArtifacts?: SnarkArtifacts,
+    options?: GenerateProofOptions
 ): Promise<SemaphoreProof> {
     requireDefined(identity, "identity")
     requireDefined(groupOrMerkleProof, "groupOrMerkleProof")
@@ -55,6 +57,14 @@ export default async function generateProof(
 
     if (snarkArtifacts) {
         requireObject(snarkArtifacts, "snarkArtifacts")
+    }
+
+    if (options) {
+        requireObject(options, "options")
+
+        if (options.singleThread !== undefined) {
+            requireTypes(options.singleThread, "options.singleThread", ["boolean"])
+        }
     }
 
     // Message and scope can be strings, numbers or buffers (i.e. Uint8Array).
@@ -109,7 +119,10 @@ export default async function generateProof(
             message: hash(message)
         },
         wasm,
-        zkey
+        zkey,
+        undefined,
+        undefined,
+        options
     )
 
     return {

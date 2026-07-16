@@ -7802,7 +7802,7 @@ __metadata:
     "@rollup/plugin-json": "npm:^6.1.0"
     "@rollup/plugin-typescript": "npm:^11.1.6"
     "@semaphore-protocol/utils": "npm:4.14.3"
-    "@types/snarkjs": "npm:^0"
+    "@types/snarkjs": "npm:^0.7.9"
     "@zk-kit/artifacts": "npm:2.0.1"
     "@zk-kit/utils": "npm:1.3.0"
     ethers: "npm:6.13.4"
@@ -9276,10 +9276,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/snarkjs@npm:^0":
-  version: 0.7.8
-  resolution: "@types/snarkjs@npm:0.7.8"
-  checksum: 10/26b2f8b8329ca9e6a0f027990262504faeae4154fbd60f18218f94623d26e2cf5abbad7048b1a0c859e19f7a7848e28f40d212a2feb4f6ff975cad23b8bd55c4
+"@types/snarkjs@npm:^0.7.9":
+  version: 0.7.9
+  resolution: "@types/snarkjs@npm:0.7.9"
+  checksum: 10/81edd2331c97539621dbd47b658f0149e52dba7a02d974a18f419d59dd2d9d436a8f0d8435b4467438461bf3e5726a1648d326cd74893c86961261ed0196d29b
   languageName: node
   linkType: hard
 

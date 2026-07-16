@@ -48,6 +48,17 @@ describe("Proof", () => {
             expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
         }, 80000)
 
+        it("Should generate a Semaphore proof on a single thread", async () => {
+            const group = new Group([1n, 2n, identity.commitment])
+
+            const proof = await generateProof(identity, group, message, scope, treeDepth, undefined, {
+                singleThread: true
+            })
+
+            expect(typeof proof).toBe("object")
+            expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
+        }, 80000)
+
         it("Should generate a Semaphore proof for a group with 1 member", async () => {
             const group = new Group([identity.commitment])
 

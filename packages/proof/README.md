@@ -78,7 +78,8 @@ group: _Group_,
 message: _BigNumberish_ | _Uint8Array_ | string,
 scope: _BigNumberish_ | _Uint8Array_ | string,
 merkleTreeDepth: _number_,
-snarkArtifacts?: [_SnarkArtifacts_](https://github.com/privacy-scaling-explorations/zk-kit/blob/88acdc6d8fa5f3f2a8ecd1e1a0140244b970c551/packages/utils/src/types/index.ts#L46)
+snarkArtifacts?: [_SnarkArtifacts_](https://github.com/privacy-scaling-explorations/zk-kit/blob/88acdc6d8fa5f3f2a8ecd1e1a0140244b970c551/packages/utils/src/types/index.ts#L46),
+options?: _GenerateProofOptions_
 ): Promise\<_SemaphoreProof_>
 
 ```typescript
@@ -106,6 +107,11 @@ const proof2 = await generateProof(identity2, group, message, scope, 20)
 const proof3 = await generateProof(identity3, group, message, scope, 20, {
     wasm: "./semaphore.wasm",
     zkey: "./semaphore.zkey"
+})
+
+// You can generate proofs on a single thread in runtimes where workers are unavailable.
+const proof4 = await generateProof(identity1, group, message, scope, 20, undefined, {
+    singleThread: true
 })
 ```
 
