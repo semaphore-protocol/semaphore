@@ -13,7 +13,10 @@ interface ISemaphore {
     /// It defines all the group parameters used by Semaphore.sol.
     struct Group {
         uint256 merkleTreeDuration;
-        mapping(uint256 => uint256) merkleRootCreationDates;
+        /// @dev Gets a Merkle root and returns the time at which it was replaced, which is when
+        /// its expiration starts. The current root is not in this mapping, as its expiration
+        /// has not started yet.
+        mapping(uint256 => uint256) merkleRootSupersededDates;
         mapping(uint256 => bool) nullifiers;
     }
 
@@ -78,6 +81,10 @@ interface ISemaphore {
     function acceptGroupAdmin(uint256 groupId) external;
 
     /// @dev Updates the group Merkle tree duration.
+    /// The new duration applies to every past root of the group, not only to roots superseded
+    /// after this call, so raising it makes older roots valid again and lowering it invalidates
+    /// proofs that are already in flight. It is also how long a removed member can keep proving
+    /// membership with an older root, so it should be kept as short as the group can tolerate.
     /// @param groupId: Id of the group.
     /// @param newMerkleTreeDuration: New Merkle tree duration.
     function updateGroupMerkleTreeDuration(uint256 groupId, uint256 newMerkleTreeDuration) external;
