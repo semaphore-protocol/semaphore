@@ -190,7 +190,9 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
                 revert Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
             }
 
-            if (block.timestamp >= merkleRootSupersededDate + merkleTreeDuration) {
+            // merkleRootSupersededDate is never in the future, so this cannot underflow
+            // and the check stays within uint256 for any duration.
+            if (block.timestamp - merkleRootSupersededDate >= merkleTreeDuration) {
                 revert Semaphore__MerkleTreeRootIsExpired();
             }
         }

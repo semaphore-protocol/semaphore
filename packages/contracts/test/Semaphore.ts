@@ -3,7 +3,7 @@
 import { Group, Identity, SemaphoreProof, generateProof } from "@semaphore-protocol/core"
 import { loadFixture, time } from "@nomicfoundation/hardhat-toolbox/network-helpers"
 import { expect } from "chai"
-import { Signer, ZeroAddress } from "ethers"
+import { MaxUint256, Signer, ZeroAddress } from "ethers"
 import { run } from "hardhat"
 // @ts-ignore
 import { Semaphore } from "../typechain-types"
@@ -423,6 +423,33 @@ describe("Semaphore", () => {
             await time.increase(7200)
 
             await semaphoreContract.addMember(groupId, members[2])
+
+            const validProof = await semaphoreContract.verifyProof(groupId, proof)
+
+            expect(validProof).to.equal(true)
+        })
+
+        it("Should verify a proof with an old root if the duration is the maximum uint256", async () => {
+            const { semaphoreContract, accountAddresses, members } = await loadFixture(deployVerifyProofFixture)
+
+            // The largest possible duration means the admin never wants old roots to expire,
+            // so the expiration check has to keep accepting them at that value.
+            const groupId = 1
+            await semaphoreContract["createGroup(address,uint256)"](accountAddresses[0], MaxUint256)
+            await semaphoreContract.addMembers(groupId, [members[0], members[1]])
+
+            const message = 2
+            const merkleTreeDepth = 12
+            const identity = new Identity("0")
+            const group = new Group()
+
+            group.addMembers([members[0], members[1]])
+
+            const proof = await generateProof(identity, group, message, group.root, merkleTreeDepth)
+
+            await semaphoreContract.addMember(groupId, members[2])
+
+            await time.increase(7200)
 
             const validProof = await semaphoreContract.verifyProof(groupId, proof)
 
