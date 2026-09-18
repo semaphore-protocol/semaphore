@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable jest/valid-expect */
 import { Group, Identity, SemaphoreProof, generateProof } from "@semaphore-protocol/core"
-import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers"
+import { loadFixture, time } from "@nomicfoundation/hardhat-toolbox/network-helpers"
 import { expect } from "chai"
-import { Signer, ZeroAddress } from "ethers"
+import { MaxUint256, Signer, ZeroAddress } from "ethers"
 import { run } from "hardhat"
 // @ts-ignore
 import { Semaphore } from "../typechain-types"
@@ -396,6 +396,121 @@ describe("Semaphore", () => {
             const transaction = semaphoreContract.verifyProof(groupId, proof)
 
             await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__MerkleTreeRootIsExpired"
+            )
+        })
+
+        it("Should verify a proof with an old root if the group was idle longer than the duration", async () => {
+            const { semaphoreContract, accountAddresses, members } = await loadFixture(deployVerifyProofFixture)
+
+            // Create a group with the default 1 hour Merkle tree duration.
+            const groupId = 1
+            await semaphoreContract["createGroup(address,uint256)"](accountAddresses[0], 3600)
+            await semaphoreContract.addMembers(groupId, [members[0], members[1]])
+
+            const message = 2
+            const merkleTreeDepth = 12
+            const identity = new Identity("0")
+            const group = new Group()
+
+            group.addMembers([members[0], members[1]])
+
+            // The proof is generated against the root while it is still the current one, but the
+            // group stays unchanged for longer than its Merkle tree duration before being updated.
+            const proof = await generateProof(identity, group, message, group.root, merkleTreeDepth)
+
+            await time.increase(7200)
+
+            await semaphoreContract.addMember(groupId, members[2])
+
+            const validProof = await semaphoreContract.verifyProof(groupId, proof)
+
+            expect(validProof).to.equal(true)
+        })
+
+        it("Should verify a proof with an old root if the duration is the maximum uint256", async () => {
+            const { semaphoreContract, accountAddresses, members } = await loadFixture(deployVerifyProofFixture)
+
+            // The largest possible duration means the admin never wants old roots to expire,
+            // so the expiration check has to keep accepting them at that value.
+            const groupId = 1
+            await semaphoreContract["createGroup(address,uint256)"](accountAddresses[0], MaxUint256)
+            await semaphoreContract.addMembers(groupId, [members[0], members[1]])
+
+            const message = 2
+            const merkleTreeDepth = 12
+            const identity = new Identity("0")
+            const group = new Group()
+
+            group.addMembers([members[0], members[1]])
+
+            const proof = await generateProof(identity, group, message, group.root, merkleTreeDepth)
+
+            await semaphoreContract.addMember(groupId, members[2])
+
+            await time.increase(7200)
+
+            const validProof = await semaphoreContract.verifyProof(groupId, proof)
+
+            expect(validProof).to.equal(true)
+        })
+
+        it("Should not verify a proof with an old root once the duration has elapsed", async () => {
+            const { semaphoreContract, accountAddresses, members } = await loadFixture(deployVerifyProofFixture)
+
+            const groupId = 1
+            await semaphoreContract["createGroup(address,uint256)"](accountAddresses[0], 3600)
+            await semaphoreContract.addMembers(groupId, [members[0], members[1]])
+
+            const message = 2
+            const merkleTreeDepth = 12
+            const identity = new Identity("0")
+            const group = new Group()
+
+            group.addMembers([members[0], members[1]])
+
+            const proof = await generateProof(identity, group, message, group.root, merkleTreeDepth)
+
+            // The countdown of the old root starts here, so it expires 1 hour after this point.
+            await semaphoreContract.addMember(groupId, members[2])
+
+            await time.increase(3600)
+
+            const transaction = semaphoreContract.verifyProof(groupId, proof)
+
+            await expect(transaction).to.be.revertedWithCustomError(
+                semaphoreContract,
+                "Semaphore__MerkleTreeRootIsExpired"
+            )
+        })
+
+        it("Should verify a proof with a root superseded by a batch of members", async () => {
+            const { semaphoreContract, accountAddresses, members } = await loadFixture(deployVerifyProofFixture)
+
+            const groupId = 1
+            await semaphoreContract["createGroup(address,uint256)"](accountAddresses[0], 3600)
+            await semaphoreContract.addMembers(groupId, [members[0], members[1]])
+
+            const message = 2
+            const merkleTreeDepth = 12
+            const identity = new Identity("0")
+            const group = new Group()
+
+            group.addMembers([members[0], members[1]])
+
+            const proof = await generateProof(identity, group, message, group.root, merkleTreeDepth)
+
+            // Adding a batch to a group that already has members supersedes the current root.
+            await semaphoreContract.addMembers(groupId, [members[2], new Identity("3").commitment])
+
+            const validProof = await semaphoreContract.verifyProof(groupId, proof)
+
+            expect(validProof).to.equal(true)
+
+            await time.increase(3600)
+
+            await expect(semaphoreContract.verifyProof(groupId, proof)).to.be.revertedWithCustomError(
                 semaphoreContract,
                 "Semaphore__MerkleTreeRootIsExpired"
             )

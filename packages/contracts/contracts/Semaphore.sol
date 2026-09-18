@@ -10,8 +10,8 @@ import {MIN_DEPTH, MAX_DEPTH} from "./base/Constants.sol";
 /// @dev This contract uses the Semaphore base contracts to provide a complete service
 /// to allow admins to create and manage groups and their members to verify Semaphore proofs
 /// Group admins can add, update or remove group members, and can be an Ethereum account or a smart contract.
-/// This contract also assigns each new Merkle tree generated with a new root a duration (or an expiry)
-/// within which the proofs generated with that root can be validated.
+/// This contract also gives each root a duration (or an expiry) within which the proofs generated with
+/// that root can still be validated after the root has been replaced by a newer one.
 contract Semaphore is ISemaphore, SemaphoreGroups {
     ISemaphoreVerifier public verifier;
 
@@ -76,16 +76,26 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
 
     /// @dev See {SemaphoreGroups-_addMember}.
     function addMember(uint256 groupId, uint256 identityCommitment) external override {
-        uint256 merkleTreeRoot = _addMember(groupId, identityCommitment);
+        uint256 oldMerkleTreeRoot = getMerkleTreeRoot(groupId);
 
-        groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
+        _addMember(groupId, identityCommitment);
+
+        // 0 marks a root as unknown and is also the root of a group with no members,
+        // so it is never stored.
+        if (oldMerkleTreeRoot != 0) {
+            groups[groupId].merkleRootSupersededDates[oldMerkleTreeRoot] = block.timestamp;
+        }
     }
 
     /// @dev See {SemaphoreGroups-_addMembers}.
     function addMembers(uint256 groupId, uint256[] calldata identityCommitments) external override {
-        uint256 merkleTreeRoot = _addMembers(groupId, identityCommitments);
+        uint256 oldMerkleTreeRoot = getMerkleTreeRoot(groupId);
 
-        groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
+        _addMembers(groupId, identityCommitments);
+
+        if (oldMerkleTreeRoot != 0) {
+            groups[groupId].merkleRootSupersededDates[oldMerkleTreeRoot] = block.timestamp;
+        }
     }
 
     /// @dev See {SemaphoreGroups-_updateMember}.
@@ -95,9 +105,12 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 newIdentityCommitment,
         uint256[] calldata merkleProofSiblings
     ) external override {
-        uint256 merkleTreeRoot = _updateMember(groupId, identityCommitment, newIdentityCommitment, merkleProofSiblings);
+        uint256 oldMerkleTreeRoot = getMerkleTreeRoot(groupId);
 
-        groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
+        _updateMember(groupId, identityCommitment, newIdentityCommitment, merkleProofSiblings);
+
+        // A group whose root is 0 has no members to update, so the old root is never 0.
+        groups[groupId].merkleRootSupersededDates[oldMerkleTreeRoot] = block.timestamp;
     }
 
     /// @dev See {SemaphoreGroups-_removeMember}.
@@ -106,9 +119,12 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         uint256 identityCommitment,
         uint256[] calldata merkleProofSiblings
     ) external override {
-        uint256 merkleTreeRoot = _removeMember(groupId, identityCommitment, merkleProofSiblings);
+        uint256 oldMerkleTreeRoot = getMerkleTreeRoot(groupId);
 
-        groups[groupId].merkleRootCreationDates[merkleTreeRoot] = block.timestamp;
+        _removeMember(groupId, identityCommitment, merkleProofSiblings);
+
+        // A group whose root is 0 has no members to remove, so the old root is never 0.
+        groups[groupId].merkleRootSupersededDates[oldMerkleTreeRoot] = block.timestamp;
     }
 
     /// @dev See {ISemaphore-validateProof}.
@@ -164,14 +180,19 @@ contract Semaphore is ISemaphore, SemaphoreGroups {
         // A proof could have used an old Merkle tree root.
         // https://github.com/semaphore-protocol/semaphore/issues/98
         if (proof.merkleTreeRoot != currentMerkleTreeRoot) {
-            uint256 merkleRootCreationDate = groups[groupId].merkleRootCreationDates[proof.merkleTreeRoot];
+            // An old root is accepted until merkleTreeDuration has passed since it was replaced,
+            // giving proofs made while it was still the current root time to arrive. The end of
+            // the window is exclusive, so a duration of 0 rejects every old root.
+            uint256 merkleRootSupersededDate = groups[groupId].merkleRootSupersededDates[proof.merkleTreeRoot];
             uint256 merkleTreeDuration = groups[groupId].merkleTreeDuration;
 
-            if (merkleRootCreationDate == 0) {
+            if (merkleRootSupersededDate == 0) {
                 revert Semaphore__MerkleTreeRootIsNotPartOfTheGroup();
             }
 
-            if (block.timestamp > merkleRootCreationDate + merkleTreeDuration) {
+            // merkleRootSupersededDate is never in the future, so this cannot underflow
+            // and the check stays within uint256 for any duration.
+            if (block.timestamp - merkleRootSupersededDate >= merkleTreeDuration) {
                 revert Semaphore__MerkleTreeRootIsExpired();
             }
         }
