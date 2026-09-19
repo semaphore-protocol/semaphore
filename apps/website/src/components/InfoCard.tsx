@@ -23,7 +23,7 @@ export default function InfoCard({ texts }: InfoCardProps) {
             height={{ base: "auto", md: "474px" }}
         >
             <CardBody padding="0">
-                <VStack align="start" spacing="10" maxH="500" overflowY="auto">
+                <VStack align="start" spacing="10" maxH="500px" overflowY="auto">
                     {texts.map((text) => (
                         <VStack key={text.title} align="start">
                             <Heading textAlign="left" fontSize={{ base: "20px", md: "24px" }}>
