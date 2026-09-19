@@ -260,6 +260,18 @@ describe("SemaphoreSubgraph", () => {
             await expect(fun).rejects.toThrow("Parameter 'options' is not an object")
         })
 
+        it("Should throw an error if the group does not exist", async () => {
+            requestMocked.mockImplementationOnce(() =>
+                Promise.resolve({
+                    groups: []
+                })
+            )
+
+            const fun = () => semaphore.getGroup("1", { members: true })
+
+            await expect(fun).rejects.toThrow("Group '1' not found")
+        })
+
         it("Should return a specific group with its members and verified proofs", async () => {
             requestMocked.mockImplementationOnce(() =>
                 Promise.resolve({
