@@ -56,5 +56,11 @@ describe("Utils", () => {
 
             expect(decodedMessage).toBe(message)
         })
+
+        it("Should return hex if message is not a valid bytes32 string", () => {
+            const hex = "0x66fdd5e25ef9ddb305ba3c2aae1856ab9c6f2979000000000000000000000000"
+            const result = decodeMessage(hex)
+            expect(result).toBe(hex)
+        })
     })
 })
