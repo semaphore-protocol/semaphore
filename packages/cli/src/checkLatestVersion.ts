@@ -16,7 +16,7 @@ export default async function checkLatestVersion(currentVersion: string) {
     let latestVersion: string
 
     try {
-        const { data } = await axios.get(cliRegistryURL)
+        const { data } = await axios.get(cliRegistryURL, { timeout: 5000 })
 
         latestVersion = data.latest
     } catch {
