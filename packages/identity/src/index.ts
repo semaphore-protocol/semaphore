@@ -40,8 +40,11 @@ export class Identity {
      * @example
      * // Generates an identity with a random private key.
      * const { privateKey, publicKey, commitment } = new Identity()
+     * @example
+     * // Generates an identity from a Buffer private key.
+     * const { privateKey, publicKey, commitment } = new Identity(Buffer.from("private-key"))
      *
-     * @param privateKey The private key used to derive the public key (hexadecimal or string).
+     * @param privateKey The private key used to derive the public key (string, Buffer, or Uint8Array).
      */
     constructor(privateKey?: string | Buffer | Uint8Array) {
         const eddsa = new EdDSAPoseidon(privateKey)
