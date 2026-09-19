@@ -1,5 +1,7 @@
 import { Group } from "../src"
 
+const zeroMembers = [0n, "0", "00", "+0", "-0", "0x0", "0o0", "0b0", " 0 ", "", "   "] as const
+
 describe("Group", () => {
     describe("# Group", () => {
         it("Should create a group", () => {
@@ -42,10 +44,10 @@ describe("Group", () => {
             expect(group.size).toBe(1)
         })
 
-        it("Should not add a member to a group if its value is 0", () => {
+        it.each(zeroMembers)("Should not add a member to a group if %p represents 0", (member) => {
             const group = new Group()
 
-            const fun = () => group.addMember(0n)
+            const fun = () => group.addMember(member)
 
             expect(fun).toThrow("Failed to add member: value cannot be 0")
         })
@@ -60,12 +62,13 @@ describe("Group", () => {
             expect(group.size).toBe(2)
         })
 
-        it("Should not add many members to a group if any value is 0", () => {
+        it.each(zeroMembers)("Should not add many members to a group if %p represents 0", (member) => {
             const group = new Group()
 
-            const fun = () => group.addMembers([1n, 0n])
+            const fun = () => group.addMembers([1n, member, 3n])
 
             expect(fun).toThrow("Failed to add member: value cannot be 0")
+            expect(group.members).toEqual([])
         })
     })
 
