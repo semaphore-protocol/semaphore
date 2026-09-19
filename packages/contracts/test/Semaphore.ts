@@ -629,7 +629,7 @@ describe("Semaphore", () => {
                     proof.merkleTreeRoot,
                     proof.nullifier,
                     proof.message,
-                    proof.merkleTreeRoot,
+                    proof.scope,
                     proof.points
                 )
         })
@@ -655,7 +655,7 @@ describe("Semaphore", () => {
                     proof.merkleTreeRoot,
                     proof.nullifier,
                     proof.message,
-                    proof.merkleTreeRoot,
+                    proof.scope,
                     proof.points
                 )
         })
@@ -673,7 +673,7 @@ describe("Semaphore", () => {
                     proof.merkleTreeRoot,
                     proof.nullifier,
                     proof.message,
-                    proof.merkleTreeRoot,
+                    proof.scope,
                     proof.points
                 )
         })
