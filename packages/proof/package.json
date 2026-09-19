@@ -41,7 +41,7 @@
         "@rollup/plugin-alias": "^5.1.0",
         "@rollup/plugin-json": "^6.1.0",
         "@rollup/plugin-typescript": "^11.1.6",
-        "@types/snarkjs": "^0",
+        "@types/snarkjs": "^0.7.9",
         "rimraf": "^5.0.5",
         "rollup": "^4.12.0",
         "rollup-plugin-cleanup": "^3.2.1"
