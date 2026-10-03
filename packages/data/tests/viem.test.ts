@@ -299,6 +299,118 @@ describe("SemaphoreViem", () => {
             )
         })
 
+        it("should handle batch additions starting at index zero", async () => {
+            const semaphoreViem = createSemaphoreViem()
+
+            semaphoreViem.contract.read.getMerkleTreeSize = jest.fn().mockReturnValue(BigInt(2))
+
+            const mockGetContractEvents = jest.fn().mockImplementation(({ eventName }) => {
+                if (eventName === "MembersAdded") {
+                    return [
+                        {
+                            args: {
+                                groupId: "42",
+                                startIndex: BigInt(0),
+                                identityCommitments: ["1", "2"]
+                            }
+                        }
+                    ]
+                }
+
+                return []
+            })
+
+            // @ts-ignore - Mocking the client's getContractEvents method
+            semaphoreViem.client.getContractEvents = mockGetContractEvents
+
+            await expect(semaphoreViem.getGroupMembers("42")).resolves.toEqual(["1", "2"])
+        })
+
+        it.each([BigInt(0), BigInt(2)])(
+            "should apply member updates at index zero in block %s",
+            async (blockNumber) => {
+                const semaphoreViem = createSemaphoreViem()
+
+                semaphoreViem.contract.read.getMerkleTreeSize = jest.fn().mockReturnValue(BigInt(1))
+
+                const mockGetContractEvents = jest.fn().mockImplementation(({ eventName }) => {
+                    if (eventName === "MemberUpdated") {
+                        return [
+                            {
+                                args: {
+                                    groupId: "42",
+                                    index: BigInt(0),
+                                    newIdentityCommitment: "2"
+                                },
+                                blockNumber
+                            }
+                        ]
+                    }
+
+                    if (eventName === "MemberAdded") {
+                        return [
+                            {
+                                args: {
+                                    groupId: "42",
+                                    index: BigInt(0),
+                                    identityCommitment: "1"
+                                }
+                            }
+                        ]
+                    }
+
+                    return []
+                })
+
+                // @ts-ignore - Mocking the client's getContractEvents method
+                semaphoreViem.client.getContractEvents = mockGetContractEvents
+
+                await expect(semaphoreViem.getGroupMembers("42")).resolves.toEqual(["2"])
+            }
+        )
+
+        it.each([BigInt(0), BigInt(2)])(
+            "should apply member removals at index zero in block %s",
+            async (blockNumber) => {
+                const semaphoreViem = createSemaphoreViem()
+
+                semaphoreViem.contract.read.getMerkleTreeSize = jest.fn().mockReturnValue(BigInt(1))
+
+                const mockGetContractEvents = jest.fn().mockImplementation(({ eventName }) => {
+                    if (eventName === "MemberRemoved") {
+                        return [
+                            {
+                                args: {
+                                    groupId: "42",
+                                    index: BigInt(0)
+                                },
+                                blockNumber
+                            }
+                        ]
+                    }
+
+                    if (eventName === "MemberAdded") {
+                        return [
+                            {
+                                args: {
+                                    groupId: "42",
+                                    index: BigInt(0),
+                                    identityCommitment: "1"
+                                }
+                            }
+                        ]
+                    }
+
+                    return []
+                })
+
+                // @ts-ignore - Mocking the client's getContractEvents method
+                semaphoreViem.client.getContractEvents = mockGetContractEvents
+
+                await expect(semaphoreViem.getGroupMembers("42")).resolves.toEqual(["0"])
+            }
+        )
+
         it("should handle all event types and update paths correctly", async () => {
             const semaphoreViem = createSemaphoreViem()
 

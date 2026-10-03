@@ -257,7 +257,12 @@ export default class SemaphoreViem {
         const memberUpdatedEventsMap = new Map<string, [bigint, string]>()
 
         for (const event of memberUpdatedEvents) {
-            if (event.args.index && event.args.newIdentityCommitment && event.blockNumber) {
+            if (
+                event.args.index !== undefined &&
+                event.args.newIdentityCommitment !== undefined &&
+                event.blockNumber !== null &&
+                event.blockNumber !== undefined
+            ) {
                 memberUpdatedEventsMap.set(event.args.index.toString(), [
                     event.blockNumber,
                     event.args.newIdentityCommitment.toString()
@@ -266,7 +271,7 @@ export default class SemaphoreViem {
         }
 
         for (const event of memberRemovedEvents) {
-            if (event.args.index && event.blockNumber) {
+            if (event.args.index !== undefined && event.blockNumber !== null && event.blockNumber !== undefined) {
                 const groupUpdate = memberUpdatedEventsMap.get(event.args.index.toString())
 
                 if (!groupUpdate || (groupUpdate && groupUpdate[0] < event.blockNumber)) {
@@ -289,7 +294,7 @@ export default class SemaphoreViem {
         const membersAddedEventsMap = new Map<string, string[]>()
 
         for (const event of membersAddedEvents) {
-            if (event.args.startIndex && event.args.identityCommitments) {
+            if (event.args.startIndex !== undefined && event.args.identityCommitments !== undefined) {
                 membersAddedEventsMap.set(
                     event.args.startIndex.toString(),
                     event.args.identityCommitments.map((i) => i.toString())
