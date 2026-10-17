@@ -71,12 +71,6 @@ export default {
         chainId: 59144,
         explorer: "https://lineascan.build"
     },
-    "scroll-sepolia": {
-        name: "Scroll Sepolia",
-        url: "https://sepolia-rpc.scroll.io",
-        chainId: 534351,
-        explorer: "https://sepolia.scrollscan.com"
-    },
     "gnosis-chiado": {
         name: "Gnosis Chiado",
         url: "https://rpc.chiadochain.net",

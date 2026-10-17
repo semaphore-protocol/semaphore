@@ -58,7 +58,6 @@ Supported networks:
 -   `base`
 -   `linea-sepolia`
 -   `linea`
--   `scroll-sepolia`
 -   `gnosis-chiado`
 -   `gnosis`
 
