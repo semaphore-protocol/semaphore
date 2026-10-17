@@ -92,7 +92,8 @@ const hardhatConfig: HardhatUserConfig = {
         ]
     },
     sourcify: {
-        enabled: true
+        // Disabled because hardhat-verify still uses the Sourcify v1 API, which has been removed.
+        enabled: false
     }
 }
 
