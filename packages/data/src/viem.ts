@@ -369,15 +369,29 @@ export default class SemaphoreViem {
             fromBlock: BigInt(this._options.startBlock || 0)
         })) as ProofValidatedLog[]
 
-        return proofValidatedEvents.map((event) => ({
-            message: event.args.message?.toString() || "",
-            merkleTreeRoot: event.args.merkleTreeRoot?.toString() || "",
-            merkleTreeDepth: event.args.merkleTreeDepth?.toString() || "",
-            scope: event.args.scope?.toString() || "",
-            nullifier: event.args.nullifier?.toString() || "",
-            points: [event.args.x?.toString() || "", event.args.y?.toString() || ""],
-            timestamp: event.blockNumber ? new Date(Number(event.blockNumber) * 1000).toISOString() : undefined
-        }))
+        return Promise.all(
+            proofValidatedEvents.map(async (event) => {
+                let timestamp: string | undefined
+
+                if (event.blockNumber !== null && event.blockNumber !== undefined) {
+                    const block = await this._client.getBlock({ blockNumber: event.blockNumber })
+
+                    if (block?.timestamp !== undefined) {
+                        timestamp = new Date(Number(block.timestamp) * 1000).toISOString()
+                    }
+                }
+
+                return {
+                    message: event.args.message?.toString() || "",
+                    merkleTreeRoot: event.args.merkleTreeRoot?.toString() || "",
+                    merkleTreeDepth: event.args.merkleTreeDepth?.toString() || "",
+                    scope: event.args.scope?.toString() || "",
+                    nullifier: event.args.nullifier?.toString() || "",
+                    points: [event.args.x?.toString() || "", event.args.y?.toString() || ""],
+                    timestamp
+                }
+            })
+        )
     }
 
     /**
