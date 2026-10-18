@@ -5,7 +5,7 @@ import {
     isSupportedNetwork
 } from "@semaphore-protocol/utils/networks"
 import { SemaphoreABI } from "@semaphore-protocol/utils/constants"
-import { requireString } from "@zk-kit/utils/error-handlers"
+import { requireString, requireTypes } from "@zk-kit/utils/error-handlers"
 import {
     Address,
     createPublicClient,
@@ -18,7 +18,15 @@ import {
     Chain,
     Log
 } from "viem"
-import { GroupResponse, ViemNetwork, ViemOptions } from "./types"
+import { GroupResponse, ViemNetwork, ViemOptions, GroupId } from "./types"
+
+function toBigIntId(id: GroupId): bigint {
+    if (typeof id === "bigint") return id
+    if (typeof id === "number") return BigInt(id)
+    if (typeof id === "string") return BigInt(id)
+    if ((id as any) && typeof (id as any).toString === "function") return BigInt((id as any).toString())
+    throw new TypeError("groupId must be a valid BigNumberish")
+}
 
 // Define types for the event logs to properly access args
 type GroupCreatedLog = Log<bigint, number, boolean, any, any, any, "GroupCreated"> & {
@@ -191,21 +199,21 @@ export default class SemaphoreViem {
      * @param groupId The unique identifier of the group.
      * @returns A promise that resolves to a GroupResponse object.
      */
-    async getGroup(groupId: string): Promise<GroupResponse> {
-        requireString(groupId, "groupId")
+    async getGroup(groupId: GroupId): Promise<GroupResponse> {
+        requireTypes(groupId as any, "groupId", ["string", "bigint", "number", "object"])
 
-        const groupAdmin = await this._contract.read.getGroupAdmin([groupId])
+        const groupAdmin = await this._contract.read.getGroupAdmin([toBigIntId(groupId)])
 
         if (groupAdmin === zeroAddress) {
             throw new Error(`Group '${groupId}' not found`)
         }
 
-        const merkleTreeRoot = await this._contract.read.getMerkleTreeRoot([groupId])
-        const merkleTreeDepth = await this._contract.read.getMerkleTreeDepth([groupId])
-        const merkleTreeSize = await this._contract.read.getMerkleTreeSize([groupId])
+        const merkleTreeRoot = await this._contract.read.getMerkleTreeRoot([toBigIntId(groupId)])
+        const merkleTreeDepth = await this._contract.read.getMerkleTreeDepth([toBigIntId(groupId)])
+        const merkleTreeSize = await this._contract.read.getMerkleTreeSize([toBigIntId(groupId)])
 
         const group: GroupResponse = {
-            id: groupId,
+            id: groupId.toString(),
             admin: groupAdmin as string,
             merkleTree: {
                 depth: Number(merkleTreeDepth),
@@ -223,10 +231,10 @@ export default class SemaphoreViem {
      * @param groupId The unique identifier of the group.
      * @returns A promise that resolves to an array of member identity commitments as strings.
      */
-    async getGroupMembers(groupId: string): Promise<string[]> {
-        requireString(groupId, "groupId")
+    async getGroupMembers(groupId: GroupId): Promise<string[]> {
+        requireTypes(groupId as any, "groupId", ["string", "bigint", "number", "object"])
 
-        const groupAdmin = await this._contract.read.getGroupAdmin([groupId])
+        const groupAdmin = await this._contract.read.getGroupAdmin([toBigIntId(groupId)])
 
         if (groupAdmin === zeroAddress) {
             throw new Error(`Group '${groupId}' not found`)
@@ -238,7 +246,7 @@ export default class SemaphoreViem {
             abi: SemaphoreABI,
             eventName: "MemberRemoved",
             args: {
-                groupId: BigInt(groupId)
+                groupId: toBigIntId(groupId)
             },
             fromBlock: BigInt(this._options.startBlock || 0)
         })) as MemberRemovedLog[]
@@ -249,7 +257,7 @@ export default class SemaphoreViem {
             abi: SemaphoreABI,
             eventName: "MemberUpdated",
             args: {
-                groupId: BigInt(groupId)
+                groupId: toBigIntId(groupId)
             },
             fromBlock: BigInt(this._options.startBlock || 0)
         })) as MemberUpdatedLog[]
@@ -281,7 +289,7 @@ export default class SemaphoreViem {
             abi: SemaphoreABI,
             eventName: "MembersAdded",
             args: {
-                groupId: BigInt(groupId)
+                groupId: toBigIntId(groupId)
             },
             fromBlock: BigInt(this._options.startBlock || 0)
         })) as MembersAddedLog[]
@@ -303,14 +311,14 @@ export default class SemaphoreViem {
             abi: SemaphoreABI,
             eventName: "MemberAdded",
             args: {
-                groupId: BigInt(groupId)
+                groupId: toBigIntId(groupId)
             },
             fromBlock: BigInt(this._options.startBlock || 0)
         })) as MemberAddedLog[]
 
         const members: string[] = []
 
-        const merkleTreeSize = await this._contract.read.getMerkleTreeSize([groupId])
+        const merkleTreeSize = await this._contract.read.getMerkleTreeSize([toBigIntId(groupId)])
 
         let index = 0
 
@@ -350,8 +358,8 @@ export default class SemaphoreViem {
      * @param groupId The unique identifier of the group.
      * @returns A promise that resolves to an array of validated proofs.
      */
-    async getGroupValidatedProofs(groupId: string): Promise<any> {
-        requireString(groupId, "groupId")
+    async getGroupValidatedProofs(groupId: GroupId): Promise<any> {
+        requireTypes(groupId as any, "groupId", ["string", "bigint", "number", "object"])
 
         const groupAdmin = await this._contract.read.getGroupAdmin([groupId])
 
@@ -364,7 +372,7 @@ export default class SemaphoreViem {
             abi: SemaphoreABI,
             eventName: "ProofValidated",
             args: {
-                groupId: BigInt(groupId)
+                groupId: toBigIntId(groupId)
             },
             fromBlock: BigInt(this._options.startBlock || 0)
         })) as ProofValidatedLog[]
@@ -386,8 +394,8 @@ export default class SemaphoreViem {
      * @param member The identity commitment to check.
      * @returns A promise that resolves to a boolean indicating whether the member is in the group.
      */
-    async isGroupMember(groupId: string, member: string): Promise<boolean> {
-        requireString(groupId, "groupId")
+    async isGroupMember(groupId: GroupId, member: string): Promise<boolean> {
+        requireTypes(groupId as any, "groupId", ["string", "bigint", "number", "object"])
         requireString(member, "member")
 
         const members = await this.getGroupMembers(groupId)
