@@ -21,6 +21,26 @@ Merkle Tree) [Solidity](https://github.com/privacy-scaling-explorations/zk-kit/t
 [JavaScript](https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/imt) implementations for managing groups. Groups are Merkle trees, and the group members (i.e., identity commitments) are their leaves.
 :::
 
+## Groups as anonymity sets
+
+In Semaphore, groups serve as [anonymity sets](https://en.wikipedia.org/wiki/Anonymity#Anonymity_and_pseudonymity) - the set of users among whom you are hiding when you generate a proof. The size of your group directly impacts the privacy protection you receive:
+
+- **Larger groups** provide stronger anonymity because it's harder to identify which specific member created a proof
+- **Smaller groups** provide weaker anonymity because there are fewer possible members to hide among
+
+### Privacy and group size
+
+When designing your application, consider the privacy requirements:
+
+- **Groups with fewer than 10 members** provide minimal privacy protection
+- **Groups with 50-100 members** are suitable for most organizational use cases (voting, feedback)
+- **Groups with 500+ members** are recommended for high-stakes privacy applications (whistleblowing, sensitive signaling)
+- **Groups with 1,000+ members** provide the strongest privacy for public applications
+
+:::tip Privacy considerations
+Group size is just one factor in maintaining privacy. For a comprehensive understanding of privacy in Semaphore, including timing attacks, metadata protection, and identity management, see the [privacy considerations guide](/guides/privacy-considerations).
+:::
+
 ## Off-chain groups
 
 Use the [`@semaphore-protocol/group`](https://github.com/semaphore-protocol/semaphore/blob/main/packages/group) package to manage off-chain groups.
@@ -99,8 +119,16 @@ To add a batch of members to a group, pass an array to the `addMembers` method. 
 group1.addMembers(members)
 ```
 
-:::caution
-When you use the same Semaphore identity across multiple groups, if an attacker takes control of that identity all the groups it is part of will be compromised. Consider using different identities for each group.
+:::caution Identity reuse across groups
+When you use the same Semaphore identity across multiple groups:
+
+1. **Security risk**: If an attacker obtains your private key, they can generate valid proofs in ALL groups where your commitment exists
+
+2. **Privacy risk - Membership linking**: With on-chain groups, anyone can see that the same commitment appears in multiple groups, linking your memberships together
+
+3. **Privacy risk - Activity linking**: If you use the same [scope](/glossary#scope) in different groups, your activities can be linked via identical [nullifiers](/glossary#nullifier). Using different scopes in different groups prevents this cryptographic linking
+
+**Best practice**: Use different identities for different groups or contexts to maintain both security and privacy. See the [privacy considerations guide](/guides/privacy-considerations#risk-4-cross-group-identity-linking) for more details.
 :::
 
 ### Remove or update members

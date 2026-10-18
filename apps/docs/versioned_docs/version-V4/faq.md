@@ -32,6 +32,71 @@ You can find a complete list of applications that are using Semaphore on the [Se
 
 There are three ways you can start using Semaphore in your project: using the [CLI](https://github.com/semaphore-protocol/semaphore/tree/main/packages/cli), using the [boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/main) as a template or forking it, or installing the Semaphore [packages](/guides/identities) manually.
 
+## What group size should I use for my application?
+
+The group size you need depends on your privacy requirements. Here are some general guidelines:
+
+-   **10-20 members**: Minimal privacy, suitable for small team feedback where anonymity is not critical
+-   **50-100 members**: Adequate for most organizational use cases like internal voting or surveys
+-   **500+ members**: Recommended for high-stakes privacy applications like whistleblowing
+-   **1,000+ members**: Maximum privacy for public applications
+
+Remember that larger groups provide stronger anonymity because it's harder to identify which specific member created a proof. For detailed guidance, see the [privacy considerations guide](/guides/privacy-considerations).
+
+## How does Semaphore protect my privacy?
+
+Semaphore uses zero-knowledge proofs to provide cryptographic privacy guarantees:
+
+1. **Group membership privacy**: No one can determine which specific group member created a proof
+2. **Message authenticity**: Only group members can create valid proofs
+3. **Double-signaling prevention**: The nullifier system prevents the same identity from creating multiple proofs for the same scope
+4. **Unlinkability across scopes**: Proofs from the same identity on different scopes cannot be linked together
+
+However, Semaphore does NOT automatically protect against network-level metadata (like your IP address), transaction timing patterns, or message content that might reveal your identity. Use relays and follow best practices to maximize your privacy. See the [privacy considerations guide](/guides/privacy-considerations) for more details.
+
+## What is an anonymity set and why does it matter?
+
+An [anonymity set](/glossary#anonymity-set) is the group of users among whom you are hiding. In Semaphore, this is the [group](/glossary#group) your identity belongs to.
+
+The anonymity set matters because it directly determines your privacy level:
+
+-   In a group of 10 members, you're one of 10 possibilities (10% chance of identification)
+-   In a group of 1,000 members, you're one of 1,000 possibilities (0.1% chance)
+
+Larger anonymity sets make it exponentially harder for anyone to identify you. Always consider whether your group size provides adequate privacy for your use case.
+
+## Should I use the same identity across multiple groups?
+
+Generally, no. Using the same identity across multiple groups creates several risks:
+
+1. **Security risk**: If an attacker compromises that identity, all groups it belongs to are affected
+2. **Privacy risk - Membership linking**: With on-chain groups, anyone can see that the same commitment appears in multiple groups, linking your memberships
+3. **Privacy risk - Activity linking**: If you use the same [scope](/glossary#scope) in different groups, your activities become linkable because nullifiers are computed as `Poseidon(scope, secret)` without the group ID
+
+**Best practice**: Use different identities for different contexts or applications. If you must use the same identity, ensure each group uses unique scopes. If you're using deterministic identity generation (e.g., signing a message with MetaMask), ensure each application uses a unique message to generate different identities. See the [privacy considerations guide](/guides/privacy-considerations#risk-4-cross-group-identity-linking) for more information.
+
+## Do I need to use a relay?
+
+If privacy is important for your application, yes. A [relay](/glossary#relay) submits blockchain transactions on your behalf, preventing your Ethereum address from being publicly linked to your proofs.
+
+**Without a relay**: Your wallet address is visible on-chain alongside your proof, allowing observers to link all your proofs together.
+
+**With a relay**: The relay's address appears on-chain, not yours, preserving your anonymity.
+
+Relays are essential for applications where users must remain anonymous, such as whistleblowing platforms or private voting systems. See the [privacy considerations guide](/guides/privacy-considerations#risk-1-transaction-linkability) for implementation guidance.
+
+## Can someone identify me from my proof?
+
+The zero-knowledge proof itself does not reveal your identity - it only proves you are a member of the group. However, you can be identified through:
+
+1. **Message content**: If your message contains identifying information
+2. **Transaction metadata**: If you submit proofs directly from your wallet without using a relay
+3. **Timing patterns**: If you submit proofs immediately after specific events
+4. **Small group size**: If the anonymity set is too small (e.g., fewer than 10 members)
+5. **Cross-group linking**: If you use the same identity in multiple groups
+
+To maximize privacy, use relays, large groups, avoid timing patterns, and never include identifying information in your messages. Read the [privacy considerations guide](/guides/privacy-considerations) for comprehensive guidance.
+
 ## How can I contribute to the protocol?
 
 There are several ways you could contribute to the protocol, you can find more information about on [Github](https://github.com/semaphore-protocol#ways-to-contribute).
