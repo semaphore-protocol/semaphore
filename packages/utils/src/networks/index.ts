@@ -54,9 +54,25 @@ export function getDeployedContract(supportedNetwork: SupportedNetwork) {
         throw new Error(`Semaphore has not been deployed on '${supportedNetwork}' yet`)
     }
 
-    const deployedContract = deployedContracts.find(({ network }) => network === supportedNetwork)
+    const networkDeployedContracts = deployedContracts.find(({ network }) => network === supportedNetwork)
 
-    return deployedContract!.contracts.find(({ name }) => name === "Semaphore") as {
+    if (!networkDeployedContracts) {
+        throw new Error(
+            `No deployed contracts found for network '${supportedNetwork}'. ` +
+                "Please ensure 'deployed-contracts.json' contains an entry for this network."
+        )
+    }
+
+    const semaphoreContract = networkDeployedContracts.contracts.find(({ name }) => name === "Semaphore")
+
+    if (!semaphoreContract) {
+        throw new Error(
+            `Contract 'Semaphore' not found in deployed contracts for network '${supportedNetwork}'. ` +
+                "Make sure deployments include 'Semaphore' for this network."
+        )
+    }
+
+    return semaphoreContract as {
         name: string
         address: string
         startBlock: number
