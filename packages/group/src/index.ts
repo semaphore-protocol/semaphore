@@ -72,11 +72,13 @@ export class Group {
      * @param member The new member to be added.
      */
     public addMember(member: BigNumber) {
-        if (member === 0n || member === "0") {
+        const normalizedMember = BigInt(member)
+
+        if (normalizedMember === 0n) {
             throw new Error("Failed to add member: value cannot be 0")
         }
 
-        this.leanIMT.insert(BigInt(member))
+        this.leanIMT.insert(normalizedMember)
     }
 
     /**
@@ -84,13 +86,13 @@ export class Group {
      * @param members New members.
      */
     public addMembers(members: BigNumber[]) {
-        for (const member of members) {
-            if (member === 0n || member === "0") {
-                throw new Error("Failed to add member: value cannot be 0")
-            }
+        const normalizedMembers = members.map(BigInt)
+
+        if (normalizedMembers.some((member) => member === 0n)) {
+            throw new Error("Failed to add member: value cannot be 0")
         }
 
-        this.leanIMT.insertMany(members.map(BigInt))
+        this.leanIMT.insertMany(normalizedMembers)
     }
 
     /**
