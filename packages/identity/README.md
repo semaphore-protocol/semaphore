@@ -49,7 +49,7 @@
     </h4>
 </div>
 
-| This library provides a class that can be used to create identities compatible with the Semaphore [circuits](https://github.com/semaphore-protocol/semaphore/tree/main/circuits). Each identity contains an [EdDSA](https://www.rfc-editor.org/rfc/rfc8032) private key, its public key, and the identity commitment, which is the [Poseidon](https://eprint.iacr.org/2019/458.pdf) hash of the public key. |
+| This library provides a class that can be used to create identities compatible with the Semaphore [circuits](https://github.com/semaphore-protocol/semaphore/tree/main/packages/circuits). Each identity contains an [EdDSA](https://www.rfc-editor.org/rfc/rfc8032) private key, its public key, and the identity commitment, which is the [Poseidon](https://eprint.iacr.org/2019/458.pdf) hash of the public key. |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## 🛠 Install
