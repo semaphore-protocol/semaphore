@@ -342,6 +342,50 @@ describe("SemaphoreSubgraph", () => {
                 ]
             })
         })
+
+        it("Should exclude members with zero identityCommitment when getting group with members", async () => {
+            requestMocked.mockImplementationOnce(() =>
+                Promise.resolve({
+                    groups: [
+                        {
+                            id: "1",
+                            merkleTree: {
+                                depth: 20,
+                                size: 3,
+                                root: "2"
+                            },
+                            admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
+                            members: [
+                                {
+                                    identityCommitment: "20"
+                                },
+                                {
+                                    identityCommitment: "17"
+                                }
+                            ]
+                        }
+                    ]
+                })
+            )
+
+            const expectedValue = await semaphore.getGroup("1", { members: true })
+
+            expect(expectedValue).toBeDefined()
+            expect(expectedValue.members).toBeDefined()
+            expect(Array.isArray(expectedValue.members)).toBeTruthy()
+            expect(expectedValue.members).toHaveLength(2)
+            expect(expectedValue.members).toContain("20")
+            expect(expectedValue.members).toContain("17")
+            expect(expectedValue.members).not.toContain("0")
+
+            // Verify that the GraphQL query includes the filter for non-zero identityCommitment
+            expect(requestMocked).toHaveBeenCalledWith(
+                expect.any(String),
+                expect.objectContaining({
+                    data: expect.stringContaining('members(where: { identityCommitment_not: \\"0\\" }, orderBy: index)')
+                })
+            )
+        })
     })
 
     describe("# getGroupMembers", () => {
@@ -381,6 +425,41 @@ describe("SemaphoreSubgraph", () => {
         it("Should throw an error if the groupId parameter type is wrong", async () => {
             const fun = () => semaphore.getGroupMembers(1 as any)
             await expect(fun).rejects.toThrow("Parameter 'groupId' is not a string")
+        })
+
+        it("Should exclude members with zero identityCommitment (removed members)", async () => {
+            requestMocked.mockImplementationOnce(() =>
+                Promise.resolve({
+                    groups: [
+                        {
+                            id: "1",
+                            merkleTree: {
+                                depth: 20,
+                                size: 3,
+                                root: "2"
+                            },
+                            admin: "0x7bcd6f009471e9974a77086a69289d16eadba286",
+                            members: [
+                                {
+                                    identityCommitment: "20"
+                                },
+                                {
+                                    identityCommitment: "17"
+                                }
+                            ]
+                        }
+                    ]
+                })
+            )
+
+            const expectedValue = await semaphore.getGroupMembers("1")
+
+            expect(expectedValue).toBeDefined()
+            expect(Array.isArray(expectedValue)).toBeTruthy()
+            expect(expectedValue).toHaveLength(2)
+            expect(expectedValue).toContain("20")
+            expect(expectedValue).toContain("17")
+            expect(expectedValue).not.toContain("0")
         })
     })
 
