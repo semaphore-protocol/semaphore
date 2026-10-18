@@ -211,7 +211,11 @@ export default class SemaphoreSubgraph {
 
         const { groups } = await request(this._url, config)
 
-        if (groups && members) {
+        if (!groups?.length) {
+            throw new Error(`Group '${groupId}' not found`)
+        }
+
+        if (members) {
             groups[0].members = groups[0].members.map((member: any) => member.identityCommitment)
         }
 
