@@ -7602,7 +7602,7 @@ __metadata:
     "@types/mocha": "npm:^10.0.6"
     "@zk-kit/baby-jubjub": "npm:1.0.3"
     "@zk-kit/binary-merkle-root.circom": "npm:2.0.0"
-    circomkit: "npm:0.3.3"
+    circomkit: "npm:0.4.0"
     circomlib: "npm:2.0.5"
     mocha: "npm:^10.2.0"
     poseidon-lite: "npm:^0.3.0"
@@ -12095,19 +12095,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"circomkit@npm:0.3.3":
-  version: 0.3.3
-  resolution: "circomkit@npm:0.3.3"
+"circomkit@npm:0.4.0":
+  version: 0.4.0
+  resolution: "circomkit@npm:0.4.0"
   dependencies:
-    circom_tester: "npm:^0.0.19"
+    "@commander-js/extra-typings": "npm:^12.1.0"
     commander: "npm:^12.1.0"
+    ffjavascript: "npm:^0.3.1"
     loglevel: "npm:^1.9.2"
   peerDependencies:
     "@types/snarkjs": ^0.7.x
-    snarkjs: ^0.7.x
+    snarkjs: ^0.7.5
   bin:
     circomkit: dist/cli.js
-  checksum: 10/c9509c7b64da8d05677ccd409185d0572a09117c9a43e28b0ca0d12a80847fa84db5b7e72af2d68f531b8e38446b3ade5cd16ed63af3590e5a2e759d19aae02b
+  checksum: 10/f0fdd03b4a0fab60db48f76b53a3c3d20f60b8be938d46abe60e95115890d415805420139f72c1055a4a7b74e58ee994e412ae3db9d9578a344d85e7e4cc1cc4
   languageName: node
   linkType: hard
 
@@ -15697,7 +15698,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ffjavascript@npm:0.3.1":
+"ffjavascript@npm:0.3.1, ffjavascript@npm:^0.3.1":
   version: 0.3.1
   resolution: "ffjavascript@npm:0.3.1"
   dependencies:
