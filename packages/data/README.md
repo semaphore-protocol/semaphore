@@ -90,6 +90,8 @@ const customSubgraph = new SemaphoreSubgraph(
 )
 ```
 
+Some default subgraphs may be archived even if the network is supported. If the default endpoint returns no query data, pass the URL of an active Semaphore subgraph as shown above, or [deploy your own subgraph](https://github.com/semaphore-protocol/semaphore/tree/main/apps/subgraph#deployment).
+
 With your SemaphoreSubgraph, you can:
 
 **Query Group IDs**
