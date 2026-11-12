@@ -1,6 +1,23 @@
 import { ByteArray, crypto } from "@graphprotocol/graph-ts"
 
 /**
+ * Calculates the LeanIMT depth from its number of leaves.
+ * @param size Number of leaves, including removed members replaced with zero.
+ * @returns Zero for at most one leaf, otherwise ceil(log2(size)).
+ */
+export function getMerkleTreeDepth(size: i32): i32 {
+    let depth = 0
+    let remaining = size - 1
+
+    while (remaining > 0) {
+        remaining >>= 1
+        depth += 1
+    }
+
+    return depth
+}
+
+/**
  * Concatenates two byte arrays.
  * @param a First byte array.
  * @param b Second byte array.
