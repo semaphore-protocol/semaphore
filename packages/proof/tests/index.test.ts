@@ -66,6 +66,21 @@ describe("Proof", () => {
             expect(BigInt(proof.merkleTreeRoot)).toBe(group.root)
         })
 
+        it("Should not modify the Merkle proof passed as a parameter", async () => {
+            const group = new Group([1n, 2n, identity.commitment])
+            const merkleProof = group.generateMerkleProof(2)
+            const siblings = [...merkleProof.siblings]
+
+            await generateProof(identity, merkleProof, message, scope, treeDepth)
+
+            expect(merkleProof.siblings).toStrictEqual(siblings)
+
+            // Reusing the same Merkle proof must still produce a valid proof.
+            const proof = await generateProof(identity, merkleProof, message, scope)
+
+            expect(await verifyProof(proof)).toBe(true)
+        }, 80000)
+
         it("Should generate a Semaphore proof without passing the tree depth", async () => {
             const group = new Group([1n, 2n, identity.commitment])
 
