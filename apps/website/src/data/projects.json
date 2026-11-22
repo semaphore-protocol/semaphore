@@ -607,5 +607,15 @@
             "website": "https://www.bringid.org",
             "github": "https://github.com/BringID/whitepaper"
         }
+    },
+    {
+        "name": "Semaphore for Stellar",
+        "tagline": "A faithful Semaphore v4 port to Stellar's Soroban, reusing Ethereum's trusted-setup ceremony unchanged via Stellar's native BN254. Enables anonymous membership, confidential multisig, and payer-privacy relays on Stellar.",
+        "categories": ["Infra", "Privacy", "Voting", "Interoperability"],
+        "pse": false,
+        "icon": "",
+        "links": {
+            "github": "https://github.com/edenbd1/semaphore-stellar"
+        }
     }
 ]
