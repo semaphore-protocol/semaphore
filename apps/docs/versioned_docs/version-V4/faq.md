@@ -24,6 +24,72 @@ In the case of a voting application, if you have a group and you want all member
 
 See the [Semaphore circuits](/technical-reference/circuits) for more technical information, or the [Semaphore boilerplate](https://github.com/semaphore-protocol/boilerplate/tree/main) for a real use-case.
 
+## How and when can multiple scopes be used in Semaphore proofs?
+
+In Semaphore, the [nullifier](/glossary#nullifier) is calculated within the zero-knowledge circuit as the Poseidon hash of the [scope](/glossary#scope) and the identity's secret scalar:
+
+```text
+nullifier = Poseidon(scope, secretScalar)
+```
+
+Because the nullifier is cryptographically bound to both the identity and the specific scope:
+
+-   **Same identity + same scope:** Produces the exact same nullifier deterministically. This prevents double-voting or duplicate actions within that specific scope context.
+-   **Same identity + different scopes:** Produces completely different, unlinkable nullifiers. External verifiers cannot correlate two proofs with different scopes to the same member.
+
+### Practical Scenarios
+
+Using multiple scopes is essential whenever members of the same group need to perform several independent actions without linking their identity across actions or exhausting their eligibility in other contexts:
+
+-   **Multi-vote or multi-question polling systems:** In an election with multiple ballot questions or proposals, each question can have a distinct scope (e.g. `hash(pollId, questionIndex)`). Group members can vote on Question 1 and Question 2 independently without revealing they are the same voter and without double-voting on either question.
+-   **Round-based or periodic signaling:** For applications requiring periodic anonymous actions (e.g. daily check-ins, recurring feedback, or epoch-based governance), each round or epoch can use a unique scope (e.g. `hash(groupId, epochNumber)`).
+-   **Multi-action workflows:** In applications with diverse anonymous interactions (e.g. upvoting vs. commenting, or submitting feedback vs. rating), each interaction type can use a distinct scope to enforce separate rate limits without cross-action interference.
+-   **Cross-context replay protection:** Using unique application- or instance-specific scopes prevents a valid proof generated for one application or poll from being replayed in another.
+
+### Code Example (Multi-Question Polling)
+
+The following example demonstrates how a single Semaphore identity can generate valid, independent proofs for multiple questions within the same poll using distinct scopes:
+
+```typescript
+import { Group } from "@semaphore-protocol/group"
+import { Identity } from "@semaphore-protocol/identity"
+import { generateProof, verifyProof } from "@semaphore-protocol/proof"
+
+const identity = new Identity()
+const group = new Group([identity.commitment, 1n, 2n])
+
+const pollId = 101
+
+// Define distinct scopes for each question in the poll
+const scopeQuestion1 = `${pollId}_q1`
+const scopeQuestion2 = `${pollId}_q2`
+
+// Generate proof for Question 1
+const proofQ1 = await generateProof(
+    identity,
+    group,
+    "Option A", // Message (e.g. vote for candidate A)
+    scopeQuestion1
+)
+
+// Generate proof for Question 2 with the same identity
+const proofQ2 = await generateProof(
+    identity,
+    group,
+    "Option B", // Message (e.g. vote for candidate B)
+    scopeQuestion2
+)
+
+// The nullifiers are completely distinct and unlinkable
+console.log(proofQ1.nullifier !== proofQ2.nullifier) // true
+
+// Both proofs verify independently against the same group root
+await verifyProof(proofQ1) // true
+await verifyProof(proofQ2) // true
+```
+
+On the verifier side (e.g. in a smart contract or backend), nullifiers can be tracked in a standard mapping (`mapping(uint256 => bool) public nullifiers`). Because distinct scopes produce unique nullifiers for each member, verifying that a nullifier has not yet been recorded prevents double-voting within each specific question while allowing the member to participate across all questions in the poll.
+
 ## Where can I find examples of applications using Semaphore?
 
 You can find a complete list of applications that are using Semaphore on the [Semaphore website](https://semaphore.pse.dev/projects).
