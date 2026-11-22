@@ -91,7 +91,9 @@ export default async function generateProof(
     const { wasm, zkey } = snarkArtifacts
 
     // The missing siblings can be set to 0, as they won't be used in the circuit.
-    const merkleProofSiblings = merkleProof.siblings
+    // The siblings are copied so that the Merkle proof passed by the caller is not
+    // modified, otherwise reusing it would change its length in the next proof.
+    const merkleProofSiblings = [...merkleProof.siblings]
 
     for (let i = 0; i < merkleTreeDepth; i += 1) {
         if (merkleProofSiblings[i] === undefined) {
