@@ -6,7 +6,6 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
  * @param config Optional Axios request configuration to customize headers, method, timeout, etc.
  * @returns A promise that resolves to the data extracted from the response, typically in JSON format.
  */
-/* istanbul ignore next */
 export default async function request(url: string, config?: AxiosRequestConfig): Promise<any> {
     const { data }: AxiosResponse<any> = await axios(url, {
         headers: {
@@ -16,5 +15,12 @@ export default async function request(url: string, config?: AxiosRequestConfig):
         ...config
     })
 
-    return data?.data
+    if (!data?.data) {
+        const message = data?.errors?.[0]?.message ?? data?.message
+        const detail = typeof message === "string" && message ? `: ${message}` : ""
+
+        throw new Error(`Subgraph response is missing query data${detail}`)
+    }
+
+    return data.data
 }
