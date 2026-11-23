@@ -3,7 +3,7 @@ import type { Config } from "jest"
 
 const exclude = ["circuits", "contracts"]
 
-const projects: any = fs
+const projects = fs
     .readdirSync("./packages", { withFileTypes: true })
     .filter((directory) => directory.isDirectory())
     .filter((directory) => !exclude.includes(directory.name))
