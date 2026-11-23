@@ -1,9 +1,9 @@
 import { defaultNetwork, SupportedNetwork } from "@semaphore-protocol/utils/networks"
 import { AxiosRequestConfig } from "axios"
-import { requireString, requireObject, requireBoolean } from "@zk-kit/utils/error-handlers"
+import { requireString, requireObject, requireBoolean, requireTypes } from "@zk-kit/utils/error-handlers"
 import getURL from "./getURL"
 import request from "./request"
-import { GroupOptions, GroupResponse } from "./types"
+import { GroupId, GroupOptions, GroupResponse } from "./types"
 import { jsDateToGraphqlDate } from "./utils"
 
 /**
@@ -163,8 +163,8 @@ export default class SemaphoreSubgraph {
      * @param options Configuration options to specify which details to fetch about the group.
      * @returns A promise that resolves to the details of the specified group.
      */
-    async getGroup(groupId: string, options: Omit<GroupOptions, "filters"> = {}): Promise<GroupResponse> {
-        requireString(groupId, "groupId")
+    async getGroup(groupId: GroupId, options: Omit<GroupOptions, "filters"> = {}): Promise<GroupResponse> {
+        requireTypes(groupId as any, "groupId", ["string", "bigint", "number"])
         requireObject(options, "options")
 
         const { members = false, validatedProofs = false } = options
@@ -176,7 +176,7 @@ export default class SemaphoreSubgraph {
             method: "post",
             data: JSON.stringify({
                 query: `{
-                    groups(where: { id: "${groupId}" }) {
+                    groups(where: { id: "${groupId.toString()}" }) {
                         id
                         merkleTree {
                             root
@@ -223,7 +223,7 @@ export default class SemaphoreSubgraph {
      * @param groupId The unique identifier of the group.
      * @returns A promise that resolves to an array of group members' identity commitments.
      */
-    async getGroupMembers(groupId: string): Promise<string[]> {
+    async getGroupMembers(groupId: GroupId): Promise<string[]> {
         const group = await this.getGroup(groupId, { members: true }) // parameters are checked inside getGroup
         return group.members!
     }
@@ -233,7 +233,7 @@ export default class SemaphoreSubgraph {
      * @param groupId The unique identifier of the group.
      * @returns A promise that resolves to an array of validated proofs.
      */
-    async getGroupValidatedProofs(groupId: string): Promise<any[]> {
+    async getGroupValidatedProofs(groupId: GroupId): Promise<any[]> {
         const group = await this.getGroup(groupId, { validatedProofs: true }) // parameters are checked inside getGroup
 
         return group.validatedProofs!
@@ -246,15 +246,15 @@ export default class SemaphoreSubgraph {
      * @param member The identity commitment of the member to check.
      * @returns A promise that resolves to true if the member is part of the group, otherwise false.
      */
-    async isGroupMember(groupId: string, member: string): Promise<boolean> {
-        requireString(groupId, "groupId")
+    async isGroupMember(groupId: GroupId, member: string): Promise<boolean> {
+        requireTypes(groupId as any, "groupId", ["string", "bigint", "number"])
         requireString(member, "member")
 
         const config: AxiosRequestConfig = {
             method: "post",
             data: JSON.stringify({
                 query: `{
-                    groups(where: { id: "${groupId}", members_: { identityCommitment: "${member}" } }) {
+                    groups(where: { id: "${groupId.toString()}", members_: { identityCommitment: "${member}" } }) {
                         id
                     }
                 }`

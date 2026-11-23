@@ -1,4 +1,5 @@
 import { Chain, PublicClient, Transport } from "viem"
+import type { BigNumberish } from "ethers"
 
 export type EthersNetwork =
     | "mainnet"
@@ -15,6 +16,8 @@ export type EthersNetwork =
     | "linea-sepolia"
 
 export type ViemNetwork = EthersNetwork
+
+export type GroupId = BigNumberish
 
 export type GroupOptions = {
     members?: boolean
