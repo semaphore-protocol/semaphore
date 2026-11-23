@@ -1,6 +1,6 @@
 /* eslint-disable jest/expect-expect */
 import { Address, BigInt, ByteArray } from "@graphprotocol/graph-ts"
-import { afterAll, assert, clearStore, describe, test } from "matchstick-as/assembly/index"
+import { afterAll, afterEach, assert, beforeEach, clearStore, describe, test } from "matchstick-as/assembly/index"
 import {
     addMember,
     addMembers,
@@ -85,6 +85,7 @@ describe("Semaphore subgraph", () => {
 
             assert.fieldEquals("MerkleTree", groupId.toString(), "root", "999")
             assert.fieldEquals("MerkleTree", groupId.toString(), "size", "1")
+            assert.fieldEquals("MerkleTree", groupId.toString(), "depth", "0")
         })
     })
 
@@ -151,6 +152,7 @@ describe("Semaphore subgraph", () => {
 
             assert.fieldEquals("MerkleTree", groupId.toString(), "root", "999")
             assert.fieldEquals("MerkleTree", groupId.toString(), "size", "3")
+            assert.fieldEquals("MerkleTree", groupId.toString(), "depth", "2")
         })
     })
 
@@ -186,6 +188,88 @@ describe("Semaphore subgraph", () => {
             assert.fieldEquals("ValidatedProof", id, "nullifier", "666")
             assert.fieldEquals("ValidatedProof", id, "message", "2")
             assert.fieldEquals("ValidatedProof", id, "points", `[${points.join(", ")}]`)
+        })
+    })
+
+    describe("# Merkle tree depth", () => {
+        beforeEach(() => {
+            clearStore()
+        })
+
+        afterEach(() => {
+            clearStore()
+        })
+
+        test("Should update depth when adding individual members", () => {
+            const groupId = BigInt.fromI32(234)
+            const expectedDepths = [0, 1, 2, 2, 3, 3, 3, 3, 4]
+
+            createGroup(createGroupCreatedEvent(groupId))
+
+            assert.fieldEquals("MerkleTree", groupId.toString(), "size", "0")
+            assert.fieldEquals("MerkleTree", groupId.toString(), "depth", "0")
+
+            for (let i = 0; i < expectedDepths.length; i += 1) {
+                addMember(
+                    createMemberAddedEvent(groupId, BigInt.fromI32(i), BigInt.fromI32(i + 123), BigInt.fromI32(i + 999))
+                )
+
+                assert.fieldEquals("MerkleTree", groupId.toString(), "size", (i + 1).toString())
+                assert.fieldEquals("MerkleTree", groupId.toString(), "depth", expectedDepths[i].toString())
+            }
+        })
+
+        test("Should update depth when batches cross multiple levels", () => {
+            const groupId = BigInt.fromI32(234)
+            const batchSizes = [1, 2, 1, 5]
+            const expectedDepths = [0, 2, 2, 4]
+            let size = 0
+
+            createGroup(createGroupCreatedEvent(groupId))
+
+            for (let i = 0; i < batchSizes.length; i += 1) {
+                const identityCommitments = new Array<BigInt>()
+
+                for (let j = 0; j < batchSizes[i]; j += 1) {
+                    identityCommitments.push(BigInt.fromI32(size + j + 123))
+                }
+
+                addMembers(
+                    createMembersAddedEvent(groupId, BigInt.fromI32(size), identityCommitments, BigInt.fromI32(999))
+                )
+
+                size += batchSizes[i]
+
+                assert.fieldEquals("MerkleTree", groupId.toString(), "size", size.toString())
+                assert.fieldEquals("MerkleTree", groupId.toString(), "depth", expectedDepths[i].toString())
+            }
+        })
+
+        test("Should preserve depth and size when updating or removing members", () => {
+            const groupId = BigInt.fromI32(234)
+            const identityCommitments = [BigInt.fromI32(123), BigInt.fromI32(124), BigInt.fromI32(125)]
+
+            createGroup(createGroupCreatedEvent(groupId))
+            addMembers(createMembersAddedEvent(groupId, BigInt.fromI32(0), identityCommitments, BigInt.fromI32(999)))
+            updateMember(
+                createMemberUpdatedEvent(
+                    groupId,
+                    BigInt.fromI32(0),
+                    identityCommitments[0],
+                    BigInt.fromI32(126),
+                    BigInt.fromI32(1000)
+                )
+            )
+
+            assert.fieldEquals("MerkleTree", groupId.toString(), "size", "3")
+            assert.fieldEquals("MerkleTree", groupId.toString(), "depth", "2")
+
+            removeMember(
+                createMemberRemovedEvent(groupId, BigInt.fromI32(2), identityCommitments[2], BigInt.fromI32(1001))
+            )
+
+            assert.fieldEquals("MerkleTree", groupId.toString(), "size", "3")
+            assert.fieldEquals("MerkleTree", groupId.toString(), "depth", "2")
         })
     })
 })

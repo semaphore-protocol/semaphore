@@ -9,7 +9,7 @@ import {
     ProofValidated
 } from "../generated/Semaphore/Semaphore"
 import { Group, Member, MerkleTree, ValidatedProof } from "../generated/schema"
-import { concat, hash } from "./utils"
+import { concat, getMerkleTreeDepth, hash } from "./utils"
 
 /**
  * Creates a new group.
@@ -82,6 +82,7 @@ export function addMember(event: MemberAdded): void {
 
         merkleTree.root = event.params.merkleTreeRoot
         merkleTree.size += 1
+        merkleTree.depth = getMerkleTreeDepth(merkleTree.size)
 
         merkleTree.save()
 
@@ -188,6 +189,7 @@ export function addMembers(event: MembersAdded): void {
 
         merkleTree.root = event.params.merkleTreeRoot
         merkleTree.size += identityCommitments.length
+        merkleTree.depth = getMerkleTreeDepth(merkleTree.size)
 
         merkleTree.save()
     }
