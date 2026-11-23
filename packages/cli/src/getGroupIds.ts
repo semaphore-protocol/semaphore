@@ -12,31 +12,35 @@ import Spinner from "./spinner.js"
  */
 export default async function getGroupIds(network: SupportedNetwork): Promise<string[]> {
     let groupIds: string[]
+    let shouldLogEthersError = false
 
     const spinner = new Spinner("Fetching groups")
 
     spinner.start()
 
     try {
-        const semaphoreSubgraph = new SemaphoreSubgraph(network)
-
-        groupIds = await semaphoreSubgraph.getGroupIds()
-
-        spinner.stop()
-    } catch {
         try {
-            const semaphoreEthers = new SemaphoreEthers(network)
+            const semaphoreSubgraph = new SemaphoreSubgraph(network)
 
-            groupIds = await semaphoreEthers.getGroupIds()
-
-            spinner.stop()
+            groupIds = await semaphoreSubgraph.getGroupIds()
         } catch {
-            spinner.stop()
+            try {
+                const semaphoreEthers = new SemaphoreEthers(network)
 
+                groupIds = await semaphoreEthers.getGroupIds()
+            } catch {
+                shouldLogEthersError = true
+
+                return null
+            }
+        }
+
+        return groupIds
+    } finally {
+        spinner.stop()
+
+        if (shouldLogEthersError) {
             console.info(`\n ${logSymbols.error}`, "error: unexpected error with the SemaphoreEthers package")
-
-            return null
         }
     }
-    return groupIds
 }
