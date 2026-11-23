@@ -31,7 +31,7 @@ export default {
     },
     optimism: {
         name: "Optimism",
-        url: "https://mainnet.optimism.io ",
+        url: "https://mainnet.optimism.io",
         chainId: 10,
         explorer: "https://optimistic.etherscan.io"
     },
