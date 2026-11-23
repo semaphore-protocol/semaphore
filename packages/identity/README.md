@@ -72,7 +72,7 @@ yarn add @semaphore-protocol/identity
 
 For more information on the functions provided by `@semaphore-protocol/identity`, please refer to the [TypeDoc documentation](https://js.semaphore.pse.dev/modules/_semaphore_protocol_identity).
 
-\# **new Identity**(privateKey?: _BigNumberish_): _Identity_
+\# **new Identity**(privateKey?: _string | Buffer | Uint8Array_): _Identity_
 
 ```typescript
 import { Identity } from "@semaphore-protocol/identity"
@@ -82,6 +82,8 @@ const { privateKey, publicKey, commitment } = new Identity()
 
 // Alternatively, you can pass your private key.
 const identity = new Identity("your-private-key")
+const identityFromBuffer = new Identity(Buffer.from("your-private-key"))
+const identityFromUint8 = new Identity(new Uint8Array([1, 2, 3]))
 ```
 
 \# **identity.export**(): _string_
