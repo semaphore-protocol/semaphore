@@ -29,9 +29,20 @@ Semaphore uses on-chain Solidity contracts and off-chain JavaScript libraries th
 -   Off chain, JavaScript libraries can be used to create identities, manage groups and generate proofs.
 -   On chain, Solidity contracts can be used to manage groups and verify proofs.
 
+## Supported environments
+
+Semaphore is **not tied to a single blockchain or even to blockchains at all**.
+While many examples in this documentation use Ethereum networks (for example, Sepolia), you can:
+
+-   deploy the Semaphore Solidity contracts to **any EVM-compatible chain** (for example, Polygon, Optimism, Arbitrum, Base, and others); and
+-   use the core circuits and JavaScript/TypeScript libraries entirely **off-chain in web2 environments** (for example, traditional backend services and APIs) without deploying smart contracts.
+
+This means you can adopt Semaphore both in web3 dApps and in existing web2 applications.
+
 ## Developer benefits
 
-Semaphore is designed to be a simple and generic _privacy layer_ for decentralized applications (dApps) on Ethereum. It encourages modular application design, allowing dApp developers to choose and customize the on-chain and off-chain components they need.
+Semaphore is designed to be a simple and generic _privacy layer_ for decentralized applications (dApps) on Ethereum and other EVM-compatible chains, as well as for privacy-preserving features in web2 applications.
+It encourages modular application design, allowing developers to choose and customize the on-chain and off-chain components they need.
 
 ## About the code
 
